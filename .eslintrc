@@ -11,7 +11,7 @@
     "no-unused-vars": 0,
     "no-console": 1,
     "semi": ["error", "always"],
-    "allowImportExportEverywhere": 0,
+    "allowImportExportEverywhere": false,
     "comma-dangle": [1, { //when to use the last comma
         "arrays": "never",
         "objects": "never",
@@ -19,7 +19,6 @@
         "exports": "never",
         "functions": "ignore",
     }],
-    "react/jsx-indent": ["error", 4],
     "react/prop-types": [2]
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"]

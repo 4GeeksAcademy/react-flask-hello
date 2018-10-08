@@ -1,12 +1,46 @@
-Collaborative React App!
+# WebApp boilerplate with React and Cloud 9
 
-Group 1: ***NavBar/Login View (Session)*** | https://getbootstrap.com/docs/4.1/examples/carousel/ & https://getbootstrap.com/docs/4.1/examples/sign-in/
+Requirements: Make sure you have node version 8
 
-Group 2: ***Landing Page with Carousel (Products and Posts)*** | https://getbootstrap.com/docs/4.1/examples/carousel/
+##### Download the boilerplate using the BreatheCode CLI
+```
+$ npm i breathecode-cli -g
+```
 
-Group 3: ***Blog/Post View (Posts)*** | https://getbootstrap.com/docs/4.1/examples/blog/
+##### Download the boilerplate using the BreatheCode CLI
+```
+$ bc start:react-project -r
+```
+##### and install the npm package:
+```
+$ npm install
+```
 
-Group 4: ***Store/Checkout (Products)*** | https://getbootstrap.com/docs/4.1/examples/product/ & https://getbootstrap.com/docs/4.1/examples/checkout/
+## Start coding! 
 
+Start the webpack server with live reload:
+- `$ npm run c9` for Cloud 9 Users.
+- `$ npm run dev-server` for windows, mac or linux.
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+### Styles
+You can update the `styles/index.scss` or `js/index.js` depending on your needs.
+
+### Components
+Add more files into your `./src/js/components` or styles folder as you need them.
+
+### Views (Components)
+Add more files into your `./src/js/views` and import them in `./src/js/layout.jsx`.
+
+### Context
+This boilerplate comes with a centralized general Context API. The file `./src/js/store/store.js` has a base structure for the store, we encourage you to change it and adapt it to your needs.
+
+The `Context.Provider` is already set, you can use the `Context.Consumer` to get the `store` and `actions` from the Context. Check `/views/demo.jsx` to see a demo.
+
+## Publish your website! 
+
+This boilerplate is 100% compatible with the free github pages hosting.
+To publish your website you need to push your code to your github repository and run the following command after:
+```sh
+$ npm run deploy
+```
+Note: You will need to [configure github pages for the branch gh-pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages)

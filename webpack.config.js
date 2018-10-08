@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var PrettierPlugin = require("prettier-webpack-plugin");
 
 module.exports = {
   entry: [
@@ -27,7 +28,7 @@ module.exports = {
           }]
         }, //css only files
         { 
-          test: /\.(png|svg|jpg|gif)$/, use: {
+          test: /\.(png|svg|jpg|gif|jpeg|webp)$/, use: {
             loader: 'file-loader',
             options: { name: '[name].[ext]' } 
           }
@@ -58,6 +59,13 @@ module.exports = {
     new HtmlWebpackPlugin({
         favicon: '4geeks.ico',
         template: 'template.html'
+    }),
+    new PrettierPlugin({
+      printWidth: 80,               // Specify the length of line that the printer will wrap on.
+      tabWidth: 4,                  // Specify the number of spaces per indentation-level.
+      useTabs: true,               // Indent lines with tabs instead of spaces.
+      semi: true,                   // Print semicolons at the ends of statements.
+      encoding: 'utf-8'            // Which encoding scheme to use on files
     })
   ]
 };

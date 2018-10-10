@@ -17,8 +17,7 @@ function DemoProducts(props) {
 											className="list-group-item"
 											onClick={() => {
 												actions.addProductToCart(item);
-											}}
-										>
+											}}>
 											{item.name}
 										</li>
 									);
@@ -32,8 +31,7 @@ function DemoProducts(props) {
 									return (
 										<li
 											className="list-group-item"
-											key={index}
-										>
+											key={index}>
 											{item.name}
 										</li>
 									);

@@ -27,8 +27,7 @@ export class Single extends React.Component {
 					<span
 						className="btn btn-primary btn-lg"
 						href="#"
-						role="button"
-					>
+						role="button">
 						Back home
 					</span>
 				</Link>

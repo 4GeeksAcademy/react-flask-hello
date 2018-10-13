@@ -17,14 +17,13 @@ export class Demo extends React.Component {
 									<li
 										key={index}
 										className="list-group-item d-flex justify-content-between"
-										style={{ background: item.background }}
-									>
+										style={{ background: item.background }}>
 										<Link to={"/single/" + index}>
 											<span>Link to: {item.title}</span>
 										</Link>
 										<p style={{ color: item.initial }}>
 											{
-												"Check the actions to see the code "
+												"Check store/store.js scroll to the actions to see the code "
 											}
 										</p>
 										<button
@@ -34,8 +33,7 @@ export class Demo extends React.Component {
 													index,
 													"orange"
 												)
-											}
-										>
+											}>
 											Change Color
 										</button>
 									</li>

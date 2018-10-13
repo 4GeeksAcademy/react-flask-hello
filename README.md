@@ -25,6 +25,8 @@ Add more files into your `./src/js/views` and import them in `./src/js/layout.js
 ### Context
 This boilerplate comes with a centralized general Context API. The file `./src/js/store/store.js` has a base structure for the store, we encourage you to change it and adapt it to your needs.
 
+React Context [docs] (https://reactjs.org/docs/context.html)
+
 The `Context.Provider` is already set, you can use the `Context.Consumer` to get the `store` and `actions` from the Context. Check `/views/demo.jsx` to see a demo.
 
 ## Publish your website! 

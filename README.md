@@ -2,18 +2,9 @@
 
 Requirements: Make sure you have node version 8
 
-##### Download the boilerplate using the BreatheCode CLI
+##### Clone this boilerplate
 ```
-$ npm i breathecode-cli -g
-```
-
-##### Download the boilerplate using the BreatheCode CLI
-```
-$ bc start:react-project -r
-```
-##### and install the npm package:
-```
-$ npm install
+$ git clone https://github.com/4GeeksAcademy/react-hello-webapp
 ```
 
 ## Start coding! 

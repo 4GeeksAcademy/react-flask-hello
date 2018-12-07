@@ -7,12 +7,19 @@ const Store = PassedComponent => {
 	class StoreWrapper extends React.Component {
 		constructor(props) {
 			super(props);
-			this.state = getState(this);
+			this.state = getState({
+				getStore: () => this.state.store,
+				setStore: updatedStore =>
+					this.setState({
+						store: Object.assign(this.state.store, updatedStore)
+					})
+			});
 		}
 
 		componentDidMount() {
-			// Set your fetchs/Ajax requests here.
-			// make sure you're using the store: this.state.store
+			// this function is the equivalent to "window.onLoad"
+			// it only run once on the entire application lifetime
+			// you should do your ajax requests here
 		}
 
 		render() {

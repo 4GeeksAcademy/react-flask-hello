@@ -59,9 +59,9 @@
 		"popper.js": "^1.12.9",
 		"prop-types": "^15.6.1",
 		"query-string": "^5.1.1",
-		"react": "^16.5.2",
+		"react": "^16.8.4",
 		"react-polyfills": "0.0.1",
-		"react-dom": "^16.5.2",
+		"react-dom": "^16.8.4",
 		"react-router": "^4.3.1",
 		"react-router-dom": "^4.3.1"
 	}

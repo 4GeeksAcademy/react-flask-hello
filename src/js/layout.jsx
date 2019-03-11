@@ -14,18 +14,20 @@ import { Footer } from "./component/footer.jsx";
 export class Layout extends React.Component {
 	render() {
 		return (
-			<BrowserRouter>
-				<ScrollToTop>
-					<Navbar />
-					<Switch>
-						<Route exact path="/" component={Home} />
-						<Route path="/demo" component={Demo} />
-						<Route path="/single/:theid" component={Single} />
-						<Route render={() => <h1>Not found!</h1>} />
-					</Switch>
-					<Footer />
-				</ScrollToTop>
-			</BrowserRouter>
+			<div className="d-flex flex-column h-100">
+				<BrowserRouter>
+					<ScrollToTop>
+						<Navbar />
+						<Switch>
+							<Route exact path="/" component={Home} />
+							<Route path="/demo" component={Demo} />
+							<Route path="/single/:theid" component={Single} />
+							<Route render={() => <h1>Not found!</h1>} />
+						</Switch>
+						<Footer />
+					</ScrollToTop>
+				</BrowserRouter>
+			</div>
 		);
 	}
 }

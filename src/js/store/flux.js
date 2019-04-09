@@ -12,6 +12,11 @@ const getState = ({ getStore, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
+			],
+			todo: [
+				{
+					text: "Esto es una prueba"
+				}
 			]
 		},
 		actions: {
@@ -28,6 +33,11 @@ const getState = ({ getStore, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			createTodo: text => {
+				const { todo } = getStore();
+
+				setStore({});
 			}
 		}
 	};

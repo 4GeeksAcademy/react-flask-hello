@@ -4,8 +4,9 @@ import ScrollToTop from "./component/functional/scrollToTop.jsx";
 
 import { Home } from "./views/home.jsx";
 import { Demo } from "./views/demo.jsx";
+import { Todo } from "./views/todo.jsx";
 import { Single } from "./views/single.jsx";
-import Store from "./store/appContext.jsx";
+import injectStore from "./store/appContext.jsx";
 
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer.jsx";
@@ -32,4 +33,4 @@ export class Layout extends React.Component {
 	}
 }
 
-export default Store(Layout);
+export default injectStore(Layout);

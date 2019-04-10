@@ -4,7 +4,6 @@ import ScrollToTop from "./component/functional/scrollToTop.jsx";
 
 import { Home } from "./views/home.jsx";
 import { Demo } from "./views/demo.jsx";
-import { Todo } from "./views/todo.jsx";
 import { Single } from "./views/single.jsx";
 import injectStore from "./store/appContext.jsx";
 

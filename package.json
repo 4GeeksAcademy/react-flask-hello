@@ -4,10 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"c9": "webpack-dev-server --mode development --host $IP --port $PORT",
-		"start": "webpack-dev-server --mode development --hot",
-		"gitpod": "webpack-dev-server --mode development --host 0.0.0.0 --port 3000",
-		"build": "webpack --mode development",
+		"c9": "webpack-dev-server --config webpack.dev.js --host $IP --port $PORT",
+		"start": "webpack-dev-server --config webpack.dev.js --hot",
+		"gitpod": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0 --port 3000",
+		"build": "webpack --config webpack.prod.js",
 		"deploy": "node deploy-to-github.js"
 	},
 	"author": {
@@ -37,6 +37,7 @@
 		"bc-console": "0.0.2",
 		"css-loader": "^2.1.1",
 		"dotenv-webpack": "^1.7.0",
+		"envfile": "^3.0.0",
 		"error-overlay-webpack-plugin": "^0.2.0",
 		"eslint": "^4.19.1",
 		"eslint-loader": "^2.0.0",
@@ -55,7 +56,8 @@
 		"style-loader": "^0.19.0",
 		"webpack": "^4.0.1",
 		"webpack-cli": "^3.3.0",
-		"webpack-dev-server": "^3.3.1"
+		"webpack-dev-server": "^3.3.1",
+		"webpack-merge": "^4.2.1"
 	},
 	"babel": {
 		"presets": [

@@ -1,10 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PrettierPlugin = require("prettier-webpack-plugin");
-const Dotenv = require('dotenv-webpack');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -43,16 +39,7 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js']
   },
-  devtool: 'cheap-module-source-map',
-  devServer: {
-    contentBase:  './dist',
-    hot: true,
-    disableHostCheck: true,
-    historyApiFallback: true
-  },
   plugins: [
-    new FriendlyErrorsWebpackPlugin(),
-    new ErrorOverlayPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       Popper: 'popper.js',
@@ -64,19 +51,6 @@ module.exports = {
     new HtmlWebpackPlugin({
         favicon: '4geeks.ico',
         template: 'template.html'
-    }),
-    new PrettierPlugin({
-      parser: "babylon",
-      printWidth: 120,             // Specify the length of line that the printer will wrap on.
-      tabWidth: 4,                // Specify the number of spaces per indentation-level.
-      useTabs: true,              // Indent lines with tabs instead of spaces.
-      bracketSpacing: true,
-      extensions: [ ".js", ".jsx" ],
-      jsxBracketSameLine: true,
-      semi: true,                 // Print semicolons at the ends of statements.
-      encoding: 'utf-8'           // Which encoding scheme to use on files
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new Dotenv()
+    })
   ]
 };

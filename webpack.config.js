@@ -3,6 +3,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PrettierPlugin = require("prettier-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -11,7 +13,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
-    publicPath: './'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -41,7 +43,7 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js']
   },
-  devtool: "source-map",
+  devtool: 'cheap-module-source-map',
   devServer: {
     contentBase:  './dist',
     hot: true,
@@ -49,7 +51,8 @@ module.exports = {
     historyApiFallback: true
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
+    new ErrorOverlayPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       Popper: 'popper.js',
@@ -73,6 +76,7 @@ module.exports = {
       semi: true,                 // Print semicolons at the ends of statements.
       encoding: 'utf-8'           // Which encoding scheme to use on files
     }),
+    new webpack.HotModuleReplacementPlugin(),
     new Dotenv()
   ]
 };

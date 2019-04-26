@@ -3,6 +3,9 @@
   "plugins": [
     "react"
   ],
+  "globals":{
+      "process": "readonly"
+  },
   "env": {
     "browser": true,
   },

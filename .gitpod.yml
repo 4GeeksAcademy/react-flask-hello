@@ -3,4 +3,3 @@ ports:
       onOpen: open-browser
 tasks:
     - init: npm install
-      command: npm run start

@@ -1,6 +1,6 @@
 ports:
-    - port: 3000
-      onOpen: open-preview
+    - port: 8080
+      onOpen: open-browser
 tasks:
     - init: npm install
-      command: npm run gitpod
+      command: npm run start

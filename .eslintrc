@@ -1,20 +1,22 @@
 {
-  parser: "babel-eslint",
+  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],
-  "globals":{
-      "process": "readonly"
-  },
   "env": {
     "browser": true,
+    "es6": true
   },
+  "extends": [ "plugin:react/recommended"],
   "rules": {
     "strict":0,
     "no-unused-vars": 0,
     "no-console": 1,
     "semi": ["error", "always"],
     "allowImportExportEverywhere": false,
+    "indent": "off",
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
     "comma-dangle": [1, { //when to use the last comma
         "arrays": "never",
         "objects": "never",
@@ -23,6 +25,5 @@
         "functions": "ignore",
     }],
     "react/prop-types": [2]
-  },
-  "extends": ["eslint:recommended", "plugin:react/recommended"]
+  }
 }

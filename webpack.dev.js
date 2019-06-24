@@ -4,7 +4,7 @@ const common = require('./webpack.common.js');
 const PrettierPlugin = require("prettier-webpack-plugin");
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
-
+const Dotenv = require('dotenv-webpack');
 module.exports = merge(common, {
     mode: 'development',
     devtool: 'cheap-module-source-map',
@@ -28,6 +28,7 @@ module.exports = merge(common, {
             semi: true,                 // Print semicolons at the ends of statements.
             encoding: 'utf-8'           // Which encoding scheme to use on files
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new Dotenv()
     ]
 });

@@ -2,7 +2,7 @@ import React from "react";
 import getState from "./flux.js";
 
 // Don't change, here is where we initialize our context, by default its just going to be Null.
-export const Context = React.createContext(null);
+export const { Consumer, Provider } = React.createContext(null);
 
 // This function injects the global store to any view/component where you want to use it, we will inject the context to Layout.jsx, you can see it here:
 // https://github.com/4GeeksAcademy/react-hello-webapp/blob/master/src/js/layout.jsx#L35
@@ -35,9 +35,9 @@ const injectContext = PassedComponent => {
 			// the context will have a getStore and setStore functions available then, because they were declared
 			// on the state of this component
 			return (
-				<Context.Provider value={this.state}>
+				<Provider value={this.state}>
 					<PassedComponent {...this.props} />
-				</Context.Provider>
+				</Provider>
 			);
 		}
 	}

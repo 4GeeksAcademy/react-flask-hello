@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { Consumer } from "../store/appContext";
 
 export const Single = props => {
 	return (
 		<div className="jumbotron">
-			<Context.Consumer>
+			<Consumer>
 				{({ store }) => {
 					return (
 						<h1 className="display-4">
@@ -14,7 +14,7 @@ export const Single = props => {
 						</h1>
 					);
 				}}
-			</Context.Consumer>
+			</Consumer>
 
 			<hr className="my-4" />
 

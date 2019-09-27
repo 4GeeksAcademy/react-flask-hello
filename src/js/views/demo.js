@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Context } from "../store/appContext";
+import { Consumer } from "../store/appContext";
 
 import "../../styles/demo.scss";
 
 export const Demo = () => (
 	<div className="container">
 		<ul className="list-group">
-			<Context.Consumer>
+			<Consumer>
 				{({ store, actions }) => {
 					return store.demo.map((item, index) => {
 						return (
@@ -35,7 +35,7 @@ export const Demo = () => (
 						);
 					});
 				}}
-			</Context.Consumer>
+			</Consumer>
 		</ul>
 		<br />
 		<Link to="/">

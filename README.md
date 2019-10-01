@@ -22,6 +22,28 @@ You can update the `styles/index.scss` or create new `.scss` files inside `style
 ### Components
 Add more files into your `./src/js/components` or styles folder as you need them and import them into your current files as needed.
 
+**Note (New changes)**: Components have been converted into functions to support the use of hooks:
+* Instead of a class component, we're using a `const` function.
+* Class `constructor` and `state` have been replaced by `useState()` hooks.
+* `componentDidMount()` was replaced by `useEffect({}, [])` - It runs at mount thanks to the second parameter (`[]`).
+* `Actions` and `Store` still work the same way.
+
+```jsx
+// Previous
+export class Demo extends React.Component {
+	constructor(props) {
+		super(props);
+		
+		this.state = getState('code here');
+	}
+}
+
+// New
+export const Demo = () => (
+	const [state, setState] = getState('code here');
+);
+```
+
 ### Views (Components)
 Add more files into your `./src/js/views` and import them in `./src/js/layout.jsx`.
 
@@ -30,7 +52,7 @@ This boilerplate comes with a centralized general Context API. The file `./src/j
 
 React Context [docs](https://reactjs.org/docs/context.html)
 
-The `Context.Provider` is already set, you can use the `Context.Consumer` to get the `store` and `actions` from the Context. Check `/views/demo.jsx` to see a demo.
+The `Provider` is already set. You can use the `Consumer` to get the `store` and `actions` from the Context. Check `/views/demo.jsx` to see a demo.
 
 ## Publish your website!
 

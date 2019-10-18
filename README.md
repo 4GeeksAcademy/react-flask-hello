@@ -29,20 +29,24 @@ Add more files into your `./src/js/components` or styles folder as you need them
 * `Actions` and `Store` still work the same way.
 
 ```jsx
-// Previous
+// Previous "Class Oriented"
 export class Demo extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		this.state = getState('code here');
 	}
 }
 
-// New
+// New "Functional Oriented"
 export const Demo = () => (
-	const [state, setState] = getState('code here');
+	const [state, setState] = getState('code here'); //using the state (if needed)
+  const { store, actions } = useContext(Context); // using the context (if needed)
+
 );
 ```
+
+💡Note: There is an example using the Context API inside `views/demo.js`;
 
 ### Views (Components)
 Add more files into your `./src/js/views` and import them in `./src/js/layout.jsx`.
@@ -52,7 +56,16 @@ This boilerplate comes with a centralized general Context API. The file `./src/j
 
 React Context [docs](https://reactjs.org/docs/context.html)
 
-The `Provider` is already set. You can use the `Consumer` to get the `store` and `actions` from the Context. Check `/views/demo.jsx` to see a demo.
+The `Provider` is already set. You can consume from any component using the useContext hook to get the `store` and `actions` from the Context. Check `/views/demo.js` to see a demo.
+
+```jsx
+import { Context } from "../store/appContext";
+const MyComponentSuper = () => {
+  //here you use useContext to get store and actions
+  const { store, actions } = useContext(Context);
+  return <div>{/* you can use your actions or store inside the html */}</div>
+}
+```
 
 ## Publish your website!
 

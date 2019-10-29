@@ -27,7 +27,7 @@ const injectContext = PassedComponent => {
 			 * This function is the equivalent to "window.onLoad", it only run once on the entire application lifetime
 			 * you should do your ajax requests or fetch api requests here
 			 *
-			 * state.loadSomeData(); <---- calling this function from the flux.js actions
+			 * state.actions.loadSomeData(); <---- calling this function from the flux.js actions
 			 *
 			 **/
 		}, []);

@@ -1,5 +1,6 @@
 {
 	"name": "react-hello-webapp",
+	"engines": { "node": "10.x" },
 	"version": "1.0.1",
 	"description": "",
 	"main": "index.js",

@@ -59,4 +59,5 @@ public/
 !.gitpod.yml
 !.htaccess
 !.eslintrc
-!.env
+!.env.example
+.now

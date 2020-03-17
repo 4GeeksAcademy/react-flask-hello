@@ -2,16 +2,23 @@
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/4GeeksAcademy/react-hello-webapp.git)
 
 ### Requirements:
-- Make sure you are using node version 8
+- Make sure you are using node version 10
 
-##### Install the packages:
+1. Install the packages:
 ```
 $ npm install
 ```
+2. Create a .env file:
+```
+$ cp .env.example .env
+```
+3. Start coding!
 
-## Start coding!
 Start the webpack server with live reload:
+
+```
 `$ npm run start` for windows, mac, linux or Gitpod.
+```
 
 ### Styles
 You can update the `styles/index.scss` or create new `.scss` files inside `styles/` and import them into your current scss or js files depending on your needs.
@@ -66,7 +73,16 @@ const MyComponentSuper = () => {
 ```
 
 ## Publish your website!
-This boilerplate is 100% compatible with the free github pages hosting.
+
+1. **ZEIT:** The FREE recomended hosting provider is [http://zeit.co/](http://zeit.co/), you can deploy in 1 minutes by typing the following command:
+```sh
+$ npm i now -g && now
+```
+✎ Note: If you get asked for credentials you have to type `$ now` after login in.
+
+![Zeit example procedure to deploy](https://ucarecdn.com/4041f971-8dd9-4dc2-84fb-4645ab42c856/)
+
+2. **Github Pages:** This boilerplate is 100% compatible with the free github pages hosting.
 To publish your website you need to push your code to your github repository and run the following command after:
 ```sh
 $ npm run deploy

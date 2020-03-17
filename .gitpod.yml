@@ -1,5 +1,8 @@
 ports:
-    - port: 8080
+    - port: 3000
       onOpen: open-browser
 tasks:
-    - init: npm install
+    - init: >
+        npm i now -g &&
+        npm install &&
+        cp .env.example .env

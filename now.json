@@ -1,0 +1,24 @@
+
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "public" }
+    }
+  ],
+
+  "routes": [
+    {
+      "src":"/(.+)\\.([a-zA-Z]{2,4})$",
+      "headers": { "cache-control": "s-maxage=31536000,immutable" },
+      "dest":"/$1.$2"
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/index.html"
+    }
+  ]
+}

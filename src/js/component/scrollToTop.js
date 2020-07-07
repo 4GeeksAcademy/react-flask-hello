@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 class ScrollToTop extends React.Component {
@@ -14,8 +13,7 @@ class ScrollToTop extends React.Component {
 	}
 }
 
-export default withRouter(ScrollToTop);
-
+export default ScrollToTop;
 ScrollToTop.propTypes = {
 	location: PropTypes.object,
 	children: PropTypes.any

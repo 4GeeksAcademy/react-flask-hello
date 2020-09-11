@@ -52,6 +52,8 @@ Thumbs.db
 # ignore node/grunt dependency directories
 node_modules/
 
+# webpack output
+dist/*
 public/
 
 # ignore the dist directory were our bundle files are going to be
@@ -61,3 +63,10 @@ public/
 !.eslintrc
 !.env.example
 .now
+
+# backend stuff
+.venv
+database.database
+database.db
+diagram.png
+__pycache__/

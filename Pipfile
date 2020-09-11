@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-swagger = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+mysql-connector-python = "*"
+flask-cors = "*"
+gunicorn = "*"
+mysqlclient = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+start="flask run -p 3000 -h 0.0.0.0"
+init="flask db init"
+migrate="flask db migrate"
+upgrade="flask db upgrade"
+deploy="echo 'Please follow this 3 steps to deploy: https://github.com/4GeeksAcademy/flask-rest-hello/blob/master/README.md#deploy-your-website-to-heroku' "

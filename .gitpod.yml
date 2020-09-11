@@ -13,15 +13,6 @@ tasks:
         pipenv run init;
         pipenv run migrate;
         pipenv run upgrade;
-    - command: >
-        cat << EOF
-        Hello! This terminal will represent your backend!
-        1. Get inside the environment $ pipenv shell
-        2. Start the server by typing $ pipenv run start
-        EOF
-    - command: >
-        cat << EOF
-        This terminal is for front-end!
-        1. Start webpack dev server $ npm run start
-        EOF
+    - command: python docs/assets/greeting.py back;
+    - command: python docs/assets/greeting.py front;
       openMode: split-right

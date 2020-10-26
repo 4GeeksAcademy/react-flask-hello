@@ -21,17 +21,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			uploadFile: fileToUpload => {
-				let data = new FormData();
-				console.log("data", fileToUpload);
-				data.append("image", fileToUpload);
-
-				let response = fetch(process.env.BACKEND_URL + "/upload", {
-					method: "POST",
-					body: data
-				});
-			},
-
 			getMessage: () => {
 				// fetching data from the backend
 				fetch(process.env.BACKEND_URL + "/api/hello")

@@ -28,7 +28,7 @@ def handle_upload():
     if 'image' not in request.files:
         raise APIException("No image to upload")
 
-    my_image = UserImage()
+    user = User()
 
     result = cloudinary.uploader.upload(
         request.files['image'],
@@ -45,8 +45,8 @@ def handle_upload():
         tags=['profile_picture']
     )
 
-    my_image.url = result['secure_url']
-    db.session.add(my_image)
+    user.profile_img_url = result['secure_url']
+    db.session.add(user)
     db.session.commit()
 
     return jsonify(my_image.serialize()), 200

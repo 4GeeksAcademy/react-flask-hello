@@ -17,6 +17,7 @@ mysql-connector-python = "*"
 flask-cors = "*"
 gunicorn = "*"
 mysqlclient = "*"
+cloudinary = "*"
 
 [requires]
 python_version = "3.8"

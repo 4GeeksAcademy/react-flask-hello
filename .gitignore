@@ -7,7 +7,11 @@
 php_errorlog
 .log
 
-# track this file .gitignore (i.e. do NOT ignore it)
+# do not ignore gitpod files
+!.gitpod.Dockerfile
+!.gitpod.yml
+
+# track webpack configs (i.e. do NOT ignore it)
 !composer.json
 !webpack.config.js
 !package.json
@@ -58,7 +62,6 @@ public/
 
 # ignore the dist directory were our bundle files are going to be
 !.gitkeep
-!.gitpod.yml
 !.htaccess
 !.eslintrc
 !.env.example

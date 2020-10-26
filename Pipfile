@@ -18,6 +18,7 @@ flask-cors = "*"
 gunicorn = "*"
 mysqlclient = "*"
 cloudinary = "*"
+flask-admin = "*"
 
 [requires]
 python_version = "3.8"

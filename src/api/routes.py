@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, UserImage
 from api.utils import generate_sitemap, APIException
 import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 #from models import Person
 
@@ -20,7 +22,7 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route('/upload', methods=['POST', 'GET'])
+@api.route('/upload', methods=['POST'])
 def handle_upload():
 
     if 'image' not in request.files:
@@ -44,6 +46,7 @@ def handle_upload():
     )
 
     my_image.url = result['secure_url']
-    my_image.save()
+    db.session.add(my_image)
+    db.session.commit()
 
     return jsonify(my_image.serialize()), 200

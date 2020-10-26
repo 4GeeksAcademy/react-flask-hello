@@ -9,6 +9,7 @@ from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from api.admin import setup_admin
 #from models import Person
 
 DEBUG = os.getenv("FLASK_ENV") == "development"
@@ -28,6 +29,9 @@ db.init_app(app)
 
 # Allow CORS requests to this API
 CORS(app)
+
+# add the admin
+setup_admin(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')

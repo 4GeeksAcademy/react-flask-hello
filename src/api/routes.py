@@ -5,8 +5,6 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 
-#from models import Person
-
 api = Blueprint('api', __name__)
 
 

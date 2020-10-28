@@ -17,7 +17,7 @@ Initially user-uploaded files and images were stored in the same database, but t
 
 We will be using Cloudinary API to save the image, its free and 100% integrated with Heroku.
 
-![Architecture](https://github.com/4GeeksAcademy/react-flask-hello/blob/45ca66bd622aaac37e0271588d18032db0e47404/docs/assets/diagram.png?raw=true)
+![Architecture](https://github.com/4GeeksAcademy/react-flask-hello/blob/master/docs/assets/diagram.png?raw=true)
 
 The image upload occurs in 4 steps:
 1. First you create an html form and use Javascript/React to send the user-selected files to the backend using the fetch API.

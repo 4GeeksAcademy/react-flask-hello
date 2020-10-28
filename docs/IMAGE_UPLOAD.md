@@ -1,5 +1,7 @@
 # Image and file upload using third party:
 
+This articule ahs a video tutorial: https://www.loom.com/share/75d597bfb9c64aa7822cc1d9f9ad1576
+
 This is quick 10min tutorial that hopefully will allow you to use the Cloudnary API to allow users to upload images into your application using the traditional `<input type="file>`.
 
 You can [click here to open the example code hosted on this repository](https://github.com/4GeeksAcademy/react-flask-hello/tree/example/cloudinary_image_upload).

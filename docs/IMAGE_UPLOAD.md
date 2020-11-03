@@ -12,12 +12,12 @@ Initially user-uploaded files and images were stored in the same database, but t
 
 1. Security: if users can upload images, What is stopping them to upload malware?; Some malware can be easily hidden within images.
 2. Performance: All of the third party storage services have CDN's available. A CDN can speed your performance in huge amounts, images will load strongly faster.
-3. Price: storage services like Cloudinary, AWS S3 or Google Storage are really cheap, you will pay only cents of a couple of dollars for the most part.
-4. Easy: It's easier implement and mantain.
+3. Price: storage services like Cloudinary, AWS S3 or Google Storage are really cheap, you will pay only cents or a couple of dollars for the most part.
+4. Easy: It's easier to implement and easier to maintain.
 
 ## Architecture
 
-We will be using Cloudinary API to save the image, its free and 100% integrated with Heroku.
+We will be using Cloudinary API to save the images, its free and 100% integrated with Heroku.
 
 ![Architecture](https://github.com/4GeeksAcademy/react-flask-hello/blob/master/docs/assets/diagram.png?raw=true)
 

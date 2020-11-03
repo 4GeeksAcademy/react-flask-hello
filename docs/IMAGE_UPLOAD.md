@@ -22,7 +22,7 @@ We will be using Cloudinary API to save the images, its free and 100% integrated
 ![Architecture](https://github.com/4GeeksAcademy/react-flask-hello/blob/master/docs/assets/diagram.png?raw=true)
 
 The image upload occurs in 4 steps:
-1. First you create an html form and use Javascript/React to send the user-selected files to the backend using the fetch API.
+1. First you create an html `<form>` with one `<input type="file" />` and use Javascript/React to send the user-selected files to the backend using the fetch API.
 2. The API (backend) will receive that request, retrive the binary files and send them to the Cloud Storage (Cloudinary).
 3. Cloudinary will respond with a 200 and the URL of the saved image.
 4. The API saves that image url on the database end responds back to the client.
@@ -31,7 +31,7 @@ The image upload occurs in 4 steps:
 
 The front end is devided in three steps:
 
-1. **Create the form**: You have to create a form with one `<input type="file">` inside, `file` inputs are very simular to `text` but they are made for files (not text), instead of using `event.target.value` to retrieve its value, you use `event.target.files`.
+1. **Create the form**: You have to create a `<form>` with one `<input type="file" />` inside, `file` inputs are very simular to `text` but they are made for files (not text), instead of using `event.target.value` to retrieve its value, you use `event.target.files`.
 2. **Listen to the input change**: When the file input changes, (`onChange`) you have to retrieve all the files that the user picked by the user by using `event.target.files`, then we store those files in a hooked variable for the near future when the form submission occurs.
 3. **Listen to the form submit**: Finally whenever the user decides to submit the form (`onSubmit`), you fetch to the backend API endpoint those files using the FormData object provided by the browser.
 

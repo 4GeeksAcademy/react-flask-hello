@@ -11,11 +11,12 @@ tasks:
         cp .env.example .env && 
         echo "" >> .env && echo "BACKEND_URL=https://3001-${GITPOD_WORKSPACE_URL:8}" >> .env && 
         npm install && 
-        pipenv install && 
+        pipenv install;
+    - command: >
         mysql -u root -e "CREATE DATABASE example" && 
         pipenv run init && 
         pipenv run migrate && 
-        pipenv run upgrade;
-    - command: python docs/assets/greeting.py back;
+        pipenv run upgrade &&
+        python docs/assets/greeting.py back;
     - command: python docs/assets/greeting.py front;
       openMode: split-right

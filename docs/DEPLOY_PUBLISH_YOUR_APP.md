@@ -23,40 +23,29 @@ $ heroku buildpacks:add --index 1 heroku/python
 $ heroku buildpacks:add --index 2 heroku/nodejs
 ```
 
-4. Commit and push to heroku
-Make sure you have commited your changes and push to heroku
-```sh
-$ git push heroku master
+5. Add a new postgress database to your project
+```bash
+$ heroku addons:create heroku-postgresql:hobby-dev
+# this command will also automatically add a DATABASE_URL env variable with the Postgress database url
 ```
 
-## Enviroment Variables (takes 2 minutes)
+5. Other Enviroment Variables
+
+You cannot create a `.env` file on Heroku, instead you need to manually add all the variables using the command line or under your heroku hashboard project settings.
+
+Open your `.env` file and copy and paste each variable (FLASK_APP, FLASK_ENV, etc.) to Heroku. ⚠️ Do not add the `DATABASE_URL` variable again, it was already added by heroku automatically when we added the postgress addon.
+
+```bash
+$ heroku config:set FLASK_APP_KEY="any key works"
+$ heroku config:set FLASK_APP=src/app.py
+# ↓ Enables debug mode
+$ heroku config:set FLASK_ENV=development 
+```
 
 <p align="center">
 <img width="400px" alt="Configuring Env Variables" src="https://github.com/4GeeksAcademy/flask-rest-hello/blob/master/docs/assets/env_variables.gif?raw=true" />
 </p>
 
-You cannot create a `.env` file on Heroku, instead you need to manually create all the variables under your project settings.
+## Done!
 
-Open your `.env` file and copy and paste each variable (FLASK_APP, DB_CONNECTION_STRING, etc.) to Heroku.
-
-
-## Deploying your database to Heroku (takes 3 minutes)
-
-<p align="center">
-<img width="400px" alt="Create DB on heroku" src="https://github.com/4GeeksAcademy/flask-rest-hello/blob/master/docs/assets/db_config.gif?raw=true" />
-</p>
-
-You local MySQL Database now has to be uploaded to a cloud, there are plenty of services that provide MySQL database hosting but we recomend JawDB because it has a Free Tier, its simple and 100% integrated with Heroku.
-
-1. Go to your heroku project dashboard and look to add a new heroku add-on.
-2. Look for JawDB MySQL and add it to your project (it may ask for a Credit Card but you will not be charged as long as your remain withing 5mb database size, enough for your demo.
-3. Once JawDB is added to your project look for the Connection String inside your JawDB dashboard, something like:
-```
-mysql://tqqa0ui0cga32nxd:eqi8nchjbpwth82v@c584md9egjnm02sk.5btxwkvyhwsf.us-east-1.rds.amazonaws.com:3306/45fds423rbtbr
-```
-4. Copy the connection string and create a new environment variable on your project settings.
-5. Run migrations on heroku: After your database is connected, you have to create the tables and structure, you can do that by running the `pipenv run upgrade` command on the production server like this:
-```
-$ heroku run -a=<your_app_name> pipenv run upgrade
-```
-:warning: Note: Notice that you have to replace `<your app name>` with your application name, you also have to be logged into heroku in your terminal (you can do that by typing `heroku login -i`)
+That is it!

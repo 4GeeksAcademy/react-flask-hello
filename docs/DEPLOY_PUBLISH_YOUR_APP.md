@@ -40,6 +40,8 @@ $ heroku config:set FLASK_APP_KEY="any key works"
 $ heroku config:set FLASK_APP=src/app.py
 # ↓ Enables debug mode
 $ heroku config:set FLASK_ENV=development 
+$ heroku config:set BASENAME=/
+$ heroku config:set BACKEND_URL=
 ```
 
 <p align="center">

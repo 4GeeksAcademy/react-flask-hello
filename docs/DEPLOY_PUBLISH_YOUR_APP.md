@@ -48,4 +48,4 @@ $ heroku config:set FLASK_ENV=development
 
 ## Done!
 
-That is it!
+That is it! If you encounter any issues please refer to the [FAQ Heroku file](./FAQ_HEROKU.md).

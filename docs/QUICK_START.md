@@ -1,20 +1,18 @@
-# Creating a Database
+# About the boilerplate
 
-1. Login in into your mysql terminal:
-```sh
-$ mysql
-```
-2. Once inside, create the database (if needed)
-```sql
-CREATE DATABASE example;
-```
-Note: you can delete the previous database using the drop command
+This boilerplate contains a Front-end React application and a Backend Python/Flask application.
 
-# Coding a typical CRUD operation
+# About the Front-end Application
+
+We are using a very similar structure to the [basic react boilerplate](https://github.com/4GeeksAcademy/react-hello) that we used previously at the academy.
+
+# About the Backend Application
+
+## Coding a typical CRUD operation
 
 As an example we are going to create a small API to manage a Person
 
-## Adding an Model
+### Adding an Model
 
 For each `model` you will have to declare a class with the model properties and a method `serialize` that returns a dictionary representation of the class
 
@@ -37,7 +35,7 @@ class Person(db.Model):
 
 ```
 
-## Adding an endpoint
+### Adding an endpoint
 
 For each endpoint you will need to have:
 1. One `@APP` decorator that specifies the path for the expoint.

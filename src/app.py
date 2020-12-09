@@ -12,7 +12,7 @@ from api.routes import api
 from api.admin import setup_admin
 #from models import Person
 
-DEBUG = os.getenv("FLASK_ENV") == "development"
+ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -44,7 +44,7 @@ def handle_invalid_usage(error):
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
-    if DEBUG:
+    if ENV == "development":
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
@@ -54,11 +54,10 @@ def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = os.path.join(path, 'index.html')
     response = send_from_directory(static_file_dir, path)
-    if DEBUG:
-        response.cache_control.max_age = 0 # avoid cache memory
+    response.cache_control.max_age = 0 # avoid cache memory
     return response
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=DEBUG)
+    app.run(host='0.0.0.0', port=PORT, debug=True)

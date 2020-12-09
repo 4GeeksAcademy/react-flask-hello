@@ -1,7 +1,5 @@
 FROM gitpod/workspace-full:latest
 
-USER root
-
 # Install PostgreSQL
 RUN sudo apt-get update \
  && sudo apt-get install -y postgresql postgresql-contrib \

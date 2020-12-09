@@ -19,3 +19,11 @@ $ git add .
 $ git commit -m 'trying to redeploy app'
 $ git push heroku master
 ```
+
+## I see only the backend, the front-end is not showing up
+
+You probably forgot to change the FLASK_ENV enviromental variable to `production`, run the following command on the console:
+
+```
+$ heroku config:set FLASK_ENV=production 
+```

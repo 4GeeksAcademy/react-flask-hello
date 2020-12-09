@@ -1,4 +1,4 @@
-FROM gitpod/workspace-mysql:latest
+FROM gitpod/workspace-full:latest
 
 USER root
 

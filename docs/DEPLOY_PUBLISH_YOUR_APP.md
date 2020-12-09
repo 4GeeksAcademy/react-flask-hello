@@ -38,8 +38,8 @@ Open your `.env` file and copy and paste each variable (FLASK_APP, FLASK_ENV, et
 ```bash
 $ heroku config:set FLASK_APP_KEY="any key works"
 $ heroku config:set FLASK_APP=src/app.py
-# ↓ Enables debug mode
-$ heroku config:set FLASK_ENV=development 
+#                               ↓ Important: Set to "production"
+$ heroku config:set FLASK_ENV=production 
 $ heroku config:set BASENAME=/
 $ heroku config:set BACKEND_URL=
 ```

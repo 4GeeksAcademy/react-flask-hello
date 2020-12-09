@@ -8,14 +8,13 @@ ports:
       onOpen: ignore
 tasks:
     - init: >
-        cp .env.example .env && 
+        (cp -n .env.example .env || true) && 
         echo "" >> .env && echo "BACKEND_URL=https://3001-${GITPOD_WORKSPACE_URL:8}" >> .env && 
-        npm install && 
+        npm install
     - command: >
         pipenv install &&
         psql -U gitpod -c 'CREATE DATABASE example;' &&
         psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d example &&
-        (cp -n .env.example .env || true) && 
         pipenv run init && 
         pipenv run migrate && 
         pipenv run upgrade &&

@@ -17,7 +17,7 @@ If you application failed to deploy you can retry by making any change to your f
 # make sure to make any change to your files
 $ git add .
 $ git commit -m 'trying to redeploy app'
-$ git push heroku master
+$ git push heroku main
 ```
 
 ## I see only the backend, the front-end is not showing up

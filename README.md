@@ -77,17 +77,4 @@ const MyComponentSuper = () => {
 
 ## Publish your website!
 
-1. **ZEIT:** The FREE recomended hosting provider is [http://zeit.co/](http://zeit.co/), you can deploy in 1 minutes by typing the following command:
-```sh
-$ npm i now -g && now
-```
-✎ Note: If you get asked for credentials you have to type `$ now` after login in.
-
-![Zeit example procedure to deploy](https://ucarecdn.com/4041f971-8dd9-4dc2-84fb-4645ab42c856/)
-
-2. **Github Pages:** This boilerplate is 100% compatible with the free github pages hosting.
-To publish your website you need to push your code to your github repository and run the following command after:
-```sh
-$ npm run deploy
-```
-Note: You will need to [configure github pages for the branch gh-pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages)
+This boilerplate it's 100% integrate with Herkou, just by pushing your changes to the heroku repository it will deploy: `$ git push heroku main`

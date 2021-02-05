@@ -50,6 +50,16 @@ $ heroku config:set BACKEND_URL=
 <img width="400px" alt="Configuring Env Variables" src="https://github.com/4GeeksAcademy/flask-rest-hello/blob/master/docs/assets/env_variables.gif?raw=true" />
 </p>
 
+## Push your changes!
+
+The last step is to push your code to heroku with your most recent changes:
+
+```
+$ git add .
+$ git commit -m 'deploying to heroku'
+$ git push heroku main
+```
+
 ## Done!
 
 That is it! If you encounter any issues please refer to the [FAQ Heroku file](./FAQ_HEROKU.md).

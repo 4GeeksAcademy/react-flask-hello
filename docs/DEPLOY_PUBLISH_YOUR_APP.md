@@ -2,6 +2,8 @@
 
 This template is 100% compatible with heroku, just make sure to understand and execute the following steps
 
+0. Create an account on heroku.com, do not create a project, you will do that later, all you need is email and password set.
+
 1. Install heroku (if you don't have it yet)
 ```sh
 $ npm i heroku -g

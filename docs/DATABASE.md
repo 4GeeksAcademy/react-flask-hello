@@ -1,13 +1,20 @@
-# Creating and/or Accessing the MySQL Database
+# Database configuration
 
-1. Log in to mysql terminal:
+In this boilerplate, you can use either postgres or sqlite as database engine. Verify your .env file to specify which one you would like to use.
+You can use the env var `DATABASE_URL` for this purpose.
+
+# Creating and/or Accessing the Postgres Database
+
+1. Log in to postgres terminal:
 ```sh
-$ mysql
+$ psql
 ```
-2. Once inside, check if you have the database already created:
+2. Once inside, list all the databases and check if you have the database already created:
 ```sql
-SHOW databases;
+\l
 ```
+Note: If you are using GitPod, check the file `docs/assets/reset_migrations.bash`. Basically, you are creating a database from scratch call `example`.
+
 3. If you don't see the example database create it by typing:
 ```sql
 CREATE DATABASE example;
@@ -15,15 +22,30 @@ CREATE DATABASE example;
 Note: Make sure to update the `DB_CONNECTION_STRING` on the `.env` file with the correct database name.
 
 3. If your database is already created, get inside of it by typing:
-```sql
-USE example;
-```
-4. Now you can type any SQL command you like, for example:
-```sql
-SHOW TABLES;
-```
-Note: type `exit;` to quit.
 
+*Command*
+```sql
+\c example;
+```
+
+*Result*
+```sql
+postgres=# \c example;
+You are now connected to database "example" as user "gitpod".
+```
+4. Now you could want to see all the tables availables:
+```sql
+\dt
+```
+
+5. Also you can execute, all the SQL queries you want. For example, assuming you have a `users` table:
+```
+select * from users;
+```
+
+Note: Type `exit` if you want to exit from the postgres terminal.
+
+More commands, you can check this [amazing summary](https://www.postgresqltutorial.com/postgresql-cheat-sheet/).
 
 # Querying data using Python and SQL Alchemy (SELECT)
 

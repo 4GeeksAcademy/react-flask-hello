@@ -5,53 +5,11 @@
 <a href="https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b"><img src="https://github.com/4GeeksAcademy/react-flask-hello/blob/master/src/img/how-to.png?raw=true" /></a>
 </p>
 
-
-### Requirements:
-- Make sure you are using node version 10
-
-1. Install the packages:
-```
-$ npm install
-```
-2. Create a .env file:
-```
-$ cp .env.example .env
-```
-3. Start coding! and the webpack dev server with live reload, for windows, mac, linux or Gitpod:
-
-```bash
-$ npm run start
-```
-
 ### Styles
 You can update the `styles/index.scss` or create new `.scss` files inside `styles/` and import them into your current scss or js files depending on your needs.
 
 ### Components
 Add more files into your `./src/js/components` or styles folder as you need them and import them into your current files as needed.
-
-**Note (New changes)**: Components have been converted into functions to support the use of hooks:
-* Instead of a class component, we're using a `const` function.
-* Class `constructor` and `state` have been replaced by `useState()` hooks.
-* `componentDidMount()` was replaced by `useEffect({}, [])` - It runs at mount thanks to the second parameter (`[]`).
-* `Actions` and `Store` still work the same way.
-
-```jsx
-// Previous "Class Oriented"
-export class Demo extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = getState('code here');
-	}
-}
-
-// New "Functional Oriented"
-export const Demo = () => (
-	const [state, setState] = getState('code here'); //using the state (if needed)
-  const { store, actions } = useContext(Context); // using the context (if needed)
-
-);
-```
 
 💡Note: There is an example using the Context API inside `views/demo.js`;
 
@@ -74,6 +32,31 @@ const MyComponentSuper = () => {
   return <div>{/* you can use your actions or store inside the html */}</div>
 }
 ```
+
+### Back-End Manual Installation:
+
+It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+
+1. Install the python packages: `$ pipenv install`
+2. Create a .env file based on the .env.example: `$ cp .env.example .env`
+3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure yo replace the valudes with your database information:
+
+| Engine	| DATABASE_URL 						|
+| ------------- | ----------------------------------------------------- |
+| SQLite	| sqlite:////test.db	 				|
+| MySQL		| mysql://username:password@localhost:port/example	|
+| Postgress	| postgres://username:password@localhost:5432/example 	|
+
+3. Run the migrations: `$ pipenv run upgrade`
+4. Run the application: `$ pipenv run start
+
+
+### Front-End Manual Installation:
+
+- Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
+
+1. Install the packages: `$ npm install`
+2. Start coding! start the webpack dev server `$ npm run start`
 
 ## Publish your website!
 

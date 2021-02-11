@@ -5,6 +5,10 @@ const PrettierPlugin = require("prettier-webpack-plugin");
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
+const port = 3000;
+const [schema, host] = process.env.GITPOD_WORKSPACE_URL.split('://');
+const publicUrl = (schema && host) ? `${port}-${host}` : `http://localhost:${host}`;
+
 module.exports = merge(common, {
     mode: 'development',
     devtool: 'cheap-module-source-map',
@@ -12,7 +16,8 @@ module.exports = merge(common, {
         contentBase:  './dist',
         hot: true,
         disableHostCheck: true,
-        historyApiFallback: true
+        historyApiFallback: true,
+        public: publicUrl
     },
     plugins: [
         new FriendlyErrorsWebpackPlugin(),

@@ -12,8 +12,6 @@ tasks:
     - init: >
         (cp -n .env.example .env || true) && 
         echo "" >> .env && echo "BACKEND_URL=https://3001-${GITPOD_WORKSPACE_URL:8}" >> .env && 
-        npm install
-    - command: >
         pipenv install &&
         psql -U gitpod -c 'CREATE DATABASE example;' &&
         psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d example &&
@@ -21,5 +19,7 @@ tasks:
         pipenv run migrate && 
         pipenv run upgrade &&
         python docs/assets/greeting.py back
-    - command: python docs/assets/greeting.py front
+    - command: >
+        npm install &&
+        python docs/assets/greeting.py front
       openMode: split-right

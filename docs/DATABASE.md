@@ -107,7 +107,7 @@ Relationship() is then specified on the parent, as referencing a collection of i
 class Parent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    children = db.relationship('Child', lazy=True)
+    children = db.relationship('Child', backref='parent',lazy=True)
 
     def __repr__(self):
         return f'<Parent {self.name}>'
@@ -122,7 +122,7 @@ class Parent(db.Model):
 class Child(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    parent_id = db.Column(db.Integer, db.ForeignKey("Parent.id"))
+    parent_id = db.Column(db.Integer, db.ForeignKey("parent.id"), nullable=False)
     
     def __repr__(self):
         return '<Child {self.name}>
@@ -138,15 +138,15 @@ class Child(db.Model):
 Many to Many adds an association table between two classes. The association table is indicated by the secondary argument to relationship(). Usually, the Table uses the MetaData object associated with the declarative base class, so that the ForeignKey directives can locate the remote tables with which to link:
 
 ```py
-association_table = Table('association', Base.metadata,
-    Column("sister_id", Integer, ForeignKey("Sister.id")),
-    Column("brother_id", Integer, ForeignKey("Brother.id"))
+association_table = db.Table('association',
+    db.Column("sister_id", db.Integer, ForeignKey("sister.id"), primary_key=True),
+    db.Column("brother_id", db.Integer, ForeignKey("brother.id"), primary_key=True)
 )
 
 class Sister(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(80), nullable=False)
-    brothers = relationship("Brother",
+    brothers = db.relationship("Brother",
                     secondary=association_table
                     back_populates="sisters") # this line is so it updates the field when Sister is updated
                     
@@ -163,7 +163,7 @@ class Sister(db.Model):
 class Brother(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(80), nullable=False)
-    sisters = relationship("Sister",
+    sisters = db.relationship("Sister",
                     secondary=association_table
                     back_populates="brothers")
                     
@@ -177,3 +177,7 @@ class Brother(db.Model):
             "sisters": list(map(lambda x: x.serialize(), self.sisters))
         }
 ```
+
+# OFFICAL DOCUMENTATION FOR MODELS FLASK Alchemy
+
+Please visit the following page for more information: https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/

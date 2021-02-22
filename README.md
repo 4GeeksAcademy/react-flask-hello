@@ -47,8 +47,9 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 | MySQL		| mysql://username:password@localhost:port/example	|
 | Postgress	| postgres://username:password@localhost:5432/example 	|
 
-3. Run the migrations: `$ pipenv run upgrade`
-4. Run the application: `$ pipenv run start
+4. Migrate the migrations: `$ pipenv run migrate` skip this step if there are no changes on Modules Columns
+5. Run the migrations: `$ pipenv run upgrade`
+6. Run the application: `$ pipenv run start
 
 
 ### Front-End Manual Installation:

@@ -22,15 +22,42 @@ We will be using Cloudinary API to save the images, its free and 100% integrated
 ![Architecture](https://github.com/4GeeksAcademy/react-flask-hello/blob/main/docs/assets/diagram.png?raw=true)
 
 The image upload occurs in 4 steps:
-1. First you create an html `<form>` with one `<input type="file" />` and use Javascript/React to send the user-selected files to the backend using the fetch API.
+1. First you create one html `<form>` with one `<input type="file" />` and use Javascript/React to send the user-selected files to the backend using the fetch function.
 2. The API (backend) will receive that request, retrive the binary files and send them to the Cloud Storage (Cloudinary).
-3. Cloudinary will respond with a 200 and the URL of the saved image.
+3. Cloudinary will respond with a 200 **and the URL of the saved image**.
 4. The API saves that image url on the database end responds back to the client.
+
+## User profile example
+
+Let's asume you want your users to be able to upload their profile images, for that you will need to have a User model like this:
+
+```py
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    profile_image_url = db.Column(db.String(255), unique=False, nullable=True)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "profile_image_url": self.profile_image_url,
+            # do not serialize the password, its a security breach
+        }
+```
+
+Note: The user has a property `profile_image_url` that eventually will contain the user image URL, because that is all we are going to store from the uploaded image, just the URL, the image itself will be hosted by Cloudinary.
 
 ## Front-end
 
-The front end is devided in three steps:
+On the front end side, we need:
 
+1. **The user id**: We need to have the User ID of the logged in user, normally you can store that in the cookies or localStorage, we are going to use localStorage.
 1. **Create the form**: You have to create a `<form>` with one `<input type="file" />` inside, `file` inputs are very simular to `text` but they are made for files (not text), instead of using `event.target.value` to retrieve its value, you use `event.target.files`.
 2. **Listen to the input change**: When the file input changes, (`onChange`) you have to retrieve all the files that the user picked by the user by using `event.target.files`, then we store those files in a hooked variable for the near future when the form submission occurs.
 3. **Listen to the form submit**: Finally whenever the user decides to submit the form (`onSubmit`), you fetch to the backend API endpoint those files using the FormData object provided by the browser.
@@ -48,7 +75,9 @@ const uploadImage = evt => {
         body,
         method: "POST"
     };
-    fetch(process.env.BACKEND_URL + "/upload", options)
+    // you need to have the user_id in the localStorage
+    const currentUserId = localStorage.getItem("user_id");
+    fetch(`${process.env.BACKEND_URL}/user/${currentUserId}/image`, options)
         .then(resp => resp.json())
         .then(data => console.log("Success!!!!", data))
         .catch(erros => console.error("ERRORRRRRR!!!", error));
@@ -72,7 +101,7 @@ The backend is expecting the files from the front end inside the `request` objec
 import cloudinary
 import cloudinary.uploader
 
-@api.route('/profile/image/<int:user_id>', methods=['PUT'])
+@api.route('/user/<int:user_id>/image', methods=['PUT'])
 def handle_upload(user_id):
 
     # validate that the front-end request was built correctly

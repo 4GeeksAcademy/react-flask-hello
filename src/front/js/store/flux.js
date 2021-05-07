@@ -13,9 +13,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			appAuth: []
 		},
 		actions: {
+			// get login/registration information
+
+			responseGoogle: response => {
+				return response;
+			},
+
+			responseFacebook: response => {
+				return response;
+			},
+
+			//push login/registration information
+			getUserIn: () => {
+				//get the store
+				const store = getStore();
+
+				//push data to store
+				store.appAuth.push(getActions().responseGoogle());
+				store.appAuth.push(getActions().responseFacebook());
+			},
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");

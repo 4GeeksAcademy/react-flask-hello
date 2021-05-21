@@ -69,6 +69,7 @@ public/
 
 # backend stuff
 .venv
+request.http
 database.database
 database.db
 diagram.png

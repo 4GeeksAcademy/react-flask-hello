@@ -1,0 +1,138 @@
+//CSS relacionado con los componentes
+
+
+// CSS de Cards de componentes
+
+.categorias{
+    display: flex;
+    overflow-x: auto;
+    min-height: 600px;
+    overflow-y: hidden;
+    margin: 10px !important;
+};
+
+.productos{
+    display: flex;
+    flex-wrap:wrap;
+    overflow-x: auto;
+    min-height: 600px;
+    overflow-y: hidden;
+    margin: 10px !important;
+    align-content: center;
+};
+
+//CSS de cards de cupones
+.categorias1{
+    flex-direction: column;
+    overflow-x: hidden;
+    min-height: 600px;
+    overflow-y: auto;
+    margin: 10px !important;
+};
+
+//CSS del Navbar
+.nav-item {
+    float: right;
+}
+.navigation {
+background-color: rgba(191, 202, 226, 0.5) !important;
+}
+.btn-in1{
+    color:#fff;
+    background-color: rgb(255, 231, 133);
+    margin-right: 10px !important;
+}
+.logo{
+    color:rgb(170, 25, 25) !important;
+    
+}
+
+
+//CSS del Footer
+.footer{
+ flex-direction: column;
+align-items: center;
+justify-content: center;
+background-color: rgba(191, 202, 226, 0.5) !important;
+}
+.f1{
+color: rgb(169, 191, 198);
+font-size: 30px;
+margin-left: 10px;
+}
+.fab.fa-facebook:hover {
+color: #3B5998;
+}
+.fab.fa-twitter:hover {
+color: #4099FF;
+}
+.fab.fa-instagram:hover {
+color: #fd1d1d;
+
+}
+.fab.fa-whatsapp:hover {
+color: #60b626;
+
+}
+
+//CSS del card de promociones
+.update {
+    margin-left: 10px;
+}
+
+//CSS del card de products
+.tarjeta {
+    margin:40px;
+}
+
+//CSS del componente cinta
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;   
+}
+
+.slider {
+    background-color: white;
+    height: 100px;
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
+  
+}
+.slider::before,.slider::after{
+    content:'';
+    position:absolute;
+    width:200px;
+    height: 100px;
+    background: linear-gradient(to right, white 0%, rgba(255,255,255,0) 100%);
+}
+.slider::before{
+    top:0;
+    left:0;
+}
+.slider::after{
+    top:0;
+    right:0;
+    transform:rotateZ(180deg);
+}
+.slider .slider-track {
+    display:flex;
+    width: calc(30% * 20);
+    animation: scroll 60s infinite linear;
+}
+.slider .slide img {
+    width: 80%;
+    height: 100px;
+
+}
+@keyframes scroll {
+    0%{
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(calc(-250px * 7));
+    }
+}
+

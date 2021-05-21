@@ -1,0 +1,195 @@
+// CSS relacionado con las vistas
+
+
+//CSS de Pages
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.c1{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+.social_icon span{
+font-size: 45px;
+margin-left: 10px;
+color: rgb(255, 218, 71);
+}
+
+.social_icon span:hover{
+color: white;
+cursor: pointer;
+}
+
+.card-header h3{
+color: white;
+}
+
+.social_icon{
+position: absolute;
+right: 20px;
+transform: translateY(-125%)
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color: rgb(255, 218, 71);
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+color: black;
+background-color: rgb(255, 218, 71);
+width: 100px;
+}
+
+.login_btn:hover{
+color: black;
+background-color: white;
+}
+
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
+}
+
+//css background de login,regiter y forgot
+.login{
+    background-image: url("https://cdn.pixabay.com/photo/2016/03/23/19/38/shopping-carts-1275480_960_720.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+.backdrop{
+    position: absolute;
+    width: 100%;
+    z-index: -9;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+//CSS de "/categorias"
+.categoriaspage{
+    background: linear-gradient(0deg, rgb(206, 207, 197), white);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 400% 400%;
+}
+
+
+
+// CSS de "/products.js"
+.h2{
+    margin: 20px;
+}
+
+//Container de busqueda del home
+.imagen-fondo {
+    background-image: url("https://upserve.com/media/sites/2/farm-to-table-featured-image.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 1000px;
+    height: 800px;
+}
+
+
+//CSS del home y de view de resultado de busqueda
+.contenedor {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 100%;
+    padding: 100px;
+}
+.container1{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+.container2 {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 170px;
+  
+}
+
+.form-group{
+    max-width: 100%;
+}
+//Boton de inicar busqueda en home
+.boton {
+    max-width: 50%;
+    font-size: 20px;
+}
+//Container de promos
+.promos {
+    overflow-x:auto;
+    min-height: 400px;
+    overflow-y: hidden;
+    overflow: scroll;
+
+}
+
+//Slogan del home
+.title {
+    text-align: center;
+}
+//CSS de la vista de favorites.js
+
+.contenedor_fav1{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+.contenedor_fav2 {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 170px;
+  
+}
+//CSS de vista cinta.js---slider
+.slider{
+    object-fit: cover;
+}

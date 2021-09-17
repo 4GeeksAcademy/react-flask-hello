@@ -4,8 +4,10 @@ image:
 ports:
     - port: 3000
       onOpen: open-browser
+      visibility: public
     - port: 3001
       onOpen: open-preview
+      visibility: public
     - port: 5432
       onOpen: ignore
 tasks:

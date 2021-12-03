@@ -12,6 +12,7 @@ ports:
       onOpen: ignore
 tasks:
     - init: >
+        nvm install 14 &&
         (cp -n .env.example .env || true) && 
         echo "" >> .env && echo "BACKEND_URL=https://3001-${GITPOD_WORKSPACE_URL:8}" >> .env && 
         pipenv install &&
@@ -22,6 +23,7 @@ tasks:
         pipenv run upgrade &&
         python docs/assets/greeting.py back
     - command: >
+        nvm install 14 &&
         npm install &&
         python docs/assets/greeting.py front
       openMode: split-right

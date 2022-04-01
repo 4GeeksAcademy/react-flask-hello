@@ -7,9 +7,10 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
+import click
 #from models import Person
 
 ENV = os.getenv("FLASK_ENV")
@@ -57,6 +58,26 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0 # avoid cache memory
     return response
+
+
+# configuracion to populate our database
+@app.cli.command("insert-test-users") # name of our command
+@click.argument("count") # argument of out command
+def insert_test_data(count):
+    print("Creating test users")
+    for x in range(1, int(count) + 1):
+        user = User()
+        user.email = "test_user" + str(x) + "@test.com"
+        user.password = "123456"
+        user.is_active = True
+        db.session.add(user)
+        db.session.commit()
+        print("User: ", user.email, " created.")
+
+    print("All test users created")
+
+    ### Insert the code to populate others tables
+    ## here
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

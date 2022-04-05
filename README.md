@@ -32,9 +32,9 @@ The `Provider` is already set. You can consume from any component using the useC
 ```jsx
 import { Context } from "../store/appContext";
 const MyComponentSuper = () => {
-  //here you use useContext to get store and actions
-  const { store, actions } = useContext(Context);
-  return <div>{/* you can use your actions or store inside the html */}</div>;
+    //here you use useContext to get store and actions
+    const { store, actions } = useContext(Context);
+    return <div>{/* you can use your actions or store inside the html */}</div>;
 };
 ```
 
@@ -58,22 +58,29 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 
 ### Backend Populate Table Users
 
-To insert test users in the database execute the following command and you see the next message:
+To insert test users in the database execute the following command:
 
-    $ flask insert-test-users 5
-    Creating test users
-    test_user1@test.com created.
-    test_user2@test.com created.
-    test_user3@test.com created.
-    test_user4@test.com created.
-    test_user5@test.com created.
-    Users created successfully!
+```sh
+$ flask insert-test-users 5
+```
+
+And you will see the following message:
+
+```
+  Creating test users
+  test_user1@test.com created.
+  test_user2@test.com created.
+  test_user3@test.com created.
+  test_user4@test.com created.
+  test_user5@test.com created.
+  Users created successfully!
+```
 
 To update with all yours tables you can edit the file app.py and go to the line 80 to insert the code to populate others tables
 
 ### Front-End Manual Installation:
 
-- Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
+-   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
 
 1. Install the packages: `$ npm install`
 2. Start coding! start the webpack dev server `$ npm run start`

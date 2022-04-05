@@ -7,10 +7,11 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db
 from api.routes import api
 from api.admin import setup_admin
-import click
+from api.commands import setup_commands
+
 #from models import Person
 
 ENV = os.getenv("FLASK_ENV")
@@ -34,6 +35,9 @@ CORS(app)
 
 # add the admin
 setup_admin(app)
+
+# add the admin
+setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
@@ -59,25 +63,6 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0 # avoid cache memory
     return response
 
-
-# configuracion to populate our database
-@app.cli.command("insert-test-users") # name of our command
-@click.argument("count") # argument of out command
-def insert_test_data(count):
-    print("Creating test users")
-    for x in range(1, int(count) + 1):
-        user = User()
-        user.email = "test_user" + str(x) + "@test.com"
-        user.password = "123456"
-        user.is_active = True
-        db.session.add(user)
-        db.session.commit()
-        print("User: ", user.email, " created.")
-
-    print("All test users created")
-
-    ### Insert the code to populate others tables
-    ## here
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

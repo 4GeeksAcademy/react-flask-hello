@@ -11,11 +11,14 @@ migrate_upgrade ()
   pipenv run upgrade
 }
 
+dir=$(pwd)
 
-if [ ! -d /workspace/react-flask-hello/migrations ]
+if [ ! -d $dir/migrations ]
 then
 echo 'creating migration'
 creating_migration
 else
+echo 'migrations already created'
+echo 'updating migrations'
 migrate_upgrade
 fi

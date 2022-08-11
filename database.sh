@@ -12,7 +12,7 @@ migrate_upgrade ()
 }
 
 
-if [ ! -d /workspace/flask-react-hello/migrations ]
+if [ ! -d /workspace/react-flask-hello/migrations ]
 then
 echo 'creating migration'
 creating_migration

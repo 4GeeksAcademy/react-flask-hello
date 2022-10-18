@@ -24,5 +24,6 @@ services:
 
 databases: # Render PostgreSQL database
     - name: postgresql-trapezoidal-42170
+      region: ohio
       ipAllowList: [] # only allow internal connections
       plan: free # optional; defaults to starter

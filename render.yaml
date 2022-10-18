@@ -4,8 +4,9 @@
 services:
     - type: web # valid values: https://render.com/docs/yaml-spec#type
       name: sample-service-name
-      env: docker # valid values: https://render.com/docs/yaml-spec#environment
-      dockerfilePath: Dockerfile.render
+      env: python # valid values: https://render.com/docs/yaml-spec#environment
+      buildCommand: "./build.sh"
+      startCommand: "gunicorn wsgi --chdir ./src/"
       plan: free # optional; defaults to starter
       numInstances: 1
       envVars:

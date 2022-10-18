@@ -1,0 +1,33 @@
+# "v2-" stacks use our new, more rigorous buildpacks management system. They
+# allow you to use multiple buildpacks in a single application, as well as to
+# use custom buildpacks. We do not support using the original stack images with
+# @renderinc/heroku-import v3.0.0 and above.
+ARG HEROKU_STACK=v2-heroku-22
+FROM ghcr.io/renderinc/heroku-app-builder:${HEROKU_STACK} AS builder
+
+# The FROM statement above triggers the following steps
+# 1. Copy the contents of the directory containing this Dockerfile to a Docker image
+# 2. Build the app using the appropriate Heroku buildpacks. This supports both Heroku and custom buildpacks.
+
+# For running the app, we use a clean base image and also one without Ubuntu development packages
+# https://devcenter.heroku.com/articles/heroku-20-stack#heroku-20-docker-image
+FROM ghcr.io/renderinc/heroku-app-runner:${HEROKU_STACK} AS runner
+
+# Copy build artifacts to runtime image
+COPY --from=builder --chown=1000:1000 /render /render/
+COPY --from=builder --chown=1000:1000 /app /app/
+
+# Switch to non-root user
+USER 1000:1000
+WORKDIR /app
+
+# Source all /app/.profile.d/*.sh files before process start.
+# These are created by buildpacks.
+# https://devcenter.heroku.com/articles/buildpack-api#profile-d-scripts
+ENTRYPOINT [ "/render/setup-env" ]
+
+# 3. By default, run the 'web' process type defined in the app's Procfile
+# You may override the process type that is run by replacing 'web' with another
+# process type name in the CMD line below. That process type must have been
+# defined in the app's Procfile during build.
+CMD [ "/render/process/web" ]

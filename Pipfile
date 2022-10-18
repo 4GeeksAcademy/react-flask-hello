@@ -17,6 +17,7 @@ flask-cors = "*"
 gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.10"

@@ -53,7 +53,7 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 
 1. Install the python packages: `$ pipenv install`
 2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure yo replace the valudes with your database information:
+3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
 
 | Engine    | DATABASE_URL                                        |
 | --------- | --------------------------------------------------- |
@@ -96,4 +96,4 @@ To update with all yours tables you can edit the file app.py and go to the line 
 
 ## Publish your website!
 
-This boilerplate it's 100% read to deploy with Render.com and Herkou in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
+This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).

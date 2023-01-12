@@ -7,9 +7,12 @@
 php_errorlog
 .log
 
-# do not ignore gitpod files
+# do not ignore gitpod and render files
 !.gitpod.Dockerfile
+!Dockerfile.render
 !.gitpod.yml
+!render.yml
+!.render-buildpacks.json
 
 # track webpack configs (i.e. do NOT ignore it)
 !composer.json
@@ -58,7 +61,8 @@ node_modules/
 
 # webpack output
 dist/*
-public/
+!public/
+!public/*
 
 # ignore the dist directory were our bundle files are going to be
 !.gitkeep

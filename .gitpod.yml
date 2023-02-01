@@ -19,6 +19,7 @@ tasks:
       python docs/assets/greeting.py back
   - command: >
       echo BACKEND_URL=$(gp url 3001) >> .env && 
+      cat .env.example >> .env &&
       npm install &&
       python docs/assets/greeting.py front
     openMode: split-right

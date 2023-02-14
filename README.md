@@ -59,3 +59,9 @@ To update with all yours tables you can edit the file app.py and go to the line 
 ## Publish your website!
 
 This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
+
+### Contributors
+
+This template was built as part of the [Full Stack Developer course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer) at [4Geeks Academy Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and [many other contributors](https://github.com/4GeeksAcademy/react-flask-hello/graphs/contributors).
+
+You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).

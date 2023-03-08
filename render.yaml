@@ -19,6 +19,8 @@ services:
             value: production
           - key: FLASK_APP_KEY # Imported from Heroku app
             value: "any key works"
+          - key: PYTHON_VERSION
+            value: 3.10.6
           - key: DATABASE_URL # Render PostgreSQL database
             fromDatabase:
                 name: postgresql-trapezoidal-42170

@@ -18,8 +18,6 @@ php_errorlog
 
 # track webpack configs (i.e. do NOT ignore it)
 !composer.json
-!.devcontainer
-!.devcontainer/*
 !webpack.config.js
 !package.json
 !webpack.production.js

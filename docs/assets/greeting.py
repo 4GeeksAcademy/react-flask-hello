@@ -15,3 +15,14 @@ if environment == "front":
     
     1. Start webpack dev server {blue("$ npm run start")}
     """)
+
+if environment == "both":
+    print(f"""
+    Welcome to the full-stack template at 4Geeks 😁.
+    
+    1. Start by running your 🐍 python backend using the command {blue("$ pipenv run start")}
+    2. Open a new terminal to run your front-end with the following command {blue("$ npm run start")}
+
+    Note: ⚠️ Please keep in mind you will always need two terminals, one for the front end, one for the back-end.
+    🛟 You can find documentation here: https://start.4geeksacademy.com
+    """)

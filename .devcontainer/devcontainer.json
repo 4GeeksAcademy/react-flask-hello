@@ -23,7 +23,7 @@
 	// This can be used to network with other containers or the host.
 	// "forwardPorts": [3000, 3001, 5432],
 
-	"onCreateCommand": "(cp .env.example .env || true) && pipenv install && bash database.sh",
+	"onCreateCommand": "(cp .env.example .env || true) && pipenv install && bash database.sh && python docs/assets/greeting.py both > /workspaces/.codespaces/shared/first-run-notice.txt",
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "npm install",
 

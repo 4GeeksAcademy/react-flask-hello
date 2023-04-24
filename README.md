@@ -29,6 +29,8 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 5. Run the migrations: `$ pipenv run upgrade`
 6. Run the application: `$ pipenv run start`
 
+> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+
 ### Backend Populate Table Users
 
 To insert test users in the database execute the following command:

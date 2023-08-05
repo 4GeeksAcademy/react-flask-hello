@@ -31,6 +31,14 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 
 > Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
 
+### Undo a migration
+
+You are also able to undo a migration by running
+
+```sh
+$ pipenv run downgrade
+```
+
 ### Backend Populate Table Users
 
 To insert test users in the database execute the following command:
@@ -51,7 +59,9 @@ And you will see the following message:
   Users created successfully!
 ```
 
-To update with all yours tables you can edit the file app.py and go to the line 80 to insert the code to populate others tables
+### **Important note for the database and the data inside it**
+
+Every Github codespace environment will have **its own database**, so if you're working with more people eveyone will have a different database and different records inside it. This data **will be lost**, so don't spend too much time manually creating records for testing, instead, you can automate adding records to your database by editing ```commands.py``` file inside ```/src/api``` folder. Edit line 32 function ```insert_test_data``` to insert the data according to your model (use the function ```insert_test_users``` above as an example). Then, all you need to do is run ```pipenv run insert-test-data```.
 
 ### Front-End Manual Installation:
 

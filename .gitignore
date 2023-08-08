@@ -75,7 +75,6 @@ dist/*
 .now
 
 # backend stuff
-migrations/
 .venv
 database.database
 database.db

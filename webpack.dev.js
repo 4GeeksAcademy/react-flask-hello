@@ -15,7 +15,7 @@ if(process.env.GITPOD_WORKSPACE_URL){
 
 //only for codespaces
 if(process.env.CODESPACE_NAME){
-  publicUrl = `wss://${process.env.CODESPACE_NAME}-${port}.preview.app.github.dev/ws`;
+  publicUrl = `wss://${process.env.CODESPACE_NAME}-${port}.app.github.dev/ws`;
 }
 
 module.exports = merge(common, {

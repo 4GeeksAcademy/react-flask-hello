@@ -1,0 +1,9 @@
+/* En tu archivo de estilos CSS */
+.btn-custom {
+  background-color: #e1721d;
+  color: #fff; /* Cambiar el color del texto si es necesario para que sea legible en el nuevo fondo */
+}
+
+.btn-custom:hover {
+  background-color: #d55c17; /* Cambiar el color cuando se pase el ratón por encima si lo deseas */
+}

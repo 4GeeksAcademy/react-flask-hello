@@ -5,3 +5,25 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+body {
+    background-image: url("https://i.imgur.com/GHvSC5J.png");
+    background-size: cover;
+    /* Scale the image to cover the entire container */
+}
+
+.text-main {
+    color: #074DB6;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 4rem;
+    line-height: 6rem;
+}
+
+.first-img{
+    width: 31.3rem;
+    height: 35.8rem;
+    overflow: hidden;
+    object-fit: cover; 
+    border-radius: 4rem;
+    margin-left: 4rem;
+}

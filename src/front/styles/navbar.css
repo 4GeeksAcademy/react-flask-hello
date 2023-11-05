@@ -1,0 +1,62 @@
+.logo {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+a {
+    text-decoration: none;
+   
+}
+a:hover{
+    color: #FD862C;
+}
+
+.title {
+    margin-top: 0.3rem;
+    margin-left: 0.7rem;
+    font-style: normal;
+    font-weight: 600;
+    color: #FD862C;
+}
+
+.button-regular{
+    color: #909bb4;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    transition-duration: 0.4s;
+}
+
+.button-regular:hover {
+    color: #0b459c;
+  }
+
+.button-login{
+    color: #E1721D;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    padding: 0rem 1rem 0rem 3rem;
+    transition-duration: 0.4s;
+}
+
+.button-signup{
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    border-radius: 0.625rem;
+    background: #FD862C;
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    transition-duration: 0.9s;
+}
+
+.button-login:hover {
+    color: #d05f0a;
+  }
+
+  .button-signup:hover {
+    background-color: #f06901;
+  }

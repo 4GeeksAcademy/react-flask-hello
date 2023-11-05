@@ -1,0 +1,70 @@
+.button-area {
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  border-radius: 0.625rem;
+  background: #5c92e3;
+  border: none;
+  padding: 0.1rem 1rem 0.1rem 1rem;
+  margin-bottom: 1rem;
+}
+.card {
+  width: 19rem;
+  padding: 1rem 0rem 1rem 0rem;
+  height: flex;
+  display: flex;
+  border: none;
+  border-radius: 1rem;
+}
+
+.card-title {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+.card-text {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.fa-circle-check {
+  margin-right: 0.5rem;
+}
+.fa-location-dot {
+  margin-right: 0.5rem;
+  margin-left: 0.2rem;
+}
+
+.button-aplicar {
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  border-radius: 0.625rem;
+  background: #fd862c;
+  border: none;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  transition-duration: 0.9s;
+}
+
+.button-aplicar:hover {
+  background-color: #f06901;
+}
+
+.button-container {
+  justify-content: end;
+}
+
+.fa-arrow-right {
+  margin-left: 0.5rem;
+}

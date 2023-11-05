@@ -5,3 +5,147 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+/* body {
+    background-image: url("https://i.imgur.com/GHvSC5J.png");
+    background-size: cover;
+    background-repeat: no-repeat;}
+    /* Scale the image to cover the entire container */
+
+.first-big-chunk {
+  background-image: url("https://s3-alpha-sig.figma.com/img/aa8e/a240/74b7b2d02905e1cbce6e2695eb8f162a?Expires=1694390400&Signature=ZK3drLxxCEeULg9hz3LAECMWFxjct10ssTIEjpLmIlnYmOZGlqHi9IgwBslGq2m95yEuQwHokr8PNzNxRGz4HLnARMJtE7G6xqemfagYJfCW5BAFBPlXOBTioKogM~7NQthIf6b9i~JCVtJBHlkWQO8dFAUQ9ts4zTrWzhTGsi7XtBPeGsCXXrgAJH6hXnr0Wa09iu7jaaYQZT1cKyCanwJ6qRfcrKWTMmJPI0FoQKdomy3C3x2D~xsC-65qHqZXTKWXxQt2DJyqNaQwQ9kmeSBk9u3PXZEwuYJw4Q595cZAyUiMOMAwSMGqK-jMaKDyosBH4kIBvgE6R-vyOvgLCw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4");
+}
+
+.text-main {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 5rem;
+}
+
+.text-subtitle {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.8rem;
+  width: 25rem;
+  margin-top: 2rem;
+}
+
+.button-becas {
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  border-radius: 2rem;
+  background: #fd862c;
+  border: none;
+  padding: 0.7rem 1.5rem 0.7rem 1.5rem;
+  transition-duration: 0.9s;
+  margin-top: 2rem;
+}
+
+.button-becas:hover {
+  background-color: #f06901;
+}
+
+.first-img {
+  width: 35.3rem;
+  height: 37.1rem;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 4rem;
+  margin-left: 4rem;
+}
+
+.second-block {
+  margin-top: 10rem;
+  margin-bottom: 5rem;
+}
+
+.second-img {
+  width: 31.3rem;
+  height: 35.8rem;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 4rem;
+}
+
+.text-second {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 3rem;
+  margin-bottom: 2rem;
+}
+
+.text-second-box {
+  margin-left: 9rem;
+}
+
+.text-second-subtitle {
+  color: #545454;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  line-height: 2rem;
+}
+
+.button-nosotros {
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  border-radius: 2rem;
+  background: #fd862c;
+  border: none;
+  padding: 0.7rem 1.5rem 0.7rem 1.5rem;
+  transition-duration: 0.9s;
+  margin-top: 2rem;
+  margin-left: auto;
+}
+
+.button-nosotros:hover {
+  background-color: #f06901;
+}
+
+.third-block {
+  background: url("https://i.imgur.com/gImkaSr.png");
+  padding-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+.title-becas {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+}
+
+/* display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1.5rem;
+*/
+.card-holder {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr); /* Dos filas */
+  grid-auto-flow: column; /* Agregar más columnas automáticamente */
+  grid-gap: 2rem;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* Oculta la barra de desplazamiento horizontal */
+.card-holder::-webkit-scrollbar {
+  display: none;
+}
+
+/* Efecto de aumento de escala al pasar el mouse sobre las tarjetas */
+.card-holder .card:hover {
+  transform: scale(1.1);
+}

@@ -1,3 +1,8 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+html,
+body {
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}

@@ -1,0 +1,18 @@
+.btn-custom {
+  background-color: #307fe2;
+  color: #fff;
+}
+
+.btn-custom:hover {
+  background-color: #074db6;
+  color: #fff;
+}
+
+.divRegsitroE {
+  margin-bottom: 6rem;
+  margin-top: 6rem;
+  width: 20rem;
+  height: 12rem;
+  background-color: #e0edff;
+  border-radius: 2rem;
+}

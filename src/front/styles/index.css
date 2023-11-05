@@ -1,3 +1,7 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+body {
+  height: 100vh;
+  background-color: #f5f5f5;
+}

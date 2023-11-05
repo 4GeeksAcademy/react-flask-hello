@@ -5,3 +5,7 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+body {
+  height: 100vh;
+  background-color: #f5f5f5;
+}

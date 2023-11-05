@@ -1,5 +1,6 @@
 # ignore all files starting with .
 .*
+/Books-Marquet/migrations
 
 # track this file .gitignore (i.e. do NOT ignore it)
 !.gitignore
@@ -80,3 +81,5 @@ database.database
 database.db
 diagram.png
 __pycache__/
+
+migrations/

@@ -1,0 +1,110 @@
+/* login--------------------------------------------------------------- */
+
+.imagen {
+  height: 50%;
+}
+.form-control {
+  border: none;
+  border-radius: 40px;
+}
+input {
+  /* margin: 1rem; */
+  border: none;
+  font-family: "Roboto", sans-serif;
+}
+label {
+  padding-left: 1rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500 !important;
+}
+.buttonLogin {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  background-color: rgb(38, 40, 42);
+  border: none;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  border-radius: 2rem;
+}
+.body {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+  position: relative;
+  width: 720px;
+  height: 440px;
+  margin: 20px auto;
+  border: 1px solid #dddd;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.imagen {
+  height: 50%;
+}
+.box-2 {
+  padding: 10px;
+  background-color: rgb(146, 197, 211);
+}
+.box-1,
+.box-2 {
+  width: 50%;
+}
+.text-muted {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding: 10px;
+  }
+  .body {
+    width: 100%;
+    height: 100%;
+  }
+  .box-1 {
+    width: 100%;
+  }
+  .box-2 {
+    width: 100%;
+    height: 440px;
+  }
+}
+
+/* register--------------------------------------------------------------------- */
+
+.form-card {
+  padding: 10px;
+  background-color: rgb(146, 197, 211);
+  font-family: "Roboto", sans-serif;
+  height: auto;
+}
+.card0 {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+  border: 0;
+  height: auto;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.card2 {
+  margin: 0;
+  background-color: rgb(146, 197, 211);
+  height: auto;
+}
+.buttonRegister {
+  border-radius: 2rem;
+  border: none;
+}
+.imagenEegister {
+  object-fit: cover;
+  height: 773px;
+  width: 320px;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.seleccion-region {
+  border-radius: 2rem;
+}

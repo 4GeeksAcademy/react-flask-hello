@@ -5,3 +5,13 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.texto-amarillo{
+    color: #fdbe34;
+}
+.bg-azul-oscuro{
+    background-color: #10316b;
+    color: #f2f7ff;
+}
+body{
+    background-color: #f2f7ff;
+}

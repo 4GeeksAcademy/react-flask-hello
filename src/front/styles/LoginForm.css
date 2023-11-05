@@ -1,0 +1,11 @@
+.img-login{
+    vertical-align: top!important;
+}
+
+#tab-loginregister:hover{
+    cursor: pointer
+}
+
+.form-check-input:hover{
+    cursor: pointer
+}

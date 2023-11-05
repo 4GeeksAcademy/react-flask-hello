@@ -1,0 +1,70 @@
+
+.AppEventos {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.contEventos{
+  margin-top: 20px;
+  align-items: left;
+  text-align: left;
+}
+#title{
+  color: rgb(11, 9, 9);
+}
+
+.white-mode {
+  text-decoration: none;
+  padding: 17px 40px;
+  background-color: yellow;
+  border-radius: 3px;
+  color: black;
+  transition: .35s ease-in-out;
+  position: absolute;
+  left: 15px;
+  bottom: 15px
+}
+.pricingTable:hover {
+  transform: scale(1.05);
+  z-index: 1
+}
+.pricingTable .pricingTable-header {
+  padding: 40px 0;
+  background: #f5f6f9;
+  border-radius: 10px 10px 50% 50%;
+  transition: all .5s ease 0s
+}
+.pricingTable:hover .pricingTable-header {
+  background: #ff9624
+}
+.pricingTable {
+    text-align: center;
+    background: #fff;
+    margin: 0 -15px;
+    box-shadow: 0 0 10px #ababab;
+    padding-bottom: 40px;
+    border-radius: 10px;
+    color: #cad0de;
+    transform: scale(1);
+    transition: all .5s ease 0s
+}
+
+#pay{
+  background-color: rgb(254, 117, 12);
+}
+#in{
+  background-color: rgb(216, 216, 216);
+  
+}
+#img{
+ margin-top: 6%; 
+ 
+}
+#image{
+  height: 85%;
+  width: 250px;
+}
+
+#card-header{
+  background-color:#0D6EFD
+}

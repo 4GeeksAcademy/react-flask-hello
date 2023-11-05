@@ -1,0 +1,42 @@
+#center{
+    align-items: center;
+}
+    
+#registerWrapper{
+    margin-top: 120px;
+}
+
+
+#registerTitle{
+    text-align: center;
+    align-items: center;
+
+}
+.center{
+    width: 150px;
+      margin: 40px auto;
+      
+      
+    }
+#teamRegister{
+  
+   text-align: center;
+}
+
+#registerTable{
+    border:solid black 1px;
+    height: 320px;
+    background-color: whitesmoke;
+}
+
+
+#registerTableTitle{
+    padding-top: 60px;
+}
+#image{
+    width: 95%;
+    height: 45%;
+}
+
+
+

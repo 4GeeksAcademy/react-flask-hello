@@ -2,12 +2,14 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-
+import Singup from "./pages/signup.js";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-
+import { Login } from "./pages/login.jsx";
+import Details from "./pages/detallesdecasas";
+import Detailsventas from "./pages/detalle_casas_venta";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
@@ -27,8 +29,12 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
+                        <Route element={<Login />} path="/login" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
+                        <Route element={<Singup />} path="/signup" />
+                        <Route element={<Details />} path="/details/:id" />
+                        <Route element={<Detailsventas />} path="/detailsventas/:id" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
@@ -38,3 +44,4 @@ const Layout = () => {
 };
 
 export default injectContext(Layout);
+

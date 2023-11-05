@@ -1,25 +1,28 @@
+
+import axios from "axios";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			// message: null,
+			// demo: [
+			// 	{
+			// 		title: "FIRST",
+			// 		background: "white",
+			// 		initial: "white"
+			// 	},
+			// 	{
+			// 		title: "SECOND",
+			// 		background: "white",
+			// 		initial: "white"
+			// 	}
+			// ]
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+			
+			// exampleFunction: () => {
+			// 	getActions().changeColor(0, "green");
+			// },
 
 			getMessage: async () => {
 				try{
@@ -30,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// don't forget to return something, that is how the async resolves
 					return data;
 				}catch(error){
-					console.log("Error loading message from backend", error)
+					// console.log("Error loading message from backend", error)
 				}
 			},
 			changeColor: (index, color) => {
@@ -46,9 +49,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+			signup: async (firstName, lastName, email, password, phone, confpassword)=>{
+				
+				try {
+					let data = await axios.post(process.env.BACKEND_URL + "/api/signup", {
+
+						"name": firstName,
+						"lastname": lastName,
+						"email": email,
+						"phone_number": phone,
+						"password": password,
+						"is_admin": false
+
+					})
+					
+					return true;
+
+				} catch (error) {
+					
+					if (error.response.status === 404) {
+						alert (error.response.data.msg)
+						
+					}
+					return false;
+				}
+
+			},
+
+			
+
+			login: async (email,password) => {
+				try {
+					let data = await axios.post(process.env.BACKEND_URL + '/api/login',
+					{
+						"email" : email,
+						"password" : password
+					})
+					console.log(data);
+					localStorage.setItem("token", data.data.access_token)
+					// setStore({ auth : true})
+					return true
+				} catch (error) {
+					console.log(error);
+					if (error.response.status === 404) {
+						alert(error.response.data.msg)
+					}
+					return false
+				}
+			},
+				
 		}
+	}
 	};
-};
+
 
 export default getState;

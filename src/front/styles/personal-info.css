@@ -1,0 +1,28 @@
+.card {
+    width: 18rem;
+}
+
+.div-general {
+    height: 600px;
+    width: 400px;
+}
+
+#div1 {
+    display: flex;
+    padding-top: 10px;
+    
+}
+
+#margin-card {
+    margin-right: 50px;
+    margin-left: 300px;
+}
+
+#summary {
+    width: 500px;
+}
+
+#estrellas {
+    width: 180px;
+    height: 20px;
+}

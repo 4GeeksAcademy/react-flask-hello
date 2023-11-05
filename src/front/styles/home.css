@@ -5,3 +5,48 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+body{
+    background-color: #f2f7ff;
+}
+
+.texto-amarillo{
+    color: #fdbe34;
+}
+
+.azul-oscuro{
+    color: #10316b;
+}
+
+.borde-azul-oscuro{
+    border-color: #10316b;
+}
+
+.bg-azul-oscuro{
+    background-color: #10316b;
+}
+
+.bg-celeste-claro{
+    background-color: #f2f7ff;
+}
+.duenio{
+    display: contents;
+    
+    color: black;
+}
+.registro{
+    font-size: smaller;
+    color: gray;
+}
+.detalle{
+    color: gray;
+    font-size: smaller;
+}
+.disponible{
+    color: gray;
+    text-decoration:underline;
+}
+.cuerpo{
+    justify-content: center;
+}
+
+

@@ -1,0 +1,448 @@
+/* color palette */
+
+:root {
+    /* RISK */
+    --color-risk-bg: #ffcccc;
+    --color-risk-border: #fcadad;
+    --color-risk-txt: #dc3545;
+    --color-risk:#ff3939;
+
+    /* CAUTION */
+    --color-caution-bg: #fff3cd; 
+    --color-caution-border: #ffeeba; 
+    --color-caution-txt: #856404;
+    --color-caution:#ffca28;
+
+    /* SILVER */
+    --color-silver-bg: #e5e5e5; 
+    --color-silver-border: #c8c8c8; 
+    --color-silver-txt: #555555;
+    --color-silver:#C0C0C0;
+
+    /* GOLD */
+    --color-gold-bg: #ffec80;
+    --color-gold-border: #e5c862; 
+    --color-gold-txt: #806105; 
+    --color-gold:#dfc223;
+
+    /* LIME */
+    --color-lime-bg: #b1efb1; 
+    --color-lime-border: #9ad79a; 
+    --color-lime-txt: #155724; 
+    --color-lime:#64f564;
+
+    /* AZURE */
+    --color-azure-bg: #b3d9ff;
+    --color-azure-border: #99b3cc; 
+    --color-azure-txt: #002080;
+    --color-azure:#007FFF;
+
+    /* MOCCA */
+    --color-mocca-bg: #c89669;
+    --color-mocca-border: #a57a4f; 
+    --color-mocca-txt: #613b1a;
+    --color-mocca:#8B4513;
+
+    /* AQUA */
+    --color-aqua-bg: #b5fafa;
+    --color-aqua-border: #99e6e6; 
+    --color-aqua-txt: #197e7e;
+    --color-aqua:#51f3f3;
+
+    /* SLATE */
+    --color-slate-bg: #c2cfd3;
+    --color-slate-border: #a4b5ba; 
+    --color-slate-txt: #34404a;
+    --color-slate:#708090;
+
+    /* COMPONENTIFY */
+    --color-componentify-bg: #ffc69b;
+    --color-componentify-border: #ff9e60; 
+    --color-componentify-txt: #FD5812;
+    --color-componentify:#FD5812;
+
+    /* LOLLYPOP */
+    --color-lollypop-bg: #ffd3eb;
+    --color-lollypop-border: #ffaac6; 
+    --color-lollypop-txt: #fc3f9e;
+    --color-lollypop:#f75daa;
+
+    /* MINT */
+    --color-mint-bg: #c3f2d9;
+    --color-mint-border: #a3d7ae; 
+    --color-mint-txt: #1a614a;
+    --color-mint:#3EB489;
+
+    /* GLOOMY */
+    --color-gloomy-bg: #dcdcdc;
+    --color-gloomy-border: #b0b0b0; 
+    --color-gloomy-txt: #000000;
+    --color-gloomy:#292b2e;
+
+    /* FOG */
+    --color-fog-bg: #f8f9fa;
+    --color-fog-border: #e8e9ea; 
+    --color-fog-txt: #747474;
+    --color-fog:#f8f9fa;
+
+    /* DARK */
+    --color-dark-bg: #000000;
+    --color-dark-border: #000000;
+    --color-dark-txt: #ffffff; 
+    --color-dark:#000000;
+
+    /* WIN */
+    --color-win-bg: #a8d8c7;
+    --color-win-border: #7ecca8; 
+    --color-win-txt: #0d4336;
+    --color-win:#198754;
+
+    /* LAVENDER */
+    --color-lavender-bg: #f5f1ff;
+    --color-lavender-border: #e2d5ff; 
+    --color-lavender-txt: #6b3eb0;
+    --color-lavender:#d6d6fa;
+
+    /* PURPLE */
+    --color-purple-bg: #f8d7f7;
+    --color-purple-border: #d8a9d5; 
+    --color-purple-txt: #8c0575;
+    --color-purple:#a008a0;
+  }
+
+/* ALERTS */
+
+.c-alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem
+}
+
+.c-alert-risk {
+    background-color: var(--color-risk-bg);
+    border: 1px solid var(--color-risk-border); 
+    color: var(--color-risk-txt); 
+}
+
+.c-alert-caution {
+    background-color: var(--color-caution-bg);
+    border: 1px solid var(--color-caution-border); 
+    color: var(--color-caution-txt); 
+}
+
+.c-alert-silver {
+    background-color: var(--color-silver-bg);
+    border: 1px solid var(--color-silver-border); 
+    color: var(--color-silver-txt); 
+}
+
+.c-alert-gold {
+    background-color: var(--color-gold-bg);
+    border: 1px solid var(--color-gold-border); 
+    color: var(--color-gold-txt); 
+}
+
+.c-alert-lime {
+    background-color: var(--color-lime-bg);
+    border: 1px solid var(--color-lime-border); 
+    color: var(--color-lime-txt); 
+}
+
+.c-alert-azure {
+    background-color: var(--color-azure-bg);
+    border: 1px solid var(--color-azure-border); 
+    color: var(--color-azure-txt); 
+}
+
+.c-alert-mocca {
+    background-color: var(--color-mocca-bg);
+    border: 1px solid var(--color-mocca-border); 
+    color: var(--color-mocca-txt); 
+}
+
+.c-alert-aqua {
+    background-color: var(--color-aqua-bg);
+    border: 1px solid var(--color-aqua-border); 
+    color: var(--color-aqua-txt); 
+}
+
+.c-alert-slate {
+    background-color: var(--color-slate-bg);
+    border: 1px solid var(--color-slate-border); 
+    color: var(--color-slate-txt); 
+}
+
+.c-alert-componentify {
+    background-color: var(--color-componentify-bg);
+    border: 1px solid var(--color-componentify-border); 
+    color: var(--color-componentify-txt); 
+}
+
+.c-alert-lollypop {
+    background-color: var(--color-lollypop-bg);
+    border: 1px solid var(--color-lollypop-border); 
+    color: var(--color-lollypop-txt); 
+}
+
+.c-alert-mint {
+    background-color: var(--color-mint-bg);
+    border: 1px solid var(--color-mint-border); 
+    color: var(--color-mint-txt); 
+}
+
+.c-alert-gloomy {
+    background-color: var(--color-gloomy-bg);
+    border: 1px solid var(--color-gloomy-border); 
+    color: var(--color-gloomy-txt); 
+}
+
+.c-alert-fog {
+    background-color: var(--color-fog-bg);
+    border: 1px solid var(--color-fog-border); 
+    color: var(--color-fog-txt); 
+}
+
+.c-alert-dark {
+    background-color: var(--color-dark-bg);
+    border: 1px solid var(--color-dark-border); 
+    color: var(--color-dark-txt); 
+}
+
+.c-alert-win {
+    background-color: var(--color-win-bg);
+    border: 1px solid var(--color-win-border); 
+    color: var(--color-win-txt); 
+}
+
+.c-alert-lavender {
+    background-color: var(--color-lavender-bg);
+    border: 1px solid var(--color-lavender-border); 
+    color: var(--color-lavender-txt); 
+}
+
+.c-alert-purple {
+    background-color: var(--color-purple-bg);
+    border: 1px solid var(--color-purple-border); 
+    color: var(--color-purple-txt); 
+}
+
+/* CLOSE BUTTON IN ALERTS */
+/* .c-btn-close {
+        box-sizing: content-box;
+        width: 1em;
+        height: 1em;
+        padding: 0.25em 0.25em;
+        color: white;
+        border: 0;
+        border-radius: 0.375rem;
+        opacity: .5;
+}
+
+.c-alert .c-btn-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        padding: 1rem 1rem;
+} */
+
+/* BUTTONS */
+.c-btn {
+    margin:0.5rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 450;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 0.02857em;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    
+}
+
+.c-btn-risk {
+    background-color: var(--color-risk-bg);
+    color: var(--color-risk-txt); 
+}
+
+.c-btn-risk-hover:hover {
+    background-color: var(--color-risk-txt);
+    color: var(--color-risk-bg); 
+}
+
+.c-btn-caution {
+    background-color: var(--color-caution-bg);
+    color: var(--color-caution-txt); 
+}
+
+.c-btn-caution-hover:hover {
+    background-color: var(--color-caution-txt);
+    color: var(--color-caution-bg); 
+}
+
+.c-btn-silver {
+    background-color: var(--color-silver-bg);
+    color: var(--color-silver-txt);  
+}
+
+.c-btn-silver-hover:hover {
+    background-color: var(--color-silver-txt);
+    color: var(--color-silver-bg); 
+}
+
+.c-btn-gold {
+    background-color: var(--color-gold-bg);
+    color: var(--color-gold-txt); 
+}
+
+.c-btn-gold-hover:hover {
+    background-color: var(--color-gold-txt);
+    color: var(--color-gold-bg); 
+}
+
+.c-btn-lime {
+    background-color: var(--color-lime-bg);
+    color: var(--color-lime-txt); 
+}
+
+.c-btn-lime-hover:hover {
+    background-color: var(--color-lime-txt);
+    color: var(--color-lime-bg); 
+}
+
+.c-btn-azure {
+    background-color: var(--color-azure-bg);
+    color: var(--color-azure-txt); 
+}
+
+.c-btn-azure-hover:hover {
+    background-color: var(--color-azure-txt);
+    color: var(--color-azure-bg); 
+}
+
+.c-btn-mocca {
+    background-color: var(--color-mocca-bg);
+    color: var(--color-mocca-txt); 
+}
+
+.c-btn-mocca-hover:hover {
+    background-color: var(--color-mocca-txt);
+    color: var(--color-mocca-bg); 
+}
+
+.c-btn-aqua {
+    background-color: var(--color-aqua-bg);
+    color: var(--color-aqua-txt); 
+}
+
+.c-btn-aqua-hover:hover {
+    background-color: var(--color-aqua-txt);
+    color: var(--color-aqua-bg); 
+}
+
+.c-btn-slate {
+    background-color: var(--color-slate-bg);
+    color: var(--color-slate-txt); 
+}
+
+.c-btn-slate-hover:hover {
+    background-color: var(--color-slate-txt);
+    color: var(--color-slate-bg); 
+}
+
+.c-btn-componentify {
+    background-color: var(--color-componentify-bg);
+    color: var(--color-componentify-txt); 
+}
+
+.c-btn-componentify-hover:hover {
+    background-color: var(--color-componentify-txt);
+    color: var(--color-componentify-bg); 
+}
+
+.c-btn-lollypop {
+    background-color: var(--color-lollypop-bg);
+    color: var(--color-lollypop-txt); 
+}
+
+.c-btn-lollypop-hover:hover {
+    background-color: var(--color-lollypop-txt);
+    color: var(--color-lollypop-bg); 
+}
+
+.c-btn-mint {
+    background-color: var(--color-mint-bg);
+    color: var(--color-mint-txt); 
+}
+
+.c-btn-mint-hover:hover {
+    background-color: var(--color-mint-txt);
+    color: var(--color-mint-bg); 
+}
+
+.c-btn-gloomy {
+    background-color: var(--color-gloomy-bg); 
+    color: var(--color-gloomy-txt); 
+}
+
+.c-btn-gloomy-hover:hover {
+    background-color: var(--color-gloomy-txt);
+    color: var(--color-gloomy-bg); 
+}
+
+.c-btn-fog {
+    background-color: var(--color-fog-bg);
+    color: var(--color-fog-txt); 
+}
+
+.c-btn-fog-hover:hover {
+    background-color: var(--color-fog-txt);
+    color: var(--color-fog-bg); 
+}
+
+.c-btn-dark {
+    background-color: var(--color-dark-bg);
+    color: var(--color-dark-txt); 
+}
+
+.c-btn-dark-hover:hover {
+    background-color: var(--color-dark-txt);
+    color: var(--color-dark-bg); 
+}
+
+.c-btn-win {
+    background-color: var(--color-win-bg);
+    color: var(--color-win-txt); 
+}
+
+.c-btn-win-hover:hover {
+    background-color: var(--color-win-txt);
+    color: var(--color-win-bg); 
+}
+
+.c-btn-lavender {
+    background-color: var(--color-lavender-bg); 
+    color: var(--color-lavender-txt); 
+}
+
+.c-btn-lavender-hover:hover {
+    background-color: var(--color-lavender-txt);
+    color: var(--color-lavender-bg); 
+}
+
+.c-btn-purple {
+    background-color: var(--color-purple-bg); 
+    color: var(--color-purple-txt); 
+}
+
+.c-btn-purple-hover:hover {
+    background-color: var(--color-purple-txt);
+    color: var(--color-purple-bg); 
+}
+

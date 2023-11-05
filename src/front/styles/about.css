@@ -1,0 +1,41 @@
+.card-about {
+  width: 300px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.about-content {
+  display: flex;
+  justify-content: space-around;
+}
+
+.about-img {
+  border-radius: 50%;
+}
+
+.card-about img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 10px auto;
+  display: block;
+}
+
+.text-about {
+  font-size: 1rem;
+}
+
+.about-icons a {
+  padding-left: 10px;
+}
+
+.about-icons {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+}

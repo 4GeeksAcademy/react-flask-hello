@@ -5,3 +5,47 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-1: #1f1641;
+  --color-2: #012272;
+  --color-3: #0486db;
+  --color-4: #05add3;
+  --color-5: #babf95;
+}
+
+body {
+  background-color: var(--color-5);
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.div-donation {
+  margin-top: 2rem;
+  text-align: center;
+  display: block;
+}
+
+.btn-donation {
+  background-color: #ffc439;
+  padding: 5px 20px;
+  border-radius: 5px;
+  color: black;
+  border: 1px solid #fff;
+  overflow: hidden;
+  transition: all .5s ease;
+  /* margin-right: 4.8rem; */
+}
+
+.btn-donation:hover {
+  border: 1px solid white;
+  color: var(--color-3);
+  background-color:  #0486db;
+  color: white;
+}
+

@@ -1,0 +1,101 @@
+.admin-user-content,
+.admin-business-content,
+.admin-review-content,
+.admin-offer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+}
+
+table {
+  width: 90%;
+}
+
+.admin-offer-content table th.th-id {
+  width: 10% !important;
+}
+
+.admin-offer-content table th.th-general {
+  width: 35% !important;
+}
+
+.admin-offer-content table th.th-actions {
+  width: 5% !important;
+}
+
+.btn-home-admin {
+  text-align: center;
+  margin: 1.3rem;
+}
+
+.btn-admin {
+  background: var(--color-1);
+  padding: 15px 45px;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+
+.admin-user-content h2,
+.admin-business-content h2,
+.admin-review-content h2,
+.admin-offer-content h2 {
+  margin: 2rem 0 1rem;
+}
+
+.th-id {
+  width: 11%;
+}
+
+.th-actions {
+  width: 5%;
+}
+
+.btn-delete-admin {
+  margin: auto;
+  text-align: center;
+}
+
+.th-general {
+  width: 30%;
+
+}
+
+.infos-contain td:not(:last-child) {
+  border-right: 1px solid var(--color-1);
+}
+
+.th-id,
+.th-general,
+.th-actions {
+  border-right: 1px solid var(--color-1);
+}
+
+.th-id:last-child,
+.th-general:last-child,
+.th-actions:last-child {
+  border-right: none;
+}
+
+tr {
+  background: var(--color-3);
+}
+
+.infos-contain {
+  background: var(--color-4);
+}
+
+
+@media (max-width: 1024px) {
+  .infos-users {
+    width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .infos-users {
+    width: calc(100% - 20px);
+  }
+}

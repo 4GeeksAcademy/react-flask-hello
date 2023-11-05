@@ -1,26 +1,37 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import HomeOfferCard from "../component/HomeOfferCard.jsx";
+import HomeReviewCard from "../component/HomeReviewCard.jsx";
+
+
+import FilterMenu from "../component/FilterMenu.js";
+import LitlleSlide from "../component/LitlleSlide.jsx";
+import GeneralInfoDiv from "../component/GeneralInfoDiv.jsx";
+import { Link } from "react-router-dom";
+
+
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
+  return (
+    <>
 
-	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
-			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
-		</div>
-	);
+
+      {store.user.is_admin &&
+        <div className="btn-home-admin">
+          <Link to='/admin'>
+            <button className="btn-admin">Espacio Admin</button>
+          </Link>
+        </div>
+      }
+
+      <LitlleSlide />
+      <FilterMenu />
+      <HomeOfferCard />
+      <HomeReviewCard />
+      <GeneralInfoDiv />
+
+    </>
+  );
 };

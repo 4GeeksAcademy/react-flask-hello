@@ -1,0 +1,20 @@
+/* .form-review-content {
+  margin: 30px auto;
+  width: 83%;
+  border: 3px ridge var(--color-1);
+  height: 300px;
+}
+
+.title-form-review,
+.comment-form-review {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-form-review input {
+  width: 100%;
+}
+
+.comment-form-review input:active {
+  border: none;
+} */

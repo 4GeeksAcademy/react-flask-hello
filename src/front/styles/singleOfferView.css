@@ -1,0 +1,112 @@
+.general{
+    background-color: white;
+    /* margin-top: 4rem; */
+    max-width: 85%;
+    height: auto;
+    width: auto;
+    position: relative;
+}
+
+.go-results{
+    cursor: pointer;
+}
+
+.up-card-buttons{
+    padding-top: 1rem;
+}
+
+.images {
+    height: auto;
+    width: 70%;
+    margin-left: 10px;
+    padding: 13px;
+}
+
+.single-image{
+    height: auto;
+    width: 60%;
+}
+
+.text-offer-area{
+    padding: 20px;
+}
+
+
+.buy-home-up {
+    /* display: flex; */
+    /* width: 100%; */
+    background-color: var(--color-3);
+    justify-content: center;
+    margin-right: 10rem;
+    /* text-align: center; */
+    margin: 0 auto;
+    padding: 5px 25px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    /* margin-left: 10px; */
+    /* left: 0; */
+    /* right: 0; */
+    /* margin-bottom: 1.5rem; */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    /* z-index: 1000; */
+    transform: translateY(50%);
+    border: 1px solid #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* margin-left: 41rem; */
+
+
+}
+
+.buy-home {
+/* display: flex; */
+width: 100%;
+background-color: var(--color-3);
+justify-content: center;
+margin-right: 10rem;
+text-align: center;
+margin: 0 auto;
+padding: 5px 25px;
+/* position: absolute; */
+bottom: 0;
+/* left: 0; */
+/* right: 0; */
+margin-bottom: 1.5rem;
+color: white;
+border-radius: 5px;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+font-size: 16px;
+/* z-index: 1000; */
+transform: translateY(50%);
+border: 1px solid #fff;
+transition: background-color 0.3s ease, transform 0.2s ease;
+margin-left: 2rem;
+
+}
+
+.buy-home:hover{
+background-color: #ffc439;
+/* Cambia el color de fondo al hacer hover */
+cursor: pointer;
+/* Cambia el cursor a una mano cerrada */
+transform: translateY(50%) scale(1.1);
+/* Desplazamiento más rápido y escala al hacer hover */
+color: white;
+border: 1px solid black;
+}
+
+.buy-home-up:hover{
+background-color: #ffc439;
+/* Cambia el color de fondo al hacer hover */
+cursor: pointer;
+/* Cambia el cursor a una mano cerrada */
+transform: translateY(50%) scale(1.1);
+/* Desplazamiento más rápido y escala al hacer hover */
+color: white;
+border: 1px solid black;
+}

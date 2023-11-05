@@ -1,0 +1,40 @@
+.content-offer-details {
+  width: 50%;
+  background-color: #fff;
+  margin: 2rem auto;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.btn-payment-content {
+  width: 85%;
+  margin: 3rem auto;
+}
+
+.btn-payment {
+  display: flex;
+  justify-content: center;
+}
+
+.offer-payment img {
+  width: 20rem;
+  height: 16rem;
+}
+
+.btn-payment {
+  width: 100%;
+}
+
+.btn-paypal {
+  width: 15rem;
+}
+
+.btn-google {
+  width: 15rem;
+  white-space: nowrap;
+  background-color: blue;
+}
+
+.don form img {
+  width: .5rem;
+}

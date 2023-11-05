@@ -1,0 +1,52 @@
+.floating-button {
+    position: fixed;
+    bottom: 50%;
+    right: 20px;
+    transform: translateY(50%);
+    padding: 10px 20px;
+    background-color: #ffc439;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    z-index: 1000;
+    /* Asegura que el botón esté en la parte superior */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* Ajusta la velocidad del desplazamiento */
+    border: 1px solid #fff;
+
+
+}
+
+.floating-button:hover {
+    background-color:  #0486db;
+    /* Cambia el color de fondo al hacer hover */
+    cursor: grabbing;
+    /* Cambia el cursor a una mano cerrada */
+    transform: translateY(50%) scale(1.1);
+    /* Desplazamiento más rápido y escala al hacer hover */
+    color: white;
+    border: 1px solid white;
+}
+
+.expanding-textarea {
+    resize: none;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: height 0.3s;
+    height: 100px;
+    width: 305px;
+}
+
+.expanding-textarea:focus {
+    height: 200px;
+}
+
+.input-placeholder::placeholder {
+    opacity: 0.6;
+}
+
+ErrorMessage{
+    color: red;
+}

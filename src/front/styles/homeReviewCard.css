@@ -1,0 +1,161 @@
+.homeReviewCard {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 85%;
+  /* height: 15rem; */
+  margin: 0 auto;
+  /* padding: .5rem 0 0; */
+  overflow: hidden;
+  overflow-x: auto;
+  position: relative;
+
+}
+
+
+.nothing {
+  height: 1.2rem;
+  width: 100%;
+}
+
+.card-home-review {
+  display: flex;
+  height: 13rem;
+  width: 23rem;
+  background-color: #fff;
+  flex-direction: row;
+  border-radius: 2%;
+  margin: 0 20px;
+  border-radius: 5px;
+  position: relative;
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+  margin-left: auto;
+  margin: 0 .7rem 1rem;
+
+}
+
+.card-transition-review{
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 15.5rem;
+  width: 26rem;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+
+.card-transition-review:hover {
+  transform: translateY(-10px) scale(1.05); /* Desplazamiento hacia arriba y aumento de escala */
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);  */
+
+
+
+}
+.card-transition-review::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  /* Transición de opacidad */
+  pointer-events: none;
+  /* Evitar que interfiera con los elementos internos */
+}
+
+
+.homeReviewCard:hover::before {
+  background-color: rgba(0, 0, 0, 0.1); /* Color con opacidad al pasar el cursor */
+  
+}
+
+
+.card-home-offer:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Color con opacidad al pasar el cursor */
+  z-index: 2;
+}
+
+
+.content-link a {
+  display: flex;
+  flex-direction: row !important;
+  width: 23rem;
+  height: 13rem;
+  color: var(--color-1);
+  text-decoration: none;
+}
+
+.img-home-review {
+  height: 13rem;
+  width: 10rem;
+  padding: 3px;
+}
+
+.img-home-review img {
+  height: 13rem;
+  width: 10rem;
+}
+
+.title-home-review {
+  padding: 0;
+  margin: 0;
+  width: 13rem;
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.title-home-review h5 {
+  margin: 0;
+  padding: 1rem;
+  flex-wrap: wrap;
+  font-size: 1.7rem;
+  text-align: center;
+  color: var(--color-1);
+  word-break: break-word;
+}
+
+.author-home-review {
+  position: absolute;
+  bottom: -.8rem;
+  right: .4rem;
+  font-size: 1rem !important;
+}
+
+.author-home-review span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.desc-home-review {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.desc-home-review p {
+  word-wrap: break-word;
+  padding: 6px;
+}
+
+.fav-home-review {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #fff;
+  width: 1.8rem;
+  height: 1.8rem;
+  text-align: center;
+  z-index: 2;
+  top: -.5rem;
+  right: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.fav-home-review:hover {
+  transform: scale(1);
+  /* Escala un 10% más grande al pasar el cursor */
+}

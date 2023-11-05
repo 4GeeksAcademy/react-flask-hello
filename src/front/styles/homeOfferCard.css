@@ -1,0 +1,159 @@
+.home-offer-card {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 85%;
+  /* height: 16rem; */
+  /* width: 95rem; */
+  margin: 0 auto;
+  /* margin-top: 4rem; */
+  overflow: hidden;
+  /* margin-top: 30px; */
+  /* margin-bottom: 10px; */
+  overflow-x: auto;
+
+}
+
+.card-home-offer {
+  display: flex !important;
+  /* justify-content: space-between; */
+  /* width: 85%; */
+  /* margin: 0 20px; */
+  background-color: white !important;
+  flex-direction: row;
+  border-radius: 2%;
+  height: 20rem;
+  width: 32rem;
+  margin-left: auto;
+  margin: 0 .7rem 1rem ;
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+
+}
+
+.card-transition {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 23rem;
+  width: 33.5rem;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+.card-transition:hover {
+  transform: translateY(-10px) scale(1.05);
+  /* Desplazamiento hacia arriba y aumento de escala */
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);  */
+
+
+}
+
+.card-transition::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  /* Transición de opacidad */
+  pointer-events: none;
+  /* Evitar que interfiera con los elementos internos */
+}
+
+.card-home-offer:hover::before {
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Color con opacidad al pasar el cursor */
+
+}
+
+
+.card-home-offer:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Color con opacidad al pasar el cursor */
+  z-index: 2;
+}
+
+
+
+.card-home-offer a {
+  display: flex;
+  flex-direction: row !important;
+  width: 53rem;
+  height: 100%;
+  color: var(--color-1);
+  text-decoration: none;
+}
+
+
+.home-prices {
+  margin-left: 0.8rem;
+  margin-top: 2rem;
+}
+
+.home-prices span {
+  margin-top: 2rem;
+}
+
+.card-home-text {
+  padding: 1px;
+}
+
+
+.second-span {
+  margin-bottom: 3.6rem;
+}
+
+.home-offer-title {
+  /* font-size: 1.1rem; */
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  color: black;
+
+  margin-left: 0.8rem;
+
+
+}
+
+.card-home-offer img {
+  width: 50%;
+  height: 100%;
+  padding: 3px;
+}
+
+.home-offer-h1 {
+  display: flex;
+  flex-wrap: nowrap;
+  /* justify-content: space-between; */
+  width: 85%;
+  /* height: 16rem; */
+  /* width: 95rem; */
+  margin: 0 auto;
+  margin-top: 3rem;
+  overflow: hidden;
+  /* margin-top: 30px; */
+  /* margin-bottom: 10px; */
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}
+
+
+.home-offer-h1-review {
+  display: flex;
+  flex-wrap: nowrap;
+  /* justify-content: space-between; */
+  width: 85%;
+  /* height: 16rem; */
+  /* width: 95rem; */
+  margin: 0 auto;
+  margin-top: 2rem;
+  /* margin-bottom: 1rem; */
+  overflow: hidden;
+  /* margin-top: 30px; */
+  /* margin-bottom: 10px; */
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}

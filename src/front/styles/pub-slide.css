@@ -1,0 +1,62 @@
+.pub-slide {
+  width: 85%;
+  margin: auto;
+  height: 15rem;
+}
+
+.pub-slide img {
+  height: 16rem;
+}
+
+.carousel-caption {
+  margin-bottom: 2.5rem;
+}
+
+.title-slide {
+  font-size: 1.5rem;
+}
+
+.trip-desc {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.6rem;
+  display: none;
+}
+
+.normal-price,
+.prenium-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.prenium-price {
+  color: black;
+}
+
+@media (min-width: 520px) {
+  .carousel-caption {
+    margin-bottom: 1.2rem;
+  }
+}
+
+@media (min-width: 720px) {
+
+  .inner {
+    height: 35rem;
+  }
+
+  .pub-slide {
+    height: 35rem;
+  }
+
+  .pub-slide img {
+    height: 35rem;
+  }
+
+  .trip-desc {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.6rem;
+    display: block;
+  }
+}

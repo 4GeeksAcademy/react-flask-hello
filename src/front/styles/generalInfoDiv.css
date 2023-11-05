@@ -1,0 +1,96 @@
+.home-box-mb {
+    margin-bottom: 80px;
+}
+
+.eva-3-container {
+    box-sizing: content-box;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 85%;
+}
+
+.home-ui-module-title {
+    margin-bottom: 20px;
+}
+
+.home-ui-module-title {
+    display: block;
+}
+
+.eva-3-h3 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-cards {
+    justify-content: space-around;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-cards {
+    display: flex;
+    overflow: auto;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-card {
+    flex: 0 1 24%;
+    padding: 42px 30px;
+    max-width: 300px;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-card {
+    padding: 32px 20px;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-card .home-ui-seo-card-title {
+    margin-bottom: 16px;
+    color: #444;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.eva-3-h4 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 500;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-card .home-ui-seo-card-title {
+    margin-bottom: 16px;
+    color: #444;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.eva-3-h4 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 500;
+}
+
+.home-ui-seo-cards-container .home-ui-seo-card .home-ui-seo-card-text {
+    line-height: 1.43;
+    letter-spacing: -0.1px;
+    color: #888;
+    font-size: 14px;
+}
+
+
+.mi-color-link a {
+    color: black;
+    text-decoration: none;
+}
+
+.mi-color-link a:hover {
+    color: black;
+}
+
+.mi-color-link a:visited {
+    color: black;
+}
+
+@media (max-width: 795px) {
+    .eva-3-card {
+        margin-left: 1rem;
+    }
+}

@@ -1,0 +1,41 @@
+.content-single-review {
+  margin: 2rem auto;
+  height: 30rem !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.img-single-review {
+  width: 100%;
+  height: 15rem;
+  padding: .5rem;
+}
+
+.img-single-review img {
+  width: 100%;
+  height: 25rem;
+  box-sizing: content-box;
+}
+
+.comment-single-review {
+  word-wrap: break-word;
+}
+
+@media (max-width: 940px) {
+  .content-single-review {
+    height: 20rem !important;
+  }
+
+  .img-single-review {
+    width: 100%;
+    height: 16rem;
+    padding: .5rem;
+  }
+
+  .img-single-review img {
+    width: 100%;
+    height: 16rem;
+    box-sizing: content-box;
+  }
+
+}

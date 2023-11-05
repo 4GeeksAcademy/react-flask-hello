@@ -1,0 +1,127 @@
+/* ForgotPassword.css */
+
+.container-signup {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: auto;
+  /* background-color: #f9f9f9; */
+  margin-top: 3rem;
+  max-width: 700px;
+}
+
+
+.content-signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title-password {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.subtitle-password {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.custom-input-password {
+  position: relative;
+  width: 300px;
+  /* Ancho del cuadro blanco */
+  margin-bottom: 16px;
+}
+
+.custom-input-signup-prefix {
+  position: relative;
+  width: 65px;
+  /* Ancho del cuadro blanco */
+  margin-bottom: 16px;
+}
+
+.custom-input-signup-phone {
+  position: relative;
+  margin-left: 5px;
+  width: 230px;
+  /* Ancho del cuadro blanco */
+  margin-bottom: 16px;
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #888;
+  /* Línea inferior del input */
+}
+
+.input-label {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  /* Ajustamos el posicionamiento del texto dentro del input */
+  font-size: 16px;
+  color: gray;
+  pointer-events: none;
+  transition: font-size 0.2s, top 0.2s, color 0.2s;
+  background-color: white;
+  /* Fondo blanco detrás del texto */
+  padding: 0 4px;
+  /* Espaciado horizontal del texto dentro del input */
+}
+
+.has-value {
+  top: -16px;
+  font-size: 12px;
+}
+
+.reset-button-signup,
+.back-button-signup {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: auto;
+  width: 9rem;
+}
+
+
+.reset-button-signup{
+  background-color: var(--color-3);
+  color: white;
+}
+
+.back-button-signup {
+  background-color: #ccc;
+  width: 4.7rem;
+  
+
+}
+
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.btn-outline-secondary {
+  background-color: var(--color-3);
+  color: white;
+
+
+}

@@ -1,0 +1,117 @@
+.navbar-nav {
+  margin-right: 3rem;
+}
+
+.navbar-brand,
+.navbar-nav {
+  margin-left: 1.5rem;
+  margin-right: 3rem;
+}
+
+.navbar-brand img {
+  height: 5rem;
+  width: auto;
+}
+
+.navbar {
+  background-color: var(--color-1);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+}
+
+li .signup,
+.login {
+  background-color: #03a8e8;
+  color: var(--color-4);
+}
+
+
+
+.navbar-brand img {
+  height: 3rem;
+  width: auto;
+}
+
+.navbar {
+  background-color: var(--color-1);
+  width: 100vw;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav h3 {
+  display: none;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: white;
+}
+
+li .signup,
+.login {
+  background-color: var(--color-4);
+  color: var(--color-4);
+  padding: 10px;
+  font-size: .8rem;
+  margin-right: .5rem;
+  position: relative;
+}
+
+@media (min-width: 520px) {
+  .navbar-nav h3 {
+    display: block;
+  }
+
+  .navbar-nav {
+    margin-right: 3rem;
+  }
+
+  .navbar-brand {
+    margin-left: 1.5rem;
+  }
+
+  .navbar-brand img {
+    height: 5rem;
+    width: auto;
+  }
+}
+
+@media (min-width: 740px) {
+
+  li .signup,
+  .login {
+    background-color: var(--color-4);
+    color: var(--color-4);
+    padding: 10px;
+    font-size: 1.1rem;
+  }
+
+
+}
+
+@media (min-width: 1000px) {
+  .navbar-nav {
+    margin-right: 4rem;
+  }
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: 7rem;
+    margin-right: 8rem;
+  }
+
+
+  .navbar-brand img {
+    height: 5rem;
+    width: auto;
+  }
+}

@@ -1,0 +1,67 @@
+.profil-content {
+  width: 85%;
+  border: 10px ridge var(--color-2);
+  margin: 3rem auto;
+  max-width: 950px;
+  background: linear-gradient(30deg, #fff, #ddd, #bbb);
+}
+
+.btn-profil {
+  margin: .5rem auto 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-profil button,
+.btn-fav-user {
+  margin: 5px;
+  padding: 4px 12px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  font-weight: 500;
+}
+
+.btn-guardar {
+  background: var(--color-2);
+  color: #fff;
+  transition: all .6s;
+
+}
+
+.btn-modif {
+  background: var(--color-2);
+  transition: all .6s;
+  color: #fff;
+}
+
+.btn-up-cancel {
+  background: red;
+  color: #fff;
+  transition: all .6s;
+}
+
+.btn-guardar:hover {
+  color: var(--color-2);
+  background: #fff;
+}
+
+.btn-modif:hover {
+  color: var(--color-2);
+  background: #fff;
+}
+
+.btn-up-cancel:hover {
+  background: #fff;
+  color: red;
+}
+
+.btn-fav-user {
+  background-color: var(--color-4);
+  color: #fff;
+  transition: all .6s;
+}
+
+.btn-fav-user:hover {
+  background-color: #fff;
+  color: var(--color-4);
+}

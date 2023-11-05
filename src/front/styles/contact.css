@@ -1,0 +1,22 @@
+form {
+  display: grid;
+  width: 50%;
+  min-width: 300px;
+  max-width: 600px;
+  margin: auto;
+}
+.success,
+.errror {
+  width: 400px;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.success {
+  background-color: green;
+  color: azure;
+}
+.error {
+  background-color: red;
+}

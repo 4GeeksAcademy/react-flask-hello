@@ -1,0 +1,56 @@
+.btn-search {
+  background-color: var(--color-3);
+  padding: 0px 16px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  transition: all 0.5s;
+}
+
+.btn-search:hover {
+  color: var(--color-2);
+  background: #fff !important;
+}
+
+.btn-cancel-search {
+  background-color: red;
+  padding: 0px 16px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  transition: all 0.5s;
+}
+
+
+.btn-cancel-search:hover {
+  color: red;
+  background: #fff;
+}
+
+.review-input-search {
+  padding-left: 6px;
+  transition: all .5s;
+  width: 23rem;
+}
+
+.review-input-search:hover {
+  background: #ddd;
+}
+
+@media (min-width: 680px) {
+  .filter-review {
+    width: 30rem !important;
+  }
+}
+
+@media (min-width: 970px) {
+  .filter-review {
+    width: 43rem !important;
+  }
+
+  .review-input-search {
+    width: 42rem;
+  }
+}

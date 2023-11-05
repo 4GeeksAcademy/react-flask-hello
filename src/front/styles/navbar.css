@@ -1,0 +1,32 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  padding: 10px 70px;
+}
+
+.navbar-logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-item:last-child {
+  margin-left: auto;
+}
+
+#navbarTogglerDemo02 {
+  padding-left: 120px;
+}

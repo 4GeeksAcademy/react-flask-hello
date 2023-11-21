@@ -1,0 +1,70 @@
+.card-perfil {
+  width: 380px;
+  border: none;
+  border-radius: 15px;
+  padding: 8px;
+  background-color: #e0edff;
+  position: relative;
+  height: 370px;
+  margin-bottom: 8%;
+  margin-top: 3%;
+}
+
+.correo {
+  display: flex;
+  text-align: left;
+  font-weight: 500;
+}
+
+.btn {
+  font-weight: 500;
+}
+
+.upper {
+  height: 100px;
+}
+
+.upper img {
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.input {
+  border-radius: 10px;
+}
+
+.user {
+  position: relative;
+}
+
+.profile img {
+  height: 80px;
+  width: 85px;
+  border-radius: 100%;
+}
+
+.backimage {
+  height: 110px;
+}
+
+.profile {
+  position: absolute;
+  top: -50px;
+  left: 38%;
+  height: 90px;
+  width: 95px;
+  border: 5px solid #fff;
+  border-radius: 100%;
+}
+
+.follow {
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 35px;
+}
+
+.stats span {
+  font-size: 29px;
+}

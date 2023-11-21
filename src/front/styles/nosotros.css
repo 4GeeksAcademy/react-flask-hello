@@ -1,0 +1,28 @@
+.title-nosotros {
+    color: #074DB6;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    line-height: 5rem;
+}
+
+.text-nosotros {
+    color: #545454;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8rem;
+    width: 40rem;
+    margin-top: 2rem;
+    text-align: justify;
+}
+
+.img-nosotros {
+    max-width: 90%;
+    overflow: hidden;
+    object-fit: cover;
+    border-radius: 4rem;
+    margin-left: 5.3rem;
+    margin-bottom: 4rem;
+    margin-top: 5.5rem;
+}

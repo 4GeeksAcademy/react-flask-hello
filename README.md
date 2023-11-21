@@ -7,7 +7,7 @@ Build web applications using React.js for the front end and python/flask for you
 - Integrated with Pipenv for package managing.
 - Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
 - Use of .env file.
-- SQLAlchemy integration for database abstraction.
+- SQLAlchemy integration for database abstraction
 
 ### 1) Installation:
 

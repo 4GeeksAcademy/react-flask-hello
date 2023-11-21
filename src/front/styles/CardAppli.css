@@ -1,0 +1,84 @@
+.button-area-appli {
+  color: white;
+  font-weight: 500;
+  border-radius: 0.625rem;
+  background: #f38d3f;
+  border: none;
+  width: 8rem;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
+.button-check-appli {
+  color: white;
+  font-weight: 500;
+  border-radius: 0.625rem;
+  background: #acd968;
+  border: none;
+  width: 8rem;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+.card-appli {
+  width: 55rem;
+  height: 9rem;
+  border-radius: 1rem;
+  border: none;
+  margin-bottom: 0;
+  padding: 1rem;
+  margin: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-title-appli {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.card-text-appli {
+  color: #074db6;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.fa-circle-check {
+  margin-right: 0.5rem;
+}
+.fa-location-dot {
+  margin-right: 0.5rem;
+  margin-left: 0.2rem;
+}
+
+.button-aplicar-appli {
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  border-radius: 0.625rem;
+  background: #fd862c;
+  border: none;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  transition-duration: 0.9s;
+}
+
+.button-aplicar-appli:hover {
+  background-color: #f06901;
+}
+
+.fa-arrow-right {
+  margin-left: 0.5rem;
+}
+
+.button-container-appli {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

@@ -1,0 +1,52 @@
+.form-control{
+    width: 100%;
+    border: none;
+    padding:0.6rem 0.6rem 0.6rem 1rem;
+    font-size: medium;
+    border-radius: 0.5rem;
+    }
+
+.container-fluid{
+    border-radius: 1rem;
+    background-color: #E0EDFF;
+    margin-bottom: 5rem;
+    margin-top: 1.5rem;
+}
+
+.form-title{
+    color: #074db6;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 5rem;
+  }
+  .form-select{
+    border: none;
+    padding:0.6rem 0.6rem 0.6rem 1rem;
+    font-size: medium;
+    border-radius: 0.5rem;
+  }
+
+  label{
+    color: #074db6;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+.button-post{
+        color: white;
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        border-radius: 0.625rem;
+        background: #FD862C;
+        border: none;
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 1rem;
+        transition-duration: 0.9s;
+    }
+    
+    .button-post:hover {
+        background-color: #f06901;
+      }
+      

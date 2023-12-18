@@ -1,26 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import ProgramDivs from "../component/programDivs";
+import { UpdateLink } from "../component/updateLink";
+
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
 
-	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
-			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
-		</div>
-	);
+  useEffect(() => {
+    if (store.programs.length > 0 && store.programs.length <= 6) {
+      actions.addTotalHours();
+    }
+  }, [store.programs]);
+  return (
+    <div className="text-center mx-auto my-3 parentDiv ">
+      <UpdateLink
+        pt="pt-3"
+        title="Update Programs"
+        link="/input"
+        rotate={false}
+        width="40%"
+        icon={faCircleUser}
+      />
+
+      <ProgramDivs />
+    </div>
+  );
 };

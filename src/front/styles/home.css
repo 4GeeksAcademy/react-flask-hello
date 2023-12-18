@@ -1,7 +1,25 @@
-/*
-    home.css: This website contains selectors only used in home.css
-
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.parentDiv {
+    width: 66%;
+    height: 27rem;
+  }
+  @media screen and (max-width: 1085px ){
+    .parentDiv {
+      
+      width: 77%;
+    }
+    
+  }
+  @media screen and (max-width: 911px ){
+    .parentDiv {
+      
+      width: 85%;
+    }
+    
+  }
+  @media screen and (max-width: 800px ){
+    .parentDiv {
+      
+      width: 92%;
+    }
+    
+  }

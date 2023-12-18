@@ -1,0 +1,22 @@
+
+@media screen and (max-width: 944px ){
+    
+    .updateLink{
+     width:50% !important;
+    }
+    
+  }
+@media screen and (max-width: 635px ){
+    
+    .updateLink{
+     width:60% !important;
+    }
+    
+  }
+@media screen and (max-width: 511px ){
+    
+    .updateLink{
+     width:100% !important;
+    }
+    
+  }

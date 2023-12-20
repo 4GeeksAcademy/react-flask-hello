@@ -11,3 +11,5 @@ COPY --from=build /opt/app/venv /venv
 
 ENV PATH="/opt/app/venv/bin:$PATH"
 ENV NODE_ENV=container
+
+

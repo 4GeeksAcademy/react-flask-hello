@@ -1,0 +1,88 @@
+
+ /* Estilos para el contenedor .content-section */
+ .landing-page .content-section {
+    gap: 20px; 
+    padding: 80px 60px; /* Ajuste del relleno */
+    width: 100%;
+    max-width: 1200px; /* Limitar el ancho máximo */
+
+    text-align: center; /* Alinear contenido al centro */
+
+  }
+  
+  .landing-page .content-section .text-wrapper {
+    color: #1a1a1a;
+    font-family: var(--title-large-font-family);
+    font-size: var(--title-large-font-size);
+    font-style: var(--title-large-font-style);
+    font-weight: var(--title-large-font-weight);
+    letter-spacing: var(--title-large-letter-spacing);
+    line-height: var(--title-large-line-height);
+    margin-top: 0; /* Eliminar margen superior negativo */
+  }
+  
+  /* Resto de estilos para diferentes elementos dentro de .content-section */
+  
+  .landing-page .content-section .auto-layout,
+  .landing-page .content-section .auto-layout-2 {
+    gap: 20px; /* Reducción del espacio entre elementos */
+    margin-bottom: 0; /* Eliminar margen inferior negativo */
+  }
+  
+  .landing-page .content-section .placeholder-image {
+    align-self: stretch; /* Ajustar imagen al ancho */
+    flex: 1; /* Ocupar todo el espacio posible */
+    position: relative; /* Restaurar posición relativa */
+  }
+  
+  .landing-page .content-section .div {
+    display: flex;
+    flex-wrap: wrap; /* Ajustar elementos al ancho del contenedor */
+    gap: 10px; /* Espacio entre elementos */
+    justify-content: center; /* Centrar elementos */
+    margin-right: 0; /* Eliminar margen derecho */
+  }
+  
+  /* Estilos específicos para el botón */
+  .landing-page .custom-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    margin-top: 20px; /* Espacio superior */
+  }
+  
+  .landing-page .custom-button:hover {
+    background-color: #ffffff;
+    color: #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Estilos para las tarjetas */
+  .landing-page .card {
+    margin-bottom: 20px; /* Reducción del margen inferior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Ancho de las tarjetas */
+    max-width: 400px; /* Ancho máximo */
+    text-align: left; /* Alinear texto a la izquierda */
+    margin: auto; /* Centrar horizontalmente */
+  }
+  
+  .landing-page .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .landing-page .card-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .landing-page .card-text {
+    font-size: 1rem;
+  }
+  

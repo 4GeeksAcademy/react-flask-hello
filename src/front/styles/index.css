@@ -1,3 +1,15 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+
+* {
+  font-family: "Calibri", "san-serif" !important;
+  margin: "auto";
+  padding: 0;
+}
+
+body {
+  background-image: url("https://img.freepik.com/vector-premium/patron-fisuras-herramientas_542572-90.jpg?w=740") !important;
+  background-repeat: repeat !important;
+  background-size: 100%;
+}

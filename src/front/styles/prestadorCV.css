@@ -1,0 +1,48 @@
+.prestadores-cv-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.btn.btn-primary.btn-lg {
+  width: 200px; /* Puedes ajustar el ancho según tus preferencias */
+  background-color: green; /* Cambia el color de fondo */
+  color: black; /* Cambia el color del texto */
+  margin: 0 2px; /* Elimina el margen interno */
+}
+/* prestadorCv.css */
+
+.prestador-container {
+  padding: 20px;
+}
+
+.btn-category {
+  margin-right: 10px;
+  /* Agrega más estilos según tus preferencias */
+}
+
+.job-post-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.btn-contact {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  /* Agrega más estilos según tus preferencias */
+}
+.btn-back {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}

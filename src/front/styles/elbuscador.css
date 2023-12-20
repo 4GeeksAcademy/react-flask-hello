@@ -1,0 +1,101 @@
+.container {
+  width: 100%;
+  height: 75%;
+  justify-content: center;
+  
+}
+
+.buttons-container {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid black;
+  color: black;
+  background-color: #CCCCCC;
+  background:#CCCCCC;
+  padding: 30px 17px;
+  border-radius: 25px;
+  margin-top: 4%;
+  margin-bottom: 8%;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .buttons-container {
+    padding: 30px 95px;
+  }
+}
+
+.col-md-auto {
+  width: 100%;
+}
+
+.btn-dark {
+  width: 100%;
+}
+
+.buttons-container .btn:hover {
+  background-color: rgb(60, 158, 173);
+  color: black;
+}
+h1 {
+  display: flex;
+  justify-content: center;
+  font-family: "Calibri", "sans-serif";
+  font-size: 2.5rem;
+  margin-top: 5px;
+  padding: 1px;
+}
+
+.submit {
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  /* Cambia el color de fondo */
+  color: #000; /* Cambia el color del texto */
+}
+.submitbutton1 {
+  background-color: #d74338;
+}
+
+.submitbutton2 {
+  background-color: #2c94da;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .submitbutton2 {
+    margin: 15px;
+  }
+}
+
+.card {
+  background-color: rgb(190, 197, 203);
+  padding: 10px;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%; /* Puedes ajustar este valor según tus necesidades */
+}
+
+.card-body {
+  padding: 3px 10px;
+  justify-content: space-between;
+  gap: 90px;
+  align-items: center;
+ 
+}
+
+.card-body2 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 120px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+p{
+  font-weight: normal;
+  font-family: "Calibri", "sans-serif";
+}

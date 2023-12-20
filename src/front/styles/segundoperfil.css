@@ -1,0 +1,144 @@
+/* Contenedor principal */
+.profile-container {
+  font-family: fantasy;
+  margin-top: 70px;
+  justify-content: center;
+  border: 1px solid #616161;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 30px;
+  background-color: #ece6e6;
+  box-shadow: 0 0 70px #000;
+  width: 60% !important;
+  height:50%;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    width: 90% !important;
+    display: block;
+  }
+
+  .photo.text-center {
+    margin: 0 auto;
+  }
+}
+
+/* Estilos para los elementos específicos dentro del contenedor */
+.profile-container * {
+  font-family: fantasy;
+}
+
+@media (min-width: 1080px) {
+  div.row {
+    gap: 70px;
+  }
+}
+
+.photo {
+  display: flex;
+  text-align: center;
+  border: 4px solid #818080;
+  padding: 10px;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcfcfc;
+  margin-right: 100%;
+}
+
+.provider-name-text {
+  font-family: fantasy;
+  color: #001F3F;
+  margin-top: 8px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.job-1,
+.job-2,
+.job-3 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 2px solid #ccc;
+  border-radius:4px;
+  width: 100%;
+
+}
+
+.description-wrapper {
+  font-family: "fantasy";
+  color: "#001F3F";
+  text-align: center; 
+ 
+}
+
+.ratings-section{
+margin-top: 5px;
+}
+
+.comments-ratings {
+  
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 14px; /* Puedes ajustar el tamaño según tus preferencias */
+  line-height: 1.5; /* Ajusta la altura de línea según tus preferencias */
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+
+.rating-list{
+font-family: fantasy;
+}
+
+.rating{
+  font-weight: bold;
+  margin-bottom: 15px;;
+  font-style: italic;
+}
+/*
+Estilos para los botones */
+.btn {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  justify-content: center;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+.uploaded-image {
+  width: 150px; /* Ajusta el tamaño de la imagen según tus necesidades */
+  height: 150px; /* Ajusta el tamaño de la imagen según tus necesidades */
+  object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo su relación de aspecto */
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  border: 2px solid #fff; /* Agrega un borde blanco al redondel */
+}
+
+@media (max-width: 768px) {
+  .logout button {
+    width: 100%;
+  }
+}

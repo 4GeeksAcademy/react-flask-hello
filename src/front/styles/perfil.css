@@ -1,0 +1,72 @@
+.container{
+  font-family: fantasy;
+}
+.profile-container, data-form {
+  justify-content: center;
+  max-width: 600px;
+  margin: auto;
+  padding: auto;
+}
+
+.profile-container {
+  margin-bottom: 15px;
+}
+
+.profile-container label {
+  font-weight: bold;
+}
+
+.profile-container input[type="text"],
+.profile-container input[type="email"],
+.profile-container input[type="date"] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+
+ .notices-section,
+ .services-history,
+ .provider-comments {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #d1efea;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container .notices-section .notice {
+  margin-bottom: 8px;
+  padding: 10px;
+  background-color: #d1efea;
+  
+}
+
+.services-history h2,
+.profile-container .provider-comments h3 {
+  margin-bottom: 15px;
+}
+
+/* Estilos para los botones */
+.button-container{
+  margin-top: 35px;
+  display: flex;
+  width: 90%;
+}
+
+.action-button {
+  width: 10rem;
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    display: block;
+  }
+
+  .action-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+

@@ -73,6 +73,8 @@
 		]
 	},
 	"dependencies": {
+		"buffer": "^6.0.3",
+		"node-fetch": "^3.3.2",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-dom": "^16.8.4",

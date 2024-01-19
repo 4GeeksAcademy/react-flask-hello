@@ -1,0 +1,54 @@
+/* navbar.css */
+
+/* Override Bootstrap's navbar-dark styles */
+img {
+  height: 45px;
+  padding-left: 10px;
+}
+
+.navbar {
+    background-color: #FFA500; /* Orange background color */
+  }
+  
+  .navbar-brand {
+    color: #000000; /* Black text color */
+  }
+  
+  .navbar-toggler{
+    color: #000000 ; /* Black icon color */
+  }
+  
+  .offcanvas-header {
+    background-color: #FFA500; /* Orange background color for the offcanvas header */
+  }
+  
+  .offcanvas-title {
+    color: #000000; /* Black text color for the offcanvas title */
+  }
+  
+  .navbar-nav .nav-link {
+    color: #FFA500; /* Black text color for nav links */
+  }
+  
+  .nav-link.active {
+    color: #FFA500; /* Orange text color for active link */
+  }
+  
+
+  .dropdown-menu {
+    background-color: #000000; /* Black background color for the dropdown menu */
+  }
+  
+  .dropdown-item {
+    color: #FFA500; /* Orange text color for dropdown items */
+  }
+  
+  .dropdown-item:hover {
+    background-color: #000000; /* Black background color on hover for dropdown items */
+    color: #FFA500; /* Orange text color on hover for dropdown items */
+  }
+  
+  .dropdown-divider {
+    background-color: #000000; /* Black color for dropdown dividers */
+  }
+  

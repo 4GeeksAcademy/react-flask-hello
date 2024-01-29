@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import EventSingle from "../component/EventSingle";
+import PopularEvents from "../sections/PopularEvents";
 
 export const Single = props => {
 	const { store, actions } = useContext(Context);
@@ -10,6 +11,11 @@ export const Single = props => {
 
 	return (
 		<div className="jumbotron">
+
+			<EventSingle />
+			<PopularEvents />
+			
+			{/*
 			<h1 className="display-4">This will show the demo element: {store.demo[params.theid].title}</h1>
 			<img src={rigoImageUrl} />
 			<hr className="my-4" />
@@ -19,6 +25,8 @@ export const Single = props => {
 					Back home
 				</span>
 			</Link>
+
+	*/}
 		</div>
 	);
 };

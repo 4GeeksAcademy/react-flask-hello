@@ -1,7 +1,84 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.bg {
+    background-image: url(https://i.pinimg.com/originals/94/b6/84/94b6843382aad570a497bb5884b216ca.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.jumbo {
+    line-height: 50px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    
+    color: white;
+    
+}
+
+h1 {
+    padding: 70px;
+}
+
+p {
+    padding: 10px;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    
+}
+
+.home-container {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.button {
+    display: inline-block;
+    border: 2px solid;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 700;
+    border-radius: 8px;;
+  }
+
+.button:hover {
+    background: orange;
+    color: black;
+  }
+
+footer {
+    
+    bottom: 0;
+    width: 100%;
+    background-color: #FFA500 ;
+    color: #000000; 
+ 
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+main {
+    flex: 1;
+}
+  footer a {
+    color: #000000;
+  }
+ 
+  

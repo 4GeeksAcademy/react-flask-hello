@@ -73,10 +73,13 @@
 		]
 	},
 	"dependencies": {
+		"@stripe/react-stripe-js": "^2.4.0",
+		"@stripe/stripe-js": "^2.4.0",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "^6.3.0"
+		"react-router-dom": "^6.3.0",
+		"stripe": "^14.13.0"
 	}
 }

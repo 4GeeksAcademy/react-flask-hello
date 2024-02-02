@@ -1,3 +1,377 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+.body {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ------ BACKGROUND COLOUR STYLING ------ */
+
+.black-background {
+  background: rgb(18, 18, 18);
+  color: white;
+}
+
+.black-two-background {
+  background: rgb(18, 18, 18);
+}
+
+.black-three-background {
+  background: rgb(36, 36, 36);
+  color: white;
+}
+
+.grey-background {
+  background: #272727;
+}
+
+.grey-two-background {
+  background: #1a1a1a;
+}
+
+/* ------ ABOUT SECTION STYLING ------ */
+
+
+.about {
+  display: flex;
+  align-content: center;
+  justify-content: space-evenly;
+  padding: 100px 100px;
+  text-align: left;
+}
+
+.about h2 {
+  color: #FF8D91;
+}
+
+.image-container {
+  width: 500px;
+  height: 400px;
+  background: white;
+  margin-right: 50px;
+}
+
+.img-fluid {
+  width: 500px;
+  height: 400px;
+}
+
+
+/* ------ SIGN UP SECTION STYLING ------ */
+
+
+.sign-up {
+  display: flex;
+  align-content: center;
+  justify-content: space-evenly;
+  padding: 100px 50px 100px;
+  text-align: left;
+}
+
+.sign-up h2 {
+  color: #000000;
+}
+
+.image-container {
+  width: 500px;
+  height: 400px;
+  background: white;
+  margin-right: 50px;
+}
+
+.img-fluid {
+  width: 500px;
+  height: 400px;
+}
+
+
+.pink-div {
+  background: #FF8D91;
+  color: black;
+  padding: 50px 30px 50px 30px;
+}
+
+/* ------ EVENT SINGLE STYLING ------ */
+
+
+.event-single {
+  display: flex;
+  align-content: center;
+  justify-content: space-evenly;
+  padding: 100px 100px;
+  text-align: left;
+  color: white;
+  height: 90vh;
+}
+
+.event-single-text {
+  padding-right: 100px;
+}
+
+.event-single h3 {
+  color: #FF8D91;
+}
+
+.event-single i {
+  margin-right: 20px;
+  color: #FF8D91;
+}
+
+/* ------ SECTION STYLING ------ */
+
+
+.section-header {
+  margin-bottom: 70px;
+}
+
+.section-header-white {
+  color: white;
+  margin-bottom: 50px;
+}
+
+h4 {
+    font-size: medium;
+}
+
+a {
+    text-decoration: none;
+  }
+
+/* ------ BUTTON STYLING ------ */
+
+
+button {
+    border-radius: 5px;
+}
+
+.btn-primary{
+    background: #FF8D91;
+    color: black;
+}
+
+.btn-secondary{
+    background: black;
+    border: solid;
+    border-width: 1px;
+}
+
+.btn-sign-up-now{
+    background: black;
+    color: white;
+    border: solid;
+    border-width: 1px;
+}
+
+.custom-btn {
+    border-color: #FF8D91; 
+  
+    /* Hover effect */
+    &:hover {
+      background-color: #000; 
+      color: #fff; 
+      border-color: #FF8D91; 
+    }
+  }
+  
+.custom-btn-dark {
+    border-color: #FF8D91; 
+  
+    /* Hover effect */
+    &:hover {
+      background-color: #FF8D91; 
+      color: #000; 
+    }
+  }
+  
+/* ------ HOME HERO STYLING ------ */
+
+
+.hero {
+  background: #272727;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 85vh;
+}
+
+
+/* ------ NAVBAR STYLING ------ */
+
+.navbar-custom {
+    background-color: #000; 
+    padding: 15px 0; 
+
+  }
+
+  .navbar-custom .navbar-brand {
+    font-size: 1.5rem; 
+  }
+
+  .navbar-custom .navbar-nav {
+    margin: 0;
+  }
+
+  .navbar-custom .navbar-nav .nav-link {
+    color: #fff; 
+    font-size: 1rem;
+    padding: 0.5rem 1rem; 
+
+    &:hover {
+      color: #FF8D91; 
+    }
+  }
+
+  .navbar-custom .nav-buttons button {
+    margin-left: 1rem; 
+    padding: 5px 30px;
+  }
+
+
+/* ------ CONTACT STYLING ------ */
+
+.contact {
+  padding: 100px 0px 100px 0px;
+}
+
+.contact-elements {
+  padding-top: 100px;
+}
+
+.contact-elements i {
+  color: white;
+}
+
+.contact-elements p {
+  color: white;
+}
+
+.contact-elements h3 {
+  color: #FF8D91;
+}
+
+.contact-elements a {
+  color: #FF8D91;
+}
+
+
+
+
+/* ------ POPULAR EVENTS STYLING ------ */
+
+.popular-events {
+  padding: 50px 0px 30px 0px; 
+}
+
+.popular-events h2 {
+  color: white;
+}
+
+/* ------ POPULAR CATEGORIES STYLING ------ */
+
+.popular-categories {
+  padding: 50px 0px 70px 0px; 
+}
+
+.popular-categories h2 {
+  color: white;
+}
+
+/* ------ FOOTER STYLING ------ */
+
+.footer {
+    background: #000;
+    font-size: small;
+    font-weight: 100;
+    margin: 50px 0 50px 0;
+}
+
+.footer-item {
+    margin: 0px 100px 0px 100px;
+}
+
+.footer-header {
+    color: #FF8D91;
+}
+
+.footer-paragraph {
+    color: white;
+    margin-bottom: 0; 
+  }
+
+.footer-link {
+    color: white;
+  }
+  
+.footer-link:hover {
+    color: #FF8D91; 
+  }
+
+/* ------ LOGIN & SIGN UP CARD & SECTION STYLING ------ */  
+
+.custom-card {
+    background: rgba(255, 255, 255, 0.1); 
+    border: none; 
+    color: white;
+  }
+
+.custom-card a {
+  color: #FF8D91;
+}
+
+.custom-card label {
+    color: #a8a8a8;
+  }
+
+.card-body {
+  text-align: left;
+}
+
+.form-control::placeholder {
+  font-size: 14px;
+}
+
+.form-lettering {
+  font-size: 14px;
+}
+
+.login {
+  margin: 100px;
+}
+
+.signup {
+  margin: 100px
+}
+
+
+/* ------ EVENT CARD STYLING ------ */  
+
+.event-card {
+  margin: 10px 10px;
+}
+
+.event-card-body {
+  padding: 20px;
+}
+
+
+/*.form-select {
+  font-size: 14px;
+
+}*/
+
+/* ------ EVENT SEARCH STYLING ------ */  
+
+.search-button {
+  margin-left: 13px;
+  padding: 5px;
+}
+
+.event-search {
+  margin: 0px;
+}
+
+.event-search-container{
+  margin: 0px;
+}

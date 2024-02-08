@@ -1,0 +1,126 @@
+.container-md {
+  background-color: rgba(59, 59, 59, 1);
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px rgb(37, 37, 37);
+  padding: 0px;
+  font-family: 'Work Sans', sans-serif;
+}
+
+
+
+ /* Header */
+.coverHeader {
+  width: 100%;
+  background-color: #555;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 20px 20px 0px 0px;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+  
+/* Bio */
+
+.topBio {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(var(--profile-image-size) / -2);
+
+  .image {
+    width: 100px;
+    height: 100px;
+    border-radius: 30%;
+    overflow: hidden;
+    border: 5px solid rgba(59, 59, 59, 1);
+    background-color: #2b2b2b;
+    position: absolute;
+    top: 250px;
+    left: 150px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .actions {
+    position: relative;
+    top: 55px;
+    display: flex;
+
+    .action-btn {
+      border: 1px solid #777;
+      margin-right: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.detailsBio {
+  color: #888;
+  margin-top: 60px;
+  padding: 20px;
+  padding-left: 45px;
+
+    .user-name {
+      color: white;
+      font-weight: bold;
+      font-size: 30px;
+      font-weight: 500;
+      margin-right: 10px;
+    }
+
+    .user-id {
+      margin-top: 2px;
+      font-size: 15px;
+    }
+
+    &__bio {
+      color: white;
+      margin-top: 10px;
+      a {
+        color: var(--theme-color);
+        text-decoration: none;
+      }
+    }
+
+    &__joined {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 15px;
+
+      &--text {
+        margin-left: 5px;
+      }
+    }
+
+    &__follows {
+      font-size: 15px;
+      display: flex;
+      margin-top: 15px;
+
+      b {
+        color: white;
+      }
+
+      &__followers {
+        margin-left: 20px;
+      }
+    }
+
+    &__followed-by {
+      font-size: 13px;
+      margin-top: 15px;
+    }
+}

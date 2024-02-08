@@ -1,3 +1,240 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+
+body {
+    background: #2B2B2B;
+    height: 100vh;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 30px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #A259FF;
+}
+
+.nav-linkshow:active {
+    color: #A259FF;
+}
+
+.navbar-nav .btn {
+    background-color: #A259FF;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 15px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.btn-custom-purple {
+    background-color: #A259FF; 
+    color: #fff;
+}
+
+.btn-con-espacio {
+    margin-right: 20px;
+}
+
+.back {
+    background-color:#2B2B2B;
+    color: #fff;
+}
+
+.numero-de-color {
+    color: #A259FF;
+}
+
+.numero-normal {
+    color: #fff;
+}
+
+.card-text {
+    color: #858584;
+    font-family: 'Space Mono', monospace;
+}
+
+.rounded-container {
+    width: 100px;
+    height: 40px;
+    background-color: #3B3B3B;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rounded-content {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.color-footer {
+    color: #CCCCCC;
+    z-index: 1;
+}
+
+.navbar-nav .btn {
+    background-color: #A259FF;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 15px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.navbar-nav .btn:hover {
+    background-color: #7148a7;
+}
+
+.btn-outline {
+    background-color: #A259FF;
+    color: white;
+    margin-left: 10px;
+    border-radius: 20px;
+}
+
+.buscar {
+    margin: 0;
+    background-color: #2B2B2B;
+    color: white;
+    border-color: #A259FF;
+    border-radius: 12px;
+    width: 300px;
+}
+
+.CrearCuenta {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+}
+
+.CrearCuenta h1 {
+    font-weight: 500;
+}
+
+.CrearCuenta a {
+    width: 450px;
+    text-align: center;
+    font-family: "Work Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.btnCrearCuenta {
+    background-color: #A259FF;
+    color: white;
+    font-weight: 500;
+    border-radius: 50px;
+    font-family: 'Work Sans', sans-serif;
+    width: 300px;
+}
+
+.btnCrearCuenta:hover {
+    background-color: #7148a7;
+    color: white;
+}
+
+.link {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin-top: 20px;
+}
+
+.linkIngresar {
+    text-decoration: none;
+    color: #A259FF;
+    margin-left: 5px;
+}
+
+.linkIngresar:hover {
+    color: #8a4fd6;
+}
+
+.error {
+    text-align: center;
+    font-family: "Work Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    color: #8a4fd6;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+
+.inputCuenta {
+    border-radius: 50px;
+    width: 300px;
+}
+
+/* Este elemento debe tener "position: relative" */
+div#is-relative {
+    max-width: 420px;
+    position: relative;
+}
+
+/* El icono debe ser "position: absolute"
+   * Ademas le damos un "display: block" y lo posicionamos */
+#icon {
+    position: absolute;
+    display: block;
+    bottom: .4rem;
+    right: 1rem;
+    color:  #8b8b8b;
+
+    user-select: none;
+    cursor: pointer;
+}
+
+input.input {
+    padding-right: 2.5rem;
+}
+
+
+.nav-tabs {
+    border-bottom: none;
+    justify-content: space-between;
+}
+
+.nav1 {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-top: 1px solid  #4c4c4c;
+}
+
+.nav-link {
+    text-decoration: none;
+    border: none;
+    padding: 8px 90px;
+    color: white;
+}
+
+.nav-link:hover {
+    border: none;
+    color: #A259FF;
+}
+
+.nav-link:focus {
+    border: none;
+    color: #A259FF;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #3B3B3B;
+    color: white;
+    border: none;
+    border-bottom: 3px solid #A259FF;
+}

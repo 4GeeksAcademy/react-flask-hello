@@ -1,7 +1,42 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.timer-container {
+    position: absolute;
+    transform: translate(-80%, -80%);
+    text-align: center;
+    z-index: 100;
+  }
+  
+  .timer {
+    color: white;
+    background-color: #3B3B3B;
+    padding: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    border-radius: 15px;
+    opacity: 0.8;
+    font-family: "Work Sans";
+  }
+  
+  .timer span {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .boton{
+    border-radius: 20px;
+    background-color: white;
+    color: #3B3B3B;
+    font-weight: bold;
+  }
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+  .boton2{
+    border-radius: 20px;
+    font-weight: bold;
+  }
+
+  .mas-visto{
+    margin-left: 10%;
+    margin-top: 5%;
+    font-family: Work Sans;
+  }

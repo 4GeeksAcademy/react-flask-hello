@@ -5,11 +5,19 @@ import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
+import { SignUp } from "./pages/signUp";
+import { Login } from "./pages/login";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { CardPeliculas } from "./component/cardPeliculas"
+import { PagesPeliculas }  from "./pages/pagesPeliculas";
+import { Profile } from "./pages/profile"
+import { MovieReviewForm } from "./component/movieReviewForm";
+import { EditUserProfile } from "./component/profile/editUserProfile";
+
+
 
 //create your first component
 const Layout = () => {
@@ -27,7 +35,13 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
+                        <Route element={<CardPeliculas />} path="/cardPeliculas" />
+                        <Route element={<PagesPeliculas />} path="/pagesPeliculas" />
+                        <Route element={<SignUp />} path="/signUp" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Profile />} path="/profile" />
+                        <Route element={<EditUserProfile/>} path="/editProfile" />
+                        <Route element={<MovieReviewForm />} path="/reviewForm" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />

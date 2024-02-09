@@ -1,0 +1,261 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  }
+
+.container {
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  max-width: 40rem;
+  background-color: darkgray;
+  border-radius: 5px;
+}
+.avatar-container {
+  text-align: center;
+  height: 100vh;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-box{
+  display: flex;
+  align-items: center;
+}
+
+#avatar-placeholder {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 10px auto;
+  
+}
+
+#avatar {
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  border: 5px solid black;
+  border-radius: 5%;
+
+}
+
+#Dio {
+  text-align: start;
+}
+
+
+
+.answer-item {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ffa500;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+
+#answerInput {
+  padding: 10px;
+  margin-right: 5px;
+  border: 2px solid black;
+  border-radius: 5px;  
+  background-color: #ffa500;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+#answerInput:hover,
+#answerInput:focus {
+  border-color: #ffa500;
+}
+
+#nextbutton {
+  padding: 10px 20px;
+  background-color: #FF8C00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 15px;
+  
+
+}
+
+#nextbutton:hover {
+  background-color: #ffa500; 
+}
+
+/* CSS talk bubble */
+.box {
+  
+  width: 300px;
+  margin: 50px auto;
+  border-radius: 15px;
+  background: #ffa500;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
+  position: relative;
+  font-size: 25px;
+}
+
+.n1:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 15px solid transparent;
+  border-right: 15px solid #ffa500;
+  border-top: 15px solid #ffa500;
+  border-bottom: 15px solid transparent;
+  left: -16px;
+  top: 0px;
+}
+
+.itinerary-container {
+  max-width: 1000px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #333;
+  color: #fff;
+}
+
+#createIt a {
+  text-decoration: none;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #FF8C00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+  display: inline-block; /* Ensures the link behaves like a block element */
+}
+
+.back-button:hover {
+  background-color: #ffa500;
+  color: white;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: #FF8C00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.save-button:hover {
+  background-color: #ffa500;
+}
+
+
+/* CSS answer AI */
+
+.answer-box {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: gray;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  max-height: 800px;
+}
+
+#generated-itinerary {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffa500;
+}
+
+.generated-itinerary h2 {
+  font-size: 1.75rem;
+  margin-bottom: 20px;
+  background-color: #FF8C00;
+  color: black;
+  border-radius: 5px;
+  
+}
+
+.generated-itinerary h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: flex-start;
+  text-transform: uppercase;
+  padding: 5px;
+  background-color: #FF8C00;
+  color: white;
+  max-width: 65px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.generated-itinerary .day-divider {
+  border-top: 2px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.days {
+  display: flex;
+  justify-content: center;
+}
+
+.object {
+  display: flex;
+  flex-direction: column;
+}
+
+.object strong {
+  font-weight: bold;
+  color: black;
+  background-color: #FF8C00;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+.generated-itinerary ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.generated-itinerary li {
+  margin-bottom: 5px;
+}

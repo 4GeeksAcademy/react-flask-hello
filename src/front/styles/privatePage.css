@@ -1,0 +1,185 @@
+/* privatePage.css */
+.card-nav {
+    height: 100vh;
+    margin: 50px auto;
+    max-width: 1000px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+ 
+}
+
+.card-header {
+    background-color: #FFA500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.nav-item{
+    padding: 5px;
+    
+}
+
+
+.nav-tabs .nav-item .nav-link {
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color  0.3s ease, color 0.3s ease;
+    outline: none;
+    
+}
+
+.nav-tabs .nav-item .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.7); 
+}
+.nav-tabs .nav-item .nav-link:hover {
+    background-color: black; 
+    color: #FFA500; 
+    border-color: orange; 
+}
+.nav-tabs .nav-item .nav-link.active {
+    background-color: black;
+    color: #FFA500;
+    border-color: orange;
+}
+
+.tab-pane {
+    border: 2px solid #FFA500;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #ffeac4;
+    color: black;
+}
+
+.tab-content {
+    background-color: #FFA500;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+.bi {
+    padding: 2px;
+    
+}
+
+#pixel {
+    
+    font-family: "VT323", monospace;
+    font-weight: 400;
+    font-style: normal;
+    animation-name: pixel;
+    animation-duration: 6s;
+
+}
+
+
+@keyframes pixel {
+    0%    {background-color: orange;}
+    15%   {background-color: black; color: orange;}
+    30%   {background-color: orange;}
+    45%   {background-color: black; color: orange;}
+    60%   {background-color: orange;}
+    75%  {background-color: black; color: orange;}
+    90%  {background-color: orange;}
+    100%  {background-color: black; color: orange;}
+
+}
+
+label {
+    border-radius: 2px;
+}
+
+
+/* Password */
+.password-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #FFA500;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 10px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  #colorChange {
+    background-color: black;
+    color: #FFA500;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #colorChange:hover {
+    background-color: white;
+    color: black;
+    outline: 3px solid black;
+    
+  } 
+
+
+
+  /* eye */
+
+  .eye-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center
+  }
+  
+  .eye {
+    position: relative;
+  }
+  
+  .eye button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .eye svg {
+    width: 20px;
+    height: 20px;
+    fill: #666; 
+    transition: fill 0.3s ease; 
+  }
+  
+  .eye:hover svg {
+    fill: #4CAF50; 
+  }
+  
+   .eye-icon-container .pe-2 {
+    padding-right: 8px;
+    color: #333; 
+    font-weight: bold;
+  }

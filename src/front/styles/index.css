@@ -1,3 +1,17 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 6px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #222;
+  }
+  
+ 

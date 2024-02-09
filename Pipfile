@@ -18,6 +18,9 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 typing-extensions = "*"
+flask-bcrypt = "*"
+openai = "*"
+Flask-JWT-Extended = "*"
 
 [requires]
 python_version = "3.10"

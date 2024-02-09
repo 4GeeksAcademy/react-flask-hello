@@ -1,0 +1,72 @@
+/* login.css */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .modal-content {
+
+    background-color: #000000;
+    border: 5px solid #ffa500;
+    border-radius: 8px;
+    color: #ffffff;
+    width: 30%;
+    
+  }
+  
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+  }
+
+  .input-field {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  
+  }
+  
+  .login-button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .modal-button {
+    background-color: #ffa500;
+    color: #000000;
+    border-radius: 5px;
+    width: 50%;
+    font-size: 20px;
+  }
+
+  .text {
+    color: white;
+  }
+  .text.pe-2 {
+    color:white;
+  }
+  #eye1 button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+  #eye1 svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    transition: fill 0.3s ease;
+  }
+  #eye1:hover svg {
+    fill: #4CAF50; /* Change the color on hover */
+  }
+

@@ -22,6 +22,8 @@ const injectContext = PassedComponent => {
 		);
 
 		useEffect(() => {
+
+			//create function to check if user is still logged in
 			/**
 			 * EDIT THIS!
 			 * This function is the equivalent to "window.onLoad", it only runs once on the entire application lifetime

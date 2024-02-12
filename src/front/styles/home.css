@@ -1,7 +1,337 @@
-/*
-    home.css: This website contains selectors only used in home.css
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
+body {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+.home {
+  position: relative;
+}
+
+/* 
+    home nav bar
 */
+.nav {
+  height: 80px;
+  min-width :100%;
+  margin-top: 25px;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.nav__menu {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__logo, a {
+  height: 120%; 
+}
+
+.nav__btn {
+  align-items: center;
+  background-color:rgba(129, 172, 168, 0.616);
+  border: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 20px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  width: 200px;
+  height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+.nav__btn:hover,
+.nav__btn:focus { 
+  background-color: rgb(77, 156, 148);
+  color: #ffffff;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+}
+
+.nav__btn:disabled { 
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, .08);
+  color: rgba(0, 0, 0, .3);
+};
+  
+  :nth-child(1) {
+    margin-left: 20px;
+  }
+
+
+/* 
+    hero - video
+*/
+.hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  
+.hero__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* 
+    about - text
+*/
+.about {
+  text-align: justify;
+  font-size: 17px;
+}
+
+/* 
+    donations
+*/
+.donations {
+  text-align: justify;
+  font-size: 17px;
+}
+.donations__button {
+  font-size: 20px;
+}
+
+.btn {
+  color: #fff;
+  background-color: #b99e23;
+  border-radius: 10px;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.open .dropdown-toggle.btn {
+  color: #fff;
+  background-color:rgb(168, 78, 50);
+}
+
+/* 
+    live - counter
+*/
+.info__bubbles {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info__bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.info__bubble > * + * {
+  margin-top: 10px;
+}
+
+.info__blob {
+  width: 425px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgb(129, 172, 168);
+  border-radius: 20px;
+  color: white;
+  font-size: 20px;
+}
+
+.info__img {
+  width: 425px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
+
+button { margin: 20px;}
+
+/* 
+    hero - image
+*/
+.hero {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero__image {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+/*
+  login/signup
+*/
+.box {
+  background: rgba(61, 85, 82, 0.616);
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  z-index: 1;
+}
+
+.box button {
+  text-transform: uppercase;
+  outline: 0;
+  background:rgb(129, 172, 168);
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 17px;
+}
+
+.box button:hover,.box button:active,.box button:focus {
+  background: rgb(77, 156, 148);
+}
+
+/*
+  login page
+*/
+.login-form {
+  position: relative;
+  background:rgba(61, 85, 82, 0.616); 
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  z-index: 1;
+}
+
+.login-form input {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 17px;
+}
+
+.login-form button {
+  text-transform: uppercase;
+  outline: 0;
+  background:rgb(129, 172, 168);
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 17px;
+}
+
+.login-form button:hover,.login-form button:active,.login-form button:focus {
+  background: rgb(77, 156, 148);
+}
+
+/*
+  signup page
+*/
+.signup-form {
+  position: relative;
+  background: rgba(61, 85, 82, 0.616);
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  z-index: 1;
+}
+
+.signup-form input {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 17px;
+}
+
+.signup-form button {
+  text-transform: uppercase;
+  outline: 0;
+  background:rgb(129, 172, 168);
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 17px;
+}
+
+.signup-form button:hover,.signup-form button:active,.signup-form button:focus {
+  background: rgb(77, 156, 148);
+}
+
+
+.admin-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-container {
+  flex-grow: 1; 
+  padding-top: 70px;
+  margin-top: 50px;
+  padding-left: 40px;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+.infoblock {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid rgb(77, 156, 148); 
+  border-radius: 5px; 
+  margin: auto;
+}
+
+.input-group-text {
+  width: 110px;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+} 
+
+.input-section {
+  margin-bottom: 10px;
+}

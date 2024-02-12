@@ -1,4 +1,12 @@
-from flask import jsonify, url_for
+from flask import jsonify, url_for, abort
+import hashlib
+from functools import wraps
+from flask_jwt_extended import jwt_required
+
+
+from flask_jwt_extended import current_user, get_jwt_identity, jwt_required
+
+from api.models import User
 
 class APIException(Exception):
     status_code = 400
@@ -39,3 +47,24 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+def get_hash(string):
+    return hashlib.sha256(bytes(string, 'utf-8')).hexdigest()
+
+
+def admin_required(f):
+    @wraps(f)
+    @jwt_required()
+    def decorated_function(*args, **kwargs):
+        identity = get_jwt_identity()
+        print(f"Identity: {identity}") 
+        if 'level' in identity:
+            print(f"Level: {identity['level']}") 
+            if identity['level'] >= 3:
+                return f(*args, **kwargs)
+            else:
+                print("Access denied due to insufficient level") 
+        else:
+            print("No level found in identity") 
+        abort(403)
+    return decorated_function

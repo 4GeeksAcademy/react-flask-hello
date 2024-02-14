@@ -1,28 +1,40 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import EventSingle from "../component/EventSingle";
+import PopularEventsTwo from "../sections/PopularEventsTwo";
 
-export const Single = props => {
-	const { store, actions } = useContext(Context);
-	const params = useParams();
+const Single = () => {
+    const { store, actions } = useContext(Context);
+    const params = useParams();
+    const [event, setEvent] = useState(null);
 
-	return (
-		<div className="jumbotron">
-			<h1 className="display-4">This will show the demo element: {store.demo[params.theid].title}</h1>
-			<img src={rigoImageUrl} />
-			<hr className="my-4" />
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const eventData = await actions.fetchEvent(params.id);
+                setEvent(eventData);
+            } catch (error) {
+                console.error("Error fetching event data:", error);
+            }
+        };
 
-			<Link to="/">
-				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Back home
-				</span>
-			</Link>
-		</div>
-	);
+        fetchData();
+    }, [actions, params.id]);
+
+    return (
+        <div>
+            <div className="container-full black-background">
+                {event && <EventSingle event={event} />}
+            </div>
+            <PopularEventsTwo />
+        </div>
+    );
 };
 
 Single.propTypes = {
-	match: PropTypes.object
+    match: PropTypes.object
 };
+
+export default Single;

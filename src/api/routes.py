@@ -11,7 +11,10 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
+# 
+# Aquí haremos la rutas de backend
+# IMPORTANTE siempre poner api.route en los endpoints 
+# 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 

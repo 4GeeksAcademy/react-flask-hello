@@ -1,3 +1,7 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.background-img {
+    opacity: 70%;
+    padding: 20px 20px 20px 20px;
+}

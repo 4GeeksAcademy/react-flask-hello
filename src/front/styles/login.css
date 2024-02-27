@@ -1,0 +1,32 @@
+form{
+    width: 40%;
+    margin: 0 auto;
+    background-color: #F7F0F0;
+    padding: 20px 40px;
+    margin-top: 20px;
+}
+
+div{
+    padding: 10px 0;
+}
+
+label, p{
+    color: #718096;
+}
+
+input[type=text]{
+    border-radius: 12px !important;
+}
+
+input[type=checkbox]{
+    margin-right: 10px;
+}
+
+a{
+    color: #1C4532;
+}
+
+a.forgotPassword{
+    margin-left: 40%;
+    text-align: right;
+}

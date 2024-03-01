@@ -31,6 +31,9 @@ It is recomended to install the backend first, make sure you have Python 3.8, Pi
 
 > Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
 
+> IMPORTANT NOTE : CUANDO SE INICIA REPO CODESPACE NUEVO EJECUTAR ESTE COMANDO EN CONSOLA PARA QUE RESETEE LAS TABLAS, SINO DARÁ ERROR:
+    rm -R -f ./migrations && pipenv run init && dropdb -h localhost -U gitpod example || true && createdb -h localhost -U gitpod example || true && psql -h localhost example -U gitpod -c 'CREATE EXTENSION unaccent;' || true && pipenv run migrate && pipenv run upgrade
+
 ### Undo a migration
 
 You are also able to undo a migration by running

@@ -5,3 +5,29 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+
+body {
+    margin: 0;
+
+  }
+  
+  #imagenFija {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Ancho del viewport */
+    height: 100vh; /* Altura del viewport */
+    object-fit: cover; /* Ajusta la imagen al contenedor sin perder la proporción y cubriendo completamente */
+  }
+
+
+  @media (max-width: 768px) {
+    #imagenClases {
+      margin-top: 100px; /* Ajusta la altura según sea necesario para evitar el navbar */
+    }
+  }
+
+/* #navbar{
+  background-color:steelblue;
+} */
+  

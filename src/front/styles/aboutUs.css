@@ -1,0 +1,16 @@
+.stylebackgroundsquare {
+    background-color: #675200;
+    width: 48rem;
+    background-repeat: no-repeat;
+
+    opacity: 0.6; 
+  }
+
+  .span {
+    z-index: 1;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  .fontaboutus {
+    color:#675200;
+  }

@@ -5,19 +5,42 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
 
-# from models import Person
+from flask_mail import Mail #IMPORTAR LA FUNCION Mail() de flask_mail
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
 app.url_map.strict_slashes = False
+# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False  # Desactivar expiración de tokens
+
+#INICIO CONFIGURACIÓN EMAIL
+mail_settings = {
+    "MAIL_SERVER": 'sandbox.smtp.mailtrap.io',
+    "MAIL_PORT":  2525,
+    "MAIL_USE_TLS": True,
+    "MAIL_USE_SSL": False,
+    "MAIL_USERNAME":  '6dbc93e3e01832',
+    "MAIL_PASSWORD": '7fb6edfc8e48e2', 
+    "MAIL_DEFAULT_SENDER": 'info.neverhobbyalone@gmail.com'
+}
+
+app.config.update(mail_settings)
+mail = Mail(app)
+#agregan mail a la app y se va llamar en routes.py como current_app
+app.mail= mail
+#FIN CONFIGURACION EMAIL
+
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -30,6 +53,9 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+# Allow CORS requests to this API
+CORS(app)
 
 # add the admin
 setup_admin(app)

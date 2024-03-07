@@ -1,3 +1,66 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+/* FONDOS */
+.bg-100 {
+    background-color: #FFFBF5;
+}
+.bg-200{
+    background-color: #F7EFE5;
+}
+.bg-300 {
+    background-color: #D7A8EB;
+}
+.bg-400 {
+    background-color: #B50DFD;
+}   
+
+/* BOTONES */
+.btn-300 {
+    background-color: #D7A8EB;
+    border-color: #D7A8EB;
+    color: #FFFBF5;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 0 #c689e0;
+    -webkit-transition: ease-out 0.8s;
+    -moz-transition: ease-out 0.8s;
+    transition: ease-out 0.8s;
+}
+
+.to-be-hoved:hover {
+    box-shadow: inset 400px 0 0 0 #B50DFD;
+}
+
+.btn-400 {
+    background-color: #B50DFD;
+    border-color: #B50DFD;
+    color: #F7EFE5;
+    text-decoration: none;
+}
+.nav-tabs > .nav-item > .nav-link {
+    
+    background-color: #D7A8EB;
+    border-color: #D7A8EB;
+    color: #F7EFE5;
+    text-decoration: none;
+}
+.nav-tabs > .nav-item > .active {
+    background-color: #B50DFD;
+    border-color: #B50DFD;
+    color: #FFFBF5;
+    text-decoration: none;
+}
+
+/* ICONOS */
+.icono-400 {
+    color: #B50DFD;
+}
+.icono-300 {
+    color: #D7A8EB;
+}
+
+.rounded-circle{
+    height: 15rem;
+    width: 15rem;
+}
+
+.carousel-indicators {
+    display: none;
+}

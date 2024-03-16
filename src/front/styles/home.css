@@ -5,3 +5,53 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+
+
+
+body{
+    background-color: #DFDCD3;
+}
+
+h2{
+    font-family: "Montserrat";
+    font-weight: 600;
+    color: #79736A;
+
+}
+
+img.card-img-top{
+    height: 300px !important;
+}
+
+.btn-success{
+    background-color: #79736A !important;
+    width: 100%;
+    margin-right: 5px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Columnas flexibles */
+    grid-gap: 20px; /* Espacio entre las columnas */
+  }
+  
+  .grid-container .row {
+    display: flex;
+  }
+  
+ 
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-2 {
+    flex: 1 0 200px; /* Establece un tamaño base de 200px para cada columna */
+    margin-bottom: 20px; /* Espacio entre las columnas */
+  }
+  
+  .card {
+    height: 100%; /* Ajusta la altura de la tarjeta al 100% del contenedor */
+  }  

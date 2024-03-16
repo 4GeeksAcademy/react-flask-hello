@@ -1,0 +1,38 @@
+@media (max-width: 767.98px) {
+    .navbar-brand, .navbar-nav .nav-link {
+      font-size: 14px;
+    }
+  }
+  
+  .container-fluid {
+    background-color: #DFDCD3 !important;
+    padding: 3%;
+  }
+  
+  .login-signup-btn {
+    padding: 0.375rem 0.75rem;
+    max-width: 100px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    height: 40px;
+    padding: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .custom-dropdown-toggle .dropdown-toggle {
+    background-color: #6b5936; 
+    color: white;
+    border-radius: 50px; 
+    width: 100%;
+    max-width: max-content;
+    min-width: max-content;
+    padding: 0.375rem 5rem;
+  }
+    
+  .custom-dropdown-toggle .dropdown-toggle:hover {
+    background-color: #cbb233; 
+  }
+  

@@ -1,0 +1,54 @@
+.d-flex {
+    background-color: transparent !important;
+    padding: 0%;
+    width: auto;
+    max-width: none;
+    min-width: none;
+}
+
+.searchbar {
+    margin-right: 1rem;
+    width: 100%;
+    max-width: 900px;
+    min-width: 500px;
+    padding: 0%;
+
+  }
+
+  /*pantalla grande*/
+  @media (max-width: 768px) {
+    .searchbar {
+        max-width: 600px;
+        min-width: 200px;
+    }
+}
+
+/*pantalla chica*/
+@media (max-width: 576px) {
+    .searchbar {
+        max-width: 100%;
+        min-width: 100px;
+        margin-right: 0.5rem;
+    }
+}
+
+.btn-primary, .btn-secondary{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.search-bar-container {
+    position: relative;
+}
+
+#collapseSearchResults {
+    background-color: white;
+    box-shadow: 0px;
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    z-index: 1000; 
+  }
+  
+

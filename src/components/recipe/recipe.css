@@ -1,0 +1,86 @@
+.recipe-container {
+  padding: 20px;
+  background-color: #f4f4f2; /* neutral beige */
+}
+
+.recipe-content {
+  padding: 40px 0;
+}
+
+.recipe-heading {
+  font-size: 2.5rem;
+  color: #4d834e; /* muted green */
+}
+
+.recipe-description {
+  font-size: 1.1rem;
+  color: #6c757d; /* neutral gray */
+}
+
+.recipe-features {
+  margin-top: 40px;
+}
+
+.feature-heading {
+  font-size: 1.5rem;
+  color: #4d834e; /* muted green */
+}
+
+.feature-description {
+  font-size: 1.1rem;
+  color: #6c757d; /* neutral gray */
+}
+
+.upgrade-section {
+  margin-top: 40px;
+}
+
+.upgrade-heading {
+  font-size: 1.5rem;
+  color: #4d834e; /* muted green */
+}
+
+.recipes-section {
+  margin-top: 40px;
+}
+
+.recipes-heading {
+  font-size: 1.8rem;
+  color: #4d834e; /* muted green */
+}
+
+.whats-hot-heading {
+  font-size: 1.2rem;
+  color: #6c757d; /* neutral gray */
+}
+
+.bg-image {
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+  height: 50vh;
+}
+
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  min-height: 80vh;
+}
+
+.card {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Semi-transparent background for recipe of the day */
+}
+
+.recipe-card {
+  background-color: #eeeeee;
+}
+
+.hero-section h1 {
+  color: #ffffff; /* Adjust text color as needed */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

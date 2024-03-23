@@ -1,0 +1,21 @@
+.bottle {
+  background: white;
+  height: 300px;
+  width: 200px;
+  border: 1px solid black;
+}
+.top {
+  height: 33%;
+  width: 100%;
+}
+.middle {
+  height: 33%;
+  width: 100%;
+}
+.bottom {
+  height: 33%;
+  width: 100%;
+}
+.active {
+  background: blue;
+}

@@ -1,0 +1,15 @@
+#whole-wheat-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #bac686;
+}
+
+a {
+  color: #3b4a40;
+}
+
+.nav-link {
+  color: #3b4a40;
+}

@@ -1,0 +1,62 @@
+@media (max-width: 767.98px) {
+    .navbar-brand, .navbar-nav .nav-link {
+      font-size: 14px;
+    }
+  }
+  
+  .container-fluid {
+    background-color: #E8E2D2 !important;
+  }
+  
+  .login-signup-btn {
+    padding: 0.375rem 0.75rem;
+    max-width: 100px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    height: 40px;
+    padding: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .custom-dropdown-toggle .dropdown-toggle {
+    background-color: #E8E2D2; 
+    color: black !important;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 50px; 
+    width: 100%;
+    max-width: max-content;
+    min-width: max-content;
+    padding: 0.375rem 5rem;
+  }
+    
+  .custom-dropdown-toggle .dropdown-toggle:hover {
+    background-color: #e0c020; 
+  }
+  
+.hoverEffect:hover{
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.dropdown-toggle:focus, .dropdown-toggle:active {
+  outline: none !important;
+  border: none;
+  box-shadow: none;
+}
+
+.profile-image-oval {
+  width: 60px;
+  height: 60px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%; 
+  cursor: pointer;
+  display: inline-block;
+  border: 2px solid white; 
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  background-color: white; 
+}

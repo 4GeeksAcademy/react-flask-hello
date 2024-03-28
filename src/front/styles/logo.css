@@ -1,0 +1,13 @@
+.logo-wrap {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  .logo-image {
+    width: 100px; 
+    height: auto; 
+    max-width: 100%; 
+    object-fit: contain; 
+  }
+  

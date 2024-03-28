@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import getState from "./flux.js";
 
+// Importa el componente FavoritesProvider y FavoritesPage
+import { FavoritesProvider, FavoritesPage } from "../pages/favorites";
+
 // Don't change, here is where we initialize our context, by default it's just going to be null.
 export const Context = React.createContext(null);
 
@@ -28,7 +31,7 @@ const injectContext = PassedComponent => {
 			 * you should do your ajax requests or fetch api requests here. Do not use setState() to save data in the
 			 * store, instead use actions, like this:
 			 **/
-			state.actions.getMessage(); // <---- calling this function from the flux.js actions
+			state.actions.loadSession(); // <---- calling this function from the flux.js actions
 		}, []);
 
 		// The initial value for the context is not null anymore, but the current state of this component,
@@ -36,7 +39,9 @@ const injectContext = PassedComponent => {
 		// on the state of this component
 		return (
 			<Context.Provider value={state}>
-				<PassedComponent {...props} />
+				
+				{/* Envuelve el componente PassedComponent con el componente FavoritesProvider */}
+					<PassedComponent {...props} />
 			</Context.Provider>
 		);
 	};

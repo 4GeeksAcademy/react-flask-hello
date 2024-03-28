@@ -1,7 +1,90 @@
-/*
-    home.css: This website contains selectors only used in home.css
+body {
+  background-color: #DFDCD3;
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+h2 {
+  font-family: "Montserrat";
+  font-weight: 600;
+  color: #79736A;
+}
+
+img.card-img-top {
+  height: auto;
+  max-height: 300px;
+  width: 100%;
+}
+
+.btn-success {
+  background-color: #79736A !important;
+  width: 100%;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.grid-container .row,
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.card {
+  height: auto;
+}
+
+button:focus {
+  outline: none;
+}
+
+.button favorite-button {
+  outline: none;
+}
+
+@keyframes clickEffect {
+  0% {
+    box-shadow: 0 0 0 0 blue;
+  }
+  100% {
+    box-shadow: 0 0 0 2px blue;
+    border-color: blue;
+  }
+}
+
+/*pantalla grande*/
+@media (max-width: 768px) {
+  .col-2, .col {
+      flex: 0 0 100%;
+      max-width: 100%;
+  }
+}
+
+/*pantalla chica*/
+@media (max-width: 576px) {
+  .searchbar {
+      max-width: 100%;
+      min-width: 100px;
+      margin-right: 0.5rem;
+  }
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  box-shadow: 2px 2px 5px #b5bda1; 
+  padding: 0 !important;
+  background-color: #b5bda1 !important;
+  width: 4% !important;
+  font-weight: bold; 
+}
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 0.9 !important;
+  background-color: #b5bda1 !important;
+  box-shadow: 2px 2px 5px #b5bda1 !important; 
+
+}
+
+.carousel-control-next {
+  right: -4% !important;
+}
+.carousel-control-prev {
+  left: -4% !important;
+}

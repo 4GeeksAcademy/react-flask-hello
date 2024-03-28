@@ -1,0 +1,28 @@
+form {
+    width: 40%;
+    margin: 0 auto;
+    background-color: #F7F0F0;
+    padding: 20px 40px;
+}
+
+label, p {
+    color: #718096;
+}
+
+input[type=checkbox] {
+    margin-right: 10px;
+}
+
+a {
+    color: #1C4532;
+}
+
+a.forgotPassword {
+    margin-left: 40%;
+    text-align: right;
+}
+
+/* Estilos para inputs con errores */
+.form-control.error {
+    border-color: red;
+}

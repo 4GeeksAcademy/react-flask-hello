@@ -1,0 +1,30 @@
+.advertisements-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #faf8f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.advertisements-title {
+    color: #5d4524;
+    font-family: 'Libre Baskerville', serif;
+    margin-bottom: 1rem;
+}
+
+.advertisements-intro, .for-readers p, .join-us p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #5d4524;
+    margin-bottom: 2rem;
+}
+
+/* Repetir el mismo patrón para los demás selectores, asegurando la coherencia estilística */
+
+@media (max-width: 768px) {
+    .advertisements-container {
+        padding: 1rem;
+    }
+    /* Ajustes para pantallas pequeñas */
+}

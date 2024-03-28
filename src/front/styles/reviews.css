@@ -1,0 +1,21 @@
+form.comentarios{
+    width: 100%
+}
+
+.btnReviews{
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+button{
+    border: none !important;
+}
+
+.fa-star{
+    font-size: 30px;
+}
+
+.review{
+    padding: 20px;
+    background-color: transparent !important;
+}

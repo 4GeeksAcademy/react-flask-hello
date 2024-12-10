@@ -5,3 +5,32 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.adlam-display-regular {
+    font-family: "ADLaM Display";
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .nunito {
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+  
+
+body {
+    background-image: url('/workspaces/Rosas-Alonso-Rodriguez-Acu-a-y-Chaves-Proyecto-final/src/front/img/banner.PNG');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+.btnStart{
+  background-color: darkblue;
+}
+.bg-success {
+  --bs-bg-opacity: 0.2;
+  background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+}
+.user-title {
+color: darkblue;
+font-size: 30px;
+}

@@ -10,6 +10,7 @@
     "slug": "react-flask-webapp-template",
     "difficulty": "intermediate",
     "duration": "4",
+    "projectType": "template",
     "repository": "https://github.com/4geeksacademy/react-flask-hello",
     "preview": "https://github.com/4geeksacademy/react-flask-hello/preview.png",
     "video": "https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b",

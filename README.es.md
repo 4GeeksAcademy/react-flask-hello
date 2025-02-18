@@ -72,7 +72,7 @@ Cada entorno de Github Codespace tendrá **su propia base de datos**, por lo que
 
 ## ¡Publica tu sitio web!
 
-Esta plantilla está 100% lista para desplegarse con Render.com y Heroku en cuestión de minutos. Por favor, lee la [documentación oficial al respecto](https://start.4geeksacademy.com/deploy).
+Esta plantilla está 100% lista para desplegarse con Render.com y Heroku en cuestión de minutos. Por favor, lee la [documentación oficial al respecto](https://4geeks.com/docs/start/deploy-to-render-com).
 
 ### Contribuyentes
 

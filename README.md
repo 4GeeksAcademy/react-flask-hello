@@ -2,7 +2,11 @@
 
 Build web applications using React.js for the front end and python/flask for your backend API.
 
+<<<<<<< HEAD
 - Documentation can be found here: https://4geeks.com/docs/start/react-flask-template
+=======
+- Documentation can be found here: https://start.4geeksacademy.com/start/react-flask
+>>>>>>> 43c6782 (Update README.md)
 - Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
 - Integrated with Pipenv for package managing.
 - Fast deployment to Render [in just a few steps here](https://4geeks.com/docs/start/deploy-to-render-com).

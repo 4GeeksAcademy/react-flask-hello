@@ -2,7 +2,7 @@
 
 Construye aplicaciones web usando React.js para el front end y python/flask para tu API backend.
 
-- La documentación se puede encontrar aquí: https://start.4geeksacademy.com/start/react-flask
+- La documentación se puede encontrar aquí: https://start.4geeksacademy.com/start/react-flask-template
 - Aquí hay un video sobre [cómo usar esta plantilla](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
 - Integrado con Pipenv para la gestión de paquetes.
 - Despliegue rápido a Render [en solo unos pocos pasos aquí](https://4geeks.com/es/docs/start/despliega-con-render-com).

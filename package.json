@@ -1,7 +1,7 @@
 {
 	"name": "react-hello-webapp",
 	"engines": {
-		"node": "16.x"
+		"node": ">=20.0.0"
 	},
 	"version": "1.0.1",
 	"description": "",

@@ -7,7 +7,6 @@ import { StoreProvider } from './hooks/useGlobalReducer';  // Import the StorePr
 import { BackendURL } from './components/BackendURL';
 
 const Main = () => {
-    console.log(import.meta.env.VITE_BACKEND_URL);
     
     if(! import.meta.env.VITE_BACKEND_URL ||  import.meta.env.VITE_BACKEND_URL == "") return (
         <React.StrictMode>

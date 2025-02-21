@@ -18,6 +18,12 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+    case 'set_hello':
+      return {
+        ...store,
+        hello: action.payload
+      };
+      
     case 'add_task':
 
       const { id,  color } = action.payload

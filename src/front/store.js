@@ -21,7 +21,7 @@ export default function storeReducer(store, action = {}) {
     case 'set_hello':
       return {
         ...store,
-        hello: action.payload
+        message: action.payload
       };
       
     case 'add_task':

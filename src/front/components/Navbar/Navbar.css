@@ -1,0 +1,143 @@
+.navbar {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    border-bottom: 1px solid #00ffff;
+    box-shadow: 0 2px 10px rgba(0, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.active {
+    background-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.navbar-brand,
+.nav-link {
+    color: #ffeb3b !important;
+
+}
+
+.dropdown-toggle {
+    background: #000000;
+    border: 1px solid #00ffff;
+    color: #ffeb3b;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.dropdown-toggle:hover {
+
+    background-color: rgba(0, 13, 26, 0.9);
+    border: 1px solid #00ffff;
+}
+
+
+.dropdown-menu {
+    background-color: rgba(0, 13, 26, 0.9);
+    border: 1px solid #00ffff;
+}
+
+.dropdown-item {
+    display: flex;
+    color: #ffffff;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    width: 95%;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 255, 255, 0.2);
+    color: #00ffff;
+}
+
+.btn-outline-success {
+    color: #00ffff;
+    border-color: #00ffff;
+}
+
+.btn-outline-success:hover {
+    background-color: #00ffff;
+    color: #000;
+}
+
+.starwarsLogo {
+    background: #000000;
+    border: 1px solid #00ffff;
+    color: #ffffff;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.starwarsLogo:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    color: #ffeb3b;
+    background: #000000;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #020202;
+}
+
+.slide-in-element {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.4s ease-out;
+    will-change: transform, opacity;
+}
+
+.slide-in-element.visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.slide-out-element {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.6s ease-in, opacity 0.5s ease-in;
+    will-change: transform, opacity;
+}
+
+.slide-delay-1 {
+    transition-delay: 0.1s;
+}
+
+.slide-delay-2 {
+    transition-delay: 0.2s;
+}
+
+.slide-delay-3 {
+    transition-delay: 0.3s;
+}
+
+.search-container {
+    overflow: hidden;
+}

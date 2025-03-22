@@ -1,0 +1,44 @@
+.categories {
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px;
+}
+
+.category-btn {
+    position: absolute;
+    background: #1b263b;
+    border: 1px solid #00ffff;
+    color: #ffffff;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    text-decoration: none;
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+.category-btn:hover {
+    background: #00ffff;
+    color: #000;
+    transform: scale(1.2);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

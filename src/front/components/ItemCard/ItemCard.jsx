@@ -61,7 +61,7 @@ export const ItemCard = () => {
                             <div>
                                 {clases !== "users" && (
                                     <Link
-                                        to={`/${clases}/${item.uid || item.id}`}
+                                        to={`/${clases}/${item.id || item.id}`}
                                         className="btn btn-light text-dark py-2 px-4 mt-auto"
                                     >
                                         See more...

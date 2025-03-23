@@ -1,38 +1,61 @@
-export const initialStore=()=>{
-  return{
-    message: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
-  }
+export const initialStore = () => {
+	return {
+		categories: [],
+		items: [],
+		selectedCategory: null,
+		properties: [],
+		favorites: [],
+	}
 }
 
 export default function storeReducer(store, action = {}) {
-  switch(action.type){
-    case 'set_hello':
-      return {
-        ...store,
-        message: action.payload
-      };
-      
-    case 'add_task':
+	switch (action.type) {
 
-      const { id,  color } = action.payload
+		case 'set_categories':
 
-      return {
-        ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
-      };
-    default:
-      throw Error('Unknown action.');
-  }    
+			return {
+				...store,
+				categories: action.payload
+			}
+
+		case 'set_items':
+
+			return {
+				...store,
+				items: action.payload
+
+			}
+
+		case 'set_properties':
+
+			return {
+				...store,
+				properties: action.payload
+			}
+
+		case 'set_selected_category': 
+		
+			return {
+				...store,
+				selectedCategory: action.payload
+			}
+
+
+		case 'add_favorites':
+
+			return {
+				...store,
+				favorites: [...store.favorites, action.payload]
+			}
+
+		case 'delete_favorites':
+
+			return {
+				...store,
+				favorites: store.favorites.filter(fav => !(fav.id === action.payload.id && fav.category === action.payload.category))
+			}
+
+		default:
+			throw Error('Unknown action.');
+	}
 }

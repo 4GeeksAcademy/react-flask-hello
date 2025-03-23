@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+    background: radial-gradient(circle at center, #000d1a, #000000);
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden; 
+    min-height: 100vh;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}

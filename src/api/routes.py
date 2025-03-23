@@ -14,10 +14,6 @@ from .models import db, User, Planet, Specie, Vehicle, Starship, Person
 
 api = Blueprint('api', __name__)
 
-@api.route('/')
-def sitemap():
-    return generate_sitemap(api)
-
 
 def get_all_user_favorites(user_id):
 
@@ -50,6 +46,10 @@ def get_all_user_favorites(user_id):
     return {
         "All my favorites": favorites_by_type
     }
+
+@api.route('/')
+def sitemap():
+    return generate_sitemap(api)
 
 # -------------------------------- ENDPOINTS DEL LOGIN ----------------------------- #
     

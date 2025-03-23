@@ -1,0 +1,82 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: "Star Jedi", sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffe81f;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ffe81f;
+  text-align: center;
+  width: 350px;
+}
+
+.login-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffe81f;
+}
+
+.login-error {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.login-input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.login-input-group label {
+  display: block;
+  font-size: 14px;
+  color: #ffe81f;
+}
+
+.login-input-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffe81f;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #ffd700;
+}
+
+.login-footer {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-footer a {
+  color: #ffe81f;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}

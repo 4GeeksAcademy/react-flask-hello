@@ -5,11 +5,37 @@ export const initialStore = () => {
 		selectedCategory: null,
 		properties: [],
 		favorites: [],
+		token: [localStorage.getItem("token")],
+		user: [localStorage.getItem("user")]
 	}
 }
 
 export default function storeReducer(store, action = {}) {
 	switch (action.type) {
+
+		case 'login':
+
+			localStorage.setItem("token", action.payload.token);
+			localStorage.setItem("user", JSON.stringify(action.payload.user));
+	  
+			return {
+			  ...store,
+			  token: action.payload.token,
+			  user: action.payload.user,
+			  error: null,
+			};
+
+			case "logout":
+				// 🟢 Eliminar de localStorage
+				localStorage.removeItem("token");
+				localStorage.removeItem("user");
+		  
+				return {
+				  ...store,
+				  token: null,
+				  user: null,
+				  notes: [],
+				};
 
 		case 'set_categories':
 

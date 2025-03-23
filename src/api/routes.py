@@ -59,15 +59,15 @@ def create_token():
 
     body = request.get_json()
 
-    required_fields = ['email', 'password']
+    required_fields = ['username', 'password']
     for field in required_fields:
         if field not in body:
             return jsonify({"Error": f"the field is required"}), 400
         
-    user = User.query.filter_by(email=body['email']).first()
+    user = User.query.filter_by(username=body['username']).first()
     
     if not user or not user.check_password(body['password']):
-        return jsonify({"error": "credencial incorrecta"}), 401
+        return jsonify({"error": "incorrect credential"}), 401
     
     access_token = create_access_token(identity=str(user.id))
 

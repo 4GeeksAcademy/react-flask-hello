@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Signup.css"; 
 
 export const Signup = () => {
+
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -26,7 +27,9 @@ export const Signup = () => {
         setIsLoading(true);
 
         try {
+
             const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+
             const response = await fetch(`${backendUrl}/api/users`, {
                 method: "POST",
                 headers: {
@@ -37,12 +40,12 @@ export const Signup = () => {
                     firstname,
                     lastname,
                     email,
-                    password
+                    password,
                 }),
             });
 
             const data = await response.json();
-
+            console.log(data)
             if (!response.ok) {
                 throw new Error(data.error || "Error registering");
             }

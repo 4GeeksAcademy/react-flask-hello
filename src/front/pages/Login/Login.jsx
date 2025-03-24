@@ -72,7 +72,7 @@ export const Login = () => {
                     </div>
 
                     <button type="submit" className="login-button" disabled={isLoading}>
-                        {isLoading ? "Loading..." : "Sign In"}
+                        {isLoading ? "Loading..." : <Link className="signup" to="/home">Sign Up</Link>}
                     </button>
                 </form>
 

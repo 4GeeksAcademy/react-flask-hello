@@ -56,7 +56,7 @@ export const ItemCard = () => {
                         <img src="https://i.etsystatic.com/16415580/r/il/666b48/1448818941/il_570xN.1448818941_qhdv.jpg" />
                         <div className="card-body d-flex flex-column align-items-center">
                             <h5 className="card-title text-center mb-3">
-                                {clases === "users" ? item.username || item.name : item.name}
+                                {clases === "users" ? item.username : item.name}
                             </h5>
                             <div>
                                 {clases !== "users" && (

@@ -2,17 +2,16 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask_migrate import Migrate
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
-from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models import PlanetFavorite, SpecieFavorite, VehicleFavorite, StarshipFavorite, PersonFavorite
 from .models import db, User, Planet, Specie, Vehicle, Starship, Person
 
 
 api = Blueprint('api', __name__)
+
 
 
 def get_all_user_favorites(user_id):
@@ -73,7 +72,7 @@ def create_token():
 
     return jsonify({
         "access_token": access_token,
-        "user": user.serialize()
+        "user": user.serialize_user()
     }), 200
 
 
@@ -102,6 +101,7 @@ def get_user(user_id):
 def create_user():
 
     data = request.get_json()
+
     if not data:
         return jsonify({"Error": "data not found"}), 400
 
@@ -118,16 +118,19 @@ def create_user():
     if existing_email:
         return jsonify({"Error": "the email is already in use"}), 400
 
-    new_user = User(
-        username=data['username'],
-        email=data['email'],
-        password=data['password'],
-        firstname=data.get('firstname', ''),
-        lastname=data.get('lastname', '')
-    )
-
     
     try:
+        
+        new_user = User(
+            username=data['username'],
+            email=data['email'],
+            password=data['password'],
+            firstname=data.get('firstname', ''),
+            lastname=data.get('lastname', ''),
+            is_active=data.get('is_active')
+        )
+
+    
         db.session.add(new_user)
         db.session.commit()
         return jsonify(new_user.serialize_user()), 201

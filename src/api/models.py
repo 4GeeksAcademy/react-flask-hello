@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Column, Integer, Float, ForeignKey
+from sqlalchemy import String, Column, Integer, Float, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 db = SQLAlchemy()
 
@@ -15,6 +17,7 @@ class User(db.Model):
     lastname = Column(String(50))
     email = Column(String(50), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
+    is_active = Column(Boolean(), default=True)
 
     planet_favorites = relationship("PlanetFavorite", back_populates="user", cascade="all, delete-orphan")
     specie_favorites = relationship("SpecieFavorite", back_populates="user", cascade="all, delete-orphan")
@@ -22,14 +25,31 @@ class User(db.Model):
     starship_favorites = relationship("StarshipFavorite", back_populates="user", cascade="all, delete-orphan")
     person_favorites = relationship("PersonFavorite", back_populates="user", cascade="all, delete-orphan")
 
+    def __init__(self, username, password, firstname, lastname, email, is_active ):
+        self.username = username
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.set_password(password)
+        self.is_active = is_active
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+    
     def serialize_user(self):
         return {
             "id": self.id,
             "username": self.username,
             "firstname": self.firstname,
             "lastname": self.lastname,
-            "email": self.email
+            "email": self.email,
+            "is_active": self.is_active,
+            "password": self.password
         }
+    
 
 
 class Planet(db.Model):

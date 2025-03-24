@@ -16,11 +16,11 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
 
     <Route path="/" element={ <Layout /> } errorElement={ <h1>Not found!</h1> } >
-      <Route index element={ <Home /> } />
+      <Route path="/home" element={ <Home /> } />
       <Route path="/:clases" element={ <Category /> }/>
       <Route path="/:clases/:id" element={ <ItemDescription/> }/>
       <Route path="/signup" element={ <Signup /> }/>
-      <Route path="/login" element={ <Login /> }/>
+      <Route index element={ <Login /> }/>
     </Route>
   )
 );

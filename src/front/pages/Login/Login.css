@@ -80,3 +80,8 @@ body {
 .login-footer a:hover {
   text-decoration: underline;
 }
+
+.signup {
+  text-decoration: none;
+  color: black;
+}

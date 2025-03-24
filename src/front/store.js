@@ -5,8 +5,8 @@ export const initialStore = () => {
 		selectedCategory: null,
 		properties: [],
 		favorites: [],
-		token: [localStorage.getItem("token")],
-		user: [localStorage.getItem("user")]
+		token: localStorage.getItem("token"),
+		user: localStorage.getItem("user")
 	}
 }
 

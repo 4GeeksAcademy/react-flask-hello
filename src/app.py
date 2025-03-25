@@ -1,33 +1,22 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 import os
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
-
+from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 import datetime
-from flask_cors import CORS
 from api.seed_data import seed_database
 
-
-app = Flask(__name__)
-app.url_map.strict_slashes = False
-
-CORS(app, origin="*",
-     allow_headers=["Content-Type", "Authorization"],
-     expose_headers=["Content-Type", "Authorization"],
-     supports_credentials=True)
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
-
+app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -59,7 +48,7 @@ app.register_blueprint(api, url_prefix='/api')
 
 
 app.config["JWT_SECRET_KEY"] = "tu-clave-secreta"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=2)
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"

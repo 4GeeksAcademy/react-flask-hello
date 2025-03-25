@@ -1,87 +1,110 @@
 export const initialStore = () => {
-	return {
-		categories: [],
-		items: [],
-		selectedCategory: null,
-		properties: [],
-		favorites: [],
-		token: localStorage.getItem("token"),
-		user: localStorage.getItem("user")
-	}
-}
+  const token = localStorage.getItem("token");
+  const userStr = localStorage.getItem("user");
+  let user = null;
+
+  if (userStr) {
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
+      console.log("Error parsing user");
+    }
+  }
+
+  return {
+    categories: [],
+    items: [],
+    selectedCategory: null,
+    properties: [],
+    favorites: [],
+    token: token || null,
+    user: user || null,
+    error: null,
+  };
+};
 
 export default function storeReducer(store, action = {}) {
-	switch (action.type) {
+  switch (action.type) {
 
-		case 'login':
+    case "login":
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
 
-			localStorage.setItem("token", action.payload.token);
-			localStorage.setItem("user", JSON.stringify(action.payload.user));
+      return {
+        ...store,
+        token: action.payload.token,
+        user: action.payload.user,
+        error: null,
+      };
+
 	  
-			return {
-			  ...store,
-			  token: action.payload.token,
-			  user: action.payload.user,
-			  error: null,
-			};
+    case "logout":
 
-			case "logout":
-				// 🟢 Eliminar de localStorage
-				localStorage.removeItem("token");
-				localStorage.removeItem("user");
-		  
-				return {
-				  ...store,
-				  token: null,
-				  user: null,
-				  notes: [],
-				};
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
-		case 'set_categories':
+      return {
+        ...store,
+        token: null,
+        user: null,
+		selectedCategory: null
+      };
 
-			return {
-				...store,
-				categories: action.payload
-			}
+    case "set_error":
+      return {
+        ...store,
+        error: action.payload,
+      };
 
-		case 'set_items':
+    case "set_categories":
+      return {
+        ...store,
+        categories: action.payload,
+      };
 
-			return {
-				...store,
-				items: action.payload
+    case "set_items":
+      return {
+        ...store,
+        items: action.payload,
+      };
 
-			}
+    case "set_properties":
+      return {
+        ...store,
+        properties: action.payload,
+      };
 
-		case 'set_properties':
+    case "set_selected_category":
+      return {
+        ...store,
+        selectedCategory: action.payload,
+      };
 
-			return {
-				...store,
-				properties: action.payload
-			}
+    case "add_favorites":
+      return {
+        ...store,
+        favorites: [...store.favorites, action.payload],
+      };
 
-		case 'set_selected_category': 
-		
-			return {
-				...store,
-				selectedCategory: action.payload
-			}
+    case "delete_favorites":
+      return {
+        ...store,
+        favorites: store.favorites.filter(
+          (fav) =>
+            !(
+              fav.id === action.payload.id &&
+              fav.category === action.payload.category
+            )
+        ),
+      };
 
+    case "load_favorites":
+      return {
+        ...store,
+        favorites: action.payload,
+      };
 
-		case 'add_favorites':
-
-			return {
-				...store,
-				favorites: [...store.favorites, action.payload]
-			}
-
-		case 'delete_favorites':
-
-			return {
-				...store,
-				favorites: store.favorites.filter(fav => !(fav.id === action.payload.id && fav.category === action.payload.category))
-			}
-
-		default:
-			throw Error('Unknown action.');
-	}
+    default:
+      throw Error("Unknown action.");
+  }
 }

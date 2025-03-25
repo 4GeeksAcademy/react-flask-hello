@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./Login.css";
 
 
 export const Login = () => {
+
     const navigate = useNavigate();
+    const { store, dispatch } = useGlobalReducer();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +22,7 @@ export const Login = () => {
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-            const response = await fetch(`${backendUrl}api/login`, {
+            const response = await fetch(`${backendUrl}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,11 +32,21 @@ export const Login = () => {
 
             const data = await response.json();
 
+            console.log(data)
+
             if (!response.ok) {
                 throw new Error(data.error || "Login failed");
             }
 
-            navigate("/");
+            dispatch({
+                type: 'login',
+                payload: {
+                    token: data.access_token,
+                    user: data.user
+                }
+            });
+
+            navigate("/home");
 
         } catch (err) {
             setError(err.message || "Login failed");
@@ -71,8 +85,12 @@ export const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="login-button" disabled={isLoading}>
-                        {isLoading ? "Loading..." : <Link className="signup" to="/home">Sign Up</Link>}
+                    <button
+                        type="submit"
+                        className="login-button"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Loading..." : "Sign In"}
                     </button>
                 </form>
 

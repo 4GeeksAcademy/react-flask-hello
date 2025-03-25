@@ -54,12 +54,12 @@ export const Home = () => {
                 return (
                     <Link
                         key={index}
-                        to={`/${category}`}
+                        to={`/${category.name}`}
                         className="category-btn"
                         style={position}
-                        onClick={() => handleCategoryClick(category)}
+                        onClick={() => handleCategoryClick(category.name)}
                     >
-                        {category}
+                        {category.name}
                     </Link>
                 );
             })}

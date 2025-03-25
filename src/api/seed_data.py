@@ -1,7 +1,11 @@
-from api.models import db, Planet, Specie, Vehicle, Starship, Person
+from api.models import db, Planet, Specie, Vehicle, Starship, Person, Category
 
 
 def seed_database():
+
+    if Category.query.count() == 0:
+        print("Adding categories...")
+        add_categories()
 
     if Planet.query.count() == 0:
         print("Adding planets...")
@@ -22,6 +26,32 @@ def seed_database():
     if Person.query.count() == 0:
         print("Adding people...")
         add_people()
+
+        
+
+
+def add_categories():
+
+    categories = [
+        Category(
+            name="planets"
+        ),
+        Category(
+            name="species"
+        ),
+        Category(
+            name="vehicles"
+        ),
+        Category(
+            name="starships"
+        ),
+        Category(
+            name="people"
+        )
+    ]
+
+    db.session.add_all(categories)
+    db.session.commit()
 
 
 def add_planets():

@@ -43,16 +43,17 @@ export const ItemCard = () => {
         }
     };
 
+    const safeItems = Array.isArray(store.items) ? store.items : [];
 
     return (
 
         <ul className="list-unstyled d-flex flex-wrap gap-4 justify-content-center mt-5">
 
-            {(store.items ?? []).map((item, index) => {
+            {safeItems.map((item, index) => {
                 const isFavorite = isInFavorites(item);
 
                 return (
-                    <li key={index} className="card text-white bg-transparent border-0">
+                    <li key={item.id} className="card text-white bg-transparent border-0">
                         <img src="https://i.etsystatic.com/16415580/r/il/666b48/1448818941/il_570xN.1448818941_qhdv.jpg" />
                         <div className="card-body d-flex flex-column align-items-center">
                             <h5 className="card-title text-center mb-3">
@@ -61,7 +62,7 @@ export const ItemCard = () => {
                             <div>
                                 {clases !== "users" && (
                                     <Link
-                                        to={`/${clases}/${item.id || item.id}`}
+                                        to={`/${clases}/${item.id}`}
                                         className="btn btn-light text-dark py-2 px-4 mt-auto"
                                     >
                                         See more...

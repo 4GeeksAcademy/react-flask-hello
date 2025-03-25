@@ -30,7 +30,7 @@ export const Signup = () => {
 
             const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-            const response = await fetch(`${backendUrl}/api/users`, {
+            const response = await fetch(`${backendUrl}/api/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -40,17 +40,19 @@ export const Signup = () => {
                     firstname,
                     lastname,
                     email,
-                    password,
+                    password
                 }),
             });
 
             const data = await response.json();
+
             console.log(data)
+
             if (!response.ok) {
                 throw new Error(data.error || "Error registering");
             }
 
-            navigate("/login");
+            navigate("/");
 
         } catch (err) {
             setError(err.message || "Error registering");

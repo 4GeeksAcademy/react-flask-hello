@@ -16,9 +16,20 @@ export const CardDescription = () => {
         const getItemDescription = async () => {
 
             try {
-                const response = await fetch(
-                    `${API_STARWARS}/${clases}/${id}`
-                )
+
+                const token = store.token;
+
+                if (!token) {
+                    throw new Error("No authentication token found");
+                }
+
+                const response = await fetch(`${API_STARWARS}/${clases}/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    }
+                });
 
                 if (!response.ok) {
                     throw new Error("We can't get the ID")

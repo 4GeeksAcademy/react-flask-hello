@@ -8,7 +8,7 @@ import { API_STARWARS } from "./Home/Home";
 
 export const Category = () => {
 
-    const { dispatch } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const { clases } = useParams();
     const [loading, setloading] = useState(true)
 
@@ -17,7 +17,21 @@ export const Category = () => {
         const fetchItems = async () => {
             setloading(true); 
             try {
-                const response = await fetch(`${API_STARWARS}/${clases}`);
+
+                const token = store.token;
+
+                if (!token) {
+                    throw new Error("No authentication token found");
+                }
+
+                const response = await fetch(`${API_STARWARS}/${clases}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    }
+                });
+                
                 if (!response.ok) {
                     throw new Error("Failed to fetch items");
                 }
@@ -32,7 +46,7 @@ export const Category = () => {
         };
     
         fetchItems();
-    }, [clases, dispatch]);
+    }, [clases, dispatch, store.token]);
 
 
     useEffect(() => {

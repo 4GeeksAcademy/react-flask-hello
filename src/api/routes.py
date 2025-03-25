@@ -89,9 +89,11 @@ def get_users():
 # -----------------------------------ENDPOINTS FOR STARWARS OBJECTS----------------------------------- #
 
 @api.route('/clases', methods=['GET'])
+
 def get_classes():
     categories = Category.query.all()
-    return jsonify([category.serialize_category() for category in categories])
+    serialized_planets = [category.serialize_category() for category in categories]
+    return jsonify(serialized_planets), 200
 
 # planets
 @api.route('/planets', methods=['GET'])

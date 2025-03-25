@@ -15,7 +15,7 @@ export const Navbar = () => {
     useEffect(() => {
 
         if (store.selectedCategory) {
-            
+
             setShowElements(true);
 
             setTimeout(() => {
@@ -23,12 +23,12 @@ export const Navbar = () => {
             }, 50);
 
         } else {
-            
+
             setElementsVisible(false);
 
             setTimeout(() => {
                 setShowElements(false);
-            }, 1000); 
+            }, 1000);
         }
 
     }, [store.selectedCategory]);
@@ -89,10 +89,17 @@ export const Navbar = () => {
         navigate(`/${category}`);
     };
 
+    const handleLogout = () => {
+
+        dispatch({ type: "logout" });
+        navigate("/");
+
+    };
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" to="/home">
                     <img
                         src="https://cdn.worldvectorlogo.com/logos/star-wars-2.svg"
                         className="btn starwarsLogo"
@@ -161,12 +168,21 @@ export const Navbar = () => {
                                         <button
                                             key={index}
                                             className={`btn btn-outline-success m-1 slide-in-element slide-delay-${index % 3 + 1} ${elementsVisible ? 'visible' : 'slide-out-element'} ${store.selectedCategory === category ? 'active' : ''}`}
-                                            onClick={() => handleCategoryClick(category)}
+                                            onClick={() => handleCategoryClick(category.name)}
                                         >
-                                            {category}
+                                            {category.name}
                                         </button>
                                     )
                                 })}
+
+                                {store.token && (
+                                    <button
+                                        className="btn btn-danger ms-2"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
+                                )}
 
                             </div>
 
@@ -182,7 +198,7 @@ export const Navbar = () => {
                                         onChange={handleSearchChange}
                                     />
                                     <button className="btn btn-outline-success" type="submit">
-                                        Search 
+                                        Search
                                     </button>
 
                                     {suggestions.length > 0 && (

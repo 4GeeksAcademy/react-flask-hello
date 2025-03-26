@@ -3,15 +3,13 @@ import { Link } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./Home.css";
 
-export const API_STARWARS = "https://sturdy-goggles-jj4495pppj55h5667-3001.app.github.dev/api";
-
 export const Home = () => {
     const { store, dispatch } = useGlobalReducer();
 
     useEffect(() => {
         const getCategories = async () => {
             try {
-                const response = await fetch(API_STARWARS + "/clases");
+                const response = await fetch(store.backend_URL + "api/clases");
                 if (!response.ok) {
                     throw new Error("We can't get the categories");
                 }

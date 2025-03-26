@@ -3,7 +3,7 @@ import './CardDescription.css';
 import { useParams } from 'react-router-dom';
 import useGlobalReducer from '../../hooks/useGlobalReducer';
 import { Spinner } from '../Spinner/Spinner';
-import { API_STARWARS } from '../../pages/Home/Home';
+
 export const CardDescription = () => {
 
     const { store, dispatch } = useGlobalReducer();
@@ -23,11 +23,11 @@ export const CardDescription = () => {
                     throw new Error("No authentication token found");
                 }
 
-                const response = await fetch(`${API_STARWARS}/${clases}/${id}`, {
+                const response = await fetch(`${store.backend_URL}/api/${clases}/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
@@ -52,7 +52,7 @@ export const CardDescription = () => {
 
 
     if (cargando) {
-        
+
         return (
             <Spinner />
         );

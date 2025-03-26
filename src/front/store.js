@@ -31,6 +31,7 @@ export const initialStore = () => {
     token: token || null,
     user: user || null,
     error: null,
+    backend_URL: import.meta.env.VITE_BACKEND_URL || ""
   };
 };
 

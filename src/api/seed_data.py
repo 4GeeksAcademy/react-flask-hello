@@ -27,7 +27,7 @@ def seed_database():
         print("Adding people...")
         add_people()
 
-        
+
 
 
 def add_categories():

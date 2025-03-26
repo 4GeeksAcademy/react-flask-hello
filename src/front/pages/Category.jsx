@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { ItemCard } from "../components/ItemCard/ItemCard";
 import { Spinner } from "../components/Spinner/Spinner";
-import { API_STARWARS } from "./Home/Home";
 
 
 export const Category = () => {
@@ -15,7 +14,7 @@ export const Category = () => {
 
     useEffect(() => {
         const fetchItems = async () => {
-            setloading(true); 
+            setloading(true);
             try {
 
                 const token = store.token;
@@ -24,27 +23,27 @@ export const Category = () => {
                     throw new Error("No authentication token found");
                 }
 
-                const response = await fetch(`${API_STARWARS}/${clases}`, {
+                const response = await fetch(`${store.backend_URL}/api/${clases}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
+                        'Authorization': `Bearer ${token}`
                     }
                 });
-                
+
                 if (!response.ok) {
                     throw new Error("Failed to fetch items");
                 }
                 const data = await response.json();
-                console.log("API Data:", data); 
+                console.log("API Data:", data);
                 dispatch({ type: "set_items", payload: data || [] });
                 setloading(false);
             } catch (error) {
                 console.error("Error fetching items:", error);
-                setloading(false); 
+                setloading(false);
             }
         };
-    
+
         fetchItems();
     }, [clases, dispatch, store.token]);
 

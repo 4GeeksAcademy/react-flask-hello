@@ -7,13 +7,13 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-api = Blueprint('api', __name__)
+user = Blueprint('user', __name__)
 
 # Allow CORS requests to this API
-CORS(api)
+CORS(user)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
+@user.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 
     response_body = {
@@ -23,7 +23,7 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-@api.route('/signup', methods=['POST'])
+@user.route('/signup', methods=['POST'])
 def signup():
 
     body = request.get_json()
@@ -54,7 +54,7 @@ def signup():
         return jsonify({"error": str(e)}), 500
 
 
-@api.route('/login', methods=['POST'])
+@user.route('/login', methods=['POST'])
 def login():
 
     body = request.get_json()
@@ -75,7 +75,7 @@ def login():
     }), 200
 
 
-@api.route('/profile', methods=['GET'])
+@user.route('/profile', methods=['GET'])
 @jwt_required()
 def profile():
     user_id = get_jwt_identity()

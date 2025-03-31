@@ -16,12 +16,12 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    rolId: Mapped[int] = mapped_column(Integer, default = 2)
+    rolId: Mapped[int] = mapped_column(Integer, default = 2) # rol id 2 => Agricultor
 
     def __init__(self, email, password):
         self.email = email
         self.set_password(password)
-        self.rolId = 2 #rol user
+       
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -36,3 +36,9 @@ class User(db.Model):
             "is_active": self.is_active
             # do not serialize the password, its a security breach
         }
+
+
+## MODELO DE PARCELA (Con serialize)
+## MODELO DE IMAGEN (Con serialize)
+## MODELO DE INFORME (Con serialize)
+## MODELO DE PRESUPUESTO (Con serialize)

@@ -81,3 +81,28 @@ def profile():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
     return jsonify(user.serialize()), 200
+
+# 👇 ❇️ Riki for the group success 👊
+# Obtener un usuario por ID
+@user.route('/user/<int:id>', methods=['GET'])
+@jwt_required()
+def get_user_by_id(id):
+    # Verificar si el usuario existe
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    # Devolver datos del usuario
+    return jsonify(user.serialize()), 200
+
+# Obtener todos los usuarios
+@user.route('/users', methods=['GET'])
+@jwt_required()
+def get_all_users():
+    # Obtener todos los usuarios
+    users = User.query.all()
+    
+    # Serializar la lista de usuarios
+    all_users = [user.serialize() for user in users]
+    
+    return jsonify(all_users), 200

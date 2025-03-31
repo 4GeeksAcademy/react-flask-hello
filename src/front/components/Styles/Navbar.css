@@ -22,13 +22,14 @@ nav {
     font-size: 16px;
     text-decoration: none;
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 20px;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
 .links a:hover {  
-    background: white;
-    color: black;
+    background: rgba(255, 255, 255, 0.201);
+    color: rgb(255, 255, 255);
+    border-radius: 20px;
 }
 
 

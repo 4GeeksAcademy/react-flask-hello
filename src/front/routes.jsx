@@ -6,8 +6,8 @@ import {
     Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Login } from "./pages/Login";
-import Signup from "./pages/Signup";
+import { Login } from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(

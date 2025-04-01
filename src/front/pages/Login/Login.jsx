@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BackendURL } from "../components/BackendURL";
+import { BackendURL } from "../../components/BackendURL";
+import "./Login.css"
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -12,7 +13,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -20,7 +21,10 @@ export const Login = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.access_token); // Guarda el token
+        console.log(data.access_token)
+        console.log("Log in exitoso !!")
         // navigate("/dashboard"); DESCOMENTAR UNA VEZ ESTE EL DASHBOARD LISTO !!
+      
       } else {
         setError(data.error || "Credenciales incorrectas");
       }

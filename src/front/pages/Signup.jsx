@@ -1,54 +1,171 @@
-// 👇 ❇️ Riki for the group success 👊
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const Signup = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    name: "",
-    lastname: "",
-    dni: ""
-  });
-  const [message, setMessage] = useState("");
+console.log("Renderizando Signup");
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+const Signup = () => {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        nombre: "",
+        apellido: "",
+        dni: "",
+        email: "",
+        password: ""
+    });
+    const [message, setMessage] = useState(null);
+    const [error, setError] = useState(null);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("Usuario registrado con éxito ✅");
-      } else {
-        setMessage(data.error || "Error al registrar");
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage("Error en el servidor");
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage(null);
+        setError(null);
 
-  return (
-    <div className="container mt-5">
-      <h2>Registro</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="email" placeholder="Email" onChange={handleChange} className="form-control mb-2" />
-        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} className="form-control mb-2" />
-        <input name="name" placeholder="Nombre" onChange={handleChange} className="form-control mb-2" />
-        <input name="lastname" placeholder="Apellido" onChange={handleChange} className="form-control mb-2" />
-        <input name="dni" placeholder="DNI" onChange={handleChange} className="form-control mb-2" />
-        <button className="btn btn-success">Registrarse</button>
-      </form>
-      <p className="mt-2">{message}</p>
-    </div>
-  );
+        try {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/user/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage(data.msg || "Usuario registrado con éxito!");
+                setFormData({
+                    nombre: "",
+                    apellido: "",
+                    dni: "",
+                    email: "",
+                    password: ""
+                });
+
+                setTimeout(() => {
+                    navigate("/login");
+                }, 1000);
+            } else {
+                setError(data.error || "Error al registrarse!");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("¡Error del servidor!");
+        }
+    };
+
+    return (
+        <div style={signupStyles.container}>
+            <form onSubmit={handleSubmit} style={signupStyles.form}>
+                <h2 style={signupStyles.title}>Registro</h2>
+
+                <label style={signupStyles.label}>Nombre</label>
+                <input
+                    type="text"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
+                    style={signupStyles.input}
+                />
+
+                <label style={signupStyles.label}>Apellido</label>
+                <input
+                    type="text"
+                    name="apellido"
+                    value={formData.apellido}
+                    onChange={handleChange}
+                    required
+                    style={signupStyles.input}
+                />
+
+                <label style={signupStyles.label}>DNI</label>
+                <input
+                    type="text"
+                    name="dni"
+                    value={formData.dni}
+                    onChange={handleChange}
+                    required
+                    style={signupStyles.input}
+                />
+
+                <label style={signupStyles.label}>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    style={signupStyles.input}
+                />
+
+                <label style={signupStyles.label}>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    style={signupStyles.input}
+                />
+
+                <button type="submit" style={signupStyles.button}>Registrarse</button>
+
+                {message && <p style={{ ...signupStyles.message, color: "green" }}>{message}</p>}
+                {error && <p style={{ ...signupStyles.message, color: "red" }}>{error}</p>}
+            </form>
+        </div>
+    );
 };
+
+const signupStyles = {
+    container: {
+        display: "flex",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+    },
+    form: {
+        backgroundColor: "#fff",
+        padding: "2rem",
+        borderRadius: "10px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+        width: "100%",
+        maxWidth: "400px",
+        display: "flex",
+        flexDirection: "column",
+    },
+    title: {
+        marginBottom: "1.5rem",
+        textAlign: "center",
+        fontSize: "24px",
+    },
+    label: {
+        marginBottom: "0.5rem",
+        fontWeight: "bold"
+    },
+    input: {
+        padding: "0.5rem",
+        marginBottom: "1rem",
+        borderRadius: "5px",
+        border: "1px solid #ccc"
+    },
+    button: {
+        padding: "0.75rem",
+        borderRadius: "5px",
+        backgroundColor: "#007bff",
+        color: "white",
+        border: "none",
+        cursor: "pointer"
+    },
+    message: {
+        marginTop: "1rem",
+        textAlign: "center"
+    }
+};
+
+export default Signup;

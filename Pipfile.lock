@@ -79,6 +79,7 @@
                 "sha256:fa5cb364ead54bbf401a26dbf03030c6b18fb2fcaf70408096a572b409586b0c"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.9' and python_version < '4.0'",
             "version": "==5.0.1"
         },
         "flask-jwt-extended": {

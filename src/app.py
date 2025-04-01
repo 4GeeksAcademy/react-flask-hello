@@ -4,12 +4,16 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
+from flask_cors import CORS
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models.models import db, User
 from api.routes.user_routes import user as user_blueprint
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
+import datetime
+
 
 # from models import Person
 
@@ -17,6 +21,9 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+CORS(app)
+
+
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -41,6 +48,13 @@ setup_commands(app)
 app.register_blueprint(user_blueprint, url_prefix='/user')
 
 # Handle/serialize errors like a JSON object
+
+app.config["JWT_SECRET_KEY"] = "yenesey-programando"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+jwt = JWTManager(app)
 
 
 @app.errorhandler(APIException)

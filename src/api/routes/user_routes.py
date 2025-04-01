@@ -75,13 +75,6 @@ def login():
     }), 200
 
 
-@user.route('/profile', methods=['GET'])
-@jwt_required()
-def profile():
-    user_id = get_jwt_identity()
-    user = User.query.get(user_id)
-    return jsonify(user.serialize()), 200
-
 # 👇 ❇️ Riki for the group success 👊
 # Obtener un usuario por ID
 @user.route('/user/<int:id>', methods=['GET'])

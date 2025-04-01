@@ -38,8 +38,8 @@ def signup():
             password=body.get("password"),
             name=body.get("name"),
             lastname=body.get("lastname"),
-            dni=body.get("dni")
-
+            dni=body.get("dni"),
+            rolId=body.get("rolId")
         )
         db.session.add(new_user)
         db.session.commit()
@@ -90,7 +90,6 @@ def get_user_by_id(id):
 
 
 @user.route('/users', methods=['GET'])
-@jwt_required()
 def get_all_users():
     # Obtener todos los usuarios
     users = User.query.all()

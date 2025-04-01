@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models.models import db, User
-from api.routes.user_routes import api
+from api.routes.user_routes import user as user_blueprint
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -38,7 +38,7 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(user_blueprint, url_prefix='/user')
 
 # Handle/serialize errors like a JSON object
 

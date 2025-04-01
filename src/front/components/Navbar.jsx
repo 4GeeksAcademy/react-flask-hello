@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
+
 import "./Styles/Navbar.css"
 import LogoFrame from "./Logo";
+
+
+
+
 
 
 const Navbar = () => {
 
 	return (
 
+feature/login
 		<nav>
 			<div className="nav-content">
 
@@ -18,9 +24,7 @@ const Navbar = () => {
 				<div className="logo">
 				<LogoFrame/>
 				</div>
-				
-			</div>
-		</nav>
+
 	);
 };
 

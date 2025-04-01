@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Styles/Navbar.css"
+import LogoFrame from "./Logo";
 
 
-export const Navbar = () => {
+const Navbar = () => {
 
 	return (
 
@@ -13,10 +14,14 @@ export const Navbar = () => {
 					<button className="Home">Home</button>
 					<button className="Log">Login</button>
 				</div>
+
 				<div className="logo">
-					<img url = '/workspaces/Spain_Coho_94_First_Proyect_Da_Da_Ja/src/front/assets/logo.png' /> 
+				<LogoFrame/>
 				</div>
+				
 			</div>
 		</nav>
 	);
 };
+
+export default Navbar;

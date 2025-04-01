@@ -1,21 +1,29 @@
 import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import './Styles/Navbar.css'
+
+import "./Styles/Navbar.css"
+import LogoFrame from "./Logo";
+
+
+
+
+
 
 const Navbar = () => {
 
 	return (
 
-
+feature/login
 		<nav>
-			<div className="links">
-				<NavLink to="/" activeClassName="active">Home</NavLink>
-				<NavLink to="/about" activeClassName="active">About</NavLink>
-				<NavLink to="/contact" activeClassName="active">Contact</NavLink>
-			</div>
-		</nav>
+			<div className="nav-content">
 
-			
+				<div className="buttons">
+					<button className="Home">Home</button>
+					<button className="Log">Login</button>
+				</div>
+
+				<div className="logo">
+				<LogoFrame/>
+				</div>
 
 	);
 };

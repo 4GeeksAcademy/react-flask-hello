@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import Register	from "../components/Register.jsx"
 
@@ -9,8 +8,11 @@ import Register	from "../components/Register.jsx"
 	
 	return (
 
-		<Register/>
-		
+		<div>
+				<Register/>
+		</div>
+
+
 	);
 }; 
 

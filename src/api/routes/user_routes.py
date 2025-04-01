@@ -9,9 +9,6 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 user = Blueprint('user_api', __name__)
 
-# Allow CORS requests to this API
-CORS(user)
-
 
 @user.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -69,6 +66,7 @@ def login():
 
     access_token = create_access_token(identity=str(user.id))
 
+    print("Conseguido!!")
     return jsonify({
         "access_token": access_token,
         "user": user.serialize()
@@ -84,18 +82,20 @@ def get_user_by_id(id):
     user = User.query.get(id)
     if not user:
         return jsonify({"error": "User not found"}), 404
-    
+
     # Devolver datos del usuario
     return jsonify(user.serialize()), 200
 
 # Obtener todos los usuarios
+
+
 @user.route('/users', methods=['GET'])
 @jwt_required()
 def get_all_users():
     # Obtener todos los usuarios
     users = User.query.all()
-    
+
     # Serializar la lista de usuarios
     all_users = [user.serialize() for user in users]
-    
+
     return jsonify(all_users), 200

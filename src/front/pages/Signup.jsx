@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-console.log("Renderizando Signup");
+console.log("Rendering Signup");
 
 const Signup = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        nombre: "",
-        apellido: "",
+        name: "",
+        lastname: "",
         dni: "",
         email: "",
         password: ""
@@ -25,7 +25,7 @@ const Signup = () => {
         setError(null);
 
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/user/signup", {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -36,10 +36,10 @@ const Signup = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage(data.msg || "Usuario registrado con éxito!");
+                setMessage(data.msg || "User successfully registered!");
                 setFormData({
-                    nombre: "",
-                    apellido: "",
+                    name: "",
+                    lastname: "",
                     dni: "",
                     email: "",
                     password: ""
@@ -49,34 +49,34 @@ const Signup = () => {
                     navigate("/login");
                 }, 1000);
             } else {
-                setError(data.error || "Error al registrarse!");
+                setError(data.error || "Registration failed!");
             }
         } catch (err) {
             console.error(err);
-            setError("¡Error del servidor!");
+            setError("Server error!");
         }
     };
 
     return (
         <div style={signupStyles.container}>
             <form onSubmit={handleSubmit} style={signupStyles.form}>
-                <h2 style={signupStyles.title}>Registro</h2>
+                <h2 style={signupStyles.title}>Sign Up</h2>
 
-                <label style={signupStyles.label}>Nombre</label>
+                <label style={signupStyles.label}>First Name</label>
                 <input
                     type="text"
-                    name="nombre"
-                    value={formData.nombre}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                     style={signupStyles.input}
                 />
 
-                <label style={signupStyles.label}>Apellido</label>
+                <label style={signupStyles.label}>Last Name</label>
                 <input
                     type="text"
-                    name="apellido"
-                    value={formData.apellido}
+                    name="lastname"
+                    value={formData.lastname}
                     onChange={handleChange}
                     required
                     style={signupStyles.input}
@@ -112,7 +112,7 @@ const Signup = () => {
                     style={signupStyles.input}
                 />
 
-                <button type="submit" style={signupStyles.button}>Registrarse</button>
+                <button type="submit" style={signupStyles.button}>Register</button>
 
                 {message && <p style={{ ...signupStyles.message, color: "green" }}>{message}</p>}
                 {error && <p style={{ ...signupStyles.message, color: "red" }}>{error}</p>}

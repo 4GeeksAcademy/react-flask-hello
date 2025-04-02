@@ -12,7 +12,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -21,6 +21,7 @@ export const Login = () => {
       if (response.ok) {
         localStorage.setItem("token", data.access_token); // Guarda el token
         // navigate("/dashboard"); DESCOMENTAR UNA VEZ ESTE EL DASHBOARD LISTO !!
+        console.log("Logueado con exito")
       } else {
         setError(data.error || "Credenciales incorrectas");
       }

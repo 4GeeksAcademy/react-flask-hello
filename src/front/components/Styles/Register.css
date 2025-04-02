@@ -1,0 +1,118 @@
+
+/*_______________MENU__LOGIN______________*/
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    padding: 20px;
+}
+
+.register form {
+    width: 90%; 
+    max-width: 400px; 
+    padding: 2em;
+    border: 2px solid gray;
+    border-radius: 20px;
+    color: gray;
+    background: none;
+}
+
+.form-control {
+    background: black !important;
+    color: white !important;
+    border: 1px solid grey !important;
+    padding: 10px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.form-control:focus, 
+.form-control:active {
+    border-color: white !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.form-check-input {
+    appearance: none;
+    outline: none !important;
+    box-shadow: none !important;
+    width: 20px;
+    height: 20px;
+    border: 2px solid grey;
+    border-radius: 4px;
+    background-color: black; 
+    transition: background-color 0.3s, border-color 0.3s; 
+}
+/*_______________MENU__LOGIN______________*/
+
+
+/*_______________CHECK__ME__OUT______________*/
+.form-check-input:checked {
+
+    background-color: grey; 
+    border-color: grey; 
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.form-check-input:focus {
+    border-color: grey !important;
+    outline: none !important;
+    box-shadow: none !important; 
+}
+
+
+.form-check-label {
+    color: white; 
+    font-size: 16px;
+    margin-left: 10px;
+    font-family: Verdana, Geneva, sans-serif;
+    outline: none !important;
+    box-shadow: none !important;
+}
+/*_______________CHECK__ME__OUT______________*/
+
+/*_______________BOTON___SUBMIT______________*/
+button {
+    width: 10vh;
+    border-radius: 20px;
+    color: grey;
+    background: none;
+    border: 2px solid grey;
+    transition: 0.2s;
+}
+
+button:hover {
+    color: white;
+    background: none;
+    border-color: white;
+}
+
+button:active {
+    color:grey;
+    background: white;
+    border-color: grey;
+}
+/*_______________BOTON___SUBMIT______________*/
+
+
+/*_______________RESPONCIVE______________*/
+@media (max-width: 768px) {
+    .register form {
+        width: 95%; 
+        max-width: 350px; 
+        padding: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .register form {
+        width: 100%; 
+        max-width: 300px;
+        padding: 1em;
+    }
+}
+/*_______________RESPONCIVE______________*/

@@ -18,8 +18,18 @@ export const Login = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
+        localStorage.setItem("rol_id", data.user.rol_id); // guardar rol
+        localStorage.setItem("user_id", data.user.id);     // opcional
+
         console.log("Log in exitoso !!");
-        // navigate("/dashboard");
+
+        if (data.user.rolId === 2) {
+          navigate("/dashboard");
+        } else if (data.user.rolId === 1) {
+          navigate("/dash_admin");
+        } else {
+          setError("Rol no reconocido");
+        }
       } else {
         setError(data.error || "Credenciales incorrectas");
       }

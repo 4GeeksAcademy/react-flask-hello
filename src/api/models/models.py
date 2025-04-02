@@ -61,7 +61,7 @@ class Field(db.Model):
     postal_code: Mapped[str] = mapped_column(String(10))
     city: Mapped[str] = mapped_column(String(100))
     user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False)
+        ForeignKey("user.id"), nullable=False)
 
     def serialize_field(self):
         return {
@@ -91,7 +91,7 @@ class Image(db.Model):
         DateTime, default=datetime.utcnow)
 
     field_id: Mapped[int] = mapped_column(
-        ForeignKey("parcels.id"), nullable=False)
+        ForeignKey("fields.id"), nullable=False)
 
     def serialize_image(self):
         return {

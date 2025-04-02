@@ -1,8 +1,9 @@
 .logo-frame {
-    width: 80px;  /* Tamaño ajustable */
-    height: 80px;
+    width: 150px;  
+    height: 150px;
+    max-width: 150px;
     border-radius: 50%;
-    border: 2px solid white; /* Hace que siempre haya un marco visible */
+    border: 1px solid white; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,29 +11,35 @@
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    background: rgba(255, 255, 255, 0.1);
+    background: none;
     transition: all 0.3s ease-in-out;
 }
 
-/* Estilo del texto de "Add your logo" */
+
 .add-logo-text {
     color: white;
     font-size: 12px;
     font-weight: bold;
     opacity: 0.7;
     text-align: center;
+    background: none;
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
-/* Imagen cargada dentro del marco */
+
+
 .logo-frame img {
-    width: 100%;
-    height: 100%;
+    width: 800%;
+    height: 80%;
     object-fit: cover;
     border-radius: 50%;
 }
 
-/* Efecto al pasar el mouse */
+
 .logo-frame:hover {
     border-color: #ddd;
     background: rgba(255, 255, 255, 0.2);

@@ -3,6 +3,7 @@ from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Integer
+from sqlalchemy import Date, Float, String
 
 
 db = SQLAlchemy()
@@ -44,6 +45,34 @@ class User(db.Model):
 
 
 # MODELO DE PARCELA (Con serialize)
+class Field(db.Model):
+    __tablename__ = "fields"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(100))
+
+    area: Mapped[float] = mapped_column(Float)
+    crop: Mapped[str] = mapped_column(String(100))
+    sowing_date: Mapped[Date] = mapped_column(Date)
+
+    street: Mapped[str] = mapped_column(String(100))
+    number: Mapped[str] = mapped_column(String(10))
+    postal_code: Mapped[str] = mapped_column(String(10))
+    city: Mapped[str] = mapped_column(String(100))
+
+    def serialize_field(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "area": self.area,
+            "crop": self.crop,
+            "sowing_date": self.sowing_date.isoformat() if self.sowing_date else None,
+            "street": self.street,
+            "number": self.number,
+            "postal_code": self.postal_code,
+            "city": self.city
+        }
+
 # MODELO DE IMAGEN (Con serialize)
 # MODELO DE INFORME (Con serialize)
 # MODELO DE PRESUPUESTO (Con serialize)

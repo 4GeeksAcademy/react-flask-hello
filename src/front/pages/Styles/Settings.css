@@ -1,0 +1,25 @@
+.option_panel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+    margin-left: 50vh;
+    width: 50vh;
+    height: 50vh;
+    padding: 5px 5px;
+    font-size: 16px;
+    border-radius: 30px;
+    border-style: solid;
+    border-color: grey;
+}
+
+.inventary_btn{
+    background: none;
+}
+
+  
+  
+
+ 
+ 
+  

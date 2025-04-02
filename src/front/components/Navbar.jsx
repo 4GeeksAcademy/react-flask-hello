@@ -1,14 +1,12 @@
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import "./Styles/Navbar.css"
 import LogoFrame from "./Logo";
 
 
 
-
-
-
 const Navbar = () => {
+
+	const navigate = useNavigate();
 
 	return (
 
@@ -19,10 +17,9 @@ const Navbar = () => {
 					<LogoFrame />
 				</div>
 				
-				<div className="buttons">
-					<button className="Home">Home</button>
-					<button className="Log">Login</button>
-
+				<div className="nav_buttons">
+					<button  onClick={() => navigate("/settings")}>Settings</button>
+					<button  onClick={() => navigate("/")}>Home</button>
 				</div>
 
 

@@ -1,9 +1,9 @@
 .logo-frame {
     width: 150px;  
     height: 150px;
-    max-width: 150px;
+    max-width: 200px;
     border-radius: 50%;
-    border: 1px solid white; 
+    border: 3px solid grey; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,14 +33,15 @@
 
 
 .logo-frame img {
-    width: 800%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
 
 
 .logo-frame:hover {
+    background: rgba(255, 255, 255, 0.4);
     border-color: #ddd;
-    background: rgba(255, 255, 255, 0.2);
+  
 }

@@ -1,0 +1,100 @@
+/* Estilos consistentes con Login.css */
+.signup-background {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url("../../assets/img/Login1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .signup-container {
+    max-width: 500px;
+    width: 100%;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+  
+  .signup-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #198754;
+  }
+  
+  .form-section-title {
+    margin: 20px 0 10px;
+    color: #198754;
+    font-size: 1.1rem;
+  }
+  
+  .signup-error {
+    margin-bottom: 15px;
+  }
+  
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .signup-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .signup-input:focus {
+    border-color: #198754;
+    outline: none;
+  }
+  
+  .signup-button {
+    padding: 12px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  
+  .signup-button:hover {
+    background-color: #157347;
+  }
+  
+  .signup-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .signup-link {
+    color: #198754;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .signup-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Scroll para formularios largos */
+  .signup-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .signup-container::-webkit-scrollbar-thumb {
+    background-color: #198754;
+    border-radius: 4px;
+  }

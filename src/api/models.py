@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, DateTime, Float, Enum, Date, Integer
-from sqlalchemy.orm import Mapped, mapped_column, relationship, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import ForeignKey
 from datetime import date
 from datetime import datetime
 from typing import List
@@ -64,8 +65,9 @@ class Gender (enum.Enum):
     # Opciones de Generos
     GENDER_MALE = "M"
     GENDER_FEMALE = "F"
+    GENDER_NONBINARY= "NB"
     GENDER_OTHER = "O"
-
+    GENDER_NONE = "NS/NC"
 
 class BloodType (enum.Enum):
 
@@ -78,15 +80,6 @@ class BloodType (enum.Enum):
     BLOOD_AB_NEGATIVE = "AB-"
     BLOOD_O_POSITIVE = "O+"
     BLOOD_O_NEGATIVE = "O-"
-
-
-class DietaryPreferences (enum.Enum):
-
-    # Preferencias alimenticias
-    DIET_VEGETARIAN = "Vegetariano"
-    DIET_VEGAN = "Vegano"
-    DIET_OTHER = "Otro"
-
 
 class PhysicalActivity (enum.Enum):
 
@@ -105,7 +98,7 @@ class GeneralData(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), unique=True)
     name: Mapped[str] = mapped_column(String(50), nullable=False)
     birth_date: Mapped[date] = mapped_column(Date, nullable=False)
-    phone: Mapped[str] = mapped_column(String(20), nullable=True)
+    phone: Mapped[str] = mapped_column(String(20), nullable=False)
     last_weight: Mapped[float] = mapped_column(
         Float(precision=2), nullable=True)
     last_height: Mapped[float] = mapped_column(
@@ -115,8 +108,7 @@ class GeneralData(db.Model):
         Enum(Gender, name="gender_enum"), nullable=False)
     blood_type: Mapped[BloodType] = mapped_column(
         Enum(BloodType, name="blood_type_enum"), nullable=True)
-    dietary_preferences: Mapped[DietaryPreferences] = mapped_column(
-        Enum(DietaryPreferences, name="dietary_preference_enum"), nullable=True)
+    dietary_preferences: Mapped[str] = mapped_column(String(150), nullable=True)
     physical_activity: Mapped[PhysicalActivity] = mapped_column(
         Enum(PhysicalActivity, name="activity_level_enum"), nullable=True)
 

@@ -6,6 +6,7 @@ fields = Blueprint('fields_api', __name__)
 
 # POST /fields - Crear una nueva parcela
 @fields.route('/fields', methods=['POST'])
+@jwt_required() 
 def create_field():
     body = request.get_json()
 
@@ -35,6 +36,7 @@ def create_field():
 
 # GET /fields - Obtener todas las parcelas
 @fields.route('/fields', methods=['GET'])
+@jwt_required() 
 def get_all_fields():
     all_fields = Field.query.all()
     serialized_fields = [field.serialize_field() for field in all_fields]
@@ -42,6 +44,7 @@ def get_all_fields():
 
 # GET /fields/<int:id> - Obtener una parcela por id
 @fields.route('/fields/<int:id>', methods=['GET'])
+@jwt_required() 
 def get_field_by_id(id):
     field = Field.query.get(id)
     if not field:

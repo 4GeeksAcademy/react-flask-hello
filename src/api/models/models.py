@@ -3,7 +3,8 @@ from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Integer
-from sqlalchemy import Date, Float, String
+from sqlalchemy import Date, Float, String, ForeignKey, DateTime
+from datetime import datetime
 
 
 db = SQLAlchemy()
@@ -59,6 +60,8 @@ class Field(db.Model):
     number: Mapped[str] = mapped_column(String(10))
     postal_code: Mapped[str] = mapped_column(String(10))
     city: Mapped[str] = mapped_column(String(100))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("user.id"), nullable=False)
 
     def serialize_field(self):
         return {
@@ -70,9 +73,34 @@ class Field(db.Model):
             "street": self.street,
             "number": self.number,
             "postal_code": self.postal_code,
-            "city": self.city
+            "city": self.city,
+            "user_id": self.user_id
+
         }
 
 # MODELO DE IMAGEN (Con serialize)
+
+
+class Image(db.Model):
+    __tablename__ = "images"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    file_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    url: Mapped[str] = mapped_column(String(500), nullable=False)
+    upload_date: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+
+    field_id: Mapped[int] = mapped_column(
+        ForeignKey("fields.id"), nullable=False)
+
+    def serialize_image(self):
+        return {
+            "id": self.id,
+            "file_name": self.file_name,
+            "url": self.url,
+            "upload_date": self.upload_date.isoformat(),
+            "field_id": self.field_id
+        }
+
 # MODELO DE INFORME (Con serialize)
 # MODELO DE PRESUPUESTO (Con serialize)

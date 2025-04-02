@@ -1,21 +1,14 @@
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 
-import {  } from "";
-import {  } from "";
-import {  } from "";
-import {  } from "";
 
-export const router = createBrowserRouter(
-    createRoutesFromElements(
 
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-        <Route path= "/" element={""} />
-        <Route path="" element={""} />  
-        <Route path="" element={""} />
-      </Route>
-    )
-);
+const AppRoutes = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<Login />} />
+        </Routes>
+    );
+};
+
+export default AppRoutes;

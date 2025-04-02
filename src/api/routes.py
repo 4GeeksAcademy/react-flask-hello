@@ -8,8 +8,3 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def example():
-    
-
-    return jsonify(), 200

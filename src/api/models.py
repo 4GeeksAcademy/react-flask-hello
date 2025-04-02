@@ -19,7 +19,7 @@ class Admins(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def serialize_admin(self):
+    def serialize_Admins(self):
         return {
             "id": self.id,
             "username": self.username,
@@ -37,7 +37,7 @@ class Negocio(db.Model):
     servicios = relationship("Servicio", back_populates="negocio")
     
 
-    def serialize(self):
+    def serialize_Negocio(self):
         return {
             "id": self.id,
             "nombre": self.nombre_negocio,
@@ -84,7 +84,7 @@ class Servicio(db.Model):
     clientes = relationship("Clientes", back_populates="servicio")
     citas = relationship("Citas", back_populates="servicio", cascade="all, delete-orphan")
 
-    def serialize(self):
+    def serialize_Servicio(self):
         return {
             "id": self.id,
             "negocio_id": self.negocio_id,
@@ -114,7 +114,7 @@ class Clientes(db.Model):
     historial_servicios = relationship("HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
 
 
-    def serialize(self):
+    def serialize_Cliente(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
@@ -134,7 +134,7 @@ class Nota(db.Model):
     cliente = relationship("Clientes", back_populates="notas")
     historial_servicio = relationship("HistorialDeServicios", back_populates="nota")
 
-    def serialize(self):
+    def serialize_Nota(self):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
@@ -153,7 +153,7 @@ class Pagos(db.Model):
     
     cliente = relationship("Clientes", back_populates="pagos")
 
-    def serialize(self):
+    def serialize_Pagos(self):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
@@ -180,7 +180,7 @@ class Citas(db.Model):
     historial_servicio = relationship("HistorialDeServicios", back_populates="cita")
 
 
-    def serialize(self):
+    def serialize_Citas(self):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
@@ -199,7 +199,7 @@ class Calendario(db.Model):
     cita = relationship("Citas", back_populates="calendario")
     problemas = relationship("Problemas", back_populates="calendario", cascade="all, delete-orphan")
 
-    def serialize(self):
+    def serialize_Calendario(self):
         return {
             "id": self.id,
             "dia": self.dia.isoformat(),
@@ -216,7 +216,7 @@ class Problemas(db.Model):
     usuario = relationship("Usuarios", back_populates="problemas")
     calendario = relationship("Calendario", back_populates="problemas")
 
-    def serialize(self):
+    def serialize_Problemas(self):
         return {
             "id": self.id,
             "id_usuario": self.usuario_id,
@@ -236,7 +236,7 @@ class HistorialDeServicios(db.Model):
     cita = relationship("Citas", back_populates="historial_servicio")
     nota = relationship("Nota", back_populates="historial_servicio")
 
-    def serialize(self):
+    def serialize_HistorialDeServicios(self):
         return {
             "id": self.id,
             "cliente": self.cliente.serialize() if self.cliente else None,

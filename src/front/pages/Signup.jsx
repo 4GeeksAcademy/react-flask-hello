@@ -46,7 +46,7 @@ const Signup = () => {
                 });
 
                 setTimeout(() => {
-                    navigate("/login");
+                    navigate("/"); // CORREGIDA LA RUTA, LA DEL LOGIN ES /, NO /login
                 }, 1000);
             } else {
                 setError(data.error || "Registration failed!");

@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Enum, ForeignKey, Numeric, Date
+from sqlalchemy import String, Enum, ForeignKey, Numeric, datetime, DateTime, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -184,6 +184,7 @@ class Citas(db.Model):
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable = False)
     cliente_id:Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable = False)
     servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable = False)
+    fecha_hora: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     estado: Mapped[str] = mapped_column(Enum("pendiente", "confirmada", "cancelada","realizada", name= "estado_cita"), nullable = False, default = "pendiente")
 
     usuario = relationship("Usuarios", back_populates="citas")

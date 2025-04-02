@@ -3,8 +3,7 @@ import FormularioLogin from "../components/FormularioLogin";
 
 const Login = () => {
   return (
-    <>
-      <style>{`body { background-color: #CAD2C5; }`}</style>
+    <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}> {/* ← Fondo aplicado aquí */}
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg p-3" style={{ backgroundColor: "#354F52" }}>
         <div className="container">
@@ -23,13 +22,13 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Formulario de Inicio de Sesion */}
+          {/* Formulario de Inicio de Sesión */}
           <div className="col-md-6">
             <FormularioLogin />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

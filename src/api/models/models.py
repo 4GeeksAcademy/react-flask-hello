@@ -15,7 +15,7 @@ class AppointmentStatus(PyEnum):
 
 # MODELO DE USUARIO
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)

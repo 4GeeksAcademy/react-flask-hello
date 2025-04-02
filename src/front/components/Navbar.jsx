@@ -10,15 +10,19 @@ const Navbar = () => {
 		<nav>
 			<div className="nav-content">
 
+				<div className="logo">
+					<LogoFrame />
+				</div>
+				
 				<div className="buttons">
 					<button className="Home">Home</button>
 					<button className="Log">Login</button>
+
 				</div>
 
-				<div className="logo">
-				<LogoFrame/>
-				</div>
-				
+
+
+
 			</div>
 		</nav>
 	);

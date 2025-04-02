@@ -8,7 +8,7 @@ const Settings = () => {
 		
 		<div className="option_panel">
 			<div className='inventary_btn'>
-			 	<button className="Inventary">Add Inventory</button>
+			 	<button className="inventary">Add Inventory</button>
 				 </div>
 		</div>
 

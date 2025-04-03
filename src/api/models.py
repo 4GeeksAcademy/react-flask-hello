@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Enum, ForeignKey, Numeric, datetime, DateTime, Date
+from sqlalchemy import String, Enum, ForeignKey, Numeric, DateTime, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -57,16 +57,16 @@ class Usuarios(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)
+    negocio_cif: Mapped[str] = mapped_column(ForeignKey("negocio.negocio_cif"), nullable=False)
     rol: Mapped[str] = mapped_column(Enum("master", "jefe", "empleado", name="role_enum"), nullable=False)
 
     negocio = relationship("Negocios", back_populates="usuarios")
     citas = relationship("Citas", back_populates="usuario",cascade="all, delete-orphan") 
     problemas = relationship("Problemas", back_populates="usuario", cascade="all, delete-orphan")
 
-    def __init__(self, username, password, negocio_id, rol="empleado"):
+    def __init__(self, username, password, negocio_cif, rol="empleado"):
         self.username = username
-        self.negocio_id = negocio_id
+        self.negocio_cif = negocio_cif 
         self.rol = rol
         self.set_password(password) 
 
@@ -185,7 +185,7 @@ class Citas(db.Model):
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable = False)
     cliente_id:Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable = False)
     servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable = False)
-    fecha_hora: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    fecha_hora: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     estado: Mapped[str] = mapped_column(Enum("pendiente", "confirmada", "cancelada","realizada", name= "estado_cita"), nullable = False, default = "pendiente")
 
     usuario = relationship("Usuarios", back_populates="citas")

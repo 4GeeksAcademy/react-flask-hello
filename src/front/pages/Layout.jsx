@@ -2,8 +2,8 @@
 
 import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
-import { Navbar } from "../components/Navbar/Navbar";  // Ruta ajustada
-import { Footer } from "../components/Footer/Footer";  // Ruta ajustada
+import Navbar from "../components/Navbar/Navbar";  // Ruta ajustada
+import Footer from "../components/Footer/Footer";  // Ruta ajustada
 
 export const Layout = () => {
   return (

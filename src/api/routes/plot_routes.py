@@ -4,32 +4,36 @@ from flask_jwt_extended import jwt_required
 
 fields = Blueprint('fields_api', __name__)
 
+# 👇 ❇️ Riki for the group success 👊
 # POST /fields - Crear una nueva parcela
 @fields.route('/fields', methods=['POST'])
 @jwt_required() 
 def create_field():
     body = request.get_json()
 
-    required_fields = ["name", "area", "crop", "sowing_date", "street", "number", "postal_code", "city", "user_id"]
-    if not body or not all(field in body for field in required_fields):
-        return jsonify({"error": "You must provide name, area, crop, sowing_date, street, number, postal_code, city and user_id"}), 400
+    required_fields = ["name", "area", "crop", "sowing_date", "street", "number", "postal_code", "city"]
+    if not all(field in body for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
 
     try:
         new_field = Field(
             name=body.get("name"),
             area=body.get("area"),
             crop=body.get("crop"),
-            sowing_date=body.get("sowing_date"), 
+            sowing_date=datetime.strptime(body["sowing_date"], '%Y-%m-%d').date(), # La conversión de fecha transforma el string en un objeto date 
             street=body.get("street"),
             number=body.get("number"),
             postal_code=body.get("postal_code"),
             city=body.get("city"),
-            user_id=body.get("user_id")
+            user_id=get_jwt_identity(),  # Obtiene ID del token
+            coordinates=body.get("coordinates")  # Opcional
         )
         db.session.add(new_field)
         db.session.commit()
         db.session.refresh(new_field)
         return jsonify(new_field.serialize_field()), 201
+    except ValueError as e:
+        return jsonify({"error": "Invalid date or number format"}), 400
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500

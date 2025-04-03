@@ -121,7 +121,7 @@ class Clientes(db.Model):
     servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable=True) #nullable true porque puede que un cliente no tenga asignado un sevicio
 
     servicio = relationship("Servicios", back_populates="clientes")
-    notas = relationship("Nota", back_populates="cliente", cascade="all, delete-orphan")#cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
+    notas = relationship("Notas", back_populates="cliente", cascade="all, delete-orphan")#cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
     pagos = relationship("Pagos", back_populates= "cliente", cascade="all, delete-orphan")
     citas = relationship("Citas", back_populates="cliente",cascade="all, delete-orphan")
     historial_servicios = relationship("HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
@@ -138,7 +138,7 @@ class Clientes(db.Model):
             "servicio": self.servicio.serialize() if self.servicio else None,#para que se muestre en servicio y con if else para que pueda ser "none" si no tiene servicio asignado
             "notas": [nota.serialize() for nota in self.notas], #se serializa el serialize de notas para que este todo relacionado y vinculado correctamente 
         }
-class Nota(db.Model):
+class Notas(db.Model):
     __tablename__ = "nota"
     id: Mapped[int] = mapped_column(primary_key=True)
     cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable=False)
@@ -151,6 +151,7 @@ class Nota(db.Model):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
+            "cliente_nombre":self.cliente.nombre, 
             "descripcion": self.descripcion
         }
 
@@ -189,7 +190,7 @@ class Citas(db.Model):
 
     usuario = relationship("Usuarios", back_populates="citas")
     cliente = relationship("Clientes", back_populates="citas")
-    servicio = relationship("Servicio", back_populates="citas")
+    servicio = relationship("Servicios", back_populates="citas")
     calendario = relationship("Calendario", back_populates="cita", uselist=False)
     historial_servicio = relationship("HistorialDeServicios", back_populates="cita")
 
@@ -198,8 +199,13 @@ class Citas(db.Model):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
+            "usuario_nombre": self.usuario.username, 
             "cliente_id": self.cliente_id,
+            "cliente_nombre": self.cliente.nombre,
+            "cliente_email": self.cliente.email,
             "servicio_id": self.servicio_id,
+            "servicio_nombre": self.servicio.nombre,
+            "fecha_hora": self.fecha_hora.isoformat(),
             "estado": self.estado,
             "calendario": self.calendario.serialize() if self.calendario else None
         }
@@ -248,7 +254,7 @@ class HistorialDeServicios(db.Model):
 
     cliente = relationship("Clientes", back_populates="historial_servicios")
     cita = relationship("Citas", back_populates="historial_servicio")
-    nota = relationship("Nota", back_populates="historial_servicio")
+    nota = relationship("Notas", back_populates="historial_servicio")
 
     def serialize_historialDeServicios(self):
         return {

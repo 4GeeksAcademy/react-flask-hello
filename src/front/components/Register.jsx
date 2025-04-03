@@ -1,30 +1,30 @@
 import React, { useState } from "react";
-import './Styles/Register.css'
+import { useNavigate } from "react-router-dom"; 
+import "./Styles/Register.css";
 
-const Form = () => {
+function Register() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [checked, setChecked] = useState(false); 
+    const navigate = useNavigate(); 
 
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        checked: false,
-    });
-
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
+
+        const response = await fetch("https://stunning-space-orbit-g47wqxx6xqrw3w4qg-3001.app.github.dev/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        alert(data.message);
     };
 
     return (
         <div className="register">
-
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">
@@ -35,12 +35,12 @@ const Form = () => {
                         className="form-control"
                         id="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
+                        value={email}  
+                        onChange={(e) => setEmail(e.target.value)}
                         aria-describedby="emailHelp"
                     />
-                      
                 </div>
+
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">
                         Password
@@ -50,29 +50,30 @@ const Form = () => {
                         className="form-control"
                         id="password"
                         name="password"
-                        value={formData.password}
-                        onChange={handleChange}
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+
                 <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
                         id="check"
                         name="checked"
-                        checked={formData.checked}
-                        onChange={handleChange}
+                        checked={checked} 
+                        onChange={(e) => setChecked(e.target.checked)} 
                     />
                     <label className="form-check-label" htmlFor="check">
                         Check me out
                     </label>
                 </div>
 
-                <button  type="submit" onClick={() => navigate("/settings")}>Settings</button>
-
+                <button type="submit">Registrarse</button>
+                <button type="button" onClick={() => navigate("/settings")}>Settings</button>
             </form>
         </div>
     );
-};
+}
 
-export default Form;
+export default Register;

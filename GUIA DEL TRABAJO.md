@@ -1,1 +1,1 @@
-PRUENBA DE SUBIDA A LA RAMA main_2 subida 1
+intento de implementar el back del registro en el front del registro sin exito

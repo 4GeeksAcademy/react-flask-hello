@@ -13,11 +13,11 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 # generate sitemap with all your endpoints
-@api.route('/')
+@api.route('/home')
 def sitemap():
     return generate_sitemap(api)
 
-@api.route('/hello', methods=['POST', 'GET'])
+@api.route('/', methods=['POST', 'GET'])
 def handle_hello():
 
     response_body = {

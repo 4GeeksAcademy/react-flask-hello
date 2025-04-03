@@ -74,6 +74,9 @@ class Field(db.Model):
     postal_code: Mapped[str] = mapped_column(String(10))
     city: Mapped[str] = mapped_column(String(100))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    # 👇 ❇️ Riki * Nuevo campo para coordenadas GPS
+    coordinates: Mapped[str] = mapped_column(String(50), nullable=True)
+    # ------------------------ #
 
     # Relaciones
     images = relationship("Image", backref="field")
@@ -92,7 +95,8 @@ class Field(db.Model):
             "number": self.number,
             "postal_code": self.postal_code,
             "city": self.city,
-            "user_id": self.user_id
+            "user_id": self.user_id,
+            "coordinates": self.coordinates,
         }
 
     def __repr__(self):

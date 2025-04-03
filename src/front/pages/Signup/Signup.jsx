@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Signup.css"
-
-
-console.log("Rendering Signup");
+import "./Signup.css";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -38,7 +35,7 @@ const Signup = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage(data.msg || "User successfully registered!");
+                setMessage(data.msg || "¡Registro exitoso!");
                 setFormData({
                     name: "",
                     lastname: "",
@@ -48,126 +45,85 @@ const Signup = () => {
                 });
 
                 setTimeout(() => {
-                    navigate("/"); // CORREGIDA LA RUTA, LA DEL LOGIN ES /, NO /login
+                    navigate("/");
                 }, 1000);
             } else {
-                setError(data.error || "Registration failed!");
+                setError(data.error || "Error en el registro");
             }
         } catch (err) {
             console.error(err);
-            setError("Server error!");
+            setError("Error del servidor");
         }
     };
 
     return (
-        <div style={signupStyles.container}>
-            <form onSubmit={handleSubmit} style={signupStyles.form}>
-                <h2 style={signupStyles.title}>Sign Up</h2>
+        <div className="signup-background">
+            <div className="signup-container">
+                <h2 className="signup-title">Registro</h2>
+                
+                <form className="signup-form" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Nombre"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="signup-input"
+                    />
+                    
+                    <input
+                        type="text"
+                        name="lastname"
+                        placeholder="Apellido"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        required
+                        className="signup-input"
+                    />
+                    
+                    <input
+                        type="text"
+                        name="dni"
+                        placeholder="DNI"
+                        value={formData.dni}
+                        onChange={handleChange}
+                        required
+                        className="signup-input"
+                    />
+                    
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="signup-input"
+                    />
+                    
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Contraseña"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        className="signup-input"
+                    />
 
-                <label style={signupStyles.label}>First Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    style={signupStyles.input}
-                />
+                    <button type="submit" className="signup-button">Registrarse</button>
 
-                <label style={signupStyles.label}>Last Name</label>
-                <input
-                    type="text"
-                    name="lastname"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    required
-                    style={signupStyles.input}
-                />
+                    {message && <p className="signup-message success">{message}</p>}
+                    {error && <p className="signup-message error">{error}</p>}
+                </form>
 
-                <label style={signupStyles.label}>DNI</label>
-                <input
-                    type="text"
-                    name="dni"
-                    value={formData.dni}
-                    onChange={handleChange}
-                    required
-                    style={signupStyles.input}
-                />
-
-                <label style={signupStyles.label}>Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    style={signupStyles.input}
-                />
-
-                <label style={signupStyles.label}>Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    style={signupStyles.input}
-                />
-
-                <button type="submit" style={signupStyles.button}>Register</button>
-
-                {message && <p style={{ ...signupStyles.message, color: "green" }}>{message}</p>}
-                {error && <p style={{ ...signupStyles.message, color: "red" }}>{error}</p>}
-            </form>
+                <p className="signup-footer">
+                    ¿Ya tienes cuenta? <a href="/" className="signup-link">Inicia sesión</a>
+                </p>
+            </div>
         </div>
     );
-};
-
-const signupStyles = {
-    container: {
-        display: "flex",
-        height: "100vh",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f2f2f2",
-    },
-    form: {
-        backgroundColor: "#fff",
-        padding: "2rem",
-        borderRadius: "10px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-        width: "100%",
-        maxWidth: "400px",
-        display: "flex",
-        flexDirection: "column",
-    },
-    title: {
-        marginBottom: "1.5rem",
-        textAlign: "center",
-        fontSize: "24px",
-    },
-    label: {
-        marginBottom: "0.5rem",
-        fontWeight: "bold"
-    },
-    input: {
-        padding: "0.5rem",
-        marginBottom: "1rem",
-        borderRadius: "5px",
-        border: "1px solid #ccc"
-    },
-    button: {
-        padding: "0.75rem",
-        borderRadius: "5px",
-        backgroundColor: "#007bff",
-        color: "white",
-        border: "none",
-        cursor: "pointer"
-    },
-    message: {
-        marginTop: "1rem",
-        textAlign: "center"
-    }
 };
 
 export default Signup;

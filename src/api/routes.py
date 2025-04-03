@@ -43,7 +43,7 @@ def crear_token():
 
 
 @api.route('/admins', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_admins():
 
     admins = Admins.query.all()
@@ -52,7 +52,7 @@ def obtener_admins():
 
 
 @api.route('/usuarios', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_usuarios():
 
     usuarios = Usuarios.query.all()
@@ -61,7 +61,7 @@ def obtener_usuarios():
 
 
 @api.route('/usuarios/<int:usuario_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_usuario(usuario_id):
 
     usuario = Usuarios.query.get(usuario_id)
@@ -72,7 +72,7 @@ def obtener_usuario(usuario_id):
 
 
 @api.route('/usuarios', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_usuario():
 
     data = request.get_json()
@@ -81,10 +81,11 @@ def agregar_usuario():
 
     campos_requeridos = [
         "username",
-        "password_hash",
+        "password",
         "negocio_cif",
         "rol",
     ]
+
     for campo in campos_requeridos:
         if campo not in data:
             return jsonify({"error": f"el campo {campo} es obligatorio"}), 400
@@ -93,14 +94,25 @@ def agregar_usuario():
         username=data["username"]).first()
     if usuario_existente:
         return jsonify({"error": "el usuario ya existe"}), 400
+    
+    negocio = Negocios.query.filter_by(negocio_cif=data["negocio_cif"]).first()
+    if not negocio:
+        return jsonify({"error": "el negocio con ese CIF no existe"}), 400
+
+    roles_permitidos = {"master", "jefe", "empleado"}
+    if data["rol"] not in roles_permitidos:
+        return jsonify({"error": "Rol inválido. Los valores permitidos son: master, jefe, empleado"}), 400
+
+    data["rol"] = data["rol"].lower()
 
     try:
         nuevo_usuario = Usuarios(
             username=data["username"],
-            password=data["password_hash"],
-            negocio=data["negocio_cif"],
+            password=data["password"],
+            negocio_cif=data["negocio_cif"], 
             rol=data["rol"]
         )
+
         db.session.add(nuevo_usuario)
         db.session.commit()
 
@@ -117,7 +129,7 @@ def agregar_usuario():
 
 
 @api.route('/usuarios', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def actualizar_usuario():
     data = request.get_json()
 
@@ -161,7 +173,7 @@ def actualizar_usuario():
 
 
 @api.route('/usuarios/<string:username>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_usuario(username):
 
     usuario = Usuarios.query.filter_by(username=username).first()
@@ -186,7 +198,7 @@ def borrar_usuario(username):
 # -----------------------------------------RUTAS PARA CLIENTES ----------------------
 
 @api.route('/clientes', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_clientes():
 
     clientes = Clientes.query.all()
@@ -196,7 +208,7 @@ def obtener_clientes():
 
 
 @api.route('/clientes/<int:cliente_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_cliente(cliente_id):
 
     cliente = Clientes.query.get(cliente_id)
@@ -207,7 +219,7 @@ def obtener_cliente(cliente_id):
 
 
 @api.route('/clientes', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_cliente():
 
     data = request.get_json()
@@ -260,7 +272,7 @@ def agregar_cliente():
 
 
 @api.route('/clientes', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def actualizar_cliente():
     data = request.get_json()
 
@@ -302,7 +314,7 @@ def actualizar_cliente():
 
 
 @api.route('/clientes/<int:cliente_id>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_cliente(cliente_id):
 
     cliente = Clientes.query.filter_by(id=cliente_id).first()
@@ -324,8 +336,10 @@ def borrar_cliente(cliente_id):
         return jsonify({"error": str(e)}), 500
 
 
+#-------------------------Negocios ------------
+
 @api.route('/negocios', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_negocios():
 
     negocios = Negocios.query.all()
@@ -334,7 +348,7 @@ def obtener_negocios():
 
 
 @api.route('/negocios/<string:negocios_cif>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_negocio(negocios_cif):
 
     negocio = Negocios.query.get(negocios_cif)
@@ -345,7 +359,7 @@ def obtener_negocio(negocios_cif):
 
 
 @api.route('/negocios', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_negocio():
 
     data = request.get_json()
@@ -371,9 +385,9 @@ def agregar_negocio():
     try:
 
         nuevo_negocio = Negocios(
-            nombre=data["nombre"],
-            CIF=data["CIF"],
-            CP=data["CP"],
+            nombre_negocio=data["nombre"],
+            negocio_cif=data["CIF"],
+            negocio_cp=data["CP"],
         )
 
         db.session.add(nuevo_negocio)
@@ -392,7 +406,7 @@ def agregar_negocio():
 
 
 @api.route('/negocios', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def actualizar_negocio():
     data = request.get_json()
 
@@ -425,7 +439,7 @@ def actualizar_negocio():
 
 
 @api.route('/negocios/<string:negocio_cif>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_negocio(negocio_cif):
 
     negocio = Negocios.query.filter_by(negocio_cif=negocio_cif).first()
@@ -446,11 +460,11 @@ def borrar_negocio(negocio_cif):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
- # ---------------------SERVICIO
+ # ---------------------SERVICIO ----------------------
 
 
 @api.route('/servicios', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_servicios():
 
     servicios = Servicios.query.all()
@@ -460,7 +474,7 @@ def obtener_servicios():
 
 
 @api.route('/servicios/<string:nombre>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_servicio(nombre):
 
     Servicio = Servicios.query.filter_by(nombre=nombre).first()
@@ -471,7 +485,7 @@ def obtener_servicio(nombre):
 
 
 @api.route('/servicios', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_servicio():
 
     data = request.get_json()
@@ -520,7 +534,7 @@ def agregar_servicio():
 
 
 @api.route('/servicios/<string:nombre_servicio>', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def actualizar_servicio(nombre_servicio):
     data = request.get_json()
 
@@ -552,7 +566,7 @@ def actualizar_servicio(nombre_servicio):
 
 
 @api.route('/servicios/<string:nombre_servicio>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_servicio(nombre_servicio):
 
     servicio = Servicios.query.filter_by(nombre=nombre_servicio).first()
@@ -577,7 +591,7 @@ def borrar_servicio(nombre_servicio):
 
 
 @api.route('/pagos', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_pagos():
 
     pagos = Pagos.query.all()
@@ -586,7 +600,7 @@ def obtener_pagos():
 
 
 @api.route('/pagos/<int:cliente_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_pago(cliente_id):
 
     pagos = Pagos.query.filter_by(cliente_id=cliente_id)
@@ -597,7 +611,7 @@ def obtener_pago(cliente_id):
 
 
 @api.route('/pagos', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_pago():
     data = request.get_json()
     if not data:
@@ -650,7 +664,7 @@ def agregar_pago():
 
 
 @api.route('/citas', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_citas():
 
     citas = Citas.query.all()
@@ -659,7 +673,7 @@ def obtener_citas():
 
 
 @api.route('/citas/<int:cliente_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_cita_cliente(cliente_id):
 
     citas = Citas.query.filter_by(cliente_id=cliente_id).all()
@@ -671,13 +685,13 @@ def obtener_cita_cliente(cliente_id):
 
 
 @api.route('/citas', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_cita():
 
     data = request.get_json()
 
     if not data:
-        return jsonify({"error": "No se proporcionaron datos en la solicitud"}), 400 
+        return jsonify({"error": "No se proporcionaron datos en la solicitud"}), 400
 
     campos_requeridos = [
         "email_cliente",
@@ -689,13 +703,14 @@ def agregar_cita():
     for campo in campos_requeridos:
         if campo not in data:
             return jsonify({"error": f"el campo {campo} es obligatorio"}), 400
-    
+
     try:
-        fecha_hora = datetime.fromisoformat(data["fecha_hora"].replace('Z', '+00:00'))
+        fecha_hora = datetime.fromisoformat(
+            data["fecha_hora"].replace('Z', '+00:00'))
 
         if fecha_hora < datetime.now():
             return jsonify({"error": "no se pueden agendar citas en fechas pasadas"}), 400
-        
+
     except ValueError:
         return jsonify({"error": "Formato de fecha y hora inválido. Use formato ISO (YYYY-MM-DDTHH:MM:SS)"}), 400
 
@@ -703,14 +718,15 @@ def agregar_cita():
     if not cliente:
         return jsonify({"error": "el cliente no ha sido encontrado"}), 404
 
-    servicio = Servicios.query.filter_by(nombre=data["nombre_servicio"]).first()
+    servicio = Servicios.query.filter_by(
+        nombre=data["nombre_servicio"]).first()
     if not servicio:
         return jsonify({"error": "el servicio no ha sido encontrado"}), 404
 
     usuario = Usuarios.query.filter_by(username=data["nombre_usuario"]).first()
     if not usuario:
         return jsonify({"error": "el usuario no ha sido encontrado"}), 404
-    
+
     fecha_solo = fecha_hora.date()
 
     citas_del_dia = Citas.query.filter(
@@ -718,7 +734,7 @@ def agregar_cita():
         func.date(Citas.fecha_hora) == fecha_solo
     ).count()
 
-    MAX_CITAS_DIARIAS = 6  
+    MAX_CITAS_DIARIAS = 6
 
     if citas_del_dia >= MAX_CITAS_DIARIAS:
         return jsonify({
@@ -729,9 +745,9 @@ def agregar_cita():
         usuario_id=usuario.id,
         fecha_hora=fecha_hora
     ).first()
-        
+
     if cita_existente_usuario:
-        return jsonify({"error": "el usuario ya tiene una cita agendada para esta fecha y hora"}), 409 
+        return jsonify({"error": "el usuario ya tiene una cita agendada para esta fecha y hora"}), 409
 
     cita_cliente = Citas.query.filter_by(
         cliente_id=cliente.id,
@@ -764,30 +780,31 @@ def agregar_cita():
 
 
 @api.route('/citas/<int:cita_id>', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def actualizar_cita(cita_id):
 
     data = request.get_json()
 
     if not data:
-         return jsonify({"error": "Data no encontrada"}), 400
+        return jsonify({"error": "Data no encontrada"}), 400
 
     cita_existente = Citas.query.get(cita_id)
 
     if not cita_existente:
-         return jsonify({"error": "cita no encontrado"}), 404
+        return jsonify({"error": "cita no encontrado"}), 404
 
     servicio = Servicios.query.filter_by(
-         nombre=data.get("nombre_servicio")).first()
-    
+        nombre=data.get("nombre_servicio")).first()
+
     if not servicio:
         return jsonify({"error": "servicio no encontrado"}), 404
-        
-    usuario = Usuarios.query.filter_by(username = data.get("nombre_usuario")).first()
+
+    usuario = Usuarios.query.filter_by(
+        username=data.get("nombre_usuario")).first()
 
     if not usuario:
-        return jsonify({"error":"Usuario no encotrado"}), 404
-    
+        return jsonify({"error": "Usuario no encotrado"}), 404
+
     try:
 
         cita_existente.fecha_hora = data.get(
@@ -800,9 +817,9 @@ def actualizar_cita(cita_id):
         db.session.commit()
 
         return jsonify({
-             "msg": "cita actualizada con éxito",
-             "cita": cita_existente.serialize_cita()
-         }), 200
+            "msg": "cita actualizada con éxito",
+            "cita": cita_existente.serialize_cita()
+        }), 200
 
     except Exception as e:
         db.session.rollback()
@@ -810,49 +827,49 @@ def actualizar_cita(cita_id):
 
 
 @api.route('/citas/<int:citas_id>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_cita(citas_id):
 
-     cita = Citas.query.filter_by(id=citas_id).first()
+    cita = Citas.query.filter_by(id=citas_id).first()
 
-     if not cita:
-         return jsonify({
-             "error": "cita no encontrada"
-         }), 404
+    if not cita:
+        return jsonify({
+            "error": "cita no encontrada"
+        }), 404
 
-     try:
-         db.session.delete(cita)
-         db.session.commit()
+    try:
+        db.session.delete(cita)
+        db.session.commit()
 
-         return jsonify({
-             "msg": "cita borrada correctamente"
-         }), 200
-     except Exception as e:
-         db.session.rollback()
-         return jsonify({"error": str(e)}), 500
+        return jsonify({
+            "msg": "cita borrada correctamente"
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 # -----------------------------Notas-----------------
 
 
 @api.route('/notas', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_notas():
 
     notas = Notas.query.all()
 
     if not notas:
         return jsonify({"error": "notas no encontradas"}), 404
-    
+
     serialized_nota = [nota.serialize_servicio() for nota in notas]
     return jsonify(serialized_nota), 200
 
 
 @api.route('/notas/<int:cliente_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def obtener_notas_cliente(cliente_id):
 
     notas = Notas.query.filter_by(cliente_id).all()
-    
+
     if not notas:
         return jsonify({"msg": "notas no encontradas"}), 200
 
@@ -860,14 +877,14 @@ def obtener_notas_cliente(cliente_id):
 
 
 @api.route('/notas', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def agregar_nota():
 
     data = request.get_json()
-    
+
     if not data:
         return jsonify({"error": "data no encontrada"}), 404
-    
+
     campos_requeridos = [
         "nombre_cliente",
         "email_cliente",
@@ -881,14 +898,14 @@ def agregar_nota():
     try:
         cliente = Clientes.query.filter_by(
             email=data["email_cliente"]).first()
-            
+
         if not cliente:
             return jsonify({"error": "cliente no encontrado"}), 404
 
         nueva_nota = Notas(
             cliente_id=cliente.id,
             nombre_cliente=cliente.nombre,
-            descripcion = data["descripcion"]
+            descripcion=data["descripcion"]
         )
 
         db.session.add(nueva_nota)
@@ -905,7 +922,7 @@ def agregar_nota():
 
 
 @api.route('/notas/<int:cliente_id>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def borrar_nota(cliente_id):
 
     nota = Notas.query.filter_by(cliente_id=cliente_id).first()

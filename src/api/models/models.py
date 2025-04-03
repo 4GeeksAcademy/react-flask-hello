@@ -95,8 +95,8 @@ class Field(db.Model):
             "number": self.number,
             "postal_code": self.postal_code,
             "city": self.city,
-            "user_id": self.user_id
-            "coordinates": self.coordinates
+            "user_id": self.user_id,
+            "coordinates": self.coordinates,
         }
 
     def __repr__(self):

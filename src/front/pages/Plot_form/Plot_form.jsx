@@ -34,7 +34,7 @@ const PlotForm = () => {
 
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/fields`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/fields/fields`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

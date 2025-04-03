@@ -1,11 +1,13 @@
 
 /*_______________MENU__LOGIN______________*/
+
 .register {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh; 
     padding: 20px;
+    
 }
 
 .register form {
@@ -15,21 +17,23 @@
     border: 2px solid gray;
     border-radius: 20px;
     color: gray;
-    background: none;
+    background: #D9D9D9;
 }
 
 .form-control {
-    background: black !important;
-    color: white !important;
-    border: 1px solid grey !important;
+    all:unset;
+    background: none;
+    color: #2F4556;
+    border: 1px solid white !important;
     padding: 10px !important;
     outline: none !important;
     box-shadow: none !important;
+    border-radius: 20px;
 }
-
 
 .form-control:focus, 
 .form-control:active {
+    all:unset;
     border-color: white !important;
     outline: none !important;
     box-shadow: none !important;
@@ -46,6 +50,7 @@
     background-color: black; 
     transition: background-color 0.3s, border-color 0.3s; 
 }
+
 /*_______________MENU__LOGIN______________*/
 
 

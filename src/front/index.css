@@ -1,11 +1,21 @@
+/* 👇 ❇️ Riki for the group success 👊 
+Importar las fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+/* Estilos globales */
 body {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-      url("https://images.unsplash.com/photo-1611080626919-df7f1c66f3b9?auto=format&fit=crop&w=1500&q=80");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
+    font-family: 'Roboto', sans-serif; /* Fuente principal para el cuerpo */
     margin: 0;
     padding: 0;
-  }
+    box-sizing: border-box;
+    color: #333; /* Color base del texto */
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif; /* Fuente para encabezados */
+    font-weight: 700;
+    color: #4682B4; /* Ejemplo de color para títulos */
+}
+
+
   

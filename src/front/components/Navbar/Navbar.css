@@ -1,0 +1,144 @@
+/* 👇 ❇️ Riki for the group success 👊 */
+
+/* Estilos Base */
+.navbar {
+    background-color: #198754;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Logo */
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+  
+  .logo-img {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo-text {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Menú Hamburguesa (Mobile) */
+  .navbar-toggle {
+    display: none;
+  }
+  
+  .navbar-toggle-label {
+    display: none;
+    cursor: pointer;
+    width: 30px;
+    height: 21px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .navbar-toggle-label span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
+  }
+  
+  /* Items de Navegación */
+  .navbar-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-item {
+    margin-left: 2rem;
+  }
+  
+  .navbar-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 0.5rem 0;
+    position: relative;
+  }
+  
+  .navbar-link:hover {
+    color: #cce7d8;
+  }
+  
+  .navbar-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s;
+  }
+  
+  .navbar-link:hover::after {
+    width: 100%;
+  }
+  
+  .navbar-button {
+    background-color: white;
+    color: #198754;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .navbar-button:hover {
+    background-color: #e8f3ed;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .navbar-toggle-label {
+      display: flex;
+    }
+  
+    .navbar-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: #198754;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+      clip-path: circle(0px at 90% -10%);
+      transition: clip-path 0.5s ease-out;
+    }
+  
+    .navbar-toggle:checked ~ .navbar-menu {
+      clip-path: circle(1000px at 90% -10%);
+    }
+  
+    .navbar-item {
+      margin: 1rem 0;
+    }
+  }

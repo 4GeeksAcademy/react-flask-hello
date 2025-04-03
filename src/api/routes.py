@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Nota, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
+from api.models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
+from datetime import datetime
+from sqlalchemy import func
+
 
 api = Blueprint('api', __name__)
 
@@ -133,7 +136,7 @@ def actualizar_usuario():
     if not usuario_existente:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    negocio_existente = Negocio.query.filter_by(
+    negocio_existente = Negocios.query.filter_by(
         negocio_cif=data["negocio_cif"]).first()
     if not negocio_existente:
         return jsonify({"error": "Negocio no encontrado"}), 404
@@ -270,7 +273,7 @@ def actualizar_cliente():
     if not cliente_existente:
         return jsonify({"error": "Cliente no encontrado"}), 404
 
-    servicio_existente = Servicio.query.filter_by(
+    servicio_existente = Servicios.query.filter_by(
         nombre=data["nombre"]).first()
 
     if not servicio_existente:
@@ -645,6 +648,7 @@ def agregar_pago():
 
     # -----------------------------Cita-----------------
 
+
 @api.route('/citas', methods=['GET'])
 @jwt_required()
 def obtener_citas():
@@ -658,121 +662,268 @@ def obtener_citas():
 @jwt_required()
 def obtener_cita_cliente(cliente_id):
 
-    citas = Citas.query.filter_by(cliente_id=cliente_id)
+    citas = Citas.query.filter_by(cliente_id=cliente_id).all()
+
     if not citas:
         return jsonify({"error": "citas no encontradas"}), 404
 
-    return jsonify(citas.serialize_pago()), 200
+    return jsonify(citas.serialize_cita()), 200
 
 
 @api.route('/citas', methods=['POST'])
 @jwt_required()
 def agregar_cita():
+
     data = request.get_json()
+
     if not data:
-        return jsonify({"error": "data no encontrada"}), 404
+        return jsonify({"error": "No se proporcionaron datos en la solicitud"}), 400 
 
     campos_requeridos = [
         "email_cliente",
         "fecha_hora",
-        "nombre_usuario", 
+        "nombre_usuario",
         "nombre_servicio"
     ]
 
     for campo in campos_requeridos:
         if campo not in data:
             return jsonify({"error": f"el campo {campo} es obligatorio"}), 400
-        
-    cliente = Clientes.query.filter_by(email = data["email_cliente"]).first()
+    
+    try:
+        fecha_hora = datetime.fromisoformat(data["fecha_hora"].replace('Z', '+00:00'))
 
+        if fecha_hora < datetime.now():
+            return jsonify({"error": "no se pueden agendar citas en fechas pasadas"}), 400
+        
+    except ValueError:
+        return jsonify({"error": "Formato de fecha y hora inválido. Use formato ISO (YYYY-MM-DDTHH:MM:SS)"}), 400
+
+    cliente = Clientes.query.filter_by(email=data["email_cliente"]).first()
     if not cliente:
         return jsonify({"error": "el cliente no ha sido encontrado"}), 404
 
-    servicio = Servicios.query.fulter_by(nombre=data["nombre_servicio"]).first()
-
+    servicio = Servicios.query.filter_by(nombre=data["nombre_servicio"]).first()
     if not servicio:
         return jsonify({"error": "el servicio no ha sido encontrado"}), 404
-    
-    usuario = Usuarios.query.filter_by(username = data["nombre_usuario"]).first()
 
+    usuario = Usuarios.query.filter_by(username=data["nombre_usuario"]).first()
     if not usuario:
         return jsonify({"error": "el usuario no ha sido encontrado"}), 404
     
-    try:
+    fecha_solo = fecha_hora.date()
 
+    citas_del_dia = Citas.query.filter(
+        Citas.usuario_id == usuario.id,
+        func.date(Citas.fecha_hora) == fecha_solo
+    ).count()
+
+    MAX_CITAS_DIARIAS = 6  
+
+    if citas_del_dia >= MAX_CITAS_DIARIAS:
+        return jsonify({
+            "error": f"el usuario ya tiene {MAX_CITAS_DIARIAS} citas programadas para este día, ha alcanzado el límite diario"
+        }), 409
+
+    cita_existente_usuario = Citas.query.filter_by(
+        usuario_id=usuario.id,
+        fecha_hora=fecha_hora
+    ).first()
+        
+    if cita_existente_usuario:
+        return jsonify({"error": "el usuario ya tiene una cita agendada para esta fecha y hora"}), 409 
+
+    cita_cliente = Citas.query.filter_by(
+        cliente_id=cliente.id,
+        fecha_hora=fecha_hora
+    ).first()
+
+    if cita_cliente:
+        return jsonify({"error": "el cliente ya tiene una cita agendada para esta fecha y hora"}), 409
+
+    try:
         nueva_cita = Citas(
+            usuario_id=usuario.id,
             cliente_id=cliente.id,
-            nombre_cliente=cliente.nombre,
-            fecha_hora=data["fecha_hora"],
-            nombre_servicio=servicio.nombre, 
-            nombre_usuario = usuario.username
+            servicio_id=servicio.id,
+            fecha_hora=fecha_hora,
+            estado="pendiente"
         )
 
         db.session.add(nueva_cita)
         db.session.commit()
 
         return jsonify({
-            "msg": "Pago registrado con éxito",
-            "pago": nueva_cita.serialize_cita()
+            "msg": "Cita registrada con éxito",
+            "cita": nueva_cita.serialize_cita()
         }), 201
 
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
-# -----------------------PENDIENTE---------------
-# @api.route('/servicios/<string:nombre_servicio>', methods=['PUT'])
-# @jwt_required()
-# def actualizar_servicio(nombre_servicio):
-#     data = request.get_json()
 
-#     if not data:
-#         return jsonify({"error": "Data no encontrada"}), 400
+@api.route('/citas/<int:cita_id>', methods=['PUT'])
+@jwt_required()
+def actualizar_cita(cita_id):
 
-#     servicio_existente = Servicios.query.filter_by(
-#         nombre=nombre_servicio).first()
+    data = request.get_json()
 
-#     if not servicio_existente:
-#         return jsonify({"error": "Servicio no encontrado"}), 404
+    if not data:
+         return jsonify({"error": "Data no encontrada"}), 400
 
-#     try:
-#         servicio_existente.descripcion = data.get(
-#             "descripcion", servicio_existente.descripcion)
-#         servicio_existente.precio = data.get(
-#             "precio", servicio_existente.precio)
+    cita_existente = Citas.query.get(cita_id)
 
-#         db.session.commit()
+    if not cita_existente:
+         return jsonify({"error": "cita no encontrado"}), 404
 
-#         return jsonify({
-#             "msg": "Servicio actualizado con éxito",
-#             "servicio": servicio_existente.serialize_servicio()
-#         }), 200
+    servicio = Servicios.query.filter_by(
+         nombre=data.get("nombre_servicio")).first()
+    
+    if not servicio:
+        return jsonify({"error": "servicio no encontrado"}), 404
+        
+    usuario = Usuarios.query.filter_by(username = data.get("nombre_usuario")).first()
 
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": str(e)}), 500
+    if not usuario:
+        return jsonify({"error":"Usuario no encotrado"}), 404
+    
+    try:
+
+        cita_existente.fecha_hora = data.get(
+            "fecha_hora", cita_existente.fecha_hora)
+        cita_existente.nombre_servicio = data.get(
+            "nombre_servicio", cita_existente.nombre_servicio)
+        cita_existente.nombre_usuario = data.get(
+            "nombre_usuario", cita_existente.nombre_usuario)
+
+        db.session.commit()
+
+        return jsonify({
+             "msg": "cita actualizada con éxito",
+             "cita": cita_existente.serialize_cita()
+         }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 
-# @api.route('/servicios/<string:nombre_servicio>', methods=['DELETE'])
-# @jwt_required()
-# def borrar_servicio(nombre_servicio):
+@api.route('/citas/<int:citas_id>', methods=['DELETE'])
+@jwt_required()
+def borrar_cita(citas_id):
 
-#     servicio = Servicios.query.filter_by(nombre=nombre_servicio).first()
+     cita = Citas.query.filter_by(id=citas_id).first()
 
-#     if not servicio:
-#         return jsonify({
-#             "error": "servicio no encontrado"
-#         }), 404
+     if not cita:
+         return jsonify({
+             "error": "cita no encontrada"
+         }), 404
 
-#     try:
-#         db.session.delete(servicio)
-#         db.session.commit()
+     try:
+         db.session.delete(cita)
+         db.session.commit()
 
-#         return jsonify({
-#             "msg": "servicio borrado correctamente"
-#         }), 200
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": str(e)}), 500
+         return jsonify({
+             "msg": "cita borrada correctamente"
+         }), 200
+     except Exception as e:
+         db.session.rollback()
+         return jsonify({"error": str(e)}), 500
+
+# -----------------------------Notas-----------------
+
+
+@api.route('/notas', methods=['GET'])
+@jwt_required()
+def obtener_notas():
+
+    notas = Notas.query.all()
+
+    if not notas:
+        return jsonify({"error": "notas no encontradas"}), 404
+    
+    serialized_nota = [nota.serialize_servicio() for nota in notas]
+    return jsonify(serialized_nota), 200
+
+
+@api.route('/notas/<int:cliente_id>', methods=['GET'])
+@jwt_required()
+def obtener_notas_cliente(cliente_id):
+
+    notas = Notas.query.filter_by(cliente_id).all()
+    
+    if not notas:
+        return jsonify({"msg": "notas no encontradas"}), 200
+
+    return jsonify(notas.serialize_nota()), 200
+
+
+@api.route('/notas', methods=['POST'])
+@jwt_required()
+def agregar_nota():
+
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"error": "data no encontrada"}), 404
+    
+    campos_requeridos = [
+        "nombre_cliente",
+        "email_cliente",
+        "descripcion",
+    ]
+
+    for campo in campos_requeridos:
+        if campo not in data:
+            return jsonify({"error": f"el campo {campo} es obligatorio"}), 400
+
+    try:
+        cliente = Clientes.query.filter_by(
+            email=data["email_cliente"]).first()
+            
+        if not cliente:
+            return jsonify({"error": "cliente no encontrado"}), 404
+
+        nueva_nota = Notas(
+            cliente_id=cliente.id,
+            nombre_cliente=cliente.nombre,
+            descripcion = data["descripcion"]
+        )
+
+        db.session.add(nueva_nota)
+        db.session.commit()
+
+        return jsonify({
+            "msg": "nota registrada con éxito",
+            "pago": nueva_nota.serialize_nota()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/notas/<int:cliente_id>', methods=['DELETE'])
+@jwt_required()
+def borrar_nota(cliente_id):
+
+    nota = Notas.query.filter_by(cliente_id=cliente_id).first()
+
+    if not nota:
+        return jsonify({
+            "error": "nota no encontrada"
+        }), 404
+
+    try:
+        db.session.delete(nota)
+        db.session.commit()
+
+        return jsonify({
+            "msg": "nota borrada correctamente"
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 # NOS QUEDA HISTORIAL, CALENDARIO, PROBLEMAS

@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import "./Styles/Register.css";
 
-function Register() {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
     const [checked, setChecked] = useState(false); 
     const navigate = useNavigate(); 
 
@@ -30,10 +29,8 @@ function Register() {
 
     return (
         <div className="register">
-            
-            <form onSubmit={handleSubmit} className="form-content">
-
-                <div className = "label-content">
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
                     <label htmlFor="email" className="form-label">
                         Email address
                     </label>
@@ -48,7 +45,7 @@ function Register() {
                     />
                 </div>
 
-                <div className= "label-content">
+                <div className="mb-3">
                     <label htmlFor="password" className="form-label">
                         Password
                     </label>
@@ -62,21 +59,7 @@ function Register() {
                     />
                 </div>
 
-                <div className= "label-content">
-                    <label htmlFor="UserName" className="form-label">
-                        Username
-                    </label>
-                    <input
-                        type="username"
-                        className="form-control"
-                        id="username"
-                        name="username"
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-
-                <div className="form-check">
+                <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
@@ -91,10 +74,10 @@ function Register() {
                 </div>
 
                 <button type="submit">Registrarse</button>
-               
+                <button type="button" onClick={() => navigate("/settings")}>Settings</button>
             </form>
         </div>
     );
 }
 
-export default Register;
+export default Login;

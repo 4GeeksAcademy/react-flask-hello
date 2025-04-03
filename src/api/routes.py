@@ -103,3 +103,4 @@ def get_user_info():
     return jsonify({
         "name": user.serialize()["username"]
     }), 200       
+

@@ -67,9 +67,9 @@ const Form = () => {
                         Check me out
                     </label>
                 </div>
-                <button type="submit">
-                    Submit
-                </button>
+
+                <button  type="submit" onClick={() => navigate("/settings")}>Settings</button>
+
             </form>
         </div>
     );

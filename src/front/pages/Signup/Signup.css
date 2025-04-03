@@ -1,7 +1,7 @@
 /* Fondo con imagen y overlay oscuro */
 .signup-background {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                   url("../../public/assets/img/Login1.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("../../assets/img/Login1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -9,7 +9,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
 }
 
 /* Contenedor del formulario */

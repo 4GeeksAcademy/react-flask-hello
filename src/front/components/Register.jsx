@@ -7,38 +7,48 @@ function Register() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [checked, setChecked] = useState(false); 
-    const navigate = useNavigate(); 
+    
+const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+const handleRegister = async (e) => {
+    e.preventDefault()
 
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/login', {
+    try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/signup', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, username }),
         });
-        
+
         const data = await response.json();
         alert(data.message);
 
+        
+        if (response.ok) {
+            navigate("/Settings"); 
 
-        {/hacer un  try catch y justo encima del catch, el ultimo paso del try seria un navigate a la pagina que quiera/}
-    
-    };
+        } else {
+            throw new Error(data.message || "Error en el inicio de sesión");
+        }
+    } catch (error) {
+        console.error("Error en el login:", error);
+        alert("Hubo un problema con el inicio de sesión.");
+    }
+};
 
     return (
         <div className="register">
             
-            <form onSubmit={handleSubmit} className="form-content">
+            <form onSubmit={handleRegister} className="form-content">
 
                 <div className = "label-content">
                     <label htmlFor="email" className="form-label">
                         Email address
                     </label>
                     <input
-                        type="email"
+                        type="email" 
                         className="form-control"
                         id="email"
                         name="email"

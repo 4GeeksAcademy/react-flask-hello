@@ -11,7 +11,7 @@ class Admins(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    rol: Mapped[str] = mapped_column(Enum("Admin", name="role_admin"), nullable=False)
+    rol: Mapped[str] = mapped_column(Enum("Admin", name="role_admin"), nullable=False)#
 
     def __init__(self, username, password, rol):
         self.username = username
@@ -87,7 +87,7 @@ class Usuarios(db.Model):
 class Servicios(db.Model):
     __tablename__= 'servicio'
     id: Mapped[int] = mapped_column(primary_key=True)
-    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)
+    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)#limitar (8)
     nombre: Mapped[str] = mapped_column(String(75),unique= True ,nullable=False)
     descripcion: Mapped[str] = mapped_column(String(500),  nullable=False)
     precio: Mapped[int] = mapped_column(Numeric(10,2), nullable=False)#precio con numeric, pero puede ser con Float o incluso Biginteger

@@ -1,1 +1,1 @@
-PRUENBA DE SUBIDA A LA RAMA Styles_Dani_2
+intento de implementar el back del registro en el front del registro sin exito

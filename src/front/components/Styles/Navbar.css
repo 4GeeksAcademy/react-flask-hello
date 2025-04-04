@@ -40,7 +40,9 @@
 .nav_buttons button:hover {
   scale: 1.1;
 }
-
-
+.nav_buttons button:active {
+  color:white;
+  background: none;
+}
 
 /*--------BUTTONS------*/

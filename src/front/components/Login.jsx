@@ -1,54 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import "./Styles/Register.css";
+import "./Styles/Login.css";
 
-function Register() {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
     const [checked, setChecked] = useState(false); 
-    
-const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
-const handleRegister = async (e) => {
-    e.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/signup', {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/login', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password, username }),
+            body: JSON.stringify({ email, password }),
         });
-
+        
         const data = await response.json();
         alert(data.message);
 
-        
-        if (response.ok) {
-            navigate("/Register"); 
 
-        } else {
-            throw new Error(data.message || "Error en el inicio de sesión");
-        }
-    } catch (error) {
-        console.error("Error en el login:", error);
-        alert("Hubo un problema con el inicio de sesión.");
-    }
-};
+        {/hacer un  try catch y justo encima del catch, el ultimo paso del try seria un navigate a la pagina que quiera/}
+    
+    };
 
     return (
         <div className="register">
-            
-            <form onSubmit={handleRegister} className="form-content">
-
-                <div className = "label-content">
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
                     <label htmlFor="email" className="form-label">
                         Email address
                     </label>
                     <input
-                        type="email" 
+                        type="email"
                         className="form-control"
                         id="email"
                         name="email"
@@ -58,7 +45,7 @@ const handleRegister = async (e) => {
                     />
                 </div>
 
-                <div className= "label-content">
+                <div className="mb-3">
                     <label htmlFor="password" className="form-label">
                         Password
                     </label>
@@ -72,22 +59,7 @@ const handleRegister = async (e) => {
                     />
                 </div>
 
-                <div className= "label-content">
-                    <label htmlFor="UserName" className="form-label">
-                        Username
-                    </label>
-                    <input
-                        type="username"
-                        className="form-control"
-                        id="username"
-                        name="username"
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-
-                {/*BOTON DE CHEK*/}
-                <div className="form-check">
+                <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
@@ -102,10 +74,10 @@ const handleRegister = async (e) => {
                 </div>
 
                 <button type="submit">Registrarse</button>
-               
+                <button type="button" onClick={() => navigate("/settings")}>Settings</button>
             </form>
         </div>
     );
 }
 
-export default Register;
+export default Login;

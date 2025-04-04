@@ -3,7 +3,8 @@ import FormularioLogin from "../components/FormularioLogin";
 
 const Login = () => {
   return (
-    <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}> {/* ← Fondo aplicado aquí */}
+    <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}>
+      
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg p-3" style={{ backgroundColor: "#354F52" }}>
         <div className="container">

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Link } from "react-router-dom";
 
-const ClientesList = () => {
-  const [clientes, setClientes] = useState([
+const ClientesList = ({ search }) => {
+  const [clientes, setClientes] = React.useState([
     {
       id: 1,
       nombre: "Juan",
@@ -27,29 +27,44 @@ const ClientesList = () => {
       telefono: "555-9876",
       email: "carlos.lopez@example.com",
     },
+
   ]);
 
-  return (
-    <Container className="mt-4">
-      <h2>Lista de Clientes</h2>
+  // Filtrar los clientes basados en la búsqueda
+  const filteredClientes = clientes.filter(
+    (cliente) =>
+      cliente.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      cliente.cliente_dni.includes(search)
+  );
 
-      <Row>
-        {clientes.map((cliente) => (
-          <Col key={cliente.id} md={4} className="mb-3">
-            <Card>
-              <Card.Body>
-                <Card.Title>{cliente.nombre} {cliente.apellido}</Card.Title>
-                <Card.Text>
-                  <strong>DNI:</strong> {cliente.cliente_dni} <br />
-                  <strong>Teléfono:</strong> {cliente.telefono} <br />
-                  <strong>Email:</strong> {cliente.email} <br />
-                </Card.Text>
-               </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+  return (
+    <div className="container">
+      <h2>Lista de Clientes</h2>
+      <div className="row">
+        {filteredClientes.length > 0 ? (
+          filteredClientes.map((cliente) => (
+            <div key={cliente.id} className="col-md-12 mb-3">
+              <Link to={`/cliente/${cliente.id}`} style={{ textDecoration: 'none' }}>
+                <div className="card" >
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      {cliente.nombre} {cliente.apellido}
+                    </h5>
+                    <p className="card-text">
+                      <strong>DNI:</strong> {cliente.cliente_dni} <br />
+                      <strong>Teléfono:</strong> {cliente.telefono} <br />
+                      <strong>Email:</strong> {cliente.email} <br />
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>No se encontraron clientes.</p>
+        )}
+      </div>
+    </div>
   );
 };
 

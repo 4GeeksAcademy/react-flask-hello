@@ -7,12 +7,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from api.models import db, Citas, Calendario, Usuarios, Clientes, Servicios
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # Crear un Blueprint separado para las operaciones de Google Calendar
 calendar_api = Blueprint('calendar_api', __name__)
 
 # Definimos los scopes necesarios para el API de Google Calendar
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
+
 
 class GoogleCalendarManager:
     def __init__(self):
@@ -38,21 +40,22 @@ class GoogleCalendarManager:
 
             with open("token.json", "w") as token:
                 token.write(creds.to_json())
-                
+
         return creds
 
     def _crear_servicio(self):
         """Crea el servicio de Google Calendar."""
         return build("calendar", "v3", credentials=self.creds)
 
-    def obtener_proximos_eventos(self, max_resultados=10, calendar_id="primary"):
+    def obtener_proximos_eventos(self, max_resultados=100, calendar_id="primary"):
         """Obtiene los próximos eventos del calendario de Google."""
         if not self.service:
             return None
 
         try:
-            ahora = datetime.datetime.now(tz=datetime.timezone.utc).isoformat() + "Z"
-            
+            ahora = datetime.datetime.now(
+                tz=datetime.timezone.utc).isoformat() + "Z"
+
             events_result = (
                 self.service.events()
                 .list(
@@ -64,39 +67,30 @@ class GoogleCalendarManager:
                 )
                 .execute()
             )
+
+            eventos = events_result.get("items", [])
+            if not eventos:
+                return {"msg": "No hay citas pendientes"}
             
-            return events_result.get("items", [])
-            
+            return eventos
+
         except HttpError as error:
             print(f"Ocurrió un error: {error}")
             return None
 
     def crear_evento(self, titulo, descripcion, inicio, fin, ubicacion=None, calendar_id="primary"):
-        """
-        Crea un nuevo evento en el calendario de Google.
-        
-        Args:
-            titulo (str): Título del evento
-            descripcion (str): Descripción del evento
-            inicio (str): Fecha y hora de inicio en formato ISO
-            fin (str): Fecha y hora de fin en formato ISO
-            ubicacion (str, optional): Ubicación del evento
-            calendar_id (str, optional): ID del calendario
-        
-        Returns:
-            dict: Evento creado o None si ocurrió un error
-        """
+       
         if not self.service:
             return None
             
         evento = {
-            'summary': titulo,
-            'description': descripcion,
-            'start': {
+            'titulo': titulo,
+            'descripcion': descripcion,
+            'inicio': {
                 'dateTime': inicio,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
-            'end': {
+            'fin': {
                 'dateTime': fin,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
@@ -113,17 +107,7 @@ class GoogleCalendarManager:
             return None
             
     def actualizar_evento(self, event_id, datos_actualizados, calendar_id="primary"):
-        """
-        Actualiza un evento existente en Google Calendar.
         
-        Args:
-            event_id (str): ID del evento a actualizar
-            datos_actualizados (dict): Datos a actualizar
-            calendar_id (str, optional): ID del calendario
-            
-        Returns:
-            dict: Evento actualizado o None si ocurrió un error
-        """
         if not self.service:
             return None
             
@@ -153,16 +137,7 @@ class GoogleCalendarManager:
             return None
             
     def eliminar_evento(self, event_id, calendar_id="primary"):
-        """
-        Elimina un evento del calendario de Google.
         
-        Args:
-            event_id (str): ID del evento a eliminar
-            calendar_id (str, optional): ID del calendario
-            
-        Returns:
-            bool: True si la eliminación fue exitosa, False en caso contrario
-        """
         if not self.service:
             return False
             
@@ -173,10 +148,10 @@ class GoogleCalendarManager:
             print(f'Ocurrió un error al eliminar el evento: {error}')
             return False
 
-# Rutas para la API de Calendario
+#----------------------------- Rutas para la API de Calendario
 
 @calendar_api.route('/calendario/eventos', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def obtener_eventos_calendario():
     """Obtiene los próximos eventos del calendario de Google."""
     calendar_manager = GoogleCalendarManager()
@@ -188,7 +163,7 @@ def obtener_eventos_calendario():
     return jsonify(eventos), 200
 
 @calendar_api.route('/calendario/sincronizar', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def sincronizar_citas_con_google():
     """Sincroniza las citas de la base de datos con Google Calendar."""
     calendar_manager = GoogleCalendarManager()
@@ -260,7 +235,7 @@ def sincronizar_citas_con_google():
     }), 200
 
 @calendar_api.route('/calendario/citas/<int:cita_id>', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def crear_evento_para_cita(cita_id):
     """Crea un evento en Google Calendar para una cita específica."""
     cita = Citas.query.get(cita_id)
@@ -311,6 +286,8 @@ def crear_evento_para_cita(cita_id):
     # Guardar la referencia en la tabla Calendario
     nuevo_calendario = Calendario(
         cita_id=cita.id,
+        fecha_hora_inicio=cita.fecha_hora,
+        fecha_hora_fin=cita.fecha_hora + datetime.timedelta(hours=1),  # O la duración que corresponda
         google_event_id=evento['id'],
         ultimo_sync=datetime.datetime.now()
     )
@@ -332,7 +309,7 @@ def crear_evento_para_cita(cita_id):
         return jsonify({"error": f"Error al guardar en la base de datos: {str(e)}"}), 500
 
 @calendar_api.route('/calendario/eventos/<int:cita_id>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def actualizar_evento_cita(cita_id):
     """Actualiza un evento en Google Calendar cuando se actualiza una cita."""
     cita = Citas.query.get(cita_id)
@@ -401,7 +378,7 @@ def actualizar_evento_cita(cita_id):
         return jsonify({"error": f"Error al actualizar en la base de datos: {str(e)}"}), 500
 
 @calendar_api.route('/calendario/eventos/<int:cita_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def eliminar_evento_cita(cita_id):
     """Elimina un evento de Google Calendar cuando se elimina una cita."""
     # Buscar el registro en la tabla Calendario

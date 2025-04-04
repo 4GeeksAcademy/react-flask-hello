@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
 from api.utils import generate_sitemap, APIException
+from api.routes import GoogleCalendarManager  
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import func
 
 
@@ -705,8 +706,7 @@ def agregar_cita():
             return jsonify({"error": f"el campo {campo} es obligatorio"}), 400
 
     try:
-        fecha_hora = datetime.fromisoformat(
-            data["fecha_hora"].replace('Z', '+00:00'))
+        fecha_hora = datetime.fromisoformat(data["fecha_hora"].replace('Z', '+00:00'))
 
         if fecha_hora < datetime.now():
             return jsonify({"error": "no se pueden agendar citas en fechas pasadas"}), 400
@@ -718,8 +718,7 @@ def agregar_cita():
     if not cliente:
         return jsonify({"error": "el cliente no ha sido encontrado"}), 404
 
-    servicio = Servicios.query.filter_by(
-        nombre=data["nombre_servicio"]).first()
+    servicio = Servicios.query.filter_by(nombre=data["nombre_servicio"]).first()
     if not servicio:
         return jsonify({"error": "el servicio no ha sido encontrado"}), 404
 
@@ -769,6 +768,46 @@ def agregar_cita():
         db.session.add(nueva_cita)
         db.session.commit()
 
+        # Intentar sincronizar con Google Calendar
+        try:
+
+            cliente = Clientes.query.get(nueva_cita.cliente_id)
+            usuario = Usuarios.query.get(nueva_cita.usuario_id)
+            servicio = Servicios.query.get(nueva_cita.servicio_id)
+
+            titulo = f"Cita: {cliente.nombre} - {servicio.nombre}"
+            descripcion = f"""
+                Cliente: {cliente.nombre}
+                Email: {cliente.email}
+                Servicio: {servicio.nombre}
+                Atendido por: {usuario.username}
+                Estado: {nueva_cita.estado}
+            """
+
+            inicio = nueva_cita.fecha_hora.isoformat()
+            fin = (nueva_cita.fecha_hora + timedelta(hours=1)).isoformat()
+
+            calendar_manager = GoogleCalendarManager()
+            evento = calendar_manager.crear_evento(
+                titulo=titulo,
+                descripcion=descripcion,
+                inicio=inicio,
+                fin=fin
+            )
+
+            if evento:
+                nuevo_calendario = Calendario(
+                    cita_id=nueva_cita.id,
+                    google_event_id=evento['id'],
+                    ultimo_sync=datetime.now()
+                )
+
+                db.session.add(nuevo_calendario)
+                db.session.commit()
+
+        except Exception as e:
+            print(f"Error al sincronizar con Google Calendar: {e}")
+
         return jsonify({
             "msg": "Cita registrada con éxito",
             "cita": nueva_cita.serialize_cita()
@@ -782,43 +821,59 @@ def agregar_cita():
 @api.route('/citas/<int:cita_id>', methods=['PUT'])
 # @jwt_required()
 def actualizar_cita(cita_id):
-
     data = request.get_json()
 
     if not data:
         return jsonify({"error": "Data no encontrada"}), 400
 
-    cita_existente = Citas.query.get(cita_id)
+    cita = Citas.query.get(cita_id)
+    if not cita:
+        return jsonify({"error": "cita no encontrada"}), 404
 
-    if not cita_existente:
-        return jsonify({"error": "cita no encontrado"}), 404
-
-    servicio = Servicios.query.filter_by(
-        nombre=data.get("nombre_servicio")).first()
-
+    servicio = Servicios.query.filter_by(nombre=data.get("nombre_servicio")).first()
     if not servicio:
         return jsonify({"error": "servicio no encontrado"}), 404
 
-    usuario = Usuarios.query.filter_by(
-        username=data.get("nombre_usuario")).first()
-
+    usuario = Usuarios.query.filter_by(username=data.get("nombre_usuario")).first()
     if not usuario:
-        return jsonify({"error": "Usuario no encotrado"}), 404
+        return jsonify({"error": "Usuario no encontrado"}), 404
 
     try:
+        nueva_fecha = datetime.fromisoformat(data.get("fecha_hora").replace('Z', '+00:00'))
 
-        cita_existente.fecha_hora = data.get(
-            "fecha_hora", cita_existente.fecha_hora)
-        cita_existente.nombre_servicio = data.get(
-            "nombre_servicio", cita_existente.nombre_servicio)
-        cita_existente.nombre_usuario = data.get(
-            "nombre_usuario", cita_existente.nombre_usuario)
+        cita.fecha_hora = nueva_fecha
+        cita.servicio_id = servicio.id
+        cita.usuario_id = usuario.id
 
         db.session.commit()
 
+        # Actualizar evento en Google Calendar
+        calendario = Calendario.query.filter_by(cita_id=cita.id).first()
+        if calendario:
+            cliente = Clientes.query.get(cita.cliente_id)
+            titulo = f"Cita: {cliente.nombre} - {servicio.nombre}"
+            descripcion = f"""
+                Cliente: {cliente.nombre}
+                Email: {cliente.email}
+                Servicio: {servicio.nombre}
+                Atendido por: {usuario.username}
+                Estado: {cita.estado}
+            """
+            inicio = cita.fecha_hora.isoformat()
+            fin = (cita.fecha_hora + timedelta(hours=1)).isoformat()
+
+            calendar_manager = GoogleCalendarManager()
+            calendar_manager.actualizar_evento(
+                event_id=calendario.google_event_id,
+                titulo=titulo,
+                descripcion=descripcion,
+                inicio=inicio,
+                fin=fin
+            )
+
         return jsonify({
             "msg": "cita actualizada con éxito",
-            "cita": cita_existente.serialize_cita()
+            "cita": cita.serialize_cita()
         }), 200
 
     except Exception as e:
@@ -829,21 +884,23 @@ def actualizar_cita(cita_id):
 @api.route('/citas/<int:citas_id>', methods=['DELETE'])
 # @jwt_required()
 def borrar_cita(citas_id):
-
     cita = Citas.query.filter_by(id=citas_id).first()
-
     if not cita:
-        return jsonify({
-            "error": "cita no encontrada"
-        }), 404
+        return jsonify({"error": "cita no encontrada"}), 404
 
     try:
+        # Eliminar el evento de Google Calendar
+        calendario = Calendario.query.filter_by(cita_id=cita.id).first()
+        if calendario:
+            calendar_manager = GoogleCalendarManager()
+            calendar_manager.eliminar_evento(calendario.google_event_id)
+            db.session.delete(calendario)
+
         db.session.delete(cita)
         db.session.commit()
 
-        return jsonify({
-            "msg": "cita borrada correctamente"
-        }), 200
+        return jsonify({"msg": "cita borrada correctamente"}), 200
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500

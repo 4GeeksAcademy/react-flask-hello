@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Enum, ForeignKey, Numeric, Date
+from sqlalchemy import String, Enum, ForeignKey, Numeric, DateTime, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -11,7 +11,13 @@ class Admins(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    rol: Mapped[str] = mapped_column(Enum("Admin", name="role_admin"), nullable=False)
+    rol: Mapped[str] = mapped_column(Enum("Admin", name="role_admin"), nullable=False)#
+
+    def __init__(self, username, password, rol):
+        self.username = username
+        self.rol = rol
+        self.set_password(password) 
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -19,25 +25,26 @@ class Admins(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def serialize_admin(self):
+    def serialize_admins(self):
         return {
             "id": self.id,
             "username": self.username,
             "rol": self.rol, 
+            "password":self.password_hash
             }
     
-class Negocio(db.Model):
+class Negocios(db.Model):
     __tablename__="negocio"
     id: Mapped[int] = mapped_column(primary_key=True)
-    nombre_negocio: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    nombre_negocio: Mapped[str] = mapped_column(String(50), nullable=False)
     negocio_cif: Mapped[str] = mapped_column(String(15), unique=True, nullable=False) 
     negocio_cp: Mapped[str] = mapped_column(String(10), nullable=False)
 
     usuarios = relationship("Usuarios", back_populates="negocio")
-    servicios = relationship("Servicio", back_populates="negocio")
+    servicios = relationship("Servicios", back_populates="negocio")
     
 
-    def serialize(self):
+    def serialize_negocio(self):
         return {
             "id": self.id,
             "nombre": self.nombre_negocio,
@@ -50,13 +57,18 @@ class Usuarios(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)
-    rol: Mapped[str] = mapped_column(Enum("master", "jefe", "usuario", name="role_enum"), nullable=False)
+    negocio_cif: Mapped[str] = mapped_column(ForeignKey("negocio.negocio_cif"), nullable=False)
+    rol: Mapped[str] = mapped_column(Enum("master", "jefe", "empleado", name="role_enum"), nullable=False)
 
-    negocio = relationship("Negocio", back_populates="usuarios")
+    negocio = relationship("Negocios", back_populates="usuarios")
     citas = relationship("Citas", back_populates="usuario",cascade="all, delete-orphan") 
     problemas = relationship("Problemas", back_populates="usuario", cascade="all, delete-orphan")
 
+    def __init__(self, username, password, negocio_cif, rol="empleado"):
+        self.username = username
+        self.negocio_cif = negocio_cif 
+        self.rol = rol
+        self.set_password(password) 
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -68,23 +80,24 @@ class Usuarios(db.Model):
         return {
             "id": self.id,
             "username": self.username,
-            "rol": self.rol
+            "rol": self.rol,
+            "password":self.password_hash
             }
     
-class Servicio(db.Model):
+class Servicios(db.Model):
     __tablename__= 'servicio'
     id: Mapped[int] = mapped_column(primary_key=True)
-    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)
-    nombre: Mapped[str] = mapped_column(String(75), nullable=False)
+    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)#limitar (8)
+    nombre: Mapped[str] = mapped_column(String(75),unique= True ,nullable=False)
     descripcion: Mapped[str] = mapped_column(String(500),  nullable=False)
     precio: Mapped[int] = mapped_column(Numeric(10,2), nullable=False)#precio con numeric, pero puede ser con Float o incluso Biginteger
     
 
-    negocio = relationship("Negocio", back_populates="servicios")
+    negocio = relationship("Negocios", back_populates="servicios")
     clientes = relationship("Clientes", back_populates="servicio")
     citas = relationship("Citas", back_populates="servicio", cascade="all, delete-orphan")
 
-    def serialize(self):
+    def serialize_servicio(self):
         return {
             "id": self.id,
             "negocio_id": self.negocio_id,
@@ -107,14 +120,14 @@ class Clientes(db.Model):
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable=True) #nullable true porque puede que un cliente no tenga asignado un sevicio
 
-    servicio = relationship("Servicio", back_populates="clientes")
-    notas = relationship("Nota", back_populates="cliente", cascade="all, delete-orphan")#cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
+    servicio = relationship("Servicios", back_populates="clientes")
+    notas = relationship("Notas", back_populates="cliente", cascade="all, delete-orphan")#cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
     pagos = relationship("Pagos", back_populates= "cliente", cascade="all, delete-orphan")
     citas = relationship("Citas", back_populates="cliente",cascade="all, delete-orphan")
     historial_servicios = relationship("HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
 
 
-    def serialize(self):
+    def serialize_clientes(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
@@ -125,7 +138,7 @@ class Clientes(db.Model):
             "servicio": self.servicio.serialize() if self.servicio else None,#para que se muestre en servicio y con if else para que pueda ser "none" si no tiene servicio asignado
             "notas": [nota.serialize() for nota in self.notas], #se serializa el serialize de notas para que este todo relacionado y vinculado correctamente 
         }
-class Nota(db.Model):
+class Notas(db.Model):
     __tablename__ = "nota"
     id: Mapped[int] = mapped_column(primary_key=True)
     cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable=False)
@@ -134,10 +147,11 @@ class Nota(db.Model):
     cliente = relationship("Clientes", back_populates="notas")
     historial_servicio = relationship("HistorialDeServicios", back_populates="nota")
 
-    def serialize(self):
+    def serialize_nota(self):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
+            "cliente_nombre":self.cliente.nombre, 
             "descripcion": self.descripcion
         }
 
@@ -153,7 +167,7 @@ class Pagos(db.Model):
     
     cliente = relationship("Clientes", back_populates="pagos")
 
-    def serialize(self):
+    def serialize_pago(self):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
@@ -171,21 +185,27 @@ class Citas(db.Model):
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable = False)
     cliente_id:Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable = False)
     servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable = False)
+    fecha_hora: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     estado: Mapped[str] = mapped_column(Enum("pendiente", "confirmada", "cancelada","realizada", name= "estado_cita"), nullable = False, default = "pendiente")
 
     usuario = relationship("Usuarios", back_populates="citas")
     cliente = relationship("Clientes", back_populates="citas")
-    servicio = relationship("Servicio", back_populates="citas")
+    servicio = relationship("Servicios", back_populates="citas")
     calendario = relationship("Calendario", back_populates="cita", uselist=False)
     historial_servicio = relationship("HistorialDeServicios", back_populates="cita")
 
 
-    def serialize(self):
+    def serialize_cita(self):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
+            "usuario_nombre": self.usuario.username, 
             "cliente_id": self.cliente_id,
+            "cliente_nombre": self.cliente.nombre,
+            "cliente_email": self.cliente.email,
             "servicio_id": self.servicio_id,
+            "servicio_nombre": self.servicio.nombre,
+            "fecha_hora": self.fecha_hora.isoformat(),
             "estado": self.estado,
             "calendario": self.calendario.serialize() if self.calendario else None
         }
@@ -193,17 +213,23 @@ class Citas(db.Model):
 class Calendario(db.Model):
     __tablename__ = "calendario"
     id: Mapped[int] = mapped_column(primary_key=True)
-    dia: Mapped[Date] = mapped_column(Date, nullable=False)
-    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False, unique=True) 
-
+    fecha_hora_inicio: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    fecha_hora_fin: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False, unique=True)
+    google_event_id: Mapped[str] = mapped_column(String(255), nullable=True)
+    ultimo_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
+    
     cita = relationship("Citas", back_populates="calendario")
     problemas = relationship("Problemas", back_populates="calendario", cascade="all, delete-orphan")
-
-    def serialize(self):
+    
+    def serialize_calendario(self):
         return {
             "id": self.id,
-            "dia": self.dia.isoformat(),
-            "cita_id": self.cita_id
+            "fecha_hora_inicio": self.fecha_hora_inicio.isoformat(),
+            "fecha_hora_fin": self.fecha_hora_fin.isoformat(),
+            "cita_id": self.cita_id,
+            "google_event_id": self.google_event_id,
+            "ultimo_sync": self.ultimo_sync.isoformat() if self.ultimo_sync else None
         }
     
 class Problemas(db.Model):
@@ -216,7 +242,7 @@ class Problemas(db.Model):
     usuario = relationship("Usuarios", back_populates="problemas")
     calendario = relationship("Calendario", back_populates="problemas")
 
-    def serialize(self):
+    def serialize_problema(self):
         return {
             "id": self.id,
             "id_usuario": self.usuario_id,
@@ -234,9 +260,9 @@ class HistorialDeServicios(db.Model):
 
     cliente = relationship("Clientes", back_populates="historial_servicios")
     cita = relationship("Citas", back_populates="historial_servicio")
-    nota = relationship("Nota", back_populates="historial_servicio")
+    nota = relationship("Notas", back_populates="historial_servicio")
 
-    def serialize(self):
+    def serialize_historialDeServicios(self):
         return {
             "id": self.id,
             "cliente": self.cliente.serialize() if self.cliente else None,

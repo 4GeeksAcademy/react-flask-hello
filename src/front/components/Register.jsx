@@ -27,7 +27,7 @@ const handleRegister = async (e) => {
 
         
         if (response.ok) {
-            navigate("/Settings"); 
+            navigate("/Register"); 
 
         } else {
             throw new Error(data.message || "Error en el inicio de sesión");
@@ -86,6 +86,7 @@ const handleRegister = async (e) => {
                     />
                 </div>
 
+                {/*BOTON DE CHEK*/}
                 <div className="form-check">
                     <input
                         type="checkbox"

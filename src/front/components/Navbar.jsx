@@ -18,7 +18,9 @@ const Navbar = () => {
 				</div>
 				
 				<div className="nav_buttons">
-					<button  onClick={() => navigate("/")}>Home</button>
+					<button  onClick={() => navigate("/")}>Register</button>
+					<button  onClick={() => navigate("/login")}>Login</button>
+					<button  onClick={() => navigate("/home")}>Home</button>
 					<button  onClick={() => navigate("/settings")}>Settings</button>
 				</div>
 

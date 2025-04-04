@@ -1,13 +1,12 @@
 """
 En este archivo están todas las rutas del Autenticacion de Usuario
-Signup(Registro-Nuevo Usuari0) Login Usuario
+Signup(Registro Usuario - Login Usuario)
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -56,7 +55,7 @@ def login():
         return jsonify({"error": "Credenciales inválidas"}), 401
 
     # Generar tokens
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
         "access_token": access_token,

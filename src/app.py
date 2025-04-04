@@ -9,6 +9,7 @@ from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.auth_routes.routes import auth_bp
+from api.users_routes.routes import users_bp
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -44,7 +45,9 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
-app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+
+app.register_blueprint(users_bp, url_prefix='/api/users')
 
 # Configuración del JWT
 app.config["JWT_SECRET_KEY"] = "clave-super-secreta"

@@ -11,6 +11,8 @@ import enum
 db = SQLAlchemy()
 
 # Por ahora 10 Tablas, 01/04/2025 => 8/10
+
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -19,21 +21,26 @@ class User(db.Model):
         String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(256), nullable=False)
     registration_date: Mapped[datetime] = mapped_column(
-        DateTime(), default=datetime.now, nullable=False)
+        DateTime(), default=datetime.now(), nullable=False)
 
     # Relaciones
-    general_data = relationship("GeneralData", back_populates="user")
+    general_data = relationship(
+        "GeneralData", back_populates="user", cascade="all, delete-orphan")
     emergency_contacts = relationship(
         "EmergencyContact", back_populates="user")
-    medical_history = relationship("MedicalHistory", back_populates="user")
+    medical_history = relationship(
+        "MedicalHistory", back_populates="user", cascade="all, delete-orphan")
     weight_history: Mapped[List["Weight"]
-                           ] = relationship(back_populates="user")
+                           ] = relationship(back_populates="user", cascade="all, delete-orphan")
     height_history: Mapped[List["Height"]
-                           ] = relationship(back_populates="user")
+                           ] = relationship(back_populates="user", cascade="all, delete-orphan")
     pulse_history: Mapped[List["Pulse"]
-                          ] = relationship(back_populates="user")
+                          ] = relationship(back_populates="user", cascade="all, delete-orphan")
     blood_pressure_history: Mapped[List["BloodPressure"]] = relationship(
-        back_populates="user")
+        back_populates="user", cascade="all, delete-orphan")
+    allergies: Mapped[List["Allergy"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    glucose_history: Mapped[List["Glucose"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan")
 
     # Constructor para la clase User que inicializa con email y password
 
@@ -65,9 +72,10 @@ class Gender (enum.Enum):
     # Opciones de Generos
     GENDER_MALE = "M"
     GENDER_FEMALE = "F"
-    GENDER_NONBINARY= "NB"
+    GENDER_NONBINARY = "NB"
     GENDER_OTHER = "O"
     GENDER_NONE = "NS/NC"
+
 
 class BloodType (enum.Enum):
 
@@ -80,6 +88,7 @@ class BloodType (enum.Enum):
     BLOOD_AB_NEGATIVE = "AB-"
     BLOOD_O_POSITIVE = "O+"
     BLOOD_O_NEGATIVE = "O-"
+
 
 class PhysicalActivity (enum.Enum):
 
@@ -100,15 +109,16 @@ class GeneralData(db.Model):
     birth_date: Mapped[date] = mapped_column(Date, nullable=False)
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
     last_weight: Mapped[float] = mapped_column(
-        Float(precision=2), nullable=True)
+        Float(precision=2), nullable=True) # ejemplo 55,20 en kg - en caso exacto seria 55.0 en kg
     last_height: Mapped[float] = mapped_column(
-        Float(precision=2), nullable=True)
-    BMI:  Mapped[float] = mapped_column(Float(precision=2), nullable=True)
+        Float(precision=2), nullable=True) # ejemplo 1.25 en m
+    BMI:  Mapped[float] = mapped_column(Float(precision=2), nullable=True) # El peso se mide en kilogramos (kg), La altura se mide en metros (m)
     gender: Mapped[Gender] = mapped_column(
         Enum(Gender, name="gender_enum"), nullable=False)
     blood_type: Mapped[BloodType] = mapped_column(
         Enum(BloodType, name="blood_type_enum"), nullable=True)
-    dietary_preferences: Mapped[str] = mapped_column(String(150), nullable=True)
+    dietary_preferences: Mapped[str] = mapped_column(
+        String(150), nullable=True)
     physical_activity: Mapped[PhysicalActivity] = mapped_column(
         Enum(PhysicalActivity, name="activity_level_enum"), nullable=True)
 
@@ -128,7 +138,7 @@ class GeneralData(db.Model):
             'BMI': self.BMI,
             'gender': self.gender.value if self.gender else None,
             'blood_type': self.blood_type.value if self.blood_type else None,
-            'dietary_preferences': self.dietary_preferences.value if self.dietary_preferences else None,
+            'dietary_preferences': self.dietary_preferences,
             'physical_activity': self.physical_activity.value if self.physical_activity else None,
         }
 
@@ -170,7 +180,7 @@ class MedicalHistory(db.Model):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'), nullable=False)
     registration_date:  Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now, nullable=False)
+        DateTime(), default=datetime.now(), nullable=False)
     kinship: Mapped[str] = mapped_column(
         String(50), nullable=False)  # parentesco(Madre-Padre)
     disease: Mapped[str] = mapped_column(
@@ -198,7 +208,7 @@ class Weight(db.Model):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'), nullable=False)
     registration_date:  Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now, nullable=False)
+        DateTime(), default=datetime.now(), nullable=False)
     weight: Mapped[float] = mapped_column(Float(precision=2), nullable=False)
 
     # Relación con el usuario
@@ -221,7 +231,7 @@ class Height(db.Model):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'), nullable=False)
     registration_date:  Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now, nullable=False)
+        DateTime(), default=datetime.now(), nullable=False)
     height: Mapped[float] = mapped_column(Float(precision=2), nullable=False)
 
     # Relacion con el Usuario
@@ -244,7 +254,7 @@ class Pulse(db.Model):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'), nullable=False)
     registration_date: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now)
+        DateTime(), default=datetime.now())
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
 
     # Relationship
@@ -266,7 +276,7 @@ class BloodPressure(db.Model):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'), nullable=False)
     registration_date: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now)
+        DateTime(), default=datetime.now())
     systolic: Mapped[int] = mapped_column(Integer, nullable=False)  # Sistólica
     diastolic: Mapped[int] = mapped_column(
         Integer, nullable=False)  # Diastólica
@@ -282,4 +292,67 @@ class BloodPressure(db.Model):
             'registration_date': self.registration_date.isoformat(),
             'systolic': self.systolic,
             'diastolic': self.diastolic
+        }
+
+
+class SeverityEnum(enum.Enum):
+
+    LEVE = "Leve"
+    MODERADA = "Moderada"
+    GRAVE = "Grave"
+    MUY_GRAVE = "Muy grave"
+
+
+class Allergy(db.Model):
+    __tablename__ = 'allergies'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id'), nullable=False)
+    registration_date: Mapped[datetime] = mapped_column(
+        DateTime(), default=datetime.now())
+    allergen: Mapped[str] = mapped_column(
+        String(100), nullable=False)  # Qué causa la alergia
+    desencadenante: Mapped[str] = mapped_column(
+        String(200), nullable=False)  # Qué activa la reacción
+    symptoms: Mapped[str] = mapped_column(
+        String(300), nullable=False)  # Síntomas que experimenta
+    severity: Mapped[SeverityEnum] = mapped_column(
+        Enum(SeverityEnum), name="severity_enum", nullable=False)
+
+    # Relacion con el usuario
+    user = relationship("User", back_populates="allergies")
+
+    def serialize_allergy(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'registration_date': self.registration_date.isoformat(),
+            'allergen': self.allergen,
+            'desencadenante': self.desencadenante,
+            'symptoms': self.symptoms,
+            'severity': self.severity.value if self.severity else None
+        }
+
+
+class Glucose(db.Model):
+    __tablename__ = 'glucose'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id'), nullable=False)
+    registration_date: Mapped[datetime] = mapped_column(
+        DateTime(), default=datetime.now())
+    glucose: Mapped[float] = mapped_column(Float(precision=2), nullable=False)
+
+    # Relacion con el usuario
+    user = relationship("User", back_populates="glucose_history")
+
+    def serialize_glucose(self):
+
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'registration_date': self.registration_date.isoformat(),
+            'glucose': self.glucose
         }

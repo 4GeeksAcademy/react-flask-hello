@@ -41,7 +41,7 @@ app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
 
-
+###############################################################################
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
@@ -55,16 +55,38 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# any other endpoint will try to serve it like a static file
-@app.route('/<path:path>', methods=['GET'])
-def serve_any_other_file(path):
-    if not os.path.isfile(os.path.join(static_file_dir, path)):
-        path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
-    return response
+# GET --
+@app.route('/>', methods=['GET']) #AGREGAR RUTA
+def get_item(item_id):
+    item = .get(item_id) ##CAMBIAR
+    if item:
+        return jsonify(item), 200
+    return jsonify({"error": "A habido un error"}), 404
 
+# POST
+@app.route('/', methods=['POST'])# AGREGAR RUTA
+def create_item():
+    new_item = request.get_json()
+    item_id = max(.keys()) + 1 if  else 1  # CAMBIAR
+    gfhnbfv[item_id] = new_item # CAMBIAR
+    return jsonify({"id": item_id}), 201
 
+# PUT
+@app.route('/>', methods=['PUT']) ##
+def update_item(item_id):
+    if item_id in : ##
+        updated_item = request.get_json()
+        [item_id] = updated_item
+        return jsonify([item_id]), 200
+    return jsonify({"error": "Item not found"}), 404
+
+# DELETE
+@app.route('/>', methods=['DELETE']) ##
+def delete_item(item_id):
+    if item_id in : ##
+        del [item_id]
+        return jsonify({"message": "Item deleted"}), 200
+    return jsonify({"error": "Item not found"}), 404
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))

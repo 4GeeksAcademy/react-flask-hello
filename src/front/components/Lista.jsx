@@ -30,7 +30,7 @@ const ClientesList = ({ search }) => {
 
   ]);
 
-  // Filtrar los clientes basados en la búsqueda
+  
   const filteredClientes = clientes.filter(
     (cliente) =>
       cliente.nombre.toLowerCase().includes(search.toLowerCase()) ||

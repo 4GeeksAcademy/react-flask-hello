@@ -20,6 +20,7 @@ flask-cors = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 sqlalchemy = "*"
+axios = "*"
 
 [requires]
 python_version = "3.13"

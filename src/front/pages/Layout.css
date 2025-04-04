@@ -2,23 +2,23 @@
 
 /* Estilos base del layout */
 .layout-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f8f9fa; /* Fondo general */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Fondo general */
+}
+
+.content-wrapper {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  padding: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .content-wrapper {
-    flex: 1; /* Ocupa todo el espacio disponible */
-    padding: 2rem;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    padding: 1rem;
   }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .content-wrapper {
-      padding: 1rem;
-    }
-  }
+}

@@ -213,17 +213,23 @@ class Citas(db.Model):
 class Calendario(db.Model):
     __tablename__ = "calendario"
     id: Mapped[int] = mapped_column(primary_key=True)
-    dia: Mapped[Date] = mapped_column(Date, nullable=False)
-    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False, unique=True) 
-
+    fecha_hora_inicio: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    fecha_hora_fin: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False, unique=True)
+    google_event_id: Mapped[str] = mapped_column(String(255), nullable=True)
+    ultimo_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
+    
     cita = relationship("Citas", back_populates="calendario")
     problemas = relationship("Problemas", back_populates="calendario", cascade="all, delete-orphan")
-
+    
     def serialize_calendario(self):
         return {
             "id": self.id,
-            "dia": self.dia.isoformat(),
-            "cita_id": self.cita_id
+            "fecha_hora_inicio": self.fecha_hora_inicio.isoformat(),
+            "fecha_hora_fin": self.fecha_hora_fin.isoformat(),
+            "cita_id": self.cita_id,
+            "google_event_id": self.google_event_id,
+            "ultimo_sync": self.ultimo_sync.isoformat() if self.ultimo_sync else None
         }
     
 class Problemas(db.Model):

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import Register	from "../components/Register.jsx"
+import Login from "../components/Login.jsx";
 import Navbar from "../components/Navbar.jsx";
 
 
@@ -9,9 +9,8 @@ import Navbar from "../components/Navbar.jsx";
 	return (
 
 		<div>
-			 <Register/>
+			 <Login/>
 		</div>
-
 
 	);
 }; 

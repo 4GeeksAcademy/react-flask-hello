@@ -42,29 +42,47 @@ def create_user_anonymous():
 @api.route('/signup', methods=['POST'])
 def create_user():
     body = request.get_json()
+    first_name = body.get('first_name')
+    last_name = body.get('last_name')
     email = body.get('email')
     password = body.get('password')
     username = body.get('username')
 
-    if not body or not email or not password or not username:
-        return jsonify({"msg": "Email, password and username are required"}), 400
+    # Verifica si no existen los campos
+    if not first_name or not last_name or not body or not email or not password or not username:
+        return jsonify({"msg": "Fisrt_name, last_name, email, password and username are required"}), 400
 
-    
+    # Verifica si el usuario existe
     existing_user = User.query.filter_by(email = email).first()
     if existing_user:
         return jsonify({"msg": "User already exists"}), 403
 
     try:
+
         new_user = User(
+            first_name=body["first_name"],
+            last_name=body["last_name"],
             email=body["email"],
             password=body["password"],
             username = body["username"] 
         )
 
         db.session.add(new_user)
+        db.session.flush()
+
+        # Declaramos variable de bienvenida
+
+
         db.session.commit()
 
-        return jsonify({"message": "User created succesfully"}), 201
+        # Creamos acceso al token
+        access_token = create_access_token(identity=new_user.id)
+
+        return jsonify({
+            "message": "User created succesfully",
+            "access_token": access_token,
+            "user": new_user.serialize()
+        }), 201
 
     except Exception as e:
         db.session.rollback()
@@ -93,8 +111,8 @@ def login():
         "user": user.serialize()       
     }), 200
 
-# Ruta del acceso privado del usuario
-@api.route('/private', methods=['GET'])
+# Ruta del acceso settings del usuario
+@api.route('/settings', methods=['GET'])
 @jwt_required() # Precisa de token para acceder
 def get_user_info():
     current_user_id = get_jwt_identity() # Devuelve el ID porque se lo he pasado al crear access_token

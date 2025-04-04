@@ -27,10 +27,9 @@ const ClientesList = ({ search }) => {
       telefono: "555-9876",
       email: "carlos.lopez@example.com",
     },
-
   ]);
 
-  
+
   const filteredClientes = clientes.filter(
     (cliente) =>
       cliente.nombre.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,31 +37,33 @@ const ClientesList = ({ search }) => {
   );
 
   return (
-    <div className="container">
-      <h2>Lista de Clientes</h2>
-      <div className="row">
-        {filteredClientes.length > 0 ? (
-          filteredClientes.map((cliente) => (
-            <div key={cliente.id} className="col-md-12 mb-3">
-              <Link to={`/cliente/${cliente.id}`} style={{ textDecoration: 'none' }}>
-                <div className="card" >
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      {cliente.nombre} {cliente.apellido}
-                    </h5>
-                    <p className="card-text">
-                      <strong>DNI:</strong> {cliente.cliente_dni} <br />
-                      <strong>Teléfono:</strong> {cliente.telefono} <br />
-                      <strong>Email:</strong> {cliente.email} <br />
-                    </p>
+    <div className="container mt-4">
+      <div className="container">
+        <h2>Lista de Clientes</h2>
+        <div className="row">
+          {filteredClientes.length > 0 ? (
+            filteredClientes.map((cliente) => (
+              <div key={cliente.id} className="col-md-12 mb-3">
+                <Link to={`/cliente/${cliente.id}`} style={{ textDecoration: "none" }}>
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        {cliente.nombre} {cliente.apellido}
+                      </h5>
+                      <p className="card-text">
+                        <strong>DNI:</strong> {cliente.cliente_dni} <br />
+                        <strong>Teléfono:</strong> {cliente.telefono} <br />
+                        <strong>Email:</strong> {cliente.email} <br />
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p>No se encontraron clientes.</p>
-        )}
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>No se encontraron clientes.</p>
+          )}
+        </div>
       </div>
     </div>
   );

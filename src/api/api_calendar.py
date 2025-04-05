@@ -25,20 +25,31 @@ class GoogleCalendarManager:
     def _obtener_credenciales(self):
         """Obtiene y refresca las credenciales si es necesario."""
         creds = None
+        
+        # Rutas a los archivos de credenciales
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        token_path = os.path.join(base_dir, "credentials", "token.json")
+        credentials_path = os.path.join(base_dir, "credentials", "credentials.json")
+        
+        # Verificar si hay un token existente
+        if os.path.exists(token_path):
+            creds = Credentials.from_authorized_user_file(token_path, SCOPES)
 
-        if os.path.exists("token.json"):
-            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-
+        # Si no hay credenciales válidas, obtenerlas
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES
+                    credentials_path, SCOPES
                 )
                 creds = flow.run_local_server(port=0)
-
-            with open("token.json", "w") as token:
+            
+            # Asegurarse de que el directorio existe
+            os.makedirs(os.path.dirname(token_path), exist_ok=True)
+            
+            # Guardar las credenciales para la próxima ejecución
+            with open(token_path, "w") as token:
                 token.write(creds.to_json())
 
         return creds
@@ -84,13 +95,13 @@ class GoogleCalendarManager:
             return None
             
         evento = {
-            'titulo': titulo,
-            'descripcion': descripcion,
-            'inicio': {
+            'summary': titulo,  # Corregido: 'titulo' → 'summary'
+            'description': descripcion,  # Corregido: 'descripcion' → 'description'
+            'start': {  # Corregido: 'inicio' → 'start'
                 'dateTime': inicio,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
-            'fin': {
+            'end': {  # Corregido: 'fin' → 'end'
                 'dateTime': fin,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
@@ -300,7 +311,7 @@ def crear_evento_para_cita(cita_id):
             "msg": "Evento creado exitosamente en Google Calendar",
             "evento": {
                 "id": evento['id'],
-                "titulo": evento['summary'],
+                "titulo": evento.get('summary', ''),
                 "link": evento.get('htmlLink', '')
             }
         }), 201

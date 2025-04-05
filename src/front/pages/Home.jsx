@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer"
 
-const home = () => {
+export const Home = () => {
   return (
     <>
     <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}>
@@ -15,5 +15,3 @@ const home = () => {
     </>
   );
 };
-
-export default home;

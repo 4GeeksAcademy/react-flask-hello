@@ -1,7 +1,7 @@
 import React from "react";
 import FormularioLogin from "../components/FormularioLogin"; 
 
-const Login = () => {
+export const Login = () => {
   return (
     <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}>
       
@@ -32,5 +32,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

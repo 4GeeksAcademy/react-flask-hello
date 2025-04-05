@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
-from api.utils import generate_sitemap, APIException
-from api.routes import GoogleCalendarManager  
+from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
+from .utils import generate_sitemap, APIException
+from .api_calendar import GoogleCalendarManager  
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from datetime import datetime, timedelta

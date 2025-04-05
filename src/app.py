@@ -4,10 +4,14 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api, calendar_api
+from api.routes import api
+from api.api_calendar import calendar_api
 from api.admin import setup_admin
 from flask_jwt_extended import JWTManager
 import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
@@ -27,7 +31,7 @@ db.init_app(app)
 
 setup_admin(app)
 
-app.register_blueprint(calendar_api, url_prefix='/api')
+app.register_blueprint(calendar_api, url_prefix='/calendar_api')
 app.register_blueprint(api, url_prefix='/api')
 
 # JWT configuration

@@ -6,7 +6,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from models import db, Citas, Calendario, Usuarios, Clientes, Servicios
+from .models import db, Citas, Calendario, Usuarios, Clientes, Servicios
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import os
 from dotenv import load_dotenv

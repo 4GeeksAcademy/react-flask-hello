@@ -11,6 +11,7 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 4px 4px 10px #2f45566f;
+  z-index: 1000;
 }
 
 .logo{
@@ -29,7 +30,7 @@
   align-items: center;
   gap: 15px;
 }
-.nav_buttons button{
+.nav_buttons .nav-btn{
   all: unset;
   font-weight: bold;
   font-size: 18px;
@@ -37,10 +38,10 @@
   color: white;
   transition: all 0.3s ease;
 }
-.nav_buttons button:hover {
+.nav_buttons .nav-btn:hover {
   scale: 1.1;
 }
-.nav_buttons button:active {
+.nav_buttons .nav-btn:active {
   color:white;
   background: none;
 }

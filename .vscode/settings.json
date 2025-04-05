@@ -1,10 +1,17 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "workbench.editorAssociations": {   
-        "*.md": "vscode.markdown.preview.editor"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-    }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "editor.padding.bottom": 2,
+  "editor.padding.top": 0,
+  "editor.inlayHints.padding": false,
+  "editor.fontFamily": "\"'Cascadia Code', 'Consolas', 'Courier New', monospace\"",
+  "editor.codeLensFontFamily": "\"Fira Code, Consolas, 'Courier New', monospace\"",
+  "editor.fontLigatures": false,
+  "editor.fontSize": 14
 }

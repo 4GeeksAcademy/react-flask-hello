@@ -1,25 +1,25 @@
 /*_______________MENU__LOGIN______________*/
 
-.register {
+.login {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
 
-.form-content {
+.log-form-content {
   width: 90%;
   max-width: 400px;
   padding: 2em;
   border-radius: 20px;
-  color: hsl(206, 20%, 32%);
+  color: #2F4556;
   background: #d9d9d9;
   box-shadow: 4px 4px 10px #2f45566f;
 }
 
 /*__________AREA_PARA_ESCRIBIR_____________*/
 
-.form-control {
+.log-form-control{
   border: 2px solid#2F4556;
   padding: 10px;
   outline: none;
@@ -27,8 +27,8 @@
   margin-bottom: 3px;
   background: #acc6cd;
 }
-.form-control:focus,
-.form-control:active {
+.log-form-control:focus,
+.log-form-control:active {
   background: #acc6cd;
   border-color: white;
   outline: none;
@@ -36,10 +36,10 @@
   border-radius: 20px;
 }
 /* Corrige el color del fondo cuando el navegador autocompleta */
-.form-control:-webkit-autofill,
-.form-control:-webkit-autofill:hover,
-.form-control:-webkit-autofill:focus,
-.form-control:-webkit-autofill:active {
+.log-form-control:-webkit-autofill,
+.log-form-control:-webkit-autofill:hover,
+.log-form-control:-webkit-autofill:focus,
+.log-form-control:-webkit-autofill:active {
   background: #acc6cd !important;
   -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
   color: #2f4556 !important;
@@ -47,15 +47,15 @@
 
 /*__________TEXTO_____________*/
 
-.form-label,
-.label-content {
+.log-form-label,
+.log-label-content {
   color: #2f4556;
   background: none;
   display: block;
   margin-bottom: 10px;
   padding-left: 15px;
 }
-.form-label {
+.log-form-label {
   display: inline-block;
   margin-top: 10px;
 }
@@ -65,32 +65,32 @@
 /*__________AREA_PARA_ESCRIBIR_____________*/
 
 /*_______________CHECK__BUTTON______________*/
-.form-check {
+.log-form-check {
   margin-top: 10px;
   background: none;
 }
-.form-check-label {
+.log-form-check-label {
   background: red;
 }
 
-.form-check-label:hover {
+.log-form-check-label:hover {
   scale: 1.1;
   border-color: white;
 }
 
-.form-check-label:checked {
+.log-form-check-label:checked {
   border-color: white;
   outline: none;
 }
 
-.form-check-label:focus {
+.log-form-check-label:focus {
   border-color: white;
   outline: none;
 }
 /*_______________CHECK__BUTTON_____________*/
 
 /*_____TEXTO__CHECK__ME__OUT_________*/
-.form-check-label {
+.log-form-check-label {
   all: unset;
   color: #415361;
   font-size: 16px;
@@ -101,31 +101,32 @@
 /*_____TEXTO__CHECK__ME__OUT_________*/
 
 /*________BUTTONN___SUBMIT______________*/
-button {
+.log-btn {
   width: 10vh;
   border-radius: 20px;
-  color: grey;
+  color: #415361;
   background: none;
 
   transition: 0.2s;
 }
 
-button:hover {
-  color: white;
+.log-btn:hover {
+  scale: 1.02;
+  color: #415361;
   background: none;
-  border-color: white;
+  border-color: #415361;
 }
 
-button:active {
-  color: grey;
-  background: white;
+.log-btn:active {
+  color: #415361;
+  background: none;
   border-color: grey;
 }
 /*__________BUTTON___SUBMIT______________*/
 
 /*_______________RESPONCIVE______________*/
 @media (max-width: 768px) {
-  .register form {
+  .login  {
     width: 95%;
     max-width: 350px;
     padding: 1.5em;
@@ -133,7 +134,7 @@ button:active {
 }
 
 @media (max-width: 480px) {
-  .register form {
+  .login  {
     width: 100%;
     max-width: 300px;
     padding: 1em;

@@ -5,9 +5,11 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 10px;
+  position: relative;
 }
-
-.form-content {
+.reg-form-content {
+  display: block;
   width: 90%;
   max-width: 400px;
   padding: 2em;
@@ -15,11 +17,12 @@
   color: hsl(206, 20%, 32%);
   background: #d9d9d9;
   box-shadow: 4px 4px 10px #2f45566f;
+  position: relative;
 }
 
 /*__________AREA_PARA_ESCRIBIR_____________*/
 
-.form-control {
+.reg-form-control {
   border: 2px solid#2F4556;
   padding: 10px;
   outline: none;
@@ -27,8 +30,8 @@
   margin-bottom: 3px;
   background: #acc6cd;
 }
-.form-control:focus,
-.form-control:active {
+.reg-form-control:focus,
+.reg-form-control:active {
   background: #acc6cd;
   border-color: white;
   outline: none;
@@ -36,10 +39,10 @@
   border-radius: 20px;
 }
 /* Corrige el color del fondo cuando el navegador autocompleta */
-.form-control:-webkit-autofill,
-.form-control:-webkit-autofill:hover,
-.form-control:-webkit-autofill:focus,
-.form-control:-webkit-autofill:active {
+.reg-form-control:-webkit-autofill,
+.reg-form-control:-webkit-autofill:hover,
+.reg-form-control:-webkit-autofill:focus,
+.reg-form-control:-webkit-autofill:active {
   background: #acc6cd !important;
   -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
   color: #2f4556 !important;
@@ -47,15 +50,15 @@
 
 /*__________TEXTO_____________*/
 
-.form-label,
-.label-content {
+.reg-form-label,
+.reg-label-content {
   color: #2f4556;
   background: none;
   display: block;
   margin-bottom: 10px;
   padding-left: 15px;
 }
-.form-label {
+.reg-form-label {
   display: inline-block;
   margin-top: 10px;
 }
@@ -65,32 +68,32 @@
 /*__________AREA_PARA_ESCRIBIR_____________*/
 
 /*_______________CHECK__BUTTON______________*/
-.form-check {
+.reg-form-check {
   margin-top: 10px;
   background: none;
 }
-.form-check-label {
+.reg-form-check-label {
   background: red;
 }
 
-.form-check-label:hover {
+.reg-form-check-label:hover {
   scale: 1.1;
   border-color: white;
 }
 
-.form-check-label:checked {
+.reg-form-check-label:checked {
   border-color: white;
   outline: none;
 }
 
-.form-check-label:focus {
+.reg-form-check-label:focus {
   border-color: white;
   outline: none;
 }
 /*_______________CHECK__BUTTON_____________*/
 
 /*_____TEXTO__CHECK__ME__OUT_________*/
-.form-check-label {
+.reg-form-check-label {
   all: unset;
   color: #415361;
   font-size: 16px;
@@ -101,25 +104,26 @@
 /*_____TEXTO__CHECK__ME__OUT_________*/
 
 /*________BUTTONN___SUBMIT______________*/
-button {
+.reg-btn {
   width: 10vh;
   border-radius: 20px;
-  color: grey;
+  color: #415361;
   background: none;
 
   transition: 0.2s;
 }
 
-button:hover {
-  color: white;
+.reg-btn:hover {
+  scale: 1.02;
+  color: #415361;
   background: none;
-  border-color: white;
+  border-color: #415361;
 }
 
-button:active {
-  color: grey;
-  background: white;
-  border-color: grey;
+.reg-btn:active {
+  color: #415361;
+  background: none;
+  border-color: #415361;
 }
 /*__________BUTTON___SUBMIT______________*/
 

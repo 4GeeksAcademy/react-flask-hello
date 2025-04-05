@@ -682,7 +682,7 @@ def obtener_cita_cliente(cliente_id):
     if not citas:
         return jsonify({"error": "citas no encontradas"}), 404
 
-    return jsonify(citas.serialize_cita()), 200
+    return jsonify([cita.serialize_cita() for cita in citas]), 200
 
 
 @api.route('/citas', methods=['POST'])

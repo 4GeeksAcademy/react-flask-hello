@@ -1,0 +1,149 @@
+/* Variables para colores y sombras - consistentes con el resto de la aplicación */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --light-bg: #f8f9fa;
+  --dark-text: #343a40;
+  --light-text: #f8f9fa;
+  --border-radius: 6px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Página completa de login */
+.login-page {
+  min-height: calc(
+    100vh - 110px
+  ); /* Ajustar espacio para el navbar y footer existentes */
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor principal */
+.login-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Panel de bienvenida */
+.welcome-panel {
+  flex: 1;
+  background-color: var(--primary-color);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(52, 152, 219, 0.7),
+    rgba(41, 128, 185, 0.3)
+  );
+  z-index: 1;
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.welcome-icon {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(1, 1, 1, 1);
+}
+
+.welcome-icon i {
+  font-size: 2.5rem;
+}
+
+.welcome-panel h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-panel p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.welcome-features {
+  width: 100%;
+  margin-top: auto;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-item:first-child {
+  border-top: none;
+}
+
+.feature-item i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  color: var(--secondary-color);
+}
+
+/* Contenedor del formulario */
+.login-form-container {
+  flex: 1;
+  background-color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-content {
+    flex-direction: column;
+  }
+
+  .welcome-panel,
+  .login-form-container {
+    width: 100%;
+  }
+
+  .welcome-content {
+    padding: 2rem 1rem;
+  }
+}

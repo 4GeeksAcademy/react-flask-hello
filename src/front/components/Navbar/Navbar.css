@@ -1,0 +1,321 @@
+/* Variables para colores y sombras */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --light-bg: #f8f9fa;
+  --dark-text: #343a40;
+  --light-text: #f8f9fa;
+  --border-radius: 6px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor principal de la barra de navegación */
+.navbar-container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra superior con logo y controles */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 0.8rem 1.5rem;
+  height: 60px;
+}
+
+.navbar-logo {
+  height: 40px; /* Ajusta este valor según el tamaño que desees */
+  width: auto; /* Mantiene la proporción */
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05); /* Efecto sutil al pasar el mouse */
+}
+
+/* Ajustar el contenedor del logo para mantener centrado el logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Controles de la barra de navegación */
+.navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Botón de reportar */
+.btn-report {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  box-shadow: var(--box-shadow);
+  transition: all 0.2s ease;
+}
+
+.btn-report:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+/* Dropdown de usuario */
+.user-dropdown {
+  position: relative;
+}
+
+.btn-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-user:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-user i {
+  font-size: 1.2rem;
+}
+
+/* Estilo para el dropdown */
+.dropdown-menu {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 0.5rem;
+}
+
+.user-name {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.logout {
+  color: var(--accent-color);
+}
+
+/* Barra de navegación secundaria */
+.sub-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 50px;
+  background-color: var(--light-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Secciones de navegación */
+.nav-sections {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--dark-text);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav-item.active {
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 600;
+  box-shadow: var(--box-shadow);
+}
+
+/* Barra de búsqueda */
+.search-container {
+  width: 250px;
+}
+
+.search-input {
+  position: relative;
+  width: 100%;
+}
+
+.search-input i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.search-input input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Modal de problemas */
+.modal-content {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: var(--primary-color);
+  color: white;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.modal-header i {
+  color: var(--accent-color);
+  margin-right: 8px;
+}
+
+.btn-close {
+  color: white;
+  opacity: 0.8;
+  filter: brightness(5);
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+/* Botón de enviar */
+.btn-submit {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+/* Lista de problemas */
+.problems-list {
+  margin-top: 1.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.list-title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.problem-card {
+  background-color: var(--light-bg);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary-color);
+  box-shadow: var(--box-shadow);
+  transition: all 0.2s ease;
+}
+
+.problem-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+.problem-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.problem-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  color: #c0392b;
+  transform: scale(1.1);
+}
+
+.problem-text {
+  color: var(--dark-text);
+  line-height: 1.4;
+}
+
+/* Animación para nuevos problemas */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.problem-card {
+  animation: fadeIn 0.3s ease-out;
+}

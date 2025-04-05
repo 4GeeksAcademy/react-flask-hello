@@ -25,6 +25,7 @@ class GoogleCalendarManager:
     def _obtener_credenciales(self):
         """Obtiene y refresca las credenciales si es necesario."""
         creds = None
+
         
         # Rutas a los archivos de credenciales
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -41,6 +42,7 @@ class GoogleCalendarManager:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
+
                     credentials_path, SCOPES
                 )
                 creds = flow.run_local_server(port=0)
@@ -95,13 +97,15 @@ class GoogleCalendarManager:
             return None
             
         evento = {
-            'summary': titulo,  # Corregido: 'titulo' → 'summary'
-            'description': descripcion,  # Corregido: 'descripcion' → 'description'
-            'start': {  # Corregido: 'inicio' → 'start'
+          
+            'titulo': titulo,
+            'descripcion': descripcion,
+            'inicio': {
                 'dateTime': inicio,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
-            'end': {  # Corregido: 'fin' → 'end'
+            'fin': {
+
                 'dateTime': fin,
                 'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
             },
@@ -311,7 +315,9 @@ def crear_evento_para_cita(cita_id):
             "msg": "Evento creado exitosamente en Google Calendar",
             "evento": {
                 "id": evento['id'],
-                "titulo": evento.get('summary', ''),
+
+                "titulo": evento.get('titulo', ''),
+
                 "link": evento.get('htmlLink', '')
             }
         }), 201

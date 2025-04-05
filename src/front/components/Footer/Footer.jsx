@@ -1,6 +1,7 @@
 /* 👇 ❇️ Riki for the group success 👊 */
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../assets/img/Logo_DronFarm1.png";
 import "./Footer.css";
 
 const Footer = () => {
@@ -10,7 +11,7 @@ const Footer = () => {
         {/* Sección 1: Logo y Descripción */}
         <div className="footer-section">
           <div className="footer-logo">
-            <img src="/assets/img/logo-white.png" alt="DronFarm" />
+            <img src={logo} alt="DronFarm" />
             <p>Monitoreo agrícola inteligente con tecnología dron</p>
           </div>
         </div>

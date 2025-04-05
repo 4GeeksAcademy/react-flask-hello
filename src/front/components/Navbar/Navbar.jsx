@@ -1,6 +1,8 @@
 /* 👇 ❇️ Riki for the group success 👊 */
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/img/Logo_DronFarm2.png";
+
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -17,8 +19,7 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-logo">
-          <img src="/assets/img/logo.png" alt="DronFarm Logo" className="logo-img" />
-          <span className="logo-text">DronFarm</span>
+          <img src={logo} alt="DronFarm Logo" className="logo-img" />
         </Link>
 
         {/* Menú Hamburguesa (Mobile) */}
@@ -41,7 +42,7 @@ const Navbar = () => {
           <li className="navbar-item">
             <Link to="/calendario" className="navbar-link">Calendario</Link>
           </li>
-          
+
           {isAuthenticated ? (
             <>
               <li className="navbar-item">

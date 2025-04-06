@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { showErrorAlert, showSuccessAlert } from '../../../components/modal_alerts/modal_alerts.jsx';
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,25 +16,22 @@ export const Login = () => {
         body: JSON.stringify(form),
       });
       const data = await response.json();
+
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
-        localStorage.setItem("rol_id", data.user.rol_id); // guardar rol
-        localStorage.setItem("user_id", data.user.id);     // opcional
+        localStorage.setItem("rol_id", data.user.rol_id); // Guardar rol
+        localStorage.setItem("user_id", data.user.id);    // Opcional
 
-        console.log("Log in exitoso !!");
+        // Mostrar modal de éxito y redirigir según el rol
+        showSuccessAlert("¡Inicio de sesión exitoso!", () => {
+          navigate(data.user.rol_id === 2 ? "/dashboard" : "/dash_admin");
+        });
 
-        if (data.user.rolId === 2) {
-          navigate("/dashboard");
-        } else if (data.user.rolId === 1) {
-          navigate("/dash_admin");
-        } else {
-          setError("Rol no reconocido");
-        }
       } else {
-        setError(data.error || "Credenciales incorrectas");
+        showErrorAlert(data.error || "Datos incorrectos");
       }
     } catch (err) {
-      setError("Error de conexión");
+      showErrorAlert("Error de conexión con el servidor");
     }
   };
 
@@ -42,7 +39,6 @@ export const Login = () => {
     <div className="login-background">
       <div className="login-container">
         <h2 className="login-title">Iniciar Sesión</h2>
-        {error && <div className="login-error alert alert-danger">{error}</div>}
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             className="login-input"

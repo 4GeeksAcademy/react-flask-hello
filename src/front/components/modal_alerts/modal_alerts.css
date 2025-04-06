@@ -1,0 +1,27 @@
+/* 👇 ❇️ Riki for the group success 👊
+
+/* Fuentes y colores heredados de index.css */
+.modal-title-error,
+.modal-title-success {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 700 !important;
+  color: #4682b4 !important; /* Color de títulos en index.css */
+}
+
+.modal-text {
+  font-family: "Roboto", sans-serif !important;
+  color: #333 !important; /* Color de texto en index.css */
+}
+
+/* Estructura del modal */
+.swal2-popup {
+  border-radius: 12px !important;
+  border: 1px solid #dee2e6 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  background: #f8f9fa !important; /* Fondo de Layout.css */
+}
+
+/* Botones */
+.swal2-confirm {
+  font-family: "Roboto", sans-serif !important;
+}

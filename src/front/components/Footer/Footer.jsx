@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="footer-section">
           <div className="footer-logo">
             <img src={logo} alt="DronFarm" />
-            <p>Monitoreo agrícola inteligente con tecnología dron</p>
+            <p>Plataforma integral de monitoreo agrícola inteligente. Decisiones con datos</p>
           </div>
         </div>
 

@@ -22,10 +22,12 @@
 }
 
 .signup-title {
+  font-family: 'Montserrat', sans-serif; /* 👈 Añadir esto */
   text-align: center;
   margin-bottom: 25px;
-  color: #198754;
+  color: #198754; /* Verde (coherente con botones) */
   font-size: 24px;
+  font-weight: 700; /* Negrita */
 }
 
 .signup-form {

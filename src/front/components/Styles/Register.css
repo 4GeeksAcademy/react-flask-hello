@@ -1,4 +1,7 @@
 /*_______________MENU__LOGIN______________*/
+*{
+  box-sizing: border-box;
+}
 
 .register {
   display: flex;
@@ -10,14 +13,14 @@
 }
 .reg-form-content {
   display: block;
-  width: 90%;
-  max-width: 400px;
-  padding: 2em;
+  width: clamp(280px, 90%, 400px);
+  padding: clamp(1em, 2vw, 2em);
   border-radius: 20px;
   color: hsl(206, 20%, 32%);
   background: #d9d9d9;
   box-shadow: 4px 4px 10px #2f45566f;
   position: relative;
+  
 }
 
 /*__________AREA_PARA_ESCRIBIR_____________*/
@@ -29,6 +32,7 @@
   border-radius: 20px;
   margin-bottom: 3px;
   background: #acc6cd;
+  width: 100%;
 }
 .reg-form-control:focus,
 .reg-form-control:active {
@@ -58,6 +62,7 @@
   margin-bottom: 10px;
   padding-left: 15px;
 }
+
 .reg-form-label {
   display: inline-block;
   margin-top: 10px;
@@ -69,24 +74,40 @@
 
 /*_______________CHECK__BUTTON______________*/
 .reg-form-check {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 10px;
   margin-top: 10px;
+  width: 100%; 
   background: none;
 }
 .reg-form-check-label {
-  background: red;
+  flex: 1; 
+  min-width: 0; 
+  word-break: break-word;
 }
 
 .reg-form-check-label:hover {
+  flex: 1; 
+  min-width: 0; 
+  word-break: break-word;
   scale: 1.1;
   border-color: white;
 }
 
 .reg-form-check-label:checked {
+  flex: 1; 
+  min-width: 0; 
+  word-break: break-word;
   border-color: white;
   outline: none;
 }
 
 .reg-form-check-label:focus {
+  flex: 1; 
+  min-width: 0; 
+  word-break: break-word;
   border-color: white;
   outline: none;
 }
@@ -105,8 +126,11 @@
 
 /*________BUTTONN___SUBMIT______________*/
 .reg-btn {
-  width: 10vh;
+  width: 100%;
+  max-width: 200px;
+  display: block;
   border-radius: 20px;
+  margin: 20px auto 0;
   color: #415361;
   background: none;
 
@@ -128,19 +152,19 @@
 /*__________BUTTON___SUBMIT______________*/
 
 /*_______________RESPONCIVE______________*/
-@media (max-width: 768px) {
-  .register form {
-    width: 95%;
+
+@media (min-width: 480px) {
+  .reg-form-content {
     max-width: 350px;
     padding: 1.5em;
   }
 }
 
-@media (max-width: 480px) {
-  .register form {
-    width: 100%;
-    max-width: 300px;
-    padding: 1em;
+@media (min-width: 768px) {
+  .reg-form-content {
+    max-width: 400px;
+    padding: 2em;
   }
 }
+
 /*_______________RESPONCIVE______________*/

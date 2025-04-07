@@ -1000,4 +1000,4 @@ def borrar_nota(cliente_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
-# NOS QUEDA HISTORIAL, CALENDARIO, PROBLEMAS
+# NOS QUEDA HISTORIAL, CALENDARIO

@@ -1,22 +1,40 @@
 /* 👇 ❇️ Riki for the group success 👊 Lunes7Abril*/
 
-/* ESTILOS DEFINITIVOS - GARANTIZADOS */
+/* Reset esencial */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* Contenedor principal con manejo de fondo */
 .app-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  position: relative; /* Necesario para el fondo */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('../assets/img/Login1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
+/* Contenido principal */
 .content-container {
   flex: 1;
   padding: 20px;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative; /* Para contenido sobre el fondo */
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 15px;
+  }
 }

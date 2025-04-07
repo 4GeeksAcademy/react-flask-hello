@@ -1,11 +1,7 @@
-/* Fondo con imagen desde public/assets/Login1.jpg */
+/* Estilos para la página de login */
 .login-background {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../../assets/img/Login1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

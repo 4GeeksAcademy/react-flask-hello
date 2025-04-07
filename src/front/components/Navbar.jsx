@@ -1,19 +1,52 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./Styles/Navbar.css"
+import LogoFrame from "./Logo";
+import useGlobalReducer from "../hooks/useGlobalReducer"
 
-export const Navbar = () => {
+
+const Navbar = () => {
+
+	const { store, dispatch } = useGlobalReducer();
+	const token = localStorage.getItem("token") || null
+
+	const handleLogout = () => {
+		dispatch({
+			type:"logout"
+		})
+	}
+
+	const navigate = useNavigate();
 
 	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
+
+		<nav>
+			<div className="nav-content">
+
+				<div className="logo">
+					<LogoFrame />
 				</div>
+				
+				<div className="nav_buttons">
+					<button onClick={() => navigate("/")}>Home</button>
+					<button onClick={()=> navigate("/signup")}>Signup</button>
+					<button onClick={() => navigate("/settings")}>Settings</button>
+					{token &&  
+						<button 
+							type="button" 
+							className ="btn btn-danger"
+							onClick={handleLogout}
+						>
+						Logout
+						</button>
+						
+					}
+				</div>
+
+
+
 			</div>
 		</nav>
 	);
 };
+
+export default Navbar;

@@ -4,6 +4,8 @@ import "./Styles/Register.css";
 
 function Register() {
     const [email, setEmail] = useState("");
+    const [first_name, setFirst_name] = useState("");
+    const [last_name, setLast_name] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [checked, setChecked] = useState(false); 
@@ -14,24 +16,43 @@ const handleRegister = async (e) => {
     e.preventDefault()
 
     try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/signup', {
+        const backendURL = import.meta.env.VITE_BACKEND_URL || "";
+
+        const response = await fetch(`${backendURL}api/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password, username }),
+            body: JSON.stringify({ 
+                first_name:first_name, 
+                last_name:last_name, 
+                email:email, 
+                password:password, 
+                username:username,
+                checked:checked
+             }),
         });
 
         const data = await response.json();
         alert(data.message);
 
         
-        if (response.ok) {
-            navigate("/Settings"); 
+        if (!response.ok) {
+            throw new Error(data.message || "Error en el inicio de sesión"); 
+        } 
 
-        } else {
-            throw new Error(data.message || "Error en el inicio de sesión");
-        }
+        dispatch({
+            type: "settings",
+            payload: {
+                email: email,
+                token: data.access_token,
+                username: data.user.username
+            }
+        })
+
+        navigate("/settings");
+            
+        
     } catch (error) {
         console.error("Error en el login:", error);
         alert("Hubo un problema con el inicio de sesión.");
@@ -42,7 +63,37 @@ const handleRegister = async (e) => {
         <div className="register">
             
             <form onSubmit={handleRegister} className="form-content">
+                {/* First Name */}
+                <div className= "label-content">
+                    <label htmlFor="FirstName" className="form-label">
+                        First Name
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="first_name"
+                        name="first_name"
+                        value={first_name} 
+                        onChange={(e) => setFirst_name(e.target.value)}
+                    />
+                </div>
 
+                {/* Last Name */}
+                <div className= "label-content">
+                    <label htmlFor="Last Name" className="form-label">
+                        Last Name
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="last_name"
+                        name="last_name"
+                        value={last_name} 
+                        onChange={(e) => setLast_name(e.target.value)}
+                    />
+                </div>
+
+                {/* Email */}
                 <div className = "label-content">
                     <label htmlFor="email" className="form-label">
                         Email address

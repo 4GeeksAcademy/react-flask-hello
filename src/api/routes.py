@@ -42,15 +42,16 @@ def create_user_anonymous():
 @api.route('/signup', methods=['POST'])
 def create_user():
     body = request.get_json()
-    first_name = body.get('first_name')
-    last_name = body.get('last_name')
+    firstname = body.get('firstname')
+    lastname = body.get('lastname')
+    shopname = body.get('shopname')
     email = body.get('email')
     password = body.get('password')
     username = body.get('username')
 
     # Verifica si no existen los campos
-    if not first_name or not last_name or not body or not email or not password or not username:
-        return jsonify({"msg": "Fisrt_name, last_name, email, password and username are required"}), 400
+    if not firstname or not lastname or not body or not email or not password or not username or not shopname:
+        return jsonify({"msg": "Fisrt_name, last_name, shop_name, email, password and username are required"}), 400
 
     # Verifica si el usuario existe
     existing_user = User.query.filter_by(email = email).first()
@@ -60,17 +61,17 @@ def create_user():
     try:
 
         new_user = User(
-            first_name=body["first_name"],
-            last_name=body["last_name"],
+            firstname=body["firstname"],
+            lastname=body["lastname"],
+            shopname=body["shopname"],
             email=body["email"],
             password=body["password"],
-            username = body["username"] 
+            username = body["username"],
+            is_active=body["is_active"]
         )
 
         db.session.add(new_user)
         db.session.flush()
-
-        # Declaramos variable de bienvenida
 
 
         db.session.commit()
@@ -120,4 +121,71 @@ def get_user_info():
 
     return jsonify({
         "name": user.serialize()["username"]
-    }), 200       
+    }), 200    
+
+#
+# Actualizar un usuario existente
+#
+@api.route('/settings/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    # Buscamos al usuario por su ID
+    user = User.query.get(user_id)
+
+    # Verificamos si el usuario existe
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    
+    # Obtenemos los datos de la request
+    request_data = request.get_json()
+
+    # Actualizamos los campos si estan presentes en la solicitud
+    if "first_name" in request_data:
+        user.first_name = request_data['first_name']
+    
+    if "last_name" in request_data:
+        user.last_name = request_data['last_name']
+
+    if "shop_name" in request_data:
+        user.shop_name = request_data['shop_name']
+
+    if "email" in request_data:
+        user.email = request_data['email']
+    
+    if "username" in request_data:
+        user.username = request_data['username']
+
+    # Si sale error al actualizar planeta, hacemos try/except
+    try:
+        # Guardamos los cambios en la base de datos
+        db.session.commit()
+
+        # Devolvemos (retornamos) el planeta actualizado
+        return jsonify(user.serialize()), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f"Error al actualizar el usuario: {str(e)}"}), 500
+
+#
+# Borrar un usuario existente
+#
+@api.route('/settings/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):    
+    # Buscamos al usuario por ID
+    user = User.query.get(user_id)
+
+    # Verificar si el usuario existe
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    
+    # Si sale error al eliminar usuario, hacemos try/except
+    try:
+        # Eliminamos el usuario de la base de datos
+        db.session.delete(user)
+        db.session.commit()
+
+        # Devolver mensaje de exito
+        return jsonify({"message": f"Usuario {user_id} eliminada correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500   

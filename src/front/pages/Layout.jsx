@@ -4,17 +4,16 @@ import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import "./Layout.css";  // Importamos los estilos
 
 export const Layout = () => {
   return (
     <ScrollToTop>
-      <div className="layout-container">
+      <div className="app-root">
         <Navbar />
-        <main className="content-wrapper">
-          <div className="content-inner"> {/* Nuevo contenedor interno */}
-            <Outlet />
-          </div>
-        </main>
+        <div className="content-container">
+          <Outlet />
+        </div>
         <Footer />
       </div>
     </ScrollToTop>

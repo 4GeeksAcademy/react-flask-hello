@@ -28,7 +28,7 @@ function Register() {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/signup`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json"
@@ -36,14 +36,18 @@ function Register() {
                 body: JSON.stringify({ email, password, firstname, lastname, shopname })
               });
 
+
             if (response.ok) {
                 navigate("/settings");
+
             } else if (response.status === 403) {
                 setMessage("El usuario ya existe");
                 setMessageType("error");
+
             } else if (response.status === 400) {
                 setMessage("La solicitud es incorrecta. Verifica los datos.");
                 setMessageType("error");
+
             } else {
                 setMessage("Hubo un problema con el registro");
                 setMessageType("error2");

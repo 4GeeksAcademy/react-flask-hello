@@ -12,7 +12,6 @@ class User(db.Model):
     lastname: Mapped[str] = mapped_column(String(120))
     shopname: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    username: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
 
@@ -26,18 +25,21 @@ class User(db.Model):
             "lastname": self.lastname,
             "shopname": self.shopname,
             "email": self.email,
-            "username": self.username
+
             # do not serialize the password, its a security breach
         }
     
     # Encriptar contraseña
     def hash_password(self, password):
         self.password = generate_password_hash(password)
-    
-    def __init__(self, email, password, username):
+
+    def __init__(self, email, password, firstname=None, lastname=None, shopname=None, is_active=False):
         self.email = email
-        self.hash_password(password)
-        self.username = username
+        self.password = generate_password_hash(password)  # Hasheando la contraseña
+        self.firstname = firstname
+        self.lastname = lastname
+        self.shopname = shopname
+        self.is_active = is_active
         
     # Comprobar si el password que introduce el usuario es el mismo que la el de la BD
     def check_password(self, password):

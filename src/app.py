@@ -13,6 +13,8 @@ from api.commands import setup_commands
 import datetime
 from flask_jwt_extended import JWTManager
 
+
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"

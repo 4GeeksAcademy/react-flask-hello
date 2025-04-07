@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import "./Styles/Login.css";
-import ErrorMessage from "../components/ErrorMessage";
-import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage1 from "../components/ErrorMessage1";
 
 
 function Login() {

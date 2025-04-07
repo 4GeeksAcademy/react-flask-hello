@@ -3,7 +3,7 @@ import './Styles/MessageBox.css'
 import { useNavigate } from 'react-router-dom';
 
 
-const ErrorMessage = ({ text }) => {
+const ErrorMessage1 = ({ text }) => {
 
     const navigate = useNavigate();
     
@@ -15,11 +15,11 @@ const ErrorMessage = ({ text }) => {
     return (
         <div className="message-box error">
             <p>{text}</p>
-            <button type="submit" className="box-btn" onClick={handleRedirectToLogin}> Atras </button>
+            <button type="submit" className="box-btn" onClick={handleRedirectToLogin}> Login </button>
         </div>
     )
 
 };
 
 
-export default ErrorMessage;
+export default ErrorMessage1;

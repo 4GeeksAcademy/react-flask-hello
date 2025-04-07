@@ -47,11 +47,10 @@ def create_user():
     shopname = body.get('shopname')
     email = body.get('email')
     password = body.get('password')
-    username = body.get('username')
 
     # Verifica si no existen los campos
-    if not firstname or not lastname or not body or not email or not password or not username or not shopname:
-        return jsonify({"msg": "Fisrt_name, last_name, shop_name, email, password and username are required"}), 400
+    if not firstname or not lastname or not email or not password or not shopname:
+        return jsonify({"msg": "Fisrt name, last name, shop name, email, password are required"}), 400
 
     # Verifica si el usuario existe
     existing_user = User.query.filter_by(email = email).first()
@@ -59,15 +58,13 @@ def create_user():
         return jsonify({"msg": "User already exists"}), 403
 
     try:
-
         new_user = User(
             firstname=body["firstname"],
             lastname=body["lastname"],
             shopname=body["shopname"],
             email=body["email"],
             password=body["password"],
-            username = body["username"],
-            is_active=body["is_active"]
+            is_active=body["True"]
         )
 
         db.session.add(new_user)

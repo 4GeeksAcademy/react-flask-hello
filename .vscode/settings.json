@@ -13,5 +13,18 @@
   "editor.fontFamily": "\"'Cascadia Code', 'Consolas', 'Courier New', monospace\"",
   "editor.codeLensFontFamily": "\"Fira Code, Consolas, 'Courier New', monospace\"",
   "editor.fontLigatures": false,
-  "editor.fontSize": 14
+  "editor.fontSize": 14,
+
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "foreground": "#f1cd00", // Cyan
+          "fontStyle": "italic bold"    // Puedes quitar esto si no quieres cursiva
+          
+        }
+      }
+    ]
+  }
 }

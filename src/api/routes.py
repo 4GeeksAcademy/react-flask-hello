@@ -137,7 +137,7 @@ def actualizar_usuario():
     if not data:
         return jsonify({"error": "data no encontrada"}), 400
 
-    campos_requeridos = ["username", "password_hash", "negocio_cif", "rol"]
+    campos_requeridos = ["username", "password", "negocio_cif", "rol"]
 
     for campo in campos_requeridos:
         if campo not in data:
@@ -157,10 +157,11 @@ def actualizar_usuario():
     try:
         usuario_existente.username = data["username"]
         usuario_existente.rol = data["rol"]
-        usuario_existente.negocio = negocio_existente
+        usuario_existente.negocio_cif = data["negocio_cif"]
+        usuario_existente.password = data["password"]
 
-        if "password_hash" in data:
-            usuario_existente.set_password(data["password_hash"])
+        if "password" in data:
+            usuario_existente.set_password(data["password"])
 
         db.session.commit()
         return jsonify({

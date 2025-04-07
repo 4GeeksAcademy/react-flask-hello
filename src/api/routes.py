@@ -42,15 +42,15 @@ def create_user_anonymous():
 @api.route('/signup', methods=['POST'])
 def create_user():
     body = request.get_json()
-    first_name = body.get('first_name')
-    last_name = body.get('last_name')
-    shop_name = body.get('shop_name')
+    firstname = body.get('firstname')
+    lastname = body.get('lastname')
+    shopname = body.get('shopname')
     email = body.get('email')
     password = body.get('password')
     username = body.get('username')
 
     # Verifica si no existen los campos
-    if not first_name or not last_name or not body or not email or not password or not username or not shop_name:
+    if not firstname or not lastname or not body or not email or not password or not username or not shopname:
         return jsonify({"msg": "Fisrt_name, last_name, shop_name, email, password and username are required"}), 400
 
     # Verifica si el usuario existe
@@ -61,9 +61,9 @@ def create_user():
     try:
 
         new_user = User(
-            first_name=body["first_name"],
-            last_name=body["last_name"],
-            shop_name=body["shop_name"],
+            firstname=body["firstname"],
+            lastname=body["lastname"],
+            shopname=body["shopname"],
             email=body["email"],
             password=body["password"],
             username = body["username"],

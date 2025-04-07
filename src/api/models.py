@@ -8,9 +8,9 @@ db = SQLAlchemy()
 # Tabla Usuario
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    first_name: Mapped[str] = mapped_column(String(120))
-    last_name: Mapped[str] = mapped_column(String(120))
-    shop_name: Mapped[str] = mapped_column(String(120))
+    firstname: Mapped[str] = mapped_column(String(120))
+    lastname: Mapped[str] = mapped_column(String(120))
+    shopname: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     username: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
@@ -22,9 +22,9 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "shop_name": self.shop_name,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "shopname": self.shopname,
             "email": self.email,
             "username": self.username
             # do not serialize the password, its a security breach

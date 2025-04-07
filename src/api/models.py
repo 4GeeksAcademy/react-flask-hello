@@ -17,7 +17,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
 
     # Relación uno a muchos con Favourites, la tabla muchos
-    id_user = relationship("Rol", back_populates="user")
+    id_user = relationship("Cliente", back_populates="user")
 
     def serialize(self):
         return {
@@ -45,14 +45,17 @@ class User(db.Model):
     
 
     
-# Tabla Rol
-class Rol(db.Model):
+# Tabla Cliente
+class Cliente(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
     # Relación muchos a uno con User, la tabla "uno"
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user = relationship("User", back_populates="id_user")
+
+    # Relación uno a muchos con Compras, la tabla muchos
+    id_cliente = relationship("Compras", back_populates="cliente")
 
     def serialize(self):
         return {
@@ -66,6 +69,10 @@ class Rol(db.Model):
 class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
+
+    # Relación muchos a uno con Cliente, la tabla "uno"
+    cliente_id: Mapped[int] = mapped_column(ForeignKey('cliente.id'))
+    cliente = relationship("Cliente", back_populates="id_cliente")
 
     def serialize(self):
         return {

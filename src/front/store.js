@@ -1,5 +1,8 @@
 export const initialStore=()=>{
   return{
+    firstname: "",
+    lastname: "",
+    shopname: "",
     email: "",
     username: "",
     token: null
@@ -14,11 +17,25 @@ export default function storeReducer(store, action = {}) {
         message: action.payload
       };
       
+      case 'signup':
+        var {firstname, lastname, shopname, email, token} = action.payload
+  
+        localStorage.setItem("token", token);
+  
+        return {
+          ...store,
+          firstname:firstname,
+          lastname:lastname,
+          shopname:shopname,
+          email:email, 
+          is_active:true, 
+          token:token
+        };
+
     case 'login':
-      const {email, username, token} = action.payload
+      var {email, token} = action.payload
 
       localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
 
       return {
         ...store,

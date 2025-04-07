@@ -114,7 +114,7 @@ class Clientes(db.Model):
     __tablename__ = "clientes"
     id: Mapped[int] = mapped_column(primary_key=True)
     nombre: Mapped[str] = mapped_column(String(75), nullable=False)
-    direccion: Mapped[str] = mapped_column(String(255), nullable=True)
+    dirección: Mapped[str] = mapped_column(String(255), nullable=True)
     telefono: Mapped[str] = mapped_column(String(15), nullable=False)
     cliente_dni: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
@@ -127,15 +127,15 @@ class Clientes(db.Model):
     historial_servicios = relationship("HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
 
 
-    def serialize_clientes(self):
+    def serialize_cliente(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
-            "direccion": self.direccion,
+            "dirección": self.dirección,
             "telefono": self.telefono,
             "cliente_dni": self.cliente_dni,
             "email": self.email,
-            "servicio": self.servicio.serialize() if self.servicio else None,#para que se muestre en servicio y con if else para que pueda ser "none" si no tiene servicio asignado
+            "servicio": self.servicio.serialize_servicio() if self.servicio else None,#para que se muestre en servicio y con if else para que pueda ser "none" si no tiene servicio asignado
             "notas": [nota.serialize() for nota in self.notas], #se serializa el serialize de notas para que este todo relacionado y vinculado correctamente 
         }
 class Notas(db.Model):
@@ -207,7 +207,7 @@ class Citas(db.Model):
             "servicio_nombre": self.servicio.nombre,
             "fecha_hora": self.fecha_hora.isoformat(),
             "estado": self.estado,
-            "calendario": self.calendario.serialize() if self.calendario else None
+            "calendario": self.calendario.serialize_calendario() if self.calendario else None
         }
     
 class Calendario(db.Model):

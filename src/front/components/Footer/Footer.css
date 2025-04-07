@@ -1,19 +1,23 @@
 /* 👇 ❇️ Riki for the group success 👊 */
-
-/* 👇 ❇️ DronFarm Footer - 100% Coherente con el Sistema de Diseño 👊 */
+/* 👇 ❇️ DronFarm Footer - Versión Definitiva 👊 */
 
 /* ===== FUENTES Y COLORES GLOBALES ===== */
-/* (Consistente con Navbar.css e index.css) */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap');
 
-/* ===== ESTILOS BASE ===== */
+/* ===== ESTILOS BASE DEFINITIVOS ===== */
 .footer {
-    background-color: #2c3e50; /* Fondo oscuro */
+    background-color: #2c3e50;
     color: white;
     padding: 3rem 0 0;
-    font-family: 'Roboto', sans-serif; /* Texto normal */
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    flex-shrink: 0; /* Crucial para el sticky footer */
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    position: relative;
+    z-index: 10;
 }
 
+/* Contenedor principal del footer */
 .footer-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -23,12 +27,12 @@
     padding: 0 2rem;
 }
 
-/* ===== SECCIONES ===== */
+/* ===== SECCIONES DEL FOOTER ===== */
 .footer-section {
     margin-bottom: 2rem;
 }
 
-/* Logo */
+/* Estilos del logo */
 .footer-logo img {
     height: 50px;
     margin-bottom: 1rem;
@@ -42,7 +46,7 @@
 
 /* Títulos de sección */
 .footer-section h3 {
-    color: #4682B4; /* Azul corporativo (coherente con títulos) */
+    color: #4682B4;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.2rem;
@@ -58,7 +62,7 @@
     bottom: 0;
     width: 50px;
     height: 2px;
-    background-color: #4682B4; /* Azul para línea decorativa */
+    background-color: #4682B4;
 }
 
 /* Listas de enlaces */
@@ -81,15 +85,15 @@
 }
 
 .footer-section ul li a:hover {
-    color: #4682B4; /* Azul en hover (coherente con títulos) */
+    color: #4682B4;
 }
 
 .footer-section ul li i {
     margin-right: 8px;
-    color: #4682B4; /* Azul para iconos */
+    color: #4682B4;
 }
 
-/* ===== FOOTER INFERIOR ===== */
+/* ===== PARTE INFERIOR DEL FOOTER ===== */
 .footer-bottom {
     text-align: center;
     padding: 1.5rem 0;
@@ -104,9 +108,26 @@
     font-weight: 400;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== MEDIA QUERIES ===== */
 @media (max-width: 768px) {
     .footer-container {
         grid-template-columns: 1fr;
     }
+    
+    .footer {
+        padding: 2rem 0 0;
+    }
 }
+
+@media (max-width: 480px) {
+    .footer {
+        position: static;
+        padding: 1.5rem 0 0;
+    }
+    
+    .footer-bottom {
+        margin-top: 1.5rem;
+    }
+}
+
+/* 👆 🤟🏼 ❇️ Riki for the group success 👊 */

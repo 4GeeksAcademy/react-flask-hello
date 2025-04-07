@@ -10,9 +10,6 @@ import enum
 
 db = SQLAlchemy()
 
-# Por ahora 10 Tablas, 01/04/2025 => 8/10
-
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -279,7 +276,7 @@ class Weight(db.Model):
         Float(precision=2), nullable=False)
     comments: Mapped[str] = mapped_column(String(200), nullable=True)
     manual_datetime: Mapped[datetime] = mapped_column(
-        DateTime(), nullable=True)
+        DateTime(), nullable=False)
 
     # Relación con el usuario
     user = relationship("User", back_populates="weight_history")
@@ -308,7 +305,7 @@ class Height(db.Model):
         Float(precision=2), nullable=False)
     comments: Mapped[str] = mapped_column(String(200), nullable=True)
     manual_datetime: Mapped[datetime] = mapped_column(
-        DateTime(), nullable=True)
+        DateTime(), nullable=False)
 
     # Relacion con el Usuario
     user = relationship("User", back_populates="height_history")
@@ -320,6 +317,7 @@ class Height(db.Model):
             'user_id': self.user_id,
             'registration_date': self.registration_date.strftime("%d-%m-%Y %H:%M") if self.registration_date else None,
             'height': self.height,
+            'comments': self.comments,
             'manual_datetime': self.manual_datetime.strftime("%d-%m-%Y %H:%M") if self.manual_datetime else None
         }
 
@@ -335,7 +333,7 @@ class Pulse(db.Model):
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
     comments: Mapped[str] = mapped_column(String(200), nullable=True)
     manual_datetime: Mapped[datetime] = mapped_column(
-        DateTime(), nullable=True)
+        DateTime(), nullable=False)
 
     # Relationship
     user = relationship("User", back_populates="pulse_history")
@@ -346,7 +344,8 @@ class Pulse(db.Model):
             'user_id': self.user_id,
             'registration_date': self.registration_date.strftime("%d-%m-%Y %H:%M") if self.registration_date else None,
             'pulse': self.pulse,
-            'manual_datetime': self.manual_datetime.strftime("%d-%m-%Y %H:%M") if self.manual_datetime else None
+            'comments': self.comments,
+            'manual_datetime': self.manual_datetime.strftime("%d-%m-%Y %H:%M")
         }
 
 
@@ -363,7 +362,7 @@ class BloodPressure(db.Model):
         Integer, nullable=False)  # Diastólica
     comments: Mapped[str] = mapped_column(String(200), nullable=True)
     manual_datetime: Mapped[datetime] = mapped_column(
-        DateTime(), nullable=True)
+        DateTime(), nullable=False)
 
     # Relacion con Usuario
     user = relationship("User", back_populates="blood_pressure_history")
@@ -376,6 +375,7 @@ class BloodPressure(db.Model):
             'registration_date': self.registration_date.strftime("%d-%m-%Y %H:%M") if self.registration_date else None,
             'systolic': self.systolic,
             'diastolic': self.diastolic,
+            'comments': self.comments,
             'manual_datetime': self.manual_datetime.strftime("%d-%m-%Y %H:%M") if self.manual_datetime else None
         }
 
@@ -428,7 +428,7 @@ class Glucose(db.Model):
     glucose: Mapped[int] = mapped_column(nullable=False)
     comments: Mapped[str] = mapped_column(String(200), nullable=True)
     manual_datetime: Mapped[datetime] = mapped_column(
-        DateTime(), nullable=True)
+        DateTime(), nullable=False)
 
     # Relacion con el usuario
     user = relationship("User", back_populates="glucose_history")
@@ -440,5 +440,6 @@ class Glucose(db.Model):
             'user_id': self.user_id,
             'registration_date': self.registration_date.strftime("%d-%m-%Y %H:%M") if self.registration_date else None,
             'glucose': self.glucose,
+            'comments': self.comments,
             'manual_datetime': self.manual_datetime.strftime("%d-%m-%Y %H:%M") if self.manual_datetime else None
         }

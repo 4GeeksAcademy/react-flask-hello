@@ -1,0 +1,1 @@
+from .routes import get_general_data, add_general_data, update_general_data

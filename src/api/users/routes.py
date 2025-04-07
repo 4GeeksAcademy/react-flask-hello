@@ -1,12 +1,10 @@
 """
-En este archivo están todas las rutas de User
-GeneralData
+En este archivo están todas las rutas de Datos Generales
+Ruta /api/users/general-data
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, GeneralData, Gender, BloodType, PhysicalActivity
-from api.utils import APIException
-from flask_cors import CORS
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import request, jsonify, Blueprint
+from api.models import db, GeneralData, Gender, BloodType, PhysicalActivity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 
 users_bp = Blueprint('users', __name__)

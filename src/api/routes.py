@@ -129,5 +129,34 @@ def get_user_info():
     user = User.query.get(current_user_id)
 
     return jsonify({
+
+        "name": user.serialize()["username"]
+    }), 200  
+
+#
+# Borrar un usuario existente
+#
+@api.route('/settings/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    # Buscamos al usuario por ID
+    user = User.query.get(user_id)
+
+    # Verificar si el usuario existe
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    
+    # Si sale error al eliminar usuario, hacemos try/except
+    try:
+        # Eliminamos el usuario de la base de datos
+        db.session.delete(user)
+        db.session.commit()
+
+        # Devolver mensaje de exito
+        return jsonify({"message": f"Usuario {user_id} eliminado correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500  
+      
         "name": user.serialize()["firstname"]
     }), 200
+

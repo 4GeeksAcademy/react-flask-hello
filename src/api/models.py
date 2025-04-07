@@ -8,6 +8,9 @@ db = SQLAlchemy()
 # Tabla Usuario
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
+    first_name: Mapped[str] = mapped_column(String(120))
+    last_name: Mapped[str] = mapped_column(String(120))
+    shop_name: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     username: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
@@ -19,6 +22,9 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "shop_name": self.shop_name,
             "email": self.email,
             "username": self.username
             # do not serialize the password, its a security breach
@@ -56,3 +62,55 @@ class Rol(db.Model):
             # do not serialize the password, its a security breach
         }
     
+# Tabla Compras
+class Compras(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
+# Tabla Stock
+class Stock(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
+# Tabla Productos
+class Productos(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
+# Tabla Facturas
+class Facturas(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
+# Tabla Detalles_Facturas (Productos - Facturas)
+class Detalles_Facturas(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    def serialize(self):
+        return {
+            "id": self.id
+        }

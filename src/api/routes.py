@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, Problemas, HistorialDeServicios
+from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, HistorialDeServicios
 from .utils import generate_sitemap, APIException
 from .api_calendar import GoogleCalendarManager  
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -1000,4 +1000,4 @@ def borrar_nota(cliente_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
-# NOS QUEDA HISTORIAL, CALENDARIO
+#NOS QUEDA HISTORIAL, CALENDARIO

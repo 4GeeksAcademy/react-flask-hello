@@ -62,7 +62,7 @@ class Usuarios(db.Model):
 
     negocio = relationship("Negocios", back_populates="usuarios")
     citas = relationship("Citas", back_populates="usuario",cascade="all, delete-orphan") 
-    problemas = relationship("Problemas", back_populates="usuario", cascade="all, delete-orphan")
+    
 
     def __init__(self, username, password, negocio_cif, rol="empleado"):
         self.username = username
@@ -220,8 +220,7 @@ class Calendario(db.Model):
     ultimo_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
     
     cita = relationship("Citas", back_populates="calendario")
-    problemas = relationship("Problemas", back_populates="calendario", cascade="all, delete-orphan")
-    
+        
     def serialize_calendario(self):
         return {
             "id": self.id,
@@ -232,23 +231,6 @@ class Calendario(db.Model):
             "ultimo_sync": self.ultimo_sync.isoformat() if self.ultimo_sync else None
         }
     
-class Problemas(db.Model):
-    __tablename__ = "problemas"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable = False)
-    descripcion: Mapped[str] = mapped_column(String(500), nullable=False)
-    dia_id: Mapped[int] = mapped_column(ForeignKey("calendario.id"), nullable=False)
-
-    usuario = relationship("Usuarios", back_populates="problemas")
-    calendario = relationship("Calendario", back_populates="problemas")
-
-    def serialize_problema(self):
-        return {
-            "id": self.id,
-            "id_usuario": self.usuario_id,
-            "descripcion": self.descripcion,
-            "id_dia": self.dia_id,
-        }
 
 class HistorialDeServicios(db.Model):
     __tablename__ = "historial_de_servicio"

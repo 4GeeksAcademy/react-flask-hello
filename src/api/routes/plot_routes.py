@@ -57,6 +57,17 @@ def get_all_fields():
     serialized_fields = [field.serialize_field() for field in all_fields]
     return jsonify(serialized_fields), 200
 
+
+# GET /fields/user/<int:user_id> - Obtener una parcela por user_id
+@fields.route('/user/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_field_by_user(user_id):
+    field = Field.query.filter_by(user_id=user_id).first()
+    if not field:
+        return jsonify({"error": "Field not found for this user"}), 404
+    return jsonify(field.serialize_field()), 200
+
+
 # GET /fields/<int:id> - Obtener una parcela por id
 
 

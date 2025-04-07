@@ -1,0 +1,7 @@
+.mapbox-parcel {
+  width: 100%;
+  height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}

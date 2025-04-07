@@ -1,24 +1,43 @@
-/* 👇 ❇️ Riki for the group success 👊 */
+/* 👇 ❇️ Riki for the group success 👊 Lunes7Abril*/
 
-/* Estilos base del layout */
+/* Estructura principal del layout */
 .layout-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8f9fa; /* Fondo general */
+  background-color: #f8f9fa;
+  position: relative; /* Contexto para posicionamiento */
 }
 
+/* Contenido principal */
 .content-wrapper {
-  flex: 1; /* Ocupa todo el espacio disponible */
+  flex: 1 0 auto; /* Ocupa todo el espacio disponible, no se reduce */
   padding: 2rem;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* Responsive */
+/* Contenedor interno opcional para mejor control */
+.content-inner {
+  min-height: calc(100vh - 180px); /* Resta altura aprox. de navbar + footer */
+  position: relative;
+}
+
+/* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
   .content-wrapper {
     padding: 1rem;
+  }
+  
+  .content-inner {
+    min-height: calc(100vh - 150px); /* Ajuste para móviles */
+  }
+}
+
+/* Protección para pantallas muy pequeñas */
+@media (max-height: 600px) {
+  .content-wrapper {
+    padding-bottom: 120px; /* Espacio extra para el footer */
   }
 }

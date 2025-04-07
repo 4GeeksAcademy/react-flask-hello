@@ -110,3 +110,19 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* 👇 ❇️ Riki for the group success 👊 Lunes7Abril*/
+
+.footer {
+    flex-shrink: 0; /* Evita que el footer se encoja */
+    width: 100%;
+    position: relative; /* Cambia de absolute a relative si estaba así */
+    z-index: 10; /* Opcional: para asegurar que está por encima de otros elementos */
+  }
+  
+  /* Para pantallas muy pequeñas con mucho contenido */
+  @media (max-width: 480px) {
+    .footer {
+      position: static; /* Asegura comportamiento normal en móviles */
+    }
+  }

@@ -1,108 +1,153 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./Styles/Register.css";
+import ErrorMessage1 from "../components/ErrorMessage1";
+import ErrorMessage2 from "../components/ErrorMessage2";
 
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
-    const [checked, setChecked] = useState(false); 
-    
-const navigate = useNavigate();
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [shopname, setShopname] = useState("");
+    const [checked, setChecked] = useState(false);
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
 
-const handleRegister = async (e) => {
-    e.preventDefault()
+    const navigate = useNavigate();
 
-    try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/signup', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password, username }),
-        });
+    const handleRegister = async (e) => {
+        e.preventDefault();
 
-        const data = await response.json();
-        alert(data.message);
-
-        
-        if (response.ok) {
-            navigate("/Register"); 
-
-        } else {
-            throw new Error(data.message || "Error en el inicio de sesión");
+        // VERIFICA QUE TODOS LOS CAMPOS ESTAN COMPLETOS
+        if (!email || !password || !firstname || !lastname || !shopname) {
+            console.log({ email, password, firstname, lastname, shopname });
+            setMessage("Por favor, completa todos los campos.");
+            setMessageType("error");
+            return;
         }
-    } catch (error) {
-        console.error("Error en el login:", error);
-        alert("Hubo un problema con el inicio de sesión.");
-    }
-};
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/signup`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password, firstname, lastname, shopname })
+              });
+
+
+            if (response.ok) {
+                navigate("/settings");
+
+            } else if (response.status === 403) {
+                setMessage("El usuario ya existe");
+                setMessageType("error");
+
+            } else if (response.status === 400) {
+                setMessage("La solicitud es incorrecta. Verifica los datos.");
+                setMessageType("error");
+
+            } else {
+                setMessage("Hubo un problema con el registro");
+                setMessageType("error2");
+            }
+
+        } catch (error2) {
+            console.error("Error de registro:", error2);
+            setMessage("Hubo un problema con el registro");
+            setMessageType("error2");
+        }
+    };
+
+    const handleMessageClose = () => {
+        setMessage("");
+        setMessageType("");
+    };
 
     return (
         <div className="register">
-            
-            <form onSubmit={handleRegister} className="form-content">
+            {message && (
+                <div className={`reg-message-box ${messageType}`}>
+                    {messageType === "error" && <ErrorMessage1 text={message} onClose={handleMessageClose} />}
+                    {messageType === "error2" && <ErrorMessage2 text={message} onClose={handleMessageClose} />}
+                </div>
+            )}
 
-                <div className = "label-content">
-                    <label htmlFor="email" className="form-label">
-                        Email address
-                    </label>
+            <form onSubmit={handleRegister} className="reg-form-content">
+                <div className="reg-label-content">
+                    <label htmlFor="firstname" className="reg-form-label">First Name</label>
                     <input
-                        type="email" 
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        value={email}  
-                        onChange={(e) => setEmail(e.target.value)}
-                        aria-describedby="emailHelp"
+                        type="text"
+                        className="reg-form-control"
+                        id="firstname"
+                        name="firstname"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
                     />
                 </div>
 
-                <div className= "label-content">
-                    <label htmlFor="password" className="form-label">
-                        Password
-                    </label>
+                <div className="reg-label-content">
+                    <label htmlFor="lastname" className="reg-form-label">Last Name</label>
+                    <input
+                        type="text"
+                        className="reg-form-control"
+                        id="lastname"
+                        name="lastname"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                    />
+                </div>
+
+                <div className="reg-label-content">
+                    <label htmlFor="shopname" className="reg-form-label">Shop Name</label>
+                    <input
+                        type="text"
+                        className="reg-form-control"
+                        id="shopname"
+                        name="shopname"
+                        value={shopname}
+                        onChange={(e) => setShopname(e.target.value)}
+                    />
+                </div>
+
+                <div className="reg-label-content">
+                    <label htmlFor="email" className="reg-form-label">Email address</label>
+                    <input
+                        type="email"
+                        className="reg-form-control"
+                        id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="reg-label-content">
+                    <label htmlFor="password" className="reg-form-label">Password</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className="reg-form-control"
                         id="password"
                         name="password"
-                        value={password} 
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
 
-                <div className= "label-content">
-                    <label htmlFor="UserName" className="form-label">
-                        Username
-                    </label>
-                    <input
-                        type="username"
-                        className="form-control"
-                        id="username"
-                        name="username"
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-
-                {/*BOTON DE CHEK*/}
-                <div className="form-check">
+                <div className="reg-form-check">
                     <input
                         type="checkbox"
-                        className="form-check-input"
+                        className="reg-form-check-input"
                         id="check"
                         name="checked"
-                        checked={checked} 
-                        onChange={(e) => setChecked(e.target.checked)} 
+                        checked={checked}
+                        onChange={(e) => setChecked(e.target.checked)}
                     />
-                    <label className="form-check-label" htmlFor="check">
-                        Check me out
-                    </label>
+                    <label className="reg-form-check-label" htmlFor="check">Check me out</label>
                 </div>
 
-                <button type="submit">Registrarse</button>
-               
+                <button type="submit" className="reg-btn">Registrarse</button>
             </form>
         </div>
     );

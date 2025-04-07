@@ -1,7 +1,7 @@
 import React from "react";
 import SeleccionarNegocio from "../components/SeleccionarNegocio";
 
-const Negocios = () => {
+export const Negocios = () => {
   return (
     <>
       <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}> {/* ← Fondo aplicado aquí */}
@@ -22,5 +22,3 @@ const Negocios = () => {
     </>
   );
 };
-
-export default Negocios;

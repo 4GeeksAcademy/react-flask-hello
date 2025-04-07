@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchInput = ({ value, onChange, placeholder }) => {
+export const SearchInput = ({ value, onChange, placeholder }) => {
   return (
     <div className="container mt-4">
       <input
@@ -14,5 +14,3 @@ const SearchInput = ({ value, onChange, placeholder }) => {
     </div>
   );
 };
-
-export default SearchInput;

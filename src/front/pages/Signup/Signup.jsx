@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showErrorAlert, showSuccessAlert } from "../../../../components/modal_alerts/modal_alerts";
+import { showErrorAlert, showSuccessAlert } from "../../components/modal_alerts/modal_alerts";
 import "./Signup.css";
 
 const Signup = () => {

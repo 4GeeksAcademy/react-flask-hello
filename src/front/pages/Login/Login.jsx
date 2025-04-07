@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { showErrorAlert, showSuccessAlert } from '../../../components/modal_alerts/modal_alerts.jsx';
+import { showErrorAlert, showSuccessAlert } from '../../components/modal_alerts/modal_alerts';
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });

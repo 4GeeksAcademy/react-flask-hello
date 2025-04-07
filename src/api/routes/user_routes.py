@@ -31,6 +31,9 @@ def signup():
     if User.query.filter_by(email=body["email"]).first():
         return jsonify({"error": "The user already exists"}), 400
 
+    if User.query.filter_by(dni=body["dni"]).first():
+        return jsonify({"error": "The user already exists"}), 400
+
     try:
 
         new_user = User(

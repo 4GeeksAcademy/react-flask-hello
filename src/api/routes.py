@@ -64,7 +64,7 @@ def create_user():
             shopname=body["shopname"],
             email=body["email"],
             password=body["password"],
-            is_active=body["True"]
+            is_active=body["is_active"]
         )
 
         db.session.add(new_user)
@@ -117,5 +117,5 @@ def get_user_info():
     user = User.query.get(current_user_id)
 
     return jsonify({
-        "name": user.serialize()["username"]
+        "name": user.serialize()["firstname"]
     }), 200    

@@ -19,12 +19,12 @@ export const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
-        localStorage.setItem("rol_id", data.user.rol_id); // Guardar rol
-        localStorage.setItem("user_id", data.user.id);    // Opcional
+        localStorage.setItem("rol_id", data.user.rolId); // ✅ cambiado a rolId
+        localStorage.setItem("user_id", data.user.id);
 
-        // Mostrar modal de éxito y redirigir según el rol
+        // ✅ Navegación corregida según rol
         showSuccessAlert("¡Inicio de sesión exitoso!", () => {
-          navigate(data.user.rol_id === 2 ? "/dashboard" : "/dash_admin");
+          navigate(Number(data.user.rolId) === 2 ? "/dashboard" : "/dash_admin");
         });
 
       } else {

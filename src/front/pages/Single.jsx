@@ -35,3 +35,4 @@ Single.propTypes = {
   // Consider removing or using it as needed.
   match: PropTypes.object
 };
+

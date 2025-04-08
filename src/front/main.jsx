@@ -5,7 +5,7 @@ import { RouterProvider } from "react-router-dom";  // Import RouterProvider to 
 import { router } from "./routes";  // Import the router configuration
 import { StoreProvider } from './hooks/useGlobalReducer';  // Import the StoreProvider for global state management
 import { BackendURL } from './components/BackendURL';
-import Home from './pages/Home';
+import PageRegister from './pages/PageRegister';
 
 const Main = () => {
     
@@ -18,9 +18,7 @@ const Main = () => {
         <React.StrictMode>  
             {/* Provide global state to all components */}
             <StoreProvider> 
-
                 <RouterProvider router={router}>
-                 <Home/>
                 </RouterProvider>
             </StoreProvider>
         </React.StrictMode>

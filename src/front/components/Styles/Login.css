@@ -1,41 +1,34 @@
 /*_______________MENU__LOGIN______________*/
-*{
-    box-sizing: border-box;
-  }
-  
-  .register {
+
+.login {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 10px;
-    position: relative;
   }
-  .reg-form-content {
-    display: block;
-    width: clamp(280px, 90%, 400px);
-    padding: clamp(1em, 2vw, 2em);
+  
+  .log-form-content {
+    width: 90%;
+    max-width: 400px;
+    padding: 2em;
     border-radius: 20px;
-    color: hsl(206, 20%, 32%);
+    color: #2F4556;
     background: #d9d9d9;
     box-shadow: 4px 4px 10px #2f45566f;
-    position: relative;
-    
   }
   
   /*__________AREA_PARA_ESCRIBIR_____________*/
   
-  .reg-form-control {
+  .log-form-control{
     border: 2px solid#2F4556;
     padding: 10px;
     outline: none;
     border-radius: 20px;
     margin-bottom: 3px;
     background: #acc6cd;
-    width: 100%;
   }
-  .reg-form-control:focus,
-  .reg-form-control:active {
+  .log-form-control:focus,
+  .log-form-control:active {
     background: #acc6cd;
     border-color: white;
     outline: none;
@@ -43,10 +36,10 @@
     border-radius: 20px;
   }
   /* Corrige el color del fondo cuando el navegador autocompleta */
-  .reg-form-control:-webkit-autofill,
-  .reg-form-control:-webkit-autofill:hover,
-  .reg-form-control:-webkit-autofill:focus,
-  .reg-form-control:-webkit-autofill:active {
+  .log-form-control:-webkit-autofill,
+  .log-form-control:-webkit-autofill:hover,
+  .log-form-control:-webkit-autofill:focus,
+  .log-form-control:-webkit-autofill:active {
     background: #acc6cd !important;
     -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
     color: #2f4556 !important;
@@ -54,16 +47,15 @@
   
   /*__________TEXTO_____________*/
   
-  .reg-form-label,
-  .reg-label-content {
+  .log-form-label,
+  .log-label-content {
     color: #2f4556;
     background: none;
     display: block;
     margin-bottom: 10px;
     padding-left: 15px;
   }
-  
-  .reg-form-label {
+  .log-form-label {
     display: inline-block;
     margin-top: 10px;
   }
@@ -73,48 +65,32 @@
   /*__________AREA_PARA_ESCRIBIR_____________*/
   
   /*_______________CHECK__BUTTON______________*/
-  .reg-form-check {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap; 
-    gap: 10px;
+  .log-form-check {
     margin-top: 10px;
-    width: 100%; 
     background: none;
   }
-  .reg-form-check-label {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
+  .log-form-check-label {
+    background: red;
   }
   
-  .reg-form-check-label:hover {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
+  .log-form-check-label:hover {
     scale: 1.1;
     border-color: white;
   }
   
-  .reg-form-check-label:checked {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
+  .log-form-check-label:checked {
     border-color: white;
     outline: none;
   }
   
-  .reg-form-check-label:focus {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
+  .log-form-check-label:focus {
     border-color: white;
     outline: none;
   }
   /*_______________CHECK__BUTTON_____________*/
   
   /*_____TEXTO__CHECK__ME__OUT_________*/
-  .reg-form-check-label {
+  .log-form-check-label {
     all: unset;
     color: #415361;
     font-size: 16px;
@@ -125,47 +101,44 @@
   /*_____TEXTO__CHECK__ME__OUT_________*/
   
   /*________BUTTONN___SUBMIT______________*/
-  .reg-btn {
-    width: 100%;
-    max-width: 200px;
-    display: block;
+  .log-btn {
+    width: 10vh;
     border-radius: 20px;
-    margin: 20px auto 0;
     color: #415361;
     background: none;
   
     transition: 0.2s;
   }
   
-  .reg-btn:hover {
+  .log-btn:hover {
     scale: 1.02;
     color: #415361;
     background: none;
     border-color: #415361;
   }
   
-  .reg-btn:active {
+  .log-btn:active {
     color: #415361;
     background: none;
-    border-color: #415361;
+    border-color: grey;
   }
   /*__________BUTTON___SUBMIT______________*/
   
   /*_______________RESPONCIVE______________*/
-  
-  @media (min-width: 480px) {
-    .reg-form-content {
+  @media (max-width: 768px) {
+    .login  {
+      width: 95%;
       max-width: 350px;
       padding: 1.5em;
     }
   }
   
-  @media (min-width: 768px) {
-    .reg-form-content {
-      max-width: 400px;
-      padding: 2em;
+  @media (max-width: 480px) {
+    .login  {
+      width: 100%;
+      max-width: 300px;
+      padding: 1em;
     }
   }
-  
   /*_______________RESPONCIVE______________*/
   

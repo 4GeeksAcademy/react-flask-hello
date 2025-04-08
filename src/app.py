@@ -8,8 +8,14 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from api.auth.routes import auth_bp
+from api.users.routes import users_bp
+from api.records import records_blueprint
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+from flask_jwt_extended import JWTManager
+import datetime
 
 # from models import Person
 
@@ -40,6 +46,21 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+
+app.register_blueprint(users_bp, url_prefix='/api/users')
+
+app.register_blueprint(records_blueprint, url_prefix='/api/records')
+
+# Configuración del JWT
+app.config["JWT_SECRET_KEY"] = "clave-super-secreta"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=12)
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+jwt = JWTManager(app)
+
+
 # Handle/serialize errors like a JSON object
 
 
@@ -57,6 +78,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):

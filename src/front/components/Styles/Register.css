@@ -67,62 +67,9 @@
     display: inline-block;
     margin-top: 10px;
   }
-  
   /*__________TEXTO_____________*/
   
-  /*__________AREA_PARA_ESCRIBIR_____________*/
-  
-  /*_______________CHECK__BUTTON______________*/
-  .reg-form-check {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap; 
-    gap: 10px;
-    margin-top: 10px;
-    width: 100%; 
-    background: none;
-  }
-  .reg-form-check-label {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
-  }
-  
-  .reg-form-check-label:hover {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
-    scale: 1.1;
-    border-color: white;
-  }
-  
-  .reg-form-check-label:checked {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
-    border-color: white;
-    outline: none;
-  }
-  
-  .reg-form-check-label:focus {
-    flex: 1; 
-    min-width: 0; 
-    word-break: break-word;
-    border-color: white;
-    outline: none;
-  }
-  /*_______________CHECK__BUTTON_____________*/
-  
-  /*_____TEXTO__CHECK__ME__OUT_________*/
-  .reg-form-check-label {
-    all: unset;
-    color: #415361;
-    font-size: 16px;
-    margin-left: 10px;
-    font-family: Verdana, Geneva, sans-serif;
-    outline: none;
-  }
-  /*_____TEXTO__CHECK__ME__OUT_________*/
+
   
   /*________BUTTONN___SUBMIT______________*/
   .reg-btn {
@@ -150,7 +97,8 @@
     border-color: #415361;
   }
   /*__________BUTTON___SUBMIT______________*/
-  
+
+ 
   /*_______________RESPONCIVE______________*/
   
   @media (min-width: 480px) {

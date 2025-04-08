@@ -3,80 +3,80 @@ import datetime
 from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-from flask_cors import CORS  # Importa CORS
+from flask_cors import CORS  # IMPORTA CORS
 
-# Importaciones del proyecto
+# IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
-# Crear la instancia de la aplicación Flask
+# CREAR LA INSTANCIA DE LA APLICACIÓN FLASK
 app = Flask(__name__)
 
-# Configuración CORS: Permitir múltiples orígenes si es necesario
+# CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app)
 
-# Configuración del entorno: usar "development" si FLASK_DEBUG está activado
+# CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 
-# Configuración de la base de datos
+# CONFIGURACIÓN DE LA BASE DE DATOS
 db_url = os.getenv("DATABASE_URL")
 if db_url:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
 else:
-    # Si no hay una URL de base de datos, se usa SQLite para desarrollo
+    # SI NO HAY UNA URL DE BASE DE DATOS, SE USA SQLITE PARA DESARROLLO
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
 
-# Deshabilitar la modificación del objeto de la base de datos (para optimización)
+# DESHABILITAR LA MODIFICACIÓN DEL OBJETO DE LA BASE DE DATOS (PARA OPTIMIZACIÓN)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inicializar la migración de la base de datos
+# INICIALIZAR LA MIGRACIÓN DE LA BASE DE DATOS
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# Configurar JWT (JSON Web Tokens) con claves y expiración
+# CONFIGURAR JWT (JSON WEB TOKENS) CON CLAVES Y EXPIRACIÓN
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=365)  # 1 año
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=365)  # 1 AÑO
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
 
-# Inicializar el gestor de JWT
+# INICIALIZAR EL GESTOR DE JWT
 jwt = JWTManager(app)
 
-# Configurar el manejo de errores para las excepciones personalizadas
+# CONFIGURAR EL MANEJO DE ERRORES PARA LAS EXCEPCIONES PERSONALIZADAS
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# Registrar el blueprint de la API con un prefijo 'api'
+# REGISTRAR EL BLUEPRINT DE LA API CON UN PREFIJO 'API'
 app.register_blueprint(api, url_prefix='/api')
 
-# Configurar el administrador y comandos personalizados
+# CONFIGURAR EL ADMINISTRADOR Y COMANDOS PERSONALIZADOS
 setup_admin(app)
 setup_commands(app)
 
-# Ruta para generar el sitemap de la API
+# RUTA PARA GENERAR EL SITEMAP DE LA API
 @app.route('/')
 def sitemap():
     if ENV == "development":
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# Ruta para servir cualquier otro archivo estático, como imágenes, JS, CSS, etc.
+# RUTA PARA SERVIR CUALQUIER OTRO ARCHIVO ESTÁTICO, COMO IMÁGENES, JS, CSS, ETC.
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
     response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # Evitar caché
+    response.cache_control.max_age = 0  # EVITAR CACHÉ
     return response
 
-# Ejecutar la aplicación si el archivo es ejecutado directamente
+# EJECUTAR LA APLICACIÓN SI EL ARCHIVO ES EJECUTADO DIRECTAMENTE
 if __name__ == '__main__':
-    # Obtener el puerto de la variable de entorno o usar el valor predeterminado 3001
+    # OBTENER EL PUERTO DE LA VARIABLE DE ENTORNO O USAR EL VALOR PREDETERMINADO 3001
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)

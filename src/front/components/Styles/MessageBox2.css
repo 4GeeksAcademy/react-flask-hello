@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); 
+  background-color: rgba(0, 0, 0, 0.6); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@
 
 .message-box  {
     width: 90%;
-    max-width: 400px; 
+    max-width: 300px; 
     padding: 1.5em;
     border-radius: 20px;
     color: hsl(206, 20%, 32%);
@@ -21,7 +21,7 @@
     box-shadow: 4px 4px 10px #2f45566f;
     text-align: center;
     position: absolute; 
-    top: 170px; 
+    top: 450px; 
     left: 50%;
     transform: translateX(-50%); 
     z-index: 1010;
@@ -46,9 +46,8 @@
 }
 
 /* Efecto al pasar el mouse sobre el botón */
-.box-btn:hover {
+.box-btn:active {
   box-shadow: 4px 4px 10px #2f45566f;
   scale: 1.1;
   transition: 0.1s;
-
 }

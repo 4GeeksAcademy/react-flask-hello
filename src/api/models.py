@@ -274,6 +274,7 @@ class Calendario(db.Model):
         }
 
 
+
 class HistorialDeServicios(db.Model):
     __tablename__ = "historial_de_servicio"
 
@@ -282,26 +283,23 @@ class HistorialDeServicios(db.Model):
         ForeignKey("clientes.id"), nullable=False)
     cita_id: Mapped[int] = mapped_column(
         ForeignKey("citas.id"), nullable=False)
-    # Puede no exisitir nota en alguna cita o cliuente
     nota_id: Mapped[int] = mapped_column(ForeignKey("nota.id"), nullable=True)
 
     cliente = relationship("Clientes", back_populates="historial_servicios")
     cita = relationship("Citas", back_populates="historial_servicio")
     nota = relationship("Notas", back_populates="historial_servicio")
 
-    def serialize_historialDeServicios(self):
+    def serialize_historial(self):
         return {
             "id": self.id,
-            "cliente": self.cliente.serialize_cliente() if self.cliente else None,
-            "cita": self.cita.serialize_cita() if self.cita else None,
-            "nota": self.nota.serialize_nota() if self.nota else None
+            "cliente_id": self.cliente_id,
+            "cliente_nombre": self.cliente.nombre if self.cliente else None,
+            "cita_id": self.cita_id,
+            "cita_info": {
+                "fecha_hora": self.cita.fecha_hora.isoformat() if self.cita else None,
+                "servicio": self.cita.servicio.nombre if self.cita and self.cita.servicio else None,
+                "estado": self.cita.estado if self.cita else None
+            },
+            "nota_id": self.nota_id,
+            "nota_descripcion": self.nota.descripcion if self.nota else None
         }
-
-
-class ClienteServicio(db.Model):
-    __tablename__ = "cliente_servicio"
-
-    cliente_id: Mapped[int] = mapped_column(
-        ForeignKey("clientes.id"), primary_key=True)
-    servicio_id: Mapped[int] = mapped_column(
-        ForeignKey("servicio.id"), primary_key=True)

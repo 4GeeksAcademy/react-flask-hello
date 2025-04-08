@@ -18,8 +18,10 @@ const Navbar = () => {
 				</div>
 				
 				<div className="nav_buttons">
-					<button  onClick={() => navigate("/home")}>Home</button>
-					<button  onClick={() => navigate("/settings")}>Settings</button>
+					<button className="nav-btn"  onClick={() => navigate("/")}>Register</button>
+					<button className="nav-btn"  onClick={() => navigate("/login")}>Login</button>
+					<button className="nav-btn"  onClick={() => navigate("/home")}>Home</button>
+					<button className="nav-btn"  onClick={() => navigate("/settings")}>Settings</button>
 				</div>
 
 

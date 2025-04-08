@@ -1,6 +1,7 @@
 import React from "react";
+import "./FormNewClient.css"
 
-const FormNewClient = () => {
+export const FormNewClient = () => {
     return (
         <>
             <div className="container">
@@ -34,7 +35,5 @@ const FormNewClient = () => {
         </>
     );
 }
-
-export default FormNewClient;
 
 // Los datos son Nombre*, Apellidos*, telefono*, DNI*, Email*

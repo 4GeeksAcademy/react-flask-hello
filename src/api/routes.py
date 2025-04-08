@@ -204,7 +204,7 @@ def obtener_clientes():
     clientes = Clientes.query.all()
 
     serialized_clientes = [cliente.serialize_cliente() for cliente in clientes]
-    
+
     return jsonify(serialized_clientes), 200
 
 
@@ -862,6 +862,9 @@ def agregar_cita():
             estado="pendiente"
         )
 
+        if servicio not in cliente.servicios:
+            cliente.servicios.append(servicio)
+            
         db.session.add(nueva_cita)
         db.session.commit()
 

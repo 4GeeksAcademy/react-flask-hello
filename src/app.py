@@ -31,8 +31,8 @@ db.init_app(app)
 
 setup_admin(app)
 
-app.register_blueprint(calendar_api, url_prefix='/calendar_api')
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(calendar_api, url_prefix='/calendar_api')
 
 # JWT configuration
 app.config["JWT_SECRET_KEY"] = "tu-clave-secreta"

@@ -206,8 +206,7 @@ class GoogleCalendarManager:
             print(f'Ocurrió un error al eliminar el evento: {error}')
             return False
 
-# ----------------------------- Rutas para la API de Calendario
-
+# ----------------------------- Rutas para la API de Calendario ---------------
 
 @calendar_api.route('/calendario/eventos', methods=['GET'])
 # @jwt_required()

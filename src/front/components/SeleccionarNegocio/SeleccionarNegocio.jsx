@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import "./SeleccionarNegocio.css"
 
 
-const SeleccionarNegocio = () => {
+export const SeleccionarNegocio = () => {
   const [buscarNegocio, setBuscarNegocio] = useState ("");
 
   const negociosRe = [
@@ -36,5 +37,3 @@ const SeleccionarNegocio = () => {
       </>
     );
   };
-  
-  export default SeleccionarNegocio;

@@ -1,7 +1,7 @@
 import React from "react";
-import FormNewClient from "../components/FormNewClient";
+import { FormNewClient } from "../components/FormularioNuevoCliente/FormNewClient";
 
-const NewClient = () => {
+export const NewClient = () => {
   return (
     <>
       <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}> {/* ← Fondo aplicado aquí */}
@@ -22,5 +22,3 @@ const NewClient = () => {
     </>
   );
 };
-
-export default NewClient;

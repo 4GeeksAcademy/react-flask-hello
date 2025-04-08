@@ -21,6 +21,9 @@ flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
 sqlalchemy = "*"
 colorama = "*"
+openpyxl = "*"
+boto3 = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.13"

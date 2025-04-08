@@ -41,7 +41,7 @@ function Register() {
 
             if (response.ok) {
 
-                localStorage.setItem("access_token", data.access_token);
+                localStorage.setItem("token", data.access_token);
 
                 // Redirige al usuario
                 navigate("/settings");

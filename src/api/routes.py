@@ -202,8 +202,9 @@ def borrar_usuario(username):
 def obtener_clientes():
 
     clientes = Clientes.query.all()
-    serialized_clientes = [cliente.serialize_cliente()
-                           for cliente in clientes]
+
+    serialized_clientes = [cliente.serialize_cliente() for cliente in clientes]
+    
     return jsonify(serialized_clientes), 200
 
 
@@ -233,8 +234,7 @@ def agregar_cliente():
         "dirección",
         "telefono",
         "cliente_dni",
-        "email",
-        "servicio"
+        "email"
     ]
 
     for campo in campos_requeridos:
@@ -255,9 +255,15 @@ def agregar_cliente():
             telefono=data["telefono"],
             cliente_dni=data["cliente_dni"],
             email=data["email"],
-            servicio_id=data["servicio"]
         )
         db.session.add(nuevo_cliente)
+
+        if "servicios_ids" in data and isinstance(data["servicios_ids"], list):
+            for servicio_id in data["servicios_ids"]:
+                servicio = Servicios.query.get(servicio_id)
+                if servicio:
+                    nuevo_cliente.servicios.append(servicio)
+
         db.session.commit()
 
         return jsonify({
@@ -284,18 +290,6 @@ def actualizar_cliente(cliente_id):
 
     if not cliente:
         return jsonify({"error": "Cliente no encontrado"}), 404
-
-    if "servicio_id" in data:
-
-        servicio_existente = Servicios.query.filter_by(
-            # Usa 'id' en lugar de 'servicio_id'
-            id=data["servicio_id"]).first()
-
-        if not servicio_existente:
-            return jsonify({"error": "Servicio no encontrado"}), 404
-
-        # Actualizar el servicio_id del cliente
-        cliente.servicio_id = servicio_existente.id
 
     try:
 
@@ -589,6 +583,93 @@ def borrar_servicio(nombre_servicio):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+
+# ---------------------------RUTAS PARA SERVICIOS DE UN CLIENTE ----------------
+
+@api.route('/clientes/<int:cliente_id>/servicios', methods=['GET'])
+# @jwt_required()
+def obtener_servicios_cliente(cliente_id):
+    cliente = Clientes.query.get(cliente_id)
+
+    if not cliente:
+        return jsonify({"error": "cliente no encontrado"}), 404
+
+    servicios = [servicio.serialize_servicio()
+                 for servicio in cliente.servicios]
+
+    return jsonify(servicios), 200
+
+# Asignar un servicio a un cliente
+
+
+@api.route('/clientes/<int:cliente_id>/servicios', methods=['POST'])
+# @jwt_required()
+def agregar_servicio_cliente(cliente_id):
+    cliente = Clientes.query.get(cliente_id)
+
+    if not cliente:
+        return jsonify({"error": "Cliente no encontrado"}), 404
+
+    data = request.get_json()
+
+    if not data or "servicio_id" not in data:
+        return jsonify({"error": "Se requiere el ID del servicio"}), 400
+
+    servicio = Servicios.query.get(data["servicio_id"])
+
+    if not servicio:
+        return jsonify({"error": "Servicio no encontrado"}), 404
+
+    # Verificar si el cliente ya tiene este servicio
+    if servicio in cliente.servicios:
+        return jsonify({"error": "El cliente ya tiene este servicio contratado"}), 400
+
+    # Agregar el servicio al cliente
+    cliente.servicios.append(servicio)
+
+    try:
+        db.session.commit()
+        return jsonify({
+            "msg": "Servicio agregado con éxito",
+            "servicios": [s.serialize_servicio() for s in cliente.servicios]
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+# Quitar un servicio de un cliente
+
+
+@api.route('/clientes/<int:cliente_id>/servicios/<int:servicio_id>', methods=['DELETE'])
+# @jwt_required()
+def quitar_servicio_cliente(cliente_id, servicio_id):
+    cliente = Clientes.query.get(cliente_id)
+
+    if not cliente:
+        return jsonify({"error": "Cliente no encontrado"}), 404
+
+    servicio = Servicios.query.get(servicio_id)
+
+    if not servicio:
+        return jsonify({"error": "Servicio no encontrado"}), 404
+
+    # Verificar si el cliente tiene este servicio
+    if servicio not in cliente.servicios:
+        return jsonify({"error": "El cliente no tiene este servicio contratado"}), 404
+
+    # Quitar el servicio del cliente
+    cliente.servicios.remove(servicio)
+
+    try:
+        db.session.commit()
+        return jsonify({
+            "msg": "Servicio eliminado con éxito",
+            "servicios": [s.serialize_servicio() for s in cliente.servicios]
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
 # --------------------------PAGOS------------------
 
 
@@ -597,7 +678,11 @@ def borrar_servicio(nombre_servicio):
 def obtener_pagos():
 
     pagos = Pagos.query.all()
-    serialized_pagos = [pago.serialize_servicio() for pago in pagos]
+    if not pagos:
+        return jsonify({"msg": "no se han encontrado pagos"}), 404
+
+    serialized_pagos = [pago.serialize_pago() for pago in pagos]
+
     return jsonify(serialized_pagos), 200
 
 
@@ -605,10 +690,10 @@ def obtener_pagos():
 # @jwt_required()
 def obtener_pago(cliente_id):
 
-    pagos = Pagos.query.filter_by(cliente_id=cliente_id)
+    pagos = Pagos.query.filter_by(cliente_id)
     if not pagos:
         return jsonify({"error": "pago no encontrado"}), 404
-    
+
     pagos_realizados = [pago.serialize_pago() for pago in pagos]
 
     return jsonify(pagos_realizados), 200
@@ -981,20 +1066,23 @@ def obtener_notas():
     if not notas:
         return jsonify({"error": "notas no encontradas"}), 404
 
-    serialized_nota = [nota.serialize_servicio() for nota in notas]
-    return jsonify(serialized_nota), 200
+    serialized_notas = [nota.serialize_nota() for nota in notas]
+
+    return jsonify(serialized_notas), 200
 
 
 @api.route('/notas/<int:cliente_id>', methods=['GET'])
 # @jwt_required()
 def obtener_notas_cliente(cliente_id):
 
-    notas = Notas.query.filter_by(cliente_id).all()
+    notas = Notas.query.filter_by(cliente_id=cliente_id).all()
 
     if not notas:
-        return jsonify({"msg": "notas no encontradas"}), 200
+        return jsonify({"msg": "notas no encontradas"}), 404
 
-    return jsonify(notas.serialize_nota()), 200
+    serialized_notas = [nota.serialize_nota() for nota in notas]
+
+    return jsonify(serialized_notas), 200
 
 
 @api.route('/notas', methods=['POST'])
@@ -1007,7 +1095,6 @@ def agregar_nota():
         return jsonify({"error": "data no encontrada"}), 404
 
     campos_requeridos = [
-        "nombre_cliente",
         "email_cliente",
         "descripcion",
     ]
@@ -1025,7 +1112,6 @@ def agregar_nota():
 
         nueva_nota = Notas(
             cliente_id=cliente.id,
-            nombre_cliente=cliente.nombre,
             descripcion=data["descripcion"]
         )
 
@@ -1034,7 +1120,7 @@ def agregar_nota():
 
         return jsonify({
             "msg": "nota registrada con éxito",
-            "pago": nueva_nota.serialize_nota()
+            "nota": nueva_nota.serialize_nota()
         }), 201
 
     except Exception as e:
@@ -1042,11 +1128,11 @@ def agregar_nota():
         return jsonify({"error": str(e)}), 500
 
 
-@api.route('/notas/<int:cliente_id>', methods=['DELETE'])
+@api.route('/notas/<int:nota_id>', methods=['DELETE'])
 # @jwt_required()
-def borrar_nota(cliente_id):
-
-    nota = Notas.query.filter_by(cliente_id=cliente_id).first()
+def borrar_nota(nota_id):
+    # Buscar la nota por su ID (clave primaria)
+    nota = Notas.query.get(nota_id)
 
     if not nota:
         return jsonify({

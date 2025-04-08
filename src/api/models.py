@@ -6,18 +6,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
+
 class Admins(db.Model):
     __tablename__ = "admins"
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    username: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    rol: Mapped[str] = mapped_column(Enum("Admin", name="role_admin"), nullable=False)#
+    rol: Mapped[str] = mapped_column(
+        Enum("Admin", name="role_admin"), nullable=False)
 
     def __init__(self, username, password, rol):
         self.username = username
         self.rol = rol
-        self.set_password(password) 
-
+        self.set_password(password)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -29,20 +31,21 @@ class Admins(db.Model):
         return {
             "id": self.id,
             "username": self.username,
-            "rol": self.rol, 
-            "password":self.password_hash
-            }
-    
+            "rol": self.rol,
+            "password": self.password_hash
+        }
+
+
 class Negocios(db.Model):
-    __tablename__="negocio"
+    __tablename__ = "negocio"
     id: Mapped[int] = mapped_column(primary_key=True)
     nombre_negocio: Mapped[str] = mapped_column(String(50), nullable=False)
-    negocio_cif: Mapped[str] = mapped_column(String(15), unique=True, nullable=False) 
+    negocio_cif: Mapped[str] = mapped_column(
+        String(15), unique=True, nullable=False)
     negocio_cp: Mapped[str] = mapped_column(String(10), nullable=False)
 
     usuarios = relationship("Usuarios", back_populates="negocio")
     servicios = relationship("Servicios", back_populates="negocio")
-    
 
     def serialize_negocio(self):
         return {
@@ -51,24 +54,28 @@ class Negocios(db.Model):
             "CIF": self.negocio_cif,
             "CP": self.negocio_cp
         }
-    
+
+
 class Usuarios(db.Model):
     __tablename__ = "usuarios"
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    username: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    negocio_cif: Mapped[str] = mapped_column(ForeignKey("negocio.negocio_cif"), nullable=False)
-    rol: Mapped[str] = mapped_column(Enum("master", "jefe", "empleado", name="role_enum"), nullable=False)
+    negocio_cif: Mapped[str] = mapped_column(
+        ForeignKey("negocio.negocio_cif"), nullable=False)
+    rol: Mapped[str] = mapped_column(
+        Enum("master", "jefe", "empleado", name="role_enum"), nullable=False)
 
     negocio = relationship("Negocios", back_populates="usuarios")
-    citas = relationship("Citas", back_populates="usuario",cascade="all, delete-orphan") 
-    
+    citas = relationship("Citas", back_populates="usuario",
+                         cascade="all, delete-orphan")
 
     def __init__(self, username, password, negocio_cif, rol="empleado"):
         self.username = username
-        self.negocio_cif = negocio_cif 
+        self.negocio_cif = negocio_cif
         self.rol = rol
-        self.set_password(password) 
+        self.set_password(password)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -81,21 +88,26 @@ class Usuarios(db.Model):
             "id": self.id,
             "username": self.username,
             "rol": self.rol,
-            "password":self.password_hash
-            }
-    
+            "password": self.password_hash
+        }
+
+
 class Servicios(db.Model):
-    __tablename__= 'servicio'
+    __tablename__ = 'servicio'
     id: Mapped[int] = mapped_column(primary_key=True)
-    negocio_id:Mapped[int] = mapped_column(ForeignKey("negocio.id"), nullable=False)#limitar (8)
-    nombre: Mapped[str] = mapped_column(String(75),unique= True ,nullable=False)
+    negocio_id: Mapped[int] = mapped_column(
+        ForeignKey("negocio.id"), nullable=False)  # limitar (8)
+    nombre: Mapped[str] = mapped_column(
+        String(75), unique=True, nullable=False)
     descripcion: Mapped[str] = mapped_column(String(500),  nullable=False)
-    precio: Mapped[int] = mapped_column(Numeric(10,2), nullable=False)#precio con numeric, pero puede ser con Float o incluso Biginteger
-    
+    # precio con numeric, pero puede ser con Float o incluso Biginteger
+    precio: Mapped[int] = mapped_column(Numeric(10, 2), nullable=False)
 
     negocio = relationship("Negocios", back_populates="servicios")
-    clientes = relationship("Clientes", back_populates="servicio")
-    citas = relationship("Citas", back_populates="servicio", cascade="all, delete-orphan")
+    clientes = relationship(
+        "Clientes", secondary="cliente_servicio", back_populates="servicios")
+    citas = relationship("Citas", back_populates="servicio",
+                         cascade="all, delete-orphan")
 
     def serialize_servicio(self):
         return {
@@ -105,7 +117,6 @@ class Servicios(db.Model):
             "descripcion": self.descripcion,
             "precio": self.precio
         }
-    
 
 
 # DEJO AQUI UN HUECO PARA EL PROBLEMA DE AL CLASE DE SERVICIOS
@@ -116,16 +127,22 @@ class Clientes(db.Model):
     nombre: Mapped[str] = mapped_column(String(75), nullable=False)
     dirección: Mapped[str] = mapped_column(String(255), nullable=True)
     telefono: Mapped[str] = mapped_column(String(15), nullable=False)
-    cliente_dni: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
-    email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
-    servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable=True) #nullable true porque puede que un cliente no tenga asignado un sevicio
-
-    servicio = relationship("Servicios", back_populates="clientes")
-    notas = relationship("Notas", back_populates="cliente", cascade="all, delete-orphan")#cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
-    pagos = relationship("Pagos", back_populates= "cliente", cascade="all, delete-orphan")
-    citas = relationship("Citas", back_populates="cliente",cascade="all, delete-orphan")
-    historial_servicios = relationship("HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
-
+    cliente_dni: Mapped[str] = mapped_column(
+        String(20), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(100), unique=True, nullable=False)
+    # nullable true porque puede que un cliente no tenga asignado un sevicio
+    servicios = relationship(
+        "Servicios", secondary="cliente_servicio", back_populates="clientes")
+    # cascade pq las notas en sí depende del cleinte pq son ntoas de cliente
+    notas = relationship("Notas", back_populates="cliente",
+                         cascade="all, delete-orphan")
+    pagos = relationship("Pagos", back_populates="cliente",
+                         cascade="all, delete-orphan")
+    citas = relationship("Citas", back_populates="cliente",
+                         cascade="all, delete-orphan")
+    historial_servicios = relationship(
+        "HistorialDeServicios", back_populates="cliente", cascade="all, delete-orphan")
 
     def serialize_cliente(self):
         return {
@@ -135,36 +152,48 @@ class Clientes(db.Model):
             "telefono": self.telefono,
             "cliente_dni": self.cliente_dni,
             "email": self.email,
-            "servicio": self.servicio.serialize_servicio() if self.servicio else None,#para que se muestre en servicio y con if else para que pueda ser "none" si no tiene servicio asignado
-            "notas": [nota.serialize() for nota in self.notas], #se serializa el serialize de notas para que este todo relacionado y vinculado correctamente 
+            "servicios": [servicio.serialize_servicio() for servicio in self.servicios] if self.servicios else [],            "notas": [nota.serialize_nota() for nota in self.notas],
+            "pagos": [pago.serialize_pago() for pago in self.pagos] if self.pagos else [],
+            "citas": [cita.serialize_cita() for cita in self.citas] if self.citas else [],
+            "historial_servicios": [historial.serialize_historial() for historial in self.historial_servicios] if self.historial_servicios else []
         }
+
+
 class Notas(db.Model):
     __tablename__ = "nota"
     id: Mapped[int] = mapped_column(primary_key=True)
-    cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable=False)
+    cliente_id: Mapped[int] = mapped_column(
+        ForeignKey("clientes.id"), nullable=False)
     descripcion: Mapped[str] = mapped_column(String(500), nullable=False)
-#pongo nullable flase para evitar crear una nota vacía por error y que pueda sobrecargar la memoria en si
+# pongo nullable flase para evitar crear una nota vacía por error y que pueda sobrecargar la memoria en si
     cliente = relationship("Clientes", back_populates="notas")
-    historial_servicio = relationship("HistorialDeServicios", back_populates="nota")
+    historial_servicio = relationship(
+        "HistorialDeServicios", back_populates="nota")
 
     def serialize_nota(self):
         return {
             "id": self.id,
             "cliente_id": self.cliente_id,
-            "cliente_nombre":self.cliente.nombre, 
+            "cliente_nombre": self.cliente.nombre,
             "descripcion": self.descripcion
         }
 
+
 class Pagos(db.Model):
-    __tablename__="pagos"
+    __tablename__ = "pagos"
     id: Mapped[int] = mapped_column(primary_key=True)
-    cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable=False)
-    metodo_pago: Mapped[str] = mapped_column(Enum("efectivo", "tarjeta", name="metodo_pago_enum"), nullable=False)
+    cliente_id: Mapped[int] = mapped_column(
+        ForeignKey("clientes.id"), nullable=False)
+    metodo_pago: Mapped[str] = mapped_column(
+        Enum("efectivo", "tarjeta", name="metodo_pago_enum"), nullable=False)
     total_estimado: Mapped[int] = mapped_column(Numeric(10, 2), nullable=False)
-    pagos_realizados: Mapped[int] = mapped_column(Numeric(10, 2), nullable=False, default=0)
-    fecha_pago: Mapped[Date] = mapped_column(Date, nullable=True)  # La fecha puede ser nullable si no se paga inmediatamente, aqui presupongo que se pone con cada pago 
-    estado:Mapped[str] = mapped_column(Enum("pendiente", "pagado",  name = "estado_enum"), nullable = False, default= "pendiente")
-    
+    pagos_realizados: Mapped[int] = mapped_column(
+        Numeric(10, 2), nullable=False, default=0)
+    # La fecha puede ser nullable si no se paga inmediatamente, aqui presupongo que se pone con cada pago
+    fecha_pago: Mapped[Date] = mapped_column(Date, nullable=True)
+    estado: Mapped[str] = mapped_column(Enum(
+        "pendiente", "pagado",  name="estado_enum"), nullable=False, default="pendiente")
+
     cliente = relationship("Clientes", back_populates="pagos")
 
     def serialize_pago(self):
@@ -172,55 +201,68 @@ class Pagos(db.Model):
             "id": self.id,
             "cliente_id": self.cliente_id,
             "metodo_pago": self.metodo_pago,
-            "total_estimado": str(self.total_estimado), #aqui convierte el total estiamdo en String cuando se serializa
+            # aqui convierte el total estiamdo en String cuando se serializa
+            "total_estimado": str(self.total_estimado),
             "pagos_realizados": self.pagos_realizados,
             "pagos_pendientes": max(0, self.total_estimado - self.pagos_realizados),
-            "fecha_pago": self.fecha_pago.isoformat() if self.fecha_pago else None, #en resumen, el isoformat() convierte la serialización a formato "AÑO-MES-DIA"
+            # en resumen, el isoformat() convierte la serialización a formato "AÑO-MES-DIA"
+            "fecha_pago": self.fecha_pago.isoformat() if self.fecha_pago else None,
             "estado": self.estado
         }
-    
+
+
 class Citas(db.Model):
-    __tablename__= "citas"
+    __tablename__ = "citas"
     id: Mapped[int] = mapped_column(primary_key=True)
-    usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable = False)
-    cliente_id:Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable = False)
-    servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), nullable = False)
+    usuario_id: Mapped[int] = mapped_column(
+        ForeignKey("usuarios.id"), nullable=False)
+    cliente_id: Mapped[int] = mapped_column(
+        ForeignKey("clientes.id"), nullable=False)
+    servicio_id: Mapped[int] = mapped_column(
+        ForeignKey("servicio.id"), nullable=False)
     fecha_hora: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    estado: Mapped[str] = mapped_column(Enum("pendiente", "confirmada", "cancelada","realizada", name= "estado_cita"), nullable = False, default = "pendiente")
+    estado: Mapped[str] = mapped_column(Enum(
+        "pendiente", "confirmada", "cancelada", "realizada", name="estado_cita"), nullable=False, default="pendiente")
 
     usuario = relationship("Usuarios", back_populates="citas")
     cliente = relationship("Clientes", back_populates="citas")
     servicio = relationship("Servicios", back_populates="citas")
-    calendario = relationship("Calendario", back_populates="cita", uselist=False)
-    historial_servicio = relationship("HistorialDeServicios", back_populates="cita")
-
+    calendario = relationship(
+        "Calendario", back_populates="cita", uselist=False)
+    historial_servicio = relationship(
+        "HistorialDeServicios", back_populates="cita")
 
     def serialize_cita(self):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
-            "usuario_nombre": self.usuario.username, 
+            "usuario_nombre": self.usuario.username,
             "cliente_id": self.cliente_id,
             "cliente_nombre": self.cliente.nombre,
             "cliente_email": self.cliente.email,
             "servicio_id": self.servicio_id,
             "servicio_nombre": self.servicio.nombre,
+            # Mostramos todos los servicios contratados por el cliente
+            "servicios_cliente": [servicio.serialize_servicio() for servicio in self.cliente.servicios] if self.cliente.servicios else [],
             "fecha_hora": self.fecha_hora.isoformat(),
             "estado": self.estado,
             "calendario": self.calendario.serialize_calendario() if self.calendario else None
         }
-    
+
+
 class Calendario(db.Model):
     __tablename__ = "calendario"
     id: Mapped[int] = mapped_column(primary_key=True)
-    fecha_hora_inicio: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    fecha_hora_inicio: Mapped[DateTime] = mapped_column(
+        DateTime, nullable=False)
     fecha_hora_fin: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False, unique=True)
+    cita_id: Mapped[int] = mapped_column(
+        ForeignKey("citas.id"), nullable=False, unique=True)
     google_event_id: Mapped[str] = mapped_column(String(255), nullable=True)
     ultimo_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
-    
+
     cita = relationship("Citas", back_populates="calendario")
-        
+
     def serialize_calendario(self):
         return {
             "id": self.id,
@@ -230,15 +272,18 @@ class Calendario(db.Model):
             "google_event_id": self.google_event_id,
             "ultimo_sync": self.ultimo_sync.isoformat() if self.ultimo_sync else None
         }
-    
+
 
 class HistorialDeServicios(db.Model):
     __tablename__ = "historial_de_servicio"
-    
+
     id: Mapped[int] = mapped_column(primary_key=True)
-    cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), nullable=False)
-    cita_id: Mapped[int] = mapped_column(ForeignKey("citas.id"), nullable=False)
-    nota_id: Mapped[int] = mapped_column(ForeignKey("nota.id"), nullable=True)  # Puede no exisitir nota en alguna cita o cliuente 
+    cliente_id: Mapped[int] = mapped_column(
+        ForeignKey("clientes.id"), nullable=False)
+    cita_id: Mapped[int] = mapped_column(
+        ForeignKey("citas.id"), nullable=False)
+    # Puede no exisitir nota en alguna cita o cliuente
+    nota_id: Mapped[int] = mapped_column(ForeignKey("nota.id"), nullable=True)
 
     cliente = relationship("Clientes", back_populates="historial_servicios")
     cita = relationship("Citas", back_populates="historial_servicio")
@@ -247,8 +292,16 @@ class HistorialDeServicios(db.Model):
     def serialize_historialDeServicios(self):
         return {
             "id": self.id,
-            "cliente": self.cliente.serialize() if self.cliente else None,
-            "cita": self.cita.serialize() if self.cita else None,
-            "nota": self.nota.serialize() if self.nota else None
+            "cliente": self.cliente.serialize_cliente() if self.cliente else None,
+            "cita": self.cita.serialize_cita() if self.cita else None,
+            "nota": self.nota.serialize_nota() if self.nota else None
         }
 
+
+class ClienteServicio(db.Model):
+    __tablename__ = "cliente_servicio"
+
+    cliente_id: Mapped[int] = mapped_column(
+        ForeignKey("clientes.id"), primary_key=True)
+    servicio_id: Mapped[int] = mapped_column(
+        ForeignKey("servicio.id"), primary_key=True)

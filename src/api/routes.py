@@ -608,8 +608,10 @@ def obtener_pago(cliente_id):
     pagos = Pagos.query.filter_by(cliente_id=cliente_id)
     if not pagos:
         return jsonify({"error": "pago no encontrado"}), 404
+    
+    pagos_realizados = [pago.serialize_pago() for pago in pagos]
 
-    return jsonify(pagos.serialize_pago()), 200
+    return jsonify(pagos_realizados), 200
 
 
 @api.route('/pagos', methods=['POST'])
@@ -620,11 +622,10 @@ def agregar_pago():
         return jsonify({"error": "data no encontrada"}), 404
 
     campos_requeridos = [
-        "nombre_cliente",
+        "email_cliente",
         "metodo_pago",
         "total_estimado",
         "pagos_realizados",
-        "pagos_pendientes",
         "fecha_pago",
         "estado"
     ]
@@ -635,17 +636,15 @@ def agregar_pago():
 
     try:
         cliente = Clientes.query.filter_by(
-            nombre=data["nombre_cliente"]).first()
+            email=data["email_cliente"]).first()
         if not cliente:
             return jsonify({"error": "Cliente no encontrado"}), 404
 
         nuevo_pago = Pagos(
             cliente_id=cliente.id,
-            nombre_cliente=cliente.nombre,
             metodo_pago=data["metodo_pago"],
             total_estimado=data["total_estimado"],
             pagos_realizados=data["pagos_realizados"],
-            pagos_pendientes=data["pagos_pendientes"],
             fecha_pago=data["fecha_pago"],
             estado=data["estado"]
         )

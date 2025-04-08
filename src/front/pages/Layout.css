@@ -38,3 +38,20 @@ html, body, #root {
     padding: 15px;
   }
 }
+
+/* 👆 🤟🏼 ❇️ Riki for the group success 8_Abril 👊 */
+/* Estilos específicos para el layout público */
+.app-root.public-layout .content-container {
+  padding-top: 0; /* Elimina el padding para el hero section */
+}
+
+/* Asegura que el footer se mantenga abajo */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1;
+}

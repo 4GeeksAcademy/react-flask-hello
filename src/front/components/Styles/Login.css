@@ -15,15 +15,15 @@
   padding: clamp(1em, 2vw, 2em);
   border-radius: 20px;
   color: hsl(206, 20%, 32%);
-  background: #d9d9d9;
-  box-shadow: 4px 4px 10px #2f45566f;
-  position: relative;
+  background: #5d97b3;
+  box-shadow: 9px 9px 19px #192633;
+    position: relative;
 }
 
 /*__________AREA_PARA_ESCRIBIR_____________*/
 
 .log-form-control {
-  border: 2px solid#2F4556;
+  border: 2px solid #34546a;
   padding: 10px;
   outline: none;
   border-radius: 20px;
@@ -52,7 +52,7 @@
 
 .log-form-label,
 .log-label-content {
-  color: #2f4556;
+  color: #ddebf0;
   background: none;
   display: block;
   margin-bottom: 10px;
@@ -65,45 +65,33 @@
 
 /*__________TEXTO_____________*/
 
-/*__________AREA_PARA_ESCRIBIR_____________*/
 
-
-
-/*_____TEXTO__CHECK__ME__OUT_________*/
-.log-form-check-label {
-  all: unset;
-  color: #415361;
-  font-size: 16px;
-  margin-left: 10px;
-  font-family: Verdana, Geneva, sans-serif;
-  outline: none;
-}
-/*_____TEXTO__CHECK__ME__OUT_________*/
 
 /*________BUTTONN___SUBMIT______________*/
 .log-btn {
   width: 100%;
-  max-width: 200px;
+  max-width: 120px;
   display: block;
   border-radius: 20px;
   margin: 20px auto 0;
-  color: #415361;
+  color: white;
   background: none;
-
-  transition: 0.2s;
+  box-shadow: 3px 3px 10px #192633;
 }
 
 .log-btn:hover {
-  scale: 1.02;
-  color: #415361;
+  color: white;
+  box-shadow: 3px 3px 10px #192633;
   background: none;
   border-color: #415361;
 }
 
 .log-btn:active {
-  color: #415361;
-  background: none;
-  border-color: #415361;
+  color: white;
+    background: none;
+    box-shadow: 3px 3px 10px #192633;
+    border-color: #415361;
+    transform: scale(0.95);
 }
 /*__________BUTTON___SUBMIT______________*/
 

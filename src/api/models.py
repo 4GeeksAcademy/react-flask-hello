@@ -26,6 +26,9 @@ class User(db.Model):
     products = relationship("Productos", back_populates="user")
     tigris_files = relationship("TigrisFiles", back_populates="user")
 
+    # Relación uno a muchos con Logo, la tabla muchos
+    logo = relationship("Logo", back_populates="user")
+
     def serialize(self):
         return {
             "id": self.id,
@@ -182,4 +185,22 @@ class Detalles_Facturas(db.Model):
             "id": self.id,
             "factura_id": self.factura_id,
             "prod_id": self.prod_id
+        }
+    
+# Tabla Logo
+
+class Logo(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    image_url: Mapped[str] = mapped_column(
+        String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+    
+    # Añadimos la relación con el usuario
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    user = relationship("User", back_populates="logo")
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "image_url": self.image_url,
+            "user_id": self.user_id
         }

@@ -232,3 +232,11 @@ def delete_user(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500
+    
+#
+# Subir un logo desde la API
+# 
+@api.route('/uploads/logo', methods=['PUT'])
+def upload_logo():
+
+    return jsonify({"message upload": "Logo subido correctamente"}), 200

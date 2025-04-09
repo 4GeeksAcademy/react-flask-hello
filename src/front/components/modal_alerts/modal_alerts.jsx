@@ -1,54 +1,44 @@
-// 👇 ❇️ Riki for the group success 👊
-// modal_alerts.jsx - Servicio reutilizable para toda la app
+// 👇 ❇️ Riki for the group success 9_Abril 👊
 
+// modal_alerts.jsx - Servicio reutilizable para toda la app
 import Swal from 'sweetalert2';
-import logo from '../../assets/img/Logo_DronFarm1.png';
 
 // Configuración centralizada de estilos y fuentes
 const modalStyles = {
-  titleFont: 'Montserrat, sans-serif', // Coherente con h1, h2, h3
-  textFont: 'Roboto, sans-serif',      // Coherente con el body
-  errorColor: '#d33',                 // Rojo para errores
-  successColor: '#28a745',            // Verde para éxito
-  titleColor: '#4682B4',              // Color de títulos (como en index.css)
-  textColor: '#333',                  // Color de texto base (como en index.css)
+  titleFont: 'Montserrat, sans-serif',
+  textFont: 'Roboto, sans-serif',
+  errorColor: '#d33',
+  successColor: '#28a745',
+  titleColor: '#4682B4',
+  textColor: '#333',
 };
 
-/**
- * Muestra un modal de error con mensaje personalizado.
- * @param {string} message - Mensaje a mostrar.
- */
+// Función de error (sin cambios)
 export const showErrorAlert = (message) => {
   Swal.fire({
     icon: 'error',
     title: 'Error',
     text: message,
     confirmButtonColor: modalStyles.errorColor,
-    background: '#f8f9fa', // Fondo coherente con Layout.css
+    background: '#f8f9fa',
     customClass: {
-      title: 'modal-title-error', // Clase para títulos
-      htmlContainer: 'modal-text', // Clase para texto
+      title: 'modal-title-error',
+      htmlContainer: 'modal-text',
     },
   });
 };
 
-/**
- * Muestra un modal de éxito con mensaje y callback opcional (ej: redirección).
- * @param {string} message - Mensaje a mostrar.
- * @param {function} [callback] - Función a ejecutar al cerrar el modal.
- */
+// Función de éxito MODIFICADA (sin logo)
 export const showSuccessAlert = (message, callback = null) => {
   Swal.fire({
     title: '¡Éxito!',
-    html: `
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <img src="${logo}" alt="Logo DronFarm" style="width: 80px; height: auto;"/>
-        <p style="margin: 0;">${message}</p>
-      </div>
-    `,
+    text: message,  // ✅ Versión simplificada
     icon: 'success',
     confirmButtonColor: modalStyles.successColor,
     background: '#f8f9fa',
+    timer: 3000,    // ✅ Cierre automático en 3s
+    timerProgressBar: true,
+    showConfirmButton: false, // ✅ Oculta el botón "OK"
     customClass: {
       title: 'modal-title-success',
       htmlContainer: 'modal-text',
@@ -58,9 +48,7 @@ export const showSuccessAlert = (message, callback = null) => {
   });
 };
 
-/**
- * Muestra un modal de carga (spinner).
- */
+// Resto del archivo sin cambios
 export const showLoadingAlert = () => {
   Swal.fire({
     title: 'Cargando...',
@@ -68,14 +56,11 @@ export const showLoadingAlert = () => {
     didOpen: () => Swal.showLoading(),
     background: '#f8f9fa',
     customClass: {
-      title: 'modal-title-success', // Reutiliza estilos de éxito
+      title: 'modal-title-success',
     },
   });
 };
 
-/**
- * Cierra cualquier modal activo.
- */
 export const closeAlert = () => {
   Swal.close();
 };

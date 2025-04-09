@@ -60,12 +60,6 @@ class Rol(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user = relationship("User", back_populates="id_user")
 
-    # Relación uno a muchos con Compras, la tabla muchos
-    id_rol = relationship("Compras", back_populates="rol")
-
-    # Relación uno a muchos con Facturas, la tabla muchos
-    id_rol2 = relationship("Facturas", back_populates="rol")
-
     def serialize(self):
         return {
             "id": self.id,
@@ -81,9 +75,7 @@ class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
 
-    # Relación muchos a uno con Rol, la tabla "uno"
-    rol_id: Mapped[int] = mapped_column(ForeignKey('rol.id'))
-    rol = relationship("Rol", back_populates="id_rol")
+    
 
     def serialize(self):
         return {
@@ -191,7 +183,7 @@ class Detalles_Facturas(db.Model):
 
 class Logo(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    image_url: Mapped[str] = mapped_column(
+    image_logo_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
     
     # Añadimos la relación con el usuario
@@ -201,6 +193,6 @@ class Logo(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image_url": self.image_url,
+            "image_logo_url": self.image_logo_url,
             "user_id": self.user_id
         }

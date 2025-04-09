@@ -1,6 +1,6 @@
 
 from flask import request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Logo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -236,7 +236,43 @@ def delete_user(user_id):
 #
 # Subir un logo desde la API
 # 
-@api.route('/uploads/logo', methods=['PUT'])
-def upload_logo():
 
-    return jsonify({"message upload": "Logo subido correctamente"}), 200
+@api.route("/get_logos", methods=['GET'])
+def get_all_logos():
+    logos = Logo.query.all()
+
+    logos_serialized = [logo.serialize() for logo in logos]
+
+    return jsonify({"logos": logos_serialized})
+
+# Ruta para registrarse un usuario (signup)
+
+@api.route('/post_logos', methods=['POST'])
+def create_logo():
+    body = request.get_json()
+    image_logo_url = body.get("image_logo_url")
+
+    # Verifica si no existen los campos
+    if not image_logo_url:
+        return jsonify({"msg": "Asigna un logo"}), 400
+
+    try:
+
+        # Creamos el nuevo logo
+        new_logo = Logo(
+            image_logo_url=image_logo_url,
+        )
+
+        db.session.add(new_logo)
+        db.session.flush()
+        db.session.commit()
+
+
+        return jsonify({
+            "logo": new_logo.serialize()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Ocurrió un error al crear el logo: {str(e)}"}), 500
+

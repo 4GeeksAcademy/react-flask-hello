@@ -7,7 +7,6 @@ db = SQLAlchemy()
 
 # TABLA DE USUARIO
 
-
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     firstname: Mapped[str] = mapped_column(String(120), nullable=True)
@@ -20,7 +19,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(
         Boolean(), nullable=False, default=False)
 
-    # RELACION UNO A MUCHOS CON FAVORITES, LA TABLA DE MUCHOS
+    # RELACION UNO A MUCHOS CON ROL, LA TABLA DE MUCHOS
 
     id_user = relationship("Rol", back_populates="user")
 
@@ -28,6 +27,9 @@ class User(db.Model):
 
     products = relationship("Productos", back_populates="user")
     tigris_files = relationship("TigrisFiles", back_populates="user")
+
+    # Relación uno a muchos con Logo, la tabla muchos
+    logo = relationship("Logo", back_populates="user")
 
     def serialize(self):
         return {
@@ -49,7 +51,6 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
 
 # TABLA DE ROL
 
@@ -76,14 +77,15 @@ class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
 
+    
+
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name
         }
-
+      
 # TABLA DE STOCK
-
 
 class Stock(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -95,6 +97,7 @@ class Stock(db.Model):
             "name": self.name
         }
 
+# TABLA DE PRODUCTOS
 
 class Productos(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -104,6 +107,10 @@ class Productos(db.Model):
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     image_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+    
+    # RELACION UNO A MUCHOS CON DETALLES_FACTURA, LA TABLA DE MUCHOS
+    
+    id_prod = relationship("Detalles_Facturas", back_populates="prod")
 
     # AÑADIMOS LA RELACION CON EL USUARIO
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
@@ -138,24 +145,56 @@ class TigrisFiles(db.Model):
 
 # TABLA DE FACTURAS
 
-
 class Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
+    cif_empresa: Mapped[str] = mapped_column(String(50))
+      
+    # RELACION UNO A MUCHOS CON DETALLES_FACTURAS, LA TABLA DE MUCHOS
+    
+    id_factura = relationship("Detalles_Facturas", back_populates="factura")
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "cif_empresa": self.cif_empresa
         }
 
 #TABLA DETALLES_FACTURA (PRODUCTOS - FACTURAS)
 
-
 class Detalles_Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
+    # Relación muchos a uno con Facturas, la tabla "uno"
+    factura_id: Mapped[int] = mapped_column(ForeignKey('facturas.id'))
+    factura = relationship("Facturas", back_populates="id_factura")
+
+    # Relación muchos a uno con Productos, la tabla "uno"
+    prod_id: Mapped[int] = mapped_column(ForeignKey('productos.id'))
+    prod = relationship("Productos", back_populates="id_prod")
+
     def serialize(self):
         return {
-            "id": self.id
+            "id": self.id,
+            "factura_id": self.factura_id,
+            "prod_id": self.prod_id
+        }
+    
+# TABLA DE LOGOS
+
+class Logo(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    image_logo_url: Mapped[str] = mapped_column(
+        String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+    
+    # Añadimos la relación con el usuario
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    user = relationship("User", back_populates="logo")
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "image_logo_url": self.image_logo_url,
+            "user_id": self.user_id
         }

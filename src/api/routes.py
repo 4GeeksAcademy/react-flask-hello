@@ -1,5 +1,5 @@
 from flask import request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Logo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -39,7 +39,6 @@ def create_user_anonymous():
         })
 
 # RUTA PARA REGISTRARSE UN USUARIO (SIGNUP)
-
 
 @api.route('/signup', methods=['POST'])
 def create_user():
@@ -92,7 +91,6 @@ def create_user():
 
 # RUTA PARA LOGEARSE Y CREACIÓN DE TOKEN
 
-
 @api.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
@@ -131,19 +129,101 @@ def get_user_info():
         "name": user.serialize()["username"]
     }), 200
 
-# BORRAR UN USUARIO EXISTENTE
+# MUESTRA TODOS LOS USUARIOS
+
+@api.route('/users', methods=['GET'])
+def get_all_users():
+
+    users = User.query.all()
+
+    if not users:
+        return jsonify({ "msg": "Users not found"}), 404
+    
+    response_body = [user.serialize() for user in users]
+
+    return jsonify(response_body), 200
+  
+# MUESTRA LOS DATOS DEL USUARIO
+
+@api.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+
+    user = User.query.get(user_id)
+
+    if user is None:
+        return jsonify({ "msg": "User not found"}), 404
+    
+    response_body = user.serialize()
+    
+    return jsonify(response_body), 200
+  
+# ACTUALIZAR UN USUARIO EXISTENTE
+
+@api.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    # Buscamos al usuaruio por su ID
+    user = User.query.get(user_id)
+
+    # VERIFICAMOS SI EL USUARIO EXISTE
+    
+    if not user:
+        return jsonify({"error": "Usuario no encontrada"}), 404
+    
+    # OBTENEMOS LOS DATOS DE LA REQUEST
+    
+    request_data = request.get_json()
+
+    
+    # ACTUALIZAMOS LOS CAMPOS SI ESTAN PRESENTES EN LA SOLICITUD
+    
+    if "firstname" in request_data:
+        user.firstname = request_data['firstname']
+    
+    if "lastname" in request_data:
+        user.lastname = request_data['lastname']
+
+    if "shopname" in request_data:
+        user.shopname = request_data['shopname']
+
+    if "email" in request_data:
+        user.email = request_data['email']
+    
+    if "username" in request_data:
+        user.username = request_data['username']
+
+    if "password" in request_data:
+        user.password = request_data['password']
+
+    # SI SALE ERROR AL ACTUALIZAR ESPECIE, HACEMOS TRY/EXCEPT
+    
+    try:
+        # GUARDAMOS LOS CAMBIOS EN LA BASE DE DATOS
+   
+        db.session.commit()
+
+        # DEVOLVEMOS (RETORNAMOS) LA ESPECIE ACTUALIZADA
+      
+        return jsonify(user.serialize()), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f"Error al actualizar el usuario: {str(e)}"}), 500
 
 
-@api.route('/settings/<int:user_id>', methods=['DELETE'])
+# BORRA UN USUARIO
+
+@api.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
+  
     # BUSCAMOS AL USUARIO POR ID
     user = User.query.get(user_id)
 
     # VERIFICAR SI EL USUARIO EXISTE
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
-
+      
     # SI SALE ERROR AL ELIMINAR USUARIO, HACEMOS TRY/EXCEPT
+
     try:
         # ELIMINAMOS EL USUARIO DE LA BASE DE DATOS
         db.session.delete(user)
@@ -154,3 +234,44 @@ def delete_user(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500
+    
+# LLAMAR AL LOGO DESDE LA API
+
+@api.route("/get_logos", methods=['GET'])
+def get_all_logos():
+    logos = Logo.query.all()
+
+    logos_serialized = [logo.serialize() for logo in logos]
+
+    return jsonify({"logos": logos_serialized})
+
+ # SUBIR EL LOGO DESDE LA API
+
+@api.route('/post_logos', methods=['POST'])
+def create_logo():
+    body = request.get_json()
+    image_logo_url = body.get("image_logo_url")
+
+    # Verifica si no existen los campos
+    if not image_logo_url:
+        return jsonify({"msg": "Asigna un logo"}), 400
+
+    try:
+
+        # CREA EL LOGO
+        new_logo = Logo(
+            image_logo_url=image_logo_url,
+        )
+
+        db.session.add(new_logo)
+        db.session.flush()
+        db.session.commit()
+
+        return jsonify({
+            "logo": new_logo.serialize()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Ocurrió un error al crear el logo: {str(e)}"}), 500
+

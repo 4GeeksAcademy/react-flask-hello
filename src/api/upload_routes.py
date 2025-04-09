@@ -3,7 +3,7 @@ ESTE MÓDULO SE ENCARGA DE MANEJAR LAS RUTAS PARA LA CARGA DE ARCHIVOS EXCEL
 """
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from api.models import db, User, Productos, TigrisFiles
+from api.models import db, User, Productos, TigrisFiles, Logo
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import pandas as pd
 import os
@@ -27,7 +27,6 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # RUTA DE PRUEBA
-
 
 @upload.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -121,7 +120,6 @@ def upload_inventory():
         if os.path.exists(file_path):
             os.remove(file_path)
         return jsonify({"error": str(e)}), 500
-
 
 # FUNCIÓN AUXILIAR PARA SUBIR ARCHIVOS A TIGRIS S3
 
@@ -272,3 +270,93 @@ def upload_to_tigris_s3(file_path, file_name):
 
     except Exception as e:
         raise Exception(f"Error al subir a Tigris S3: {str(e)}")
+    
+# Ruta para subir logos
+
+@upload.route("/get_logos", methods=['GET'])
+def get_all_logos():
+    logos = Logo.query.all()
+
+    logos_serialized = [logo.serialize() for logo in logos]
+
+    return jsonify({"logos": logos_serialized})
+
+@upload.route('/upload-logos', methods=['POST'])
+@jwt_required()
+def upload_logo():
+  
+    
+    # Obtener el ID del usuario del token JWT
+    user_id = get_jwt_identity()
+
+    if "file" not in request.files:
+        return jsonify({"message": "No se envió ningún archivo"}), 400
+
+    # Verificar que el usuario exista
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    file = request.files["file"]
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    try:
+        # 1. Subir el archivo original a Tigris S3
+        file_url = upload_to_tigris_s3(file_path, file.filename)
+
+        # 2. Procesar el Excel y guardar en la base de datos
+        df = pd.read_excel(file_path)
+
+        # Verificar que el Excel tiene las columnas esperadas
+        required_columns = ['nombre_del_producto',
+                            'precio_por_unidad', 'descripción', 'unidades']
+        for col in required_columns:
+            if col not in df.columns:
+                return jsonify({"error": f"Falta la columna '{col}' en el archivo Excel"}), 400
+
+        # Normalizar nombres de columnas
+        df.columns = [col.lower().replace(' ', '_') for col in df.columns]
+
+        # Convertir a registros
+        records = df.to_dict(orient="records")
+
+        # Guardar cada producto en la base de datos
+        products_added = 0
+        for record in records:
+            # Mapear campos del Excel al modelo con los nuevos nombres
+            new_product = Productos(
+                product_name=record['nombre_del_producto'],
+                price_per_unit=record['precio_por_unidad'],
+                description=record['descripción'],
+                quantity=record['unidades'],
+                user_id=user_id  # ID del usuario obtenido del token
+            )
+            db.session.add(new_product)
+            products_added += 1
+
+        # 3. Guardar la URL de Tigris en la tabla TigrisFiles
+        new_tigris_file = TigrisFiles(
+            url=file_url,
+            user_id=user_id  # ID del usuario obtenido del token
+        )
+        db.session.add(new_tigris_file)
+
+        # Confirmar cambios en la base de datos
+        db.session.commit()
+
+        # Eliminar el archivo temporal
+        os.remove(file_path)
+
+        return jsonify({
+            "message": f"Archivo procesado y {products_added} productos guardados en la base de datos.",
+            "file_url": file_url,
+            "products_added": products_added
+        })
+
+    except Exception as e:
+        # En caso de error, hacer rollback
+        db.session.rollback()
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        return jsonify({"error": str(e)}), 500

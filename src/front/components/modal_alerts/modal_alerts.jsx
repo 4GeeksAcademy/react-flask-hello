@@ -54,7 +54,9 @@ export const showSuccessAlert = (message, callback = null) => {
       htmlContainer: 'modal-text',
     },
   }).then(() => {
-    if (callback) callback();
+    if (typeof callback === 'function') {
+      callback();
+    }
   });
 };
 

@@ -1,4 +1,3 @@
-
 from flask import request, jsonify, url_for, Blueprint
 from api.models import db, User, Logo
 from api.utils import generate_sitemap, APIException
@@ -9,7 +8,7 @@ from api.upload_routes import upload
 api = Blueprint('api', __name__)
 
 
-# Registro del blueprint upload:
+# REGISTRO DEL BLUEPRINT UPLOAD:
 api.register_blueprint(upload, url_prefix='/upload')
 
 
@@ -25,12 +24,12 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
-# Endpoint para generar usuario anónimo
+# ENDPOINT PARA GENERAR USUARIO ANÓNIMO
 
 
 @api.route('/anonymous/create', methods=['POST'])
 def create_user_anonymous():
-    # verificar si existe un token
+    # VERIFICAR SI EXISTE UN TOKEN
     existing_token = request.cookies.get('anonymousToken')
 
     if existing_token:
@@ -39,7 +38,7 @@ def create_user_anonymous():
             'isNew': False
         })
 
-# Ruta para registrarse un usuario (signup)
+# RUTA PARA REGISTRARSE UN USUARIO (SIGNUP)
 
 @api.route('/signup', methods=['POST'])
 def create_user():
@@ -50,20 +49,20 @@ def create_user():
     email = body.get('email')
     password = body.get('password')
 
-    # Verifica si no existen los campos
+    # VERIFICA SI NO EXISTEN LOS CAMPOS
     if not firstname or not lastname or not email or not password or not shopname:
         return jsonify({"msg": "Todos los campos son obligatorios"}), 400
 
-    # Verifica si el usuario existe
+    # VERIFICA SI EL USUARIO EXISTE
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         return jsonify({"msg": "El usuario ya existe"}), 403
 
     try:
-        # Encriptamos la contraseña antes de guardarla
+        # ENCRIPTAMOS LA CONTRASEÑA ANTES DE GUARDARLA
         hashed_password = User.hash_password(password)
 
-        # Creamos el nuevo usuario
+        # CREAMOS EL NUEVO USUARIO
         new_user = User(
             firstname=firstname,
             lastname=lastname,
@@ -77,7 +76,7 @@ def create_user():
         db.session.flush()
         db.session.commit()
 
-        # Creamos el token de acceso
+        # CREAMOS EL TOKEN DE ACCESO
         access_token = create_access_token(identity=new_user.id)
 
         return jsonify({
@@ -90,7 +89,7 @@ def create_user():
         db.session.rollback()
         return jsonify({"error": f"Ocurrió un error al crear el usuario: {str(e)}"}), 500
 
-# Ruta para logearse y creación de token
+# RUTA PARA LOGEARSE Y CREACIÓN DE TOKEN
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -104,10 +103,10 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"error": "user incorrecto"}), 401
+        return jsonify({"error": "email incorrecto"}), 401
 
     if not user.check_password(password):
-        return jsonify({"error": "pasword incorrecto"}), 401
+        return jsonify({"error": "password incorrecto"}), 401
 
     access_token = create_access_token(identity=str(user.id))
 
@@ -116,13 +115,13 @@ def login():
         "user": user.serialize()
     }), 200
 
-# Ruta del acceso settings del usuario
+# RUTA DEL ACCESO SETTINGS DEL USUARIO
 
 
 @api.route('/settings', methods=['GET'])
-@jwt_required()  # Precisa de token para acceder
+@jwt_required()  # PRECISA DE TOKEN PARA ACCEDER
 def get_user_info():
-    # Devuelve el ID porque se lo he pasado al crear access_token
+    # DEVUELVE EL ID PORQUE SE LO HE PASADO AL CREAR ACCESS_TOKEN
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
 
@@ -130,11 +129,8 @@ def get_user_info():
         "name": user.serialize()["username"]
     }), 200
 
+# MUESTRA TODOS LOS USUARIOS
 
-#
-# USUARIO
-# Muestra todos los usuarios
-#
 @api.route('/users', methods=['GET'])
 def get_all_users():
 
@@ -146,10 +142,9 @@ def get_all_users():
     response_body = [user.serialize() for user in users]
 
     return jsonify(response_body), 200
+  
+# MUESTRA LOS DATOS DEL USUARIO
 
-#
-# Muestra los datos de un usuario
-#
 @api.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
 
@@ -161,24 +156,26 @@ def get_user(user_id):
     response_body = user.serialize()
     
     return jsonify(response_body), 200
+  
+# ACTUALIZAR UN USUARIO EXISTENTE
 
-
-#
-# Actualizar un usuario existente
-#
 @api.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
     # Buscamos al usuaruio por su ID
     user = User.query.get(user_id)
 
-    # Verificamos si el usuario existe
+    # VERIFICAMOS SI EL USUARIO EXISTE
+    
     if not user:
         return jsonify({"error": "Usuario no encontrada"}), 404
     
-    # Obtenemos los datos de la request
+    # OBTENEMOS LOS DATOS DE LA REQUEST
+    
     request_data = request.get_json()
 
-    # Actualizamos los campos si estan presentes en la solicitud
+    
+    # ACTUALIZAMOS LOS CAMPOS SI ESTAN PRESENTES EN LA SOLICITUD
+    
     if "firstname" in request_data:
         user.firstname = request_data['firstname']
     
@@ -197,45 +194,48 @@ def update_user(user_id):
     if "password" in request_data:
         user.password = request_data['password']
 
-    # Si sale error al actualizar especie, hacemos try/except
+    # SI SALE ERROR AL ACTUALIZAR ESPECIE, HACEMOS TRY/EXCEPT
+    
     try:
-        # Guardamos los cambios en la base de datos
+        # GUARDAMOS LOS CAMBIOS EN LA BASE DE DATOS
+   
         db.session.commit()
 
-        # Devolvemos (retornamos) la especie actualizada
+        # DEVOLVEMOS (RETORNAMOS) LA ESPECIE ACTUALIZADA
+      
         return jsonify(user.serialize()), 200
     
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f"Error al actualizar el usuario: {str(e)}"}), 500
 
-#
-# Borra un usuario
-#
+
+# BORRA UN USUARIO
+
 @api.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    # Buscamos al usuario por ID
+  
+    # BUSCAMOS AL USUARIO POR ID
     user = User.query.get(user_id)
 
-    # Verificar si el usuario existe
+    # VERIFICAR SI EL USUARIO EXISTE
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
-    
-    # Si sale error al eliminar usuario, hacemos try/except
+      
+    # SI SALE ERROR AL ELIMINAR USUARIO, HACEMOS TRY/EXCEPT
+
     try:
-        # Eliminamos el usuario de la base de datos
+        # ELIMINAMOS EL USUARIO DE LA BASE DE DATOS
         db.session.delete(user)
         db.session.commit()
 
-        # Devolver mensaje de exito
+        # DEVOLVER MENSAJE DE EXITO
         return jsonify({"message": f"Usuario {user_id} eliminado correctamente"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500
     
-#
-# Subir un logo desde la API
-# 
+# LLAMAR AL LOGO DESDE LA API
 
 @api.route("/get_logos", methods=['GET'])
 def get_all_logos():
@@ -245,7 +245,7 @@ def get_all_logos():
 
     return jsonify({"logos": logos_serialized})
 
-# Ruta para registrarse un usuario (signup)
+ # SUBIR EL LOGO DESDE LA API
 
 @api.route('/post_logos', methods=['POST'])
 def create_logo():
@@ -258,7 +258,7 @@ def create_logo():
 
     try:
 
-        # Creamos el nuevo logo
+        # CREA EL LOGO
         new_logo = Logo(
             image_logo_url=image_logo_url,
         )
@@ -266,7 +266,6 @@ def create_logo():
         db.session.add(new_logo)
         db.session.flush()
         db.session.commit()
-
 
         return jsonify({
             "logo": new_logo.serialize()

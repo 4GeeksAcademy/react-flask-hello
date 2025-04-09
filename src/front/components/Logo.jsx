@@ -4,12 +4,12 @@ import axios from "axios";
 
 const LogoFrame = () => {
 
-    
+
     const [image_logo_url, setImage] = useState(null); 
     const fileInputRef = useRef(null); 
-    const savedLogo = localStorage.getItem("logoApp");
+    const savedLogo = localStorage.getItem("logoApp"); // DECLARO SAVEDLOGO PARA QUE GUARDE LA IMAGEN EN MI LOCALSTORAGE
 
-    useEffect(() => {
+    useEffect(() => { 
         const savedLogo = localStorage.getItem("logoApp");
         if (savedLogo) {
             setImage(savedLogo);
@@ -31,26 +31,38 @@ const LogoFrame = () => {
                 console.log("Imagen guardada en localStorage.");
             };
             reader.readAsDataURL(file);
+
+    const [image, setImage] = useState(null);
+    const fileInputRef = useRef(null);
+
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setImage(imageUrl);
+
         }
     };
 
-    
     const handleClick = () => {
         fileInputRef.current.click();
     };
 
     return (
         <div className="logo-frame" onClick={handleClick}>
-            <input 
-                type="file" 
-                ref={fileInputRef} 
-                accept="image/*" 
-                onChange={handleImageUpload} 
-                style={{ display: "none" }} 
+
+            { /*BOTON DE SUBIDA DE IMG_LOGO*/}
+            <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"    /*URL DEL LOGO*/ 
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
             />
-            
-            
-            {!savedLogo ? (
+  
+            {!savedLogo ? ( {!image ? (
+
                 <p className="add-logo-text">Add your logo</p>
             ) : (
                 <img src={savedLogo} alt="Logo" />

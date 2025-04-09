@@ -1,144 +1,113 @@
 /*_______________MENU__LOGIN______________*/
 
 .login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 10px;
+  position: relative;
+}
+
+.log-form-content {
+  display: block;
+  width: clamp(250px, 80%, 400px);
+  padding: clamp(1em, 2vw, 2em);
+  border-radius: 20px;
+  color: hsl(206, 20%, 32%);
+  background: #5d97b3;
+  box-shadow: 9px 9px 19px #192633;
+    position: relative;
+}
+
+/*__________AREA_PARA_ESCRIBIR_____________*/
+
+.log-form-control {
+  border: 2px solid #34546a;
+  padding: 10px;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  background: #acc6cd;
+}
+.log-form-control:focus,
+.log-form-control:active {
+  background: #acc6cd;
+  border-color: white;
+  outline: none;
+  box-shadow: none;
+  border-radius: 20px;
+}
+/* Corrige el color del fondo cuando el navegador autocompleta */
+.log-form-control:-webkit-autofill,
+.log-form-control:-webkit-autofill:hover,
+.log-form-control:-webkit-autofill:focus,
+.log-form-control:-webkit-autofill:active {
+  background: #acc6cd !important;
+  -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
+  color: #2f4556 !important;
+}
+
+/*__________TEXTO_____________*/
+
+.log-form-label,
+.log-label-content {
+  color: #ddebf0;
+  background: none;
+  display: block;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+.log-form-label {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/*__________TEXTO_____________*/
+
+
+
+/*________BUTTONN___SUBMIT______________*/
+.log-btn {
+  width: 100%;
+  max-width: 120px;
+  display: block;
+  border-radius: 20px;
+  margin: 20px auto 0;
+  color: white;
+  background: none;
+  box-shadow: 3px 3px 10px #192633;
+}
+
+.log-btn:hover {
+  color: white;
+  box-shadow: 3px 3px 10px #192633;
+  background: none;
+  border-color: #415361;
+}
+
+.log-btn:active {
+  color: white;
+    background: none;
+    box-shadow: 3px 3px 10px #192633;
+    border-color: #415361;
+    transform: scale(0.95);
+}
+/*__________BUTTON___SUBMIT______________*/
+
+/*_______________RESPONCIVE______________*/
+@media (min-width: 480px) {
+  .reg-form-content {
+    max-width: 350px;
+    padding: 1.5em;
   }
-  
-  .log-form-content {
-    width: 90%;
+}
+
+@media (min-width: 768px) {
+  .reg-form-content {
     max-width: 400px;
     padding: 2em;
-    border-radius: 20px;
-    color: #2F4556;
-    background: #d9d9d9;
-    box-shadow: 4px 4px 10px #2f45566f;
   }
-  
-  /*__________AREA_PARA_ESCRIBIR_____________*/
-  
-  .log-form-control{
-    border: 2px solid#2F4556;
-    padding: 10px;
-    outline: none;
-    border-radius: 20px;
-    margin-bottom: 3px;
-    background: #acc6cd;
-  }
-  .log-form-control:focus,
-  .log-form-control:active {
-    background: #acc6cd;
-    border-color: white;
-    outline: none;
-    box-shadow: none;
-    border-radius: 20px;
-  }
-  /* Corrige el color del fondo cuando el navegador autocompleta */
-  .log-form-control:-webkit-autofill,
-  .log-form-control:-webkit-autofill:hover,
-  .log-form-control:-webkit-autofill:focus,
-  .log-form-control:-webkit-autofill:active {
-    background: #acc6cd !important;
-    -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
-    color: #2f4556 !important;
-  }
-  
-  /*__________TEXTO_____________*/
-  
-  .log-form-label,
-  .log-label-content {
-    color: #2f4556;
-    background: none;
-    display: block;
-    margin-bottom: 10px;
-    padding-left: 15px;
-  }
-  .log-form-label {
-    display: inline-block;
-    margin-top: 10px;
-  }
-  
-  /*__________TEXTO_____________*/
-  
-  /*__________AREA_PARA_ESCRIBIR_____________*/
-  
-  /*_______________CHECK__BUTTON______________*/
-  .log-form-check {
-    margin-top: 10px;
-    background: none;
-  }
-  .log-form-check-label {
-    background: red;
-  }
-  
-  .log-form-check-label:hover {
-    scale: 1.1;
-    border-color: white;
-  }
-  
-  .log-form-check-label:checked {
-    border-color: white;
-    outline: none;
-  }
-  
-  .log-form-check-label:focus {
-    border-color: white;
-    outline: none;
-  }
-  /*_______________CHECK__BUTTON_____________*/
-  
-  /*_____TEXTO__CHECK__ME__OUT_________*/
-  .log-form-check-label {
-    all: unset;
-    color: #415361;
-    font-size: 16px;
-    margin-left: 10px;
-    font-family: Verdana, Geneva, sans-serif;
-    outline: none;
-  }
-  /*_____TEXTO__CHECK__ME__OUT_________*/
-  
-  /*________BUTTONN___SUBMIT______________*/
-  .log-btn {
-    width: 10vh;
-    border-radius: 20px;
-    color: #415361;
-    background: none;
-  
-    transition: 0.2s;
-  }
-  
-  .log-btn:hover {
-    scale: 1.02;
-    color: #415361;
-    background: none;
-    border-color: #415361;
-  }
-  
-  .log-btn:active {
-    color: #415361;
-    background: none;
-    border-color: grey;
-  }
-  /*__________BUTTON___SUBMIT______________*/
-  
-  /*_______________RESPONCIVE______________*/
-  @media (max-width: 768px) {
-    .login  {
-      width: 95%;
-      max-width: 350px;
-      padding: 1.5em;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .login  {
-      width: 100%;
-      max-width: 300px;
-      padding: 1em;
-    }
-  }
-  /*_______________RESPONCIVE______________*/
-  
+}
+
+/*_______________RESPONCIVE______________*/

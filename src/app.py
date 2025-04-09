@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
+from api import api
 from api.api_calendar import calendar_api
 from api.admin import setup_admin
 from flask_jwt_extended import JWTManager

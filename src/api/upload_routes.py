@@ -38,7 +38,6 @@ def handle_hello():
 
 # RUTA PARA SUBIR ARCHIVOS EXCEL
 
-
 @upload.route('/upload-inventory', methods=['POST'])
 @jwt_required()
 def upload_inventory():
@@ -123,8 +122,8 @@ def upload_inventory():
             os.remove(file_path)
         return jsonify({"error": str(e)}), 500
 
-# FUNCIÓN AUXILIAR PARA SUBIR ARCHIVOS A TIGRIS S3
 
+# FUNCIÓN AUXILIAR PARA SUBIR ARCHIVOS A TIGRIS S3
 
 @upload.route("/get_all", methods=['GET'])
 def get_all_products():
@@ -191,6 +190,8 @@ def delete_tigris_file(file_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+# AQUÍ PODRÍAS BORRAR TODOS LOS PRODUCTOS
+
 
 @upload.route("/delete-all-products", methods=['DELETE'])
 def delete_all_products():
@@ -209,6 +210,7 @@ def delete_all_products():
         return jsonify({"error": str(e)}), 500
 
 
+# AQUÍ PODRÍAS BORRAR TODOS LOS ARCHIVOS
 @upload.route("/delete-all-files", methods=['DELETE'])
 def delete_all_files():
     """ELIMINA TODOS LOS REGISTROS DE ARCHIVOS DE TIGRIS"""

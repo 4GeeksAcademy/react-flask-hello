@@ -7,7 +7,7 @@ export const Navbar = () => {
 			<div className="container">
 				{/* Logo y marca */}
 				<a className="navbar-brand d-flex align-items-center" href="#">
-					<img src="public/images/LogoNavbar.png" style={{width:"150px"}}/>
+					<img src="/images/LogoNavbar.png" style={{width:"150px"}}/>
 				</a>
 				
 				{/* Botón de colapso para móviles */}
@@ -20,7 +20,7 @@ export const Navbar = () => {
 				aria-expanded="false" 
 				aria-label="Toggle navigation"
 				>
-				<i class="fa-solid fa-bars"></i>
+				<i className="fa-solid fa-bars"></i>
 				</button>
 				
 				{/* Contenido colapsable */}

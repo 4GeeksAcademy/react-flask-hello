@@ -13,6 +13,7 @@ from api.users.routes import users_bp
 from api.records import records_blueprint
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 from flask_jwt_extended import JWTManager
 import datetime
@@ -59,6 +60,9 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
 jwt = JWTManager(app)
+
+# Allow CORS requests to this API
+CORS(app)
 
 
 # Handle/serialize errors like a JSON object

@@ -33,9 +33,13 @@ def signup():
     db.session.add(new_user)
     db.session.commit()
 
+    # Generar tokens
+    access_token = create_access_token(identity=str(new_user.id))
+
     return jsonify({
         "message": "Usuario registrado exitosamente",
-        "user_id": new_user.id
+        "user_id": new_user.id,
+        "access_token": access_token
     }), 201
 
 

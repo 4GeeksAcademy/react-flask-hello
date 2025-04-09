@@ -76,23 +76,38 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
-    if (!validateForm()) {
-      
-      return
-    }
-    console.log(formData)
+    
+    if (!validateForm()) {return}
+    
     setIsLoading(true)
+
     try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-      // LLAMAR A LA API
-      console.log(formData)
+      const response = await fetch(`${backendUrl}/api/auth/signup`, {
+          method:"POST",
+          headers:{
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+              confirmarpassword: formData.confirmPassword,
+          })
+      })
 
+      if(!response.ok){
+          throw new Error(data.error || "Error al registrar usuario")
+      }
+
+      const data = await response.json()
+
+      localStorage.setItem("accessToken", data.access_token)
+    
+      //navigate("/login") --> Aqui debe hacer navigate to registro de Felipe
       
-
     } catch (error) {
-
-      
+      console.log(error.message)
     } finally {
       setIsLoading(false)
     }

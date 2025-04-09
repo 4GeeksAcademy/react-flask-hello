@@ -230,7 +230,7 @@ class Citas(db.Model):
     calendario = relationship(
         "Calendario", back_populates="cita", uselist=False)
     historial_servicio = relationship(
-        "HistorialDeServicios", back_populates="cita")
+        "HistorialDeServicios", back_populates="cita", cascade="all, delete-orphan")
 
     def serialize_cita(self):
         return {

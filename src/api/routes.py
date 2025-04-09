@@ -1277,10 +1277,8 @@ def agregar_historial():
         db.session.add(nuevo_historial)
         db.session.commit()
 
-        # Actualizamos el estado de la cita a "realizada" si no está ya en ese estado
-        if cita.estado != "realizada":
-            cita.estado = "realizada"
-            db.session.commit()
+       
+
 
         return jsonify({
             "msg": "Registro de historial creado con éxito",

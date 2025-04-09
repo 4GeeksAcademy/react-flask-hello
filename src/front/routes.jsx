@@ -1,4 +1,4 @@
-// Import necessary components and functions from react-router-dom.
+/* 👆 🤟🏼 ❇️ Riki for the group success 8_Abril 👊 */
 
 import {
   createBrowserRouter,
@@ -6,30 +6,28 @@ import {
   Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
+import PublicLayout from "./pages/PublicLayout"; // Importación correcta (sin destructuring)
 import { Login } from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Dash_user from "./pages/Dash_user/Dash_user";
 import Dash_admin from "./pages/Dash_admin/Dash_admin";
 import Plot_form from "./pages/Plot_form/Plot_form";
+import Landing from "./pages/Landing/Landing"; // Componente Landing
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
-
-    // Root Route: All navigation will start from here.
-    <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-
-      {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-      <Route path="/" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/dashboard" element={<Dash_user />} />
-      <Route path="/dash_admin" element={<Dash_admin />} />
-      <Route path="/plot_form" element={<Plot_form />} />
-
-    </Route>
+    <>
+      {/* Landing page directamente sin layout */}
+      <Route path="/" element={<Landing />} />
+      
+      {/* El resto de rutas con su layout original */}
+      <Route path="/app" element={<Layout />} errorElement={<h1>Not found!</h1>}>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="dashboard" element={<Dash_user />} />
+        <Route path="dash_admin" element={<Dash_admin />} />
+        <Route path="plot_form" element={<Plot_form />} />
+      </Route>
+    </>
   )
 );

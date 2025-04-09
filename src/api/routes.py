@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, HistorialDeServicios
+from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, HistorialDeServicios, ClienteServicio
 from .utils import generate_sitemap, APIException
 from .api_calendar import GoogleCalendarManager
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -348,7 +348,7 @@ def obtener_negocios():
 # @jwt_required()
 def obtener_negocio(negocios_cif):
 
-    negocio = Negocios.query.get(negocios_cif)
+    negocio = Negocios.query.filter_by(negocio_cif=negocios_cif).first()
     if not negocio:
         return jsonify({"error": "negocio no encontrado"}), 404
 
@@ -520,6 +520,55 @@ def agregar_servicio():
         return jsonify({
             "msg": "servicio creado con éxito",
             "servicio": nuevo_servicio.serialize_servicio()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "error": str(e)
+        }), 500
+
+
+@api.route('/servicios/varios', methods=['POST'])
+# @jwt_required()
+def agregar_servicios_varios():
+
+    data = request.get_json()
+    if not data or not isinstance(data, list):
+        return jsonify({"error": "Se esperaba un arreglo de servicios"}), 400
+
+    campos_requeridos = ["nombre", "descripcion", "precio", "negocio_id"]
+    servicios_creados = []
+    servicios_existentes = []
+
+    try:
+        for servicio_data in data:
+            for campo in campos_requeridos:
+                if campo not in servicio_data:
+                    return jsonify({"error": f"el campo {campo} es obligatorio en uno de los servicios"}), 400
+
+            servicio_existente = Servicios.query.filter_by(
+                nombre=servicio_data["nombre"]).first()
+            if servicio_existente:
+                servicios_existentes.append(servicio_data["nombre"])
+                continue
+
+            nuevo_servicio = Servicios(
+                nombre=servicio_data["nombre"],
+                descripcion=servicio_data["descripcion"],
+                precio=servicio_data["precio"],
+                negocio_id=servicio_data["negocio_id"]
+            )
+
+            db.session.add(nuevo_servicio)
+            servicios_creados.append(nuevo_servicio)
+
+        db.session.commit()
+
+        return jsonify({
+            "msg": f"{len(servicios_creados)} servicios creados con éxito",
+            "servicios_creados": [s.serialize_servicio() for s in servicios_creados],
+            "servicios_existentes": servicios_existentes
         }), 201
 
     except Exception as e:
@@ -1159,7 +1208,7 @@ def borrar_nota(nota_id):
 @api.route('/historial/cliente/<int:cliente_id>', methods=['GET'])
 # @jwt_required()
 def obtener_historial_cliente(cliente_id):
-    """Obtiene el historial de servicios de un cliente específico por su ID"""
+
     cliente = Clientes.query.get(cliente_id)
 
     if not cliente:
@@ -1171,14 +1220,15 @@ def obtener_historial_cliente(cliente_id):
     if not historiales:
         return jsonify({"msg": f"No se han encontrado registros de historial para el cliente {cliente.nombre}"}), 404
 
-    serialized_historiales = [historial.serialize_historial() for historial in historiales]
+    serialized_historiales = [historial.serialize_historial()
+                              for historial in historiales]
     return jsonify(serialized_historiales), 200
 
 
 @api.route('/historial', methods=['POST'])
 # @jwt_required()
 def agregar_historial():
-    """Crea un nuevo registro en el historial de servicios"""
+
     data = request.get_json()
 
     if not data:
@@ -1201,12 +1251,11 @@ def agregar_historial():
     if not cita:
         return jsonify({"error": "Cita no encontrada"}), 404
 
-    # Después se mira si la cita pertenece a ese cliente 
     if cita.cliente_id != cliente.id:
         return jsonify({"error": "La cita no pertenece a este cliente"}), 400
 
-    # Verificamos si ya existe un registro para esta cita
-    historial_existente = HistorialDeServicios.query.filter_by(cita_id=data["cita_id"]).first()
+    historial_existente = HistorialDeServicios.query.filter_by(
+        cita_id=data["cita_id"]).first()
     if historial_existente:
         return jsonify({"error": "Ya existe un registro de historial para esta cita"}), 400
 
@@ -1214,7 +1263,7 @@ def agregar_historial():
         nuevo_historial = HistorialDeServicios(
             cliente_id=data["cliente_id"],
             cita_id=data["cita_id"],
-            nota_id=data.get("nota_id")  
+            nota_id=data.get("nota_id")
         )
 
         if "nota_id" in data and data["nota_id"]:
@@ -1228,35 +1277,34 @@ def agregar_historial():
         db.session.add(nuevo_historial)
         db.session.commit()
 
-        # Actualizamos el estado de la cita a "realizada" si no está ya en ese estado
-        if cita.estado != "realizada":
-            cita.estado = "realizada"
-            db.session.commit()
+       
+
 
         return jsonify({
             "msg": "Registro de historial creado con éxito",
             "historial": nuevo_historial.serialize_historial()
         }), 201
-        
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-    
+
+
 @api.route('/historial/<int:historial_id>', methods=['DELETE'])
 # @jwt_required()
 def borrar_historial(historial_id):
     """Elimina un registro del historial de servicios"""
     historial = HistorialDeServicios.query.get(historial_id)
-    
+
     if not historial:
         return jsonify({"error": "Registro de historial no encontrado"}), 404
-        
+
     try:
         db.session.delete(historial)
         db.session.commit()
-        
+
         return jsonify({"msg": "Registro de historial eliminado correctamente"}), 200
-        
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500

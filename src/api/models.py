@@ -303,3 +303,9 @@ class HistorialDeServicios(db.Model):
             "nota_id": self.nota_id,
             "nota_descripcion": self.nota.descripcion if self.nota else None
         }
+
+class ClienteServicio(db.Model):
+    __tablename__ = "cliente_servicio"
+    
+    cliente_id: Mapped[int] = mapped_column(ForeignKey("clientes.id"), primary_key=True)
+    servicio_id: Mapped[int] = mapped_column(ForeignKey("servicio.id"), primary_key=True)

@@ -1159,7 +1159,7 @@ def borrar_nota(nota_id):
 @api.route('/historial/cliente/<int:cliente_id>', methods=['GET'])
 # @jwt_required()
 def obtener_historial_cliente(cliente_id):
-    """Obtiene el historial de servicios de un cliente específico por su ID"""
+   
     cliente = Clientes.query.get(cliente_id)
 
     if not cliente:
@@ -1178,7 +1178,7 @@ def obtener_historial_cliente(cliente_id):
 @api.route('/historial', methods=['POST'])
 # @jwt_required()
 def agregar_historial():
-    """Crea un nuevo registro en el historial de servicios"""
+    
     data = request.get_json()
 
     if not data:
@@ -1201,11 +1201,11 @@ def agregar_historial():
     if not cita:
         return jsonify({"error": "Cita no encontrada"}), 404
 
-    # Después se mira si la cita pertenece a ese cliente 
+     
     if cita.cliente_id != cliente.id:
         return jsonify({"error": "La cita no pertenece a este cliente"}), 400
 
-    # Verificamos si ya existe un registro para esta cita
+    
     historial_existente = HistorialDeServicios.query.filter_by(cita_id=data["cita_id"]).first()
     if historial_existente:
         return jsonify({"error": "Ya existe un registro de historial para esta cita"}), 400

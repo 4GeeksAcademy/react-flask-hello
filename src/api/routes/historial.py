@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import db, HistorialDeServicios, Clientes, Citas, Notas
 from flask_jwt_extended import jwt_required
 
-historial_routes = Blueprint('historial_routes', __name__, url_prefix='/api')
+historial_routes = Blueprint('historial_routes', __name__)
 
 
 @historial_routes.route('/historial/cliente/<int:cliente_id>', methods=['GET'])

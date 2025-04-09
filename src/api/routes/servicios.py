@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import db, Servicios
 from flask_jwt_extended import jwt_required
 
-servicios_routes = Blueprint('servicios_routes', __name__, url_prefix='/api')
+servicios_routes = Blueprint('servicios_routes', __name__)
 
 @servicios_routes.route('/servicios', methods=['GET'])
 # @jwt_required()

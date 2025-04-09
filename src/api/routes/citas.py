@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from datetime import datetime, timedelta, timezone
 from sqlalchemy import func
 
-citas_routes = Blueprint('citas_routes', __name__, url_prefix='/api')
+citas_routes = Blueprint('citas_routes', __name__)
 
 @citas_routes.route('/citas', methods=['GET'])
 # @jwt_required()

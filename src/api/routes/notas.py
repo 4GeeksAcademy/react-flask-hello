@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import db, Notas, Clientes
 from flask_jwt_extended import jwt_required
 
-notas_routes = Blueprint('notas_routes', __name__, url_prefix='/api')
+notas_routes = Blueprint('notas_routes', __name__)
 
 @notas_routes.route('/notas', methods=['GET'])
 # @jwt_required()

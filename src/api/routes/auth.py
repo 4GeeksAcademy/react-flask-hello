@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import Usuarios
 from flask_jwt_extended import create_access_token
 
-auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api')
+auth_routes = Blueprint('auth_routes', __name__)
 
 @auth_routes.route('/login', methods=['POST'])
 def crear_token():

@@ -348,7 +348,7 @@ def obtener_negocios():
 # @jwt_required()
 def obtener_negocio(negocios_cif):
 
-    negocio = Negocios.query.get(negocios_cif)
+    negocio = Negocios.query.filter_by(negocio_cif=negocios_cif).first()
     if not negocio:
         return jsonify({"error": "negocio no encontrado"}), 404
 

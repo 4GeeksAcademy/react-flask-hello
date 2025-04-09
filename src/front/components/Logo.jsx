@@ -3,11 +3,8 @@ import './Styles/Logo.css';
 import axios from "axios";
 
 const LogoFrame = () => {
-
-
-    const [image_logo_url, setImage] = useState(null); 
+    const [image, setImage] = useState(null); 
     const fileInputRef = useRef(null); 
-    const savedLogo = localStorage.getItem("logoApp"); // DECLARO SAVEDLOGO PARA QUE GUARDE LA IMAGEN EN MI LOCALSTORAGE
 
     useEffect(() => { 
         const savedLogo = localStorage.getItem("logoApp");
@@ -23,7 +20,7 @@ const LogoFrame = () => {
             const imageUrl = URL.createObjectURL(file);
             setImage(imageUrl);
             
-            // Guardar la imagen en localStorage
+            // Guardar la imagen en localStorage en base64
             const reader = new FileReader();
             reader.onloadend = function() {
                 const base64data = reader.result;
@@ -31,17 +28,6 @@ const LogoFrame = () => {
                 console.log("Imagen guardada en localStorage.");
             };
             reader.readAsDataURL(file);
-
-    const [image, setImage] = useState(null);
-    const fileInputRef = useRef(null);
-
-
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setImage(imageUrl);
-
         }
     };
 
@@ -51,21 +37,20 @@ const LogoFrame = () => {
 
     return (
         <div className="logo-frame" onClick={handleClick}>
-
-            { /*BOTON DE SUBIDA DE IMG_LOGO*/}
+            {/* BOTÓN INVISIBLE DE SUBIDA */}
             <input
                 type="file"
                 ref={fileInputRef}
-                accept="image/*"    /*URL DEL LOGO*/ 
+                accept="image/*"
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
             />
-  
-            {!savedLogo ? ( {!image ? (
 
+            {/* VISTA DEL LOGO O TEXTO DEFAULT */}
+            {!image ? (
                 <p className="add-logo-text">Add your logo</p>
             ) : (
-                <img src={savedLogo} alt="Logo" />
+                <img src={image} alt="Logo" />
             )}
         </div>
     );

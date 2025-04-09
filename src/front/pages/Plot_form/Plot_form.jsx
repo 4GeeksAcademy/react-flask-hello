@@ -49,7 +49,7 @@ const PlotForm = () => {
                     number: plotData.number,
                     postal_code: plotData.postalCode,
                     city: plotData.city,
-                    coordinates: plotData.coordinates
+                    coordinates: plotData.coordinates || ""
                 })
             });
 

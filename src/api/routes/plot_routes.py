@@ -3,6 +3,8 @@ from api.models.models import db, Field
 from flask_jwt_extended import jwt_required
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import requests
+import time
 
 
 fields = Blueprint('fields_api', __name__)
@@ -22,30 +24,74 @@ def create_field():
     if not all(field in body for field in required_fields):
         return jsonify({"error": "Missing required fields"}), 400
 
+    coords = body.get("coordinates")
+
+    if not coords:
+        try:
+            calle = body.get("street", "")
+            numero = body.get("number", "")
+            if numero.lower() == "s/n":
+                numero = ""
+
+            city_clean = body.get("city", "").split(",")[0].strip()
+            headers = {
+                "User-Agent": "DroneFarmBot/1.0 (contacto@dronfarm.com)"}
+
+            # Primer intento: dirección completa
+            direccion = f"{calle} {numero}, {body.get('postal_code')} {city_clean}, España"
+            geo_url = f"https://nominatim.openstreetmap.org/search?q={direccion}&format=json"
+            geo_res = requests.get(geo_url, headers=headers)
+            time.sleep(1)
+            geo_data = geo_res.json()
+
+            # Fallback: solo ciudad + CP si no hay resultados
+            if not geo_data:
+                fallback_dir = f"{body.get('postal_code')} {city_clean}, España"
+                print("🔁 Fallback geocoding con:", fallback_dir)
+                fallback_url = f"https://nominatim.openstreetmap.org/search?q={fallback_dir}&format=json"
+                fallback_res = requests.get(fallback_url, headers=headers)
+                time.sleep(1)
+                geo_data = fallback_res.json()
+
+            if geo_data and geo_data[0].get("lat") and geo_data[0].get("lon"):
+                lat = geo_data[0]["lat"]
+                lon = geo_data[0]["lon"]
+                coords = f"{lat}, {lon}"
+            else:
+                print("❌ Dirección no encontrada ni con fallback:", direccion)
+                coords = None
+
+        except Exception as geo_err:
+            print("🌐 Geocoding error:", geo_err)
+            coords = None
+
     try:
         new_field = Field(
             name=body.get("name"),
             area=body.get("area"),
             crop=body.get("crop"),
-            # La conversión de fecha transforma el string en un objeto date
             sowing_date=datetime.strptime(
                 body["sowing_date"], '%Y-%m-%d').date(),
             street=body.get("street"),
             number=body.get("number"),
             postal_code=body.get("postal_code"),
             city=body.get("city"),
-            user_id=user_id,  # Obtiene ID del token
-            coordinates=body.get("coordinates")  # Opcional
+            user_id=user_id,
+            coordinates=coords
         )
+
         db.session.add(new_field)
         db.session.commit()
         db.session.refresh(new_field)
+
         return jsonify(new_field.serialize_field()), 201
-    except ValueError as e:
+
+    except ValueError:
         return jsonify({"error": "Invalid date or number format"}), 400
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 # GET /fields - Obtener todas las parcelas
 

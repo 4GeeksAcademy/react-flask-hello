@@ -31,7 +31,7 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        showSuccessAlert(data.msg || "¡Registro realizado con éxito!", "/");
+        showSuccessAlert(data.msg || "¡Registro realizado con éxito!", () => {});
         setFormData({
           name: "",
           lastname: "",

@@ -23,6 +23,7 @@ db = "*"
 sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
+requests = "*"
 
 [requires]
 python_version = "3.13"

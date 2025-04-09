@@ -15,8 +15,6 @@ const Landing = () => {
 
   return (
     <div className="landing-container">
-      {/* ELIMINA el Navbar de aquí */}
-      
       {/* Hero Section */}
       <motion.section className="hero-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
         <div className="hero-content">
@@ -28,7 +26,7 @@ const Landing = () => {
         </div>
       </motion.section>
 
-      {/* Features Grid */}
+      {/* Features Grid con fondo verde */}
       <section className="features-section" id="features">
         <h2 className="section-title">Nuestra Tecnología</h2>
         <div className="bento-grid">
@@ -45,8 +43,6 @@ const Landing = () => {
           ))}
         </div>
       </section>
-
-      {/* ELIMINA el Footer de aquí */}
     </div>
   );
 };

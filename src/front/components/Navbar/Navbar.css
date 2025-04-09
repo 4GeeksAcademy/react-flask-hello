@@ -126,6 +126,17 @@
     transform: translateY(-2px);
 }
 
+/* Estilo para el botón de cerrar sesión */
+.navbar-button-logout {
+    background-color: #dc3545; /* Rojo para cerrar sesión */
+    color: white;
+}
+
+.navbar-button-logout:hover {
+    background-color: #c82333; /* Rojo más oscuro para hover */
+    color: white;
+}
+
 /* ===== RESPONSIVE (Mobile) ===== */
 @media (max-width: 768px) {
     .navbar-toggle-label {

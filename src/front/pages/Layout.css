@@ -1,4 +1,4 @@
-/* 👇 ❇️ Riki for the group success 👊 Lunes7Abril*/
+/* 👇 ❇️ Riki for the group success 👊 9_Abril*/
 
 /* Reset esencial */
 html, body, #root {
@@ -14,6 +14,13 @@ html, body, #root {
   min-height: 100vh;
   width: 100%;
   position: relative; /* Necesario para el fondo */
+  background-color: #FFFFFF; /* Fondo blanco por defecto */
+}
+
+/* Aplicar imagen de fondo SOLO para la página de login */
+body[data-route="login"] .app-root,
+body[data-route="signup"],
+body[data-route="contacto"] .app-root {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url('../assets/img/Login1.jpg');
   background-size: cover;
@@ -39,7 +46,7 @@ html, body, #root {
   }
 }
 
-/* 👆 🤟🏼 ❇️ Riki for the group success 8_Abril 👊 */
+
 /* Estilos específicos para el layout público */
 .app-root.public-layout .content-container {
   padding-top: 0; /* Elimina el padding para el hero section */

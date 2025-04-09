@@ -18,7 +18,6 @@ const PublicNavbar = () => {
         {/* Logo */}
         <Link to="/" className="public-navbar-logo">
           <img src={logo} alt="DronFarm Logo" className="public-logo-img" />
-          <span className="public-logo-text">DronFarm</span>
         </Link>
 
         {/* Menú Hamburguesa (Mobile) */}

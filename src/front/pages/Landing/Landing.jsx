@@ -21,8 +21,7 @@ const Landing = () => {
       <motion.section className="hero-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
         <div className="hero-content">
           <h1>Agricultura de Precisión con Tecnología Drone</h1>
-          <p>Maximiza tu producción con análisis de cultivo en tiempo real</p>
-          <button className="cta-button">Solicitar Demo</button>
+          <p>Maximiza tu producción con análisis de cultivos en tiempo real</p>
         </div>
         <div className="hero-image-container">
           <img src={heroImage} alt="Monitoreo agrícola con drones" className="hero-image" />

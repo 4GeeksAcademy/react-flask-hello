@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import './Landing.css';
 import heroImage from '../../assets/img/Login1.jpg';
 import Logo from '../../assets/img/Logo_DronFarm2.png';
-import Navbar from '../../components/Navbar/Navbar'; // Importamos el Navbar compartido
-import Footer from '../../components/Footer/Footer'; // Importamos el Footer compartido
+
 
 const Landing = () => {
   const features = [
@@ -16,8 +15,7 @@ const Landing = () => {
 
   return (
     <div className="landing-container">
-      {/* Usamos el Navbar compartido en lugar del específico de Landing */}
-      <Navbar />
+      {/* ELIMINA el Navbar de aquí */}
       
       {/* Hero Section */}
       <motion.section className="hero-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
@@ -49,8 +47,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Usamos el Footer compartido en lugar del específico de Landing */}
-      <Footer />
+      {/* ELIMINA el Footer de aquí */}
     </div>
   );
 };

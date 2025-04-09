@@ -14,7 +14,7 @@ import Dash_user from "./pages/Dash_user/Dash_user";
 import Dash_admin from "./pages/Dash_admin/Dash_admin";
 import Plot_form from "./pages/Plot_form/Plot_form";
 import Landing from "./pages/Landing/Landing";
-import Contacto from "./pages/Contacto/Contacto";
+import Contact from "./pages/Contact/Contact";
 
 // Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
@@ -37,7 +37,7 @@ export const router = createBrowserRouter(
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="contacto" element={<Contacto />} />
+        <Route path="contacto" element={<Contact />} />
       </Route>
       
       {/* Rutas privadas con Layout y protección */}

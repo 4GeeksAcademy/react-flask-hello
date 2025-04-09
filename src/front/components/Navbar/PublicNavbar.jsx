@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './PublicNavbar.css';
-import logo from '../assets/logo.png'; // Ajusta la ruta según la ubicación de tu logo
+import logo from '../../assets/img/Logo_DronFarm2.png';
 
 const PublicNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +11,7 @@ const PublicNavbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  
   return (
     <nav className="public-navbar">
       <div className="public-navbar-container">

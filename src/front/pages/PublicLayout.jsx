@@ -2,7 +2,7 @@
 
 import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
-import PublicNavbar from "../components/PublicNavbar";
+import PublicNavbar from "../components/Navbar/PublicNavbar";
 import Footer from "../components/Footer/Footer";
 import "./Layout.css";  // Reutilizamos los mismos estilos
 

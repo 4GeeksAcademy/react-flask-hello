@@ -15,7 +15,7 @@ export default function ExcelUploader() {
     formData.append("file", file);
 
     try {
-      const response = await axios.post("http://localhost:3000/upload", formData, {
+      const response = await axios.post("https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert(response.data.message);
@@ -26,7 +26,7 @@ export default function ExcelUploader() {
 
   return (
     <div className="p-4">
-      <input type="file" accept=".xlsx" onChange={handleFileChange} />
+      <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
       <button onClick={handleUpload} className="p-2 bg-blue-500 text-white">
         Subir Archivo
       </button>

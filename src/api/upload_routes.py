@@ -123,8 +123,8 @@ def upload_inventory():
             os.remove(file_path)
         return jsonify({"error": str(e)}), 500
 
-# Función auxiliar para subir archivos a Tigris S3
 
+# Función auxiliar para subir archivos a Tigris S3
 
 @upload.route("/get_all", methods=['GET'])
 def get_all_products():

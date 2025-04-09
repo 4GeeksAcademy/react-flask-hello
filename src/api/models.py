@@ -7,7 +7,6 @@ db = SQLAlchemy()
 
 # Tabla Usuario
 
-
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     firstname: Mapped[str] = mapped_column(String(120), nullable=True)
@@ -20,7 +19,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(
         Boolean(), nullable=False, default=False)
 
-    # Relación uno a muchos con Favourites, la tabla muchos
+    # Relación uno a muchos con Rol, la tabla muchos
     id_user = relationship("Rol", back_populates="user")
 
     # Añadimos relaciones (A productos y a tigris_files)
@@ -49,6 +48,7 @@ class User(db.Model):
 
 
 # Tabla Rol
+
 class Rol(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
@@ -56,6 +56,12 @@ class Rol(db.Model):
     # Relación muchos a uno con User, la tabla "uno"
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user = relationship("User", back_populates="id_user")
+
+    # Relación uno a muchos con Compras, la tabla muchos
+    id_rol = relationship("Compras", back_populates="rol")
+
+    # Relación uno a muchos con Facturas, la tabla muchos
+    id_rol2 = relationship("Facturas", back_populates="rol")
 
     def serialize(self):
         return {
@@ -65,12 +71,16 @@ class Rol(db.Model):
             # do not serialize the password, its a security breach
         }
 
-# Tabla Compras
 
+# Tabla Compras
 
 class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
+
+    # Relación muchos a uno con Rol, la tabla "uno"
+    rol_id: Mapped[int] = mapped_column(ForeignKey('rol.id'))
+    rol = relationship("Rol", back_populates="id_rol")
 
     def serialize(self):
         return {
@@ -78,8 +88,8 @@ class Compras(db.Model):
             "name": self.name
         }
 
-# Tabla Stock
 
+# Tabla Stock
 
 class Stock(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -91,6 +101,7 @@ class Stock(db.Model):
             "name": self.name
         }
 
+# Tabla Productos
 
 class Productos(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -100,6 +111,9 @@ class Productos(db.Model):
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     image_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+    
+    # Relación uno a muchos con Detalles_Facturas, la tabla muchos
+    id_prod = relationship("Detalles_Facturas", back_populates="prod")
 
     # Añadimos la relación con el usuario
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
@@ -132,26 +146,40 @@ class TigrisFiles(db.Model):
             "user_id": self.user_id
         }
 
-# Tabla Facturas
 
+# Tabla Facturas
 
 class Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
+    cif_empresa: Mapped[str] = mapped_column(String(50))
+
+    # Relación uno a muchos con Detalles_Facturas, la tabla muchos
+    id_factura = relationship("Detalles_Facturas", back_populates="factura")
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "cif_empresa": self.cif_empresa
         }
 
 # Tabla Detalles_Facturas (Productos - Facturas)
 
-
 class Detalles_Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
+    # Relación muchos a uno con Facturas, la tabla "uno"
+    factura_id: Mapped[int] = mapped_column(ForeignKey('facturas.id'))
+    factura = relationship("Facturas", back_populates="id_factura")
+
+    # Relación muchos a uno con Productos, la tabla "uno"
+    prod_id: Mapped[int] = mapped_column(ForeignKey('productos.id'))
+    prod = relationship("Productos", back_populates="id_prod")
+
     def serialize(self):
         return {
-            "id": self.id
+            "id": self.id,
+            "factura_id": self.factura_id,
+            "prod_id": self.prod_id
         }

@@ -41,7 +41,6 @@ def create_user_anonymous():
 
 # Ruta para registrarse un usuario (signup)
 
-
 @api.route('/signup', methods=['POST'])
 def create_user():
     body = request.get_json()
@@ -93,7 +92,6 @@ def create_user():
 
 # Ruta para logearse y creación de token
 
-
 @api.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
@@ -132,10 +130,89 @@ def get_user_info():
         "name": user.serialize()["username"]
     }), 200
 
-# Borrar un usuario existente
+
+#
+# USUARIO
+# Muestra todos los usuarios
+#
+@api.route('/users', methods=['GET'])
+def get_all_users():
+
+    users = User.query.all()
+
+    if not users:
+        return jsonify({ "msg": "Users not found"}), 404
+    
+    response_body = [user.serialize() for user in users]
+
+    return jsonify(response_body), 200
+
+#
+# Muestra los datos de un usuario
+#
+@api.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+
+    user = User.query.get(user_id)
+
+    if user is None:
+        return jsonify({ "msg": "User not found"}), 404
+    
+    response_body = user.serialize()
+    
+    return jsonify(response_body), 200
 
 
-@api.route('/settings/<int:user_id>', methods=['DELETE'])
+#
+# Actualizar un usuario existente
+#
+@api.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    # Buscamos al usuaruio por su ID
+    user = User.query.get(user_id)
+
+    # Verificamos si el usuario existe
+    if not user:
+        return jsonify({"error": "Usuario no encontrada"}), 404
+    
+    # Obtenemos los datos de la request
+    request_data = request.get_json()
+
+    # Actualizamos los campos si estan presentes en la solicitud
+    if "firstname" in request_data:
+        user.firstname = request_data['firstname']
+    
+    if "lastname" in request_data:
+        user.lastname = request_data['lastname']
+
+    if "shopname" in request_data:
+        user.shopname = request_data['shopname']
+
+    if "email" in request_data:
+        user.email = request_data['email']
+    
+    if "username" in request_data:
+        user.username = request_data['username']
+
+    if "password" in request_data:
+        user.password = request_data['password']
+
+    # Si sale error al actualizar especie, hacemos try/except
+    try:
+        # Guardamos los cambios en la base de datos
+        db.session.commit()
+
+        # Devolvemos (retornamos) la especie actualizada
+        return jsonify(user.serialize()), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f"Error al actualizar el usuario: {str(e)}"}), 500
+
+#
+# Borra un usuario
+#
+@api.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     # Buscamos al usuario por ID
     user = User.query.get(user_id)
@@ -143,7 +220,7 @@ def delete_user(user_id):
     # Verificar si el usuario existe
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
-
+    
     # Si sale error al eliminar usuario, hacemos try/except
     try:
         # Eliminamos el usuario de la base de datos

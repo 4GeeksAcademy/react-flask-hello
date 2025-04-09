@@ -1,20 +1,22 @@
 /* 👇 ❇️ Riki for the group success 👊 Lunes9Abril*/
 
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import PublicNavbar from '../components/PublicNavbar';
-import Footer from '../components/Footer'; // Importa tu Footer si existe
+import { Outlet } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
+import PublicNavbar from "../components/PublicNavbar";
+import Footer from "../components/Footer/Footer";
+import "./Layout.css";  // Reutilizamos los mismos estilos
 
-const PublicLayout = () => {
+export const PublicLayout = () => {
   return (
-    <div className="public-layout">
-      <PublicNavbar />
-      <main className="public-content">
-        <Outlet />
-      </main>
-      {/* Usa tu Footer si lo tienes implementado */}
-      {/* <Footer /> */}
-    </div>
+    <ScrollToTop>
+      <div className="app-root">
+        <PublicNavbar />
+        <div className="content-container">
+          <Outlet />
+        </div>
+        <Footer />
+      </div>
+    </ScrollToTop>
   );
 };
 

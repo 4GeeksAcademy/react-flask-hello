@@ -24,7 +24,7 @@ export const Login = () => {
 
         // ✅ Navegación corregida según rol
         showSuccessAlert("¡Inicio de sesión exitoso!", () => {
-          navigate(Number(data.user.rolId) === 2 ? "/dashboard" : "/dash_admin");
+          navigate(Number(data.user.rolId) === 2 ? "/app/dashboard" : "/app/dash_admin");
         });
 
       } else {

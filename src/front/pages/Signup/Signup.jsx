@@ -39,7 +39,7 @@ const Signup = () => {
           email: "",
           password: ""
         });
-        navigate("/plot_form");
+        navigate("/app/plot_form");
       } else {
         showErrorAlert(data.error || "Error en el registro");
       }

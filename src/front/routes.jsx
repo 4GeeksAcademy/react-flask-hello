@@ -50,7 +50,7 @@ export const router = createBrowserRouter(
         } 
         errorElement={<h1>Not found!</h1>}
       >
-        <Route index element={<Dash_user />} />
+        <Route path ="dashboard" element={<Dash_user />} />
         <Route path="dash_admin" element={<Dash_admin />} />
         <Route path="plot_form" element={<Plot_form />} />
       </Route>

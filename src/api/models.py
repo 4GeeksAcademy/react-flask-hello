@@ -6,7 +6,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 # TABLA DE USUARIO
-
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     firstname: Mapped[str] = mapped_column(String(120), nullable=True)
@@ -15,16 +14,32 @@ class User(db.Model):
         String(120), unique=True, nullable=True)
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(nullable=False)
+    
+    _password = db.Column('password', db.String(128), nullable=False)
+
     is_active: Mapped[bool] = mapped_column(
         Boolean(), nullable=False, default=False)
 
-    # RELACION UNO A MUCHOS CON ROL, LA TABLA DE MUCHOS
+    # PROPIEDADES PARA MANEJAR LA CONTRASEÑA DE FORMA SEGURA
+    @property
+    def password(self):
+        # Este es el getter para obtener el valor de la contraseña (encriptada)
+        return self._password
 
-    id_user = relationship("Rol", back_populates="user")
+    @password.setter
+    def password(self, password):
+        # Este es el setter que encripta la contraseña antes de guardarla
+        self._password = generate_password_hash(password)
+
+    # MÉTODO PARA VERIFICAR LA CONTRASEÑA
+    def check_password(self, password):
+        # Este método compara la contraseña proporcionada con la almacenada (encriptada)
+        return check_password_hash(self._password, password)
+
+    # RELACION UNO A MUCHOS CON ROL, LA TABLA DE MUCHOS
+    roles = relationship("Rol", back_populates="user")
 
     # AÑADIMOS RELACIONES (A PRODUCTOS Y A TIGRIS FILES)
-
     products = relationship("Productos", back_populates="user")
     tigris_files = relationship("TigrisFiles", back_populates="user")
 
@@ -38,30 +53,17 @@ class User(db.Model):
             "lastname": self.lastname,
             "shopname": self.shopname,
             "email": self.email,
-
             # DO NOT SERIALIZE THE PASSWORD, ITS A SECURITY BREACH
         }
 
-    # ENCRIPTA LA CONTRASEÑA
-
-    def hash_password(password):
-        return generate_password_hash(password)
-
-    # COMPROBAR SI EL PASSWORD QUE INTRODUCE EL USUARIO ES EL MISMO QUE LA EL DE LA DB
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
 # TABLA DE ROL
-
 class Rol(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
     # RELACION MUCHOS A UNO CON USER, LA TABLA "UNO"
-
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    user = relationship("User", back_populates="id_user")
+    user = relationship("User", back_populates="roles")
 
     def serialize(self):
         return {
@@ -72,21 +74,17 @@ class Rol(db.Model):
         }
 
 # TABLA DE COMPRAS
-
 class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
-
-    
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name
         }
-      
-# TABLA DE STOCK
 
+# TABLA DE STOCK
 class Stock(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
@@ -98,7 +96,6 @@ class Stock(db.Model):
         }
 
 # TABLA DE PRODUCTOS
-
 class Productos(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     product_name: Mapped[str] = mapped_column(String(120), nullable=False)
@@ -107,10 +104,9 @@ class Productos(db.Model):
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     image_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
-    
+
     # RELACION UNO A MUCHOS CON DETALLES_FACTURA, LA TABLA DE MUCHOS
-    
-    id_prod = relationship("Detalles_Facturas", back_populates="prod")
+    factura_detalles = relationship("Detalles_Facturas", back_populates="prod")
 
     # AÑADIMOS LA RELACION CON EL USUARIO
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
@@ -144,14 +140,12 @@ class TigrisFiles(db.Model):
         }
 
 # TABLA DE FACTURAS
-
 class Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
     cif_empresa: Mapped[str] = mapped_column(String(50))
-      
+
     # RELACION UNO A MUCHOS CON DETALLES_FACTURAS, LA TABLA DE MUCHOS
-    
     id_factura = relationship("Detalles_Facturas", back_populates="factura")
 
     def serialize(self):
@@ -161,8 +155,7 @@ class Facturas(db.Model):
             "cif_empresa": self.cif_empresa
         }
 
-#TABLA DETALLES_FACTURA (PRODUCTOS - FACTURAS)
-
+# TABLA DETALLES_FACTURA (PRODUCTOS - FACTURAS)
 class Detalles_Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
@@ -172,7 +165,7 @@ class Detalles_Facturas(db.Model):
 
     # Relación muchos a uno con Productos, la tabla "uno"
     prod_id: Mapped[int] = mapped_column(ForeignKey('productos.id'))
-    prod = relationship("Productos", back_populates="id_prod")
+    prod = relationship("Productos", back_populates="factura_detalles")
 
     def serialize(self):
         return {
@@ -180,18 +173,17 @@ class Detalles_Facturas(db.Model):
             "factura_id": self.factura_id,
             "prod_id": self.prod_id
         }
-    
-# TABLA DE LOGOS
 
+# TABLA DE LOGOS
 class Logo(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     image_logo_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
-    
+
     # Añadimos la relación con el usuario
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     user = relationship("User", back_populates="logo")
-    
+
     def serialize(self):
         return {
             "id": self.id,

@@ -13,19 +13,35 @@ const LogoFrame = () => {
         }
     }, []);
     
-    const handleImageUpload = (event) => {
+    const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setImage(imageUrl);
             
-            // Guardar la imagen en localStorage en base64
+            // Guardar la imagen en localStorage
             const reader = new FileReader();
-            reader.onloadend = function() {
+            reader.onloadend = async function() {
                 const base64data = reader.result;
+
+                // Guardar en localStorage
                 localStorage.setItem("logoApp", base64data);
-                console.log("Imagen guardada en localStorage.");
+
+                // También guardar en la cookie (si es necesario)
+                document.cookie = `logoApp=${base64data}; path=/; max-age=${60 * 60 * 24 * 365}`;
+
+                try {
+                    // Enviar la imagen al backend
+                    const response = await axios.post('api/post_logos', {
+                        logo: base64data
+                    }, {
+                        withCredentials: true // Para que la cookie de sesión se envíe con la petición
+                    });
+                    console.log(response.data.message); // Mensaje de éxito del servidor
+                } catch (error) {
+                    console.error("Error al guardar el logo:", error);
+                }
             };
             reader.readAsDataURL(file);
         }

@@ -7,7 +7,7 @@ const Settings = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [responseDebug, setResponseDebug] = useState(null);
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('acces_token')
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);

@@ -3,6 +3,7 @@ from api.models import db, User, Logo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import send_from_directory
 from api.upload_routes import upload
 import os
 import random
@@ -12,10 +13,6 @@ from werkzeug.utils import secure_filename  # Línea 9
 
 api = Blueprint('api', __name__)
 
-# Registro del blueprint upload
-# (Asegúrate de que 'upload' se importa correctamente desde api.upload_routes y no lo redefinas aquí)
-# Elimina la siguiente línea, ya que se está redefiniendo el blueprint:
-# upload = Blueprint('upload', __name__)
 
 @api.route('/home')
 def sitemap():
@@ -41,7 +38,7 @@ def create_user_anonymous():
         }), 200
 
     # Crear usuario anónimo con un email temporal y una contraseña aleatoria
-    # Línea 24-27: Optimización de generación de email y contraseña aleatoria
+   
     timestamp = int(time.time())
     random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
     temp_email = f"anonymous_{timestamp}_{random_suffix}@temp.com"
@@ -90,6 +87,7 @@ def create_user_anonymous():
         return jsonify({'error': f"Error al crear usuario anónimo: {str(e)}"}), 500
 
 # Ruta para registrarse un usuario y loguearse automáticamente (signup)
+
 @api.route('/signup', methods=['POST'])
 def create_user():
     body = request.get_json()
@@ -141,6 +139,7 @@ def create_user():
         return jsonify({"error": f"Ocurrió un error al crear el usuario: {str(e)}"}), 500
 
 # Ruta para logearse y creación de token
+
 @api.route('/login', methods=['POST'])
 def login():
     try:
@@ -182,7 +181,7 @@ def login():
             "access_token": access_token,
             "user": user_data,
             "logo_url": logo_url
-            
+
         }), 200
     except Exception as e:
         return jsonify({"error": f"Error en login: {str(e)}"}), 500
@@ -221,23 +220,16 @@ def delete_user(user_id):
         db.session.rollback()
         return jsonify({'error': f"Error al eliminar el usuario: {str(e)}"}), 500
 
-# Llamar al logo desde la API
-@api.route("/get_logos", methods=['GET'])
-def get_all_logos():
-    logos = Logo.query.all()
 
-    logos_serialized = [logo.serialize() for logo in logos]
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    return jsonify({"logos": logos_serialized})
 
-# Subir el logo desde la API
-from flask import request, jsonify
-from werkzeug.utils import secure_filename
-import os
-
-@api.route('/api/post_logos', methods=['POST'])
+# Ruta para subir y guardar el logo
+@api.route('/post_logos', methods=['POST'])
 def post_logos():
-    current_user_id = get_jwt_identity()
+    current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT
     
     # Verificar si el archivo ha sido subido
     if 'logo' not in request.files:
@@ -245,8 +237,13 @@ def post_logos():
 
     logo_file = request.files['logo']
 
+    # Verificar si se seleccionó un archivo
     if logo_file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
+
+    # Verificar si el archivo tiene una extensión permitida
+    if not allowed_file(logo_file.filename):
+        return jsonify({'error': 'File type not allowed. Only PNG, JPG, JPEG, GIF are allowed.'}), 400
 
     user = User.query.get(current_user_id)
 
@@ -258,11 +255,19 @@ def post_logos():
 
     # Definir la ruta donde se guardará el logo
     logo_filename = secure_filename(logo_file.filename)
-    logo_path = os.path.join('static/logos', logo_filename)
+    logo_path = os.path.join('static', 'logos', logo_filename)
+
+    # Asegurarse de que el directorio existe
+    if not os.path.exists(os.path.dirname(logo_path)):
+        os.makedirs(os.path.dirname(logo_path))
 
     # Guardar el archivo en el servidor
-    logo_file.save(logo_path)
-
+    try:
+        logo_file.save(logo_path)
+    except Exception as e:
+        return jsonify({"message": f"Error saving the logo: {str(e)}"}), 500
+    
+    # Si ya existe un logo, actualizamos la URL; si no, creamos uno nuevo
     if logo:
         logo.image_logo_url = logo_path  # Actualizamos la URL del logo
     else:
@@ -275,3 +280,28 @@ def post_logos():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": f"Error updating logo: {str(e)}"}), 500
+
+
+# Ruta para obtener el logo de un usuario
+@api.route('/get_logo', methods=['GET'])
+def get_logo():
+    current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT
+    
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Buscar si existe un logo para el usuario
+    logo = Logo.query.filter_by(user_id=current_user_id).first()
+
+    if not logo:
+        return jsonify({"message": "Logo not found"}), 404
+    
+    # Obtener la ruta del logo y devolver la imagen
+    logo_path = logo.image_logo_url
+    
+    # Servir la imagen desde el directorio donde se encuentra
+    try:
+        return send_from_directory(os.path.dirname(logo_path), os.path.basename(logo_path))
+    except Exception as e:
+        return jsonify({"message": f"Error serving logo: {str(e)}"}), 500

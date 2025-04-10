@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useGlobalReducer from "../../hooks/useGlobalReducer";
+
 import "./Navbar.css";
-// Importar el logo
 import logo from "../../assets/images/flow-logo.svg";
 
 export const Navbar = () => {
-	// Estado para almacenar la lista de problemas
-	const [problems, setProblems] = useState([]);
-	// Estado para el nuevo problema que se está escribiendo
-	const [newProblem, setNewProblem] = useState("");
 
-	// Cargar problemas del localStorage al iniciar
+	const { store, dispatch } = useGlobalReducer();
+	const navigate = useNavigate();
+	const [problems, setProblems] = useState([]);
+	const [newProblem, setNewProblem] = useState("");
+	const username = store.user?.username || "User";
+
 	useEffect(() => {
 		const savedProblems = localStorage.getItem('problems');
 		if (savedProblems) {
@@ -17,12 +20,10 @@ export const Navbar = () => {
 		}
 	}, []);
 
-	// Guardar problemas en localStorage cuando cambian
 	useEffect(() => {
 		localStorage.setItem('problems', JSON.stringify(problems));
 	}, [problems]);
 
-	// Manejar el envío del formulario
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (newProblem.trim() !== "") {
@@ -33,62 +34,53 @@ export const Navbar = () => {
 				date: new Date().toLocaleString()
 			};
 			setProblems([...problems, problemWithTimestamp]);
-			setNewProblem(""); // Limpiar el input
+			setNewProblem("");
 		}
 	};
 
-	// Eliminar un problema
 	const deleteProblem = (id) => {
 		setProblems(problems.filter(problem => problem.id !== id));
 	};
+
+	const handleLogout = () => {
+		dispatch({ type: "logout" })
+		navigate("/")
+	}
 
 	return (
 		<div className="navbar-container">
 			{/* Barra superior con logo y usuario */}
 			<div className="top-navbar">
 				<div className="logo-container">
-					{/* Reemplazar texto por imagen de logo */}
 					<img src={logo} alt="Flow Logo" className="navbar-logo" />
 				</div>
 
 				<div className="navbar-controls">
 					<button className="btn-report" data-bs-toggle="modal" data-bs-target="#problemasModal">
 						<i className="bi bi-exclamation-triangle"></i>
-						<span>Reportar</span>
+						<span>Report</span>
 					</button>
 
-					<div className="user-dropdown">
-						<button className="btn-user dropdown-toggle" data-bs-toggle="dropdown">
-							<i className="bi bi-person-circle"></i>
-							<span>Usuario</span>
-						</button>
-						<ul className="dropdown-menu dropdown-menu-end">
-							<li><span className="dropdown-item user-name">Admin User</span></li>
-							<li><hr className="dropdown-divider" /></li>
-							<li><a className="dropdown-item" href="#">Mi perfil</a></li>
-							<li><a className="dropdown-item" href="#">Configuración</a></li>
-							<li><hr className="dropdown-divider" /></li>
-							<li><a className="dropdown-item logout" href="#">Cerrar sesión</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-
-			{/* Barra de navegación secundaria */}
-			<div className="sub-navbar">
-				<div className="nav-sections">
-					<button className="nav-item active">view 1</button>
-					<button className="nav-item">view 2</button>
-					<button className="nav-item">view 3</button>
-					<button className="nav-item">view 4</button>
-					<button className="nav-item">view 5</button>
-				</div>
-
-				<div className="search-container">
-					<div className="search-input">
-						<i className="bi bi-search"></i>
-						<input type="text" placeholder="Buscar..." />
-					</div>
+					{store.token && (
+						<div className="user-dropdown">
+							<button className="btn-user dropdown-toggle" data-bs-toggle="dropdown">
+								<i className="bi bi-person-circle"></i>
+								<span>{username}</span>
+							</button>
+							<ul className="dropdown-menu dropdown-menu-end">
+								<li><span className="dropdown-item user-name">{username}</span></li>
+								<li><hr className="dropdown-divider" /></li>
+								<li>
+									<button
+										className="dropdown-item logout"
+										onClick={handleLogout}
+									>
+										Logout
+									</button>
+								</li>
+							</ul>
+						</div>
+					)}
 				</div>
 			</div>
 

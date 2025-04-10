@@ -18,7 +18,7 @@
   ); /* Ajustar espacio para el navbar y footer existentes */
   display: flex;
   flex-direction: column;
-  background-color: #f5f7fa;
+  background-color: #b4cdf8;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -77,18 +77,15 @@
 .welcome-icon {
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
-  width: 80px;
-  height: 80px;
+  width: 15rem;
+  height: 15rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
   box-shadow: 0 5px 15px rgba(1, 1, 1, 1);
-}
-
-.welcome-icon i {
-  font-size: 2.5rem;
+  padding: 0;
 }
 
 .welcome-panel h2 {

@@ -14,7 +14,6 @@ export function StoreProvider({ children }) {
     </StoreContext.Provider>
 }
 
-
 export default function useGlobalReducer() {
     const { dispatch, store } = useContext(StoreContext)
     return { dispatch, store };

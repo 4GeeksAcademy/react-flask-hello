@@ -20,23 +20,23 @@ export default function storeReducer(store, action = {}) {
   	switch (action.type) {
     	case "login":
       		localStorage.setItem("token", action.payload.token);
-			localStorage.setItem("usuario", JSON.stringify(action.payload.usuario))
+			localStorage.setItem("usuario", JSON.stringify(action.payload.user))
 
 	  		return {
 			...store,
 			token: action.payload.token,
-			usuario: action.payload.usuario,
+			user: action.payload.user,
 			error: null
 	  		};
 
 		case "logout":
 			localStorage.removeItem("token");
-			localStorage.removeItem("usuario")
+			localStorage.removeItem("user")
 
 			return {
 				...store,
 				token: null,
-				usuario: null
+				user: null
 			};
 
 		case "set_error":

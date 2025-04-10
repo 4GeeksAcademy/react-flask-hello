@@ -2,7 +2,6 @@
 // modal_alerts.jsx - Servicio reutilizable para toda la app
 
 import Swal from 'sweetalert2';
-import logo from '../../assets/img/Logo_DronFarm1.png';
 
 // Configuración centralizada de estilos y fuentes
 const modalStyles = {
@@ -40,15 +39,13 @@ export const showErrorAlert = (message) => {
 export const showSuccessAlert = (message, callback = null) => {
   Swal.fire({
     title: '¡Éxito!',
-    html: `
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <img src="${logo}" alt="Logo DronFarm" style="width: 80px; height: auto;"/>
-        <p style="margin: 0;">${message}</p>
-      </div>
-    `,
+    text: message,  // ✅ Versión simplificada
     icon: 'success',
     confirmButtonColor: modalStyles.successColor,
     background: '#f8f9fa',
+    timer: 3000,    // ✅ Cierre automático en 3s
+    timerProgressBar: true,
+    showConfirmButton: false, // ✅ Oculta el botón "OK"
     customClass: {
       title: 'modal-title-success',
       htmlContainer: 'modal-text',
@@ -59,7 +56,6 @@ export const showSuccessAlert = (message, callback = null) => {
     }
   });
 };
-
 /**
  * Muestra un modal de carga (spinner).
  */

@@ -1,27 +1,39 @@
-/* 👇 ❇️ Riki for the group success 👊 Lunes8Abril*/
+/* 👇 ❇️ Riki for the group success 👊 Lunes9Abril*/
 
-import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from '../components/Navbar/Navbar'; // Navbar original
-import Footer from '../components/Footer/Footer'; // Footer original
+import { Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import ScrollToTop from "../components/ScrollToTop";
+import PublicNavbar from "../components/Navbar/PublicNavbar";
+import Footer from "../components/Footer/Footer";
+import "./Layout.css";  // Reutilizamos los mismos estilos
 
-const PublicLayout = () => {
+export const PublicLayout = () => {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  
+  // Usar useEffect para añadir un atributo al body basado en la ruta actual
+  useEffect(() => {
+    // Extraer el nombre de la ruta (sin el slash inicial)
+    const routeName = location.pathname.substring(1) || "landing";
+    
+    // Añadir el atributo data-route al body
+    document.body.setAttribute("data-route", routeName);
+    
+    // Limpieza cuando el componente se desmonte
+    return () => {
+      document.body.removeAttribute("data-route");
+    };
+  }, [location]);
 
-  // Si estamos en la página de inicio (Landing), no mostramos el navbar y footer adicionales
-  if (isLandingPage) {
-    return <Outlet />; // Solo muestra el Landing con su propio navbar y footer
-  }
-
-  // Para otras páginas públicas, mostramos el layout completo
   return (
-    <div className="public-layout">
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <ScrollToTop>
+      <div className="app-root">
+        <PublicNavbar />
+        <div className="content-container">
+          <Outlet />
+        </div>
+        <Footer />
+      </div>
+    </ScrollToTop>
   );
 };
 

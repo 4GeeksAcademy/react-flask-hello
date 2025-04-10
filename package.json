@@ -56,6 +56,7 @@
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
 		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@react-pdf/renderer": "^4.3.0",
 		"axios": "^1.8.4",
 		"cors": "^2.8.5",
 		"framer-motion": "^12.6.3",

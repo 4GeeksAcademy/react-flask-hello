@@ -141,7 +141,6 @@ def create_user():
         return jsonify({"error": f"Ocurrió un error al crear el usuario: {str(e)}"}), 500
 
 # Ruta para logearse y creación de token
-# En routes.py, actualiza la función login
 @api.route('/login', methods=['POST'])
 def login():
     try:
@@ -183,6 +182,7 @@ def login():
             "access_token": access_token,
             "user": user_data,
             "logo_url": logo_url
+            
         }), 200
     except Exception as e:
         return jsonify({"error": f"Error en login: {str(e)}"}), 500

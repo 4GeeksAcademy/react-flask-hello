@@ -14,22 +14,21 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        // Validación de los campos
         if (!email || !password) {
             setMessage("Por favor, completa todos los campos.");
             setMessageType("error2");
             return;
         }
-        const requestData = { email, password};
-        console.log("Datos enviados al backend:", requestData);
+
+        const requestData = { email, password };
 
         try {
-            // Asegúrate de que la URL tenga el formato correcto
+            // Verificar si la URL base termina en barra
             const baseUrl = import.meta.env.VITE_BACKEND_URL;
-            // Añade una barra diagonal si no está presente al final de la URL base
             const apiUrl = baseUrl.endsWith('/') ? `${baseUrl}api/login` : `${baseUrl}/api/login`;
-            
-            console.log("URL completa de la petición:", apiUrl);
 
+            // Petición al servidor
             const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
@@ -37,25 +36,29 @@ function Login() {
                     "Accept": "application/json"
                 },
                 body: JSON.stringify(requestData),
-                credentials: "include" // Para manejar cookies si es necesario
+                credentials: "include" 
             });
 
-            console.log("Código de estado de la respuesta:", response.status);
-            
             const data = await response.json();
-            console.log("Respuesta del servidor:", data);
 
             if (response.ok) {
-                localStorage.setItem('token', data.access_token);
+
+                // Guardamos el Token en el navegador
+                localStorage.setItem("access_token", data.access_token);
+
+                console.log("Token guardado en cookies:", data.access_token);
+
                 navigate("/settings");
+            
+            
             } else {
-                // Mostrar mensaje de error del servidor
+                // Mostrar mensaje de error
                 setMessage(data.error || "Error al iniciar sesión");
                 setMessageType("error2");
             }
 
-        } catch (error2) {
-            console.error("Error al iniciar sesión:", error2);
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
             setMessage("Error al conectar con el servidor");
             setMessageType("error2");
         }
@@ -76,7 +79,6 @@ function Login() {
             )}
 
             <form onSubmit={handleLogin} className="log-form-content">
-
                 <div className="log-label-content">
                     <label htmlFor="email" className="log-form-label">
                         Email address
@@ -106,9 +108,7 @@ function Login() {
                     />
                 </div>
 
-
                 <button type="submit" className="log-btn">Login</button>
-
             </form>
         </div>
     );

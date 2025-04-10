@@ -11,13 +11,17 @@
   color: #333;
 }
 
-/* Hero section */
+/* Hero section - Glassmorphism */
 .contacto-hero {
   text-align: center;
   margin-bottom: 3rem;
-  padding: 2rem 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  padding: 3rem 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(25, 135, 84, 0.1);
 }
 
 .contacto-hero h1 {
@@ -40,16 +44,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+  background-color: rgba(25, 135, 84, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
 }
 
 /* Columna de información */
 .contacto-info {
   flex: 1;
   min-width: 300px;
-  background-color: #198754;
-  color: white;
+  background-color: #4cc480; /* Verde claro del logo */
+  color: #ffffff; /* Texto blanco para mejor contraste */
   padding: 2rem;
   border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .contacto-info h2 {
@@ -57,6 +65,7 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
+  color: white; /* Asegurando buen contraste */
 }
 
 .info-item {
@@ -68,6 +77,7 @@
 .info-item i {
   margin-right: 1rem;
   font-size: 1.2rem;
+  color: #e8f7ee; /* Color claro para iconos que contrasta con el verde del logo */
 }
 
 .contacto-social {
@@ -78,6 +88,7 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: white;
 }
 
 .social-icons {
@@ -100,7 +111,7 @@
 
 .social-icons a:hover {
   background-color: white;
-  color: #198754;
+  color: #4cc480; /* Verde claro del logo */
   transform: translateY(-3px);
 }
 
@@ -110,7 +121,7 @@
   min-width: 300px;
   padding: 2rem;
   background-color: #fff;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 

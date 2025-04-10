@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Plot_form.css";
+import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
 
 const PlotForm = () => {
     const [plotData, setPlotData] = useState({
@@ -56,11 +57,13 @@ const PlotForm = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setSuccess("Parcela registrada correctamente");
-                setTimeout(() => navigate("/dashboard"), 1500);
+                showSuccessAlert("Parcela registrada correctamente", () => {
+                    navigate("/app/dashboard");
+                });
             } else {
-                setError(data.error || "Error al registrar la parcela");
+                showErrorAlert(data.error || "Error al registrar la parcela");
             }
+
         } catch (err) {
             setError("Error de conexión con el servidor");
             console.error(err);

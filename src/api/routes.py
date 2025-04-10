@@ -37,7 +37,7 @@ def create_user_anonymous():
         return jsonify({
             'message': "El usuario anónimo ya existe",
             'isNew': False,
-            'token': existing_token
+            
         }), 200
 
     # Crear usuario anónimo con un email temporal y una contraseña aleatoria
@@ -118,7 +118,8 @@ def create_user():
             lastname=lastname,
             shopname=shopname,
             email=email,
-            password=hashed_password,  # Contraseña encriptada
+            password=hashed_password,
+            logo = Logo(new_user.id),  
             is_active=True  # Asumiendo que el usuario está activo por defecto
         )
 
@@ -140,30 +141,52 @@ def create_user():
         return jsonify({"error": f"Ocurrió un error al crear el usuario: {str(e)}"}), 500
 
 # Ruta para logearse y creación de token
+# En routes.py, actualiza la función login
 @api.route('/login', methods=['POST'])
 def login():
-    body = request.get_json()
-    email = body.get("email")
-    password = body.get("password")
+    try:
+        body = request.get_json()
+        if not body:
+            return jsonify({"error": "No se proporcionaron datos"}), 400
+            
+        email = body.get("email")
+        password = body.get("password")
 
-    if not body or not email or not password:
-        return jsonify({"error": "Email y password son requeridos"}), 400
+        if not email or not password:
+            return jsonify({"error": "Email y password son requeridos"}), 400
 
-    user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
-    if not user:
-        return jsonify({"error": "usuario incorrecto"}), 401
+        if not user:
+            return jsonify({"error": "usuario incorrecto"}), 401
 
-    if not user.check_password(password):
-        return jsonify({"error": "password incorrecto"}), 401
+        if not user.check_password(password):
+            return jsonify({"error": "password incorrecto"}), 401
 
-    access_token = create_access_token(identity=str(user.id))
+        # Crear token con información del usuario (incluyendo URL del logo si existe)
+        user_data = user.serialize()
+        
+        # Obtener logo si existe
+        logo = Logo.query.filter_by(user_id=user.id).first()
+        logo_url = logo.image_logo_url if logo else None
+        
+        # Incluir información en el token
+        token_data = {
+            "id": user.id,
+            "email": user.email,
+            "logo_url": logo_url
+        }
+        
+        access_token = create_access_token(identity=token_data)
 
-    return jsonify({
-        "access_token": access_token,
-        "user": user.serialize()
-    }), 200
-
+        return jsonify({
+            "access_token": access_token,
+            "user": user_data,
+            "logo_url": logo_url
+        }), 200
+    except Exception as e:
+        return jsonify({"error": f"Error en login: {str(e)}"}), 500
+    
 # Ruta del acceso settings del usuario
 @api.route('/settings', methods=['GET'])
 @jwt_required()  # Precisa de token para acceder
@@ -208,14 +231,22 @@ def get_all_logos():
     return jsonify({"logos": logos_serialized})
 
 # Subir el logo desde la API
-@api.route('/post_logos', methods=['POST'])
+from flask import request, jsonify
+from werkzeug.utils import secure_filename
+import os
+
+@api.route('/api/post_logos', methods=['POST'])
 def post_logos():
     current_user_id = get_jwt_identity()
-    data = request.get_json()
-    logo_data = data.get('logo')
-
-    if not logo_data:
+    
+    # Verificar si el archivo ha sido subido
+    if 'logo' not in request.files:
         return jsonify({'error': 'No logo provided'}), 400
+
+    logo_file = request.files['logo']
+
+    if logo_file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
 
     user = User.query.get(current_user_id)
 
@@ -225,10 +256,17 @@ def post_logos():
     # Buscar si ya existe un logo para este usuario
     logo = Logo.query.filter_by(user_id=current_user_id).first()
 
+    # Definir la ruta donde se guardará el logo
+    logo_filename = secure_filename(logo_file.filename)
+    logo_path = os.path.join('static/logos', logo_filename)
+
+    # Guardar el archivo en el servidor
+    logo_file.save(logo_path)
+
     if logo:
-        logo.image_logo_url = logo_data  # Actualizamos
+        logo.image_logo_url = logo_path  # Actualizamos la URL del logo
     else:
-        new_logo = Logo(image_logo_url=logo_data, user_id=current_user_id)
+        new_logo = Logo(image_logo_url=logo_path, user_id=current_user_id)
         db.session.add(new_logo)
 
     try:

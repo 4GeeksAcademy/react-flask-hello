@@ -17,33 +17,33 @@ const LogoFrame = () => {
         const file = event.target.files[0];
         
         if (file) {
+            // Crear URL temporal para mostrar la imagen
             const imageUrl = URL.createObjectURL(file);
             setImage(imageUrl);
             
-            // Guardar la imagen en localStorage
-            const reader = new FileReader();
-            reader.onloadend = async function() {
-                const base64data = reader.result;
+            // Guardar la imagen en localStorage como URL temporal
+            localStorage.setItem("logoApp", imageUrl);
 
-                // Guardar en localStorage
-                localStorage.setItem("logoApp", base64data);
+            // Crear un FormData para enviar el archivo
+            const formData = new FormData();
+            formData.append('logo', file); // 'logo' es el campo que espera el backend
 
-                // También guardar en la cookie (si es necesario)
-                document.cookie = `logoApp=${base64data}; path=/; max-age=${60 * 60 * 24 * 365}`;
-
-                try {
-                    // Enviar la imagen al backend
-                    const response = await axios.post('api/post_logos', {
-                        logo: base64data
-                    }, {
-                        withCredentials: true // Para que la cookie de sesión se envíe con la petición
-                    });
-                    console.log(response.data.message); // Mensaje de éxito del servidor
-                } catch (error) {
-                    console.error("Error al guardar el logo:", error);
-                }
-            };
-            reader.readAsDataURL(file);
+            try {
+                // Enviar la imagen al backend
+                const response = await axios.post(
+                    import.meta.env.VITE_BACKEND_URL + 'api/post_logos', 
+                    formData,
+                    {
+                        withCredentials: true, // Para que la cookie de sesión se envíe con la petición
+                        headers: {
+                            'Content-Type': 'multipart/form-data' // Asegúrate de que el backend pueda manejar este tipo de contenido
+                        }
+                    }
+                );
+                console.log(response.data.message); // Mensaje de éxito del servidor
+            } catch (error) {
+                console.error("Error al guardar el logo:", error);
+            }
         }
     };
 

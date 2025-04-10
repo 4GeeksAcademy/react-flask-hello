@@ -22,26 +22,41 @@ function Login() {
         const requestData = { email, password};
         console.log("Datos enviados al backend:", requestData);
 
-
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/login', {
+            // Asegúrate de que la URL tenga el formato correcto
+            const baseUrl = import.meta.env.VITE_BACKEND_URL;
+            // Añade una barra diagonal si no está presente al final de la URL base
+            const apiUrl = baseUrl.endsWith('/') ? `${baseUrl}api/login` : `${baseUrl}/api/login`;
+            
+            console.log("URL completa de la petición:", apiUrl);
+
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify(requestData),
+                credentials: "include" // Para manejar cookies si es necesario
             });
 
+            console.log("Código de estado de la respuesta:", response.status);
+            
             const data = await response.json();
+            console.log("Respuesta del servidor:", data);
 
             if (response.ok) {
-                localStorage.setItem('token', data.access_token)
+                localStorage.setItem('token', data.access_token);
                 navigate("/settings");
+            } else {
+                // Mostrar mensaje de error del servidor
+                setMessage(data.error || "Error al iniciar sesión");
+                setMessageType("error2");
             }
 
         } catch (error2) {
-            console.error("Error Iniciar secion:", error2);
-            setMessage("Error Iniciar secion");
+            console.error("Error al iniciar sesión:", error2);
+            setMessage("Error al conectar con el servidor");
             setMessageType("error2");
         }
     };

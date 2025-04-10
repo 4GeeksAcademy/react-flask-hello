@@ -7,7 +7,7 @@ export const initialStore = () => {
   	try {
 		if (userStr) user = JSON.parse(userStr)
   	} catch (e) {
-		console.log("error en la data")
+		console.log("error in the data")
   	}
   	return {
     	token: token || null,
@@ -20,7 +20,7 @@ export default function storeReducer(store, action = {}) {
   	switch (action.type) {
     	case "login":
       		localStorage.setItem("token", action.payload.token);
-			localStorage.setItem("usuario", JSON.stringify(action.payload.user))
+			localStorage.setItem("user", JSON.stringify(action.payload.user))
 
 	  		return {
 			...store,

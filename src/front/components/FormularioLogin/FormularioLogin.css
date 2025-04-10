@@ -150,6 +150,7 @@
   transition: all 0.2s ease;
   margin-top: 1rem;
   cursor: pointer;
+  height: auto;
 }
 
 .login-button:hover {

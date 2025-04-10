@@ -1,96 +1,39 @@
-import React, { useState } from "react";
-import useGlobalReducer from "../../hooks/useGlobalReducer";
-import { useNavigate, Link } from "react-router-dom";
-
-
+import React from "react";
 import { FormularioLogin } from "../../components/FormularioLogin/FormularioLogin";
+
 import "./Login.css";
+import logo from "../../assets/images/flow-logo.svg";
 
 
 
 export const Login = () => {
 
-	const navigate = useNavigate()
-	const { store, dispatch } = useGlobalReducer();
-
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [isLoading, setIsLoadin] = useState("");
-	const [error, setError] = useState("");
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setError("");
-		setIsLoadin(true);
-
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
-
-			const response = await fetch(`${backendUrl}api/login`, {
-				method: "POST",
-				headers: {
-					"Content-type": "application/json",
-				},
-				body: JSON.stringify({
-					username,
-					password
-				})
-			});
-
-			const data = await response.json();
-
-			console.log(data)
-
-			if(!response.ok) {
-				throw new Error(data.error || "Login failed");
-			}
-
-			dispatch({
-				type:"login",
-				payload: {
-					token: data.acces_token,
-					user: data.user
-				}
-			});
-
-			navigate("/");
-
-		} catch (err) {
-			setError(err.message || "Login failed");
-		}finally {
-			setIsLoadin(false);
-		}
-	}
-
-
-
-
-
 	return (
 		<div className="login-page">
 			{/* Contenido principal */}
 			<div className="login-container">
+				
 				<div className="login-content">
 					{/* Panel de bienvenida */}
 					<div className="welcome-panel">
 						<div className="welcome-content">
 							<div className="welcome-icon">
-								<i className="bi bi-shield-lock"></i>
+								<img src={logo} alt="Flow Logo" />
 							</div>
-							<h2>Bienvenido a Flow</h2>
-							<p>Sistema de gestión empresarial profesional</p>
+							<h2>Wellcome to FLOW</h2>
+							<p>Professional business management system</p>
 							<div className="welcome-features">
 								<div className="feature-item">
 									<i className="bi bi-calendar-check"></i>
-									<span>Gestión de citas</span>
+									<span>Appointment management</span>
 								</div>
 								<div className="feature-item">
 									<i className="bi bi-people"></i>
-									<span>Administración de personal</span>
+									<span>Personnel administration</span>
 								</div>
 								<div className="feature-item">
 									<i className="bi bi-briefcase"></i>
-									<span>Gestión de negocios</span>
+									<span>Business management</span>
 								</div>
 							</div>
 						</div>

@@ -16,7 +16,7 @@ from api.commands import setup_commands
 app = Flask(__name__)
 
 # Registra el Blueprint con el prefijo de URL
-app.register_blueprint(api, url_prefix='/api')
+app = Flask(__name__)
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app)

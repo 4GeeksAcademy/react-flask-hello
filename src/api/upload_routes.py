@@ -20,7 +20,8 @@ AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_ENDPOINT_URL_S3 = os.getenv("AWS_ENDPOINT_URL_S3")
 AWS_REGION = os.getenv("AWS_REGION", "auto")
-BUCKET_NAME = "inventory-files"  # Necesitarás crear este bucket en Tigris
+import uuid
+BUCKET_NAME = f"inventory-files-{uuid.uuid4().hex[:8]}"
 
 # Configuración de carga de archivos
 UPLOAD_FOLDER = "uploads"

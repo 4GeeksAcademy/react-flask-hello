@@ -1,17 +1,18 @@
 import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-
+import DownloadExcelButton from "./downloadiventary.jsx";
+import "./Styles/Settings.css";
 
  const Home = () => {
 
 	return (
 
-		<div className="home-content">
-			
-		</div>
-
-
-	);
+		
+    <div className="p-2 bg-blue-500 text-white rounded">
+      <DownloadExcelButton />
+    </div>
+  );
 }; 
+
 
 export default Home;

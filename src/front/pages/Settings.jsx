@@ -77,7 +77,7 @@ const Settings = () => {
         <button className="inventary">Add Inventory</button>
       </div>
       <div className="excel-uploader p-4">
-        <h3>Cargar Inventario desde Excel</h3>
+        <h1>Cargar Inventario desde Excel</h1>
         <form onSubmit={handleUpload}>
           <input
             type="file"

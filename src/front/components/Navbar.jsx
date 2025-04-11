@@ -26,8 +26,23 @@ const Navbar = () => {
       setIsLoggedIn(!!localStorage.getItem("access_token"));
     };
 
+
+				<div className="logo">
+					<LogoFrame />
+				</div>
+				
+				<div className="nav_buttons">
+					<button className="nav-btn"  onClick={() => navigate("/")}>Register</button>
+					<button className="nav-btn"  onClick={() => navigate("/login")}>Login</button>
+					<button className="nav-btn"  onClick={() => navigate("/home")}>Home</button>
+					<button className="nav-btn"  onClick={() => navigate("/settings")}>Settings</button>
+					<button className="nav-btn"  onClick={() => navigate("/cart")}>Cart</button>
+
+				</div>
+
     // Inicializa el estado al cargar el componente
     checkLoginStatus();
+
 
     // Escuchar cambios en localStorage
     window.addEventListener("storage", checkLoginStatus);

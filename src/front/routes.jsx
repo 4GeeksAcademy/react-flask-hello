@@ -20,7 +20,7 @@ export const AppRoutes = createBrowserRouter(
         <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
             <Route index element={<Login />} />
             <Route path="/business" element={<Business />} />
-            <Route path="/clientes" element={<ClientList />} />
+            <Route path="/clients" element={<ClientList />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/newclient" element={<NewClient />} />
         </Route>

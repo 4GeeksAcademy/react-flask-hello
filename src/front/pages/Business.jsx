@@ -1,7 +1,7 @@
 import React from "react";
-import { SeleccionarNegocio } from "../components/SeleccionarNegocio/SeleccionarNegocio";
+import { SelectBusiness } from "../components/SeleccionarNegocio/SelectBusiness";
 
-export const Negocios = () => {
+export const Business = () => {
   return (
     <>
       <div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}> {/* ← Fondo aplicado aquí */}
@@ -15,7 +15,7 @@ export const Negocios = () => {
         {/* Contenido */}
         <div className="container mt-5">
           <div className="row">
-          < SeleccionarNegocio /> {/* Formulario cliente*/}
+          < SelectBusiness /> {/* Formulario cliente*/}
           </div>
         </div>
       </div>

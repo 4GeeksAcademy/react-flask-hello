@@ -60,7 +60,7 @@ export const FormularioLogin = () => {
             });
 
             setTimeout(() => {
-                navigate("/negocios");
+                navigate("/business");
             }, 100);
 
         } catch (err) {

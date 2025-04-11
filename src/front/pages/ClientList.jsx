@@ -14,7 +14,6 @@ export const ClientList = () => {
 	return (
 		<ScrollToTop>
 			<div style={{ backgroundColor: "#CAD2C5", minHeight: "100vh" }}>
-				<Navbar />
 
 
 				<SearchInput

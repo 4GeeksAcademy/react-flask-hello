@@ -23,7 +23,7 @@ const Settings = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "api/upload/",
+      const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "api/upload/upload-inventory",
         formData,
         {
           headers: {

@@ -2,6 +2,9 @@ export const initialStore = () => {
   const token = localStorage.getItem("token");
   const userStr = localStorage.getItem("user");
   const businessStr = localStorage.getItem("business");
+  const selectedBusinessStr = localStorage.getItem("selected_business");
+
+  
   let user = null;
   let business = [];
   let selectedBusiness = null;
@@ -46,6 +49,13 @@ export default function storeReducer(store, action = {}) {
         token: null,
         user: null,
         business: [],
+        selectedBusiness: null,
+      };
+    
+    case "set_error":
+      return {
+        ...store,
+        error: action.payload,
       };
 
     case "set_business":
@@ -60,13 +70,6 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         selectedBusiness: action.payload,
-      };
-    
-    
-    case "set_error":
-      return {
-        ...store,
-        error: action.payload,
       };
     default:
       return store;

@@ -1,11 +1,8 @@
-// 👇 ❇️ Riki for the group success 11 Abril 👊
-
-import React, { useEffect, useState, useContext } from "react";
-import { Context } from "../store/appContext";
-
+import React, { useEffect, useState } from "react";
+import useGlobalReducer from "../../hooks/useGlobalReducer";
 
 const QuoteHistory = () => {
-  const { store } = useContext(Context);
+  const { store } = useGlobalReducer();
   const [quotes, setQuotes] = useState([]);
 
   useEffect(() => {

@@ -49,7 +49,7 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(fields_blueprint, url_prefix="/fields")
-app.register_blueprint(quote_routes)
+app.register_blueprint(quote_routes, url_prefix="/quote")
 
 
 # Handle/serialize errors like a JSON object

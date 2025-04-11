@@ -39,7 +39,7 @@ export const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="contacto" element={<Contact />} />
-        <Route path="/dashboard/historial" element={<QuoteHistory />} />
+        <Route path="quotehistory" element={<QuoteHistory />} />
       </Route>
       
       {/* Rutas privadas con Layout y protección */}

@@ -1,4 +1,4 @@
-#👇 ❇️ Riki for the group success 10 Abril 👊
+#👇 ❇️ Riki for the group success 11 Abril 👊
 
 
 # routes/quote_routes.py (COMPLETO)
@@ -158,4 +158,27 @@ def get_user_quotes(user_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@quote.route("/presupuestos/<int:quote_id>/pdf", methods=["GET"])
+def get_quote_pdf(quote_id):
+    try:
+        quote = Quote.query.get(quote_id)
+        if not quote:
+            return jsonify({"error": "Presupuesto no encontrado"}), 404
+
+        # Ruta donde guardas tus PDFs
+        pdf_folder = os.path.join(os.getcwd(), "pdfs")
+        pdf_path = os.path.join(pdf_folder, f"presupuesto_{quote_id}.pdf")
+
+        # Si el archivo no existe, genera uno falso para probar (luego se reemplaza con generación real)
+        if not os.path.exists(pdf_path):
+            with open(pdf_path, "w") as f:
+                f.write(f"Presupuesto #{quote_id} - Simulación de PDF")
+
+        return send_file(pdf_path, as_attachment=True)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 

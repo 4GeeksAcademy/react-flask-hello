@@ -134,3 +134,28 @@ def generate_pdf(id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@quote_routes.route('/usuario/<int:user_id>/presupuestos', methods=['GET'])
+def get_user_quotes(user_id):
+    try:
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        quotes = Quote.query.filter_by(user_id=user_id).order_by(Quote.created_at.desc()).all()
+
+        result = []
+        for quote in quotes:
+            result.append({
+                "id": quote.id,
+                "cost": quote.cost,
+                "description": quote.description,
+                "created_at": quote.created_at.strftime("%Y-%m-%d %H:%M"),
+                "field": quote.field.name if quote.field else None
+            })
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+

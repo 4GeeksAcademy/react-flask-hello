@@ -1,0 +1,29 @@
+[
+	{
+		"precio": 150,
+		"id": 1,
+		"title": "Pera",
+		"thumbnailUrl": "imgs/pera.jpg"
+	},
+
+	{
+		"precio": 100,
+		"id": 2,
+		"title": "Naranja",
+		"thumbnailUrl": "imgs/naranja.jpeg"
+	},
+
+	{
+		"precio": 200,
+		"id": 3,
+		"title": "Piña",
+		"thumbnailUrl": "imgs/piña.jpeg"
+	},
+
+	{
+		"precio": 450,
+		"id": 4,
+		"title": "Aguacate",
+		"thumbnailUrl": "imgs/aguacate.jpeg"
+	}
+]

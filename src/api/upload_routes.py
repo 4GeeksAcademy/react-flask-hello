@@ -20,13 +20,13 @@ AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_ENDPOINT_URL_S3 = os.getenv("AWS_ENDPOINT_URL_S3")
 AWS_REGION = os.getenv("AWS_REGION", "auto")
-BUCKET_NAME = "inventory-files"  # Necesitarás crear este bucket en Tigris
+import uuid
+BUCKET_NAME = f"inventory-files-{uuid.uuid4().hex[:8]}"
 
 # Configuración de carga de archivos
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Ruta de prueba
 
 
 @upload.route('/hello', methods=['POST', 'GET'])
@@ -36,12 +36,13 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
-# Ruta para subir archivos Excel
 
+# Ruta para subir archivos Excel
 
 @upload.route('/upload-inventory', methods=['POST'])
 @jwt_required()
 def upload_inventory():
+
     """
     Maneja la subida de archivos Excel:
     1. Guarda el archivo original en Tigris S3
@@ -52,7 +53,7 @@ def upload_inventory():
     user_id = get_jwt_identity()
 
     if "file" not in request.files:
-        return jsonify({"message": "No se envió ningún archivo"}), 400
+        return jsonify({"error": "No se encontró archivo en la solicitud"}), 400
 
     # Verificar que el usuario exista
     user = User.query.get(user_id)
@@ -62,6 +63,7 @@ def upload_inventory():
     file = request.files["file"]
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
+    
 
     try:
         # 1. Subir el archivo original a Tigris S3

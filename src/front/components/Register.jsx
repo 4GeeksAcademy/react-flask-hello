@@ -10,7 +10,6 @@ function Register() {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [shopname, setShopname] = useState("");
-    const [checked, setChecked] = useState(false);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
 
@@ -21,7 +20,7 @@ function Register() {
 
         if (!email || !password || !firstname || !lastname || !shopname) {
             setMessage("Por favor, completa todos los campos.");
-            setMessageType("error");
+            setMessageType("error2");
             return;
         }
 
@@ -40,7 +39,6 @@ function Register() {
             const data = await response.json();
 
             if (response.ok) {
-
                 localStorage.setItem("token", data.access_token);
 
                 // Redirige al usuario
@@ -56,12 +54,12 @@ function Register() {
 
             } else {
                 setMessage(data.error || "Hubo un problema con el registro");
-                setMessageType("error2");
+                setMessageType("error");
             }
         } catch (error) {
             console.error("Error de registro:", error);
             setMessage("No se pudo conectar al servidor");
-            setMessageType("error2");
+            setMessageType("error");
         }
     };
 
@@ -72,6 +70,7 @@ function Register() {
 
     return (
         <div className="register">
+            
             {message && (
                 <div className={`reg-message-box ${messageType}`}>
                     {messageType === "error" && <ErrorMessage1 text={message} onClose={handleMessageClose} />}
@@ -135,16 +134,6 @@ function Register() {
                     />
                 </div>
 
-                <div className="reg-form-check">
-                    <input
-                        type="checkbox"
-                        className="reg-form-check-input"
-                        id="check"
-                        checked={checked}
-                        onChange={(e) => setChecked(e.target.checked)}
-                    />
-                    <label className="reg-form-check-label" htmlFor="check">Check me out</label>
-                </div>
 
                 <button type="submit" className="reg-btn">Registrarse</button>
             </form>

@@ -1,25 +1,22 @@
 import React from 'react';
-import './Styles/MessageBox.css'
-import { useNavigate } from 'react-router-dom';
+import './Styles/MessageBox2.css';
 
+const ErrorMessage2 = ({ text, onClose }) => {
 
-const ErrorMessage1 = ({ text }) => {
+    //FUNCION DEL BOTON DEL MENSAJE ERROR PARA CERRAR LA VENTANA
 
-    const navigate = useNavigate();
-    
-    //FUNCION DEL BOTON DEL MENSAJE ERROR PARA REDIRIGIR A LOGIN
-    const handleRedirectToLogin = () => {
-        navigate("/login");  
+    const handleCloseMessage = () => {
+        onClose();  
     };
 
     return (
-        <div className="message-box error">
-            <p>{text}</p>
-            <button type="submit" className="box-btn" onClick={handleRedirectToLogin}> Login </button>
+        <div className="overlay">
+            <div className="message-box error">
+                <p>{text}</p>
+                <button type="button" className="box-btn" onClick={handleCloseMessage}>Back</button>
+            </div>
         </div>
-    )
-
+    );
 };
 
-
-export default ErrorMessage1;
+export default ErrorMessage2;

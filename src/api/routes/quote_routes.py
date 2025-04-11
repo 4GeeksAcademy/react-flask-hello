@@ -12,10 +12,10 @@ import tempfile
 
 print("✅ quote_routes CARGADO")
 
-quote_routes = Blueprint('quote_routes', __name__)
+quote = Blueprint('quote_routes', __name__)
 
 # POST /presupuesto (Crear nuevo presupuesto)
-@quote_routes.route('/presupuesto', methods=['POST'])
+@quote.route('/presupuesto', methods=['POST'])
 def create_quote():
     print("📥 Recibida petición en /presupuesto")
     try:
@@ -58,7 +58,7 @@ def create_quote():
         return jsonify({"error": str(e)}), 500
 
 # GET /presupuesto/<id> (Obtener presupuesto específico)
-@quote_routes.route('/presupuesto/<int:id>', methods=['GET'])
+@quote.route('/presupuesto/<int:id>', methods=['GET'])
 def get_quote(id):
     try:
         quote = Quote.query.options(joinedload(Quote.user), joinedload(Quote.field)).get(id)
@@ -77,7 +77,7 @@ def get_quote(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@quote_routes.route('/test-crear-presupuesto', methods=['GET'])
+@quote.route('/test-crear-presupuesto', methods=['GET'])
 def crear_presupuesto_para_prueba():
     try:
         user = User.query.get(1)
@@ -106,7 +106,7 @@ def crear_presupuesto_para_prueba():
 
 
 # GET /presupuesto/<id>/pdf (Generar y devolver el PDF)
-@quote_routes.route('/presupuesto/<int:id>/pdf', methods=['GET'])
+@quote.route('/presupuesto/<int:id>/pdf', methods=['GET'])
 def generate_pdf(id):
     try:
         quote = Quote.query.options(joinedload(Quote.user), joinedload(Quote.field)).get(id)
@@ -135,7 +135,7 @@ def generate_pdf(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@quote_routes.route('/usuario/<int:user_id>/presupuestos', methods=['GET'])
+@quote.route('/usuario/<int:user_id>/presupuestos', methods=['GET'])
 def get_user_quotes(user_id):
     try:
         user = User.query.get(user_id)

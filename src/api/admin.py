@@ -1,6 +1,6 @@
 import os
 from flask_admin import Admin
-from .models import db, Usuarios, Admins, Negocios, Servicios, Clientes, Notas, Pagos, Citas, Calendario, HistorialDeServicios
+from .models import db, Users, Admins, Businesses, Services, Clients, Notes, Payments, Appointments, Calendar, ServiceHistory
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -10,4 +10,4 @@ def setup_admin(app):
 
     
 
-    admin.add_view(ModelView(Usuarios, db.session))
+    admin.add_view(ModelView(Users, db.session))

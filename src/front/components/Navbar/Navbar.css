@@ -23,13 +23,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--primary-color);
+  background-color:var(--primary-color);
   padding: 0.8rem 1.5rem;
-  height: 60px;
+  height: auto;
 }
 
 .navbar-logo {
-  height: 40px; /* Ajusta este valor según el tamaño que desees */
+  height: 100px;
   width: auto; /* Mantiene la proporción */
   transition: transform 0.3s ease;
 }
@@ -38,12 +38,10 @@
   transform: scale(1.05); /* Efecto sutil al pasar el mouse */
 }
 
-/* Ajustar el contenedor del logo para mantener centrado el logo */
 .logo-container {
   display: flex;
   align-items: center;
-  padding: 4px 8px;
-  border-radius: var(--border-radius);
+  border-radius: 50%;
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.1),
@@ -51,6 +49,7 @@
   );
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  margin: 10px;
 }
 
 .logo-container:hover {

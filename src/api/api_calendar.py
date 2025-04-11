@@ -6,62 +6,56 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .models import db, Citas, Calendario, Usuarios, Clientes, Servicios
+from .models import db, Appointments, Calendar, Users, Clients, Services
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Crear un Blueprint separado para las operaciones de Google Calendar
 calendar_api = Blueprint('calendar_api', __name__)
 
-# Definimos los scopes necesarios para el API de Google Calendar
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
 class GoogleCalendarManager:
     def __init__(self):
-        """Inicializa la clase y obtiene las credenciales."""
-        self.creds = self.obtener_credenciales()
-        self.service = self.crear_servicio() if self.creds else None
+        """Initialize the class and get credentials."""
+        self.creds = self.get_credentials()
+        self.service = self.create_service() if self.creds else None
 
-    def obtener_credenciales(self):
-        """Obtiene y refresca las credenciales si es necesario."""
+    def get_credentials(self):
+        """Get and refresh credentials if necessary."""
         creds = None
 
-        # Rutas a los archivos de credenciales
         credentials_path = os.getenv("CREDENTIALS_PATH")
         token_path = os.getenv("TOKEN_PATH")
 
-        print(f"Buscando credenciales en: {credentials_path}")
-        print(f"Buscando token en: {token_path}")
+        print(f"Looking for credentials in: {credentials_path}")
+        print(f"Looking for token in: {token_path}")
 
-        # Verificar si los archivos existen
         if not os.path.exists(credentials_path):
             print(
-                f"ERROR: El archivo de credenciales no existe en {credentials_path}")
+                f"ERROR: The credentials file does not exist at {credentials_path}")
             return None
 
-        # Verificar si hay un token existente
         if os.path.exists(token_path):
-            print(f"Token encontrado en {token_path}")
+            print(f"Token found at {token_path}")
             creds = Credentials.from_authorized_user_file(token_path, SCOPES)
         else:
-            print(f"No se encontró token en {token_path}")
+            print(f"No token found at {token_path}")
 
-        # Si no hay credenciales válidas, obtenerlas
         if not creds or not creds.valid:
-            print("Credenciales no válidas o inexistentes")
+            print("Invalid or non-existent credentials")
             if creds and creds.expired and creds.refresh_token:
-                print("Refrescando credenciales expiradas")
+                print("Refreshing expired credentials")
                 try:
                     creds.refresh(Request())
-                    print("Credenciales refrescadas con éxito")
+                    print("Credentials refreshed successfully")
                 except Exception as e:
-                    print(f"Error al refrescar credenciales: {e}")
+                    print(f"Error refreshing credentials: {e}")
             else:
-                print("Generando nuevas credenciales")
+                print("Generating new credentials")
                 try:
                     flow = InstalledAppFlow.from_client_secrets_file(
                         credentials_path, SCOPES
@@ -69,133 +63,128 @@ class GoogleCalendarManager:
                     flow.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
                     auth_url, _ = flow.authorization_url(prompt='consent')
                     print(
-                        f'Por favor, visita esta URL para autorizar la aplicación: {auth_url}')
-                    code = input('Ingresa el código de autorización: ')
+                        f'Please visit this URL to authorize the application: {auth_url}')
+                    code = input('Enter the authorization code: ')
                     flow.fetch_token(code=code)
                     creds = flow.credentials
-                    print("Nuevas credenciales generadas con éxito")
+                    print("New credentials generated successfully")
 
                 except Exception as e:
 
-                    print(f"Error al generar nuevas credenciales: {e}")
+                    print(f"Error generating new credentials: {e}")
                     return None
 
-            # Asegurarse de que el directorio existe
             os.makedirs(os.path.dirname(token_path), exist_ok=True)
 
-            # Guardar las credenciales para la próxima ejecución
             try:
                 with open(token_path, "w") as token:
                     token.write(creds.to_json())
-                print(f"Credenciales guardadas en {token_path}")
+                print(f"Credentials saved at {token_path}")
             except Exception as e:
-                print(f"Error al guardar credenciales: {e}")
+                print(f"Error saving credentials: {e}")
 
         return creds
 
-    def crear_servicio(self):
-        """Crea el servicio de Google Calendar."""
+    def create_service(self):
+        """Create the Google Calendar service."""
         try:
             service = build("calendar", "v3", credentials=self.creds)
-            print("Servicio de Google Calendar creado exitosamente")
+            print("Google Calendar service created successfully")
             return service
         except Exception as e:
-            print(f"Error al crear el servicio de Google Calendar: {e}")
+            print(f"Error creating Google Calendar service: {e}")
             return None
 
-    def obtener_proximos_eventos(self, max_resultados=100, calendar_id="primary"):
-        """Obtiene los próximos eventos del calendario de Google."""
+    def get_upcoming_events(self, max_results=100, calendar_id="primary"):
+        """Get upcoming events from Google Calendar."""
         if not self.service:
             return None
 
         try:
-            ahora = datetime.datetime.now(
+            now = datetime.datetime.now(
                 tz=datetime.timezone.utc).isoformat()
 
             events_result = (
                 self.service.events()
                 .list(
                     calendarId=calendar_id,
-                    timeMin=ahora,
-                    maxResults=max_resultados,
+                    timeMin=now,
+                    maxResults=max_results,
                     singleEvents=True,
                     orderBy="startTime",
                 )
                 .execute()
             )
 
-            eventos = events_result.get("items", [])
-            if not eventos:
-                return {"msg": "No hay citas pendientes"}
+            events = events_result.get("items", [])
+            if not events:
+                return {"msg": "No pending appointments"}
 
-            return eventos
+            return events
 
         except HttpError as error:
-            print(f"Ocurrió un error: {error}")
+            print(f"An error occurred: {error}")
             return None
 
-    def crear_evento(self, titulo, descripcion, inicio, fin, ubicacion=None, calendar_id="primary"):
-        """Crea un evento en Google Calendar."""
+    def create_event(self, title, description, start, end, location=None, calendar_id="primary"):
+        """Create an event in Google Calendar."""
         if not self.service:
             return None
 
-        evento = {
-            'summary': titulo,
-            'description': descripcion,
+        event = {
+            'summary': title,
+            'description': description,
             'start': {
-                'dateTime': inicio,
-                'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
+                'dateTime': start,
+                'timeZone': 'Europe/Madrid',  
             },
             'end': {
-                'dateTime': fin,
-                'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
+                'dateTime': end,
+                'timeZone': 'Europe/Madrid',  
             },
         }
 
-        if ubicacion:
-            evento['location'] = ubicacion
+        if location:
+            event['location'] = location
 
         try:
-            resultado = self.service.events().insert(
-                calendarId=calendar_id, body=evento).execute()
-            return resultado
+            result = self.service.events().insert(
+                calendarId=calendar_id, body=event).execute()
+            return result
         except HttpError as error:
-            print(f'Ocurrió un error al crear el evento: {error}')
+            print(f'An error occurred while creating the event: {error}')
             return None
 
-    def actualizar_evento(self, event_id, datos_actualizados, calendar_id="primary"):
-        """Actualiza un evento existente en Google Calendar."""
+    def update_event(self, event_id, updated_data, calendar_id="primary"):
+        """Update an existing event in Google Calendar."""
         if not self.service:
             return None
 
         try:
-            # Primero obtenemos el evento actual
-            evento = self.service.events().get(
+            event = self.service.events().get(
                 calendarId=calendar_id, eventId=event_id).execute()
 
-            # Actualizamos los campos
-            for key, value in datos_actualizados.items():
+            for key, value in updated_data.items():
                 if key in ['start', 'end']:
                     if 'dateTime' in value:
-                        evento[key]['dateTime'] = value['dateTime']
+                        event[key]['dateTime'] = value['dateTime']
                     if 'timeZone' in value:
-                        evento[key]['timeZone'] = value['timeZone']
+                        event[key]['timeZone'] = value['timeZone']
                 else:
-                    evento[key] = value
+                    event[key] = value
 
-            # Guardamos los cambios
-            evento_actualizado = self.service.events().update(
-                calendarId=calendar_id, eventId=event_id, body=evento
+            updated_event = self.service.events().update(
+                calendarId=calendar_id, eventId=event_id, body=event
             ).execute()
 
-            return evento_actualizado
+            return updated_event
 
         except HttpError as error:
-            print(f'Ocurrió un error al actualizar el evento: {error}')
+            print(f'An error occurred while updating the event: {error}')
             return None
 
-    def eliminar_evento(self, event_id, calendar_id="primary"):
-        """Elimina un evento de Google Calendar."""
+    def delete_event(self, event_id, calendar_id="primary"):
+        """Delete an event from Google Calendar."""
         if not self.service:
             return False
 
@@ -203,299 +192,277 @@ class GoogleCalendarManager:
             self.service.events().delete(calendarId=calendar_id, eventId=event_id).execute()
             return True
         except HttpError as error:
-            print(f'Ocurrió un error al eliminar el evento: {error}')
+            print(f'An error occurred while deleting the event: {error}')
             return False
 
-# ----------------------------- Rutas para la API de Calendario ---------------
+# ----------------------------- Routes for Calendar API ---------------
 
-@calendar_api.route('/calendario/eventos', methods=['GET'])
+@calendar_api.route('/calendar/events', methods=['GET'])
 # @jwt_required()
-def obtener_eventos_calendario():
-    """Obtiene los próximos eventos del calendario de Google."""
+def get_calendar_events():
+    """Get upcoming events from Google Calendar."""
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:
-        return jsonify({"error": "No se pudo inicializar el servicio de Google Calendar"}), 500
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
 
-    eventos = calendar_manager.obtener_proximos_eventos(max_resultados=10)
+    events = calendar_manager.get_upcoming_events(max_results=10)
 
-    if eventos is None:
-        return jsonify({"error": "No se pudo acceder al calendario de Google"}), 500
+    if events is None:
+        return jsonify({"error": "Could not access Google Calendar"}), 500
 
-    return jsonify(eventos), 200
+    return jsonify(events), 200
 
 
-@calendar_api.route('/calendario/sincronizar', methods=['GET'])
+@calendar_api.route('/calendar/sync', methods=['GET'])
 # @jwt_required()
-def sincronizar_citas_con_google():
-    """Sincroniza las citas de la base de datos con Google Calendar."""
+def sync_appointments_with_google():
+    """Sync appointments from the database with Google Calendar."""
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:
-        return jsonify({"error": "No se pudo inicializar el servicio de Google Calendar"}), 500
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
 
-    # Obtener todas las citas pendientes que no tienen un evento de Google Calendar asociado
-    citas_pendientes = Citas.query.filter_by(estado="pendiente").all()
-    citas_sincronizadas = []
+    pending_appointments = Appointments.query.filter_by(status="pending").all()
+    synced_appointments = []
 
-    for cita in citas_pendientes:
-        # Verificar si ya está registrada en la tabla de Calendario
-        calendario_existente = Calendario.query.filter_by(
-            cita_id=cita.id).first()
+    for appointment in pending_appointments:
+        existing_calendar = Calendar.query.filter_by(
+            appointment_id=appointment.id).first()
 
-        if not calendario_existente:
-            # Obtener información adicional sobre la cita
-            cliente = Clientes.query.get(cita.cliente_id)
-            usuario = Usuarios.query.get(cita.usuario_id)
-            servicio = Servicios.query.get(cita.servicio_id)
+        if not existing_calendar:
 
-            if not cliente or not usuario or not servicio:
+            client = Clients.query.get(appointment.client_id)
+            user = Users.query.get(appointment.user_id)
+            service = Services.query.get(appointment.service_id)
+
+            if not client or not user or not service:
                 continue
 
-            # Crear título y descripción para el evento
-            titulo = f"Cita: {cliente.nombre} - {servicio.nombre}"
-            descripcion = f"""
-                Cliente: {cliente.nombre}
-                Email: {cliente.email}
-                Servicio: {servicio.nombre}
-                Atendido por: {usuario.username}
-                Estado: {cita.estado}
+            title = f"Appointment: {client.name} - {service.name}"
+            description = f"""
+                Client: {client.name}
+                Email: {client.email}
+                Service: {service.name}
+                Attended by: {user.username}
+                Status: {appointment.status}
             """
 
-            # Asegurarse de que la fecha tenga el formato ISO8601 con zona horaria
-            inicio = cita.fecha_hora.isoformat()
+            start = appointment.date_time.isoformat()
 
-            # Asumimos que cada cita dura 1 hora, puedes ajustar esto según tus necesidades
-            fin = (cita.fecha_hora + datetime.timedelta(hours=1)).isoformat()
+            end = (appointment.date_time + datetime.timedelta(hours=1)).isoformat()
 
-            # Crear el evento en Google Calendar
-            evento = calendar_manager.crear_evento(
-                titulo=titulo,
-                descripcion=descripcion,
-                inicio=inicio,
-                fin=fin
+            event = calendar_manager.create_event(
+                title=title,
+                description=description,
+                start=start,
+                end=end
             )
 
-            if evento:
-                # Guardar la referencia en la tabla Calendario
-                nuevo_calendario = Calendario(
-                    cita_id=cita.id,
-                    fecha_hora_inicio=cita.fecha_hora,
-                    fecha_hora_fin=cita.fecha_hora +
+            if event:
+                new_calendar = Calendar(
+                    appointment_id=appointment.id,
+                    start_date_time=appointment.date_time,
+                    end_date_time=appointment.date_time +
                     datetime.timedelta(hours=1),
-                    google_event_id=evento['id'],
-                    ultimo_sync=datetime.datetime.now()
+                    google_event_id=event['id'],
+                    last_sync=datetime.datetime.now()
                 )
 
                 try:
-                    db.session.add(nuevo_calendario)
+                    db.session.add(new_calendar)
                     db.session.commit()
-                    citas_sincronizadas.append({
-                        "cita_id": cita.id,
-                        "evento_id": evento['id'],
-                        "titulo": evento['summary']
+                    synced_appointments.append({
+                        "appointment_id": appointment.id,
+                        "event_id": event['id'],
+                        "title": event['summary']
                     })
                 except Exception as e:
                     db.session.rollback()
-                    print(f"Error al guardar en la tabla Calendario: {e}")
+                    print(f"Error saving to Calendar table: {e}")
 
     return jsonify({
-        "msg": f"Se sincronizaron {len(citas_sincronizadas)} citas con Google Calendar",
-        "citas_sincronizadas": citas_sincronizadas
+        "msg": f"{len(synced_appointments)} appointments synchronized with Google Calendar",
+        "synced_appointments": synced_appointments
     }), 200
 
 
-@calendar_api.route('/calendario/citas/<int:cita_id>', methods=['POST'])
+@calendar_api.route('/calendar/appointments/<int:appointment_id>', methods=['POST'])
 # @jwt_required()
-def crear_evento_para_cita(cita_id):
-    """Crea un evento en Google Calendar para una cita específica."""
-    cita = Citas.query.get(cita_id)
+def create_event_for_appointment(appointment_id):
+    """Create a Google Calendar event for a specific appointment."""
+    appointment = Appointments.query.get(appointment_id)
 
-    if not cita:
-        return jsonify({"error": "Cita no encontrada"}), 404
+    if not appointment:
+        return jsonify({"error": "Appointment not found"}), 404
 
-    # Verificar si ya existe un evento para esta cita
-    calendario_existente = Calendario.query.filter_by(cita_id=cita.id).first()
-    if calendario_existente:
-        return jsonify({"error": "Esta cita ya tiene un evento asociado en Google Calendar"}), 400
+    existing_calendar = Calendar.query.filter_by(appointment_id=appointment.id).first()
+    if existing_calendar:
+        return jsonify({"error": "This appointment already has an associated event in Google Calendar"}), 400
 
-    # Obtener información adicional sobre la cita
-    cliente = Clientes.query.get(cita.cliente_id)
-    usuario = Usuarios.query.get(cita.usuario_id)
-    servicio = Servicios.query.get(cita.servicio_id)
+    client = Clients.query.get(appointment.client_id)
+    user = Users.query.get(appointment.user_id)
+    service = Services.query.get(appointment.service_id)
 
-    if not cliente or not usuario or not servicio:
-        return jsonify({"error": "No se pudo obtener toda la información asociada a la cita"}), 404
+    if not client or not user or not service:
+        return jsonify({"error": "Could not get all information associated with the appointment"}), 404
 
-    # Crear título y descripción para el evento
-    titulo = f"Cita: {cliente.nombre} - {servicio.nombre}"
-    descripcion = f"""
-        Cliente: {cliente.nombre}
-        Email: {cliente.email}
-        Servicio: {servicio.nombre}
-        Atendido por: {usuario.username}
-        Estado: {cita.estado}
+    title = f"Appointment: {client.name} - {service.name}"
+    description = f"""
+        Client: {client.name}
+        Email: {client.email}
+        Service: {service.name}
+        Attended by: {user.username}
+        Status: {appointment.status}
     """
 
-    # La fecha de la cita debe estar en formato ISO8601
-    inicio = cita.fecha_hora.isoformat()
-    # Asumimos que cada cita dura 1 hora
-    fin = (cita.fecha_hora + datetime.timedelta(hours=1)).isoformat()
+    start = appointment.date_time.isoformat()
+    end = (appointment.date_time + datetime.timedelta(hours=1)).isoformat()
 
-    # Crear el evento en Google Calendar
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:
-        return jsonify({"error": "No se pudo inicializar el servicio de Google Calendar"}), 500
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
 
-    evento = calendar_manager.crear_evento(
-        titulo=titulo,
-        descripcion=descripcion,
-        inicio=inicio,
-        fin=fin
+    event = calendar_manager.create_event(
+        title=title,
+        description=description,
+        start=start,
+        end=end
     )
 
-    if not evento:
-        return jsonify({"error": "No se pudo crear el evento en Google Calendar"}), 500
+    if not event:
+        return jsonify({"error": "Could not create event in Google Calendar"}), 500
 
-    # Guardar la referencia en la tabla Calendario
-    nuevo_calendario = Calendario(
-        cita_id=cita.id,
-        fecha_hora_inicio=cita.fecha_hora,
-        # O la duración que corresponda
-        fecha_hora_fin=cita.fecha_hora + datetime.timedelta(hours=1),
-        google_event_id=evento['id'],
-        ultimo_sync=datetime.datetime.now()
+    new_calendar = Calendar(
+        appointment_id=appointment.id,
+        start_date_time=appointment.date_time,
+        end_date_time=appointment.date_time + datetime.timedelta(hours=1),
+        google_event_id=event['id'],
+        last_sync=datetime.datetime.now()
     )
 
     try:
-        db.session.add(nuevo_calendario)
+        db.session.add(new_calendar)
         db.session.commit()
 
         return jsonify({
-            "msg": "Evento creado exitosamente en Google Calendar",
-            "evento": {
-                "id": evento['id'],
-                "titulo": evento.get('summary', ''),
-                "link": evento.get('htmlLink', '')
+            "msg": "Event created successfully in Google Calendar",
+            "event": {
+                "id": event['id'],
+                "title": event.get('summary', ''),
+                "link": event.get('htmlLink', '')
             }
         }), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Error al guardar en la base de datos: {str(e)}"}), 500
+        return jsonify({"error": f"Error saving to database: {str(e)}"}), 500
 
 
-@calendar_api.route('/calendario/eventos/<int:cita_id>', methods=['PUT'])
+@calendar_api.route('/calendar/events/<int:appointment_id>', methods=['PUT'])
 # @jwt_required()
-def actualizar_evento_cita(cita_id):
-    """Actualiza un evento en Google Calendar cuando se actualiza una cita."""
-    cita = Citas.query.get(cita_id)
+def update_appointment_event(appointment_id):
+    """Update a Google Calendar event when an appointment is updated."""
+    appointment = Appointments.query.get(appointment_id)
 
-    if not cita:
-        return jsonify({"error": "Cita no encontrada"}), 404
+    if not appointment:
+        return jsonify({"error": "Appointment not found"}), 404
 
-    # Buscar el registro en la tabla Calendario
-    calendario = Calendario.query.filter_by(cita_id=cita.id).first()
-    if not calendario:
-        return jsonify({"error": "Esta cita no tiene un evento asociado en Google Calendar"}), 404
+    calendar = Calendar.query.filter_by(appointment_id=appointment.id).first()
+    if not calendar:
+        return jsonify({"error": "This appointment does not have an associated event in Google Calendar"}), 404
 
-    # Obtener información actualizada sobre la cita
-    cliente = Clientes.query.get(cita.cliente_id)
-    usuario = Usuarios.query.get(cita.usuario_id)
-    servicio = Servicios.query.get(cita.servicio_id)
+    client = Clients.query.get(appointment.client_id)
+    user = Users.query.get(appointment.user_id)
+    service = Services.query.get(appointment.service_id)
 
-    if not cliente or not usuario or not servicio:
-        return jsonify({"error": "No se pudo obtener toda la información asociada a la cita"}), 404
+    if not client or not user or not service:
+        return jsonify({"error": "Could not get all information associated with the appointment"}), 404
 
-    # Crear datos actualizados para el evento
-    datos_actualizados = {
-        'summary': f"Cita: {cliente.nombre} - {servicio.nombre}",
+    updated_data = {
+        'summary': f"Appointment: {client.name} - {service.name}",
         'description': f"""
-            Cliente: {cliente.nombre}
-            Email: {cliente.email}
-            Servicio: {servicio.nombre}
-            Atendido por: {usuario.username}
-            Estado: {cita.estado}
+            Client: {client.name}
+            Email: {client.email}
+            Service: {service.name}
+            Attended by: {user.username}
+            Status: {appointment.status}
         """,
         'start': {
-            'dateTime': cita.fecha_hora.isoformat(),
-            'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
+            'dateTime': appointment.date_time.isoformat(),
+            'timeZone': 'Europe/Madrid',  # Adjust according to your timezone
         },
         'end': {
-            'dateTime': (cita.fecha_hora + datetime.timedelta(hours=1)).isoformat(),
-            'timeZone': 'Europe/Madrid',  # Ajusta según tu zona horaria
+            'dateTime': (appointment.date_time + datetime.timedelta(hours=1)).isoformat(),
+            'timeZone': 'Europe/Madrid',  # Adjust according to your timezone
         }
     }
 
-    # Actualizar el evento en Google Calendar
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:
-        return jsonify({"error": "No se pudo inicializar el servicio de Google Calendar"}), 500
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
 
-    evento_actualizado = calendar_manager.actualizar_evento(
-        event_id=calendario.google_event_id,
-        datos_actualizados=datos_actualizados
+    updated_event = calendar_manager.update_event(
+        event_id=calendar.google_event_id,
+        updated_data=updated_data
     )
 
-    if not evento_actualizado:
-        return jsonify({"error": "No se pudo actualizar el evento en Google Calendar"}), 500
+    if not updated_event:
+        return jsonify({"error": "Could not update event in Google Calendar"}), 500
 
-    # Actualizar el último sincronizado
     try:
-        calendario.ultimo_sync = datetime.datetime.now()
+        calendar.last_sync = datetime.datetime.now()
         db.session.commit()
 
         return jsonify({
-            "msg": "Evento actualizado exitosamente en Google Calendar",
-            "evento": {
-                "id": evento_actualizado['id'],
-                "titulo": evento_actualizado['summary'],
-                "link": evento_actualizado.get('htmlLink', '')
+            "msg": "Event updated successfully in Google Calendar",
+            "event": {
+                "id": updated_event['id'],
+                "title": updated_event['summary'],
+                "link": updated_event.get('htmlLink', '')
             }
         }), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Error al actualizar en la base de datos: {str(e)}"}), 500
+        return jsonify({"error": f"Error updating database: {str(e)}"}), 500
 
 
-@calendar_api.route('/calendario/eventos/<int:cita_id>', methods=['DELETE'])
+@calendar_api.route('/calendar/events/<int:appointment_id>', methods=['DELETE'])
 # @jwt_required()
-def eliminar_evento_cita(cita_id):
-    """Elimina un evento de Google Calendar cuando se elimina una cita."""
-    # Buscar el registro en la tabla Calendario
-    calendario = Calendario.query.filter_by(cita_id=cita_id).first()
-    if not calendario:
-        return jsonify({"error": "Esta cita no tiene un evento asociado en Google Calendar"}), 404
+def delete_appointment_event(appointment_id):
+    """Delete a Google Calendar event when an appointment is deleted."""
+    # Look for the record in the Calendar table
+    calendar = Calendar.query.filter_by(appointment_id=appointment_id).first()
+    if not calendar:
+        return jsonify({"error": "This appointment does not have an associated event in Google Calendar"}), 404
 
-    # Eliminar el evento de Google Calendar
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:
-        return jsonify({"error": "No se pudo inicializar el servicio de Google Calendar"}), 500
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
 
-    exito = calendar_manager.eliminar_evento(
-        event_id=calendario.google_event_id)
+    success = calendar_manager.delete_event(
+        event_id=calendar.google_event_id)
 
-    if not exito:
-        return jsonify({"error": "No se pudo eliminar el evento de Google Calendar"}), 500
+    if not success:
+        return jsonify({"error": "Could not delete event from Google Calendar"}), 500
 
-    # Eliminar el registro de la tabla Calendario
     try:
-        db.session.delete(calendario)
+        db.session.delete(calendar)
         db.session.commit()
 
         return jsonify({
-            "msg": "Evento eliminado exitosamente de Google Calendar"
+            "msg": "Event deleted successfully from Google Calendar"
         }), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Error al eliminar de la base de datos: {str(e)}"}), 500
+        return jsonify({"error": f"Error deleting from database: {str(e)}"}), 500
 
 
-print("Inicializando GoogleCalendarManager...")
-calendario = GoogleCalendarManager()
-if calendario.service:
-    print("✅ Servicio de Google Calendar inicializado correctamente")
+print("Initializing GoogleCalendarManager...")
+calendar = GoogleCalendarManager()
+if calendar.service:
+    print("✅ Google Calendar service initialized correctly")
 else:
-    print("❌ Error al inicializar el servicio de Google Calendar")
+    print("❌ Error initializing Google Calendar service")

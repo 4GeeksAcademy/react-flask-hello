@@ -1,106 +1,144 @@
 import React, { useState } from "react";
+import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { useNavigate, Link } from "react-router-dom";
+
 import "./FormularioLogin.css";
 
 export const FormularioLogin = () => {
-	const [formData, setFormData] = useState({
-		username: "",
-		password: ""
-	});
+    const navigate = useNavigate();
+    const { store, dispatch } = useGlobalReducer();
 
-	const [showPassword, setShowPassword] = useState(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-	const handleChange = (e) => {
-		const { id, value } = e.target;
-		setFormData({
-			...formData,
-			[id]: value
-		});
-	};
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setIsLoading(true);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		// Aquí iría la lógica de autenticación
-		console.log("Datos de inicio de sesión:", formData);
-	};
+        try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-	const togglePasswordVisibility = () => {
-		setShowPassword(!showPassword);
-	};
+            const response = await fetch(`${backendUrl}api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
 
-	return (
-		<div className="form-login-container">
-			<div className="form-header">
-				<h2>Iniciar sesión</h2>
-				<p>Ingresa tus credenciales para acceder al sistema</p>
-			</div>
+            const data = await response.json();
 
-			<form className="login-form" onSubmit={handleSubmit}>
-				{/* Campo de usuario */}
-				<div className="form-group">
-					<label htmlFor="username" className="form-label">Usuario</label>
-					<div className="input-group">
-						<span className="input-icon">
-							<i className="bi bi-person"></i>
-						</span>
-						<input
-							type="text"
-							id="username"
-							className="form-control"
-							placeholder="Ingresa tu nombre de usuario"
-							value={formData.username}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-				</div>
+            console.log("Respuesta del login:", data);
 
-				{/* Campo de contraseña */}
-				<div className="form-group">
-					<div className="password-label-row">
-						<label htmlFor="password" className="form-label">Contraseña</label>
-						<a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
-					</div>
-					<div className="input-group">
-						<span className="input-icon">
-							<i className="bi bi-lock"></i>
-						</span>
-						<input
-							type={showPassword ? "text" : "password"}
-							id="password"
-							className="form-control"
-							placeholder="Ingresa tu contraseña"
-							value={formData.password}
-							onChange={handleChange}
-							required
-						/>
-						<button
-							type="button"
-							className="password-toggle"
-							onClick={togglePasswordVisibility}
-						>
-							<i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
-						</button>
-					</div>
-				</div>
+            if (!response.ok) {
+                throw new Error(data.error || "Login failed");
+            }
 
-				{/* Recordar credenciales */}
-				<div className="form-check">
-					<input type="checkbox" className="form-check-input" id="rememberMe" />
-					<label className="form-check-label" htmlFor="rememberMe">
-						Recordar mis credenciales
-					</label>
-				</div>
+            const token = data.access_token || data.acces_token || data.token;
+            if (!token) {
+                console.error("Token not found in response:", data);
+                throw new Error("Token not found in response");
+            }
 
-				{/* Botón de inicio de sesión */}
-				<button type="submit" className="login-button">
-					<i className="bi bi-box-arrow-in-right"></i>
-					Iniciar sesión
-				</button>
-			</form>
+            dispatch({
+                type: "login",
+                payload: {
+                    token: token,
+                    user: data.user
+                }
+            });
 
-			<div className="login-footer-text">
-				<p>¿No tienes una cuenta? <a href="#">Comunícate con el administrador</a></p>
-			</div>
-		</div>
-	);
+            console.log("Estado después del login:", {
+                token,
+                user: data.user
+            });
+
+            setTimeout(() => {
+                navigate("/negocios");
+            }, 100);
+
+        } catch (err) {
+            console.error("Error en login:", err);
+            setError(err.message || "Login failed");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <div className="form-login-container">
+            <div className="form-header">
+                <h2>Sign in</h2>
+                <p>Enter your credentials to access the system</p>
+            </div>
+
+            {error && (
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>
+            )}
+
+            <form className="login-form" onSubmit={handleSubmit}>
+                {/* Campo de usuario */}
+                <div className="form-group">
+                    <label htmlFor="username" className="form-label">Username</label>
+                    <div className="input-group">
+                        <span className="input-icon">
+                            <i className="bi bi-person"></i>
+                        </span>
+                        <input
+                            type="text"
+                            id="username"
+                            className="form-control"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                </div>
+
+                {/* Campo de contraseña */}
+                <div className="form-group">
+                    <div className="password-label-row">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <a href="#" className="forgot-password">Forgot your password?</a>
+                    </div>
+                    <div className="input-group">
+                        <span className="input-icon">
+                            <i className="bi bi-lock"></i>
+                        </span>
+                        <input
+                            type="password"
+                            id="password"
+                            className="form-control"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                </div>
+
+                {/* Botón de inicio de sesión */}
+                <button
+                    type="submit"
+                    className="login-button"
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Loading..." : "Sign In"}
+                </button>
+            </form>
+
+            <div className="login-footer-text">
+                <p>Don't have an account?<a href="#"> Contact the administrator</a></p>
+            </div>
+        </div>
+    );
 };

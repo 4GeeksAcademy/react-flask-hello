@@ -1,83 +1,155 @@
-/* 👆 🤟🏼 ❇️ Riki for the group success 8_Abril 👊 */
+/* 👆 🤟🏼 ❇️ Riki for the group success 9_Abril 👊 */
 
-/* Estilos base heredados del navbar original */
+/* 👇 ❇️ DronFarm Public Navbar - 100% Coherente con el Sistema de Diseño 👊 */
+
+/* ===== FUENTES Y COLORES GLOBALES ===== */
+/* (Basado en index.css y manual tipográfico) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap');
+
+/* ===== ESTILOS BASE ===== */
 .public-navbar {
-  background: #4CAF50; /* Verde original */
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
+    background-color: #198754; /* Verde principal (botones/acciones) */
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Roboto', sans-serif; /* Default para textos */
 }
 
-.navbar-container {
-  width: 100%;
-  max-width: 1400px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.public-navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Logo */
-.navbar-logo {
-  display: flex;
-  align-items: center;
+/* ===== LOGO ===== */
+.public-navbar-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
 }
 
-.logo-img {
-  height: 45px; /* Altura original */
-  width: auto;
+.public-logo-img {
+    height: 40px;
+    margin-right: 10px;
 }
 
-/* Enlaces */
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+.public-logo-text {
+    font-family: 'Montserrat', sans-serif; /* Tipografía destacada */
+    font-weight: 700;
+    color: white;
 }
 
-.nav-link {
-  color: white !important;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  text-decoration: none;
+/* ===== MENÚ HAMBURGUESA (Mobile) ===== */
+.public-navbar-toggle {
+    display: none;
 }
 
-.nav-link:hover {
-  color: #e8f5e9 !important;
-  transform: translateY(-2px);
+.public-navbar-toggle-label {
+    display: none;
+    cursor: pointer;
+    width: 30px;
+    height: 21px;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Botón Acceso Clientes */
-.login-button {
-  background: #2196F3 !important; /* Azul original */
-  color: white !important;
-  padding: 0.6rem 1.5rem;
-  border-radius: 25px;
-  border: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
+.public-navbar-toggle-label span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
 }
 
-.login-button:hover {
-  background: #1976D2 !important;
-  transform: translateY(-2px);
+/* ===== ITEMS DE NAVEGACIÓN ===== */
+.public-navbar-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-/* Responsive */
+.public-navbar-item {
+    margin-left: 2rem;
+}
+
+.public-navbar-link {
+    color: white;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif; /* Texto normal */
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.public-navbar-link:hover {
+    color: #cce7d8; /* Verde claro para hover (coherente con #198754) */
+}
+
+.public-navbar-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s;
+}
+
+.public-navbar-link:hover::after {
+    width: 100%;
+}
+
+/* ===== BOTÓN DE INICIAR SESIÓN ===== */
+.public-navbar-button {
+    background-color: white;
+    color: #198754; /* Verde principal */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif; /* Tipografía destacada */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.public-navbar-button:hover {
+    background-color: #e8f3ed; /* Fondo hover claro */
+    transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE (Mobile) ===== */
 @media (max-width: 768px) {
-  .public-navbar {
-    padding: 0.8rem 1rem;
-  }
+    .public-navbar-toggle-label {
+        display: flex;
+    }
 
-  .nav-links {
-    display: none; /* Ocultar en móviles como en el original */
-  }
+    .public-navbar-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #198754;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        clip-path: circle(0px at 90% -10%);
+        transition: clip-path 0.5s ease-out;
+    }
 
-  .logo-img {
-    height: 40px; /* Ajuste para móviles */
-  }
+    .public-navbar-toggle:checked ~ .public-navbar-menu {
+        clip-path: circle(1000px at 90% -10%);
+    }
+
+    .public-navbar-item {
+        margin: 1rem 0;
+    }
 }

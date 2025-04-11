@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import './Landing.css';
 import heroImage from '../../assets/img/Login1.jpg';
 import Logo from '../../assets/img/Logo_DronFarm2.png';
-import Navbar from '../../components/Navbar/Navbar'; // Importamos el Navbar compartido
-import Footer from '../../components/Footer/Footer'; // Importamos el Footer compartido
+
 
 const Landing = () => {
   const features = [
@@ -16,22 +15,18 @@ const Landing = () => {
 
   return (
     <div className="landing-container">
-      {/* Usamos el Navbar compartido en lugar del específico de Landing */}
-      <Navbar />
-      
       {/* Hero Section */}
       <motion.section className="hero-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
         <div className="hero-content">
           <h1>Agricultura de Precisión con Tecnología Drone</h1>
-          <p>Maximiza tu producción con análisis de cultivo en tiempo real</p>
-          <button className="cta-button">Solicitar Demo</button>
+          <p>Maximiza tu producción con análisis de cultivos en tiempo real</p>
         </div>
         <div className="hero-image-container">
           <img src={heroImage} alt="Monitoreo agrícola con drones" className="hero-image" />
         </div>
       </motion.section>
 
-      {/* Features Grid */}
+      {/* Features Grid con fondo verde */}
       <section className="features-section" id="features">
         <h2 className="section-title">Nuestra Tecnología</h2>
         <div className="bento-grid">
@@ -48,9 +43,6 @@ const Landing = () => {
           ))}
         </div>
       </section>
-
-      {/* Usamos el Footer compartido en lugar del específico de Landing */}
-      <Footer />
     </div>
   );
 };

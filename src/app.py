@@ -10,6 +10,7 @@ from api.utils import APIException, generate_sitemap
 from api.models.models import db, User
 from api.routes.user_routes import user as user_blueprint
 from api.routes.plot_routes import fields as fields_blueprint
+from api.routes.quote_routes import quote_routes
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
@@ -48,6 +49,7 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(fields_blueprint, url_prefix="/fields")
+app.register_blueprint(quote_routes, url_prefix="/quote")
 
 
 # Handle/serialize errors like a JSON object

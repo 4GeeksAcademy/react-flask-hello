@@ -1,0 +1,31 @@
+/* 👇 ❇️ Riki for the group success 👊 9 Abril*/
+
+/* Estilos para el layout público - coherente con el sistema de diseño */
+.public-app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .public-content-container {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+  }
+  
+  /* Media queries para responsividad */
+  @media (max-width: 768px) {
+    .public-content-container {
+      padding: 1.5rem 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .public-content-container {
+      padding: 1rem;
+    }
+  }

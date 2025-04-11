@@ -37,10 +37,7 @@ export const SelectBusiness = () => {
 						payload: data
 					});
 
-					setTimeout(() => {
-						navigate("/clientes");
-				}, 100);
-					
+									
 				} catch (error) {
 					console.error("Error fetching businesses:", error);
 					dispatch({
@@ -80,7 +77,7 @@ export const SelectBusiness = () => {
 				{filteredBusinesses.map((business) => (
 					<Link
 						key={business.id}
-						to={`/business/${business.id}`}
+						to={`/clients`}
 						style={{ textDecoration: 'none' }}
 						onClick={() => handleSelectBusiness(business)}
 					>

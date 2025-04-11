@@ -1,40 +1,48 @@
 import { useState } from "react";
 import axios from "axios";
-
 import './Styles/Settings.css';
 
 const Settings = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [responseDebug, setResponseDebug] = useState(null);
-  const token = localStorage.getItem('token')
 
+  // Obtenemos el token de localStorage para enviarlo con la solicitud
+  const token = localStorage.getItem('token');
+
+  // Maneja el cambio del archivo seleccionado
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
+  // Maneja la carga del archivo
   const handleUpload = async (event) => {
     event.preventDefault();
     if (!file) return alert("Selecciona un archivo primero.");
 
     setUploading(true);
     setResponseDebug(null);
+
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "api/upload/upload-inventory",
+      // Realizamos la petición POST con axios y enviamos el token en los headers
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "upload-inventory", // Asegúrate de que esta URL sea correcta
         formData,
         {
           headers: {
             "Accept": "application/json",
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
           },
-          withCredentials: false,
+
+          // El navegador se encargará de enviarlo automáticamente con cada solicitud si el token está en las cookies
+          withCredentials: true, 
         }
       );
 
+      // Mostrar los detalles de la respuesta
       setResponseDebug({
         status: response.status,
         statusText: response.statusText,
@@ -42,10 +50,12 @@ const Settings = () => {
         data: response.data
       });
 
-      alert(response.data.message);
+      alert(response.data.message); // Mostrar el mensaje de respuesta
+
     } catch (error) {
       console.error("Error al subir archivo:", error);
 
+      // Manejo de error detallado
       setResponseDebug({
         error: true,
         message: error.message,
@@ -57,7 +67,7 @@ const Settings = () => {
 
       alert("Error al subir archivo: " + (error.response?.data?.error || error.message));
     } finally {
-      setUploading(false);
+      setUploading(false); // Terminamos el proceso de carga
     }
   };
 
@@ -73,12 +83,12 @@ const Settings = () => {
             type="file"
             accept=".xlsx"
             onChange={handleFileChange}
-            disabled={uploading}
+            disabled={uploading} // Deshabilitamos el input si estamos subiendo
           />
           <button
             type="submit"
             className="p-2 bg-blue-500 text-white"
-            disabled={uploading}
+            disabled={uploading} // Deshabilitamos el botón si estamos subiendo
           >
             {uploading ? "Subiendo..." : "Subir a Tigris Data"}
           </button>

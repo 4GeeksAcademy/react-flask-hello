@@ -1,5 +1,9 @@
+// 👇 ❇️ Riki for the group success 11 Abril 👊
+
 import React, { useEffect, useState } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PdfDocument from "../../components/Quote/PdfDocument";
 
 const QuoteHistory = () => {
   const { store } = useGlobalReducer();
@@ -39,16 +43,34 @@ const QuoteHistory = () => {
             <tbody>
               {quotes.map((q) => {
                 const cultivo = q.description?.split("|")[0]?.trim();
+                const area = q.field || "N/A";
+
                 return (
                   <tr key={q.id}>
                     <td>{q.created_at}</td>
                     <td>{cultivo}</td>
-                    <td>{q.field}</td>
+                    <td>{area}</td>
                     <td>{q.cost.toFixed(2)}</td>
                     <td>
-                      <button className="btn btn-outline-secondary btn-sm" disabled>
+                      <PDFDownloadLink
+                        document={
+                          <PdfDocument
+                            user={`Usuario #${q.user_id}`}
+                            field={area}
+                            cropType={cultivo}
+                            hectares={"N/A"} // Puedes parsear desde q.description si quieres
+                            services={q.description}
+                            frequency={"Mensual"}
+                            pricePerHectare={q.cost}
+                            total={q.cost}
+                            validUntil={"2025-06-30"}
+                          />
+                        }
+                        fileName={`presupuesto_${q.id}.pdf`}
+                        className="btn btn-outline-primary btn-sm"
+                      >
                         Descargar PDF
-                      </button>
+                      </PDFDownloadLink>
                     </td>
                   </tr>
                 );

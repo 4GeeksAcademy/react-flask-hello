@@ -8,7 +8,7 @@ const Cart = () => {
   })
 
   useEffect(() => {
-    fetch('/productos.json')
+    fetch('./productos.json')
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error(err))

@@ -11,7 +11,7 @@ import { Demo } from "./pages/Demo";
 import Settings from "./pages/Settings";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
-
+import Cart from "./pages/Cart";
 
 
 export const router = createBrowserRouter(
@@ -26,6 +26,8 @@ export const router = createBrowserRouter(
       <Route path="/single/:theId" element={ <Single />} />  {}
       <Route path="/demo" element={<Demo />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/cart" element={<Cart />} />
+
     </Route>
   )
 );

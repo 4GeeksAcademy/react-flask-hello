@@ -10,6 +10,7 @@ import { Business} from "./pages/Business.jsx";
 import { ClientList } from "./pages/ClientList";
 import { Dashboard } from "./pages/Dashboard/Dashboard.jsx";
 import { NewClient } from "./pages/NewClient/NewClient.jsx"
+import { NewService } from "./pages/NewService/NewService.jsx"
 
 
 
@@ -23,6 +24,7 @@ export const AppRoutes = createBrowserRouter(
             <Route path="/clientes" element={<ClientList />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/newclient" element={<NewClient />} />
+            <Route path="/newservice" element={<NewService />} />
         </Route>
     )
 );

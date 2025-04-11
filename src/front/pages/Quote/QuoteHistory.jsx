@@ -1,7 +1,8 @@
 // 👇 ❇️ Riki for the group success 11 Abril 👊
 
 import React, { useEffect, useState, useContext } from "react";
-import { Context } from "../../store/appContext";
+import { Context } from "../store/appContext";
+
 
 const QuoteHistory = () => {
   const { store } = useContext(Context);

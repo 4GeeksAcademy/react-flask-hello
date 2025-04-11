@@ -15,6 +15,7 @@ import Dash_admin from "./pages/Dash_admin/Dash_admin";
 import Plot_form from "./pages/Plot_form/Plot_form";
 import Landing from "./pages/Landing/Landing";
 import Contact from "./pages/Contact/Contact";
+import QuoteHistory from "./pages/Quote/QuoteHistory";
 
 // Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
@@ -38,6 +39,7 @@ export const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="contacto" element={<Contact />} />
+        <Route path="quotehistory" element={<QuoteHistory />} />
       </Route>
       
       {/* Rutas privadas con Layout y protección */}

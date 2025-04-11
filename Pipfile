@@ -24,6 +24,7 @@ sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
 requests = "*"
+weasyprint = "*"
 
 [requires]
 python_version = "3.13"

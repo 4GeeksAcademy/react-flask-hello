@@ -45,6 +45,14 @@ const QuoteHistory = () => {
                 const cultivo = q.description?.split("|")[0]?.trim();
                 const area = q.field || "N/A";
 
+                // 🧠 Parsear hectáreas desde la descripción
+                const matches = q.description?.match(/(\d+(\.\d+)?)\s*ha/i);
+                const hectares = matches ? matches[1] : "N/A";
+
+                // 📅 Calcular fecha válida hasta (30 días después)
+                const createdDate = new Date(q.created_at);
+                const validUntil = new Date(createdDate.setDate(createdDate.getDate() + 30)).toLocaleDateString("es-ES");
+
                 return (
                   <tr key={q.id}>
                     <td>{q.created_at}</td>
@@ -55,15 +63,15 @@ const QuoteHistory = () => {
                       <PDFDownloadLink
                         document={
                           <PdfDocument
-                            user={`Usuario #${q.user_id}`}
+                            user={store.user?.name || `Usuario #${q.user_id}`}
                             field={area}
                             cropType={cultivo}
-                            hectares={"N/A"} // Puedes parsear desde q.description si quieres
+                            hectares={hectares}
                             services={q.description}
                             frequency={"Mensual"}
                             pricePerHectare={q.cost}
                             total={q.cost}
-                            validUntil={"2025-06-30"}
+                            validUntil={validUntil}
                           />
                         }
                         fileName={`presupuesto_${q.id}.pdf`}

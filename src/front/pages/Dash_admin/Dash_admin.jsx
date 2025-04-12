@@ -3,7 +3,7 @@ import axios from "axios";
 
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
-  const [lands, setLands] = useState([]);
+
   const [selectedUser, setSelectedUser] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [newUser, setNewUser] = useState({ name: "", email: "" });
@@ -12,7 +12,7 @@ const DashboardAdmin = () => {
   // Recuperar token almacenado 
   const token = localStorage.getItem("token");
 
-  // lista de usuarios y tierras al iniciar el componente
+  // lista de usuarios 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -20,7 +20,7 @@ const DashboardAdmin = () => {
           `${import.meta.env.VITE_BACKEND_URL}/user/users`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        console.log("User recieved",res.data)
+        console.log("User recieved", res.data)
         setUsers(res.data);
         if (res.data.length > 0) setSelectedUser(res.data[0]);
       } catch (err) {
@@ -29,30 +29,17 @@ const DashboardAdmin = () => {
       }
     };
 
-    const fetchLands = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/fields/fields`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setLands(res.data);
-        console.log("hole")
-        console.log(lands)
-      } catch (err) {
-        console.error("Error fetching lands:", err);
-        setError("Error fetching lands");
-      }
-    };
+
 
     fetchUsers();
-    fetchLands();
+
   }, [token]);
 
   // Función para crear un nuevo usuario
   const handleCreateUser = async () => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/users`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users`,
         newUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -69,7 +56,7 @@ const DashboardAdmin = () => {
     if (!editingUser) return;
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${editingUser.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users/${editingUser.id}`,
         editingUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -85,7 +72,7 @@ const DashboardAdmin = () => {
   const handleDeleteUser = async (userId) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users/${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUsers(users.filter((user) => user.id !== userId));
@@ -163,23 +150,6 @@ const DashboardAdmin = () => {
           </div>
         </div>
 
-                  {/* Lista de Tierras */}
-          <div className="lands-section">
-            <h3 className="section-title">Lands</h3>
-            {lands.size === 0 ? (
-              <p className="empty-message">No hay tierras disponibles.</p>
-            ) : (
-              <ul className="lands-list">
-                {[...lands].map(([key, land]) => (
-                  land && land.name ? (  // Verificamos que 'land' y 'land.name' existan
-                    <li key={key} className="land-item">
-                      {land.name}
-                    </li>
-                  ) : null
-                ))}
-              </ul>
-            )}
-          </div> 
 
         {/* Detalles del Usuario y Edición */}
         <div className="user-details-section">

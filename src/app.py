@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.register_blueprint(api, url_prefix='/api')
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"

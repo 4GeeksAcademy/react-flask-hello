@@ -14,34 +14,53 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        // Validación de los campos
         if (!email || !password) {
             setMessage("Por favor, completa todos los campos.");
             setMessageType("error2");
             return;
         }
-        const requestData = { email, password};
-        console.log("Datos enviados al backend:", requestData);
 
+        const requestData = { email, password };
 
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'api/login', {
+            // Verificar si la URL base termina en barra
+            const baseUrl = import.meta.env.VITE_BACKEND_URL;
+            const apiUrl = baseUrl.endsWith('/') ? `${baseUrl}api/login` : `${baseUrl}api/login`;
+            
+            // Petición al servidor
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify(requestData),
+                
             });
 
             const data = await response.json();
-
+           
+            
             if (response.ok) {
-                localStorage.setItem('token', data.access_token)
+
+                // Guardamos el Token en el navegador
+                localStorage.setItem("access_token", data.access_token);
+
+                console.log("Token guardado en cookies:", data.access_token);
+
                 navigate("/settings");
+            
+            
+            } else {
+                // Mostrar mensaje de error
+                setMessage(data.error || "Error al iniciar sesión");
+                setMessageType("error2");
             }
 
-        } catch (error2) {
-            console.error("Error Iniciar secion:", error2);
-            setMessage("Error Iniciar secion");
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            setMessage("Error al conectar con el servidor");
             setMessageType("error2");
         }
     };
@@ -61,7 +80,6 @@ function Login() {
             )}
 
             <form onSubmit={handleLogin} className="log-form-content">
-
                 <div className="log-label-content">
                     <label htmlFor="email" className="log-form-label">
                         Email address
@@ -91,9 +109,7 @@ function Login() {
                     />
                 </div>
 
-
                 <button type="submit" className="log-btn">Login</button>
-
             </form>
         </div>
     );

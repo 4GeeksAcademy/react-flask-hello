@@ -17,8 +17,8 @@ const LogoFrame = () => {
         const file = event.target.files[0];
         
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setImage(imageUrl);
+            const image_logo_url = URL.createObjectURL(file);
+            setImage(image_logo_url);
             
             // Guardar la imagen en localStorage
             const reader = new FileReader();
@@ -36,7 +36,7 @@ const LogoFrame = () => {
                     const response = await axios.post('api/post_logos', {
                         logo: base64data
                     }, {
-                        withCredentials: true // Para que la cookie de sesión se envíe con la petición
+                        withCredentials: true
                     });
                     console.log(response.data.message); // Mensaje de éxito del servidor
                 } catch (error) {

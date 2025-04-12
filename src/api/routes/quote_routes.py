@@ -1,6 +1,5 @@
 #👇 ❇️ Riki for the group success 11 Abril 👊
 
-
 # routes/quote_routes.py (COMPLETO)
 from flask import Blueprint, jsonify, request, render_template, send_file
 from api.models.models import db, Quote, User, Field
@@ -9,6 +8,7 @@ from datetime import datetime, timedelta
 from services.pricing_service import calculate_quote
 from weasyprint import HTML
 import tempfile
+import os
 
 print("✅ quote_routes CARGADO")
 
@@ -20,8 +20,9 @@ def create_quote():
     print("📥 Recibida petición en /presupuesto")
     try:
         data = request.get_json()
+        print("DEBUG POST DATA:", data)
         required_fields = ['hectares', 'cropType', 'services', 'frequency', 'field_id', 'user_id']
-        
+
         if not all(field in data for field in required_fields):
             return jsonify({"error": "Campos faltantes"}), 400
 
@@ -41,7 +42,7 @@ def create_quote():
             user_id=data['user_id'],
             created_at=datetime.utcnow()
         )
-        
+
         db.session.add(new_quote)
         db.session.commit()
 
@@ -54,6 +55,7 @@ def create_quote():
         }), 201
 
     except Exception as e:
+        print("❌ ERROR EN POST /presupuesto:", str(e))
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
@@ -64,7 +66,7 @@ def get_quote(id):
         quote = Quote.query.options(joinedload(Quote.user), joinedload(Quote.field)).get(id)
         if not quote:
             return jsonify({"error": "Presupuesto no encontrado"}), 404
-            
+
         return jsonify({
             "id": quote.id,
             "cost": quote.cost,
@@ -73,7 +75,7 @@ def get_quote(id):
             "created_at": quote.created_at.isoformat(),
             "description": quote.description
         }), 200
-        
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -134,7 +136,7 @@ def generate_pdf(id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 @quote.route('/usuario/<int:user_id>/presupuestos', methods=['GET'])
 def get_user_quotes(user_id):
     try:
@@ -158,7 +160,7 @@ def get_user_quotes(user_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 
 @quote.route("/presupuestos/<int:quote_id>/pdf", methods=["GET"])
 def get_quote_pdf(quote_id):
@@ -180,5 +182,3 @@ def get_quote_pdf(quote_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-

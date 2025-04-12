@@ -1,152 +1,102 @@
-// 👇 ❇️ Riki for the group success  11 Abril 👊
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import PdfDocument from "../../components/Quote/PdfDocument";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import "./quote.css";
+import "./Quote.css";
+import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
 
 const Quote = () => {
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
   const [fieldData, setFieldData] = useState(null);
-  const [formData, setFormData] = useState({
-    frequency: "",
-    services: "",
-    pricePerHectare: ""
-  });
-  const [total, setTotal] = useState(0);
+  const [frequency, setFrequency] = useState("Mensual");
+  const [pricePerHectare, setPricePerHectare] = useState(80);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // ✅ Cargar datos de usuario y parcela
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("user_id");
-
-    if (!token || !userId) {
-      navigate("/login");
-      return;
-    }
-
-    const fetchData = async () => {
+    const fetchFieldData = async () => {
       try {
-        const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/user/${userId}`, {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("user_id");
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/fields/user/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUserData(userRes.data);
-
-        const fieldRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fields/user/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFieldData(fieldRes.data);
+        const data = await response.json();
+        setFieldData(data);
+        setLoading(false);
       } catch (err) {
-        console.error("Error al cargar datos:", err);
+        console.error("Error al cargar los datos de la parcela:", err);
       }
     };
 
-    fetchData();
+    fetchFieldData();
   }, []);
-
-  // ✅ Actualizar total
-  useEffect(() => {
-    if (fieldData && formData.pricePerHectare) {
-      const totalCalc = (fieldData.area * parseFloat(formData.pricePerHectare)).toFixed(2);
-      setTotal(totalCalc);
-    }
-  }, [formData.pricePerHectare, fieldData]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-
     try {
-      const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/presupuesto`, {
-        cost: total,
-        description: `${fieldData.crop} | ${formData.services} | ${formData.frequency}`,
-        field_id: fieldData.id,
-        user_id: userData.id
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("user_id");
+      const total = fieldData.area * pricePerHectare;
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/presupuesto`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          cost: total,
+          description: `${fieldData.crop} | ${fieldData.area} ha | ${frequency}`,
+        }),
       });
 
-      if (resp.status === 201) {
-        alert("✅ Presupuesto guardado correctamente");
-        navigate("/app/dashboard");
+      if (response.ok) {
+        showSuccessAlert("Presupuesto enviado correctamente", () => navigate("/quotehistory"));
+      } else {
+        const data = await response.json();
+        showErrorAlert(data.error || "Error al enviar presupuesto");
       }
     } catch (err) {
-      console.error("Error al guardar presupuesto:", err);
-      alert("❌ No se pudo guardar el presupuesto");
+      console.error("Error de conexión:", err);
+      showErrorAlert("Error de conexión con el servidor");
     }
   };
 
-  if (!userData || !fieldData) return <div>Cargando datos...</div>;
+  if (loading || !fieldData) return <div className="quote-container">Cargando datos de la parcela...</div>;
+
+  const total = (fieldData.area * pricePerHectare).toFixed(2);
 
   return (
     <div className="quote-container">
-      <h2>Generar Presupuesto</h2>
-      <form onSubmit={handleSubmit} className="quote-form">
-        <div>
-          <label>Periodicidad:</label>
-          <select name="frequency" value={formData.frequency} onChange={handleChange} required>
-            <option value="">Seleccione...</option>
+      <h2 className="quote-title">Generar Presupuesto</h2>
+
+      <form className="quote-form" onSubmit={handleSubmit}>
+        <div className="quote-section">
+          <h3>Datos de la Parcela</h3>
+          <p><strong>Nombre:</strong> {fieldData.name}</p>
+          <p><strong>Área:</strong> {fieldData.area} hectáreas</p>
+          <p><strong>Cultivo:</strong> {fieldData.crop}</p>
+        </div>
+
+        <div className="quote-section">
+          <label htmlFor="frequency">Periodicidad del Servicio:</label>
+          <select
+            id="frequency"
+            value={frequency}
+            onChange={(e) => setFrequency(e.target.value)}
+            className="quote-form-group"
+          >
             <option value="Mensual">Mensual</option>
             <option value="Trimestral">Trimestral</option>
             <option value="Anual">Anual</option>
           </select>
         </div>
 
-        <div>
-          <label>Servicios contratados:</label>
-          <input
-            type="text"
-            name="services"
-            value={formData.services}
-            onChange={handleChange}
-            required
-            placeholder="Ej: Monitoreo con dron, análisis de cultivo..."
-          />
+        <div className="quote-section">
+          <p><strong>Precio por hectárea:</strong> {pricePerHectare} €</p>
+          <p className="quote-total"><strong>Total estimado:</strong> {total} €</p>
         </div>
 
-        <div>
-          <label>Precio por hectárea (€):</label>
-          <input
-            type="number"
-            name="pricePerHectare"
-            value={formData.pricePerHectare}
-            onChange={handleChange}
-            min="1"
-            required
-          />
-        </div>
-
-        <div className="quote-actions">
-          <button type="submit">💾 Guardar Presupuesto</button>
-          <PDFDownloadLink
-            document={
-              <PdfDocument
-                user={userData.name}
-                field={fieldData.name}
-                cropType={fieldData.crop}
-                hectares={fieldData.area}
-                services={formData.services}
-                frequency={formData.frequency}
-                pricePerHectare={formData.pricePerHectare}
-                total={total}
-                validUntil={"2025-06-30"}
-              />
-            }
-            fileName={`Presupuesto_${userData.name}.pdf`}
-            className="btn-pdf"
-          >
-            📄 Descargar PDF
-          </PDFDownloadLink>
-        </div>
+        <button type="submit" className="quote-submit">Solicitar Presupuesto</button>
       </form>
     </div>
   );

@@ -10,14 +10,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 user = Blueprint('user_api', __name__)
 
 
-@user.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
 
 
 @user.route('/signup', methods=['POST'])
@@ -89,15 +82,52 @@ def get_user_by_id(id):
     # Devolver datos del usuario
     return jsonify(user.serialize()), 200
 
+
+
+
 # Obtener todos los usuarios
-
-
 @user.route('/users', methods=['GET'])
 def get_all_users():
-    # Obtener todos los usuarios
     users = User.query.all()
-
-    # Serializar la lista de usuarios
     all_users = [user.serialize() for user in users]
-
     return jsonify(all_users), 200
+
+@user.route('/users/fullinfo', methods=['GET'])
+def get_full_info():
+    inspector = inspect(db.engine)
+    tables = inspector.get_table_names()
+    data = {}
+    for table in tables:
+        results = db.session.execute(f"SELECT * FROM {table}")
+        rows = [dict(row) for row in results]
+        data[table] = rows
+    return jsonify(data), 200
+
+
+@user.route('/users/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_user(id):
+    body = request.get_json()
+    user = User.query.get(id)
+
+
+    new_user = User(
+
+    name=body["name"],
+    lastname=body["lastname"],
+
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({"msg": "User created!"}), 201
+
+
+@user.route('/users/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_users(id):
+    user = User.query.get(id)
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"msg": "User deleted"}), 200
+
+

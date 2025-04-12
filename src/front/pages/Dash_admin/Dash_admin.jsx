@@ -6,7 +6,7 @@ const DashboardAdmin = () => {
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ name: "", email: "" });
+  const [newUser, setNewUser] = useState({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
   const [error, setError] = useState("");
 
   // Recuperar token almacenado 
@@ -28,28 +28,28 @@ const DashboardAdmin = () => {
         setError("Error fetching users");
       }
     };
-
-
-
     fetchUsers();
-
   }, [token]);
 
   // Función para crear un nuevo usuario
   const handleCreateUser = async () => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/user/users`,
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/signup`,
         newUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUsers([...users, res.data]);
-      setNewUser({ name: "", email: "" });
+      setNewUser({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
+      const updatedUsers = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/users`);
+      setUsers(updatedUsers.data);
     } catch (err) {
       console.error("Error creating user:", err);
       setError("Error creating user");
     }
   };
+
+
+
 
   // Función para actualizar un usuario
   const handleUpdateUser = async () => {

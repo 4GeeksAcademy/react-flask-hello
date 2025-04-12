@@ -27,7 +27,7 @@ function Login() {
             // Verificar si la URL base termina en barra
             const baseUrl = import.meta.env.VITE_BACKEND_URL;
             const apiUrl = baseUrl.endsWith('/') ? `${baseUrl}api/login` : `${baseUrl}api/login`;
-            
+
             // Petición al servidor
             const response = await fetch(apiUrl, {
                 method: "POST",

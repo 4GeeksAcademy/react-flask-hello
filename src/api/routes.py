@@ -11,18 +11,15 @@ import string
 import time
 from werkzeug.utils import secure_filename  
 
-
 api = Blueprint('api', __name__)
 
 
 # REGISTRO DEL BLUEPRINT UPLOAD:
 api.register_blueprint(upload, url_prefix='/upload')
 
-
 @api.route('/home')
 def sitemap():
     return generate_sitemap(api)
-
 
 @api.route('/', methods=['POST', 'GET'])
 def handle_hello():
@@ -30,7 +27,6 @@ def handle_hello():
         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
     }
     return jsonify(response_body), 200
-
 
 # ENDPOINT PARA GENERAR USUARIO ANÓNIMO
 @api.route('/anonymous/create', methods=['POST'])
@@ -46,17 +42,11 @@ def create_user_anonymous():
         }), 200
 
     # Crear usuario anónimo con un email temporal y una contraseña aleatoria
-    import random
-    import string
-    import time
 
-    # Generar un email temporal único basado en timestamp
     timestamp = int(time.time())
     random_suffix = ''.join(random.choices(
         string.ascii_lowercase + string.digits, k=8))
     temp_email = f"anonymous_{timestamp}_{random_suffix}@temp.com"
-
-    # Generar una contraseña aleatoria
     temp_password = ''.join(random.choices(
         string.ascii_letters + string.digits, k=12))
 
@@ -82,7 +72,7 @@ def create_user_anonymous():
             "id": anonymous_user.id,
             "email": anonymous_user.email,
             "is_anonymous": True,
-            "logo_url": logo.image_logo_url  # Añadimos la URL del logo al token
+            "logo_url": logo.image_logo_url
         }
         anonymous_token = create_access_token(identity=token_data)
 
@@ -95,10 +85,9 @@ def create_user_anonymous():
         })
 
         # Establecer la cookie con el token anónimo
-        # En producción, ajusta max_age, secure=True, httponly=True, samesite='Strict'
         response.set_cookie('anonymousToken', anonymous_token,
                             max_age=86400*30)  # 30 días
-
+        
         return response, 201
 
     except Exception as e:
@@ -130,7 +119,7 @@ def signup():
             lastname=lastname,
             shopname=shopname,
             email=email,
-            password=password,  # Se encriptará automáticamente gracias al setter
+            password=password,
             is_active=True
         )
        
@@ -358,7 +347,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # LLAMAR AL LOGO DESDE LA API
-# Ruta para obtener el logo de un usuario
 @api.route('/get_logo', methods=['GET'])
 def get_logo():
     current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT

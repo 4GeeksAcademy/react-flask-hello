@@ -14,7 +14,9 @@
       {
         "scope": ["comment", "comment.line", "comment.block"],
         "settings": {
+
           "foreground": "#eaff00"
+
         }
       }
     ]

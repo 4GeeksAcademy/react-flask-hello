@@ -3,56 +3,50 @@ import './Styles/Logo.css';
 import axios from "axios";
 
 const LogoFrame = () => {
-    const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(false); // Nuevo estado para cargar
-    const fileInputRef = useRef(null);
+    const [image, setImage] = useState(null); 
+    const fileInputRef = useRef(null); 
 
-    // Cargar el logo desde localStorage al montar
-    useEffect(() => {
+    useEffect(() => { 
         const savedLogo = localStorage.getItem("logoApp");
         if (savedLogo) {
-            setImage(savedLogo); // base64 sigue siendo válido como src de <img>
+            setImage(savedLogo);
         }
     }, []);
-
+    
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         
         if (file) {
-            // Mostrar el estado de carga
-            setLoading(true);
-
-            // Convertir el archivo a base64
+            const image_logo_url = URL.createObjectURL(file);
+            setImage(image_logo_url);
+            
+            // Guardar la imagen en localStorage
             const reader = new FileReader();
-            reader.onloadend = async () => {
-                const base64 = reader.result;
-                setImage(base64); // Mostrar la imagen en la interfaz
-                localStorage.setItem("logoApp", base64); // Guardar en localStorage
+            reader.onloadend = async function() {
+                const base64data = reader.result;
 
-                // Enviar al backend usando FormData como antes
-                const formData = new FormData();
-                formData.append('logo', file);
+                // Guardar en localStorage
+                localStorage.setItem("logoApp", image_logo_url);
+
+                // También guardar en la cookie (si es necesario)
+                document.cookie = `logoApp=${image_logo_url}; path=/; max-age=${60 * 60 * 24 * 365}`;
 
                 try {
-                    const response = await axios.post(
-                        import.meta.env.VITE_BACKEND_URL + 'api/post_logos', 
-                        formData,
-                        {
-                            withCredentials: true,
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        }
-                    );
-                    console.log(response.data.message);
+                    // Enviar la imagen al backend
+                    const response = await axios.post('api/post_logos', {
+                        logo: file,
+                        
+                    },
+                    console.log("Logo enviado al backend:", file),
+                     {
+                        withCredentials: true
+                    });
+                    console.log(response.data.message); // Mensaje de éxito del servidor
                 } catch (error) {
                     console.error("Error al guardar el logo:", error);
-                } finally {
-                    setLoading(false); // Detener el estado de carga
                 }
             };
-
-            reader.readAsDataURL(file); // Esto dispara el onloadend
+            reader.readAsDataURL(file);
         }
     };
 
@@ -62,7 +56,7 @@ const LogoFrame = () => {
 
     return (
         <div className="logo-frame" onClick={handleClick}>
-            {/* Botón invisible de subida */}
+            {/* BOTÓN INVISIBLE DE SUBIDA */}
             <input
                 type="file"
                 ref={fileInputRef}
@@ -71,18 +65,11 @@ const LogoFrame = () => {
                 style={{ display: "none" }}
             />
 
-            {/* Mostrar el logo o texto por defecto */}
+            {/* VISTA DEL LOGO O TEXTO DEFAULT */}
             {!image ? (
                 <p className="add-logo-text">Add your logo</p>
             ) : (
                 <img src={image} alt="Logo" />
-            )}
-
-            {/* Mostrar el estado de carga */}
-            {loading && (
-                <div className="loading-spinner">
-                    Uploading...
-                </div>
             )}
         </div>
     );

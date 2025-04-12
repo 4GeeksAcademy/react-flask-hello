@@ -8,21 +8,27 @@
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
 
-// CODIGO PARA EL CAMBIO DE COLOR DE LOS COMENTARIOS
-
+  // CODIGO PARA EL CAMBIO DE COLOR DE LOS COMENTARIOS
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        
         "scope": ["comment", "comment.line", "comment.block"],
         "settings": {
-          
-          "foreground": "#f9ba00c5",
-          
+
+          "foreground": "#eaff00"
+
         }
       }
     ]
   },
 
-  
+  // Fuente Fira Code y ligaduras
+  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
+  "editor.fontLigatures": true,
+
+  // Opciones adicionales para mejorar la visualización
+  "editor.fontSize": 14,
+  "editor.lineHeight": 22,
+  "editor.cursorStyle": "block", // Estilo de cursor (bloque)
+  "editor.renderWhitespace": "all" // Mostrar espacios, tabs y saltos de línea
 }

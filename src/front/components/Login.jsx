@@ -40,7 +40,8 @@ function Login() {
             });
 
             const data = await response.json();
-
+           
+            
             if (response.ok) {
 
                 // Guardamos el Token en el navegador

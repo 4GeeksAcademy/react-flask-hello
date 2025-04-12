@@ -4,7 +4,7 @@ from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS  # IMPORTA CORS
-from api.upload_routes import upload 
+from api.upload_routes import upload
 # IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
@@ -23,12 +23,14 @@ CORS(app, supports_credentials=True)
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
+static_file_dir = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), '../public/')
 
 # CONFIGURACIÓN DE LA BASE DE DATOS
 db_url = os.getenv("DATABASE_URL")
 if db_url:
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
+        "postgres://", "postgresql://")
 else:
     # SI NO HAY UNA URL DE BASE DE DATOS, SE USA SQLITE PARA DESARROLLO
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
@@ -51,10 +53,11 @@ app.config["JWT_HEADER_TYPE"] = "Bearer"
 jwt = JWTManager(app)
 
 # CONFIGURAR EL MANEJO DE ERRORES PARA LAS EXCEPCIONES PERSONALIZADAS
+
+
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
-
 
 
 # CONFIGURAR EL ADMINISTRADOR Y COMANDOS PERSONALIZADOS
@@ -62,6 +65,8 @@ setup_admin(app)
 setup_commands(app)
 
 # RUTA PARA GENERAR EL SITEMAP DE LA API
+
+
 @app.route('/')
 def sitemap():
     if ENV == "development":
@@ -69,6 +74,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # RUTA PARA SERVIR CUALQUIER OTRO ARCHIVO ESTÁTICO, COMO IMÁGENES, JS, CSS, ETC.
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
@@ -76,6 +83,7 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # EVITAR CACHÉ
     return response
+
 
 # EJECUTAR LA APLICACIÓN SI EL ARCHIVO ES EJECUTADO DIRECTAMENTE
 if __name__ == '__main__':

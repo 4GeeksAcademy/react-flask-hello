@@ -17,6 +17,7 @@ import Landing from "./pages/Landing/Landing";
 import Contact from "./pages/Contact/Contact";
 import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
+import PdfDocument from "./components/Quote/PdfDocument"
 
 
 // Componente para proteger rutas privadas
@@ -58,6 +59,7 @@ export const router = createBrowserRouter(
         <Route path="dash_admin" element={<Dash_admin />} />
         <Route path="plot_form" element={<Plot_form />} />
         <Route path="quote" element={<Quote />} />
+        <Route path="pdfdocument" element={<PdfDocument />} />
 
       </Route>
       

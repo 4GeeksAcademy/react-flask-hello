@@ -26,16 +26,19 @@ const LogoFrame = () => {
                 const base64data = reader.result;
 
                 // Guardar en localStorage
-                localStorage.setItem("logoApp", base64data);
+                localStorage.setItem("logoApp", image_logo_url);
 
                 // También guardar en la cookie (si es necesario)
-                document.cookie = `logoApp=${base64data}; path=/; max-age=${60 * 60 * 24 * 365}`;
+                document.cookie = `logoApp=${image_logo_url}; path=/; max-age=${60 * 60 * 24 * 365}`;
 
                 try {
                     // Enviar la imagen al backend
                     const response = await axios.post('api/post_logos', {
-                        logo: base64data
-                    }, {
+                        logo: file,
+                        
+                    },
+                    console.log("Logo enviado al backend:", file),
+                     {
                         withCredentials: true
                     });
                     console.log(response.data.message); // Mensaje de éxito del servidor

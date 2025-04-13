@@ -18,18 +18,20 @@ import Contact from "./pages/Contact/Contact";
 import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
 import PdfDocument from "./components/Quote/PdfDocument"
+import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
+
 
 
 // Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
   // Verifica si el usuario está autenticado
   const isAuthenticated = localStorage.getItem("token");
-  
+
   if (!isAuthenticated) {
     // Redirige al login si no está autenticado
     return <Navigate to="/login" replace />;
   }
-  
+
   return children;
 };
 
@@ -44,25 +46,26 @@ export const router = createBrowserRouter(
         <Route path="contacto" element={<Contact />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
       </Route>
-      
+
       {/* Rutas privadas con Layout y protección */}
-      <Route 
-        path="/app" 
+      <Route
+        path="/app"
         element={
           <ProtectedRoute>
             <Layout />
           </ProtectedRoute>
-        } 
+        }
         errorElement={<h1>Not found!</h1>}
       >
-        <Route path ="dashboard" element={<Dash_user />} />
+        <Route path="dashboard" element={<Dash_user />} />
         <Route path="dash_admin" element={<Dash_admin />} />
         <Route path="plot_form" element={<Plot_form />} />
         <Route path="quote" element={<Quote />} />
         <Route path="pdfdocument" element={<PdfDocument />} />
+        <Route path="pdfdocument" element={<PdfDocumentWrapper />} />
 
       </Route>
-      
+
       {/* Ruta para redireccionar URLs no encontradas */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </>

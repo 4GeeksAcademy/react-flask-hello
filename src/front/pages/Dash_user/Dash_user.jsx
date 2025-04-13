@@ -161,7 +161,7 @@ const Dash_user = () => {
                                 className="request-report-button"
                                 onClick={() => navigate("/app/quote")}
                             >
-                                SOLICITAR NUEVO INFORME
+                                SOLICITAR PRESUPUESTO
                             </button>
                         </>
                     )}

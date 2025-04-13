@@ -25,6 +25,8 @@ alembic = "*"
 psycopg2-binary = "*"
 requests = "*"
 weasyprint = "*"
+flask-mail = "*"
+reportlab = "*"
 
 [requires]
 python_version = "3.13"

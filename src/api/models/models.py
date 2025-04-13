@@ -8,12 +8,16 @@ from enum import Enum as PyEnum
 db = SQLAlchemy()
 
 # ENUM PARA ESTADO DE CITAS
+
+
 class AppointmentStatus(PyEnum):
     PENDING = "pending"
     CONFIRMED = "confirmed"
     CANCELLED = "cancelled"
 
 # MODELO DE USUARIO
+
+
 class User(db.Model):
     __tablename__ = "users"
 
@@ -21,10 +25,12 @@ class User(db.Model):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     lastname: Mapped[str] = mapped_column(String(100), nullable=False)
     dni: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
-    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     rolId: Mapped[int] = mapped_column(Integer, default=2)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
 
     # Relaciones
     fields = relationship("Field", backref="user")
@@ -61,6 +67,8 @@ class User(db.Model):
         return f"<User {self.id} - {self.email}>"
 
 # MODELO DE PARCELA
+
+
 class Field(db.Model):
     __tablename__ = "fields"
 
@@ -73,7 +81,8 @@ class Field(db.Model):
     number: Mapped[str] = mapped_column(String(10))
     postal_code: Mapped[str] = mapped_column(String(10))
     city: Mapped[str] = mapped_column(String(100))
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"), nullable=False)
     # 👇 ❇️ Riki * Nuevo campo para coordenadas GPS
     coordinates: Mapped[str] = mapped_column(String(50), nullable=True)
     # ------------------------ #
@@ -103,14 +112,18 @@ class Field(db.Model):
         return f"<Field {self.id} - {self.name}>"
 
 # MODELO DE IMAGEN
+
+
 class Image(db.Model):
     __tablename__ = "images"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     file_name: Mapped[str] = mapped_column(String(255), nullable=False)
     url: Mapped[str] = mapped_column(String(500), nullable=False)
-    upload_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    field_id: Mapped[int] = mapped_column(ForeignKey("fields.id"), nullable=False)
+    upload_date: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+    field_id: Mapped[int] = mapped_column(
+        ForeignKey("fields.id"), nullable=False)
 
     def serialize_image(self):
         return {
@@ -125,6 +138,8 @@ class Image(db.Model):
         return f"<Image {self.id} - {self.file_name}>"
 
 # MODELO DE INFORME
+
+
 class Report(db.Model):
     __tablename__ = "reports"
 
@@ -133,12 +148,16 @@ class Report(db.Model):
     url: Mapped[str] = mapped_column(String(500), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     date: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    field_id: Mapped[int] = mapped_column(ForeignKey("fields.id"), nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    field_id: Mapped[int] = mapped_column(
+        ForeignKey("fields.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"), nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=True)
 
     def serialize_report(self):
         return {
             "id": self.id,
+            "title": self.title,
             "file_name": self.file_name,
             "url": self.url,
             "description": self.description,
@@ -151,6 +170,8 @@ class Report(db.Model):
         return f"<Report {self.id} - {self.file_name}>"
 
 # MODELO DE PRESUPUESTO
+
+
 class Quote(db.Model):
     __tablename__ = "quotes"
 
@@ -175,15 +196,20 @@ class Quote(db.Model):
         return f"<Quote {self.id} - ${self.cost}>"
 
 # MODELO DE CITA
+
+
 class Appointment(db.Model):
     __tablename__ = "appointments"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     date: Mapped[dt_date] = mapped_column(Date, nullable=False)
     time: Mapped[dt_time] = mapped_column(Time, nullable=False)
-    field_id: Mapped[int] = mapped_column(ForeignKey("fields.id"), nullable=False)
-    status: Mapped[AppointmentStatus] = mapped_column(Enum(AppointmentStatus), nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    field_id: Mapped[int] = mapped_column(
+        ForeignKey("fields.id"), nullable=False)
+    status: Mapped[AppointmentStatus] = mapped_column(
+        Enum(AppointmentStatus), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"), nullable=False)
 
     def serialize_appointment(self):
         return {

@@ -1,0 +1,69 @@
+.report-modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: "Inter", sans-serif;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: #1f2937;
+  text-align: center;
+}
+
+.dropzone-area {
+  border: 2px dashed #9ca3af;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.modal-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 9999px;
+  border: none;
+  background-color: #e5e7eb;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-btn:hover {
+  background-color: #d1d5db;
+}
+
+.modal-btn.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  background-color: #2563eb;
+}

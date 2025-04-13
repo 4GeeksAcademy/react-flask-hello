@@ -87,6 +87,19 @@ def serve_any_other_file(path):
     return response
 
 
+@app.route('/uploads/<path:filename>', methods=['GET'])
+def serve_uploaded_file(filename):
+    upload_folder = os.path.join(app.root_path, 'uploads')
+    # ✅ ¡clave!
+    return send_from_directory(upload_folder, filename, as_attachment=False)
+
+@app.route('/download/<path:filename>', methods=['GET'])
+def download_file(filename):
+    upload_folder = os.path.join(app.root_path, 'uploads')
+    return send_from_directory(upload_folder, filename, as_attachment=True)
+
+
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))

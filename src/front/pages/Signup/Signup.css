@@ -1,14 +1,13 @@
-/* Fondo con imagen y overlay oscuro */
+/* 👇 ❇️ Riki for the group success 👊 12 Abril */
+
+
+/* Contenedor del formulario con posicionamiento */
 .signup-background {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../../assets/img/Login1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Eliminamos las propiedades de background-image que ahora están en Layout.css */
 }
 
 /* Contenedor del formulario */
@@ -22,7 +21,7 @@
 }
 
 .signup-title {
-  font-family: 'Montserrat', sans-serif; /* 👈 Añadir esto */
+  font-family: 'Montserrat', sans-serif;
   text-align: center;
   margin-bottom: 25px;
   color: #198754; /* Verde (coherente con botones) */

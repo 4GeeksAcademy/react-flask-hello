@@ -1,31 +1,46 @@
-/* 👇 ❇️ Riki for the group success 👊
-/* Estilos base */
-
+/* Contenedor principal - eliminamos las propiedades de fondo */
 .plot-form-container {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../../assets/img/Login1.jpg");
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  /* Eliminamos las propiedades de background-image que ahora están en Layout.css */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #f5f7fa;
+  overflow: hidden;
 }
 
+/* Tarjeta blanca encima del fondo */
 .plot-form-card {
+  position: relative;
+  z-index: 2;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   padding: 2.5rem;
   width: 100%;
   max-width: 800px;
 }
 
+/* Título principal más grande */
 .plot-form-title {
   color: #2c3e50;
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Título de secciones más pequeño */
+.section-title {
+  color: #871919;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Formulario */
@@ -40,14 +55,6 @@
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
-}
-
-.section-title {
-  color: #871919;
-  margin-bottom: 1.2rem;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #dee2e6;
-  padding-bottom: 0.5rem;
 }
 
 .form-row {
@@ -84,7 +91,7 @@
 
 select.form-input {
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 1rem;
@@ -108,10 +115,29 @@ select.form-input {
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-bottom: 1rem;
 }
 
 .submit-button:hover {
   background-color: #157347;
+}
+
+.request-report-button {
+  background-color: #4682b4;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.request-report-button:hover {
+  background-color: #376996;
+  transform: scale(1.02);
 }
 
 .error-message {

@@ -1,0 +1,109 @@
+/* 👇 ❇️ Riki for the group success 12 Abril 👊
+
+/* ✨ quote.css — estilo para página de presupuesto */
+
+.quote-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+  
+  .quote-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #198754;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .quote-section {
+    margin-bottom: 2rem;
+  }
+  
+  .quote-section h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4682B4;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.5rem;
+  }
+  
+  .quote-item {
+    margin-bottom: 0.8rem;
+  }
+  
+  .quote-label {
+    font-weight: 600;
+    color: #198754;
+    margin-right: 0.5rem;
+  }
+  
+  .quote-value {
+    color: #333;
+  }
+  
+  .quote-form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .quote-form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .quote-form-group select,
+  .quote-form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .quote-form-group select:focus,
+  .quote-form-group input:focus {
+    border-color: #198754;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+  }
+  
+  .quote-submit {
+    display: block;
+    width: 100%;
+    background-color: #198754;
+    color: white;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .quote-submit:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+  }
+  
+  .quote-total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4682B4;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  

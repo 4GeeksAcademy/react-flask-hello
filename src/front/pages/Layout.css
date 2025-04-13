@@ -17,10 +17,11 @@ html, body, #root {
   background-color: #FFFFFF; /* Fondo blanco por defecto */
 }
 
-/* Aplicar imagen de fondo SOLO para la página de login */
+/* Aplicar imagen de fondo SOLO para las páginas de autenticación y formularios */
 body[data-route="login"] .app-root,
-body[data-route="signup"],
-body[data-route="contacto"] .app-root {
+body[data-route="signup"] .app-root,
+body[data-route="contacto"] .app-root,
+body[data-route="plot_form"] .app-root {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url('../assets/img/Login1.jpg');
   background-size: cover;
@@ -45,7 +46,6 @@ body[data-route="contacto"] .app-root {
     padding: 15px;
   }
 }
-
 
 /* Estilos específicos para el layout público */
 .app-root.public-layout .content-container {

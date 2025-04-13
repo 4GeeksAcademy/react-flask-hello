@@ -178,10 +178,9 @@ class Quote(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     cost: Mapped[float] = mapped_column(Float, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
-    field_id: Mapped[int] = mapped_column(
-        ForeignKey("fields.id"), nullable=False)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False)
+    field_id: Mapped[int] = mapped_column(ForeignKey("fields.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     def serialize_quote(self):
         return {
@@ -189,7 +188,8 @@ class Quote(db.Model):
             "cost": self.cost,
             "description": self.description,
             "field_id": self.field_id,
-            "user_id": self.user_id
+            "user_id": self.user_id,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M") if self.created_at else None
         }
 
     def __repr__(self):

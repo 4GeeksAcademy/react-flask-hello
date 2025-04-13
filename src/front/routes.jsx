@@ -16,6 +16,9 @@ import Plot_form from "./pages/Plot_form/Plot_form";
 import Landing from "./pages/Landing/Landing";
 import Contact from "./pages/Contact/Contact";
 import QuoteHistory from "./pages/Quote/QuoteHistory";
+import Quote from "./pages/Quote/Quote";
+import PdfDocument from "./components/Quote/PdfDocument"
+
 
 // Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
@@ -55,6 +58,9 @@ export const router = createBrowserRouter(
         <Route path ="dashboard" element={<Dash_user />} />
         <Route path="dash_admin" element={<Dash_admin />} />
         <Route path="plot_form" element={<Plot_form />} />
+        <Route path="quote" element={<Quote />} />
+        <Route path="pdfdocument" element={<PdfDocument />} />
+
       </Route>
       
       {/* Ruta para redireccionar URLs no encontradas */}

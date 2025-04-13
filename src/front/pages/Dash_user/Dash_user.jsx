@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './Dash_user.css';
 import MapboxParcel from '../../components/MapboxParcel/MapboxParcel';
@@ -10,6 +11,7 @@ const Dash_user = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
     const [fieldData, setFieldData] = useState(null);
     const [forecast, setForecast] = useState([]);
     const [reports, setReports] = useState([]);
@@ -229,8 +231,12 @@ const Dash_user = () => {
                             </div>
 
 
-                            <button className="request-report-button">SOLICITAR NUEVO INFORME</button>
-
+                            <button
+                                className="request-report-button"
+                                onClick={() => navigate("/app/quote")}
+                            >
+                                SOLICITAR NUEVO INFORME
+                            </button>
                         </>
                     )}
                 </div>

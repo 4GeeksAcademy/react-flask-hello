@@ -11,6 +11,8 @@ from api.models.models import db, User
 from api.routes.user_routes import user as user_blueprint
 from api.routes.plot_routes import fields as fields_blueprint
 from api.routes.quote_routes import quote
+from api.routes.report_routes import report_routes
+
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
@@ -50,6 +52,7 @@ setup_commands(app)
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(fields_blueprint, url_prefix="/fields")
 app.register_blueprint(quote, url_prefix="/quote")
+app.register_blueprint(report_routes, url_prefix="/report_routes")
 
 
 # Handle/serialize errors like a JSON object
@@ -93,11 +96,11 @@ def serve_uploaded_file(filename):
     # ✅ ¡clave!
     return send_from_directory(upload_folder, filename, as_attachment=False)
 
+
 @app.route('/download/<path:filename>', methods=['GET'])
 def download_file(filename):
     upload_folder = os.path.join(app.root_path, 'uploads')
     return send_from_directory(upload_folder, filename, as_attachment=True)
-
 
 
 # this only runs if `$ python src/main.py` is executed

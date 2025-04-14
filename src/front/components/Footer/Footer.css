@@ -11,7 +11,6 @@
   --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Contenedor principal del footer */
 .footer-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--primary-color);
@@ -22,31 +21,15 @@
   bottom: 0;
   left: 0;
   width: 100%;
-
 }
 
 /* Contenido del footer */
 .footer-content {
-  max-width: 1200px;
+  max-width: auto;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0.5rem;
 }
 
-/* Navegación del footer */
-.footer-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-/* Secciones del footer */
-.footer-section {
-  display: flex;
-  align-items: center;
-}
-
-/* Botones del footer */
 .footer-btn {
   display: flex;
   align-items: center;

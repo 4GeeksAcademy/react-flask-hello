@@ -1,109 +1,333 @@
-/* 👇 ❇️ Riki for the group success 12 Abril 👊
+/* Estilos generales */
+.quote-editor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
 
-/* ✨ quote.css — estilo para página de presupuesto */
+.editor-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #15803d;
+  text-align: center;
+}
 
-.quote-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Roboto', sans-serif;
-    color: #333;
+/* Estilos para las tarjetas/secciones */
+.editor-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #16a34a;
+}
+
+/* Información del cliente */
+.quote-info {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid #16a34a;
+}
+
+.quote-info p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.quote-info strong {
+  font-weight: 600;
+  color: #444;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  border-color: #16a34a;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+/* Resultados del presupuesto */
+.quote-result {
+  background-color: #f0f9f4;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 20px 0 10px;
+  border-left: 4px solid #16a34a;
+}
+
+.quote-result p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.total-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+/* Botones de acción */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  min-width: 160px; /* Ancho mínimo para botones uniformes */
+}
+
+.button-icon {
+  margin-right: 0.5rem;
+}
+
+.save-button {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #d97706;
+}
+
+.preview-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.preview-button:hover {
+  background-color: #2563eb;
+}
+
+.download-button {
+  background-color: #16a34a;
+  color: white;
+}
+
+.download-button:hover {
+  background-color: #15803d;
+}
+
+/* Sección de email */
+.email-container {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.email-title {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.email-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.email-input:focus {
+  border-color: #16a34a;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+.email-button {
+  background-color: #7e22ce;
+  color: white;
+  min-width: auto; /* Anular ancho mínimo para este botón */
+}
+
+.email-button:hover:not(:disabled) {
+  background-color: #6b21a8;
+}
+
+.disabled-button {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+.success-message {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #dcfce7;
+  color: #166534;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Vista previa del PDF */
+.preview-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Estilos para la vista previa del presupuesto */
+.quote-preview {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 30px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #333;
+}
+
+.quote-preview-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #16a34a;
+  padding-bottom: 15px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.quote-preview-logo {
+  width: 80px;
+  height: auto;
+  margin-right: 15px;
+}
+
+.quote-preview-title {
+  font-size: 1.5rem;
+  color: #4682B4;
+  margin: 0;
+}
+
+.quote-preview-date {
+  text-align: right;
+}
+
+.quote-preview-date p {
+  margin: 5px 0;
+}
+
+.quote-preview-section {
+  margin-bottom: 25px;
+}
+
+.quote-preview-section h3 {
+  font-size: 1.2rem;
+  color: #16a34a;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.quote-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.quote-preview-table td {
+  padding: 8px 0;
+  line-height: 1.5;
+}
+
+.quote-preview-table td:first-child {
+  width: 40%;
+}
+
+.quote-preview-total td {
+  padding-top: 15px;
+  font-size: 1.1rem;
+  color: #16a34a;
+}
+
+.quote-preview-footer {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #666;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 15px;
+}
+
+.quote-preview-footer p {
+  margin: 5px 0;
+}
+
+/* Estado de carga */
+.quote-loading {
+  text-align: center;
+  padding: 30px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
   }
   
-  .quote-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #198754;
-    margin-bottom: 1.5rem;
-    text-align: center;
+  .email-form {
+    flex-direction: column;
   }
   
-  .quote-section {
-    margin-bottom: 2rem;
-  }
-  
-  .quote-section h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #4682B4;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.5rem;
-  }
-  
-  .quote-item {
-    margin-bottom: 0.8rem;
-  }
-  
-  .quote-label {
-    font-weight: 600;
-    color: #198754;
-    margin-right: 0.5rem;
-  }
-  
-  .quote-value {
-    color: #333;
-  }
-  
-  .quote-form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .quote-form-group label {
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  
-  .quote-form-group select,
-  .quote-form-group input {
+  .button {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    transition: border-color 0.3s;
   }
   
-  .quote-form-group select:focus,
-  .quote-form-group input:focus {
-    border-color: #198754;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+  .quote-preview-header {
+    flex-direction: column;
   }
   
-  .quote-submit {
-    display: block;
-    width: 100%;
-    background-color: #198754;
-    color: white;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 5px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+  .quote-preview-date {
+    text-align: left;
+    margin-top: 15px;
   }
-  
-  .quote-submit:hover {
-    background-color: #146c43;
-    transform: translateY(-2px);
-  }
-  
-  .quote-total {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #4682B4;
-    text-align: center;
-    margin-top: 2rem;
-  }
-  
+}

@@ -8,6 +8,7 @@ import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Login/Login.jsx";
 import { Business } from "./pages/Business/Business.jsx";
 import { ClientList } from "./pages/ClientList";
+import { Dashboard } from "./pages/Dashboard/Dashboard.jsx";
 import { NewClient } from "./pages/NewClient/NewClient.jsx"
 import { NewService } from "./pages/NewService/NewService.jsx"
 import { Calendar } from "./pages/Calendar/Calendar.jsx";

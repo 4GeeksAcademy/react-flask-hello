@@ -13,8 +13,9 @@ const Dash_user = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const { store } = useGlobalReducer();
     const [userData, setUserData] = useState(null);
+    const [fieldsList, setFieldsList] = useState([]);
+    const [selectedField, setSelectedField] = useState(null);
     const navigate = useNavigate();
-    const [fieldData, setFieldData] = useState(null);
     const [forecast, setForecast] = useState([]);
     const [reports, setReports] = useState([]);
     const [error, setError] = useState("");
@@ -45,10 +46,44 @@ const Dash_user = () => {
                 const fieldRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fields/user/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setFieldData(fieldRes.data);
 
-                const [lat, lon] = fieldRes.data.coordinates.split(',').map(coord => parseFloat(coord.trim()));
+                const userFields = Array.isArray(fieldRes.data) ? fieldRes.data : [];
+                setFieldsList(userFields);
+                setSelectedField(userFields[0]);
+            } catch (err) {
+                console.error("Error al cargar datos:", err);
+                setError("Error al cargar datos del usuario o la tierra");
+            } finally {
+                setLoading(prev => ({ ...prev, weather: false }));
+            }
 
+            try {
+                const reportsRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setReports(Array.isArray(reportsRes.data) ? reportsRes.data : []);
+            } catch (err) {
+                console.error('Error al cargar informes:', err);
+                setReports([]);
+            } finally {
+                setLoading(prev => ({ ...prev, reports: false }));
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+    // clima en funcion del cultivo
+    useEffect(() => {
+        const fetchWeatherForField = async () => {
+            if (!selectedField) return;
+
+            const [lat, lon] = selectedField.coordinates
+                .split(',')
+                .map(coord => parseFloat(coord.trim()));
+
+            try {
                 const forecastRes = await axios.get(
                     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=e3007f5e69ba980e3897f92c2c2d4750&units=metric&lang=es`
                 );
@@ -73,41 +108,26 @@ const Dash_user = () => {
                 });
 
                 setForecast(daily);
-
             } catch (err) {
-                console.error("Error al cargar datos:", err);
-                setError("Error al cargar datos del usuario o la tierra");
-            } finally {
-                setLoading(prev => ({ ...prev, weather: false }));
-            }
-
-            try {
-                const reportsRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${userId}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                setReports(Array.isArray(reportsRes.data) ? reportsRes.data : []);
-            } catch (err) {
-                console.error('Error al cargar informes:', err);
-                setReports([]);
-            } finally {
-                setLoading(prev => ({ ...prev, reports: false }));
+                console.error("Error al cargar el clima:", err);
             }
         };
 
-        fetchData();
-    }, []);
+        fetchWeatherForField();
+    }, [selectedField]);
 
-    const pointsClave = fieldData ? [
+
+    const pointsClave = selectedField ? [
         {
-            lat: parseFloat(fieldData.coordinates.split(',')[0]) + 0.0003,
-            lon: parseFloat(fieldData.coordinates.split(',')[1]) + 0.0002,
+            lat: parseFloat(selectedField.coordinates.split(',')[0]) + 0.0003,
+            lon: parseFloat(selectedField.coordinates.split(',')[1]) + 0.0002,
             name: "Sensor 1",
             description: "Humedad: 68%",
             color: "blue"
         },
         {
-            lat: parseFloat(fieldData.coordinates.split(',')[0]) - 0.0004,
-            lon: parseFloat(fieldData.coordinates.split(',')[1]) - 0.0001,
+            lat: parseFloat(selectedField.coordinates.split(',')[0]) - 0.0004,
+            lon: parseFloat(selectedField.coordinates.split(',')[1]) - 0.0001,
             name: "Punto de riego",
             description: "Activo",
             color: "green"
@@ -137,34 +157,68 @@ const Dash_user = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="top-section">
-                <div className="map-container">
-                    {fieldData ? (
-                        <MapboxParcel
-                            latitude={parseFloat(fieldData.coordinates.split(',')[0])}
-                            longitude={parseFloat(fieldData.coordinates.split(',')[1])}
-                            points={pointsClave}
-                        />
-                    ) : (
-                        <div className="map-placeholder">Cargando mapa...</div>
-                    )}
+            <div className="top-section two-column-layout">
+                <div className="left-panel">
+                    <div className="map-container">
+                        {selectedField && selectedField.coordinates ? (
+                            (() => {
+                                const [lat, lon] = selectedField.coordinates
+                                    .split(',')
+                                    .map(coord => parseFloat(coord.trim()));
+
+                                return (
+                                    <MapboxParcel
+                                        key={selectedField.id}
+                                        latitude={lat}
+                                        longitude={lon}
+                                        points={pointsClave}
+                                    />
+                                );
+                            })()
+                        ) : (
+                            <div className="map-placeholder">Cargando mapa...</div>
+                        )}
+                    </div>
+
+                    <div className="weather-horizontal-section">
+                        <WeatherForecast daily={forecast} loading={loading.weather} />
+                    </div>
                 </div>
 
                 <div className="info-panel">
-                    {userData && fieldData && (
+                    {userData && selectedField && (
                         <>
+                            {fieldsList.length > 1 && (
+                                <div className="field-selector">
+                                    <label htmlFor="fieldSelect">Selecciona tu parcela:</label>
+                                    <select
+                                        id="fieldSelect"
+                                        value={selectedField?.id}
+                                        onChange={(e) => {
+                                            const selected = fieldsList.find(f => f.id === parseInt(e.target.value));
+                                            setSelectedField(selected);
+                                        }}
+                                    >
+                                        {fieldsList.map(field => (
+                                            <option key={field.id} value={field.id}>
+                                                {field.name} - {field.city}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+
                             <div className="user-info">
                                 <h2>{userData.name?.toUpperCase()}</h2>
-                                <p>{fieldData.street}, {fieldData.number}</p>
-                                <p>{fieldData.city}</p>
-                                <p><strong>{fieldData.area} HCT</strong></p>
-                                <p>{fieldData.crop.toUpperCase()}</p>
+                                <p>{selectedField.street}, {selectedField.number}</p>
+                                <p>{selectedField.city}</p>
+                                <p><strong>{selectedField.area} HCT</strong></p>
+                                <p>{selectedField.crop.toUpperCase()}</p>
                             </div>
 
                             <div className="reports-section">
                                 <h4>Mis Informes</h4>
 
-                                {/* Mostramos mensaje de carga sin esconder la lista */}
                                 {loading.reports && (
                                     <p className="loading-msg">🔄 Actualizando informes...</p>
                                 )}
@@ -227,29 +281,22 @@ const Dash_user = () => {
                                 ) : null}
                             </div>
 
-
-
                             <button
                                 className="request-report-button"
                                 onClick={() => navigate("/app/quote")}
                             >
                                 SOLICITAR PRESUPUESTO
                             </button>
+
+                            <button
+                                className="add-field-button"
+                                onClick={() => navigate("/app/plot_form")}
+                            >
+                                ➕ AÑADIR NUEVO CULTIVO
+                            </button>
                         </>
                     )}
                 </div>
-            </div>
-
-            <div className="bottom-section">
-
-                <div className="bottom-section">
-                    <div className="weather-horizontal-section">
-                        <WeatherForecast daily={forecast} loading={loading.weather} />
-                    </div>
-                </div>
-
-
-
             </div>
 
             <button
@@ -259,11 +306,12 @@ const Dash_user = () => {
                 SUBIR INFORME MANUALMENTE
             </button>
 
+
             {modalVisible && (
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <Report
-                            fieldId={fieldData?.id}
+                            fieldId={selectedField?.id}
                             onClose={() => setModalVisible(false)}
                             onUploaded={() => {
                                 setModalVisible(false);

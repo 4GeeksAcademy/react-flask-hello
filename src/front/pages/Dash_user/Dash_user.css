@@ -234,3 +234,14 @@ body {
   width: 90%;
   max-width: 500px;
 }
+
+.loading-msg {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.reports-list.loading {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}

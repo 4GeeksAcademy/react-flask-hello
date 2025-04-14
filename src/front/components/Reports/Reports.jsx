@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import './Reports.css'; // Asegúrate que esté importado
+import {useGlobalReducer} from "../../hooks/useGlobalReducer"; // ✅ Import del global store
 
-const Report = ({ userId, fieldId, onClose, onUploaded }) => {
+const Report = ({ fieldId, onClose, onUploaded }) => {
+  const { store } = useGlobalReducer(); // ✅ Hook global
+  const token = store.auth.token;
+  const userId = store.auth.userId;
+
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -31,6 +36,9 @@ const Report = ({ userId, fieldId, onClose, onUploaded }) => {
 
     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/report_routes/upload_report`, {
       method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}` // ✅ Token desde global store
+      },
       body: formData
     });
 

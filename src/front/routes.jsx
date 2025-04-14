@@ -1,11 +1,11 @@
-/* 👆 🤟🏼 ❇️ Riki for the group success 9_Abril 👊 */
-
+// 👆 ❇️ Riki for the group success 👊
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   Navigate
 } from "react-router-dom";
+
 import { Layout } from "./pages/Layout";
 import PublicLayout from "./pages/PublicLayout";
 import { Login } from "./pages/Login/Login";
@@ -17,23 +17,9 @@ import Landing from "./pages/Landing/Landing";
 import Contact from "./pages/Contact/Contact";
 import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
-import PdfDocument from "./components/Quote/PdfDocument"
+import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
-
-
-
-// Componente para proteger rutas privadas
-const ProtectedRoute = ({ children }) => {
-  // Verifica si el usuario está autenticado
-  const isAuthenticated = localStorage.getItem("token");
-
-  if (!isAuthenticated) {
-    // Redirige al login si no está autenticado
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
+import ProtectedRoute from ".//ProtectedRoute"; // 👈 Importa el nuevo componente
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,8 +48,7 @@ export const router = createBrowserRouter(
         <Route path="plot_form" element={<Plot_form />} />
         <Route path="quote" element={<Quote />} />
         <Route path="pdfdocument" element={<PdfDocument />} />
-        <Route path="pdfdocument" element={<PdfDocumentWrapper />} />
-
+        <Route path="pdfdocumentwrapper" element={<PdfDocumentWrapper />} />
       </Route>
 
       {/* Ruta para redireccionar URLs no encontradas */}

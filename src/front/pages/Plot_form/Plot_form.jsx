@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Plot_form.css";
 import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
+import {useGlobalReducer} from "../../hooks/useGlobalReducer";
+
 
 const CROP_OPTIONS = {
   "Cereales y Cultivos Extensivos": ["Trigo", "Cebada", "Avena", "Maíz", "Arroz", "Girasol", "Algodón"],
@@ -15,6 +17,7 @@ const CROP_OPTIONS = {
 };
 
 const PlotForm = () => {
+  const { store } = useGlobalReducer();
   const [plotData, setPlotData] = useState({
     name: "",
     area: "",
@@ -71,7 +74,7 @@ const PlotForm = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const token = store.auth.token;
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/fields/fields`, {
         method: "POST",
         headers: {

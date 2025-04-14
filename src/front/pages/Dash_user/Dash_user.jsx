@@ -5,11 +5,13 @@ import './Dash_user.css';
 import MapboxParcel from '../../components/MapboxParcel/MapboxParcel';
 import WeatherForecast from '../../components/WeatherForecast/WeatherForecast';
 import Report from '../../components/Reports/Reports'; // o ajusta la ruta según tu estructura
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+
 
 
 const Dash_user = () => {
     const [modalVisible, setModalVisible] = useState(false);
-
+    const { store } = useGlobalReducer();
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
     const [fieldData, setFieldData] = useState(null);
@@ -24,8 +26,8 @@ const Dash_user = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('user_id');
+            const token = store.auth.token;
+            const userId = store.auth.userId;
 
             if (!token || !userId) {
                 setError("Usuario no autenticado");
@@ -119,7 +121,7 @@ const Dash_user = () => {
         try {
             await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/report_routes/delete/${reportId}`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${store.auth.token}` // 👈 usamos el token desde el store
                 }
             });
 
@@ -130,7 +132,6 @@ const Dash_user = () => {
             alert("No se pudo eliminar el informe.");
         }
     };
-
 
     if (error) return <div className="error-message">{error}</div>;
 
@@ -163,15 +164,17 @@ const Dash_user = () => {
                             <div className="reports-section">
                                 <h4>Mis Informes</h4>
 
-                                {loading.reports ? (
-                                    <p>Cargando informes...</p>
-                                ) : reports.length > 0 ? (
-                                    <ul>
+                                {/* Mostramos mensaje de carga sin esconder la lista */}
+                                {loading.reports && (
+                                    <p className="loading-msg">🔄 Actualizando informes...</p>
+                                )}
+
+                                {reports.length > 0 ? (
+                                    <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
                                         {reports.map((r, i) => (
                                             <li key={i}>
                                                 <div className="report-item-header">
                                                     <div>
-                                                        {/* Título como enlace que ABRE el archivo (no se descarga) */}
                                                         <a
                                                             href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
                                                             target="_blank"
@@ -189,8 +192,6 @@ const Dash_user = () => {
                                                             📌 {r.title || 'Sin título'}
                                                         </a>
 
-
-                                                        {/* Info de archivo */}
                                                         <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
                                                             📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
                                                         </p>
@@ -201,17 +202,14 @@ const Dash_user = () => {
                                                     </div>
 
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                        {/* Descargar: con atributo download */}
                                                         <a
-                                                            href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`} // 👈 usamos la nueva ruta
+                                                            href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
                                                             className="download-report-button"
                                                             title="Descargar"
                                                         >
                                                             ⬇️ Descargar
                                                         </a>
 
-
-                                                        {/* Eliminar */}
                                                         <button
                                                             onClick={() => handleDeleteReport(r.id)}
                                                             className="delete-report-button"
@@ -222,13 +220,13 @@ const Dash_user = () => {
                                                     </div>
                                                 </div>
                                             </li>
-
                                         ))}
                                     </ul>
-                                ) : (
+                                ) : !loading.reports ? (
                                     <p>No hay informes disponibles</p>
-                                )}
+                                ) : null}
                             </div>
+
 
 
                             <button
@@ -265,14 +263,14 @@ const Dash_user = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <Report
-                            userId={localStorage.getItem('user_id')}
                             fieldId={fieldData?.id}
                             onClose={() => setModalVisible(false)}
                             onUploaded={() => {
                                 setModalVisible(false);
                                 setLoading(prev => ({ ...prev, reports: true }));
-                                axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${localStorage.getItem('user_id')}`, {
-                                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+
+                                axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${store.auth.userId}`, {
+                                    headers: { Authorization: `Bearer ${store.auth.token}` },
                                 })
                                     .then((res) => {
                                         const data = Array.isArray(res.data) ? res.data : [];
@@ -285,6 +283,7 @@ const Dash_user = () => {
                                         setLoading(prev => ({ ...prev, reports: false }));
                                     });
                             }}
+
                         />
                     </div>
 

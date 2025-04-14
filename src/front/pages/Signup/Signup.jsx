@@ -4,9 +4,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showErrorAlert, showSuccessAlert } from "../../components/modal_alerts/modal_alerts";
 import "./Signup.css";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { dispatch } = useGlobalReducer(); // 👈 Hook global
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -31,7 +34,21 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        showSuccessAlert(data.msg || "¡Registro realizado con éxito!", () => {});
+        // 👇 Despachar login si el backend responde con token y user
+        if (data.access_token && data.user) {
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              token: data.access_token,
+              rolId: data.user.rolId,
+              userId: data.user.id
+            }
+          });
+        }
+        navigate("/app/plot_form");
+        showSuccessAlert(data.msg || "¡Registro realizado con éxito!", () => {
+          
+        });
         setFormData({
           name: "",
           lastname: "",
@@ -39,7 +56,7 @@ const Signup = () => {
           email: "",
           password: ""
         });
-        navigate("/app/plot_form");
+
       } else {
         showErrorAlert(data.error || "Error en el registro");
       }

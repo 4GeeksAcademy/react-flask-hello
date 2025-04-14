@@ -153,3 +153,26 @@
     gap: 0;
   }
 }
+
+input[type="number"].form-input {
+  width: 100%; /* fuerza que use el mismo ancho que el select */
+  -moz-appearance: textfield; /* quita estilo nativo en Firefox */
+}
+
+input[type="number"].form-input::-webkit-outer-spin-button,
+input[type="number"].form-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Forzar altura y aspecto uniforme en input y select */
+input[type="number"].form-input,
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 42px; /* ajusta según tu diseño */
+  line-height: 1.2;
+  padding: 0.65rem;
+  font-size: 0.95rem;
+}

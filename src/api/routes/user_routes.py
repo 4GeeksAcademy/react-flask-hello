@@ -11,9 +11,6 @@ from sqlalchemy import inspect
 user = Blueprint('user_api', __name__)
 
 
-
-
-
 @user.route('/signup', methods=['POST'])
 def signup():
 
@@ -90,8 +87,6 @@ def get_user_by_id(id):
     return jsonify(user.serialize()), 200
 
 
-
-
 # Obtener todos los usuarios
 @user.route('/users', methods=['GET'])
 def get_all_users():
@@ -99,7 +94,8 @@ def get_all_users():
     all_users = [user.serialize() for user in users]
     return jsonify(all_users), 200
 
-#Rutas creadas por Javier.
+# Rutas creadas por Javier.
+
 
 @user.route('/users/fullinfo', methods=['GET'])
 def get_full_info():
@@ -126,7 +122,8 @@ def update_user():
         return jsonify({"error": "Usuario no encontrado"}), 404
 
     # Verificar si el usuario tiene permisos para actualizar
-    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
+    campos_permitidos = ["email", "name",
+                         "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
             setattr(user_obj, campo, data[campo])
@@ -142,7 +139,7 @@ def update_user():
 @user.route('/users', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-    
+
     user_id = request.args.get("id", None)
     if not user_id:
         return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
@@ -158,4 +155,5 @@ def delete_user():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 

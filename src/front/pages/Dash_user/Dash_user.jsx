@@ -6,7 +6,7 @@ import MapboxParcel from '../../components/MapboxParcel/MapboxParcel';
 import WeatherForecast from '../../components/WeatherForecast/WeatherForecast';
 import Report from '../../components/Reports/Reports'; // o ajusta la ruta según tu estructura
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
-
+import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelectorModal";
 
 
 const Dash_user = () => {
@@ -24,6 +24,8 @@ const Dash_user = () => {
         weather: true,
         reports: true
     });
+    const [initialSelectionDone, setInitialSelectionDone] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -153,6 +155,17 @@ const Dash_user = () => {
         }
     };
 
+    if (!initialSelectionDone && fieldsList.length > 1) {
+        return (
+          <FieldSelectorModal
+            fields={fieldsList}
+            selected={selectedField}
+            setSelected={setSelectedField}
+            onSelect={() => setInitialSelectionDone(true)}
+          />
+        );
+      }
+      
     if (error) return <div className="error-message">{error}</div>;
 
     return (

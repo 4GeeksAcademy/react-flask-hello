@@ -116,7 +116,7 @@ const PlotForm = () => {
           <div className="form-section">
             <h3 className="section-title">Información básica</h3>
             <div className="form-group">
-              <label htmlFor="name">Nombre de usuario*</label>
+              <label htmlFor="name">Nombre de parcela*</label>
               <input
                 type="text"
                 id="name"

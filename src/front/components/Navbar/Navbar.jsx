@@ -57,10 +57,13 @@ export const Navbar = () => {
 					</div>
 
 					<div className="navbar-controls">
-						<button className="btn-report" data-bs-toggle="modal" data-bs-target="#problemasModal">
-							<i className="bi bi-exclamation-triangle"></i>
-							<span>Report</span>
-						</button>
+
+						{store.token && (
+							<button className="btn-report" data-bs-toggle="modal" data-bs-target="#problemasModal">
+								<i className="bi bi-exclamation-triangle"></i>
+								<span>Report</span>
+							</button>
+						)}
 
 						{store.token && (
 							<div className="user-dropdown">
@@ -147,47 +150,49 @@ export const Navbar = () => {
 			</div>
 
 			{/* Fila de botones de navegación */}
-			<div className="sub-navigation">
-				<div className="container-fluid">
-					<div className="row justify-content-center my-2">
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/clients" className="nav-button btn-clients">
-								<i className="fa-solid fa-circle-user"></i>
-								<span>CLIENTS</span>
-							</Link>
-						</div>
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/newclient" className="nav-button btn-new-client">
-								<div>
-									<i className="fa-solid fa-plus"></i>
+			<div className={`sub-navigation-container ${store.token ? 'visible' : ''}`}>
+				<div className="sub-navigation">
+					<div className="container-fluid">
+						<div className="row justify-content-center my-2">
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/clients" className="nav-button btn-clients">
 									<i className="fa-solid fa-circle-user"></i>
-								</div>
-								<span>NEW CLIENTS</span>
-							</Link>
-						</div>
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/appointments" className="nav-button btn-appointments">
-								<i className="fa-solid fa-calendar-check"></i>
-								<span>APPOINTMENTS</span>
-							</Link>
-						</div>
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/calendar" className="nav-button btn-calendar">
-								<i className="fa-solid fa-building"></i>
-								<span>CALENDAR</span>
-							</Link>
-						</div>
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/business" className="nav-button btn-business">
-								<i className="fa-solid fa-building"></i>
-								<span>BUSINESS</span>
-							</Link>
-						</div>
-						<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
-							<Link to="/services" className="nav-button btn-services">
-								<i className="fa-solid fa-paperclip"></i>
-								<span>SERVICES</span>
-							</Link>
+									<span>CLIENTS</span>
+								</Link>
+							</div>
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/newclient" className="nav-button btn-new-client">
+									<div>
+										<i className="fa-solid fa-plus"></i>
+										<i className="fa-solid fa-circle-user"></i>
+									</div>
+									<span>NEW CLIENTS</span>
+								</Link>
+							</div>
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/appointments" className="nav-button btn-appointments">
+									<i className="fa-solid fa-calendar-check"></i>
+									<span>APPOINTMENTS</span>
+								</Link>
+							</div>
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/calendar" className="nav-button btn-calendar">
+									<i className="fa-solid fa-building"></i>
+									<span>CALENDAR</span>
+								</Link>
+							</div>
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/business" className="nav-button btn-business">
+									<i className="fa-solid fa-building"></i>
+									<span>BUSINESS</span>
+								</Link>
+							</div>
+							<div className="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
+								<Link to="/services" className="nav-button btn-services">
+									<i className="fa-solid fa-paperclip"></i>
+									<span>SERVICES</span>
+								</Link>
+							</div>
 						</div>
 					</div>
 				</div>

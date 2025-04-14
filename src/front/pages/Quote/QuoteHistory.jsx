@@ -1,7 +1,7 @@
 // 👇 ❇️ Riki for the group success 11 Abril 👊
 
 import React, { useEffect, useState } from "react";
-import useGlobalReducer from "../../hooks/useGlobalReducer";
+import {useGlobalReducer} from "../../hooks/useGlobalReducer";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PdfDocument from "../../components/Quote/PdfDocument";
 

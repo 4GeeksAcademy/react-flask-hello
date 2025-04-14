@@ -4,6 +4,7 @@ import PdfDocument from "../../components/Quote/PdfDocument";
 import LogoDronFarm from "../../assets/img/Logo_DronFarm2.png";
 import "./Quote.css";
 import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
+import {useGlobalReducer} from "../../hooks/useGlobalReducer";
 
 const Quote = () => {
   const [userData, setUserData] = useState(null);
@@ -18,6 +19,7 @@ const Quote = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [validUntil, setValidUntil] = useState(getDefaultValidDate());
   const [isPdfReady, setIsPdfReady] = useState(false);
+  const { store } = useGlobalReducer();
 
   const frequencyMultipliers = {
     Mensual: 1,
@@ -26,8 +28,8 @@ const Quote = () => {
     Anual: 12
   };
 
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user_id");
+  const token = store.auth.token;
+  const userId = store.auth.userId;
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   function getDefaultValidDate() {

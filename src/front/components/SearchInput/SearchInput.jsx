@@ -1,15 +1,15 @@
 import React from "react";
+import "./SearchInput.css";
 
 export const SearchInput = ({ value, onChange, placeholder }) => {
   return (
-    <div className="container mt-4">
+    <div className="search-box">
       <input
         type="text"
-        className="form-control"
+        className="search-field"
         placeholder={placeholder || "Buscar..."}
         value={value}
         onChange={onChange}
-        style={{ width: "300px", marginBottom: "20px" }}
       />
     </div>
   );

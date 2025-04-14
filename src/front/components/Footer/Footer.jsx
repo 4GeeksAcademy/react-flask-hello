@@ -11,13 +11,13 @@ export const Footer = () => {
 					</p>
 					<div className="social-links">
 						<a href="#" className="social-link">
-							<i class="fa-brands fa-linkedin"></i>
+							<i className="fa-brands fa-linkedin"></i>
 						</a>
 						<a href="#" className="social-link">
-							<i class="fa-brands fa-square-x-twitter"></i>
+							<i className="fa-brands fa-square-x-twitter"></i>
 						</a>
 						<a href="#" className="social-link">
-							<i class="fa-brands fa-square-facebook"></i>
+							<i className="fa-brands fa-square-facebook"></i>
 						</a>
 					</div>
 				</div>

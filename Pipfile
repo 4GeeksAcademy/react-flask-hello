@@ -24,7 +24,12 @@ sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
 weasyprint = "*"
+<<<<<<< HEAD
 requests = "*"
+=======
+flask-mail = "*"
+reportlab = "*"
+>>>>>>> main
 
 [requires]
 python_version = "3.13"

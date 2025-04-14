@@ -29,7 +29,6 @@ def signup():
         return jsonify({"error": "The user already exists"}), 400
 
     try:
-
         new_user = User(
             email=body.get("email"),
             password=body.get("password"),
@@ -41,7 +40,14 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"msg": "User created!!"}), 201
+        # ✅ Crear el token justo después del commit
+        access_token = create_access_token(identity=str(new_user.id))
+
+        return jsonify({
+            "msg": "User created!!",
+            "access_token": access_token,
+            "user": new_user.serialize()
+        }), 201
 
     except Exception as e:
         db.session.rollback()

@@ -4,6 +4,11 @@
   overflow-x: auto;
   padding: 0.5rem 0;
   background: none;
+
+  width: 100%; /* ✅ ocupa el 100% del ancho disponible */
+  flex-grow: 1; /* ✅ permite que crezca */
+  justify-content: start; /* asegura que el contenido arranque a la izquierda */
+  box-sizing: border-box; /* asegura que padding no altere el ancho real */
 }
 
 /* Tarjeta del día */

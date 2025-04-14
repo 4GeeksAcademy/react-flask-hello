@@ -80,8 +80,85 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* Estilos bonitos para lista de informes */
 .reports-section ul {
-  padding-left: 1rem;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reports-section li {
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reports-section li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.07);
+}
+
+.reports-section a {
+  font-size: 1rem;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.reports-section a:hover {
+  text-decoration: underline;
+  color: #111827;
+}
+
+.report-description {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.download-report-button,
+.delete-report-button {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.download-report-button {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.download-report-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.delete-report-button {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.delete-report-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+@media (min-width: 768px) {
+  .bottom-section {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .request-report-button {
@@ -93,24 +170,13 @@ body {
   border-radius: 9999px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
 
 .request-report-button:hover {
   background-color: #059669;
-}
-
-.bottom-section {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-@media (min-width: 768px) {
-  .bottom-section {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .weather-card,
@@ -145,4 +211,37 @@ body {
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  width: 100%; /* ✅ Asegura esto */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.loading-msg {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.reports-list.loading {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Dash_admin.css";
+import {useGlobalReducer} from "../../hooks/useGlobalReducer";
+
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
 
@@ -8,9 +10,12 @@ const DashboardAdmin = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [newUser, setNewUser] = useState({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
   const [error, setError] = useState("");
+  const { store } = useGlobalReducer();
+
+
 
   // Recuperar token almacenado 
-  const token = localStorage.getItem("token");
+  const token = store.auth.token;
 
   // lista de usuarios 
   useEffect(() => {
@@ -186,6 +191,23 @@ const DashboardAdmin = () => {
           </div>
         </div>
 
+                  {/* Lista de Tierras */}
+          <div className="lands-section">
+            <h3 className="section-title">Lands</h3>
+            {lands.size === 0 ? (
+              <p className="empty-message">No hay tierras disponibles.</p>
+            ) : (
+              <ul className="lands-list">
+                {[...lands].map(([key, land]) => (
+                  land && land.name ? (  // Verificamos que 'land' y 'land.name' existan
+                    <li key={key} className="land-item">
+                      {land.name}
+                    </li>
+                  ) : null
+                ))}
+              </ul>
+            )}
+          </div> 
 
         {/* Detalles del Usuario y Edición */}
         <div className="user-details-section">

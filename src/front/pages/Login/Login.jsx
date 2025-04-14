@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { showErrorAlert, showSuccessAlert } from '../../components/modal_alerts/modal_alerts';
+import {useGlobalReducer} from "../../hooks/useGlobalReducer"; // 👈 Import del global store
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { dispatch } = useGlobalReducer(); // 👈 Obtenemos el dispatch global
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +20,16 @@ export const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.access_token);
-        localStorage.setItem("rol_id", data.user.rolId); // ✅ cambiado a rolId
-        localStorage.setItem("user_id", data.user.id);
+        // 👇 Guardamos en el global store + localStorage desde el reducer
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            token: data.access_token,
+            rolId: data.user.rolId,
+            userId: data.user.id
+          }
+        });
 
-        // ✅ Navegación corregida según rol
         showSuccessAlert("¡Inicio de sesión exitoso!", () => {
           navigate(Number(data.user.rolId) === 2 ? "/app/dashboard" : "/app/dash_admin");
         });

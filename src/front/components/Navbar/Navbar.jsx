@@ -3,14 +3,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assets/img/Logo_DronFarm2.png";
-
 import "./Navbar.css";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
-  
+  const { store, dispatch } = useGlobalReducer();
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   // Detectar si estamos en el dashboard - corregido para usar "/app"
   const isDashboard = location.pathname.includes("/app");
 
@@ -20,10 +25,12 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("rol_id");
-    localStorage.removeItem("user_id");
+    dispatch({ type: "LOGOUT" });
     navigate("/"); // Redirige a la página de landing
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -35,8 +42,16 @@ const Navbar = () => {
         </Link>
 
         {/* Menú Hamburguesa (Mobile) */}
-        <input type="checkbox" id="navbar-toggle" className="navbar-toggle" />
+        <input
+          type="checkbox"
+          id="navbar-toggle"
+          className="navbar-toggle"
+          checked={isMenuOpen}
+          onChange={toggleMenu}
+        />
         <label htmlFor="navbar-toggle" className="navbar-toggle-label">
+          <span></span>
+          <span></span>
           <span></span>
         </label>
 
@@ -49,7 +64,10 @@ const Navbar = () => {
                 <Link to="/contacto" className="navbar-link">Contacto</Link>
               </li>
               <li className="navbar-item">
-                <button onClick={handleLogout} className="navbar-button navbar-button-logout">
+                <button
+                  onClick={handleLogout}
+                  className="navbar-button navbar-button-logout"
+                >
                   Cerrar Sesión
                 </button>
               </li>

@@ -10,6 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // Detectar si estamos en el dashboard - corregido para usar "/app"
   const isDashboard = location.pathname.includes("/app");
@@ -26,6 +27,10 @@ const Navbar = () => {
     navigate("/"); // Redirige a la página de landing
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -35,8 +40,16 @@ const Navbar = () => {
         </Link>
 
         {/* Menú Hamburguesa (Mobile) */}
-        <input type="checkbox" id="navbar-toggle" className="navbar-toggle" />
+        <input 
+          type="checkbox" 
+          id="navbar-toggle" 
+          className="navbar-toggle" 
+          checked={isMenuOpen}
+          onChange={toggleMenu}
+        />
         <label htmlFor="navbar-toggle" className="navbar-toggle-label">
+          <span></span>
+          <span></span>
           <span></span>
         </label>
 
@@ -49,7 +62,10 @@ const Navbar = () => {
                 <Link to="/contacto" className="navbar-link">Contacto</Link>
               </li>
               <li className="navbar-item">
-                <button onClick={handleLogout} className="navbar-button navbar-button-logout">
+                <button 
+                  onClick={handleLogout} 
+                  className="navbar-button navbar-button-logout"
+                >
                   Cerrar Sesión
                 </button>
               </li>

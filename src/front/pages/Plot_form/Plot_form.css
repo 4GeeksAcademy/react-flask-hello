@@ -1,14 +1,18 @@
 /* Estilos base */
 .plot-form-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #f5f7fa;
+  overflow: hidden;
 }
 
+/* Tarjeta blanca encima del fondo */
 .plot-form-card {
+  position: relative;
+  z-index: 2;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -17,12 +21,25 @@
   max-width: 800px;
 }
 
+/* Título principal */
 .plot-form-title {
   color: #2c3e50;
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   font-weight: 600;
+}
+
+/* Título de secciones */
+.section-title {
+  color: #2c3e50;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: inline-block;
+  background: white;
+  padding: 0 0.5rem;
 }
 
 /* Formulario */
@@ -37,17 +54,6 @@
   padding: 1.25rem;
   border-radius: 6px;
   background-color: #fff;
-}
-
-.section-title {
-  color: #2c3e50;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  display: inline-block;
-  background: white;
-  padding: 0 0.5rem;
 }
 
 .form-row {
@@ -106,6 +112,24 @@
 
 .submit-button:hover {
   background-color: #2c5282;
+}
+
+.request-report-button {
+  background-color: #4682b4;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.request-report-button:hover {
+  background-color: #376996;
+  transform: scale(1.02);
 }
 
 .error-message {

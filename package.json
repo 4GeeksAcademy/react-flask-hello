@@ -54,6 +54,7 @@
 		]
 	},
 	"dependencies": {
+		"@stripe/stripe-js": "^7.0.0",
 		"axios": "^1.8.4",
 		"cors": "^2.8.5",
 		"prop-types": "^15.8.1",

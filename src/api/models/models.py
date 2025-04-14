@@ -76,7 +76,6 @@ class Field(db.Model):
     name: Mapped[str] = mapped_column(String(100))
     area: Mapped[float] = mapped_column(Float)
     crop: Mapped[str] = mapped_column(String(100))
-    sowing_date: Mapped[dt_date] = mapped_column(Date)
     street: Mapped[str] = mapped_column(String(100))
     number: Mapped[str] = mapped_column(String(10))
     postal_code: Mapped[str] = mapped_column(String(10))
@@ -99,7 +98,6 @@ class Field(db.Model):
             "name": self.name,
             "area": self.area,
             "crop": self.crop,
-            "sowing_date": self.sowing_date.isoformat() if self.sowing_date else None,
             "street": self.street,
             "number": self.number,
             "postal_code": self.postal_code,
@@ -178,9 +176,12 @@ class Quote(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     cost: Mapped[float] = mapped_column(Float, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
-    field_id: Mapped[int] = mapped_column(ForeignKey("fields.id"), nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    field_id: Mapped[int] = mapped_column(
+        ForeignKey("fields.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=True)
 
     def serialize_quote(self):
         return {

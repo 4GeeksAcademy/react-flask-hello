@@ -20,7 +20,7 @@ def create_field():
     body = request.get_json()
     user_id = get_jwt_identity()
 
-    required_fields = ["name", "area", "crop", "sowing_date",
+    required_fields = ["name", "area", "crop",
                        "street", "number", "postal_code", "city"]
     if not all(field in body for field in required_fields):
         return jsonify({"error": "Missing required fields"}), 400
@@ -71,8 +71,6 @@ def create_field():
             name=body.get("name"),
             area=body.get("area"),
             crop=body.get("crop"),
-            sowing_date=datetime.strptime(
-                body["sowing_date"], '%Y-%m-%d').date(),
             street=body.get("street"),
             number=body.get("number"),
             postal_code=body.get("postal_code"),
@@ -113,8 +111,6 @@ def get_field_by_user(user_id):
     if not field:
         return jsonify({"error": "Field not found for this user"}), 404
     return jsonify(field.serialize_field()), 200
-
-
 
 
 # 👇 ✅ GET /fields/<int:id> - Obtener una parcela por id

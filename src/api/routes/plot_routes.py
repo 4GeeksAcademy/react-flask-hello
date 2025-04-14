@@ -106,11 +106,13 @@ def get_all_fields():
 
 @fields.route('/user/<int:user_id>', methods=['GET'])
 @jwt_required()
-def get_field_by_user(user_id):
-    field = Field.query.filter_by(user_id=user_id).first()
-    if not field:
-        return jsonify({"error": "Field not found for this user"}), 404
-    return jsonify(field.serialize_field()), 200
+def get_fields_by_user(user_id):
+    fields = Field.query.filter_by(user_id=user_id).all()
+
+    if not fields:
+        return jsonify([]), 200  # Devuelve lista vacía si no hay parcelas
+
+    return jsonify([f.serialize_field() for f in fields]), 200
 
 
 # 👇 ✅ GET /fields/<int:id> - Obtener una parcela por id

@@ -30,6 +30,11 @@ body {
     flex-direction: row;
   }
 }
+.two-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
 .map-container {
   flex: 3;
@@ -156,9 +161,17 @@ body {
 }
 
 @media (min-width: 768px) {
-  .bottom-section {
-    grid-template-columns: 1fr 1fr;
+  .two-column-layout {
+    flex-direction: row;
+    align-items: flex-start;
   }
+}
+
+.left-panel {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .request-report-button {
@@ -205,13 +218,12 @@ body {
   font-weight: 600;
 }
 
-/* Weather horizontal forecast block */
 .weather-horizontal-section {
   background-color: #ffffff;
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  width: 100%; /* ✅ Asegura esto */
+  width: 100%;
 }
 
 .modal-overlay {
@@ -244,4 +256,35 @@ body {
 .reports-list.loading {
   opacity: 0.6;
   transition: opacity 0.3s ease;
+}
+
+.add-field-button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #10b981; /* verde */
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-field-button:hover {
+  background-color: #059669;
+}
+
+.field-selector {
+  margin-bottom: 1rem;
+}
+
+.field-selector label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.field-selector select {
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
 }

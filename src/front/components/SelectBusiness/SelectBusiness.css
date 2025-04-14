@@ -1,0 +1,62 @@
+.business-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    
+  }
+  
+  .business-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .business-card-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+    display: block;
+  }
+  
+  .business-card-link:hover {
+    transform: translateY(-5px);
+  }
+  
+  .business-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+  
+  .business-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: #3498db;
+  }
+  
+  .business-name {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+    color: #333333;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 992px) {
+    .business-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .business-grid {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import { useNavigate, Link } from "react-router-dom";
 
-import "./SeleccionarNegocio.css"
+import "./SelectBusiness.css"
 
-
-export const SelectBusiness = () => {
-
+export const SelectBusiness = ({ searchTerm = "" }) => {
 	const navigate = useNavigate();
 	const { store, dispatch } = useGlobalReducer();
 
-	const [searchTerm, setSearchTerm] = useState("");
+	
 
 	useEffect(() => {
 		if (store.business.length === 0) {
-
 			const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
 			const fetchBusinesses = async () => {
@@ -31,15 +28,13 @@ export const SelectBusiness = () => {
 						throw new Error(data.error || 'Error loading businesses');
 					}
 
-
 					dispatch({
 						type: "set_business",
 						payload: data
 					});
-
-									
 				} catch (error) {
 					console.error("Error fetching businesses:", error);
+
 					dispatch({
 						type: "set_error",
 						payload: error.message
@@ -50,7 +45,6 @@ export const SelectBusiness = () => {
 			fetchBusinesses();
 		}
 	}, [store.token]);
-
 
 	const filteredBusinesses = store.business.filter(business =>
 		business.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -65,29 +59,21 @@ export const SelectBusiness = () => {
 
 	return (
 		<>
-			<div>
-				<h5>Searcher:</h5>
-				<input
-					type="text"
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-				/>
-			</div>
-			<div className="row">
-				{filteredBusinesses.map((business) => (
-					<Link
-						key={business.id}
-						to={`/clients`}
-						style={{ textDecoration: 'none' }}
-						onClick={() => handleSelectBusiness(business)}
-					>
-						<div className="m-2 border border-black card col-4">
-							<div className="m-2">
-								<h5>{business.name}</h5>
+			<div className="business-container">
+				<div className="business-grid">
+					{filteredBusinesses.map((business) => (
+						<Link
+							key={business.id}
+							to={`/clients`}
+							className="business-card-link"
+							onClick={() => handleSelectBusiness(business)}
+						>
+							<div className="business-card">
+								<h5 className="business-name">{business.name}</h5>
 							</div>
-						</div>
-					</Link>
-				))}
+						</Link>
+					))}
+				</div>
 			</div>
 		</>
 	);

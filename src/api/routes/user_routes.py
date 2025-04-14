@@ -6,6 +6,7 @@ from api.models.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from sqlalchemy import inspect
 
 user = Blueprint('user_api', __name__)
 
@@ -92,6 +93,8 @@ def get_all_users():
     all_users = [user.serialize() for user in users]
     return jsonify(all_users), 200
 
+#Rutas creadas por Javier.
+
 @user.route('/users/fullinfo', methods=['GET'])
 def get_full_info():
     inspector = inspect(db.engine)
@@ -104,30 +107,49 @@ def get_full_info():
     return jsonify(data), 200
 
 
-@user.route('/users/<int:id>', methods=['PUT'])
+@user.route('/users', methods=['PUT'])
 @jwt_required()
-def update_user(id):
-    body = request.get_json()
-    user = User.query.get(id)
+def update_user():
+    data = request.get_json()
+    if not data or not data.get("id"):
+        return jsonify({"error": "Debes proporcionar el id del usuario a actualizar"}), 400
+
+    user_id = data.get("id")
+    user_obj = User.query.get(user_id)
+    if not user_obj:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    # Verificar si el usuario tiene permisos para actualizar
+    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
+    for campo in campos_permitidos:
+        if campo in data:
+            setattr(user_obj, campo, data[campo])
+
+    try:
+        db.session.commit()
+        return jsonify(user_obj.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 
-    new_user = User(
-
-    name=body["name"],
-    lastname=body["lastname"],
-
-    )
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({"msg": "User created!"}), 201
-
-
-@user.route('/users/<int:id>', methods=['DELETE'])
+@user.route('/users', methods=['DELETE'])
 @jwt_required()
-def delete_users(id):
-    user = User.query.get(id)
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"msg": "User deleted"}), 200
+def delete_user():
+    
+    user_id = request.args.get("id", None)
+    if not user_id:
+        return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
 
+    user_obj = User.query.get(user_id)
+    if not user_obj:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    try:
+        db.session.delete(user_obj)
+        db.session.commit()
+        return jsonify({"msg": "Usuario eliminado correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 

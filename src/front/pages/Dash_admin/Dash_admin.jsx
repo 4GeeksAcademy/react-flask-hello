@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Dash_admin.css"; 
+import "./Dash_admin.css";
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
 
@@ -56,7 +56,7 @@ const DashboardAdmin = () => {
     if (!editingUser) return;
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/user/users/${editingUser.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users`,
         editingUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -136,11 +136,47 @@ const DashboardAdmin = () => {
               className="form-input"
             />
             <input
+              type="text"
+              placeholder="Lastname"
+              value={newUser.lastname}
+              onChange={(e) =>
+                setNewUser({ ...newUser, lastname: e.target.value })
+              }
+              className="form-input"
+            />
+            <input
+              type="text"
+              placeholder="DNI"
+              value={newUser.dni}
+              onChange={(e) =>
+                setNewUser({ ...newUser, dni: e.target.value })
+              }
+              className="form-input"
+            />
+            <input
               type="email"
               placeholder="Email"
               value={newUser.email}
               onChange={(e) =>
                 setNewUser({ ...newUser, email: e.target.value })
+              }
+              className="form-input"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={newUser.password}
+              onChange={(e) =>
+                setNewUser({ ...newUser, password: e.target.value })
+              }
+              className="form-input"
+            />
+            <input
+              type="number"
+              placeholder="Rol ID"
+              value={newUser.rolId}
+              onChange={(e) =>
+                setNewUser({ ...newUser, rolId: parseInt(e.target.value) })
               }
               className="form-input"
             />
@@ -160,10 +196,19 @@ const DashboardAdmin = () => {
                 <strong>ID:</strong> {selectedUser.id}
               </p>
               <p>
-                <strong>Name:</strong> {selectedUser.name}
+                <strong>Name:</strong> {selectedUser.name} {selectedUser.lastname}
               </p>
               <p>
                 <strong>Email:</strong> {selectedUser.email}
+              </p>
+              <p>
+                <strong>DNI:</strong> {selectedUser.dni}
+              </p>
+              <p>
+                <strong>Rol:</strong> {selectedUser.rolId}
+              </p>
+              <p>
+                <strong>Created At:</strong> {new Date(selectedUser.created_at).toLocaleString()}
               </p>
             </div>
           ) : (
@@ -175,6 +220,7 @@ const DashboardAdmin = () => {
               <h4 className="form-title">Edit User</h4>
               <input
                 type="text"
+                placeholder="Name"
                 value={editingUser.name}
                 onChange={(e) =>
                   setEditingUser({ ...editingUser, name: e.target.value })
@@ -182,10 +228,47 @@ const DashboardAdmin = () => {
                 className="form-input"
               />
               <input
+                type="text"
+                placeholder="Lastname"
+                value={editingUser.lastname}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, lastname: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="DNI"
+                value={editingUser.dni}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, dni: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
                 type="email"
+                placeholder="Email"
                 value={editingUser.email}
                 onChange={(e) =>
                   setEditingUser({ ...editingUser, email: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="password"
+                placeholder="New Password (optional)"
+                value={editingUser.password || ""}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, password: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="number"
+                placeholder="Rol ID"
+                value={editingUser.rolId}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, rolId: parseInt(e.target.value) })
                 }
                 className="form-input"
               />

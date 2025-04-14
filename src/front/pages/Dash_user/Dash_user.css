@@ -10,7 +10,7 @@ body {
 .dashboard-container {
   width: 100%;
   min-height: 100vh;
-  padding: 2rem; /* top, right, bottom, left: 2rem */
+  padding: 2rem; 
   margin: 0 auto;
   font-family: "Inter", sans-serif;
   background-color: #f9fafb;

@@ -15,6 +15,9 @@ export const CalendarComp = () => {
     const [syncStatus, setSyncStatus] = useState(null);
 
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+
+    // Esta funcuion nos permite obtener los eventos del calendario.
     const fetchCalendarEvents = async () => {
 
         try {
@@ -22,7 +25,7 @@ export const CalendarComp = () => {
             setLoading(true);
             setError(null);
 
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+            
 
             const options = {
                 headers: {
@@ -62,17 +65,67 @@ export const CalendarComp = () => {
     };
 
 
+    const syncGoogleCalendar = async () => {
+
+        try {
+
+            setSyncStatus({ loading: true, message: null, success: null});
+
+            const options = {
+                headers: {
+                    'Autorization': `Bearer ${store.token}`
+                }
+            };
+
+            const response = await fetch (`${backendUrl}api/calendar/sync`, options);
+
+            if (!response.ok) {
+                throw new Error ("Error syncing with Google Calendar");
+            }
+
+            const data = await response.json();
+
+            setSyncStatus({
+                loading: false,
+                success: true,
+                message: data.msg,
+                count: data.synced_appointments.length
+            });
+
+            fetchCalendarEvents();
+
+        } catch (error) {
+            console.error("Error syncing calencar:", error);
+            setSyncStatus({
+                loading: false,
+                success: false,
+                message: error.message
+            });
+        }
+    };
+
+    useEffect(() => {
+
+        fetchCalendarEvents();
+
+    }, []);
 
 
+    const handleDateClick = (arg) => {
+        console.log("Selected date:", arg.dateStr);
+    };
 
-
-
-
+    const handleEventClick = (clickInfo) => {
+        console.log("Selected event", clickInfo.event);
+    }
 
 
     return (
-        <>
+        <div className="calendar-container">
+            <div className="calendar-header">
 
-        </>
+            </div>
+
+        </div>
     )
 }

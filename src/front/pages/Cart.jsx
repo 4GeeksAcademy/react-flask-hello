@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { loadStripe } from '@stripe/stripe-js'
-
-const stripePromise = loadStripe('pk_test_TU_CLAVE_PUBLICA') // ⚠️ Reemplaza con tu clave real
+import { useNavigate } from 'react-router-dom'
 
 const Cart = () => {
   const [productos, setProductos] = useState([])
@@ -10,12 +8,14 @@ const Cart = () => {
     return localCarrito ? JSON.parse(localCarrito) : {}
   })
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/productos')
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error(err))
-  }, []) 
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito))
@@ -60,15 +60,30 @@ const Cart = () => {
   const totalPrecio = Object.values(carrito).reduce((acc, item) => acc + item.cantidad * item.precio, 0)
 
   const handleCheckout = async () => {
-    const stripe = await stripePromise
-    const response = await fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/crear-sesion', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: Object.values(carrito) })
-    })
+    try {
+      const token = localStorage.getItem("jwt")
 
-    const data = await response.json()
-    stripe.redirectToCheckout({ sessionId: data.id })
+      const response = await fetch("https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/compra", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          items: Object.values(carrito)
+        })
+      })
+
+      if (response.ok) {
+        vaciarCarrito()
+        navigate('/success')
+      } else {
+        alert("Error al procesar la compra.")
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Hubo un problema con el pago.")
+    }
   }
 
   return (

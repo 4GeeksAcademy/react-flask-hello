@@ -76,7 +76,7 @@ const Cart = () => {
 
       if (response.ok) {
         vaciarCarrito()
-        navigate('/success')
+        navigate('/success') //Compra exitosa y descarga factura
       } else {
         alert("Error al procesar la compra.")
       }

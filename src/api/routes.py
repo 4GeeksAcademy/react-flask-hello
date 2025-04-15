@@ -17,6 +17,7 @@ api = Blueprint('api', __name__)
 # RUTA PARA REGISTRARSE UN USUARIO Y LOGUEARCE AUTOMÁTICAMENTE (SIGNUP)
 @api.route('/signup', methods=['POST'])
 def signup():
+   
     body = request.get_json()
     firstname = body.get('firstname')
     lastname = body.get('lastname')
@@ -192,15 +193,15 @@ def update_user(user_id):
             "logo_url": logo_url,
             "is_admin": is_admin
         }
-        new_access_token = create_access_token(identity=new_token_data)
+        access_token = create_access_token(identity=str(user.id))
         
         response = jsonify({
             "user": user.serialize(),
-            "access_token": new_access_token
+            "access_token": access_token
         })
         
         # Actualizamos la cookie con el nuevo token
-        response.set_cookie('access_token', new_access_token,
+        response.set_cookie('access_token', access_token,
                             max_age=86400*30, httponly=True, secure=True)
         
         return response, 200

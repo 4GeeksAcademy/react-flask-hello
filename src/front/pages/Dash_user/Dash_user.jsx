@@ -155,203 +155,200 @@ const Dash_user = () => {
         }
     };
 
-    if (!initialSelectionDone && fieldsList.length > 1) {
-        return (
-          <FieldSelectorModal
-            fields={fieldsList}
-            selected={selectedField}
-            setSelected={setSelectedField}
-            onSelect={() => setInitialSelectionDone(true)}
-          />
-        );
-      }
-      
+
+
+
+
     if (error) return <div className="error-message">{error}</div>;
 
     return (
-        <div className="dashboard-container">
-            <div className="top-section two-column-layout">
-                <div className="left-panel">
-                    <div className="map-container">
-                        {selectedField && selectedField.coordinates ? (
-                            (() => {
-                                const [lat, lon] = selectedField.coordinates
-                                    .split(',')
-                                    .map(coord => parseFloat(coord.trim()));
-
-                                return (
-                                    <MapboxParcel
-                                        key={selectedField.id}
-                                        latitude={lat}
-                                        longitude={lon}
-                                        points={pointsClave}
-                                    />
-                                );
-                            })()
-                        ) : (
-                            <div className="map-placeholder">Cargando mapa...</div>
-                        )}
-                    </div>
-
-                    <div className="weather-horizontal-section">
-                        <WeatherForecast daily={forecast} loading={loading.weather} />
-                    </div>
-                </div>
-
-                <div className="info-panel">
-                    {userData && selectedField && (
-                        <>
-                            {fieldsList.length > 1 && (
-                                <div className="field-selector">
-                                    <label htmlFor="fieldSelect">Selecciona tu parcela:</label>
-                                    <select
-                                        id="fieldSelect"
-                                        value={selectedField?.id}
-                                        onChange={(e) => {
-                                            const selected = fieldsList.find(f => f.id === parseInt(e.target.value));
-                                            setSelectedField(selected);
-                                        }}
-                                    >
-                                        {fieldsList.map(field => (
-                                            <option key={field.id} value={field.id}>
-                                                {field.name} - {field.city}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-
-                            <div className="user-info">
-                                <h2>{userData.name?.toUpperCase()}</h2>
-                                <p>{selectedField.street}, {selectedField.number}</p>
-                                <p>{selectedField.city}</p>
-                                <p><strong>{selectedField.area} HCT</strong></p>
-                                <p>{selectedField.crop.toUpperCase()}</p>
-                            </div>
-
-                            <div className="reports-section">
-                                <h4>Mis Informes</h4>
-
-                                {loading.reports && (
-                                    <p className="loading-msg">🔄 Actualizando informes...</p>
-                                )}
-
-                                {reports.length > 0 ? (
-                                    <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
-                                        {reports.map((r, i) => (
-                                            <li key={i}>
-                                                <div className="report-item-header">
-                                                    <div>
-                                                        <a
-                                                            href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="report-title"
-                                                            style={{
-                                                                display: 'block',
-                                                                fontSize: '1.1rem',
-                                                                fontWeight: '600',
-                                                                color: '#111827',
-                                                                textDecoration: 'none',
-                                                                marginBottom: '0.25rem'
-                                                            }}
-                                                        >
-                                                            📌 {r.title || 'Sin título'}
-                                                        </a>
-
-                                                        <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
-                                                            📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
-                                                        </p>
-
-                                                        {r.description && (
-                                                            <p className="report-description">📝 {r.description}</p>
-                                                        )}
-                                                    </div>
-
-                                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                        <a
-                                                            href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
-                                                            className="download-report-button"
-                                                            title="Descargar"
-                                                        >
-                                                            ⬇️ Descargar
-                                                        </a>
-
-                                                        <button
-                                                            onClick={() => handleDeleteReport(r.id)}
-                                                            className="delete-report-button"
-                                                            title="Eliminar"
-                                                        >
-                                                            🗑️ Eliminar
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : !loading.reports ? (
-                                    <p>No hay informes disponibles</p>
-                                ) : null}
-                            </div>
-
-                            <button
-                                className="request-report-button"
-                                onClick={() => navigate("/app/quote")}
-                            >
-                                SOLICITAR PRESUPUESTO
-                            </button>
-
-                            <button
-                                className="add-field-button"
-                                onClick={() => navigate("/app/plot_form")}
-                            >
-                                ➕ AÑADIR NUEVO CULTIVO
-                            </button>
-                        </>
-                    )}
-                </div>
-            </div>
-
-            <button
-                className="upload-report-button"
-                onClick={() => setModalVisible(true)}
-            >
-                SUBIR INFORME MANUALMENTE
-            </button>
-
-
-            {modalVisible && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <Report
-                            fieldId={selectedField?.id}
-                            onClose={() => setModalVisible(false)}
-                            onUploaded={() => {
-                                setModalVisible(false);
-                                setLoading(prev => ({ ...prev, reports: true }));
-
-                                axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${store.auth.userId}`, {
-                                    headers: { Authorization: `Bearer ${store.auth.token}` },
-                                })
-                                    .then((res) => {
-                                        const data = Array.isArray(res.data) ? res.data : [];
-                                        setReports(data);
-                                    })
-                                    .catch(() => {
-                                        setReports([]);
-                                    })
-                                    .finally(() => {
-                                        setLoading(prev => ({ ...prev, reports: false }));
-                                    });
-                            }}
-
-                        />
-                    </div>
-
-                </div>
+        <>
+            {(!initialSelectionDone && fieldsList.length > 1) && (
+                <FieldSelectorModal
+                    fields={fieldsList}
+                    setSelected={(field) => {
+                        setSelectedField(field);
+                        setInitialSelectionDone(true);
+                    }}
+                    onClose={() => setInitialSelectionDone(true)}
+                    selected={selectedField} // no olvides pasar esto si lo usas en la clase `selected`
+                />
             )}
 
-        </div>
+            <div className="dashboard-container">
+                <div className="top-section two-column-layout">
+                    <div className="left-panel">
+                        <div className="map-container">
+                            {selectedField && selectedField.coordinates ? (
+                                (() => {
+                                    const [lat, lon] = selectedField.coordinates
+                                        .split(',')
+                                        .map(coord => parseFloat(coord.trim()));
+
+                                    return (
+                                        <MapboxParcel
+                                            key={selectedField.id}
+                                            latitude={lat}
+                                            longitude={lon}
+                                            points={pointsClave}
+                                        />
+                                    );
+                                })()
+                            ) : (
+                                <div className="map-placeholder">Cargando mapa...</div>
+                            )}
+                        </div>
+
+                        <div className="weather-horizontal-section">
+                            <WeatherForecast daily={forecast} loading={loading.weather} />
+                        </div>
+                    </div>
+
+                    <div className="info-panel">
+                        {userData && selectedField && (
+                            <>
+
+                                <div className="user-info">
+                                    <h2>{userData.name?.toUpperCase()}</h2>
+                                    {fieldsList.length > 1 && (
+                                        <button
+                                            className="change-field-button"
+                                            onClick={() => setInitialSelectionDone(false)}
+                                        >
+                                            🔄 Cambiar de cultivo
+                                        </button>
+                                    )}
+                                    <p>{selectedField.street}, {selectedField.number}</p>
+                                    <p>{selectedField.city}</p>
+                                    <p><strong>{selectedField.area} HCT</strong></p>
+                                    <p>{selectedField.crop.toUpperCase()}</p>
+                                </div>
+
+                                <div className="reports-section">
+                                    <h4>Mis Informes</h4>
+
+                                    {loading.reports && (
+                                        <p className="loading-msg">🔄 Actualizando informes...</p>
+                                    )}
+
+                                    {reports.length > 0 ? (
+                                        <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
+                                            {reports.map((r, i) => (
+                                                <li key={i}>
+                                                    <div className="report-item-header">
+                                                        <div>
+                                                            <a
+                                                                href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="report-title"
+                                                                style={{
+                                                                    display: 'block',
+                                                                    fontSize: '1.1rem',
+                                                                    fontWeight: '600',
+                                                                    color: '#111827',
+                                                                    textDecoration: 'none',
+                                                                    marginBottom: '0.25rem'
+                                                                }}
+                                                            >
+                                                                📌 {r.title || 'Sin título'}
+                                                            </a>
+
+                                                            <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
+                                                                📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
+                                                            </p>
+
+                                                            {r.description && (
+                                                                <p className="report-description">📝 {r.description}</p>
+                                                            )}
+                                                        </div>
+
+                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                            <a
+                                                                href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
+                                                                className="download-report-button"
+                                                                title="Descargar"
+                                                            >
+                                                                ⬇️ Descargar
+                                                            </a>
+
+                                                            <button
+                                                                onClick={() => handleDeleteReport(r.id)}
+                                                                className="delete-report-button"
+                                                                title="Eliminar"
+                                                            >
+                                                                🗑️ Eliminar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : !loading.reports ? (
+                                        <p>No hay informes disponibles</p>
+                                    ) : null}
+                                </div>
+
+                                <button
+                                    className="request-report-button"
+                                    onClick={() => navigate("/app/quote")}
+                                >
+                                    SOLICITAR PRESUPUESTO
+                                </button>
+
+                                <button
+                                    className="add-field-button"
+                                    onClick={() => navigate("/app/plot_form")}
+                                >
+                                    ➕ AÑADIR NUEVO CULTIVO
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                <button
+                    className="upload-report-button"
+                    onClick={() => setModalVisible(true)}
+                >
+                    SUBIR INFORME MANUALMENTE
+                </button>
+
+
+                {modalVisible && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <Report
+                                fieldId={selectedField?.id}
+                                onClose={() => setModalVisible(false)}
+                                onUploaded={() => {
+                                    setModalVisible(false);
+                                    setLoading(prev => ({ ...prev, reports: true }));
+
+                                    axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${store.auth.userId}`, {
+                                        headers: { Authorization: `Bearer ${store.auth.token}` },
+                                    })
+                                        .then((res) => {
+                                            const data = Array.isArray(res.data) ? res.data : [];
+                                            setReports(data);
+                                        })
+                                        .catch(() => {
+                                            setReports([]);
+                                        })
+                                        .finally(() => {
+                                            setLoading(prev => ({ ...prev, reports: false }));
+                                        });
+                                }}
+
+                            />
+                        </div>
+
+                    </div>
+                )}
+
+            </div>
+
+        </>
     );
 };
 

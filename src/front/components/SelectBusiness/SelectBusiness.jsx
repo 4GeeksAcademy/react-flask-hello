@@ -8,7 +8,7 @@ export const SelectBusiness = ({ searchTerm = "" }) => {
 	const navigate = useNavigate();
 	const { store, dispatch } = useGlobalReducer();
 
-	
+
 
 	useEffect(() => {
 		if (store.business.length === 0) {
@@ -58,23 +58,21 @@ export const SelectBusiness = ({ searchTerm = "" }) => {
 	};
 
 	return (
-		<>
-			<div className="business-container">
-				<div className="business-grid">
-					{filteredBusinesses.map((business) => (
-						<Link
-							key={business.id}
-							to={`/calendar`}
-							className="business-card-link"
-							onClick={() => handleSelectBusiness(business)}
-						>
-							<div className="business-card">
-								<h5 className="business-name">{business.name}</h5>
-							</div>
-						</Link>
-					))}
-				</div>
-			</div>
-		</>
+
+		<div className="business-container ">
+			{filteredBusinesses.map((business) => (
+				<Link
+					key={business.id}
+					to={`/calendar`}
+					className="business-card-link"
+					onClick={() => handleSelectBusiness(business)}
+				>
+					<div className="business-card">
+						<h5 className="business-name">{business.name}</h5>
+					</div>
+				</Link>
+			))}
+		</div>
+
 	);
 };

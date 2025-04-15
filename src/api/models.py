@@ -217,6 +217,7 @@ class Appointments(db.Model):
         ForeignKey("clients.id"), nullable=False)
     service_id: Mapped[int] = mapped_column(
         ForeignKey("service.id"), nullable=False)
+    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=False)
     date_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     status: Mapped[str] = mapped_column(Enum(
         "pending", "confirmed", "cancelled", "completed", name="appointment_status"), nullable=False, default="pending")
@@ -228,6 +229,7 @@ class Appointments(db.Model):
         "Calendar", back_populates="appointment", uselist=False)
     service_history = relationship(
         "ServiceHistory", back_populates="appointment", cascade="all, delete-orphan")
+    business = relationship("Businesses", backref="appointments")
 
     def serialize_appointment(self):
         return {
@@ -256,8 +258,10 @@ class Calendar(db.Model):
         ForeignKey("appointments.id"), nullable=False, unique=True)
     google_event_id: Mapped[str] = mapped_column(String(255), nullable=True)
     last_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
+    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=True)
 
     appointment = relationship("Appointments", back_populates="calendar")
+    business = relationship("Businesses", backref="calendar_events")
 
     def serialize_calendar(self):
         return {

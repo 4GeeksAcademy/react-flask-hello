@@ -17,16 +17,16 @@ function Register() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
+    
         if (!email || !password || !firstname || !lastname || !shopname) {
             setMessage("Por favor, completa todos los campos.");
             setMessageType("error2");
             return;
         }
-
+    
         const requestData = { email, password, firstname, lastname, shopname };
         console.log("Datos enviados al backend:", requestData);
-
+    
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/signup`, {
                 method: "POST",
@@ -35,23 +35,20 @@ function Register() {
                 },
                 body: JSON.stringify(requestData) 
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
+                // Solo guardamos el token y redirigimos si la respuesta es exitosa
                 localStorage.setItem("token", data.access_token);
-
                 // Redirige al usuario
                 navigate("/settings");
-
             } else if (response.status === 403) {
                 setMessage("El usuario ya existe");
                 setMessageType("error");
-
             } else if (response.status === 400) {
                 setMessage(data.msg || "La solicitud es incorrecta. Verifica los datos.");
                 setMessageType("error");
-
             } else {
                 setMessage(data.error || "Hubo un problema con el registro");
                 setMessageType("error");

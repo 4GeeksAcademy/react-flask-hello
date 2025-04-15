@@ -13,7 +13,7 @@ body {
   padding: 2rem; 
   margin: 0 auto;
   font-family: "Inter", sans-serif;
-  background-color: #f9fafb;
+  background-color: rgba(249, 250, 251, 0.9);
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -29,6 +29,11 @@ body {
   .top-section {
     flex-direction: row;
   }
+}
+.two-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .map-container {
@@ -156,9 +161,17 @@ body {
 }
 
 @media (min-width: 768px) {
-  .bottom-section {
-    grid-template-columns: 1fr 1fr;
+  .two-column-layout {
+    flex-direction: row;
+    align-items: flex-start;
   }
+}
+
+.left-panel {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .request-report-button {
@@ -205,13 +218,12 @@ body {
   font-weight: 600;
 }
 
-/* Weather horizontal forecast block */
 .weather-horizontal-section {
   background-color: #ffffff;
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  width: 100%; /* ✅ Asegura esto */
+  width: 100%;
 }
 
 .modal-overlay {
@@ -244,4 +256,39 @@ body {
 .reports-list.loading {
   opacity: 0.6;
   transition: opacity 0.3s ease;
+}
+
+.add-field-button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #10b981; /* verde */
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-field-button:hover {
+  background-color: #059669;
+}
+
+.change-field-button {
+  background-color: transparent;
+  border: 1px solid #10b981;
+  color: #10b981;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.change-field-button:hover {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #059669;
 }

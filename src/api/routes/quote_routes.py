@@ -1,4 +1,4 @@
-#👇 ❇️ Riki for the group success 11 Abril 👊
+# 👇 ❇️ Riki for the group success 11 Abril 👊
 
 # routes/quote_routes.py (COMPLETO)
 from flask import Blueprint, jsonify, request, render_template, send_file
@@ -7,6 +7,8 @@ from sqlalchemy.orm import joinedload
 from datetime import datetime, timedelta
 from services.pricing_service import calculate_quote
 from weasyprint import HTML
+from services.email_service import send_quote_email
+
 import tempfile
 import os
 
@@ -15,13 +17,16 @@ print("✅ quote_routes CARGADO")
 quote = Blueprint('quote_routes', __name__)
 
 # POST /presupuesto (Crear nuevo presupuesto)
+
+
 @quote.route('/presupuesto', methods=['POST'])
 def create_quote():
     print("📥 Recibida petición en /presupuesto")
     try:
         data = request.get_json()
         print("DEBUG POST DATA:", data)
-        required_fields = ['hectares', 'cropType', 'services', 'frequency', 'field_id', 'user_id']
+        required_fields = ['hectares', 'cropType',
+                           'services', 'frequency', 'field_id', 'user_id']
 
         if not all(field in data for field in required_fields):
             return jsonify({"error": "Campos faltantes"}), 400
@@ -46,6 +51,31 @@ def create_quote():
         db.session.add(new_quote)
         db.session.commit()
 
+        # Obtener info del usuario y la parcela para el email
+        user = User.query.get(data['user_id'])
+        field = Field.query.get(data['field_id'])
+
+        # Cuerpo del correo
+        cuerpo_html = f"""
+        <h2>¡Hola {user.name}!</h2>
+        <p>Hemos generado tu presupuesto para el campo <strong>{field.name}</strong>:</p>
+        <ul>
+            <li><strong>Cultivo:</strong> {data['cropType']}</li>
+            <li><strong>Servicios:</strong> {', '.join(data['services'])}</li>
+            <li><strong>Frecuencia:</strong> {data['frequency']}</li>
+            <li><strong>Área:</strong> {data['hectares']} hectáreas</li>
+            <li><strong>Total estimado:</strong> {quote_data["total"]} €</li>
+        </ul>
+        <p>Gracias por confiar en <strong>DroneFarm</strong>.</p>
+        """
+
+        # Enviar email
+        send_quote_email(
+            destinatario=user.email,
+            asunto="Tu presupuesto de DroneFarm está listo 🚀",
+            cuerpo=cuerpo_html
+        )
+
         return jsonify({
             "id": new_quote.id,
             "total": quote_data["total"],
@@ -60,10 +90,13 @@ def create_quote():
         return jsonify({"error": str(e)}), 500
 
 # GET /presupuesto/<id> (Obtener presupuesto específico)
+
+
 @quote.route('/presupuesto/<int:id>', methods=['GET'])
 def get_quote(id):
     try:
-        quote = Quote.query.options(joinedload(Quote.user), joinedload(Quote.field)).get(id)
+        quote = Quote.query.options(joinedload(
+            Quote.user), joinedload(Quote.field)).get(id)
         if not quote:
             return jsonify({"error": "Presupuesto no encontrado"}), 404
 
@@ -78,6 +111,7 @@ def get_quote(id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @quote.route('/test-crear-presupuesto', methods=['GET'])
 def crear_presupuesto_para_prueba():
@@ -111,7 +145,8 @@ def crear_presupuesto_para_prueba():
 @quote.route('/presupuesto/<int:id>/pdf', methods=['GET'])
 def generate_pdf(id):
     try:
-        quote = Quote.query.options(joinedload(Quote.user), joinedload(Quote.field)).get(id)
+        quote = Quote.query.options(joinedload(
+            Quote.user), joinedload(Quote.field)).get(id)
         if not quote:
             return jsonify({"error": "Presupuesto no encontrado"}), 404
 
@@ -137,6 +172,7 @@ def generate_pdf(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @quote.route('/usuario/<int:user_id>/presupuestos', methods=['GET'])
 def get_user_quotes(user_id):
     try:
@@ -144,7 +180,8 @@ def get_user_quotes(user_id):
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        quotes = Quote.query.filter_by(user_id=user_id).order_by(Quote.created_at.desc()).all()
+        quotes = Quote.query.filter_by(user_id=user_id).order_by(
+            Quote.created_at.desc()).all()
 
         result = []
         for quote in quotes:

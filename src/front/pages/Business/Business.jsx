@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SelectBusiness } from "../../components/SelectBusiness/SelectBusiness";
-import { SearchInput } from "../../components/Search";
+import { SearchInput } from "../../components/SearchInput/SearchInput";
 
 export const Business = () => {
   const [search, setSearch] = useState("");
@@ -14,7 +14,7 @@ export const Business = () => {
       <SearchInput
         value={search}
         onChange={handleSearchChange}
-        placeholder="Buscar nombre de la empresa..."
+        placeholder="Search company name..."
       />
 
       <SelectBusiness  searchTerm = {search}/>

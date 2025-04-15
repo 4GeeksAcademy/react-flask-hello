@@ -64,7 +64,7 @@ export const SelectBusiness = ({ searchTerm = "" }) => {
 					{filteredBusinesses.map((business) => (
 						<Link
 							key={business.id}
-							to={`/dashboard`}
+							to={`/calendar`}
 							className="business-card-link"
 							onClick={() => handleSelectBusiness(business)}
 						>

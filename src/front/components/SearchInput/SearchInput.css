@@ -1,0 +1,20 @@
+.search-box {
+    
+    margin: 15px 0;
+    margin-left: 40px;
+    width: 30rem;
+}
+
+.search-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.search-field:focus {
+    outline: none;
+    border-color: #3380c0;
+}

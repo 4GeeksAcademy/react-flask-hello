@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Navbar } from "../components/Navbar/Navbar";
-import { ClientesList } from "../components/Lista";
-import ScrollToTop from "../components/ScrollToTop";
-import { SearchInput } from "../components/Search";
+import { ClientesList } from "../components/Lista.jsx";
+import ScrollToTop from "../components/ScrollToTop.jsx";
+import { SearchInput } from "../components/SearchInput/SearchInput.jsx";
 
 export const ClientList = () => {
 	const [search, setSearch] = useState("");

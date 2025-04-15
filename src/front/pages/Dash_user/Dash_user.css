@@ -30,19 +30,45 @@ body {
     flex-direction: row;
   }
 }
+
 .two-column-layout {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .two-column-layout {
+    flex-direction: row;
+    align-items: stretch; /* 👈 se asegura que ambas columnas se estiren */
+  }
+}
+
+.left-panel {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%; /* misma altura que .info-panel */
 }
 
 .map-container {
-  flex: 3;
-  height: 480px;
+  flex: 2; /* toma 2/3 del espacio */
+  min-height: 0; /* necesario para que flexbox funcione bien con overflow */
   border-radius: 1rem;
   overflow: hidden;
-  border: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.weather-horizontal-section {
+  flex: 1; /* toma 1/3 del espacio */
+  min-height: 0;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
 }
 
 .map-placeholder {
@@ -63,6 +89,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 100%; /* ✅ iguala altura de la izquierda */
 }
 
 .user-info h2 {
@@ -93,6 +120,24 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  max-height: 300px; /* ✅ ajusta como prefieras */
+  overflow-y: auto;
+  padding-right: 0.5rem; /* espacio para scrollbar */
+}
+
+/* Scrollbar bonita */
+.reports-section ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reports-section ul::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 4px;
+}
+
+.reports-section ul::-webkit-scrollbar-track {
+  background: #f3f4f6;
 }
 
 .reports-section li {
@@ -117,6 +162,19 @@ body {
 .reports-section a:hover {
   text-decoration: underline;
   color: #111827;
+}
+
+.reports-section ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reports-section ul::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 4px;
+}
+
+.reports-section ul::-webkit-scrollbar-track {
+  background: #f3f4f6;
 }
 
 .report-description {
@@ -280,11 +338,14 @@ body {
   color: #10b981;
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   transition: all 0.3s ease;
+  display: block;
+  width: 100%; /* ✅ igual que los otros botones */
+  text-align: center;
 }
 
 .change-field-button:hover {

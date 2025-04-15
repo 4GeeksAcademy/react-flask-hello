@@ -155,13 +155,15 @@ const Dash_user = () => {
         }
     };
 
-
-
-
+    const filteredReports = reports.filter(
+        (report) => report.field_id === selectedField?.id
+      );
 
     if (error) return <div className="error-message">{error}</div>;
+    
 
     return (
+        
         <>
             {(!initialSelectionDone && fieldsList.length > 1) && (
                 <FieldSelectorModal
@@ -231,9 +233,9 @@ const Dash_user = () => {
                                         <p className="loading-msg">🔄 Actualizando informes...</p>
                                     )}
 
-                                    {reports.length > 0 ? (
+                                    {filteredReports.length > 0 ? (
                                         <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
-                                            {reports.map((r, i) => (
+                                            {filteredReports.map((r, i) => (
                                                 <li key={i}>
                                                     <div className="report-item-header">
                                                         <div>

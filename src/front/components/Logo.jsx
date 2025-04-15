@@ -3,50 +3,112 @@ import './Styles/Logo.css';
 import axios from "axios";
 
 const LogoFrame = () => {
-    const [image, setImage] = useState(null); 
-    const fileInputRef = useRef(null); 
+    const [image, setImage] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [error, setError] = useState(null);
+    const fileInputRef = useRef(null);
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-    useEffect(() => { 
-        const savedLogo = localStorage.getItem("logoApp");
-        if (savedLogo) {
-            setImage(savedLogo);
+    useEffect(() => {
+        // Intentar cargar el logo desde localStorage primero
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        if (userData && userData.logo_url) {
+            setImage(userData.logo_url);
         }
-    }, []);
-    
+        
+        // Luego intentar obtener desde el servidor (solo si hay token)
+        const fetchLogo = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            try {
+                const response = await axios.get(`${baseUrl}api/get_logo`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    responseType: 'blob' // Para recibir la imagen como blob
+                });
+                
+                // Solo procesamos si obtuvimos datos válidos
+                if (response.data.size > 0) {
+                    // Crear URL para la imagen recibida
+                    const imageUrl = URL.createObjectURL(response.data);
+                    setImage(imageUrl);
+                    
+                    // Actualizar userData en localStorage
+                    const userData = JSON.parse(localStorage.getItem("userData")) || {};
+                    userData.logo_url = imageUrl;
+                    localStorage.setItem("userData", JSON.stringify(userData));
+                }
+            } catch (error) {
+                console.log("No se pudo cargar el logo:", error);
+                // No mostramos error al usuario para este caso
+            }
+        };
+        
+        fetchLogo();
+    }, [baseUrl]);
+
+    // Maneja la carga del archivo
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         
         if (file) {
-            const image_logo_url = URL.createObjectURL(file);
-            setImage(image_logo_url);
+            setIsUploading(true);
+            setError(null);
             
-            // Guardar la imagen en localStorage
+            // Mostrar una vista previa local inmediatamente
             const reader = new FileReader();
-            reader.onloadend = async function() {
-                const base64data = reader.result;
-
-                // Guardar en localStorage
-                localStorage.setItem("logoApp", image_logo_url);
-
-                // También guardar en la cookie (si es necesario)
-                document.cookie = `logoApp=${image_logo_url}; path=/; max-age=${60 * 60 * 24 * 365}`;
-
-                try {
-                    // Enviar la imagen al backend
-                    const response = await axios.post('api/post_logo', {
-                        logo: file,
-                        
-                    },
-                    console.log("Logo enviado al backend:", file),
-                     {
-                        withCredentials: true
-                    });
-                    console.log(response.data.message); // Mensaje de éxito del servidor
-                } catch (error) {
-                    console.error("Error al guardar el logo:", error);
-                }
+            reader.onload = (e) => {
+                setImage(e.target.result);
             };
             reader.readAsDataURL(file);
+            
+            try {
+                // Subir el archivo al servidor
+                const formData = new FormData();
+                formData.append('logo', file); // Nombre del campo según el backend
+                
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("No hay token de autenticación");
+                }
+                
+                console.log("Enviando logo a:", `${baseUrl}api/post_logo`);
+                
+                const response = await axios.post(
+                    `${baseUrl}api/post_logo`,
+                    formData,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                            // No establecemos Content-Type para permitir que axios lo configure
+                        }
+                    }
+                );
+
+                console.log("Respuesta del servidor:", response.data);
+
+                // Actualizar userData en localStorage (mantenemos la vista previa por ahora)
+                const userData = JSON.parse(localStorage.getItem("userData")) || {};
+                // Guardamos la URL de la vista previa temporalmente
+                userData.logo_url = image;
+                localStorage.setItem("userData", JSON.stringify(userData));
+                
+                // No intentamos obtener el logo justo después de subir para evitar problemas de caché o timing
+                // La próxima vez que se cargue el componente lo obtendrá correctamente
+                
+            } catch (error) {
+                console.error("Error al subir el logo:", error);
+                setError("No se pudo subir el logo. Intenta de nuevo.");
+                
+                if (error.response) {
+                    console.log("Respuesta de error:", error.response.data);
+                    console.log("Estado HTTP:", error.response.status);
+                }
+            } finally {
+                setIsUploading(false);
+            }
         }
     };
 
@@ -56,7 +118,6 @@ const LogoFrame = () => {
 
     return (
         <div className="logo-frame" onClick={handleClick}>
-            {/* BOTÓN INVISIBLE DE SUBIDA */}
             <input
                 type="file"
                 ref={fileInputRef}
@@ -64,13 +125,14 @@ const LogoFrame = () => {
                 onChange={handleImageUpload}
                 style={{ display: "none" }}
             />
-
-            {/* VISTA DEL LOGO O TEXTO DEFAULT */}
-            {!image ? (
-                <p className="add-logo-text">Add your logo</p>
+            {isUploading ? (
+                <p className="uploading-text">Subiendo...</p>
+            ) : image ? (
+                <img src={image} alt="Logo" className="logo-image" />
             ) : (
-                <img src={image} alt="Logo" />
+                <p className="add-logo-text">Add your logo</p>
             )}
+            {error && <p className="error-text">{error}</p>}
         </div>
     );
 };

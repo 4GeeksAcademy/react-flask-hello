@@ -247,26 +247,51 @@ def allowed_file(filename):
 
 # LLAMAR AL LOGO DESDE LA API
 @api.route('/get_logo', methods=['GET'])
+@jwt_required()  # Asegúrate de que esta decoración esté presente
 def get_logo():
-    current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT
-    
-    user = User.query.get(current_user_id)
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    # Buscar si existe un logo para el usuario
-    logo = Logo.query.filter_by(user_id=current_user_id).first()
-
-    if not logo:
-        return jsonify({"message": "Logo not found"}), 404
-    
-    # Obtener la ruta del logo y devolver la imagen
-    logo_path = logo.image_logo_url
-    
-    # Servir la imagen desde el directorio donde se encuentra
     try:
-        return send_from_directory(os.path.dirname(logo_path), os.path.basename(logo_path))
+        current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT
+        
+        # Agregar logs para depuración
+        print(f"Buscando logo para el usuario ID: {current_user_id}")
+        
+        user = User.query.get(current_user_id)
+        if not user:
+            print(f"Usuario no encontrado: {current_user_id}")
+            return jsonify({"message": "User not found"}), 404
+
+        # Buscar si existe un logo para el usuario
+        logo = Logo.query.filter_by(user_id=current_user_id).first()
+
+        if not logo:
+            print(f"Logo no encontrado para usuario: {current_user_id}")
+            return jsonify({"message": "Logo not found"}), 404
+        
+        if not logo.image_logo_url:
+            print(f"URL de logo vacía para usuario: {current_user_id}")
+            return jsonify({"message": "Logo URL is empty"}), 404
+        
+        # Obtener la ruta del logo
+        logo_path = logo.image_logo_url
+        print(f"Ruta del logo: {logo_path}")
+        
+        # Verificar si el archivo existe
+        if not os.path.exists(logo_path):
+            print(f"El archivo no existe en la ruta: {logo_path}")
+            return jsonify({"message": "Logo file not found on server"}), 404
+        
+        # Servir la imagen desde el directorio donde se encuentra
+        directory = os.path.dirname(logo_path)
+        filename = os.path.basename(logo_path)
+        print(f"Sirviendo archivo desde directorio: {directory}, nombre: {filename}")
+        
+        return send_from_directory(directory, filename)
+    
     except Exception as e:
+        print(f"Error en get_logo: {str(e)}")
+        # Más detalles sobre la excepción para depuración
+        import traceback
+        traceback.print_exc()
         return jsonify({"message": f"Error serving logo: {str(e)}"}), 500
     
 

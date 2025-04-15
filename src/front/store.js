@@ -111,7 +111,7 @@ export default function storeReducer(store, action = {}) {
     case "sync_calendar_error":
       return {
         ...store,
-        syncStatu: {
+        syncStatus: {
           loading: false,
           message: action.payload,
           success: false,

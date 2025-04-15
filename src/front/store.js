@@ -4,7 +4,6 @@ export const initialStore = () => {
   const businessStr = localStorage.getItem("business");
   const selectedBusinessStr = localStorage.getItem("selected_business");
 
-  
   let user = null;
   let business = [];
   let selectedBusiness = null;
@@ -22,6 +21,10 @@ export const initialStore = () => {
     error: null,
     business: business || [],
     selectedBusiness: selectedBusiness || null,
+    calendarEvents: [],
+    calendarLoading: false,
+    calendarError: null,
+    syncStatus: null,
   };
 };
 
@@ -51,12 +54,6 @@ export default function storeReducer(store, action = {}) {
         business: [],
         selectedBusiness: null,
       };
-    
-    case "set_error":
-      return {
-        ...store,
-        error: action.payload,
-      };
 
     case "set_business":
       localStorage.setItem("business", JSON.stringify(action.payload));
@@ -71,6 +68,62 @@ export default function storeReducer(store, action = {}) {
         ...store,
         selectedBusiness: action.payload,
       };
+
+    case "load_calendar_events_start":
+      return {
+        ...store,
+        calendarLoading: true,
+        calendarError: null,
+      };
+
+    case "load_calendar_events_success":
+      return {
+        ...store,
+        calendarEvents: action.payload,
+        calendarLoading: false,
+        calendarError: null,
+      };
+
+    case "load_calendar_event_error":
+      return {
+        ...store,
+        calendarLoading: false,
+        calendarError: action.payload,
+      };
+
+    case "sync_calendar_start":
+      return {
+        ...store,
+        syncStatus: { loading: true, message: null, success: null },
+      };
+
+    case "sync_calendar_success":
+      return {
+        ...store,
+        syncStatus: {
+          loading: false,
+          message: action.payload.msg,
+          success: true,
+          count: action.payload.synced_appointments.length,
+        },
+      };
+
+    case "sync_calendar_error":
+      return {
+        ...store,
+        syncStatu: {
+          loading: false,
+          message: action.payload,
+          success: false,
+        },
+      };
+
+    case "set_error":
+      return {
+        ...store,
+        error: action.payload,
+      };
+
     default:
       return store;
   }

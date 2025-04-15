@@ -23,32 +23,18 @@ AWS_REGION = os.getenv("AWS_REGION", "auto")
 import uuid
 BUCKET_NAME = f"inventory-files-{uuid.uuid4().hex[:8]}"
 
+
 # Configuración de carga de archivos
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = "upload"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-
-@upload.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-    return jsonify(response_body), 200
 
 
 # Ruta para subir archivos Excel
 
-@upload.route('/upload-inventory', methods=['POST'])
+@upload.route('/inventory', methods=['POST'])
 @jwt_required()
 def upload_inventory():
 
-    """
-    Maneja la subida de archivos Excel:
-    1. Guarda el archivo original en Tigris S3
-    2. Procesa el contenido y lo guarda en la tabla Productos
-    3. Guarda la URL de Tigris en la tabla TigrisFiles
-    """
     # Obtener el ID del usuario del token JWT
     user_id = get_jwt_identity()
 

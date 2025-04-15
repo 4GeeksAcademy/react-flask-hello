@@ -15,7 +15,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     
-    _password = db.Column('password', db.String(128), nullable=False)
+    _password: Mapped[str] = mapped_column("password", String(128), nullable=False)
 
     is_active: Mapped[bool] = mapped_column(
         Boolean(), nullable=False, default=False)
@@ -158,7 +158,6 @@ class Facturas(db.Model):
 # TABLA DETALLES_FACTURA (PRODUCTOS - FACTURAS)
 class Detalles_Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-
     # Relación muchos a uno con Facturas, la tabla "uno"
     factura_id: Mapped[int] = mapped_column(ForeignKey('facturas.id'))
     factura = relationship("Facturas", back_populates="id_factura")

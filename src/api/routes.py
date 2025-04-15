@@ -198,22 +198,6 @@ def login():
         }), 200
 
 
-# MUESTRA LOS DATOS DEL USUARIO ACTUAL (ADMINISTRADOR/USUARIO)
-@api.route('/user', methods=['GET'])
-@jwt_required() 
-def get_current_user():
-    current_user = get_jwt_identity()
-    user_id = current_user.get("id")
-    
-    user = User.query.get(user_id)
-    
-    if user is None:
-        return jsonify({"msg": "User not found"}), 404
-
-    response_body = user.serialize()
-
-    return jsonify(response_body), 200
-
 
 # MUESTRA TODOS LOS USUARIOS (ADMINISTRADOR)
 @api.route('/users', methods=['GET'])
@@ -373,7 +357,8 @@ def get_logo():
 
 # Ruta para subir y guardar el logo
 
-@api.route('/post_logos', methods=['POST'])
+@api.route('/post_logo', methods=['POST'])
+@jwt_required()
 def post_logos():
     current_user_id = get_jwt_identity()
     

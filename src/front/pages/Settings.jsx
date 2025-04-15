@@ -29,12 +29,13 @@ const Settings = () => {
     try {
       // Realizamos la petición POST con axios y enviamos el token en los headers
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "upload-inventory", // Asegúrate de que esta URL sea correcta
+        import.meta.env.VITE_BACKEND_URL + "upload/inventory", // Asegúrate de que esta URL sea correcta
         formData,
         {
           headers: {
             "Accept": "application/json",
             "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
           },
 
           // El navegador se encargará de enviarlo automáticamente con cada solicitud si el token está en las cookies

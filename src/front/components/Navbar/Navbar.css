@@ -323,9 +323,9 @@
 .sub-navigation-container {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+  transition: max-height 1s ease-in-out, opacity 1s ease-in-out;
   opacity: 0;
-  background-color: #2c3e50;
+  background-color: var(--primary-color);
 }
 
 .sub-navigation-container.visible {

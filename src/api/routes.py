@@ -4,7 +4,6 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import send_from_directory
-from api.upload_routes import upload
 import os
 import random
 import string
@@ -13,86 +12,6 @@ from werkzeug.utils import secure_filename
 
 api = Blueprint('api', __name__)
 
-
-# REGISTRO DEL BLUEPRINT UPLOAD:
-api.register_blueprint(upload, url_prefix='/upload')
-
-@api.route('/home')
-def sitemap():
-    return generate_sitemap(api)
-
-@api.route('/', methods=['POST', 'GET'])
-def handle_hello():
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-    return jsonify(response_body), 200
-
-# ENDPOINT PARA GENERAR USUARIO ANÓNIMO
-@api.route('/anonymous/create', methods=['POST'])
-def create_user_anonymous():
-    # VERIFICAR SI EXISTE UN TOKEN
-    existing_token = request.cookies.get('anonymousToken')
-
-    if existing_token:
-        return jsonify({
-            'message': "El usuario anónimo ya existe",
-            'isNew': False,
-            'token': existing_token
-        }), 200
-
-    # Crear usuario anónimo con un email temporal y una contraseña aleatoria
-
-    timestamp = int(time.time())
-    random_suffix = ''.join(random.choices(
-        string.ascii_lowercase + string.digits, k=8))
-    temp_email = f"anonymous_{timestamp}_{random_suffix}@temp.com"
-    temp_password = ''.join(random.choices(
-        string.ascii_letters + string.digits, k=12))
-
-    # Crear el usuario anónimo
-    anonymous_user = User(
-        email=temp_email,
-        password=temp_password,  # Se encriptará automáticamente gracias al setter
-        shopname="Anonymous Shop",
-        is_active=True
-    )
-
-    try:
-        db.session.add(anonymous_user)
-        db.session.commit()
-
-        # Crear un logo por defecto para el usuario anónimo
-        logo = Logo(user_id=anonymous_user.id)
-        db.session.add(logo)
-        db.session.commit()
-
-        # Generar token para el usuario anónimo
-        token_data = {
-            "id": anonymous_user.id,
-            "email": anonymous_user.email,
-            "is_anonymous": True,
-            "logo_url": logo.image_logo_url
-        }
-        anonymous_token = create_access_token(identity=token_data)
-
-        # Preparar respuesta (en una aplicación real, establecerías el token como cookie)
-        response = jsonify({
-            'message': "Usuario anónimo creado exitosamente",
-            'isNew': True,
-            'token': anonymous_token,
-            'user': anonymous_user.serialize()
-        })
-
-        # Establecer la cookie con el token anónimo
-        response.set_cookie('anonymousToken', anonymous_token,
-                            max_age=86400*30)  # 30 días
-        
-        return response, 201
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': f"Error al crear usuario anónimo: {str(e)}"}), 500
 
 
 # RUTA PARA REGISTRARSE UN USUARIO Y LOGUEARCE AUTOMÁTICAMENTE (SIGNUP)
@@ -132,12 +51,8 @@ def signup():
         db.session.commit()
 
         # Creamos el access token con el logo incluido
-        access_token = create_access_token(identity={
-            "id": new_user.id,
-            "email": new_user.email,
-            "shopname": new_user.shopname,
-            "logo_url": logo.image_logo_url
-        })
+        access_token = create_access_token(identity=str(new_user.id))
+       
 
         response = jsonify({
             "access_token": access_token,
@@ -185,7 +100,7 @@ def login():
         "email": user.email,
       
     }
-    access_token = create_access_token(identity=token_data)
+    access_token = create_access_token(identity=str(user.id))
 
     # Guardar el ID del usuario en la sesión
     session['user_id'] = user.id
@@ -196,7 +111,6 @@ def login():
             
 
         }), 200
-
 
 
 # MUESTRA TODOS LOS USUARIOS (ADMINISTRADOR)

@@ -10,6 +10,7 @@ const Settings = () => {
   // Obtenemos el token de localStorage para enviarlo con la solicitud
   const token = localStorage.getItem('token');
 
+
   // Maneja el cambio del archivo seleccionado
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -20,6 +21,10 @@ const Settings = () => {
     event.preventDefault();
     if (!file) return alert("Selecciona un archivo primero.");
 
+    if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+      return alert("Por favor, selecciona un archivo Excel válido (.xlsx o .xls)");
+    }
+
     setUploading(true);
     setResponseDebug(null);
 
@@ -27,19 +32,19 @@ const Settings = () => {
     formData.append("file", file);
 
     try {
-      // Realizamos la petición POST con axios y enviamos el token en los headers
+      console.log("Subiendo a:", `${import.meta.env.VITE_BACKEND_URL}/upload/inventory`);
+      console.log("Token usado:", token);
+
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "upload/inventory", // Asegúrate de que esta URL sea correcta
+        `${import.meta.env.VITE_BACKEND_URL}/upload/inventory`,
         formData,
         {
           headers: {
-            "Accept": "application/json",
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
 
-          // El navegador se encargará de enviarlo automáticamente con cada solicitud si el token está en las cookies
-          withCredentials: true, 
         }
       );
 
@@ -51,27 +56,37 @@ const Settings = () => {
         data: response.data
       });
 
-      alert(response.data.message); // Mostrar el mensaje de respuesta
-
+      alert(response.data.message);
+      console.log("URL del archivo en Tigris:", response.data.file_url);
     } catch (error) {
       console.error("Error al subir archivo:", error);
+
+      let errorMessage = "Error desconocido";
+
+      if (error.response) {
+        console.log("Datos de la respuesta de error:", error.response.data);
+        errorMessage = error.response.data.error || error.message;
+      } else {
+        errorMessage = error.message;
+      }
 
       // Manejo de error detallado
       setResponseDebug({
         error: true,
-        message: error.message,
+        message: errorMessage,
         response: error.response ? {
           status: error.response.status,
           data: error.response.data
         } : "Sin respuesta del servidor"
       });
 
-      alert("Error al subir archivo: " + (error.response?.data?.error || error.message));
+      alert("Error al subir archivo: " + errorMessage);
     } finally {
       setUploading(false); // Terminamos el proceso de carga
     }
   };
 
+  // El JSX debe estar aquí, fuera de handleUpload
   return (
     <div className="option_panel">
       <div className="inventary_btn">
@@ -79,17 +94,22 @@ const Settings = () => {
       </div>
       <div className="excel-uploader p-4">
         <h1>Cargar Inventario desde Excel</h1>
+        <p className="text-sm text-gray-600 mb-2">
+          El archivo Excel debe contener las siguientes columnas:
+          <strong>nombre_del_producto, precio_por_unidad, descripción, unidades</strong>
+        </p>
         <form onSubmit={handleUpload}>
           <input
             type="file"
-            accept=".xlsx"
+            accept=".xlsx, .xls"
             onChange={handleFileChange}
-            disabled={uploading} // Deshabilitamos el input si estamos subiendo
+            disabled={uploading}
+            id="fileInput"
           />
           <button
             type="submit"
             className="p-2 bg-blue-500 text-white"
-            disabled={uploading} // Deshabilitamos el botón si estamos subiendo
+            disabled={uploading}
           >
             {uploading ? "Subiendo..." : "Subir a Tigris Data"}
           </button>
@@ -112,16 +132,6 @@ const Settings = () => {
                 <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-auto">
                   {JSON.stringify(responseDebug.data, null, 2)}
                 </pre>
-                {responseDebug.data.download_url && (
-                  <a
-                    href={responseDebug.data.download_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-block bg-green-500 text-white px-4 py-2 rounded"
-                  >
-                    Descargar archivo guardado
-                  </a>
-                )}
               </>
             )}
           </div>

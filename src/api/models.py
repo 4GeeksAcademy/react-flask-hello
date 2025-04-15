@@ -190,3 +190,41 @@ class Logo(db.Model):
             "image_logo_url": self.image_logo_url,
             "user_id": self.user_id
         }
+
+
+
+#Añadido por JAVI para el carrito de la compra
+
+
+   # Tabla de productos comprados en una compra (muchos a muchos)
+class BuyItem(db.Model):
+    __tablename__ = 'buy_items'
+    id = db.Column(db.Integer, primary_key=True)
+    buy_id = db.Column(db.Integer, db.ForeignKey('buys.id'))
+    producto_id = db.Column(db.Integer, db.ForeignKey('productos.id'))
+    cantidad = db.Column(db.Integer, nullable=False)
+    precio = db.Column(db.Float, nullable=False)
+
+    # Relación con el Producto
+
+    producto = db.relationship('Producto', backref='buy_items')
+
+
+# Tabla de la compra para el vendedor
+
+class Buy(db.Model):
+    __tablename__ = 'buys'
+    id = db.Column(db.Integer, primary_key=True)
+
+    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   # Quien compra
+    seller_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Quien vende
+
+    total = db.Column(db.Float, nullable=False)
+    fecha = db.Column(db.DateTime, server_default=db.func.now())
+    factura_path = db.Column(db.String(256))  # Ruta al archivo factura.PDF de la compra
+
+    # Relaciones para variar unidades de STOCK
+
+    buyer = db.relationship('User', foreign_keys=[buyer_id], backref='compras_realizadas')
+    seller = db.relationship('User', foreign_keys=[seller_id], backref='ventas_realizadas')
+    items = db.relationship('BuyItem', backref='compra', cascade='all, delete-orphan')

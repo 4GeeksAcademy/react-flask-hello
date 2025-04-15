@@ -5,6 +5,9 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import send_from_directory
 from api.upload_routes import upload
+from Buys import bp as buys_bp # Modificacion JAVI
+
+
 import os
 import random
 import string
@@ -12,6 +15,7 @@ import time
 from werkzeug.utils import secure_filename  # Línea 9
 
 api = Blueprint('api', __name__)
+api.register_blueprint(buys_bp) # Modificacion JAVI
 
 
 @api.route('/home')
@@ -305,3 +309,6 @@ def get_logo():
         return send_from_directory(os.path.dirname(logo_path), os.path.basename(logo_path))
     except Exception as e:
         return jsonify({"message": f"Error serving logo: {str(e)}"}), 500
+    
+
+

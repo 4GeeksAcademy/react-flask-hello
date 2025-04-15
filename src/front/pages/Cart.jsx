@@ -11,7 +11,7 @@ const Cart = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/productos')
+    fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/productos')//Conecta con BackEnd
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error(err))

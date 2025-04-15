@@ -33,7 +33,7 @@ const LogoFrame = () => {
 
                 try {
                     // Enviar la imagen al backend
-                    const response = await axios.post('api/post_logos', {
+                    const response = await axios.post('api/post_logo', {
                         logo: file,
                         
                     },

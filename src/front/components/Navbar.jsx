@@ -27,19 +27,6 @@ const Navbar = () => {
     };
 
 
-				<div className="logo">
-					<LogoFrame />
-				</div>
-				
-				<div className="nav_buttons">
-					<button className="nav-btn"  onClick={() => navigate("/")}>Register</button>
-					<button className="nav-btn"  onClick={() => navigate("/login")}>Login</button>
-					<button className="nav-btn"  onClick={() => navigate("/home")}>Home</button>
-					<button className="nav-btn"  onClick={() => navigate("/settings")}>Settings</button>
-					<button className="nav-btn"  onClick={() => navigate("/cart")}>Cart</button>
-
-				</div>
-
     // Inicializa el estado al cargar el componente
     checkLoginStatus();
 
@@ -69,6 +56,7 @@ const Navbar = () => {
           )}
           <button className="nav-btn" onClick={() => navigate("/home")}>Home</button>
           <button className="nav-btn" onClick={() => navigate("/settings")}>Settings</button>
+          <button className="nav-btn"  onClick={() => navigate("/cart")}>Cart</button>
 
           {isLoggedIn && (
             <button className="nav-btn" onClick={LogoutButton}>Cerrar sesión</button>

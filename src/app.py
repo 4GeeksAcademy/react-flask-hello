@@ -4,11 +4,12 @@ from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS  # IMPORTA CORS
-from api.upload_routes import upload
+
 # IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from api.upload_routes import upload
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -17,9 +18,13 @@ app = Flask(__name__)
 
 # Registra el Blueprint con el prefijo de URL
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(upload, url_prefix='/upload')
+
+
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app, supports_credentials=True)
+CORS(app, resources={r"/upload/*": {"origins": "*"}})
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"

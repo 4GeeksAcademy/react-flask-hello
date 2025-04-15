@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./List.css";
 
-export const ClientesList = ({ search }) => {
-    const [clientes, setClientes] = React.useState([
+export const ClientList = ({ search }) => {
+    const [clients, setClients] = React.useState([
         {
             id: 1,
             nombre: "Juan",
@@ -101,21 +101,13 @@ export const ClientesList = ({ search }) => {
             telefono: "555-8901",
             email: "elena.moreno@example.com",
         },
-        {
-            id: 13,
-            nombre: "Pablo",
-            apellido: "Jiménez",
-            cliente_dni: "21987654",
-            telefono: "555-2109",
-            email: "pablo.jimenez@example.com",
-        }
-
+     
     ]);
 
-    const filteredClientes = clientes.filter(
-        (cliente) =>
-            cliente.nombre.toLowerCase().includes(search.toLowerCase()) ||
-            cliente.cliente_dni.includes(search)
+    const filteredClientes = clients.filter(
+        (client) =>
+            client.nombre.toLowerCase().includes(search.toLowerCase()) ||
+            client.cliente_dni.includes(search)
     );
 
     return (
@@ -124,27 +116,27 @@ export const ClientesList = ({ search }) => {
 
             {filteredClientes.length > 0 ? (
                 <div className="clients-grid">
-                    {filteredClientes.map((cliente) => (
+                    {filteredClientes.map((client) => (
                         <Link
-                            key={cliente.id}
-                            to={`/cliente/${cliente.id}`}
+                            key={client.id}
+                            to={`/cliente/${client.id}`}
                             className="client-card-link"
                         >
                             <div className="client-card">
                                 <div className="client-header">
                                     <h3 className="client-name">
-                                        {cliente.nombre} {cliente.apellido}
+                                        {client.nombre} {client.apellido}
                                     </h3>
-                                    <span className="client-dni">DNI: {cliente.cliente_dni}</span>
+                                    <span className="client-dni">DNI: {client.cliente_dni}</span>
                                 </div>
                                 <div className="client-info">
                                     <div className="info-item">
-                                        <i className="info-icon phone-icon"></i>
-                                        <span>{cliente.telefono}</span>
+                                        <i className="info-icon fas fa-phone"></i>
+                                        <span>{client.telefono}</span>
                                     </div>
                                     <div className="info-item">
-                                        <i className="info-icon email-icon"></i>
-                                        <span>{cliente.email}</span>
+                                        <i className="info-icon fas fa-envelope"></i>
+                                        <span>{client.email}</span>
                                     </div>
                                 </div>
                             </div>

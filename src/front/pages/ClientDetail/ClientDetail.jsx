@@ -54,7 +54,7 @@ export const ClientDetail = () => {
 
     const fetchClientServices = async () => {
         try {
-            const response = await fetch(`${backendUrl}clients/${clientId}/services`, {
+            const response = await fetch(`${backendUrl}api/clients/${clientId}/services`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -32,7 +32,7 @@ const Settings = () => {
     formData.append("file", file);
 
     try {
-      console.log("Subiendo a:", `${import.meta.env.VITE_BACKEND_URL}/upload/inventory`);
+      console.log("Subiendo a:", `${import.meta.env.VITE_BACKEND_URL}upload/inventory`);
       console.log("Token usado:", token);
 
       const response = await axios.post(

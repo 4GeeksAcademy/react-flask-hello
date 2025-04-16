@@ -12,8 +12,14 @@ const DashboardAdmin = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
-  // Estados adicionales para fields, reports y budgets
+  // Estados para Field
   const [userField, setUserField] = useState(null);
+  const [fieldCreateModalOpen, setFieldCreateModalOpen] = useState(false);
+  const [fieldEditModalOpen, setFieldEditModalOpen] = useState(false);
+  const [newField, setNewField] = useState({ name: "", area: "" });
+  const [editingField, setEditingField] = useState(null);
+
+  // Estados para Reports y Budgets (ejemplo)
   const [userReports, setUserReports] = useState([]);
   const [userBudgets, setUserBudgets] = useState([]);
 
@@ -28,7 +34,6 @@ const DashboardAdmin = () => {
           `${import.meta.env.VITE_BACKEND_URL}/user/users`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        console.log("Users received", res.data);
         setUsers(Array.isArray(res.data) ? res.data : res.data.users || []);
         if (Array.isArray(res.data) ? res.data.length > 0 : (res.data.users && res.data.users.length > 0)) {
           setSelectedUser(Array.isArray(res.data) ? res.data[0] : res.data.users[0]);
@@ -50,7 +55,7 @@ const DashboardAdmin = () => {
           `${import.meta.env.VITE_BACKEND_URL}/user/${selectedUser.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        // Asumimos que el endpoint devuelve un objeto field (ajusta si retorna un array)
+        // Asumimos que el endpoint devuelve el objeto field
         setUserField(res.data);
       } catch (err) {
         console.error("Error fetching user field:", err);
@@ -59,7 +64,7 @@ const DashboardAdmin = () => {
     fetchField();
   }, [selectedUser, token]);
 
-  // Obtener Reports del usuario seleccionado
+  // Obtención de Reports
   useEffect(() => {
     if (!selectedUser) return;
     const fetchReports = async () => {
@@ -76,7 +81,7 @@ const DashboardAdmin = () => {
     fetchReports();
   }, [selectedUser, token]);
 
-  // Obtener Budgets del usuario seleccionado
+  // Obtención de Budgets
   useEffect(() => {
     if (!selectedUser) return;
     const fetchBudgets = async () => {
@@ -146,7 +151,7 @@ const DashboardAdmin = () => {
     }
   };
 
-  // Función para eliminar report (similar a handleDeleteUser)
+  // Funciones para Reports
   const handleDeleteReport = async (reportId) => {
     try {
       await axios.delete(
@@ -159,12 +164,54 @@ const DashboardAdmin = () => {
     }
   };
 
+  // Funciones para Field
+  const handleCreateField = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/fields`,
+        newField,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(res.data);
+      setNewField({ name: "", area: "" });
+      setFieldCreateModalOpen(false);
+    } catch (err) {
+      console.error("Error creating field:", err);
+    }
+  };
+
+  const handleUpdateField = async () => {
+    if (!editingField) return;
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/fields/${editingField.id}`,
+        editingField,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(res.data);
+      setEditingField(null);
+      setFieldEditModalOpen(false);
+    } catch (err) {
+      console.error("Error updating field:", err);
+    }
+  };  
+  const handleDeleteField = async (fieldId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/fields/${fieldId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(null);
+    } catch (err) {
+      console.error("Error deleting field:", err);
+    }
+  };
   return (
     <div className="dashboard-container">
       <h2 className="dashboard-title">Admin Dashboard</h2>
       {error && <div className="error-message">{error}</div>}
       <div className="dashboard-grid">
-        {/* Columna de lista de usuarios (30% ancho) */}
+        {/* Lista de usuarios (30%) */}
         <div className="users-section" style={{ width: "30%" }}>
           <h3 className="section-title">Users</h3>
           <ul className="users-list">
@@ -208,7 +255,7 @@ const DashboardAdmin = () => {
           </button>
         </div>
 
-        {/* Columna de detalles del usuario y extra (70% ancho) */}
+        {/* Detalles del usuario y secciones extra (70%) */}
         <div className="user-details-section" style={{ width: "80%" }}>
           {selectedUser ? (
             <div className="user-details-card">
@@ -243,10 +290,33 @@ const DashboardAdmin = () => {
                     <p>
                       <strong>Area:</strong> {userField.area}
                     </p>
-                    {/* Agrega más datos del field si es necesario */}
+                    <button
+                      onClick={() => {
+                        setEditingField(userField);
+                        setFieldEditModalOpen(true);
+                      }}
+                      className="submit-button"
+                    >
+                      Edit Field
+                    </button>
+                    <button
+                      onClick={handleDeleteField}
+                      className="action-button delete-button"
+                      style={{ marginLeft: "0.5rem" }}
+                    >
+                      Delete Field
+                    </button>
                   </div>
                 ) : (
-                  <p>No field found for this user.</p>
+                  <div>
+                    <p>No field found for this user.</p>
+                    <button
+                      onClick={() => setFieldCreateModalOpen(true)}
+                      className="submit-button"
+                    >
+                      Create Field
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -266,7 +336,8 @@ const DashboardAdmin = () => {
                         >
                           View Report
                         </a>
-                        {" "}
+                        <br />
+                        <p><strong>Date:</strong> {new Date(report.date).toLocaleString()}</p>
                         <button onClick={() => handleDeleteReport(report.id)}>
                           Delete
                         </button>
@@ -286,7 +357,8 @@ const DashboardAdmin = () => {
                     {userBudgets.map((budget) => (
                       <li key={budget.id}>
                         <strong>{budget.description}</strong> - ${budget.cost}
-                        {" "}
+                        <br />
+                        <p><strong>Created At:</strong> {new Date(budget.created_at).toLocaleString()}</p>
                         <a
                           href={`${import.meta.env.VITE_BACKEND_URL}/presupuesto/${budget.id}/pdf`}
                           target="_blank"
@@ -301,7 +373,6 @@ const DashboardAdmin = () => {
                   <p>No budgets found.</p>
                 )}
               </div>
-
             </div>
           ) : (
             <p>Select a user to view details</p>
@@ -382,7 +453,6 @@ const DashboardAdmin = () => {
         </div>
       )}
 
-
       {/* Modal para editar usuario */}
       {editModalOpen && editingUser && (
         <div className="modal-overlay" onClick={() => setEditModalOpen(false)}>
@@ -462,6 +532,82 @@ const DashboardAdmin = () => {
         </div>
       )}
 
+      {/* Modal para crear Field */}
+      {fieldCreateModalOpen && (
+        <div className="modal-overlay" onClick={() => setFieldCreateModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Create Field</h3>
+            <div className="create-field-form">
+              <input
+                type="text"
+                placeholder="Name"
+                value={newField.name}
+                onChange={(e) =>
+                  setNewField({ ...newField, name: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Area"
+                value={newField.area}
+                onChange={(e) =>
+                  setNewField({ ...newField, area: e.target.value })
+                }
+                className="form-input"
+              />
+              <div className="form-actions">
+                <button onClick={handleCreateField} className="submit-button">
+                  Create
+                </button>
+                <button onClick={() => setFieldCreateModalOpen(false)} className="cancel-button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar Field */}
+      {fieldEditModalOpen && editingField && (
+        <div className="modal-overlay" onClick={() => setFieldEditModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Edit Field</h3>
+            <div className="edit-field-form">
+              <input
+                type="text"
+                placeholder="Name"
+                value={editingField.name}
+                onChange={(e) =>
+                  setEditingField({ ...editingField, name: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Area"
+                value={editingField.area}
+                onChange={(e) =>
+                  setEditingField({ ...editingField, area: e.target.value })
+                }
+                className="form-input"
+              />
+              <div className="form-actions">
+                <button onClick={handleUpdateField} className="submit-button">
+                  Update
+                </button>
+                <button onClick={() => {
+                  setFieldEditModalOpen(false);
+                  setEditingField(null);
+                }} className="cancel-button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

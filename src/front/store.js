@@ -3,15 +3,21 @@ export const initialStore = () => {
   const userStr = localStorage.getItem("user");
   const businessStr = localStorage.getItem("business");
   const selectedBusinessStr = localStorage.getItem("selected_business");
+  const clientsStr = localStorage.getItem("clients");
+  const selectedClientStr = localStorage.getItem("selectedClient");
 
   let user = null;
   let business = [];
   let selectedBusiness = null;
+  let clients = [];
+  let selectedClient = null;
 
   try {
     if (userStr) user = JSON.parse(userStr);
     if (businessStr) business = JSON.parse(businessStr);
     if (selectedBusinessStr) selectedBusiness = JSON.parse(selectedBusinessStr);
+    if (clientsStr) clients = JSON.parse(clientsStr);
+    if (selectedClientStr) selectedClient = JSON.parse(selectedClientStr);
   } catch (e) {
     console.log("error in the data");
   }
@@ -25,6 +31,8 @@ export const initialStore = () => {
     calendarLoading: false,
     calendarError: null,
     syncStatus: null,
+    clients: clients || [],
+    selectedClient: selectedClient || null,
   };
 };
 
@@ -46,6 +54,8 @@ export default function storeReducer(store, action = {}) {
       localStorage.removeItem("user");
       localStorage.removeItem("business");
       localStorage.removeItem("selected_business");
+      localStorage.removeItem("clients");
+      localStorage.removeItem("selectedClient");
 
       return {
         ...store,
@@ -53,6 +63,7 @@ export default function storeReducer(store, action = {}) {
         user: null,
         business: [],
         selectedBusiness: null,
+        clients: [],
       };
 
     case "set_business":
@@ -116,6 +127,19 @@ export default function storeReducer(store, action = {}) {
           message: action.payload,
           success: false,
         },
+      };
+
+    case "set_clients":
+      localStorage.setItem("clients", JSON.stringify(action.payload));
+      return {
+        ...store,
+        clients: action.payload,
+      };
+    case "select_client":
+      localStorage.setItem("selectedClient", JSON.stringify(action.payload));
+      return {
+        ...store,
+        selectedClient: action.payload,
       };
 
     case "set_error":

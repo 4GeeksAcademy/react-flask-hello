@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./List.css";
+import "./ClientList.css";
 
 export const ClientList = ({ search }) => {
     const [clients, setClients] = React.useState([])
-        
-    
+
     const filteredClientes = clients.filter(
         (client) =>
             client.nombre.toLowerCase().includes(search.toLowerCase()) ||

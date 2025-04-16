@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ClientList } from "../../components/ClientsList/List";
+import { ClientList } from "../../components/ClientsList/ClientList";
 import { SearchInput } from "../../components/SearchInput/SearchInput";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
-
+import "./Clients.css"
 export const Clients = () => {
     const [search, setSearch] = useState("");
     const { store, dispatch } = useGlobalReducer();

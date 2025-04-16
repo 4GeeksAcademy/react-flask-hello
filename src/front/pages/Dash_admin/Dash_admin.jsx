@@ -5,6 +5,7 @@ import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para la barra de búsqueda
   const [selectedUser, setSelectedUser] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [newUser, setNewUser] = useState({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
@@ -13,7 +14,7 @@ const DashboardAdmin = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   // Estados para Field
-  const [userField, setUserField] = useState(null);
+  const [userFields, setUserFields] = useState([]);
   const [fieldCreateModalOpen, setFieldCreateModalOpen] = useState(false);
   const [fieldEditModalOpen, setFieldEditModalOpen] = useState(false);
   const [newField, setNewField] = useState({ name: "", area: "" });
@@ -34,10 +35,11 @@ const DashboardAdmin = () => {
           `${import.meta.env.VITE_BACKEND_URL}/user/users`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setUsers(Array.isArray(res.data) ? res.data : res.data.users || []);
-        if (Array.isArray(res.data) ? res.data.length > 0 : (res.data.users && res.data.users.length > 0)) {
-          setSelectedUser(Array.isArray(res.data) ? res.data[0] : res.data.users[0]);
-        }
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data.users || [];
+        setUsers(data);
+        if (data.length > 0) setSelectedUser(data[0]);
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Error fetching users");
@@ -46,22 +48,27 @@ const DashboardAdmin = () => {
     fetchUsers();
   }, [token]);
 
+  // Filtrar usuarios según searchTerm
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Obtener Field asociado al usuario seleccionado
   useEffect(() => {
     if (!selectedUser) return;
-    const fetchField = async () => {
+    const fetchFields = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/user/${selectedUser.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/users/${selectedUser.id}/fields`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        // Asumimos que el endpoint devuelve el objeto field
-        setUserField(res.data);
+        console.log("Fields received:", res.data);
+        setUserFields(res.data);
       } catch (err) {
-        console.error("Error fetching user field:", err);
+        console.error("Error fetching user fields:", err);
       }
     };
-    fetchField();
+    fetchFields();
   }, [selectedUser, token]);
 
   // Obtención de Reports
@@ -110,7 +117,10 @@ const DashboardAdmin = () => {
         `${import.meta.env.VITE_BACKEND_URL}/user/users`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUsers(Array.isArray(updatedUsers.data) ? updatedUsers.data : updatedUsers.data.users || []);
+      const data = Array.isArray(updatedUsers.data)
+        ? updatedUsers.data
+        : updatedUsers.data.users || [];
+      setUsers(data);
       setCreateModalOpen(false);
     } catch (err) {
       console.error("Error creating user:", err);
@@ -138,7 +148,7 @@ const DashboardAdmin = () => {
   const handleDeleteUser = async (userId) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/user/users/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users?id=${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUsers(users.filter((user) => user.id !== userId));
@@ -158,13 +168,13 @@ const DashboardAdmin = () => {
         `${import.meta.env.VITE_BACKEND_URL}/delete/${reportId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUserReports(userReports.filter(report => report.id !== reportId));
+      setUserReports(userReports.filter((report) => report.id !== reportId));
     } catch (err) {
       console.error("Error deleting report:", err);
     }
   };
 
-  // Funciones para Field
+  // Funciones para Field (CRUD para Tierras)
   const handleCreateField = async () => {
     try {
       const res = await axios.post(
@@ -172,7 +182,7 @@ const DashboardAdmin = () => {
         newField,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUserField(res.data);
+      setUserFields(res.data);
       setNewField({ name: "", area: "" });
       setFieldCreateModalOpen(false);
     } catch (err) {
@@ -188,61 +198,50 @@ const DashboardAdmin = () => {
         editingField,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUserField(res.data);
+      setUserFields(res.data);
       setEditingField(null);
       setFieldEditModalOpen(false);
     } catch (err) {
       console.error("Error updating field:", err);
     }
-  };  
+  };
+
   const handleDeleteField = async (fieldId) => {
     try {
       await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/fields/${fieldId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUserField(null);
+      setUserFields(null);
     } catch (err) {
       console.error("Error deleting field:", err);
     }
   };
+
   return (
     <div className="dashboard-container">
       <h2 className="dashboard-title">Admin Dashboard</h2>
       {error && <div className="error-message">{error}</div>}
       <div className="dashboard-grid">
-        {/* Lista de usuarios (30%) */}
+        {/* Columna de usuarios (30%) */}
         <div className="users-section" style={{ width: "30%" }}>
           <h3 className="section-title">Users</h3>
+          <input
+            type="text"
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
           <ul className="users-list">
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <li
                 key={user.id}
                 className="user-item"
                 onClick={() => setSelectedUser(user)}
               >
                 <span>{user.name}</span>
-                <div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditingUser(user);
-                      setEditModalOpen(true);
-                    }}
-                    className="action-button edit-button"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteUser(user.id);
-                    }}
-                    className="action-button delete-button"
-                  >
-                    Delete
-                  </button>
-                </div>
+                {/* Se han removido aquí los botones de acciones */}
               </li>
             ))}
           </ul>
@@ -255,7 +254,7 @@ const DashboardAdmin = () => {
           </button>
         </div>
 
-        {/* Detalles del usuario y secciones extra (70%) */}
+        {/* Detalles del usuario y secciones extra */}
         <div className="user-details-section" style={{ width: "80%" }}>
           {selectedUser ? (
             <div className="user-details-card">
@@ -275,37 +274,56 @@ const DashboardAdmin = () => {
                 <strong>Rol:</strong> {selectedUser.rolId}
               </p>
               <p>
-                <strong>Created At:</strong>{" "}
-                {new Date(selectedUser.created_at).toLocaleString()}
+                <strong>Created At:</strong> {new Date(selectedUser.created_at).toLocaleString()}
               </p>
 
-              {/* Sección Field */}
+              {/* Aquí se colocan los botones de acciones de usuario */}
+              <div className="user-details-actions">
+                <button
+                  onClick={() => {
+                    setEditingUser(selectedUser);
+                    setEditModalOpen(true);
+                  }}
+                  className="action-button edit-button"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteUser(selectedUser.id)}
+                  className="action-button delete-button"
+                >
+                  Delete
+                </button>
+              </div>
+
+              {/* Sección Field (Tierras) */}
               <div className="fields-section">
                 <h4 className="section-title">Registered Field</h4>
-                {userField ? (
+                {userFields ? (
                   <div>
                     <p>
-                      <strong>Name:</strong> {userField.name}
+                      <strong>Name:</strong> {userFields.name}
                     </p>
                     <p>
-                      <strong>Area:</strong> {userField.area}
+                      <strong>Area:</strong> {userFields.area}
                     </p>
-                    <button
-                      onClick={() => {
-                        setEditingField(userField);
-                        setFieldEditModalOpen(true);
-                      }}
-                      className="submit-button"
-                    >
-                      Edit Field
-                    </button>
-                    <button
-                      onClick={handleDeleteField}
-                      className="action-button delete-button"
-                      style={{ marginLeft: "0.5rem" }}
-                    >
-                      Delete Field
-                    </button>
+                    <div className="field-actions">
+                      <button
+                        onClick={() => {
+                          setEditingField(userFields);
+                          setFieldEditModalOpen(true);
+                        }}
+                        className="action-button edit-button"
+                      >
+                        Edit Field
+                      </button>
+                      <button
+                        onClick={() => handleDeleteField(userFields.id)}
+                        className="action-button delete-button"
+                      >
+                        Delete Field
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div>

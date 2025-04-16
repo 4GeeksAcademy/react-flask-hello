@@ -47,6 +47,7 @@ class Businesses(db.Model):
 
     users = relationship("Users", back_populates="business")
     services = relationship("Services", back_populates="business")
+    clients = relationship("Clients", back_populates="business")
 
     def serialize_business(self):
         return {
@@ -130,18 +131,14 @@ class Clients(db.Model):
         String(20), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False)
-    # nullable true because a client might not have an assigned service
-    services = relationship(
-        "Services", secondary="client_service", back_populates="clients")
-    # cascade because the notes themselves depend on the client as they are client notes
-    notes = relationship("Notes", back_populates="client",
-                         cascade="all, delete-orphan")
-    payments = relationship("Payments", back_populates="client",
-                            cascade="all, delete-orphan")
-    appointments = relationship("Appointments", back_populates="client",
-                                cascade="all, delete-orphan")
-    service_history = relationship(
-        "ServiceHistory", back_populates="client", cascade="all, delete-orphan")
+    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=False)
+
+    business = relationship("Businesses", back_populates="clients")
+    services = relationship("Services", secondary="client_service", back_populates="clients")
+    notes = relationship("Notes", back_populates="client", cascade="all, delete-orphan")
+    payments = relationship("Payments", back_populates="client", cascade="all, delete-orphan")
+    appointments = relationship("Appointments", back_populates="client", cascade="all, delete-orphan")
+    service_history = relationship("ServiceHistory", back_populates="client", cascade="all, delete-orphan")
 
     def serialize_client(self):
         return {
@@ -151,6 +148,7 @@ class Clients(db.Model):
             "phone": self.phone,
             "client_id_number": self.client_id_number,
             "email": self.email,
+            "business_id": self.business_id,  # Incluir business_id en la serialización
             "services": [service.serialize_service() for service in self.services] if self.services else [],
             "notes": [note.serialize_note() for note in self.notes],
             "payments": [payment.serialize_payment() for payment in self.payments] if self.payments else [],

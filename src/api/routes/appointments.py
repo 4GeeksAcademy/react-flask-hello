@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Appointments, Clients, Users, Services, Calendar
+from ..models import db, Appointments, Clients, Users, Services, Calendar, Businesses
 from ..api_calendar import GoogleCalendarManager
 from flask_jwt_extended import jwt_required
 from datetime import datetime, timedelta, timezone
@@ -7,12 +7,25 @@ from sqlalchemy import func
 
 appointments_routes = Blueprint('appointments_routes', __name__)
 
+
 @appointments_routes.route('/appointments', methods=['GET'])
 # @jwt_required()
 def get_appointments():
-    appointments = Appointments.query.all()
-    serialized_appointments = [appointment.serialize_appointment() for appointment in appointments]
+
+    business_id = request.args.get('business_id')
+    query = Appointments.query
+
+    if business_id:
+        query = query.filter_by(business_id=business_id)
+
+    appointments = query.all()
+
+    serialized_appointments = [
+        appointment.serialize_appointment() for appointment in appointments
+    ]
+
     return jsonify(serialized_appointments), 200
+
 
 @appointments_routes.route('/appointments/<int:client_id>', methods=['GET'])
 # @jwt_required()
@@ -21,6 +34,7 @@ def get_client_appointments(client_id):
     if not appointments:
         return jsonify({"error": "appointments not found"}), 404
     return jsonify([appointment.serialize_appointment() for appointment in appointments]), 200
+
 
 @appointments_routes.route('/appointments', methods=['POST'])
 # @jwt_required()
@@ -33,7 +47,8 @@ def add_appointment():
         "client_email",
         "date_time",
         "username",
-        "service_name"
+        "service_name",
+        "business_id"
     ]
 
     for field in required_fields:
@@ -75,6 +90,12 @@ def add_appointment():
     if not user:
         return jsonify({"error": "user not found"}), 404
 
+    business_id = data["business_id"]
+    business = Businesses.query.get(business_id)
+
+    if not business:
+        return jsonify({"error": "business not found"}), 404
+
     date_only = date_time.date()
 
     appointments_of_day = Appointments.query.filter(
@@ -110,6 +131,7 @@ def add_appointment():
             user_id=user.id,
             client_id=client.id,
             service_id=service.id,
+            business_id=business_id,
             date_time=date_time,
             status="pending"
         )
@@ -126,7 +148,12 @@ def add_appointment():
             client = Clients.query.get(new_appointment.client_id)
             user = Users.query.get(new_appointment.user_id)
             service = Services.query.get(new_appointment.service_id)
-
+            extended_properties = {
+                'private': {
+                    'businessId': str(new_appointment.business_id),
+                    'appointmentId': str(new_appointment.id)
+                }
+            }
             title = f"Appointment: {client.name} - {service.name}"
             description = f"""
                 Client: {client.name}
@@ -145,7 +172,8 @@ def add_appointment():
                 titulo=title,
                 descripcion=description,
                 inicio=start,
-                fin=end
+                fin=end,
+                propiedades_extendidas=extended_properties
             )
 
             if event:
@@ -153,8 +181,10 @@ def add_appointment():
                 new_calendar = Calendar(
                     appointment_id=new_appointment.id,
                     start_date_time=new_appointment.date_time,
-                    end_date_time=new_appointment.date_time + timedelta(hours=1),
+                    end_date_time=new_appointment.date_time +
+                    timedelta(hours=1),
                     google_event_id=event['id'],
+                    business_id=new_appointment.business_id,
                     last_sync=datetime.now(timezone.utc)
                 )
                 db.session.add(new_calendar)
@@ -171,6 +201,7 @@ def add_appointment():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 @appointments_routes.route('/appointments/<int:appointment_id>', methods=['PUT'])
 # @jwt_required()
@@ -200,6 +231,13 @@ def update_appointment(appointment_id):
             return jsonify({"error": "User not found"}), 404
         appointment.user_id = user.id
 
+    # Process business_id if provided
+    if "business_id" in data:
+        business = Businesses.query.get(data["business_id"])
+        if not business:
+            return jsonify({"error": "business not found"}), 404
+        appointment.business_id = data["business_id"]
+
     # Only process the date if provided
     if "date_time" in data:
         try:
@@ -223,19 +261,24 @@ def update_appointment(appointment_id):
         db.session.commit()
 
         # Update event in Google Calendar
-        calendar = Calendar.query.filter_by(appointment_id=appointment.id).first()
-        if calendar and ("date_time" in data or "service_name" in data or "username" in data):
+        calendar = Calendar.query.filter_by(
+            appointment_id=appointment.id).first()
+        if calendar and ("date_time" in data or "service_name" in data or "username" in data or "business_id" in data):
             client = Clients.query.get(appointment.client_id)
             # Get updated service
             service = Services.query.get(appointment.service_id)
             # Get updated user
             user = Users.query.get(appointment.user_id)
+            # Get updated business
+            business = Businesses.query.get(appointment.business_id)
 
-            # Update dates in the calendar object if the date changed
             if "date_time" in data:
                 calendar.start_date_time = appointment.date_time
                 calendar.end_date_time = appointment.date_time + \
                     timedelta(hours=1)
+
+            if "business_id" in data:
+                calendar.business_id = appointment.business_id
 
             title = f"Appointment: {client.name} - {service.name}"
             description = f"""
@@ -244,14 +287,22 @@ def update_appointment(appointment_id):
                 Service: {service.name}
                 Attended by: {user.username}
                 Status: {appointment.status}
+                Business: {business.business_name}
+                Business ID: {appointment.business_id}
             """
 
             start = calendar.start_date_time.isoformat()
             end = calendar.end_date_time.isoformat()
 
+            extended_properties = {
+                'private': {
+                    'businessId': str(appointment.business_id),
+                    'appointmentId': str(appointment.id)
+                }
+            }
+
             calendar_manager = GoogleCalendarManager()
 
-            # Verify correct parameters according to your implementation
             updated_data = {
                 'summary': title,
                 'description': description,
@@ -262,7 +313,8 @@ def update_appointment(appointment_id):
                 'end': {
                     'dateTime': end,
                     'timeZone': 'Europe/Madrid',
-                }
+                },
+                'extendedProperties': extended_properties
             }
 
             calendar_manager.actualizar_evento(
@@ -270,7 +322,6 @@ def update_appointment(appointment_id):
                 datos_actualizados=updated_data
             )
 
-            # Save changes in the calendar
             calendar.last_sync = datetime.now(timezone.utc)
             db.session.commit()
 
@@ -283,6 +334,7 @@ def update_appointment(appointment_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+
 @appointments_routes.route('/appointments/<int:appointment_id>', methods=['DELETE'])
 # @jwt_required()
 def delete_appointment(appointment_id):
@@ -292,7 +344,8 @@ def delete_appointment(appointment_id):
 
     try:
         # Delete the event from Google Calendar
-        calendar = Calendar.query.filter_by(appointment_id=appointment.id).first()
+        calendar = Calendar.query.filter_by(
+            appointment_id=appointment.id).first()
         if calendar:
             calendar_manager = GoogleCalendarManager()
             calendar_manager.eliminar_evento(calendar.google_event_id)

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <!-- Fondo con gradiente suave -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FBFF" />
+      <stop offset="100%" stop-color="#EDF6FF" />
+    </linearGradient>
+  </defs>
+  <!-- Fondo base -->
+  <rect width="640" height="360" fill="url(#bgGradient)" />
+  <!-- Elementos decorativos minimalistas -->
+  <!-- Círculos decorativos en esquina superior izquierda -->
+  <circle cx="40" cy="40" r="30" fill="#E7F5FF" opacity="0.6" />
+  <circle cx="80" cy="60" r="20" fill="#D0EBFF" opacity="0.5" />
+  <!-- Círculos decorativos en esquina inferior derecha -->
+  <circle cx="600" cy="320" r="25" fill="#D0EBFF" opacity="0.5" />
+  <circle cx="560" cy="300" r="15" fill="#E7F5FF" opacity="0.6" />
+  <!-- Iconos de personas -->
+  <g opacity="0.15">
+    <!-- Persona 1 -->
+    <g transform="translate(120, 120)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+    <!-- Persona 2 -->
+    <g transform="translate(520, 140)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+    <!-- Persona 3 -->
+    <g transform="translate(200, 280)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+    <!-- Persona 4 -->
+    <g transform="translate(450, 250)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+    <!-- Persona 5 (adicional) -->
+    <g transform="translate(320, 100)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+    <!-- Persona 6 (adicional) -->
+    <g transform="translate(380, 320)">
+      <!-- Cabeza -->
+      <circle cx="0" cy="-15" r="10" fill="#4DABF7" />
+      <!-- Cuerpo -->
+      <path d="M0,-5 L0,15 M-12,0 L12,0 M-10,25 L0,15 L10,25" stroke="#4DABF7" stroke-width="3" fill="none" />
+    </g>
+  </g>
+  <!-- Líneas conectoras minimalistas -->
+  <path d="M120,145 Q200,180 280,160" stroke="#D0EBFF" stroke-width="2" fill="none" />
+  <path d="M280,160 Q350,140 420,170" stroke="#D0EBFF" stroke-width="2" fill="none" />
+  <path d="M420,170 Q500,200 520,148" stroke="#D0EBFF" stroke-width="2" fill="none" />
+  <path d="M200,260 Q300,240 380,250" stroke="#D0EBFF" stroke-width="2" fill="none" />
+  <path d="M380,250 Q420,260 450,237" stroke="#D0EBFF" stroke-width="2" fill="none" />
+  <!-- Puntos decorativos -->
+  <circle cx="280" cy="160" r="4" fill="#A5D8FF" opacity="0.7" />
+  <circle cx="420" cy="170" r="4" fill="#A5D8FF" opacity="0.7" />
+  <circle cx="380" cy="250" r="4" fill="#A5D8FF" opacity="0.7" />
+  <!-- Formas geométricas sutiles -->
+  <rect x="150" y="200" width="30" height="30" rx="4" ry="4" fill="#E7F5FF" opacity="0.5" />
+  <rect x="460" y="80" width="25" height="25" rx="4" ry="4" fill="#E7F5FF" opacity="0.5" />
+  <rect x="320" y="300" width="35" height="20" rx="4" ry="4" fill="#E7F5FF" opacity="0.5" />
+</svg>

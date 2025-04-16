@@ -25,6 +25,7 @@ pytz = "*"
 google-auth = "*"
 google-api-python-client = "*"
 flask-migrate = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.13"

@@ -16,11 +16,27 @@ export const initialStore = () => {
     if (userStr) user = JSON.parse(userStr);
     if (businessStr) business = JSON.parse(businessStr);
     if (selectedBusinessStr) selectedBusiness = JSON.parse(selectedBusinessStr);
-    if (clientsStr) clients = JSON.parse(clientsStr);
+    if (clientsStr) {
+      clients = JSON.parse(clientsStr);
+      // Asegurarse de que clients sea siempre un array
+      if (!Array.isArray(clients)) {
+        console.warn(
+          "clients en localStorage no es un array, inicializando como array vacío"
+        );
+        clients = [];
+      }
+    }
     if (selectedClientStr) selectedClient = JSON.parse(selectedClientStr);
   } catch (e) {
-    console.log("error in the data");
+    console.error("Error al parsear datos de localStorage:", e);
+    // En caso de error, inicializar todo con valores seguros
+    user = null;
+    business = [];
+    selectedBusiness = null;
+    clients = [];
+    selectedClient = null;
   }
+
   return {
     token: token || null,
     user: user || null,
@@ -130,11 +146,23 @@ export default function storeReducer(store, action = {}) {
       };
 
     case "set_clients":
-      localStorage.setItem("clients", JSON.stringify(action.payload));
+      // Asegurarse de que lo que guardamos en localStorage es un array
+      const clientsToStore = Array.isArray(action.payload)
+        ? action.payload
+        : [];
+
+      console.log("Guardando clientes en el reducer:", {
+        cantidad: clientsToStore.length,
+        esArray: Array.isArray(clientsToStore),
+      });
+
+      localStorage.setItem("clients", JSON.stringify(clientsToStore));
+
       return {
         ...store,
-        clients: action.payload,
+        clients: clientsToStore,
       };
+
     case "select_client":
       localStorage.setItem("selectedClient", JSON.stringify(action.payload));
       return {

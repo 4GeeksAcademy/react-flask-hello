@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Presupuesto DroneFarm</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        color: #333;
+        padding: 40px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+      }
+
+      .logo-block {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .logo-block img {
+        width: 120px;
+        height: auto;
+      }
+
+      .logo-block h1 {
+        font-size: 18px;
+        color: #198754;
+        margin: 0;
+        padding-bottom: 4px;
+        border-bottom: 2px solid #198754;
+        white-space: nowrap;
+      }
+
+      .date-info {
+        text-align: right;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .date-info p {
+        margin: 4px 0;
+      }
+
+      .section {
+        margin-top: 30px;
+      }
+
+      .section-title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #198754;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+      }
+
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .info-table td {
+        padding: 6px 0;
+      }
+
+      .info-table td:first-child {
+        font-weight: bold;
+        width: 170px;
+      }
+
+      .resumen {
+        border-top: 2px solid #ccc;
+        margin-top: 30px;
+        padding-top: 20px;
+      }
+
+      .resumen p {
+        margin: 8px 0;
+      }
+
+      .resumen strong {
+        color: #000;
+      }
+
+      .footer {
+        margin-top: 40px;
+        font-size: 13px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo-block">
+        <img
+          src="/workspaces/DronFarm1.1/src/front/assets/img/Logo_DronFarm1.png"
+          alt="Logo DroneFarm"
+        />
+        <h1>Presupuesto de Servicios Agrícolas</h1>
+      </div>
+      <div class="date-info">
+        <p><strong>Fecha:</strong> {{ fecha_hoy }}</p>
+        <p><strong>Válido hasta:</strong> {{ valid_until }}</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">CLIENTE</div>
+      <table class="info-table">
+        <tr>
+          <td>Cliente:</td>
+          <td>{{ user }}</td>
+        </tr>
+        <tr>
+          <td>Parcela:</td>
+          <td>{{ field }}</td>
+        </tr>
+        <tr>
+          <td>Cultivo:</td>
+          <td>{{ cropType }}</td>
+        </tr>
+        <tr>
+          <td>Hectáreas:</td>
+          <td>{{ hectares }} ha</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">SERVICIOS</div>
+      <table class="info-table">
+        <tr>
+          <td>Servicios incluidos:</td>
+          <td>{{ services }}</td>
+        </tr>
+        <tr>
+          <td>Periodicidad:</td>
+          <td>{{ frequency }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">DETALLES ECONÓMICOS</div>
+      <table class="info-table">
+        <tr>
+          <td>Precio por hectárea:</td>
+          <td>{{ price_per_hectare }} €</td>
+        </tr>
+        <tr>
+          <td>Hectáreas:</td>
+          <td>{{ hectares }}</td>
+        </tr>
+        <tr>
+          <td><strong>TOTAL:</strong></td>
+          <td><strong>{{ total }} €</strong></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>* Este presupuesto no incluye IVA.</p>
+      <p>* Los servicios se realizarán según las condiciones meteorológicas.</p>
+      <p>
+        * DroneFarm se reserva el derecho a modificar el servicio en caso de
+        condiciones adversas.
+      </p>
+    </div>
+  </body>
+</html>

@@ -25,7 +25,7 @@ Font.register({
 // ✅ Estilos del PDF
 const styles = StyleSheet.create({
   page: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Helvetica',
     padding: 40,
     fontSize: 12,
     color: '#333',
@@ -59,7 +59,17 @@ const logoBase64 = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAADmCAYAAA
 `;
 
 // ✅ Componente PDF
-const PdfDocument = ({ user, field, cropType, hectares, services, frequency, pricePerHectare, total, validUntil }) => (
+const PdfDocument = ({
+  user = '',
+  field = '',
+  cropType = '',
+  hectares = 0,
+  services = '',
+  frequency = '',
+  pricePerHectare = 0,
+  total = 0,
+  validUntil = ''
+}) => (
   <Document>
     <Page style={styles.page}>
       <Image style={styles.logo} src={logoBase64} />

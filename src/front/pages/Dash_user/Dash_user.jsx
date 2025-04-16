@@ -11,7 +11,7 @@ import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelecto
 
 const Dash_user = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const { store } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const [userData, setUserData] = useState(null);
     const [fieldsList, setFieldsList] = useState([]);
     const [selectedField, setSelectedField] = useState(null);
@@ -157,21 +157,26 @@ const Dash_user = () => {
 
     const filteredReports = reports.filter(
         (report) => report.field_id === selectedField?.id
-      );
+    );
 
     if (error) return <div className="error-message">{error}</div>;
-    
+
 
     return (
-        
+
         <>
             {(!initialSelectionDone && fieldsList.length > 1) && (
                 <FieldSelectorModal
                     fields={fieldsList}
                     setSelected={(field) => {
                         setSelectedField(field);
+                        dispatch({
+                            type: "SET_SELECTED_FIELD",
+                            payload: field
+                        });
                         setInitialSelectionDone(true);
                     }}
+
                     onClose={() => setInitialSelectionDone(true)}
                     selected={selectedField} // no olvides pasar esto si lo usas en la clase `selected`
                 />

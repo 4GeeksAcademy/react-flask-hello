@@ -19,6 +19,7 @@ export const initialStore = () => {
       rolId: localStorage.getItem("rol_id"),
       userId: localStorage.getItem("user_id"),
     },
+    selectedField: null,
   };
 };
 
@@ -63,6 +64,12 @@ export default function storeReducer(store, action = {}) {
           rolId: null,
           userId: null,
         },
+      };
+
+    case "SET_SELECTED_FIELD":
+      return {
+        ...store,
+        selectedField: action.payload,
       };
 
     default:

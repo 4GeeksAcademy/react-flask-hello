@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Clients, Services
+from ..models import db, Clients, Services, Calendar, Appointments, ClientService, Businesses
 from flask_jwt_extended import jwt_required
+from ..api_calendar import GoogleCalendarManager
 
 clients_routes = Blueprint('clients_routes', __name__)
+
 
 @clients_routes.route('/clients', methods=['GET'])
 # @jwt_required()
@@ -11,6 +13,7 @@ def get_clients():
     serialized_clients = [client.serialize_client() for client in clients]
     return jsonify(serialized_clients), 200
 
+
 @clients_routes.route('/clients/<int:client_id>', methods=['GET'])
 # @jwt_required()
 def get_client(client_id):
@@ -18,6 +21,7 @@ def get_client(client_id):
     if not client:
         return jsonify({"error": "client not found"}), 404
     return jsonify(client.serialize_client()), 200
+
 
 @clients_routes.route('/clients', methods=['POST'])
 # @jwt_required()
@@ -31,7 +35,8 @@ def add_client():
         "address",
         "phone",
         "client_id_number",
-        "email"
+        "email",
+        "business_id"
     ]
 
     for field in required_fields:
@@ -43,6 +48,10 @@ def add_client():
 
     if existing_client:
         return jsonify({"error": "the client already exists"}), 400
+    
+    business = Businesses.query.get(data["business_id"])
+    if not business:
+        return jsonify({"error": f"El negocio con ID {data['business_id']} no existe"}), 404
 
     try:
         new_client = Clients(
@@ -51,6 +60,7 @@ def add_client():
             phone=data["phone"],
             client_id_number=data["client_id_number"],
             email=data["email"],
+            business_id=data["business_id"] 
         )
         db.session.add(new_client)
 
@@ -72,6 +82,7 @@ def add_client():
         return jsonify({
             "error": str(e)
         }), 500
+
 
 @clients_routes.route('/clients/<int:client_id>', methods=['PUT'])
 # @jwt_required()
@@ -103,28 +114,67 @@ def update_client(client_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+
 @clients_routes.route('/clients/<int:client_id>', methods=['DELETE'])
 # @jwt_required()
 def delete_client(client_id):
-    client = Clients.query.filter_by(id=client_id).first()
-
-    if not client:
-        return jsonify({
-            "error": "client not found"
-        }), 404
-
     try:
+        client = Clients.query.get(client_id)
+
+        if not client:
+            return jsonify({"error": "Client not found"}), 404
+
+        calendar_manager = GoogleCalendarManager()
+
+        appointments = Appointments.query.filter_by(client_id=client_id).all()
+
+        db.session.begin_nested()
+
+        calendars = Calendar.query.join(Appointments).filter(
+            Appointments.client_id == client_id
+        ).all()
+
+        deleted_events = []
+
+        if calendars:
+            print(
+                f"Deleting {len(calendars)} calendar entries for the client {client_id}")
+            for calendar in calendars:
+                if calendar_manager and calendar_manager.service:
+                    success = calendar_manager.delete_event(
+                        event_id=calendar.google_event_id)
+                    if success:
+                        deleted_events.append(calendar.google_event_id)
+                    else:
+                        print(
+                            f"Error deleting event from Google Calendar: {calendar.google_event_id}")
+
+                db.session.delete(calendar)
+
+        ClientService.query.filter_by(client_id=client_id).delete()
+
+        for appointment in appointments:
+            db.session.delete(appointment)
+
         db.session.delete(client)
+
         db.session.commit()
 
         return jsonify({
-            "msg": "Client deleted successfully"
+            "message": "Client successfully deleted",
+            "client_id": client_id,
+            "deleted_events": deleted_events
         }), 200
+
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+        print(f"Error deleting client {client_id}: {str(e)}")
+        return jsonify({"error": f"Error deleting client: {str(e)}"}), 500
 
-# Routes for client-service relationship
+
+# ------------------------------------- Routes for client-service ---------------------------
+
+
 @clients_routes.route('/clients/<int:client_id>/services', methods=['GET'])
 # @jwt_required()
 def get_client_services(client_id):
@@ -134,9 +184,10 @@ def get_client_services(client_id):
         return jsonify({"error": "client not found"}), 404
 
     services = [service.serialize_service()
-                 for service in client.services]
+                for service in client.services]
 
     return jsonify(services), 200
+
 
 @clients_routes.route('/clients/<int:client_id>/services', methods=['POST'])
 # @jwt_required()
@@ -155,7 +206,7 @@ def add_service_to_client(client_id):
 
     if not service:
         return jsonify({"error": "Service not found"}), 404
-    
+
     if service in client.services:
         return jsonify({"error": "The client already has this service contracted"}), 400
 
@@ -170,6 +221,7 @@ def add_service_to_client(client_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 @clients_routes.route('/clients/<int:client_id>/services/<int:service_id>', methods=['DELETE'])
 # @jwt_required()

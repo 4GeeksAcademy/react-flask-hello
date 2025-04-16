@@ -549,3 +549,34 @@ if calendar.service:
     print("✅ Google Calendar service initialized correctly")
 else:
     print("❌ Error initializing Google Calendar service")
+
+
+#-------------------------------------------------- Para eventos puntuales sin citas ----------------
+
+@calendar_api.route('/calendar/events/google/<string:event_id>', methods=['DELETE'])
+# @jwt_required()
+def delete_google_event_by_id(event_id):
+    """Delete a Google Calendar event directly by its Google event ID."""
+    calendar_manager = GoogleCalendarManager()
+    
+    if not calendar_manager.service:
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
+    
+    success = calendar_manager.delete_event(event_id=event_id)
+    
+    if not success:
+        return jsonify({"error": "Could not delete event from Google Calendar"}), 500
+    
+    # También eliminar la entrada de la tabla Calendar si existe
+    calendar_entry = Calendar.query.filter_by(google_event_id=event_id).first()
+    if calendar_entry:
+        try:
+            db.session.delete(calendar_entry)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"Error deleting from database: {str(e)}"}), 500
+    
+    return jsonify({
+        "msg": "Event deleted successfully from Google Calendar"
+    }), 200

@@ -10,6 +10,7 @@ from api.admin import setup_admin
 from flask_jwt_extended import JWTManager
 import datetime
 from dotenv import load_dotenv
+from flask_cors import CORS  
 
 load_dotenv()
 
@@ -18,7 +19,8 @@ static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-# Database configuration
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
@@ -34,7 +36,7 @@ setup_admin(app)
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(calendar_api, url_prefix='/calendar_api')
 
-# JWT configuration
+
 app.config["JWT_SECRET_KEY"] = "tu-clave-secreta"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=1)
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]

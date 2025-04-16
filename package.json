@@ -55,7 +55,13 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^6.7.2",
+		"@fullcalendar/core": "^6.1.17",
+		"@fullcalendar/daygrid": "^6.1.17",
+		"@fullcalendar/interaction": "^6.1.17",
+		"@fullcalendar/react": "^6.1.17",
+		"@fullcalendar/timegrid": "^6.1.17",
 		"bootstrap": "^5.3.5",
+		"events": "^3.3.0",
 		"googleapis": "^148.0.0",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",

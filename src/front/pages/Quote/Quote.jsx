@@ -4,7 +4,7 @@ import PdfDocument from "../../components/Quote/PdfDocument";
 import LogoDronFarm from "../../assets/img/Logo_DronFarm2.png";
 import "./Quote.css";
 import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
-import {useGlobalReducer} from "../../hooks/useGlobalReducer";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 const Quote = () => {
   const [userData, setUserData] = useState(null);
@@ -21,6 +21,7 @@ const Quote = () => {
   const [isPdfReady, setIsPdfReady] = useState(false);
   const { store } = useGlobalReducer();
 
+
   const frequencyMultipliers = {
     Mensual: 1,
     Trimestral: 3,
@@ -30,6 +31,7 @@ const Quote = () => {
 
   const token = store.auth.token;
   const userId = store.auth.userId;
+  const selectedField = store.selectedField;
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   function getDefaultValidDate() {
@@ -50,32 +52,40 @@ const Quote = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       try {
+        console.log("🎯 Iniciando carga de datos para presupuesto...");
+        console.log("🔑 Token:", token);
+        console.log("👤 UserID:", userId);
+        console.log("🌐 BACKEND_URL:", BACKEND_URL);
+
         const userRes = await fetch(`${BACKEND_URL}/user/user/${userId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const userData = await userRes.json();
+        console.log("📥 userData:", userData);
         setUserData(userData);
         setUserEmail(userData.email || "");
 
-        const fieldRes = await fetch(`${BACKEND_URL}/fields/user/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const fieldData = await fieldRes.json();
-        setFieldData(fieldData);
-
       } catch (err) {
-        console.error("Error al cargar datos:", err);
-        showErrorAlert("Error al obtener datos del usuario o la parcela");
+        console.error("❌ Error al cargar usuario:", err);
+        showErrorAlert("Error al obtener datos del usuario.");
       } finally {
         setIsLoading(false);
         setIsPdfReady(true);
       }
     };
 
-    if (token && userId) fetchData();
-  }, []);
+    if (token && userId && store.selectedField) {
+      console.log("🌱 Usando parcela seleccionada:", store.selectedField);
+      setFieldData(store.selectedField);
+      fetchUserData();
+    } else if (!store.selectedField) {
+      showErrorAlert("No hay ninguna parcela seleccionada.");
+      setIsLoading(false);
+    }
+  }, [token, userId, store.selectedField]);
+
 
   const totalPrice = () => {
     if (!fieldData?.area || !frequency) return 0;
@@ -127,27 +137,40 @@ const Quote = () => {
       return;
     }
 
+    const htmlBody = `
+      <div style="font-family: Arial, sans-serif; color: #333; font-size: 14px;">
+        <h2 style="color: #198754;">¡Hola ${userData?.name}!</h2>
+        <p>Gracias por confiar en <strong>DroneFarm</strong>.</p>
+        <p>Adjunto encontrarás el presupuesto generado para tu parcela <strong>${fieldData?.name}</strong>.</p>
+        <p><strong>Total estimado:</strong> ${totalPrice()} €</p>
+        <p><strong>Válido hasta:</strong> ${formatDate(validUntil)}</p>
+        <p style="margin-top: 20px;">Quedamos atentos para cualquier duda o ajuste.</p>
+        <p>Un saludo,<br/>Equipo DroneFarm 🚀</p>
+      </div>
+    `;
+
+    const payload = {
+      email: userEmail,
+      quoteDataHtml: htmlBody,
+      user: userData?.name,
+      field: fieldData?.name,
+      cropType: capitalize(fieldData?.crop),
+      hectares: fieldData?.area,
+      services: services.join(', '),
+      frequency: capitalize(frequency),
+      pricePerHectare,
+      total: totalPrice(),
+      validUntil: formatDate(validUntil)
+    };
+
     setIsEmailSending(true);
     try {
-      const response = await fetch(`${BACKEND_URL}/email/enviar-presupuesto`, {
+      const response = await fetch(`${BACKEND_URL}/quote/enviar-presupuesto`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          email: userEmail,
-          quoteData: {
-            user: userData?.name,
-            field: fieldData?.name,
-            cropType: capitalize(fieldData?.crop),
-            hectares: fieldData?.area,
-            services: services.join(', '),
-            frequency: capitalize(frequency),
-            pricePerHectare,
-            total: totalPrice(),
-            validUntil: formatDate(validUntil)
-          }
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
@@ -165,6 +188,8 @@ const Quote = () => {
       setIsEmailSending(false);
     }
   };
+
+
 
   const isFormValid = userData && fieldData && fieldData.area > 0 && frequency && pricePerHectare > 0;
 

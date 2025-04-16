@@ -14,7 +14,7 @@ import os
 
 print("✅ quote_routes CARGADO")
 
-quote = Blueprint('quote_routes', __name__)
+quote = Blueprint('quote_routes', __name__, template_folder='../templates')
 
 # POST /presupuesto (Crear nuevo presupuesto)
 
@@ -31,7 +31,7 @@ def create_quote():
         if not all(field in data for field in required_fields):
             return jsonify({"error": "Campos faltantes"}), 400
 
-        # Calcular presupuesto con servicio separado
+        # Calcular presupuesto
         quote_data = calculate_quote(
             hectareas=data['hectares'],
             tipo_cultivo=data['cropType'],
@@ -51,31 +51,6 @@ def create_quote():
         db.session.add(new_quote)
         db.session.commit()
 
-        # Obtener info del usuario y la parcela para el email
-        user = User.query.get(data['user_id'])
-        field = Field.query.get(data['field_id'])
-
-        # Cuerpo del correo
-        cuerpo_html = f"""
-        <h2>¡Hola {user.name}!</h2>
-        <p>Hemos generado tu presupuesto para el campo <strong>{field.name}</strong>:</p>
-        <ul>
-            <li><strong>Cultivo:</strong> {data['cropType']}</li>
-            <li><strong>Servicios:</strong> {', '.join(data['services'])}</li>
-            <li><strong>Frecuencia:</strong> {data['frequency']}</li>
-            <li><strong>Área:</strong> {data['hectares']} hectáreas</li>
-            <li><strong>Total estimado:</strong> {quote_data["total"]} €</li>
-        </ul>
-        <p>Gracias por confiar en <strong>DroneFarm</strong>.</p>
-        """
-
-        # Enviar email
-        send_quote_email(
-            destinatario=user.email,
-            asunto="Tu presupuesto de DroneFarm está listo 🚀",
-            cuerpo=cuerpo_html
-        )
-
         return jsonify({
             "id": new_quote.id,
             "total": quote_data["total"],
@@ -88,6 +63,61 @@ def create_quote():
         print("❌ ERROR EN POST /presupuesto:", str(e))
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+# Enviar presupuesto
+
+
+@quote.route('/enviar-presupuesto', methods=['POST'])
+def enviar_presupuesto():
+    try:
+        data = request.get_json()
+
+        # Cuerpo simplificado para el email
+        destinatario = data.get("email")
+        quote_html_preview = data.get("quoteDataHtml")
+
+        # Datos para renderizar el PDF bonito (desde plantilla Jinja2)
+        pdf_data = {
+            "user": data.get("user"),
+            "field": data.get("field"),
+            "cropType": data.get("cropType"),
+            "hectares": data.get("hectares"),
+            "services": data.get("services"),
+            "frequency": data.get("frequency"),
+            "price_per_hectare": data.get("pricePerHectare"),
+            "total": data.get("total"),
+            "valid_until": data.get("validUntil")
+        }
+
+        # Renderizar HTML usando plantilla
+        rendered_pdf_html = render_template(
+            "presupuesto_bonito.html",
+            today=datetime.today().strftime("%Y-%m-%d"),
+            **pdf_data
+        )
+
+        # Generar PDF temporal
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
+            HTML(string=rendered_pdf_html).write_pdf(f.name)
+            pdf_path = f.name
+
+        # Enviar correo con PDF adjunto
+        send_quote_email(
+            destinatario=destinatario,
+            asunto="Presupuesto DroneFarm (PDF incluido) 🚀",
+            cuerpo=quote_html_preview,
+            adjunto_path=pdf_path
+        )
+
+        # Eliminar PDF temporal
+        os.remove(pdf_path)
+
+        return jsonify({"msg": "Correo enviado con PDF adjunto"}), 200
+
+    except Exception as e:
+        print("❌ ERROR EN /enviar-presupuesto:", str(e))
+        return jsonify({"error": str(e)}), 500
+
 
 # GET /presupuesto/<id> (Obtener presupuesto específico)
 

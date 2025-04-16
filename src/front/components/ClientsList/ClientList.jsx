@@ -46,7 +46,7 @@ export const ClientList = ({ search }) => {
                     {filteredClients.map((client) => (
                         <Link
                             key={client.id}
-                            to={`/cliente/${client.id}`}
+                            to={`/clients/${client.id}`}
                             className="client-card-link"
                         >
                             <div className="client-card">

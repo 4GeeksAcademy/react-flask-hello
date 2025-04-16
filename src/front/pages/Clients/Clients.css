@@ -1,7 +1,6 @@
 .clients-container {
-    background-image: url("../../assets/images/background-business.svg");
+    background-image: url("../../assets/images/background-clients.svg");
     background-size: cover;
-    background-repeat: repeat;
+    background-repeat: no-repeat;
     background-position: center;
   }
-  

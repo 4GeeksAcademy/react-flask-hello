@@ -12,7 +12,7 @@
 }
 
 .clients-container {
-  max-width: 1200px;
+  max-width: auto;
   margin: 0 auto;
   padding: 20px;
   min-height: 80vh;

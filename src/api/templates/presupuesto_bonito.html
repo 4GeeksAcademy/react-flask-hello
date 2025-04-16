@@ -21,25 +21,24 @@
         margin-bottom: 30px;
       }
 
-      .logo-block {
+      .left-block {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
 
-      .logo-block img {
-        width: 120px;
+      .logo-img {
+        width: 200px;
         height: auto;
       }
 
-      .logo-block h1 {
+      .title-text {
         font-size: 18px;
         color: #198754;
         margin: 0;
-        padding-bottom: 4px;
         border-bottom: 2px solid #198754;
-        white-space: nowrap;
+        padding-bottom: 6px;
       }
 
       .date-info {
@@ -102,13 +101,15 @@
   </head>
   <body>
     <div class="header">
-      <div class="logo-block">
+      <div class="left-block">
         <img
-          src="/workspaces/DronFarm1.1/src/front/assets/img/Logo_DronFarm1.png"
+          src="data:image/png;base64,{{ logo_base64 }}"
           alt="Logo DroneFarm"
+          class="logo-img"
         />
-        <h1>Presupuesto de Servicios Agrícolas</h1>
+        <h1 class="title-text">Presupuesto de Servicios Agrícolas</h1>
       </div>
+
       <div class="date-info">
         <p><strong>Fecha:</strong> {{ fecha_hoy }}</p>
         <p><strong>Válido hasta:</strong> {{ valid_until }}</p>

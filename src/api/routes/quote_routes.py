@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from services.pricing_service import calculate_quote
 from weasyprint import HTML
 from services.email_service import send_quote_email
+import base64
 
 import tempfile
 import os
@@ -71,12 +72,20 @@ def create_quote():
 def enviar_presupuesto():
     try:
         data = request.get_json()
-
-        # Cuerpo simplificado para el email
         destinatario = data.get("email")
         quote_html_preview = data.get("quoteDataHtml")
 
-        # Datos para renderizar el PDF bonito (desde plantilla Jinja2)
+        # Formatear fechas
+        fecha_hoy = datetime.today().strftime("%d/%m/%Y")
+        valid_until_format = datetime.strptime(
+            data.get("validUntil"), "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        # ✅ Convertir el logo en base64
+        logo_path = "/workspaces/DronFarm1.1/src/front/assets/img/Logo_DronFarm1.png"
+        with open(logo_path, "rb") as logo_file:
+            logo_base64 = base64.b64encode(logo_file.read()).decode("utf-8")
+
+        # Datos para el PDF
         pdf_data = {
             "user": data.get("user"),
             "field": data.get("field"),
@@ -86,13 +95,13 @@ def enviar_presupuesto():
             "frequency": data.get("frequency"),
             "price_per_hectare": data.get("pricePerHectare"),
             "total": data.get("total"),
-            "valid_until": data.get("validUntil")
         }
 
-        # Renderizar HTML usando plantilla
         rendered_pdf_html = render_template(
             "presupuesto_bonito.html",
-            today=datetime.today().strftime("%Y-%m-%d"),
+            fecha_hoy=fecha_hoy,
+            valid_until=valid_until_format,
+            logo_base64=logo_base64,
             **pdf_data
         )
 
@@ -117,7 +126,6 @@ def enviar_presupuesto():
     except Exception as e:
         print("❌ ERROR EN /enviar-presupuesto:", str(e))
         return jsonify({"error": str(e)}), 500
-
 
 # GET /presupuesto/<id> (Obtener presupuesto específico)
 

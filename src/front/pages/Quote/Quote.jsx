@@ -160,7 +160,7 @@ const Quote = () => {
       frequency: capitalize(frequency),
       pricePerHectare,
       total: totalPrice(),
-      validUntil: formatDate(validUntil)
+      validUntil: validUntil
     };
 
     setIsEmailSending(true);

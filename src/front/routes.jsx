@@ -8,7 +8,7 @@ import { Layout } from "./pages/Layout";
 import  Home  from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import Settings from "./pages/Settings";
+import Settings from "./components/Settings";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
 import Cart from "./pages/Cart";

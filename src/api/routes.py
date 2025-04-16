@@ -9,6 +9,9 @@ import random
 import string
 import time
 from werkzeug.utils import secure_filename  
+from flask import make_response
+from datetime import datetime
+import secrets
 
 api = Blueprint('api', __name__)
 
@@ -112,6 +115,19 @@ def login():
             
 
         }), 200
+
+
+# RUTA PARA CERRAR SESIÓN
+@api.route('/logout', methods=['POST'])
+def logout():
+    # Limpiar la sesión del usuario
+    if 'user_id' in session:
+        session.pop('user_id', None)
+    
+    # En caso de usar flask-jwt-extended con lista negra de tokens
+    # aquí agregaríamos el token actual a la lista negra
+    
+    return jsonify({"message": "Sesión cerrada exitosamente"}), 200
 
 
 # MUESTRA TODOS LOS USUARIOS (ADMINISTRADOR)
@@ -246,105 +262,102 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # LLAMAR AL LOGO DESDE LA API
-@api.route('/get_logo', methods=['GET'])
-@jwt_required()  # Asegúrate de que esta decoración esté presente
+
+def generate_logo_token(user_id):
+    # Generar un token seguro único para acceder al logo
+    token = secrets.token_urlsafe(16)
+    # En una implementación real, guardarías este token en la base de datos
+    # asociado al user_id para verificarlo después
+    return token
+
+# Actualice las rutas de logo con estos cambios:
+
+@api.route('/api/get_logo', methods=['GET'])
+@jwt_required()
 def get_logo():
+    # Obtener ID del usuario desde el token JWT
+    user_id = get_jwt_identity()
+    
     try:
-        current_user_id = get_jwt_identity()  # Obtener el id del usuario desde el token JWT
+        # Buscar logo en la base de datos
+        logo = Logo.query.filter_by(user_id=user_id).first()
         
-        # Agregar logs para depuración
-        print(f"Buscando logo para el usuario ID: {current_user_id}")
+        if not logo or not logo.image_data:
+            return jsonify({"error": "No se encontró logo para este usuario"}), 404
         
-        user = User.query.get(current_user_id)
-        if not user:
-            print(f"Usuario no encontrado: {current_user_id}")
-            return jsonify({"message": "User not found"}), 404
-
-        # Buscar si existe un logo para el usuario
-        logo = Logo.query.filter_by(user_id=current_user_id).first()
-
-        if not logo:
-            print(f"Logo no encontrado para usuario: {current_user_id}")
-            return jsonify({"message": "Logo not found"}), 404
+        # Devolver la imagen con headers adicionales
+        response = make_response(logo.image_data)
+        response.headers.set('Content-Type', 'image/png')  # Ajustar según el tipo
         
-        if not logo.image_logo_url:
-            print(f"URL de logo vacía para usuario: {current_user_id}")
-            return jsonify({"message": "Logo URL is empty"}), 404
+        # Si tienes una URL en la nube, incluirla en el header
+        if hasattr(logo, 'image_logo_url') and logo.image_logo_url:
+            response.headers.set('logo-cloud-url', logo.image_logo_url)
         
-        # Obtener la ruta del logo
-        logo_path = logo.image_logo_url
-        print(f"Ruta del logo: {logo_path}")
-        
-        # Verificar si el archivo existe
-        if not os.path.exists(logo_path):
-            print(f"El archivo no existe en la ruta: {logo_path}")
-            return jsonify({"message": "Logo file not found on server"}), 404
-        
-        # Servir la imagen desde el directorio donde se encuentra
-        directory = os.path.dirname(logo_path)
-        filename = os.path.basename(logo_path)
-        print(f"Sirviendo archivo desde directorio: {directory}, nombre: {filename}")
-        
-        return send_from_directory(directory, filename)
-    
+        return response
     except Exception as e:
-        print(f"Error en get_logo: {str(e)}")
-        # Más detalles sobre la excepción para depuración
-        import traceback
-        traceback.print_exc()
-        return jsonify({"message": f"Error serving logo: {str(e)}"}), 500
-    
+        return jsonify({"error": f"Error al obtener el logo: {str(e)}"}), 500
 
-# Ruta para subir y guardar el logo
+
+
 
 @api.route('/post_logo', methods=['POST'])
 @jwt_required()
-def post_logos():
-    current_user_id = get_jwt_identity()
+def post_logo():
+    # Obtener ID del usuario desde el token JWT
+    user_id = get_jwt_identity()
     
-    # Verificar si el archivo ha sido subido
-    if 'logo' not in request.files:
-        return jsonify({'error': 'No logo provided'}), 400
-
-    logo_file = request.files['logo']
-
-    # Verificar si se seleccionó un archivo
-    if logo_file.filename == '':
-        return jsonify({'error': 'No file selected'}), 400
-
-    # Verificar si el archivo tiene una extensión permitida
-    if not allowed_file(logo_file.filename):
-        return jsonify({'error': 'File type not allowed. Only PNG, JPG, JPEG, GIF are allowed.'}), 400
-
-    user = User.query.get(current_user_id)
-
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    # Buscar si ya existe un logo para este usuario
-    logo = Logo.query.filter_by(user_id=current_user_id).first()
-
-    # Definir la ruta donde se guardará el logo
-    logo_filename = secure_filename(logo_file.filename)
-    logo_path = os.path.join('static', 'logos', logo_filename)
-
-    # Asegurarse de que el directorio existe
-    if not os.path.exists(os.path.dirname(logo_path)):
-        os.makedirs(os.path.dirname(logo_path))
-
-    # Guardar el archivo en el servidor
     try:
-        logo_file.save(logo_path)
-    except Exception as e:
-        return jsonify({"message": f"Error saving the logo: {str(e)}"}), 500
-    
-
-    new_logo = Logo(image_logo_url=logo_path, user_id=current_user_id)
-    db.session.add(new_logo)
-
-    try:
+        # Verificar si se envió un archivo
+        if 'logo' not in request.files:
+            return jsonify({"error": "No se encontró archivo de logo"}), 400
+        
+        file = request.files['logo']
+        
+        if file.filename == '':
+            return jsonify({"error": "No se seleccionó ningún archivo"}), 400
+        
+        # Verificar si es un tipo de archivo permitido
+        if not allowed_file(file.filename):
+            return jsonify({"error": "Tipo de archivo no permitido"}), 400
+        
+        # Leer los datos del archivo
+        image_data = file.read()
+        
+        # Guardar en base de datos
+        logo = Logo.query.filter_by(user_id=user_id).first()
+        
+        # Generar URL para el logo
+        host_url = request.host_url.rstrip('/')
+        logo_token = generate_logo_token(user_id)
+        logo_url = f"{host_url}/api/get_logo"  # No incluimos el token en la URL, se usa JWT
+        
+        if logo:
+            # Actualizar logo existente
+            logo.image_data = image_data
+            if hasattr(logo, 'image_logo_url'):
+                logo.image_logo_url = logo_url
+            if hasattr(logo, 'updated_at'):
+                logo.updated_at = datetime.now()
+        else:
+            # Crear nuevo registro - ajusta los campos según tu modelo Logo
+            logo = Logo(
+                user_id=user_id,
+                image_data=image_data
+            )
+            # Agregar estos campos si existen en tu modelo
+            if hasattr(Logo, 'image_logo_url'):
+                logo.image_logo_url = logo_url
+            if hasattr(Logo, 'created_at'):
+                logo.created_at = datetime.now()
+            
+            db.session.add(logo)
+        
         db.session.commit()
-        return jsonify({"message": "Logo updated successfully"}), 200
+        
+        return jsonify({
+            "message": "Logo guardado correctamente",
+            "logo_url": logo_url
+        }), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": f"Error updating logo: {str(e)}"}), 500
+        return jsonify({"error": f"Error al guardar el logo: {str(e)}"}), 500

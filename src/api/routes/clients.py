@@ -199,24 +199,50 @@ def add_service_to_client(client_id):
 
     data = request.get_json()
 
-    if not data or "service_id" not in data:
+    # Verifica si se recibió service_id (singular) o service_ids (plural)
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    # Intentar leer service_id (para compatibilidad con código anterior)
+    if "service_id" in data:
+        service_ids = [data["service_id"]]
+    # Si no existe service_id, buscar service_ids
+    elif "service_ids" in data:
+        service_ids = data["service_ids"]
+    else:
         return jsonify({"error": "Service ID is required"}), 400
+    
+    # Validar que service_ids sea una lista
+    if not isinstance(service_ids, list) or len(service_ids) == 0:
+        return jsonify({"error": "service_ids must be a non-empty list"}), 400
 
-    service = Services.query.get(data["service_id"])
+    added_services = []
+    errors = []
 
-    if not service:
-        return jsonify({"error": "Service not found"}), 404
+    for service_id in service_ids:
+        service = Services.query.get(service_id)
+        
+        if not service:
+            errors.append(f"Service with ID {service_id} not found")
+            continue
+            
+        if service in client.services:
+            errors.append(f"The client already has the service '{service.name}' contracted")
+            continue
+            
+        client.services.append(service)
+        added_services.append(service)
 
-    if service in client.services:
-        return jsonify({"error": "The client already has this service contracted"}), 400
-
-    client.services.append(service)
+    if not added_services and errors:
+        db.session.rollback()
+        return jsonify({"error": "; ".join(errors)}), 400
 
     try:
         db.session.commit()
         return jsonify({
-            "msg": "Service added successfully",
-            "services": [s.serialize_service() for s in client.services]
+            "msg": f"{len(added_services)} services added successfully",
+            "services": [s.serialize_service() for s in client.services],
+            "warnings": errors if errors else None
         }), 200
     except Exception as e:
         db.session.rollback()

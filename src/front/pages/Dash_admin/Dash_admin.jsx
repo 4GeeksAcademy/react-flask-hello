@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {useGlobalReducer} from "../../hooks/useGlobalReducer";
+import "./Dash_admin.css";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
-  const [lands, setLands] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ name: "", email: "" });
+  const [newUser, setNewUser] = useState({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
   const [error, setError] = useState("");
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  // Estados para Field
+  const [userField, setUserField] = useState(null);
+  const [fieldCreateModalOpen, setFieldCreateModalOpen] = useState(false);
+  const [fieldEditModalOpen, setFieldEditModalOpen] = useState(false);
+  const [newField, setNewField] = useState({ name: "", area: "" });
+  const [editingField, setEditingField] = useState(null);
+
+  // Estados para Reports y Budgets (ejemplo)
+  const [userReports, setUserReports] = useState([]);
+  const [userBudgets, setUserBudgets] = useState([]);
+
   const { store } = useGlobalReducer();
-
-
-
-  // Recuperar token almacenado 
   const token = store.auth.token;
 
-  // lista de usuarios y tierras al iniciar el componente
+  // Recuperar usuarios
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -24,72 +34,111 @@ const DashboardAdmin = () => {
           `${import.meta.env.VITE_BACKEND_URL}/user/users`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        console.log("User recieved", res.data)
-        setUsers(res.data);
-        if (res.data.length > 0) setSelectedUser(res.data[0]);
+        setUsers(Array.isArray(res.data) ? res.data : res.data.users || []);
+        if (Array.isArray(res.data) ? res.data.length > 0 : (res.data.users && res.data.users.length > 0)) {
+          setSelectedUser(Array.isArray(res.data) ? res.data[0] : res.data.users[0]);
+        }
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Error fetching users");
       }
     };
-
-    const fetchLands = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/fields/fields`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setLands(res.data);
-        console.log("hole")
-        console.log(lands)
-      } catch (err) {
-        console.error("Error fetching lands:", err);
-        setError("Error fetching lands");
-      }
-    };
-
     fetchUsers();
-    fetchLands();
   }, [token]);
 
-  // Función para crear un nuevo usuario
+  // Obtener Field asociado al usuario seleccionado
+  useEffect(() => {
+    if (!selectedUser) return;
+    const fetchField = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/${selectedUser.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        // Asumimos que el endpoint devuelve el objeto field
+        setUserField(res.data);
+      } catch (err) {
+        console.error("Error fetching user field:", err);
+      }
+    };
+    fetchField();
+  }, [selectedUser, token]);
+
+  // Obtención de Reports
+  useEffect(() => {
+    if (!selectedUser) return;
+    const fetchReports = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user_reports/${selectedUser.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setUserReports(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        console.error("Error fetching reports:", err);
+      }
+    };
+    fetchReports();
+  }, [selectedUser, token]);
+
+  // Obtención de Budgets
+  useEffect(() => {
+    if (!selectedUser) return;
+    const fetchBudgets = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/usuario/${selectedUser.id}/presupuestos`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setUserBudgets(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        console.error("Error fetching budgets:", err);
+      }
+    };
+    fetchBudgets();
+  }, [selectedUser, token]);
+
   const handleCreateUser = async () => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/users`,
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/signup`,
         newUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setUsers([...users, res.data]);
-      setNewUser({ name: "", email: "" });
+      setNewUser({ name: "", email: "", password: "", lastname: "", dni: "", rolId: 1 });
+      const updatedUsers = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/user/users`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUsers(Array.isArray(updatedUsers.data) ? updatedUsers.data : updatedUsers.data.users || []);
+      setCreateModalOpen(false);
     } catch (err) {
       console.error("Error creating user:", err);
       setError("Error creating user");
     }
   };
 
-  // Función para actualizar un usuario
   const handleUpdateUser = async () => {
     if (!editingUser) return;
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${editingUser.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users`,
         editingUser,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUsers(users.map((user) => (user.id === editingUser.id ? res.data : user)));
       setEditingUser(null);
+      setEditModalOpen(false);
     } catch (err) {
       console.error("Error updating user:", err);
       setError("Error updating user");
     }
   };
 
-  // Función para eliminar un usuario
   const handleDeleteUser = async (userId) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/users/${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUsers(users.filter((user) => user.id !== userId));
@@ -102,13 +151,68 @@ const DashboardAdmin = () => {
     }
   };
 
+  // Funciones para Reports
+  const handleDeleteReport = async (reportId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/delete/${reportId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserReports(userReports.filter(report => report.id !== reportId));
+    } catch (err) {
+      console.error("Error deleting report:", err);
+    }
+  };
+
+  // Funciones para Field
+  const handleCreateField = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/fields`,
+        newField,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(res.data);
+      setNewField({ name: "", area: "" });
+      setFieldCreateModalOpen(false);
+    } catch (err) {
+      console.error("Error creating field:", err);
+    }
+  };
+
+  const handleUpdateField = async () => {
+    if (!editingField) return;
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/fields/${editingField.id}`,
+        editingField,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(res.data);
+      setEditingField(null);
+      setFieldEditModalOpen(false);
+    } catch (err) {
+      console.error("Error updating field:", err);
+    }
+  };  
+  const handleDeleteField = async (fieldId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/fields/${fieldId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserField(null);
+    } catch (err) {
+      console.error("Error deleting field:", err);
+    }
+  };
   return (
     <div className="dashboard-container">
       <h2 className="dashboard-title">Admin Dashboard</h2>
       {error && <div className="error-message">{error}</div>}
       <div className="dashboard-grid">
-        {/* Lista de Usuarios y CRUD */}
-        <div className="users-section">
+        {/* Lista de usuarios (30%) */}
+        <div className="users-section" style={{ width: "30%" }}>
           <h3 className="section-title">Users</h3>
           <ul className="users-list">
             {users.map((user) => (
@@ -123,6 +227,7 @@ const DashboardAdmin = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditingUser(user);
+                      setEditModalOpen(true);
                     }}
                     className="action-button edit-button"
                   >
@@ -141,74 +246,222 @@ const DashboardAdmin = () => {
               </li>
             ))}
           </ul>
-          <div className="create-user-form">
-            <h4 className="form-title">Create New User</h4>
-            <input
-              type="text"
-              placeholder="Name"
-              value={newUser.name}
-              onChange={(e) =>
-                setNewUser({ ...newUser, name: e.target.value })
-              }
-              className="form-input"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={newUser.email}
-              onChange={(e) =>
-                setNewUser({ ...newUser, email: e.target.value })
-              }
-              className="form-input"
-            />
-            <button onClick={handleCreateUser} className="submit-button">
-              Create User
-            </button>
-          </div>
+          <button
+            onClick={() => setCreateModalOpen(true)}
+            className="submit-button"
+            style={{ marginTop: "1rem" }}
+          >
+            Create User
+          </button>
         </div>
 
-        {/* Lista de Tierras */}
-        <div className="lands-section">
-          <h3 className="section-title">Lands</h3>
-          {lands.size === 0 ? (
-            <p className="empty-message">No hay tierras disponibles.</p>
-          ) : (
-            <ul className="lands-list">
-              {[...lands].map(([key, land]) => (
-                land && land.name ? (  // Verificamos que 'land' y 'land.name' existan
-                  <li key={key} className="land-item">
-                    {land.name}
-                  </li>
-                ) : null
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Detalles del Usuario y Edición */}
-        <div className="user-details-section">
-          <h3 className="section-title">User Details</h3>
+        {/* Detalles del usuario y secciones extra (70%) */}
+        <div className="user-details-section" style={{ width: "80%" }}>
           {selectedUser ? (
             <div className="user-details-card">
               <p>
                 <strong>ID:</strong> {selectedUser.id}
               </p>
               <p>
-                <strong>Name:</strong> {selectedUser.name}
+                <strong>Name:</strong> {selectedUser.name} {selectedUser.lastname}
               </p>
               <p>
                 <strong>Email:</strong> {selectedUser.email}
               </p>
+              <p>
+                <strong>DNI:</strong> {selectedUser.dni}
+              </p>
+              <p>
+                <strong>Rol:</strong> {selectedUser.rolId}
+              </p>
+              <p>
+                <strong>Created At:</strong>{" "}
+                {new Date(selectedUser.created_at).toLocaleString()}
+              </p>
+
+              {/* Sección Field */}
+              <div className="fields-section">
+                <h4 className="section-title">Registered Field</h4>
+                {userField ? (
+                  <div>
+                    <p>
+                      <strong>Name:</strong> {userField.name}
+                    </p>
+                    <p>
+                      <strong>Area:</strong> {userField.area}
+                    </p>
+                    <button
+                      onClick={() => {
+                        setEditingField(userField);
+                        setFieldEditModalOpen(true);
+                      }}
+                      className="submit-button"
+                    >
+                      Edit Field
+                    </button>
+                    <button
+                      onClick={handleDeleteField}
+                      className="action-button delete-button"
+                      style={{ marginLeft: "0.5rem" }}
+                    >
+                      Delete Field
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <p>No field found for this user.</p>
+                    <button
+                      onClick={() => setFieldCreateModalOpen(true)}
+                      className="submit-button"
+                    >
+                      Create Field
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Sección Reports */}
+              <div className="extra-info">
+                <h4 className="section-title">Reports</h4>
+                {userReports.length > 0 ? (
+                  <ul className="fields-list">
+                    {userReports.map((report) => (
+                      <li key={report.id}>
+                        <strong>{report.title}</strong> - {report.description}
+                        <br />
+                        <a
+                          href={`${import.meta.env.VITE_BACKEND_URL}${report.url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Report
+                        </a>
+                        <br />
+                        <p><strong>Date:</strong> {new Date(report.date).toLocaleString()}</p>
+                        <button onClick={() => handleDeleteReport(report.id)}>
+                          Delete
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No reports found.</p>
+                )}
+              </div>
+
+              {/* Sección Budgets */}
+              <div className="budget-section">
+                <h4 className="section-title">Budgets</h4>
+                {userBudgets.length > 0 ? (
+                  <ul className="fields-list">
+                    {userBudgets.map((budget) => (
+                      <li key={budget.id}>
+                        <strong>{budget.description}</strong> - ${budget.cost}
+                        <br />
+                        <p><strong>Created At:</strong> {new Date(budget.created_at).toLocaleString()}</p>
+                        <a
+                          href={`${import.meta.env.VITE_BACKEND_URL}/presupuesto/${budget.id}/pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Download PDF
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No budgets found.</p>
+                )}
+              </div>
             </div>
           ) : (
             <p>Select a user to view details</p>
           )}
+        </div>
+      </div>
 
-          {editingUser && (
-            <div className="edit-user-form">
-              <h4 className="form-title">Edit User</h4>
+      {/* Modal para crear usuario */}
+      {createModalOpen && (
+        <div className="modal-overlay" onClick={() => setCreateModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Create New User</h3>
+            <div className="create-user-form">
               <input
                 type="text"
+                placeholder="Name"
+                value={newUser.name}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, name: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Lastname"
+                value={newUser.lastname}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, lastname: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="DNI"
+                value={newUser.dni}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, dni: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={newUser.email}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={newUser.password}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, password: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="number"
+                placeholder="Rol ID"
+                value={newUser.rolId}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, rolId: parseInt(e.target.value) })
+                }
+                className="form-input"
+              />
+              <div className="form-actions">
+                <button onClick={handleCreateUser} className="submit-button">
+                  Create
+                </button>
+                <button onClick={() => setCreateModalOpen(false)} className="cancel-button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar usuario */}
+      {editModalOpen && editingUser && (
+        <div className="modal-overlay" onClick={() => setEditModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Edit User</h3>
+            <div className="edit-user-form">
+              <input
+                type="text"
+                placeholder="Name"
                 value={editingUser.name}
                 onChange={(e) =>
                   setEditingUser({ ...editingUser, name: e.target.value })
@@ -216,10 +469,47 @@ const DashboardAdmin = () => {
                 className="form-input"
               />
               <input
+                type="text"
+                placeholder="Lastname"
+                value={editingUser.lastname}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, lastname: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="DNI"
+                value={editingUser.dni}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, dni: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
                 type="email"
+                placeholder="Email"
                 value={editingUser.email}
                 onChange={(e) =>
                   setEditingUser({ ...editingUser, email: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="password"
+                placeholder="New Password (optional)"
+                value={editingUser.password || ""}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, password: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="number"
+                placeholder="Rol ID"
+                value={editingUser.rolId}
+                onChange={(e) =>
+                  setEditingUser({ ...editingUser, rolId: parseInt(e.target.value) })
                 }
                 className="form-input"
               />
@@ -228,16 +518,97 @@ const DashboardAdmin = () => {
                   Update
                 </button>
                 <button
-                  onClick={() => setEditingUser(null)}
+                  onClick={() => {
+                    setEditModalOpen(false);
+                    setEditingUser(null);
+                  }}
                   className="cancel-button"
                 >
                   Cancel
                 </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Modal para crear Field */}
+      {fieldCreateModalOpen && (
+        <div className="modal-overlay" onClick={() => setFieldCreateModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Create Field</h3>
+            <div className="create-field-form">
+              <input
+                type="text"
+                placeholder="Name"
+                value={newField.name}
+                onChange={(e) =>
+                  setNewField({ ...newField, name: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Area"
+                value={newField.area}
+                onChange={(e) =>
+                  setNewField({ ...newField, area: e.target.value })
+                }
+                className="form-input"
+              />
+              <div className="form-actions">
+                <button onClick={handleCreateField} className="submit-button">
+                  Create
+                </button>
+                <button onClick={() => setFieldCreateModalOpen(false)} className="cancel-button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar Field */}
+      {fieldEditModalOpen && editingField && (
+        <div className="modal-overlay" onClick={() => setFieldEditModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="section-title">Edit Field</h3>
+            <div className="edit-field-form">
+              <input
+                type="text"
+                placeholder="Name"
+                value={editingField.name}
+                onChange={(e) =>
+                  setEditingField({ ...editingField, name: e.target.value })
+                }
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Area"
+                value={editingField.area}
+                onChange={(e) =>
+                  setEditingField({ ...editingField, area: e.target.value })
+                }
+                className="form-input"
+              />
+              <div className="form-actions">
+                <button onClick={handleUpdateField} className="submit-button">
+                  Update
+                </button>
+                <button onClick={() => {
+                  setFieldEditModalOpen(false);
+                  setEditingField(null);
+                }} className="cancel-button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

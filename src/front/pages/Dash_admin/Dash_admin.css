@@ -1,0 +1,252 @@
+/* Reset global y box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tipografías y estilo base */
+html,
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+/* Contenedor principal */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Título principal */
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  color: #111827;
+}
+
+/* Grid general: lista de usuarios y detalles */
+/* Se actualiza la grilla para darle más ancho a la lista de usuarios */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sección de usuarios y detalles */
+.users-section,
+.user-details-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+/* Título de sección */
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+/* Listado de usuarios */
+.users-list {
+  list-style: none;
+  width: 100%;
+}
+
+/* Cada fila de usuario */
+/* Cada fila de usuario */
+.user-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+
+}
+
+/* Texto del usuario: recortar si es muy largo, con un ancho mínimo */
+.user-item span {
+  flex: 1;
+  min-width: 120px;  /* Ajusta este valor según tus necesidades */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contenedor para los botones de acciones */
+.user-item .actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+
+/* Contenedor para los botones de acciones */
+.user-item .actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Botones generales */
+button,
+.request-report-button,
+.button {
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 0.25rem;
+}
+
+button:hover,
+.request-report-button:hover,
+.button:hover {
+  background-color: #059669;
+  transform: scale(1.02);
+}
+
+button:active,
+.request-report-button:active,
+.button:active {
+  background-color: #047d56;
+  transform: scale(0.97);
+}
+
+/* Botones específicos para acciones en la lista de usuarios */
+.action-button {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+}
+
+.edit-button {
+  background-color: #3b82f6;
+}
+
+.edit-button:hover {
+  background-color: #2563eb;
+}
+
+.delete-button {
+  background-color: #ef4444;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+}
+
+/* Formularios de creación y edición */
+.create-user-form,
+.edit-user-form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Detalles del usuario */
+.user-details-card p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+/* Secciones internas: fields, reports y budgets */
+.fields-section,
+.extra-info,
+.budget-section {
+  margin-top: 1rem;
+}
+
+.fields-section ul,
+.extra-info ul,
+.budget-section ul {
+  list-style: none;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+
+.fields-section li,
+.extra-info li,
+.budget-section li {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+/* Mensajes de error */
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive: ajustes para botones en móviles */
+@media (max-width: 480px) {
+  button,
+  .request-report-button,
+  .button {
+    width: 100%;
+    font-size: 1rem;
+  }
+}

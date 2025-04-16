@@ -60,7 +60,7 @@ class User(db.Model):
             "dni": self.dni,
             "email": self.email,
             "rolId": self.rolId,
-            "created_at": self.created_at.isoformat()
+            "created_at": self.created_at.isoformat(),
         }
 
     def __repr__(self):

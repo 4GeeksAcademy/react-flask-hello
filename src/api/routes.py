@@ -55,7 +55,10 @@ def signup():
         db.session.commit()
 
         # Creamos el access token con el logo incluido
-        access_token = create_access_token(identity=str(new_user.id))
+        expires_delta = datetime.timedelta(days=30)
+        access_token = create_access_token(identity=str(new_user.id),
+        expires_delta=expires_delta)                              
+                                          
        
 
         response = jsonify({
@@ -261,6 +264,8 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+
 # LLAMAR AL LOGO DESDE LA API
 
 def generate_logo_token(user_id):
@@ -272,7 +277,7 @@ def generate_logo_token(user_id):
 
 # Actualice las rutas de logo con estos cambios:
 
-@api.route('/api/get_logo', methods=['GET'])
+@api.route('api/get_logo', methods=['GET'])
 @jwt_required()
 def get_logo():
     # Obtener ID del usuario desde el token JWT

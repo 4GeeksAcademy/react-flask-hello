@@ -44,38 +44,20 @@ def generate_sitemap(app):
 
 
 #Código añadido por JAVI para crear funcion pdf
-
-def generate_invoice_pdf(compra, buyer, seller, item):
-    factura_dir = os.getenv("FACTURA_DIR", "static/facturas")
-    os.makedirs(factura_dir, exist_ok=True)
-
+def generateBill(factura, comprador, vendedor, item):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
 
-    # Título
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(200, 10, "Invoice / Factura", ln=True, align="C")
+    pdf.cell(200, 10, txt=f"Factura ID: {factura.id}", ln=True)
+    pdf.cell(200, 10, txt=f"Comprador: {comprador.firstname} {comprador.lastname}", ln=True)
+    pdf.cell(200, 10, txt=f"Vendedor: {vendedor.shopname}", ln=True)
+    pdf.cell(200, 10, txt=f"Producto: {item['title']}", ln=True)
+    pdf.cell(200, 10, txt=f"Cantidad: {item['cantidad']}", ln=True)
+    pdf.cell(200, 10, txt=f"Precio unitario: {item['precio']}", ln=True)
+    pdf.cell(200, 10, txt=f"Total: {item['cantidad'] * item['precio']} €", ln=True)
 
-    pdf.set_font("Arial", size=12)
-    pdf.ln(10)
-
-    # Info de comprador y vendedor
-    pdf.cell(100, 10, f"Buyer: {buyer.email}", ln=True)
-    pdf.cell(100, 10, f"Seller: {seller.email}", ln=True)
-    pdf.ln(10)
-
-    # Detalles del producto
-    pdf.cell(100, 10, f"Product: {item['title']}", ln=True)
-    pdf.cell(100, 10, f"Quantity: {item['cantidad']}", ln=True)
-    pdf.cell(100, 10, f"Unit Price: ${item['precio']}", ln=True)
-    pdf.cell(100, 10, f"Total: ${item['cantidad'] * item['precio']}", ln=True)
-
-    pdf.ln(10)
-    pdf.cell(100, 10, f"Purchase ID: {compra.id}", ln=True)
-
-    filename = f"factura_{compra.id}.pdf"
-    filepath = os.path.join(factura_dir, filename)
-    pdf.output(filepath)
-
-    return f"/{filepath}"  # Ruta relativa para usarla en el frontend
+    filename = f"facturas/factura_{factura.id}.pdf"
+    os.makedirs("facturas", exist_ok=True)
+    pdf.output(name=filename)
+    return f"/{filename}"

@@ -6,12 +6,10 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
-flask-cors = "*"
 gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
@@ -21,10 +19,15 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 colorama = "*"
 boto3 = "*"
-flask = "*"
 pandas = "*"
 openpyxl = "*"
 tigrisdb = "*"
+reportlab = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+flask-cors = "*"
+werkzeug = "*"
+fpdf = "*"
 
 [requires]
 python_version = "3.13"

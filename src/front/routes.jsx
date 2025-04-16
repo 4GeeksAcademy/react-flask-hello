@@ -11,7 +11,7 @@ import { Clients } from "./pages/Clients/Clients.jsx"
 import { NewClient } from "./pages/NewClient/NewClient.jsx";
 import { NewService } from "./pages/NewService/NewService.jsx"
 import { Calendar } from "./pages/Calendar/Calendar.jsx";
-
+import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
 
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
@@ -23,6 +23,8 @@ export const AppRoutes = createBrowserRouter(
             <Route path="/clients" element={<Clients />} />
             <Route path="/newclient" element={<NewClient />} />
             <Route path="/newservice" element={<NewService />} />
+            <Route path="/clients/:clientId" element={<ClientDetail />} />
+
         </Route>
     )
 );

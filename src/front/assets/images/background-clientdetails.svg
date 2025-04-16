@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Definición de gradientes -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fa" />
+      <stop offset="100%" stop-color="#e9ecef" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a86e8" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#4a86e8" stop-opacity="0.2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect width="100%" height="100%" fill="url(#bgGradient)" />
+  
+  <!-- Elementos decorativos - formas abstractas -->
+  <path d="M0,800 Q300,650 600,700 T1200,550 V800 H0 Z" fill="url(#accentGradient)" />
+  <path d="M1200,0 Q900,150 600,100 T0,250 V0 H1200 Z" fill="url(#accentGradient)" opacity="0.7" />
+  
+  <!-- Patrones sutiles para añadir textura -->
+  <g opacity="0.1">
+    <circle cx="200" cy="200" r="80" fill="#4a86e8" />
+    <circle cx="1000" cy="600" r="100" fill="#4a86e8" />
+    <circle cx="850" cy="200" r="50" fill="#4a86e8" />
+    <circle cx="350" cy="650" r="70" fill="#4a86e8" />
+  </g>
+  
+  <!-- Líneas decorativas -->
+  <g stroke="#4a86e8" opacity="0.07" stroke-width="1.5">
+    <line x1="100" y1="0" x2="100" y2="800" />
+    <line x1="300" y1="0" x2="300" y2="800" />
+    <line x1="500" y1="0" x2="500" y2="800" />
+    <line x1="700" y1="0" x2="700" y2="800" />
+    <line x1="900" y1="0" x2="900" y2="800" />
+    <line x1="1100" y1="0" x2="1100" y2="800" />
+  </g>
+  
+  <!-- Puntos decorativos -->
+  <g fill="#4a86e8" opacity="0.1">
+    <circle cx="150" cy="150" r="3" />
+    <circle cx="150" cy="250" r="3" />
+    <circle cx="150" cy="350" r="3" />
+    <circle cx="150" cy="450" r="3" />
+    <circle cx="150" cy="550" r="3" />
+    <circle cx="150" cy="650" r="3" />
+    
+    <circle cx="350" cy="130" r="3" />
+    <circle cx="350" cy="230" r="3" />
+    <circle cx="350" cy="330" r="3" />
+    <circle cx="350" cy="430" r="3" />
+    <circle cx="350" cy="530" r="3" />
+    <circle cx="350" cy="630" r="3" />
+    
+    <circle cx="550" cy="150" r="3" />
+    <circle cx="550" cy="250" r="3" />
+    <circle cx="550" cy="350" r="3" />
+    <circle cx="550" cy="450" r="3" />
+    <circle cx="550" cy="550" r="3" />
+    <circle cx="550" cy="650" r="3" />
+    
+    <circle cx="750" cy="130" r="3" />
+    <circle cx="750" cy="230" r="3" />
+    <circle cx="750" cy="330" r="3" />
+    <circle cx="750" cy="430" r="3" />
+    <circle cx="750" cy="530" r="3" />
+    <circle cx="750" cy="630" r="3" />
+    
+    <circle cx="950" cy="150" r="3" />
+    <circle cx="950" cy="250" r="3" />
+    <circle cx="950" cy="350" r="3" />
+    <circle cx="950" cy="450" r="3" />
+    <circle cx="950" cy="550" r="3" />
+    <circle cx="950" cy="650" r="3" />
+    
+    <circle cx="1150" cy="130" r="3" />
+    <circle cx="1150" cy="230" r="3" />
+    <circle cx="1150" cy="330" r="3" />
+    <circle cx="1150" cy="430" r="3" />
+    <circle cx="1150" cy="530" r="3" />
+    <circle cx="1150" cy="630" r="3" />
+  </g>
+</svg>

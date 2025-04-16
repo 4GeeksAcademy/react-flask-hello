@@ -15,3 +15,6 @@
 
 4) En consecuencia, su cliente se encontrara con un entorno minimalista, amigable y facil de usar para poder hacer sus compras de manera facil y rapido.
 
+
+prueba de subida. hay login, hay singup, sube inventario (hay que hacer el logo en local si o si)
+

@@ -8,8 +8,7 @@ const Settings = () => {
   const [responseDebug, setResponseDebug] = useState(null);
 
   // Obtenemos el token de localStorage para enviarlo con la solicitud
-  const token = localStorage.getItem('token');
-
+  const token = localStorage.getItem('access_token');  // Cambiado de 'token' a 'access_token'
 
   // Maneja el cambio del archivo seleccionado
   const handleFileChange = (event) => {
@@ -32,11 +31,17 @@ const Settings = () => {
     formData.append("file", file);
 
     try {
-      console.log("Subiendo a:", `${import.meta.env.VITE_BACKEND_URL}upload/inventory`);
+      // Corregir la URL para evitar doble barra
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const apiUrl = backendUrl.endsWith('/') 
+        ? `${backendUrl}upload/inventory` 
+        : `${backendUrl}/upload/inventory`;
+      
+      console.log("Subiendo a:", apiUrl);
       console.log("Token usado:", token);
 
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/upload/inventory`,
+        apiUrl,
         formData,
         {
           headers: {
@@ -44,7 +49,6 @@ const Settings = () => {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
           },
-
         }
       );
 
@@ -81,12 +85,11 @@ const Settings = () => {
       });
 
       alert("Error al subir archivo: " + errorMessage);
-    } finally {
+    } finally {a
       setUploading(false); // Terminamos el proceso de carga
     }
   };
 
-  // El JSX debe estar aquí, fuera de handleUpload
   return (
     <div className="option_panel">
       <div className="inventary_btn">

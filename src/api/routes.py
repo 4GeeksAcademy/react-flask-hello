@@ -20,22 +20,21 @@ api = Blueprint('api', __name__)
 # RUTA PARA REGISTRARSE UN USUARIO Y LOGUEARCE AUTOMÁTICAMENTE (SIGNUP)
 @api.route('/signup', methods=['POST'])
 def signup():
-   
-    body = request.get_json()
-    firstname = body.get('firstname')
-    lastname = body.get('lastname')
-    shopname = body.get('shopname')
-    email = body.get('email')
-    password = body.get('password')
+    try:  # Añadir un try/except general para diagnosticar
+        body = request.get_json()
+        firstname = body.get('firstname')
+        lastname = body.get('lastname')
+        shopname = body.get('shopname')
+        email = body.get('email')
+        password = body.get('password')
 
-    if not firstname or not lastname or not email or not password or not shopname:
-        return jsonify({"msg": "Todos los campos son obligatorios"}), 400
+        if not firstname or not lastname or not email or not password or not shopname:
+            return jsonify({"msg": "Todos los campos son obligatorios"}), 400
 
-    existing_user = User.query.filter_by(email=email).first()
-    if existing_user:
-        return jsonify({"msg": "El usuario ya existe"}), 403
-    
-    try:
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return jsonify({"msg": "El usuario ya existe"}), 403
+        
         # Creamos el nuevo usuario
         new_user = User(
             firstname=firstname,
@@ -49,18 +48,26 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        # Creamos un logo por defecto para ese usuario
-        logo = Logo(user_id=new_user.id)
-        db.session.add(logo)
-        db.session.commit()
-
-        # Creamos el access token con el logo incluido
-        expires_delta = datetime.timedelta(days=30)
-        access_token = create_access_token(identity=str(new_user.id),
-        expires_delta=expires_delta)                              
+        try:
+            # Creamos un logo por defecto para ese usuario
+            # Asegúrate de que esto funcione con tu modelo Logo
+            default_logo_url = "https://placehold.co/600x400/EEE/31343C"
+            logo = Logo(user_id=new_user.id, image_logo_url=default_logo_url)
+            db.session.add(logo)
+            db.session.commit()
+        except Exception as logo_error:
+            print(f"Error al crear el logo: {str(logo_error)}")
+            # No fallamos si hay un problema con el logo
+        
+        from datetime import timedelta  # Asegúrate de importar esto
+        
+        # Creamos el access token
+        expires_delta = timedelta(days=30)  # Usa timedelta, no datetime.timedelta
+        access_token = create_access_token(
+            identity=str(new_user.id),
+            expires_delta=expires_delta
+        )                              
                                           
-       
-
         response = jsonify({
             "access_token": access_token,
             "user": new_user.serialize()
@@ -74,8 +81,8 @@ def signup():
 
     except Exception as e:
         db.session.rollback()
+        print(f"Error completo en signup: {str(e)}")  # Imprimir en los logs
         return jsonify({"msg": f"Error al registrar el usuario: {str(e)}"}), 500
-
 
 # RUTA PARA LOGEARSE Y CREACIÓN DE TOKEN Y COOKIE
 @api.route('/login', methods=['POST'])
@@ -277,7 +284,7 @@ def generate_logo_token(user_id):
 
 # Actualice las rutas de logo con estos cambios:
 
-@api.route('api/get_logo', methods=['GET'])
+@api.route('api/get_logo', methods=['GET'])  # Corregir la barra inicial
 @jwt_required()
 def get_logo():
     # Obtener ID del usuario desde el token JWT
@@ -305,7 +312,7 @@ def get_logo():
 
 
 
-@api.route('/post_logo', methods=['POST'])
+@api.route('api/post_logo', methods=['POST']) 
 @jwt_required()
 def post_logo():
     # Obtener ID del usuario desde el token JWT

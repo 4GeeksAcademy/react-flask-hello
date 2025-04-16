@@ -4,7 +4,7 @@ import "./Styles/Register.css";
 import ErrorMessage1 from "../components/ErrorMessage1";
 import ErrorMessage2 from "../components/ErrorMessage2";
 
-function Register() {
+    function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstname, setFirstname] = useState("");
@@ -17,45 +17,65 @@ function Register() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-    
+        
         if (!email || !password || !firstname || !lastname || !shopname) {
             setMessage("Por favor, completa todos los campos.");
             setMessageType("error2");
             return;
         }
-    
+        
         const requestData = { email, password, firstname, lastname, shopname };
         console.log("Datos enviados al backend:", requestData);
-    
+        
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/signup`, {
+            // Verificar URL del backend
+            const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+            const apiUrl = backendUrl.endsWith('/') ? `${backendUrl}api/signup` : `${backendUrl}/api/signup`;
+            console.log("URL de registro:", apiUrl);
+            
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(requestData) 
             });
-    
-            const data = await response.json();
-    
+            
+            // Intenta obtener la respuesta JSON
+            let data;
+            try {
+                data = await response.json();
+                console.log("Respuesta del servidor:", data);
+            } catch (jsonError) {
+                console.error("Error al parsear JSON:", jsonError);
+                data = { error: "Formato de respuesta inválido" };
+            }
+            
             if (response.ok) {
-                // Solo guardamos el token y redirigimos si la respuesta es exitosa
-                localStorage.setItem("token", data.access_token);
-                // Redirige al usuario
+                // Guardar token - usar "access_token" para ser consistente con login
+                localStorage.setItem("access_token", data.access_token);
                 navigate("/settings");
-            } else if (response.status === 403) {
-                setMessage("El usuario ya existe");
-                setMessageType("error");
-            } else if (response.status === 400) {
-                setMessage(data.msg || "La solicitud es incorrecta. Verifica los datos.");
-                setMessageType("error");
             } else {
-                setMessage(data.error || "Hubo un problema con el registro");
+                console.error("Error en respuesta:", {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                });
+                
+                if (response.status === 403) {
+                    setMessage("El usuario ya existe");
+                } else if (response.status === 400) {
+                    setMessage(data.msg || "La solicitud es incorrecta");
+                } else if (response.status === 500) {
+                    setMessage(data.msg || "Error interno del servidor");
+                } else {
+                    setMessage(data.error || data.msg || "Hubo un problema con el registro");
+                }
                 setMessageType("error");
             }
         } catch (error) {
-            console.error("Error de registro:", error);
-            setMessage("No se pudo conectar al servidor");
+            console.error("Error detallado:", error);
+            setMessage(`Error de conexión: ${error.message}`);
             setMessageType("error");
         }
     };

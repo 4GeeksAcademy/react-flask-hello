@@ -359,7 +359,7 @@ def create_event_for_appointment(appointment_id):
     client = Clients.query.get(appointment.client_id)
     user = Users.query.get(appointment.user_id)
     service = Services.query.get(appointment.service_id)
-    business = Business.query.get(appointment.business_id)
+    business = Businesses.query.get(appointment.business_id)
     business_name = business.name if business else "Unknown Business"
 
     if not client or not user or not service:
@@ -445,7 +445,7 @@ def update_appointment_event(appointment_id):
     client = Clients.query.get(appointment.client_id)
     user = Users.query.get(appointment.user_id)
     service = Services.query.get(appointment.service_id)
-    business = Business.query.get(appointment.business_id)
+    business = Businesses.query.get(appointment.business_id)
     business_name = business.name if business else "Unknown Business"
 
     if not client or not user or not service:

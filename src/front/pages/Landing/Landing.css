@@ -21,7 +21,7 @@
 
 /* Navbar */
 .landing-nav {
-  padding: 1.5rem 5%;
+  padding: 1.5rem 6%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +33,7 @@
 }
 
 .nav-logo {
-  height: 50px;
+  height: 51px;
   width: auto;
 }
 
@@ -58,7 +58,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 4rem 5%;
+  padding: 4rem 7%;
   background: linear-gradient(to right, #e8f5e9, #c8e6c9);
 }
 

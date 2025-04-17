@@ -284,7 +284,7 @@ def generate_logo_token(user_id):
 
 # Actualice las rutas de logo con estos cambios:
 
-@api.route('api/get_logo', methods=['GET'])  # Corregir la barra inicial
+@api.route('/get_logo', methods=['GET'])  # Corregir la barra inicial
 @jwt_required()
 def get_logo():
     # Obtener ID del usuario desde el token JWT
@@ -312,64 +312,38 @@ def get_logo():
 
 
 
-@api.route('api/post_logo', methods=['POST']) 
+# Endpoint para subir logo
+@api.route('/post_logo', methods=['POST'])
 @jwt_required()
 def post_logo():
-    # Obtener ID del usuario desde el token JWT
     user_id = get_jwt_identity()
     
-    try:
-        # Verificar si se envió un archivo
-        if 'logo' not in request.files:
-            return jsonify({"error": "No se encontró archivo de logo"}), 400
+    if 'logo' not in request.files:
+        return jsonify({"error": "No se encontró archivo"}), 400
         
-        file = request.files['logo']
-        
-        if file.filename == '':
-            return jsonify({"error": "No se seleccionó ningún archivo"}), 400
-        
-        # Verificar si es un tipo de archivo permitido
-        if not allowed_file(file.filename):
-            return jsonify({"error": "Tipo de archivo no permitido"}), 400
-        
-        # Leer los datos del archivo
-        image_data = file.read()
-        
-        # Guardar en base de datos
-        logo = Logo.query.filter_by(user_id=user_id).first()
-        
-        # Generar URL para el logo
-        host_url = request.host_url.rstrip('/')
-        logo_token = generate_logo_token(user_id)
-        logo_url = f"{host_url}/api/get_logo"  # No incluimos el token en la URL, se usa JWT
-        
-        if logo:
-            # Actualizar logo existente
-            logo.image_data = image_data
-            if hasattr(logo, 'image_logo_url'):
-                logo.image_logo_url = logo_url
-            if hasattr(logo, 'updated_at'):
-                logo.updated_at = datetime.now()
-        else:
-            # Crear nuevo registro - ajusta los campos según tu modelo Logo
-            logo = Logo(
-                user_id=user_id,
-                image_data=image_data
-            )
-            # Agregar estos campos si existen en tu modelo
-            if hasattr(Logo, 'image_logo_url'):
-                logo.image_logo_url = logo_url
-            if hasattr(Logo, 'created_at'):
-                logo.created_at = datetime.now()
-            
-            db.session.add(logo)
-        
-        db.session.commit()
-        
-        return jsonify({
-            "message": "Logo guardado correctamente",
-            "logo_url": logo_url
-        }), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": f"Error al guardar el logo: {str(e)}"}), 500
+    file = request.files['logo']
+    if not file:
+        return jsonify({"error": "No se seleccionó archivo"}), 400
+    
+    # Leer datos de la imagen
+    image_data = file.read()
+    
+    # Buscar o crear el logo del usuario
+    logo = Logo.query.filter_by(user_id=user_id).first()
+    if not logo:
+        logo = Logo(user_id=user_id)
+        db.session.add(logo)
+    
+    # Actualizar los datos
+    logo.image_data = image_data
+    
+    # También guardar la URL por defecto (usar preferiblemente una URL absoluta)
+    host_url = request.host_url.rstrip('/')
+    logo.image_logo_url = f"{host_url}/api/get_logo?user_id={user_id}"
+    
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Logo guardado correctamente",
+        "logo_url": logo.image_logo_url
+    }), 200

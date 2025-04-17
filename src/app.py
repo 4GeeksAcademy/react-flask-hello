@@ -24,7 +24,7 @@ app.register_blueprint(upload, url_prefix='/upload')
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app, supports_credentials=True)
-CORS(app, resources={r"/upload/*": {"origins": "*"}})
+CORS(app, resources={r"/upload/*": {"origins": "*", "methods": ["GET", "POST"]}})
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"

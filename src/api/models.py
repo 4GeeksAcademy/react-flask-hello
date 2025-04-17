@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Column, Integer, Float, Boolean, ForeignKey
+from sqlalchemy import String, Column, Integer, Float, Boolean, ForeignKey,LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
+from typing import Optional
 
 db = SQLAlchemy()
 
@@ -178,6 +179,8 @@ class Logo(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     image_logo_url: Mapped[str] = mapped_column(
         String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+
+    image_data: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
 
     # Añadimos la relación con el usuario
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)

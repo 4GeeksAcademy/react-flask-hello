@@ -78,58 +78,48 @@ const LogoFrame = () => {
     };
 
     // Función para cargar el logo desde la API
-const loadLogoFromApi = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return null;
-    
-    try {
-        // Añadir timestamp para evitar caché
-        const timestamp = new Date().getTime();
-        const apiUrl = `${baseUrl}/api/get_logo?t=${timestamp}`;
-            
-        console.log("Intentando cargar logo desde:", apiUrl);
-            
-        const response = await axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'image/*'
-            },
-            responseType: 'blob'
-        });
+    const loadLogoFromApi = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) return null;
         
-        // Procesar respuesta solo si es válida
-        if (response.data && response.data.size > 0) {
-            console.log("Logo recibido de API, tamaño:", response.data.size);
-            
-            // Crear URL para la imagen recibida para mostrarla temporalmente
-            const contentType = response.headers['content-type'] || 'image/png';
-            const blob = new Blob([response.data], { type: contentType });
-            const imageUrl = URL.createObjectURL(blob);
-            
-            // Importante: Convertir el blob a base64 para guardar en localStorage
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const base64data = reader.result;
-                    
-                    // Guardar base64 en localStorage en lugar de la URL del blob
-                    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-                    userData.logo_url = base64data;
-                    localStorage.setItem("userData", JSON.stringify(userData));
-                    
-                    // Resolver con la URL temporal para mostrar inmediatamente
-                    resolve(imageUrl);
-                };
-                reader.readAsDataURL(blob);
+        try {
+            // Añadir timestamp para evitar caché
+            const timestamp = new Date().getTime();
+            // ¡IMPORTANTE! Asegúrate de que la ruta sea exactamente igual que en el backend
+            const apiUrl = `${baseUrl}/api/get_logo?t=${timestamp}`;
+                
+            console.log("Intentando cargar logo desde:", apiUrl);
+                
+            const response = await axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'image/*'
+                },
+                responseType: 'blob'
             });
+            
+            // Procesar respuesta solo si es válida
+            if (response.data && response.data.size > 0) {
+                console.log("Logo recibido de API, tamaño:", response.data.size);
+                // Crear URL para la imagen recibida
+                const contentType = response.headers['content-type'] || 'image/png';
+                const blob = new Blob([response.data], { type: contentType });
+                const imageUrl = URL.createObjectURL(blob);
+                
+                // Actualizar userData en localStorage
+                const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+                userData.logo_url = imageUrl;
+                localStorage.setItem("userData", JSON.stringify(userData));
+                
+                return imageUrl;
+            }
+        } catch (error) {
+            console.error("Error al cargar logo desde API:", error);
+            return null;
         }
-    } catch (error) {
-        console.error("Error al cargar logo desde API:", error);
+        
         return null;
-    }
-    
-    return null;
-};
+    };
 
     // Cargar logo cuando cambia el estado de autenticación
     useEffect(() => {
@@ -260,7 +250,7 @@ const loadLogoFromApi = async () => {
                     className="logo-image"
                     key={`img-${Date.now()}`}
                     onError={(e) => {
-                       
+                        console.error("Error cargando imagen:", e.target.src);
                         e.target.src = DEFAULT_LOGO;
                     }}
                 />

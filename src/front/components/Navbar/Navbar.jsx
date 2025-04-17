@@ -6,7 +6,6 @@ import logo from "../../assets/img/Logo_DronFarm2.png";
 import "./Navbar.css";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
-
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,28 +15,39 @@ const Navbar = () => {
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Detectar si estamos en el dashboard - corregido para usar "/app"
   const isDashboard = location.pathname.includes("/app");
 
   useEffect(() => {
-    // Actualizar el estado de autenticación cuando cambie
-    setIsAuthenticated(!!localStorage.getItem("token"));
+    setIsAuthenticated(
+      !!localStorage.getItem("token") &&
+      localStorage.getItem("token") !== "undefined" &&
+      localStorage.getItem("token") !== "null" &&
+      localStorage.getItem("token").trim() !== ""
+    );
   }, [location]);
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/"); // Redirige a la página de landing
+    navigate("/");
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
-        <Link to={isAuthenticated ? "/app" : "/"} className="navbar-logo">
+        {/* Logo con redirección y cierre del menú */}
+        <Link
+          to={isAuthenticated ? "/app/dashboard" : "/"}
+          className="navbar-logo"
+          onClick={closeMenu}
+        >
           <img src={logo} alt="DronFarm Logo" className="logo-img" />
         </Link>
 
@@ -55,17 +65,21 @@ const Navbar = () => {
           <span></span>
         </label>
 
-        {/* Items de Navegación */}
+        {/* Menú de navegación */}
         <ul className="navbar-menu">
           {isDashboard || isAuthenticated ? (
             <>
-              {/* Solo contacto y cerrar sesión, manteniendo la misma estructura que PublicNavbar */}
               <li className="navbar-item">
-                <Link to="/contacto" className="navbar-link">Contacto</Link>
+                <Link to="/contacto" className="navbar-link" onClick={closeMenu}>
+                  Contacto
+                </Link>
               </li>
               <li className="navbar-item">
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    closeMenu();
+                    handleLogout();
+                  }}
                   className="navbar-button navbar-button-logout"
                 >
                   Cerrar Sesión
@@ -75,19 +89,29 @@ const Navbar = () => {
           ) : (
             <>
               <li className="navbar-item">
-                <Link to="/" className="navbar-link">Inicio</Link>
+                <Link to="/" className="navbar-link" onClick={closeMenu}>
+                  Inicio
+                </Link>
               </li>
               <li className="navbar-item">
-                <Link to="/nosotros" className="navbar-link">Nosotros</Link>
+                <Link to="/nosotros" className="navbar-link" onClick={closeMenu}>
+                  Nosotros
+                </Link>
               </li>
               <li className="navbar-item">
-                <Link to="/servicios" className="navbar-link">Servicios</Link>
+                <Link to="/servicios" className="navbar-link" onClick={closeMenu}>
+                  Servicios
+                </Link>
               </li>
               <li className="navbar-item">
-                <Link to="/contacto" className="navbar-link">Contacto</Link>
+                <Link to="/contacto" className="navbar-link" onClick={closeMenu}>
+                  Contacto
+                </Link>
               </li>
               <li className="navbar-item">
-                <Link to="/login" className="navbar-button">Iniciar Sesión</Link>
+                <Link to="/login" className="navbar-button" onClick={closeMenu}>
+                  Iniciar Sesión
+                </Link>
               </li>
             </>
           )}

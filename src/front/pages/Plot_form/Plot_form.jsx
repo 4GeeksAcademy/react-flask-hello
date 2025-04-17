@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Plot_form.css";
 import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
-import {useGlobalReducer} from "../../hooks/useGlobalReducer";
-
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 const CROP_OPTIONS = {
   "Cereales y Cultivos Extensivos": ["Trigo", "Cebada", "Avena", "Maíz", "Arroz", "Girasol", "Algodón"],
@@ -18,6 +17,8 @@ const CROP_OPTIONS = {
 
 const PlotForm = () => {
   const { store } = useGlobalReducer();
+  const navigate = useNavigate();
+
   const [plotData, setPlotData] = useState({
     name: "",
     area: "",
@@ -28,8 +29,8 @@ const PlotForm = () => {
     city: "",
     coordinates: ""
   });
+
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,12 +103,73 @@ const PlotForm = () => {
       } else {
         showErrorAlert(data.error || "Error al registrar la parcela");
       }
-
     } catch (err) {
       setError("Error de conexión con el servidor");
       console.error(err);
     }
   };
+
+  const handleAddAnother = async () => {
+    setError(null);
+
+    const requiredFields = ["name", "area", "cropType", "street", "number", "postalCode", "city"];
+    const isIncomplete = requiredFields.some(field => !plotData[field]?.trim());
+
+    if (isIncomplete) {
+      showErrorAlert("Por favor completa todos los campos obligatorios.");
+      return;
+    }
+
+    if (plotData.coordinates && !validateCoordinates(plotData.coordinates)) {
+      showErrorAlert("Formato de coordenadas inválido. Use: latitud,longitud");
+      return;
+    }
+
+    try {
+      const token = store.auth.token;
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/fields/fields`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: plotData.name,
+          area: parseFloat(plotData.area),
+          crop: plotData.cropType,
+          street: plotData.street,
+          number: plotData.number,
+          postal_code: plotData.postalCode,
+          city: plotData.city,
+          coordinates: plotData.coordinates || ""
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showSuccessAlert("Parcela registrada correctamente");
+        setPlotData({
+          name: "",
+          area: "",
+          cropType: "",
+          street: "",
+          number: "",
+          postalCode: "",
+          city: "",
+          coordinates: ""
+        });
+      } else {
+        showErrorAlert(data.error || "Error al registrar la parcela");
+      }
+    } catch (err) {
+      setError("Error de conexión con el servidor");
+      console.error(err);
+    }
+  };
+
+
+
 
   return (
     <div className="plot-form-container">
@@ -115,7 +177,6 @@ const PlotForm = () => {
         <h2 className="plot-form-title">Registro de Nueva Parcela</h2>
 
         <form onSubmit={handleSubmit} className="plot-form">
-          {/* Sección 1: Información Básica */}
           <div className="form-section">
             <h3 className="section-title">Información básica</h3>
             <div className="form-group">
@@ -171,7 +232,6 @@ const PlotForm = () => {
             </div>
           </div>
 
-          {/* Sección 2: Ubicación */}
           <div className="form-section">
             <h3 className="section-title">Ubicación</h3>
             <div className="form-row">
@@ -261,12 +321,22 @@ const PlotForm = () => {
             </div>
           </div>
 
-          <div className="form-actions">
+          <div className="button-row">
             <button type="submit" className="submit-button">
               Registrar Parcela
             </button>
-            {error && <p className="error-message">{error}</p>}
+
+            <button
+              type="button"
+              onClick={handleAddAnother}
+              className="submit-button"
+            >
+              Añadir otro cultivo
+            </button>
+
           </div>
+
+          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>

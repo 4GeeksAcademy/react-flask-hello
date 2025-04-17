@@ -35,9 +35,9 @@ export const router = createBrowserRouter(
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}
       <Route path="/contacto" element={<Contact />} />
-      <Route path="servicios" element={<WeOffer />}
+      <Route path="servicios" element={<WeOffer />} />
 
-      {/* Rutas privadas con Layout y protección */}
+
       <Route
         path="/app"
         element={

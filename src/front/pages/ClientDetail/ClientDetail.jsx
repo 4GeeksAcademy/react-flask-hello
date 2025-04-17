@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./ClientDetail.css";
@@ -9,6 +9,7 @@ export const ClientDetail = () => {
     const { store, dispatch } = useGlobalReducer();
     const { token, selectedBusiness } = store;
     const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+    const businessId = selectedBusiness?.id;
 
     const [client, setClient] = useState(null);
     const [clientServices, setClientServices] = useState([]);
@@ -17,13 +18,13 @@ export const ClientDetail = () => {
     const [notes, setNotes] = useState([]);
     const [activeService, setActiveService] = useState(null);
 
-    // Modal states para notas
+    // Estado del modal de notas
     const [showNoteModal, setShowNoteModal] = useState(false);
     const [newNote, setNewNote] = useState("");
     const [notesLoading, setNotesLoading] = useState(false);
     const [noteError, setNoteError] = useState(null);
 
-    // Modal states para servicios
+    // Estado del modal de servicios
     const [showServiceModal, setShowServiceModal] = useState(false);
     const [availableServices, setAvailableServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState([]);
@@ -108,13 +109,13 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Ordenamos las notas por fecha (las más recientes primero)
+                // Ordenamos las notas por fecha (más recientes primero)
                 const sortedNotes = Array.isArray(data) ?
                     [...data].sort((a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now()))
                     : [];
                 setNotes(sortedNotes);
             } else {
-                // Si recibimos un 404, significa que no hay notas, lo cual es OK
+                // Si es 404, significa que no hay notas, lo cual es OK
                 if (response.status === 404) {
                     setNotes([]);
                 } else {
@@ -129,10 +130,11 @@ export const ClientDetail = () => {
         }
     };
 
-
+    // Función para cargar los servicios disponibles
     const fetchAvailableServices = async () => {
-        if (!selectedBusiness) {
-            setServiceError("No business selected");
+        // Verificar si existe el negocio seleccionado
+        if (!businessId) {
+            setServiceError("No hay negocio seleccionado");
             return;
         }
 
@@ -140,50 +142,35 @@ export const ClientDetail = () => {
         setServiceError(null);
 
         try {
-            // Log the request URL for debugging
-            const requestUrl = `${backendUrl}api/business/${selectedBusiness.id}/services`;
-            console.log("Fetching services from:", requestUrl);
-
+            const requestUrl = `${backendUrl}api/business/${businessId}/services`;
+            console.log("URL de la petición:", requestUrl);
+            
             const response = await fetch(requestUrl, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-            // Log response status
-            console.log("Response status:", response.status);
+            console.log("Respuesta recibida, status:", response.status);
 
-            // If not OK, try to get more diagnostic info
             if (!response.ok) {
-                const contentType = response.headers.get("content-type");
-                console.log("Response content type:", contentType);
-
-                // If it's HTML, get text and log part of it
-                if (contentType && contentType.includes("text/html")) {
-                    const htmlText = await response.text();
-                    console.error("Received HTML instead of JSON:", htmlText.substring(0, 200) + "...");
-                    throw new Error(`Server returned HTML (${response.status}) instead of JSON. Check server logs.`);
-                }
-
-                // Try to parse as JSON anyway
-                const errorData = await response.json().catch(e => ({ error: "Could not parse error response" }));
-                throw new Error(errorData.error || `Server error: ${response.status}`);
+                const errorData = await response.json().catch(e => ({ error: "No se pudo procesar la respuesta" }));
+                throw new Error(errorData.error || `Error del servidor: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log("Datos recibidos:", data);
 
-            // Ensure data is an array
             if (!Array.isArray(data)) {
-                console.error("Expected array but got:", data);
-                throw new Error("Response is not in the expected format (array)");
+                throw new Error("La respuesta no tiene el formato esperado (array)");
             }
 
-            // Filter the services that the client already has assigned
+            // Filtrar servicios que el cliente ya tiene asignados
             const clientServiceIds = clientServices.map(service => service.id);
             const filteredServices = data.filter(service => !clientServiceIds.includes(service.id));
-
+            
+            console.log("Servicios filtrados:", filteredServices.length);
             setAvailableServices(filteredServices);
-            // Initially, no service is selected
             setSelectedServices([]);
         } catch (error) {
             console.error("Error fetching available services:", error);
@@ -193,6 +180,7 @@ export const ClientDetail = () => {
         }
     };
 
+    // Funciones de navegación
     const handleEditAppointment = () => {
         if (activeService) {
             navigate(`/appointment/edit/${activeService.id}`);
@@ -203,10 +191,11 @@ export const ClientDetail = () => {
         navigate(`/client/${clientId}/budget`);
     };
 
-    // Functions para el modal de notas
+    // Modal de notas
     const openNoteModal = () => {
         setShowNoteModal(true);
         setNoteError(null);
+        setNewNote("");
     };
 
     const closeNoteModal = () => {
@@ -225,7 +214,6 @@ export const ClientDetail = () => {
         setNoteError(null);
 
         try {
-            // Verificamos que tenemos el email del cliente
             if (!client || !client.email) {
                 throw new Error("No se encontró información del cliente");
             }
@@ -248,7 +236,6 @@ export const ClientDetail = () => {
                 throw new Error(data.error || data.msg || "Error al guardar la nota");
             }
 
-            // Actualizar la lista de notas
             await fetchClientNotes();
             closeNoteModal();
         } catch (error) {
@@ -259,7 +246,6 @@ export const ClientDetail = () => {
         }
     };
 
-    // Función para eliminar una nota
     const deleteNote = async (noteId) => {
         if (!confirm("¿Estás seguro de que deseas eliminar esta nota?")) {
             return;
@@ -278,7 +264,6 @@ export const ClientDetail = () => {
                 throw new Error(data.error || data.msg || "Error al eliminar la nota");
             }
 
-            // Actualizar la lista de notas
             fetchClientNotes();
         } catch (error) {
             console.error("Error deleting note:", error);
@@ -286,11 +271,10 @@ export const ClientDetail = () => {
         }
     };
 
-    // Functions para el modal de servicios
+    // Modal de servicios
     const openServiceModal = () => {
         setShowServiceModal(true);
         setServiceError(null);
-        fetchAvailableServices();
     };
 
     const closeServiceModal = () => {
@@ -299,7 +283,13 @@ export const ClientDetail = () => {
         setServiceError(null);
     };
 
-    // Función para manejar la selección de servicios
+    // Cargar servicios cuando se abre el modal
+    useEffect(() => {
+        if (showServiceModal) {
+            fetchAvailableServices();
+        }
+    }, [showServiceModal]);
+
     const handleServiceSelection = (serviceId) => {
         if (selectedServices.includes(serviceId)) {
             setSelectedServices(selectedServices.filter(id => id !== serviceId));
@@ -308,7 +298,6 @@ export const ClientDetail = () => {
         }
     };
 
-    // Función para asignar los servicios seleccionados al cliente
     const assignServicesToClient = async () => {
         if (selectedServices.length === 0) {
             setServiceError("Debes seleccionar al menos un servicio");
@@ -336,7 +325,6 @@ export const ClientDetail = () => {
                 throw new Error(data.error || data.msg || "Error al asignar servicios");
             }
 
-            // Actualizar la lista de servicios del cliente
             await fetchClientServices();
             closeServiceModal();
         } catch (error) {
@@ -347,10 +335,226 @@ export const ClientDetail = () => {
         }
     };
 
+    // Componente Modal de Notas
+    const NoteModal = () => {
+        // Estado local para la nota
+        const [localNote, setLocalNote] = useState("");
+        const [localError, setLocalError] = useState(null);
+        
+        // Inicializar el estado local cuando se abre el modal
+        useEffect(() => {
+            if (showNoteModal) {
+                setLocalNote(newNote || "");
+                setLocalError(null);
+            }
+        }, [showNoteModal, newNote]);
+        
+        // Función para manejar cambios en el textarea
+        const handleNoteChange = (e) => {
+            const text = e.target.value;
+            setLocalNote(text);
+            
+            // Limpiar el error si el usuario empieza a escribir
+            if (text.trim() !== "" && localError) {
+                setLocalError(null);
+            }
+        };
+        
+        // Función para guardar la nota
+        const handleSaveNote = () => {
+            // Validación
+            if (!localNote || localNote.trim() === "") {
+                setLocalError("La nota no puede estar vacía");
+                return;
+            }
+            
+            // Transferimos el contenido al estado del componente padre
+            setNewNote(localNote);
+            
+            // Limpiar error en el componente padre si existe
+            if (noteError) {
+                setNoteError(null);
+            }
+            
+            // Llamar a la función que maneja el guardado
+            addNewNote();
+        };
+        
+        return (
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h3>Agregar Nueva Nota</h3>
+                        <button 
+                            className="close-button" 
+                            onClick={closeNoteModal}
+                            type="button"
+                        >
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        {/* Mostrar el error local en lugar del error del padre */}
+                        {localError && (
+                            <div className="note-error-message" style={{
+                                backgroundColor: "#ffdddd",
+                                color: "#d8000c",
+                                padding: "10px",
+                                borderRadius: "4px",
+                                marginBottom: "10px"
+                            }}>
+                                {localError}
+                            </div>
+                        )}
+                        
+                        <textarea
+                            placeholder="Escribe tu nota aquí..."
+                            value={localNote}
+                            onChange={handleNoteChange}
+                            rows={4}
+                            disabled={notesLoading}
+                            style={{
+                                width: "100%",
+                                padding: "8px",
+                                boxSizing: "border-box",
+                                resize: "vertical",
+                                borderRadius: "4px",
+                                border: "1px solid #ccc"
+                            }}
+                        />
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="cancel-button"
+                            onClick={closeNoteModal}
+                            disabled={notesLoading}
+                            type="button"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            className="save-button"
+                            onClick={handleSaveNote}
+                            disabled={notesLoading}
+                            type="button"
+                        >
+                            {notesLoading ? "Guardando..." : "Guardar Nota"}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // Componente Modal de Servicios
+    const ServiceModal = () => {
+        return (
+            <div className="modal-overlay">
+                <div className="modal-content service-modal">
+                    <div className="modal-header">
+                        <h3>Agregar Servicios</h3>
+                        <button className="close-button" onClick={closeServiceModal}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        {serviceError && (
+                            <div className="service-error-message" style={{
+                                backgroundColor: "#ffdddd",
+                                color: "#d8000c",
+                                padding: "10px",
+                                borderRadius: "4px",
+                                marginBottom: "15px"
+                            }}>
+                                {serviceError}
+                            </div>
+                        )}
+                        
+                        {/* Información de diagnóstico sobre el negocio seleccionado */}
+                        {!businessId && (
+                            <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
+                                <strong>Información de diagnóstico:</strong> No se detecta un negocio seleccionado.
+                            </div>
+                        )}
+                        
+                        {businessId && (
+                            <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
+                                <strong>Negocio seleccionado:</strong> ID: {businessId}
+                            </div>
+                        )}
+
+                        {servicesLoading ? (
+                            <div className="services-loading">Cargando servicios disponibles...</div>
+                        ) : (
+                            <>
+                                {availableServices.length === 0 ? (
+                                    <div className="no-services-message">
+                                        No hay servicios disponibles para asignar a este cliente.
+                                        <div style={{ marginTop: "10px" }}>
+                                            <button 
+                                                onClick={fetchAvailableServices}
+                                                style={{
+                                                    padding: "5px 10px",
+                                                    background: "#f0f0f0",
+                                                    border: "1px solid #ccc",
+                                                    borderRadius: "4px",
+                                                    cursor: "pointer"
+                                                }}
+                                            >
+                                                <i className="fas fa-sync-alt"></i> Intentar nuevamente
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="services-list">
+                                        {availableServices.map(service => (
+                                            <div key={service.id} className="service-option">
+                                                <label className="service-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedServices.includes(service.id)}
+                                                        onChange={() => handleServiceSelection(service.id)}
+                                                    />
+                                                    <div className="service-info">
+                                                        <span className="service-name">{service.name}</span>
+                                                        <span className="service-price">${service.price}</span>
+                                                    </div>
+                                                </label>
+                                                <div className="service-description">
+                                                    {service.description}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="cancel-button"
+                            onClick={closeServiceModal}
+                            disabled={servicesLoading}
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            className="save-button"
+                            onClick={assignServicesToClient}
+                            disabled={servicesLoading || availableServices.length === 0 || selectedServices.length === 0}
+                        >
+                            {servicesLoading ? "Asignando..." : "Asignar Servicios"}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     if (loading) {
         return (
             <div className="client-detail-container">
-                <div className="loading">Loading customer information...</div>
+                <div className="loading">Cargando información del cliente...</div>
             </div>
         );
     }
@@ -370,8 +574,8 @@ export const ClientDetail = () => {
         return (
             <div className="client-detail-container">
                 <div className="not-found">
-                    <p>Client not found</p>
-                    <button onClick={() => navigate(-1)}>Back</button>
+                    <p>Cliente no encontrado</p>
+                    <button onClick={() => navigate(-1)}>Volver</button>
                 </div>
             </div>
         );
@@ -383,11 +587,11 @@ export const ClientDetail = () => {
                 <div className="client-detail-container">
                     <div className="back-button">
                         <button onClick={() => navigate(-1)}>
-                            <i className="fas fa-arrow-left"></i> Back
+                            <i className="fas fa-arrow-left"></i> Volver
                         </button>
                     </div>
 
-                    {/* informacion principal cliente */}
+                    {/* Información principal del cliente */}
                     <div className="client-header">
                         <div className="client-info-main">
                             <h1>{client.name}</h1>
@@ -396,16 +600,16 @@ export const ClientDetail = () => {
                     </div>
 
                     <div className="client-details-grid">
-                        {/*  información personal */}
+                        {/* Información personal */}
                         <div className="client-info-section">
-                            <h2>Personal Information</h2>
+                            <h2>Información Personal</h2>
                             <div className="info-grid">
                                 <div className="info-item">
-                                    <span className="info-label">Direcction:</span>
+                                    <span className="info-label">Dirección:</span>
                                     <span className="info-value">{client.address || "No disponible"}</span>
                                 </div>
                                 <div className="info-item">
-                                    <span className="info-label">Phone:</span>
+                                    <span className="info-label">Teléfono:</span>
                                     <span className="info-value">{client.phone || "No disponible"}</span>
                                 </div>
                                 <div className="info-item">
@@ -415,12 +619,12 @@ export const ClientDetail = () => {
                             </div>
                         </div>
 
-                        {/* notas */}
+                        {/* Notas */}
                         <div className="client-notes-section">
                             <div className="section-header">
                                 <h2>Notas</h2>
                                 <button className="add-note-button" onClick={openNoteModal}>
-                                    <i className="fas fa-plus"></i> Add nota
+                                    <i className="fas fa-plus"></i> Agregar nota
                                 </button>
                             </div>
 
@@ -448,32 +652,32 @@ export const ClientDetail = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="no-notes">There are no notes recorded</div>
+                                    <div className="no-notes">No hay notas registradas</div>
                                 )}
                             </div>
                         </div>
 
-                        {/* servicio activo */}
+                        {/* Servicio activo */}
                         <div className="active-service-section">
-                            <h2>Active service</h2>
+                            <h2>Servicio Activo</h2>
 
                             {activeService ? (
                                 <div className="active-service-info">
                                     <div className="service-name">{activeService.name}</div>
                                     <div className="service-detail">
-                                        <span className="detail-label">Description:</span>
+                                        <span className="detail-label">Descripción:</span>
                                         <span className="detail-value">{activeService.description || "No disponible"}</span>
                                     </div>
                                     <div className="service-detail">
-                                        <span className="detail-label">Price:</span>
+                                        <span className="detail-label">Precio:</span>
                                         <span className="detail-value">${activeService.price || "N/A"}</span>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="no-active-service">
-                                    <p>There are no active services</p>
+                                    <p>No hay servicios activos</p>
                                     <button className="add-service-button" onClick={openServiceModal}>
-                                        <i className="fas fa-plus"></i> Add service
+                                        <i className="fas fa-plus"></i> Agregar servicio
                                     </button>
                                 </div>
                             )}
@@ -481,7 +685,7 @@ export const ClientDetail = () => {
                             {activeService && (
                                 <div className="service-actions">
                                     <button className="add-service-button" onClick={openServiceModal}>
-                                        <i className="fas fa-plus"></i> Add another service
+                                        <i className="fas fa-plus"></i> Agregar otro servicio
                                     </button>
                                 </div>
                             )}
@@ -492,7 +696,7 @@ export const ClientDetail = () => {
                     <div className="action-buttons">
                         <Link to={`/client/${clientId}/service-history`} className="action-button history-button">
                             <i className="fas fa-history"></i>
-                            <span>Service history</span>
+                            <span>Historial de servicios</span>
                         </Link>
 
                         <button
@@ -501,7 +705,7 @@ export const ClientDetail = () => {
                             disabled={!activeService}
                         >
                             <i className="fas fa-calendar-alt"></i>
-                            <span>Modify appointment</span>
+                            <span>Modificar cita</span>
                         </button>
 
                         <button
@@ -509,119 +713,15 @@ export const ClientDetail = () => {
                             className="action-button budget-button"
                         >
                             <i className="fas fa-file-invoice-dollar"></i>
-                            <span>See budget</span>
+                            <span>Ver presupuesto</span>
                         </button>
                     </div>
 
                     {/* Modal para agregar notas */}
-                    {showNoteModal && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h3>Add New Note</h3>
-                                    <button className="close-button" onClick={closeNoteModal}>
-                                        <i className="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    {noteError && (
-                                        <div className="note-error-message">{noteError}</div>
-                                    )}
-                                    <textarea
-                                        placeholder="Write your note here..."
-                                        value={newNote}
-                                        onChange={(e) => setNewNote(e.target.value)}
-                                        rows={4}
-                                        disabled={notesLoading}
-                                    />
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        className="cancel-button"
-                                        onClick={closeNoteModal}
-                                        disabled={notesLoading}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        className="save-button"
-                                        onClick={addNewNote}
-                                        disabled={notesLoading}
-                                    >
-                                        {notesLoading ? "Saving..." : "Save Note"}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {showNoteModal && <NoteModal />}
 
                     {/* Modal para agregar servicios */}
-                    {showServiceModal && (
-                        <div className="modal-overlay">
-                            <div className="modal-content service-modal">
-                                <div className="modal-header">
-                                    <h3>Add Services</h3>
-                                    <button className="close-button" onClick={closeServiceModal}>
-                                        <i className="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    {serviceError && (
-                                        <div className="service-error-message">{serviceError}</div>
-                                    )}
-
-                                    {servicesLoading ? (
-                                        <div className="services-loading">Loading available services...</div>
-                                    ) : (
-                                        <>
-                                            {availableServices.length === 0 ? (
-                                                <div className="no-services-message">
-                                                    There are no services available to assign to this client.
-                                                </div>
-                                            ) : (
-                                                <div className="services-list">
-                                                    {availableServices.map(service => (
-                                                        <div key={service.id} className="service-option">
-                                                            <label className="service-checkbox">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={selectedServices.includes(service.id)}
-                                                                    onChange={() => handleServiceSelection(service.id)}
-                                                                />
-                                                                <div className="service-info">
-                                                                    <span className="service-name">{service.name}</span>
-                                                                    <span className="service-price">${service.price}</span>
-                                                                </div>
-                                                            </label>
-                                                            <div className="service-description">
-                                                                {service.description}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </>
-                                    )}
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        className="cancel-button"
-                                        onClick={closeServiceModal}
-                                        disabled={servicesLoading}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        className="save-button"
-                                        onClick={assignServicesToClient}
-                                        disabled={servicesLoading || availableServices.length === 0 || selectedServices.length === 0}
-                                    >
-                                        {servicesLoading ? "Assigning..." : "Assign Services"}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {showServiceModal && <ServiceModal />}
                 </div>
             </div>
         </div>

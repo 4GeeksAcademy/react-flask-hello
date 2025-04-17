@@ -199,20 +199,17 @@ def add_service_to_client(client_id):
 
     data = request.get_json()
 
-    # Verifica si se recibió service_id (singular) o service_ids (plural)
     if not data:
         return jsonify({"error": "No data provided"}), 400
     
-    # Intentar leer service_id (para compatibilidad con código anterior)
     if "service_id" in data:
         service_ids = [data["service_id"]]
-    # Si no existe service_id, buscar service_ids
+
     elif "service_ids" in data:
         service_ids = data["service_ids"]
     else:
         return jsonify({"error": "Service ID is required"}), 400
     
-    # Validar que service_ids sea una lista
     if not isinstance(service_ids, list) or len(service_ids) == 0:
         return jsonify({"error": "service_ids must be a non-empty list"}), 400
 
@@ -276,3 +273,41 @@ def remove_service_from_client(client_id, service_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@clients_routes.route('/services/<int:service_id>/complete', methods=['PUT'])
+# @jwt_required()
+def complete_service(service_id):
+    
+    try:
+        client_service = ClientService.query.filter_by(service_id=service_id).first()
+        
+        if not client_service:
+            return jsonify({"error": "El servicio no se encontró o no está asignado a ningún cliente"}), 404
+        
+        client_service.completed = True
+        client_service.completed_date = db.func.now()  
+        
+        db.session.commit()
+        
+        service = Services.query.get(service_id)
+        
+        if not service:
+            return jsonify({"error": "No se pudo encontrar el servicio después de marcarlo como completado"}), 500
+        
+        response_data = {
+            "id": service.id,
+            "name": service.name,
+            "description": service.description,
+            "price": service.price,
+            "completed": True,
+            "completed_date": client_service.completed_date.isoformat() if client_service.completed_date else None
+        }
+        
+        return jsonify({
+            "message": "Servicio marcado como completado exitosamente",
+            "service": response_data
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error al marcar el servicio como completado: {str(e)}"}), 500

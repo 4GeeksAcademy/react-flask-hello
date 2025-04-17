@@ -130,6 +130,67 @@ export const ClientDetail = () => {
         }
     };
 
+    // Función para marcar un servicio como realizado
+    const handleServiceDone = async (serviceId) => {
+        try {
+            const response = await fetch(`${backendUrl}api/services/${serviceId}/complete`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            // Log para depuración
+            console.log("Respuesta del servidor:", response.status);
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || data.msg || "Error al marcar el servicio como realizado");
+            }
+
+            // Obtener los datos de la respuesta
+            const data = await response.json();
+            console.log("Servicio marcado como completado:", data);
+
+            // Actualizar la lista de servicios
+            await fetchClientServices();
+
+            // Mostrar mensaje de éxito
+            alert("Servicio marcado como realizado correctamente");
+        } catch (error) {
+            console.error("Error al marcar servicio como realizado:", error);
+            alert(`Error: ${error.message}`);
+        }
+    };
+
+    // Función para eliminar un servicio
+    const handleServiceDelete = async (serviceId) => {
+        if (!confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${backendUrl}api/clients/${clientId}/services/${serviceId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || data.msg || "Error al eliminar el servicio");
+            }
+
+            // Actualizar la lista de servicios
+            fetchClientServices();
+        } catch (error) {
+            console.error("Error deleting service:", error);
+            alert(`Error: ${error.message}`);
+        }
+    };
+
+
     // Función para cargar los servicios disponibles
     const fetchAvailableServices = async () => {
         // Verificar si existe el negocio seleccionado
@@ -144,7 +205,7 @@ export const ClientDetail = () => {
         try {
             const requestUrl = `${backendUrl}api/business/${businessId}/services`;
             console.log("URL de la petición:", requestUrl);
-            
+
             const response = await fetch(requestUrl, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -168,7 +229,7 @@ export const ClientDetail = () => {
             // Filtrar servicios que el cliente ya tiene asignados
             const clientServiceIds = clientServices.map(service => service.id);
             const filteredServices = data.filter(service => !clientServiceIds.includes(service.id));
-            
+
             console.log("Servicios filtrados:", filteredServices.length);
             setAvailableServices(filteredServices);
             setSelectedServices([]);
@@ -340,7 +401,7 @@ export const ClientDetail = () => {
         // Estado local para la nota
         const [localNote, setLocalNote] = useState("");
         const [localError, setLocalError] = useState(null);
-        
+
         // Inicializar el estado local cuando se abre el modal
         useEffect(() => {
             if (showNoteModal) {
@@ -348,18 +409,18 @@ export const ClientDetail = () => {
                 setLocalError(null);
             }
         }, [showNoteModal, newNote]);
-        
+
         // Función para manejar cambios en el textarea
         const handleNoteChange = (e) => {
             const text = e.target.value;
             setLocalNote(text);
-            
+
             // Limpiar el error si el usuario empieza a escribir
             if (text.trim() !== "" && localError) {
                 setLocalError(null);
             }
         };
-        
+
         // Función para guardar la nota
         const handleSaveNote = () => {
             // Validación
@@ -367,26 +428,26 @@ export const ClientDetail = () => {
                 setLocalError("La nota no puede estar vacía");
                 return;
             }
-            
+
             // Transferimos el contenido al estado del componente padre
             setNewNote(localNote);
-            
+
             // Limpiar error en el componente padre si existe
             if (noteError) {
                 setNoteError(null);
             }
-            
+
             // Llamar a la función que maneja el guardado
             addNewNote();
         };
-        
+
         return (
             <div className="modal-overlay">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h3>Agregar Nueva Nota</h3>
-                        <button 
-                            className="close-button" 
+                        <button
+                            className="close-button"
                             onClick={closeNoteModal}
                             type="button"
                         >
@@ -406,7 +467,7 @@ export const ClientDetail = () => {
                                 {localError}
                             </div>
                         )}
-                        
+
                         <textarea
                             placeholder="Escribe tu nota aquí..."
                             value={localNote}
@@ -469,14 +530,14 @@ export const ClientDetail = () => {
                                 {serviceError}
                             </div>
                         )}
-                        
+
                         {/* Información de diagnóstico sobre el negocio seleccionado */}
                         {!businessId && (
                             <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
                                 <strong>Información de diagnóstico:</strong> No se detecta un negocio seleccionado.
                             </div>
                         )}
-                        
+
                         {businessId && (
                             <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
                                 <strong>Negocio seleccionado:</strong> ID: {businessId}
@@ -491,7 +552,7 @@ export const ClientDetail = () => {
                                     <div className="no-services-message">
                                         No hay servicios disponibles para asignar a este cliente.
                                         <div style={{ marginTop: "10px" }}>
-                                            <button 
+                                            <button
                                                 onClick={fetchAvailableServices}
                                                 style={{
                                                     padding: "5px 10px",
@@ -658,37 +719,57 @@ export const ClientDetail = () => {
                         </div>
 
                         {/* Servicio activo */}
-                        <div className="active-service-section">
-                            <h2>Servicio Activo</h2>
+                        {/* Servicios del Cliente */}
+                        <div className="client-services-section">
+                            <div className="section-header">
+                                <h2>Servicios del Cliente</h2>
+                                <button className="add-service-button" onClick={openServiceModal}>
+                                    <i className="fas fa-plus"></i> Agregar servicio
+                                </button>
+                            </div>
 
-                            {activeService ? (
-                                <div className="active-service-info">
-                                    <div className="service-name">{activeService.name}</div>
-                                    <div className="service-detail">
-                                        <span className="detail-label">Descripción:</span>
-                                        <span className="detail-value">{activeService.description || "No disponible"}</span>
+                            <div className="services-list">
+                                {clientServices.length > 0 ? (
+                                    clientServices.map(service => (
+                                        <div key={service.id} className="service-item">
+                                            <div className="service-header">
+                                                <div className="service-name-price">
+                                                    <span className="service-name">{service.name}</span>
+                                                    <span className="service-price">${service.price}</span>
+                                                </div>
+                                                <div className="service-date">
+                                                    {service.created_at
+                                                        ? new Date(service.created_at).toLocaleDateString()
+                                                        : "Fecha no disponible"}
+                                                </div>
+                                            </div>
+                                            <div className="service-description">
+                                                {service.description || "Sin descripción"}
+                                            </div>
+                                            <div className="service-actions">
+                                                <button
+                                                    className="service-done-button"
+                                                    onClick={() => handleServiceDone(service.id)}
+                                                    title="Marcar como realizado"
+                                                >
+                                                    <i className="fas fa-check"></i> Realizado
+                                                </button>
+                                                <button
+                                                    className="service-delete-button"
+                                                    onClick={() => handleServiceDelete(service.id)}
+                                                    title="Eliminar servicio"
+                                                >
+                                                    <i className="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="no-services">
+                                        <p>No hay servicios asignados</p>
                                     </div>
-                                    <div className="service-detail">
-                                        <span className="detail-label">Precio:</span>
-                                        <span className="detail-value">${activeService.price || "N/A"}</span>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="no-active-service">
-                                    <p>No hay servicios activos</p>
-                                    <button className="add-service-button" onClick={openServiceModal}>
-                                        <i className="fas fa-plus"></i> Agregar servicio
-                                    </button>
-                                </div>
-                            )}
-
-                            {activeService && (
-                                <div className="service-actions">
-                                    <button className="add-service-button" onClick={openServiceModal}>
-                                        <i className="fas fa-plus"></i> Agregar otro servicio
-                                    </button>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
 

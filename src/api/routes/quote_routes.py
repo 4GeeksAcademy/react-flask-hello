@@ -257,3 +257,46 @@ def get_quote_pdf(quote_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@quote.route('/descargar-pdf', methods=['POST'])
+def descargar_presupuesto_pdf():
+    try:
+        data = request.get_json()
+
+        # Formatear fechas
+        fecha_hoy = datetime.today().strftime("%d/%m/%Y")
+        valid_until_format = datetime.strptime(
+            data.get("valid_until"), "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        # Convertir logo a base64
+        logo_path = "/workspaces/DronFarm1.1/src/front/assets/img/Logo_DronFarm1.png"
+        with open(logo_path, "rb") as logo_file:
+            logo_base64 = base64.b64encode(logo_file.read()).decode("utf-8")
+
+        rendered_pdf_html = render_template(
+            "presupuesto_bonito.html",
+            fecha_hoy=fecha_hoy,
+            valid_until=valid_until_format,
+            logo_base64=logo_base64,
+            user=data.get("user"),
+            field=data.get("field"),
+            cropType=data.get("cropType"),
+            hectares=data.get("hectares"),
+            services=data.get("services"),
+            frequency=data.get("frequency"),
+            price_per_hectare=data.get("price_per_hectare"),
+            total=data.get("total")
+        )
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
+            HTML(string=rendered_pdf_html).write_pdf(f.name)
+            return send_file(
+                f.name,
+                as_attachment=True,
+                download_name=f"presupuesto_{data.get('user').replace(' ', '_')}.pdf"
+            )
+
+    except Exception as e:
+        print("❌ ERROR en /descargar-pdf:", str(e))
+        return jsonify({"error": str(e)}), 500

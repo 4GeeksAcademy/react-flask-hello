@@ -36,16 +36,17 @@ export const showErrorAlert = (message) => {
  * @param {string} message - Mensaje a mostrar.
  * @param {function} [callback] - Función a ejecutar al cerrar el modal.
  */
-export const showSuccessAlert = (message, callback = null) => {
+export const showSuccessAlert = (message, callback = null, forceButton = false) => {
   Swal.fire({
     title: '¡Éxito!',
-    text: message,  // ✅ Versión simplificada
+    text: message,
     icon: 'success',
+    confirmButtonText: 'Okey',
     confirmButtonColor: modalStyles.successColor,
     background: '#f8f9fa',
-    timer: 3000,    // ✅ Cierre automático en 3s
-    timerProgressBar: true,
-    showConfirmButton: false, // ✅ Oculta el botón "OK"
+    showConfirmButton: forceButton,     // 👈 Solo si lo pedís
+    timer: forceButton ? undefined : 3000,
+    timerProgressBar: !forceButton,
     customClass: {
       title: 'modal-title-success',
       htmlContainer: 'modal-text',
@@ -56,6 +57,7 @@ export const showSuccessAlert = (message, callback = null) => {
     }
   });
 };
+
 /**
  * Muestra un modal de carga (spinner).
  */

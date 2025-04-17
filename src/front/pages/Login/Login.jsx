@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { showErrorAlert, showSuccessAlert } from '../../components/modal_alerts/modal_alerts';
-import {useGlobalReducer} from "../../hooks/useGlobalReducer"; // 👈 Import del global store
+import { useGlobalReducer } from "../../hooks/useGlobalReducer"; // 👈 Import del global store
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -29,6 +29,8 @@ export const Login = () => {
             userId: data.user.id
           }
         });
+
+        localStorage.setItem("fromLogin", "true");
 
         showSuccessAlert("¡Inicio de sesión exitoso!", () => {
           navigate(Number(data.user.rolId) === 2 ? "/app/dashboard" : "/app/dash_admin");

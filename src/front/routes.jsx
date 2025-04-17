@@ -21,6 +21,8 @@ import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
 import ProtectedRoute from "./ProtectedRoute"; // 👈 corregido también el path doble
 import WeOffer from "./pages/WeOffer/WeOffer";
+import AboutUs from "./pages/AboutUs/AboutUs";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,7 +37,8 @@ export const router = createBrowserRouter(
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}
       <Route path="/contacto" element={<Contact />} />
-      <Route path="servicios" element={<WeOffer />} />
+      <Route path="/servicios" element={<WeOffer />} />
+      <Route path="/nosotros" element={<AboutUs />} />
 
 
       <Route

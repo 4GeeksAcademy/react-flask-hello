@@ -51,7 +51,17 @@ const Dash_user = () => {
 
                 const userFields = Array.isArray(fieldRes.data) ? fieldRes.data : [];
                 setFieldsList(userFields);
-                setSelectedField(userFields[0]);
+
+                const lastSelectedId = localStorage.getItem("selectedFieldId");
+                const matchingField = userFields.find(f => f.id.toString() === lastSelectedId);
+
+                if (matchingField) {
+                    setSelectedField(matchingField);
+                    dispatch({ type: "SET_SELECTED_FIELD", payload: matchingField });
+                    setInitialSelectionDone(true); // ✅ no mostramos modal
+                } else {
+                    setSelectedField(userFields[0]);
+                }
             } catch (err) {
                 console.error("Error al cargar datos:", err);
                 setError("Error al cargar datos del usuario o la tierra");
@@ -159,6 +169,55 @@ const Dash_user = () => {
         (report) => report.field_id === selectedField?.id
     );
 
+
+    const handleSendEmail = async () => {
+        if (!userData?.email || !selectedField) return;
+
+        const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+        const userEmail = userData.email;
+        const frequency = "Mensual";
+        const pricePerHectare = 30;
+        const services = ["fotogrametria"];
+        const total = (selectedField.area * pricePerHectare).toFixed(2);
+        const validUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+        const htmlBody = `
+          <div style="font-family: Arial, sans-serif; color: #333; font-size: 14px;">
+            <h2 style="color: #198754;">¡Hola ${userData?.name}!</h2>
+            <p>Gracias por confiar en <strong>DroneFarm</strong>.</p>
+            <p>Adjunto encontrarás el presupuesto generado para tu parcela <strong>${selectedField?.name}</strong>.</p>
+            <p><strong>Total estimado:</strong> ${total} €</p>
+            <p><strong>Válido hasta:</strong> ${new Date(validUntil).toLocaleDateString('es-ES')}</p>
+            <p style="margin-top: 20px;">Quedamos atentos para cualquier duda o ajuste.</p>
+            <p>Un saludo,<br/>Equipo DroneFarm 🚀</p>
+          </div>
+        `;
+
+        const payload = {
+            email: userEmail,
+            quoteDataHtml: htmlBody,
+            user: userData.name,
+            field: selectedField.name,
+            cropType: selectedField.crop,
+            hectares: selectedField.area,
+            services: services.join(", "),
+            frequency,
+            pricePerHectare,
+            total,
+            validUntil
+        };
+
+        try {
+            await axios.post(`${BACKEND_URL}/quote/enviar-presupuesto`, payload);
+            console.log("✅ Correo con PDF enviado desde Dashboard");
+        } catch (error) {
+            console.error("❌ Error al enviar el correo:", error);
+        }
+    };
+
+
+
+
     if (error) return <div className="error-message">{error}</div>;
 
 
@@ -174,7 +233,9 @@ const Dash_user = () => {
                             type: "SET_SELECTED_FIELD",
                             payload: field
                         });
+                        localStorage.setItem("selectedFieldId", field.id); // ✅ Guardamos selección
                         setInitialSelectionDone(true);
+
                     }}
 
                     onClose={() => setInitialSelectionDone(true)}
@@ -298,10 +359,15 @@ const Dash_user = () => {
 
                                 <button
                                     className="request-report-button"
-                                    onClick={() => navigate("/app/quote")}
+                                    onClick={async () => {
+                                        await handleSendEmail();   // 📧 Enviar correo con PDF antes
+                                        navigate("/app/quote");    // 🚀 Luego redirigir
+                                    }}
                                 >
                                     SOLICITAR PRESUPUESTO
                                 </button>
+
+
 
                                 <button
                                     className="add-field-button"

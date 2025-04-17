@@ -21,6 +21,7 @@ const FieldSelectorModal = ({ fields, setSelected, onClose, selected }) => {
                             className={`field-button ${selected?.id === field.id ? "selected" : ""}`}
                             onClick={() => {
                                 setSelected(field);
+                                localStorage.setItem("selectedField", JSON.stringify(field));
                                 onClose(); // si quieres cerrar al hacer clic en la parcela
                             }}
                         >

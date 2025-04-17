@@ -19,7 +19,7 @@ import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
 import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
-import ProtectedRoute from ".//ProtectedRoute"; // 👈 Importa el nuevo componente
+import ProtectedRoute from "./ProtectedRoute"; // 👈 corregido también el path doble
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,9 +29,11 @@ export const router = createBrowserRouter(
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="contacto" element={<Contact />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
       </Route>
+
+      {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}
+      <Route path="/contacto" element={<Contact />} />
 
       {/* Rutas privadas con Layout y protección */}
       <Route

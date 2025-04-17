@@ -20,7 +20,7 @@
     padding-bottom: 20px;
 }
 
-/* Tamaño Logo */
+/* Logo Size */
 .logoFor {
     width: 80px;
     height: 80px;
@@ -49,11 +49,6 @@
     border: none;
     background-color: #3498db;
     color: white;
-}
-
-
-.prueba {
-    background-color: rgb(172, 202, 228);
 }
 /* The Inputs are with Bootstrap */
 

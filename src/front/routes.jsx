@@ -3,7 +3,6 @@ import {
     createRoutesFromElements,
     Route,
 } from "react-router-dom";
-
 import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Login/Login.jsx";
 import { Business } from "./pages/Business/Business.jsx";

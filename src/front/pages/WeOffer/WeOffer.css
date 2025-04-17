@@ -1,0 +1,53 @@
+/* 👇 ❇️ Riki for the group success 15 Abril 👊 */
+
+.weoffer-container {
+    padding: 2rem;
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+  
+  .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    color: #198754;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .weoffer-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .weoffer-list {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .quote-button-container {
+    text-align: center;
+  }
+  
+  .quote-button {
+    background: rgba(70, 130, 180, 0.3); /* azul con transparencia */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  
+  .quote-button:hover {
+    background: rgba(70, 130, 180, 0.5);
+    transform: scale(1.05);
+  }

@@ -1,8 +1,11 @@
 /* Form Box */
 .formBox {
-    border: solid black;
-    background-color:#2c3e50;
+    border: none !important;
+    border-radius: 20px;
+    background-color:white !important;
     margin: 250px;
+    padding: 5px;
+    box-shadow: 4px 4px 10px gray;
 }
 
 /* Div Title and Logo Zone */
@@ -12,7 +15,7 @@
 
 /* Form Title */
 .formTitle {
-    color: white;
+    color: black !important;
     margin: 10px;
     padding-bottom: 20px;
 }
@@ -25,7 +28,7 @@
 
 /* Label Style */
 .labelStyle {
-    color: white;
+    color: black !important;
     font-weight: bold;
     font-size: x-large;
 }
@@ -42,6 +45,16 @@
     height: 40px;
     font-weight: bold;
     font-size: x-large;
+    border-radius: 10px;
+    border: none;
+    background-color: #3498db;
+    color: white;
 }
 
+
+.prueba {
+    background-color: rgb(172, 202, 228);
+}
 /* The Inputs are with Bootstrap */
+
+/* #3498db */

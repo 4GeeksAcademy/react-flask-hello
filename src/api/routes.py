@@ -8,13 +8,12 @@ import os
 import random
 import string
 import time
-from werkzeug.utils import secure_filename  
+from werkzeug.utils import secure_filename
 from flask import make_response
 from datetime import datetime
 import secrets
 
 api = Blueprint('api', __name__)
-
 
 
 # RUTA PARA REGISTRARSE UN USUARIO Y LOGUEARCE AUTOMÁTICAMENTE (SIGNUP)
@@ -34,7 +33,7 @@ def signup():
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return jsonify({"msg": "El usuario ya existe"}), 403
-        
+
         # Creamos el nuevo usuario
         new_user = User(
             firstname=firstname,
@@ -44,7 +43,7 @@ def signup():
             password=password,
             is_active=True
         )
-       
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -58,16 +57,17 @@ def signup():
         except Exception as logo_error:
             print(f"Error al crear el logo: {str(logo_error)}")
             # No fallamos si hay un problema con el logo
-        
+
         from datetime import timedelta  # Asegúrate de importar esto
-        
+
         # Creamos el access token
-        expires_delta = timedelta(days=30)  # Usa timedelta, no datetime.timedelta
+        # Usa timedelta, no datetime.timedelta
+        expires_delta = timedelta(days=30)
         access_token = create_access_token(
             identity=str(new_user.id),
             expires_delta=expires_delta
-        )                              
-                                          
+        )
+
         response = jsonify({
             "access_token": access_token,
             "user": new_user.serialize()
@@ -85,12 +85,14 @@ def signup():
         return jsonify({"msg": f"Error al registrar el usuario: {str(e)}"}), 500
 
 # RUTA PARA LOGEARSE Y CREACIÓN DE TOKEN Y COOKIE
+
+
 @api.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
     email = body.get("email")
     password = body.get("password")
-   
+
     if not body or not email or not password:
         return jsonify({"error": "Email y password son requeridos"}), 400
 
@@ -112,7 +114,7 @@ def login():
     token_data = {
         "id": user.id,
         "email": user.email,
-      
+
     }
     access_token = create_access_token(identity=str(user.id))
 
@@ -120,11 +122,11 @@ def login():
     session['user_id'] = user.id
 
     return jsonify({
-            "access_token": access_token,
-            "user": user_data,
-            
+        "access_token": access_token,
+        "user": user_data,
 
-        }), 200
+
+    }), 200
 
 
 # RUTA PARA CERRAR SESIÓN
@@ -133,10 +135,10 @@ def logout():
     # Limpiar la sesión del usuario
     if 'user_id' in session:
         session.pop('user_id', None)
-    
+
     # En caso de usar flask-jwt-extended con lista negra de tokens
     # aquí agregaríamos el token actual a la lista negra
-    
+
     return jsonify({"message": "Sesión cerrada exitosamente"}), 200
 
 
@@ -173,10 +175,10 @@ def update_user(user_id):
     current_user = get_jwt_identity()
     current_user_id = current_user.get("id")
     is_admin = current_user.get("is_admin", False)
-    
+
     if user_id != current_user_id and not is_admin:
         return jsonify({"msg": "Access denied"}), 403
-    
+
     user = User.query.get(user_id)
 
     if not user:
@@ -184,7 +186,7 @@ def update_user(user_id):
 
     # OBTENEMOS LOS DATOS DE LA REQUEST
     request_data = request.get_json()
-    
+
     # ACTUALIZAMOS LOS CAMPOS SI ESTAN PRESENTES EN LA SOLICITUD
     if "firstname" in request_data:
         user.firstname = request_data['firstname']
@@ -206,11 +208,11 @@ def update_user(user_id):
 
     try:
         db.session.commit()
-        
+
         # Obtener logo actualizado
         logo = Logo.query.filter_by(user_id=user.id).first()
         logo_url = logo.image_logo_url if logo else None
-        
+
         # Actualizamos el token con la información actualizada del usuario
         new_token_data = {
             "id": user.id,
@@ -220,16 +222,16 @@ def update_user(user_id):
             "is_admin": is_admin
         }
         access_token = create_access_token(identity=str(user.id))
-        
+
         response = jsonify({
             "user": user.serialize(),
             "access_token": access_token
         })
-        
+
         # Actualizamos la cookie con el nuevo token
         response.set_cookie('access_token', access_token,
                             max_age=86400*30, httponly=True, secure=True)
-        
+
         return response, 200
 
     except Exception as e:
@@ -245,10 +247,10 @@ def delete_user(user_id):
     current_user = get_jwt_identity()
     current_user_id = current_user.get("id")
     is_admin = current_user.get("is_admin", False)
-    
+
     if user_id != current_user_id and not is_admin:
         return jsonify({"msg": "Access denied"}), 403
-        
+
     # BUSCAMOS AL USUARIO POR ID
     user = User.query.get(user_id)
 
@@ -272,7 +274,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
 # LLAMAR AL LOGO DESDE LA API
 
 def generate_logo_token(user_id):
@@ -284,32 +285,32 @@ def generate_logo_token(user_id):
 
 # Actualice las rutas de logo con estos cambios:
 
+
 @api.route('/get_logo', methods=['GET'])  # Corregir la barra inicial
 @jwt_required()
 def get_logo():
     # Obtener ID del usuario desde el token JWT
     user_id = get_jwt_identity()
-    
+
     try:
         # Buscar logo en la base de datos
         logo = Logo.query.filter_by(user_id=user_id).first()
-        
+
         if not logo or not logo.image_data:
             return jsonify({"error": "No se encontró logo para este usuario"}), 404
-        
+
         # Devolver la imagen con headers adicionales
         response = make_response(logo.image_data)
-        response.headers.set('Content-Type', 'image/png')  # Ajustar según el tipo
-        
+        # Ajustar según el tipo
+        response.headers.set('Content-Type', 'image/png')
+
         # Si tienes una URL en la nube, incluirla en el header
         if hasattr(logo, 'image_logo_url') and logo.image_logo_url:
             response.headers.set('logo-cloud-url', logo.image_logo_url)
-        
+
         return response
     except Exception as e:
         return jsonify({"error": f"Error al obtener el logo: {str(e)}"}), 500
-
-
 
 
 # Endpoint para subir logo
@@ -317,32 +318,32 @@ def get_logo():
 @jwt_required()
 def post_logo():
     user_id = get_jwt_identity()
-    
+
     if 'logo' not in request.files:
         return jsonify({"error": "No se encontró archivo"}), 400
-        
+
     file = request.files['logo']
     if not file:
         return jsonify({"error": "No se seleccionó archivo"}), 400
-    
+
     # Leer datos de la imagen
     image_data = file.read()
-    
+
     # Buscar o crear el logo del usuario
     logo = Logo.query.filter_by(user_id=user_id).first()
     if not logo:
         logo = Logo(user_id=user_id)
         db.session.add(logo)
-    
+
     # Actualizar los datos
     logo.image_data = image_data
-    
+
     # También guardar la URL por defecto (usar preferiblemente una URL absoluta)
     host_url = request.host_url.rstrip('/')
     logo.image_logo_url = f"{host_url}/api/get_logo?user_id={user_id}"
-    
+
     db.session.commit()
-    
+
     return jsonify({
         "message": "Logo guardado correctamente",
         "logo_url": logo.image_logo_url

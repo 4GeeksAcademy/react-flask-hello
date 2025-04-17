@@ -77,7 +77,7 @@ const Contact = () => {
             <h2>Información de contacto</h2>
             <div className="info-item">
               <i className="icon-map">📍</i>
-              <p>Av. Agricultura 1234, Madrid, España</p>
+              <p>Av. del Bootcamp 1234, Madrid, España</p>
             </div>
             <div className="info-item">
               <i className="icon-phone">📞</i>

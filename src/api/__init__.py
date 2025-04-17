@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import send_from_directory
 from api.upload_routes import upload
-from api.buys import bp as buys_bp  # Modificacion JAVI
+from api.buys import buys_bp  # Modificacion JAVI
 
 
 import os

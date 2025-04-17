@@ -10,16 +10,16 @@ from api.upload_routes import upload
 
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
+#from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-
+from api.buys import buys_bp
 
 # CREAR LA INSTANCIA DE LA APLICACIÓN FLASK
 app = Flask(__name__)
 CORS(app)
 
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(buys_bp,  url_prefix='/api')
 app.register_blueprint(upload, url_prefix='/api')
 
 

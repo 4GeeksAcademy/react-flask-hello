@@ -16,7 +16,7 @@ from werkzeug.utils import secure_filename  # Línea 9
 
 api = Blueprint('api', __name__)
 api.register_blueprint(buys_bp) # Modificacion JAVI
-
+api.register_blueprint(upload)
 
 @api.route('/home')
 def sitemap():

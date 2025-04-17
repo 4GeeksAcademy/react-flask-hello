@@ -200,10 +200,11 @@ class Logo(db.Model):
 class BuyItem(db.Model):
     __tablename__ = 'buy_items'
     id = db.Column(db.Integer, primary_key=True)
-    buy_id = db.Column(db.Integer, db.ForeignKey('buys.id'))
     producto_id = db.Column(db.Integer, db.ForeignKey('productos.id'))
-    cantidad = db.Column(db.Integer, nullable=False)
-    precio = db.Column(db.Float, nullable=False)
+    compra_id = db.Column(db.Integer, db.ForeignKey('buys.id'))
+    cantidad = db.Column(db.Integer)
+    precio = db.Column(db.Float)
+
 
     # Relación con el Producto
 

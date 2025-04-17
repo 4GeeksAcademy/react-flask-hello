@@ -59,6 +59,7 @@ const Navbar = () => {
           <button className="nav-btn" onClick={() => navigate("/home")}>Home</button>
           <button className="nav-btn" onClick={() => navigate("/settings")}>Settings</button>
           <button className="nav-btn"  onClick={() => navigate("/cart")}>Cart</button>
+          <button className="nav-btn"  onClick={() => navigate("/stock")}>Stock</button>
 
 
           {isLoggedIn && (

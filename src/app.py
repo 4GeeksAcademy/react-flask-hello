@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 from src.api.routes import api
-from src.api.models import db
+from src.api.db import db
 from src.api.admin import setup_admin
 
 def create_app():
@@ -16,6 +16,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///levelup.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["JWT_SECRET_KEY"] = os.getenv("SECRET_KEY", "super-secret")
+    app.secret_key = 'super secret key'
 
     # Inicialización de extensiones
     db.init_app(app)

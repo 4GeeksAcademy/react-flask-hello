@@ -19,8 +19,13 @@ import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
 import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
-import ProtectedRoute from "./ProtectedRoute"; // 👈 corregido también el path doble
+import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+
+<Route path="/forgot-password" element={<ForgotPassword />} />
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +36,7 @@ export const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Route>
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}

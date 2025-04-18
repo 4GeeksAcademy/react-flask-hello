@@ -1,0 +1,16 @@
+.back-arrow {
+  position: absolute; /* O relative si está dentro de un contenedor */
+  top: 70px; /* justo debajo del navbar (ajusta si tu navbar es más alto) */
+  left: 20px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  z-index: 500;
+  transition: color 0.2s ease;
+}
+
+.back-arrow:hover {
+  color: #0a7cff;
+}

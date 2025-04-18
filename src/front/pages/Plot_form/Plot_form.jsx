@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Plot_form.css";
 import { showSuccessAlert, showErrorAlert } from "../../components/modal_alerts/modal_alerts";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+import MapPicker from "../../components/MapPicker/MapPicker";
+import debounce from "lodash.debounce";
 
 const CROP_OPTIONS = {
   "Cereales y Cultivos Extensivos": ["Trigo", "Cebada", "Avena", "Maíz", "Arroz", "Girasol", "Algodón"],
@@ -34,11 +36,35 @@ const PlotForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPlotData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setPlotData(prev => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    const { street, number, city, postalCode } = plotData;
+
+    if (!street || !number || !city || !postalCode) return;
+
+    const fetchCoordinates = debounce(async () => {
+      try {
+        const encodedAddress = encodeURIComponent(`${street} ${number}, ${postalCode} ${city}`);
+        const res = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?access_token=pk.eyJ1IjoiZXF1aXBvMiIsImEiOiJjbTk3Z3EyeWgwN2pzMnJzYWh0ejd0bHNuIn0.xV1fX4yZB6W1JhpxlJ0Dsg`
+        );
+        const data = await res.json();
+
+        if (data.features?.length > 0) {
+          const [lon, lat] = data.features[0].center;
+          setPlotData(prev => ({ ...prev, coordinates: `${lat.toFixed(6)}, ${lon.toFixed(6)}` }));
+        }
+      } catch (err) {
+        console.error("❌ Error geocodificando dirección:", err);
+      }
+    }, 1000);
+
+    fetchCoordinates();
+
+    return () => fetchCoordinates.cancel();
+  }, [plotData.street, plotData.number, plotData.city, plotData.postalCode]);
 
   const validateCoordinates = (coords) => {
     if (!coords) return true;
@@ -97,9 +123,7 @@ const PlotForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        showSuccessAlert("Parcela registrada correctamente", () => {
-          navigate("/app/dashboard");
-        });
+        showSuccessAlert("Parcela registrada correctamente", () => navigate("/app/dashboard"));
       } else {
         showErrorAlert(data.error || "Error al registrar la parcela");
       }
@@ -167,9 +191,6 @@ const PlotForm = () => {
       console.error(err);
     }
   };
-
-
-
 
   return (
     <div className="plot-form-container">
@@ -321,6 +342,13 @@ const PlotForm = () => {
             </div>
           </div>
 
+          <MapPicker
+            initialCoordinates={plotData.coordinates}
+            onCoordinatesChange={(coords) =>
+              setPlotData((prev) => ({ ...prev, coordinates: coords }))
+            }
+          />
+
           <div className="button-row">
             <button type="submit" className="submit-button">
               Registrar Parcela
@@ -333,7 +361,6 @@ const PlotForm = () => {
             >
               Añadir otro cultivo
             </button>
-
           </div>
 
           {error && <p className="error-message">{error}</p>}

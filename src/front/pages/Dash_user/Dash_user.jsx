@@ -257,7 +257,12 @@ const Dash_user = () => {
                                             key={selectedField.id}
                                             latitude={lat}
                                             longitude={lon}
-                                            points={pointsClave}
+                                            fields={fieldsList}
+                                            onFieldClick={(field) => {
+                                                setSelectedField(field);
+                                                dispatch({ type: "SET_SELECTED_FIELD", payload: field });
+                                                localStorage.setItem("selectedFieldId", field.id);
+                                            }}
                                         />
                                     );
                                 })()

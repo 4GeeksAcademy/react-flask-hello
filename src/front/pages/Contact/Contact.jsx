@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import './Contact.css';
+import { motion } from 'framer-motion';
 
 import Navbar from '../../components/Navbar/Navbar';
 import PublicNavbar from '../../components/Navbar/PublicNavbar';
@@ -67,13 +68,27 @@ const Contact = () => {
       {isLoggedIn ? <Navbar /> : <PublicNavbar />}
 
       <div className="contacto-container">
-        <section className="contacto-hero">
+        {/* 🎬 Hero con animación */}
+        <motion.section
+          className="contacto-hero"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <h1>Contáctanos</h1>
           <p>Estamos aquí para responder a tus preguntas y ayudarte a transformar tu agricultura</p>
-        </section>
+        </motion.section>
 
         <div className="contacto-content">
-          <div className="contacto-info">
+          {/* 🎬 Info animada desde la izquierda */}
+          <motion.div
+            className="contacto-info"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <h2>Información de contacto</h2>
             <div className="info-item">
               <i className="icon-map">📍</i>
@@ -102,9 +117,16 @@ const Contact = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="contacto-form-container">
+          {/* 🎬 Formulario animado desde la derecha */}
+          <motion.div
+            className="contacto-form-container"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
             <h2>Envíanos un mensaje</h2>
 
             {enviado && (
@@ -178,11 +200,17 @@ const Contact = () => {
                 ></textarea>
               </div>
 
-              <button type="submit" className="submit-button">
+              {/* 🎬 Botón animado */}
+              <motion.button
+                type="submit"
+                className="submit-button"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Enviar mensaje
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
 

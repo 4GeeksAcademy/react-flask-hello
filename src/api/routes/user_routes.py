@@ -12,6 +12,7 @@ import os
 
 user = Blueprint('user_api', __name__)
 
+
 @user.route('/signup', methods=['POST'])
 def signup():
     body = request.get_json()
@@ -107,10 +108,15 @@ def update_user():
     if not user_obj:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
+    campos_permitidos = ["email", "name",
+                         "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
-            setattr(user_obj, campo, data[campo])
+            if campo == "password":
+                if data[campo]:  # solo si hay valor, no si está vacío
+                    user_obj.set_password(data[campo])
+            else:
+                setattr(user_obj, campo, data[campo])
 
     try:
         db.session.commit()
@@ -123,23 +129,23 @@ def update_user():
 @user.route('/users', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-    user_id = request.args.get("id", None)
+    user_id = request.args.get('id')
+
     if not user_id:
-        return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
+        return jsonify({'error': 'ID de usuario requerido'}), 400
 
-    user_obj = User.query.get(user_id)
-    if not user_obj:
-        return jsonify({"error": "Usuario no encontrado"}), 404
+    user = User.query.get(user_id)
 
-    try:
-        db.session.delete(user_obj)
-        db.session.commit()
-        return jsonify({"msg": "Usuario eliminado correctamente"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+    if not user:
+        return jsonify({'error': 'Usuario no encontrado'}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'Usuario eliminado con éxito'}), 200
 
 
+# 💥 RUTA DE ENVÍO DE CORREO DE PRUEBA
 @user.route('/send-test-email', methods=['POST'])
 def send_test_email():
     data = request.get_json()
@@ -193,13 +199,66 @@ def send_reset_link():
         return jsonify({"error": "No se pudo enviar el correo"}), 500
 
 
+@user.route('/reset-password/<token>', methods=['POST'])
+def reset_password_post(token):
+    data = request.get_json()
+    new_password = data.get("password")
+
+    if not new_password:
+        return jsonify({"error": "La nueva contraseña es requerida"}), 400
+
+    # Buscar el token
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    # Buscar usuario y actualizar contraseña
+    user = User.query.get(reset_token.user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.password = generate_password_hash(new_password)
+    reset_token.used = True
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "Contraseña actualizada con éxito"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al actualizar contraseña"}), 500
+
+
+@user.route('/validate-reset-token/<token>', methods=['GET'])
+def validate_reset_token(token):
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    return jsonify({"message": "Token válido"}), 200
+
+
 @user.route('/reset-password/<token>', methods=['PATCH'])
 def reset_password(token):
     body = request.get_json()
     if not body or not body.get("password"):
         return jsonify({"error": "La nueva contraseña es obligatoria"}), 400
 
-    token_entry = PasswordResetToken.query.filter_by(token=token, used=False).first()
+    token_entry = PasswordResetToken.query.filter_by(
+        token=token, used=False).first()
 
     if not token_entry or token_entry.expiration < datetime.utcnow():
         return jsonify({"error": "El token es inválido o ha expirado"}), 400
@@ -217,17 +276,3 @@ def reset_password(token):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
-
-@user.route('/validate-reset-token/<token>', methods=['GET'])
-def validate_reset_token(token):
-    reset_token = PasswordResetToken.query.filter_by(token=token).first()
-
-    if not reset_token:
-        return jsonify({"error": "Token inválido"}), 400
-    if reset_token.used:
-        return jsonify({"error": "Este enlace ya fue usado"}), 400
-    if reset_token.expiration < datetime.utcnow():
-        return jsonify({"error": "El enlace ha caducado"}), 400
-
-    return jsonify({"message": "Token válido"}), 200

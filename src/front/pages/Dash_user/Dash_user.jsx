@@ -10,7 +10,6 @@ import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelecto
 
 
 const Dash_user = () => {
-    const [modalVisible, setModalVisible] = useState(false);
     const { store, dispatch } = useGlobalReducer();
     const [userData, setUserData] = useState(null);
     const [fieldsList, setFieldsList] = useState([]);
@@ -380,44 +379,6 @@ const Dash_user = () => {
                     </div>
                 </div>
 
-                <button
-                    className="upload-report-button"
-                    onClick={() => setModalVisible(true)}
-                >
-                    SUBIR INFORME MANUALMENTE
-                </button>
-
-
-                {modalVisible && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <Report
-                                fieldId={selectedField?.id}
-                                onClose={() => setModalVisible(false)}
-                                onUploaded={() => {
-                                    setModalVisible(false);
-                                    setLoading(prev => ({ ...prev, reports: true }));
-
-                                    axios.get(`${import.meta.env.VITE_BACKEND_URL}/report_routes/user_reports/${store.auth.userId}`, {
-                                        headers: { Authorization: `Bearer ${store.auth.token}` },
-                                    })
-                                        .then((res) => {
-                                            const data = Array.isArray(res.data) ? res.data : [];
-                                            setReports(data);
-                                        })
-                                        .catch(() => {
-                                            setReports([]);
-                                        })
-                                        .finally(() => {
-                                            setLoading(prev => ({ ...prev, reports: false }));
-                                        });
-                                }}
-
-                            />
-                        </div>
-
-                    </div>
-                )}
 
             </div>
 

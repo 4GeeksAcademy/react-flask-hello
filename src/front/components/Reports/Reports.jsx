@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import './Reports.css'; // Asegúrate que esté importado
-import {useGlobalReducer} from "../../hooks/useGlobalReducer"; // ✅ Import del global store
+import './Reports.css';
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
-const Report = ({ fieldId, onClose, onUploaded }) => {
-  const { store } = useGlobalReducer(); // ✅ Hook global
+const Report = ({ fieldId, fields = [], userId: userIdProp, onClose, onUploaded }) => {
+  const { store } = useGlobalReducer();
   const token = store.auth.token;
-  const userId = store.auth.userId;
+  const userId = userIdProp || store.auth.userId;
 
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedFieldId, setSelectedFieldId] = useState(fieldId || '');
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: false,
@@ -22,7 +23,8 @@ const Report = ({ fieldId, onClose, onUploaded }) => {
   });
 
   const handleUpload = async () => {
-    if (!file || !userId || !fieldId) {
+    const finalFieldId = selectedFieldId || fieldId;
+    if (!file || !userId || !finalFieldId) {
       alert('Faltan datos');
       return;
     }
@@ -30,27 +32,33 @@ const Report = ({ fieldId, onClose, onUploaded }) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('user_id', userId);
-    formData.append('field_id', fieldId);
+    formData.append('field_id', finalFieldId);
     formData.append('title', title);
     formData.append('description', description);
 
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/report_routes/upload_report`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}` // ✅ Token desde global store
-      },
-      body: formData
-    });
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/report_routes/upload_report`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      });
 
-    if (res.ok) {
-      alert('Archivo subido');
-      setFile(null);
-      setTitle('');
-      setDescription('');
-      if (onUploaded) onUploaded();
-      if (onClose) onClose();
-    } else {
-      alert('Error al subir el archivo');
+      if (res.ok) {
+        alert('📁 Informe subido correctamente');
+        setFile(null);
+        setTitle('');
+        setDescription('');
+        setSelectedFieldId('');
+        if (onUploaded) onUploaded();
+        if (onClose) onClose();
+      } else {
+        alert('❌ Error al subir el informe');
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert('❌ Error de red al subir el informe');
     }
   };
 
@@ -68,6 +76,22 @@ const Report = ({ fieldId, onClose, onUploaded }) => {
           <p>Arrastra un archivo aquí o haz clic para seleccionar</p>
         )}
       </div>
+
+      {/* Selector de tierra si viene el listado */}
+      {!fieldId && fields.length > 0 && (
+        <select
+          className="modal-input"
+          value={selectedFieldId}
+          onChange={(e) => setSelectedFieldId(e.target.value)}
+        >
+          <option value="">Selecciona una parcela</option>
+          {fields.map((f) => (
+            <option key={f.id} value={f.id}>
+              {f.name} ({f.area} HCT)
+            </option>
+          ))}
+        </select>
+      )}
 
       <input
         type="text"

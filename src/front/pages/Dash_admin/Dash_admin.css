@@ -1,232 +1,89 @@
-/* Reset global y box-sizing */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Tipografías y estilo base */
-html,
-body {
-  font-family: "Inter", sans-serif;
-  background-color: #f9fafb;
-  color: #374151;
-}
-
-/* Contenedor principal */
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-/* Título principal */
-.dashboard-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  text-align: center;
-  color: #111827;
-  margin-bottom: 1rem;
-}
-
-/* Grid general: lista de usuarios y detalles */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  grid-template-rows: auto;
-  gap: 0em;
-}
-
-@media (max-width: 768px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Secciones con fondo blanco, bordes redondeados y sombra sutil */
-.users-section,
-.user-details-section {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: 100%;
-}
-
-/* Título de sección */
-.section-title {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
-  color: #111827;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-}
-
-/* Barra de búsqueda */
-.search-input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-/* Listado de usuarios */
-.users-list {
-  list-style: none;
-  width: 100%;
-}
-
-/* Cada fila de usuario */
-.user-item {
-  padding: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
+.search-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.user-item:hover {
-  background-color: #f3f4f6;
-}
-
-/* Nombre de usuario */
-.user-item span {
-  flex: 1;
-  min-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Contenedor para botones de acciones */
-.user-item .actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-/* Botones generales */
-button,
-.request-report-button,
-.button {
-  background-color: #10b981;
-  color: #ffffff;
+.create-user-button {
+  background-color: #3b82f6;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0.65rem 1.2rem;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
-button:hover,
-.request-report-button:hover,
-.button:hover {
-  background-color: #059669;
-  transform: scale(1.02);
-}
-
-button:active,
-.request-report-button:active,
-.button:active {
-  background-color: #047d56;
-  transform: scale(0.97);
-}
-
-/* Botones específicos para acciones en la lista de usuarios */
-.action-button {
-  font-size: 0.875rem;
-  padding: 0.5rem 0.75rem;
-  margin: 0;
-}
-
-.edit-button {
-  background-color: #3b82f6;
-}
-
-.edit-button:hover {
+.create-user-button:hover {
   background-color: #2563eb;
 }
 
-.delete-button {
-  background-color: #ef4444;
+.user-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
-.delete-button:hover {
-  background-color: #dc2626;
+.user-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
 }
 
-/* Formularios de creación y edición */
-.create-user-form,
-.edit-user-form,
-.create-field-form,
-.edit-field-form {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.form-title {
-  font-size: 1.25rem;
+.user-card h4 {
   margin-bottom: 0.5rem;
   color: #111827;
 }
 
-.form-input {
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-/* Detalles del usuario */
-.user-details-card p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
+.user-card p {
+  margin: 0.25rem 0;
   color: #4b5563;
+  font-size: 0.95rem;
 }
 
-/* Secciones internas: fields, reports y budgets */
-.fields-section,
-.extra-info,
-.budget-section {
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 
-.fields-section ul,
-.extra-info ul,
-.budget-section ul {
-  list-style: none;
+.card-actions button {
   padding: 0.5rem 1rem;
-  margin: 0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
 }
 
-.fields-section li,
-.extra-info li,
-.budget-section li {
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed #e5e7eb;
+.card-actions button:hover {
+  opacity: 0.9;
 }
 
-/* Estilos para modales */
+.edit-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -234,44 +91,10 @@ button:active,
 }
 
 .modal-content {
-  background: #ffffff;
+  background: #fff;
   padding: 2rem;
   border-radius: 8px;
   max-width: 500px;
   width: 90%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Mensajes de error */
-.error-message {
-  color: red;
-  margin-bottom: 1rem;
-}
-
-/* Responsive para botones en móviles */
-@media (max-width: 480px) {
-  button,
-  .request-report-button,
-  .button {
-    width: 100%;
-    font-size: 1rem;
-  }
-}
-
-.user-actions {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.user-details-actions {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.field-actions {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }

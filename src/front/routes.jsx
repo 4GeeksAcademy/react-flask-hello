@@ -23,9 +23,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
-
-<Route path="/forgot-password" element={<ForgotPassword />} />
-
 import AboutUs from "./pages/AboutUs/AboutUs";
 
 
@@ -39,6 +36,8 @@ export const router = createBrowserRouter(
         <Route path="signup" element={<Signup />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
       </Route>
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}

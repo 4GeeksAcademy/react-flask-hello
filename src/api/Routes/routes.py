@@ -48,10 +48,8 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        # Variable para almacenar la URL del logo
-        default_logo_url = "https://placehold.co/600x400/EEE/31343C"
-
         try:
+            default_logo_url = "https://placehold.co/600x400/EEE/31343C"
             # Creamos un logo por defecto para ese usuario
             logo = Logo(user_id=new_user.id, image_logo_url=default_logo_url)
             db.session.add(logo)
@@ -96,36 +94,47 @@ def signup():
 
 @api.route('/login', methods=['POST'])
 def login():
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
+    body = request.get_json()
+    email = body.get("email")
+    password = body.get("password")
+
+    if not body or not email or not password:
+        return jsonify({"error": "Email y password son requeridos"}), 400
 
     user = User.query.filter_by(email=email).first()
-    if not user or not user.check_password(password):
-        return jsonify({"msg": "Bad email or password"}), 401
+
+    if not user:
+        return jsonify({"error": "email incorrecto"}), 401
+
+    if not user.check_password(password):
+        return jsonify({"error": "password incorrecto"}), 401
+
+    user_data = user.serialize()
 
     # Obtener el logo del usuario
     logo = Logo.query.filter_by(user_id=user.id).first()
-    logo_url = logo.logo_url if logo else "https://placehold.co/600x400/EEE/31343C"
+    # "https://placehold.co/600x400/EEE/31343C"
+    logo_url = logo.logo_url if logo else None
 
-    # Crear token usando solo el ID como identity
-    access_token = create_access_token(
-        identity=user.id,
-        additional_claims={
-            'email': user.email,
-            'firstname': user.firstname,
-            'lastname': user.lastname,
-            'shopname': user.shopname,
-            'logo_url': logo_url
-        }
-    )
+    # Incluir información en el token
+    token_data = {
+        "id": user.id,
+        "email": user.email,
+        'logo_url': logo_url
+    }
+    access_token = create_access_token(identity=str(user.id))
+
+     # Guardar el ID del usuario en la sesión
+    session['user_id'] = user.id
 
     return jsonify({
-        "access_token": access_token,
-        "user": user.serialize()
-    }), 200
+    "access_token": access_token,
+    "user": user.serialize()
+
+}), 200
+
 
 # RUTA PARA CERRAR SESIÓN
-
 
 @api.route('/logout', methods=['POST'])
 def logout():

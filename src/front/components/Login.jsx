@@ -16,25 +16,6 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const baseUrl = import.meta.env.VITE_BACKEND_URL || '';
 
-    // Función mejorada para construir URLs sin barras duplicadas
-    function buildApiUrl(endpoint) {
-        // Normalizar baseUrl (eliminar barra final si existe)
-        let normalizedBaseUrl = baseUrl;
-        if (normalizedBaseUrl.endsWith('/')) {
-            normalizedBaseUrl = normalizedBaseUrl.slice(0, -1);
-        }
-        
-        // Asegúrate de que endpoint comience con / pero sin duplicación
-        if (!endpoint.startsWith('/')) {
-            endpoint = '/' + endpoint;
-        }
-        
-        // Construir la URL completa
-        const url = `${normalizedBaseUrl}/api${endpoint}`;
-        console.log("URL construida:", url);
-        return url;
-    }
-
     // Verificar si ya hay sesión activa
     useEffect(() => {
         const token = localStorage.getItem('access_token');
@@ -56,12 +37,8 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // Usar la función mejorada para construir la URL
 
-            const loginUrl = buildApiUrl('/login');
-            console.log("Enviando solicitud de login a:", loginUrl);
-            
-            const response = await axios.post(loginUrl, formData);
+            const response = await axios.post(`${baseUrl}api/login`, formData);
             
             // Guardar token
             localStorage.setItem('access_token', response.data.access_token);

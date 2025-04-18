@@ -6,7 +6,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from flask import send_from_directory
 from api.upload_routes import upload
 from api.buys import bp as buys_bp # Modificacion JAVI
-
+from api.forgetpassword import auth
 
 import os
 import random
@@ -17,6 +17,8 @@ from werkzeug.utils import secure_filename  # Línea 9
 api = Blueprint('api', __name__)
 api.register_blueprint(buys_bp) # Modificacion JAVI
 api.register_blueprint(upload)
+api.register_blueprint(auth)
+
 
 @api.route('/home')
 def sitemap():

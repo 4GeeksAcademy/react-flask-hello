@@ -15,6 +15,7 @@ import Cart from "./pages/Cart";
 import Success from './components/Success'
 import Cancel from './components/Cancel'
 import Stock from './pages/Stock'
+import AddProduct from './pages/Addproduct'
 
 
 export const router = createBrowserRouter(
@@ -32,7 +33,8 @@ export const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
-      <Route path="/" element={<Stock />} />
+      <Route path="/stock" element={<Stock />} />
+      <Route path="/AddProduct" element={<AddProduct />} />
 
 
     </Route>

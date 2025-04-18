@@ -6,6 +6,7 @@ from api.utils import generateBill
 
 import os
 
+
 buys_bp = Blueprint('buys_bp', __name__)
 
 @buys_bp.route('/compra', methods=['POST'])

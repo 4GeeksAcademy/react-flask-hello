@@ -6,7 +6,6 @@ import { AppRoutes } from "./routes";
 import { StoreProvider } from './hooks/useGlobalReducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import "./hooks/i18n"
 
 
 const Main = () => {

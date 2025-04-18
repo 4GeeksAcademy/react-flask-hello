@@ -70,6 +70,18 @@ export const Login = () => {
         <p className="login-footer">
           ¿No tienes cuenta? <a className="login-link" href="/signup">Regístrate aquí</a>.
         </p>
+        <p className="login-footer">
+          ¿Olvidaste tu contraseña?{' '}
+          <a
+            href="/forgot-password"
+            className="login-link"
+            style={{ textDecoration: "none", color: "#a7ccbb", fontWeight: "bold" }}
+            onMouseOver={(e) => (e.target.style.textDecoration = "underline")}
+            onMouseOut={(e) => (e.target.style.textDecoration = "none")}
+          >
+            Recuperar acceso
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
 import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
-import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AboutUs from "./pages/AboutUs/AboutUs";
 

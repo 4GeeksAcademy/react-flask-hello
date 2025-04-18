@@ -22,7 +22,7 @@ import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
 import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from './pages/ResetPassword';
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 <Route path="/forgot-password" element={<ForgotPassword />} />
 

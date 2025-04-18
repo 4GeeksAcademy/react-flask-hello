@@ -10,6 +10,7 @@ from sqlalchemy import inspect
 from flask_mail import Message
 from api import mail
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 user = Blueprint('user_api', __name__)
 
@@ -197,3 +198,79 @@ def send_reset_link():
     except Exception as e:
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "No se pudo enviar el correo"}), 500
+
+user.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    new_password = data.get("password")
+
+    if not new_password:
+        return jsonify({"error": "La nueva contraseña es requerida"}), 400
+
+    # Buscar el token
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    # Buscar usuario y actualizar contraseña
+    user = User.query.get(reset_token.user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.password = generate_password_hash(new_password)
+    reset_token.used = True
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "Contraseña actualizada con éxito"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al actualizar contraseña"}), 500
+    
+@user.route('/validate-reset-token/<token>', methods=['GET'])
+def validate_reset_token(token):
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    return jsonify({"message": "Token válido"}), 200
+
+@user.route('/reset-password/<token>', methods=['PATCH'])
+def reset_password(token):
+    body = request.get_json()
+    if not body or not body.get("password"):
+        return jsonify({"error": "La nueva contraseña es obligatoria"}), 400
+
+    token_entry = PasswordResetToken.query.filter_by(token=token, used=False).first()
+
+    if not token_entry or token_entry.expiration < datetime.utcnow():
+        return jsonify({"error": "El token es inválido o ha expirado"}), 400
+
+    user = User.query.get(token_entry.user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.set_password(body["password"])
+    token_entry.used = True
+
+    try:
+        db.session.commit()
+        return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+

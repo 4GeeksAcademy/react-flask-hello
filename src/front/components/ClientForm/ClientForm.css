@@ -14,9 +14,9 @@
 }
 
 .client-form-container-box {
-  background-color: var(--primary-blue);
+  background-color: var(--white);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   max-width: auto;
   overflow: hidden;
 }
@@ -26,11 +26,12 @@
   align-items: center;
   justify-content: center;
   padding: 15px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--medium-gray);
+  background-color: var(--white);
 }
 
 .client-form-title {
-  color: var(--white);
+  color: black;
   font-size: 28px;
   font-weight: 600;
   margin: 0;
@@ -38,7 +39,7 @@
 }
 
 .client-form-content {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--white);
   border-radius: 6px;
   margin: 15px;
   padding: 20px;
@@ -63,46 +64,45 @@
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: black;
-  font-size: 25px;
+  color: var(--dark-blue);
+  font-size: 18px;
 }
 
 .client-form-input {
   width: 100%;
   padding: 12px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: var(--white);
+  border: 1px solid var(--medium-gray);
   border-radius: var(--border-radius);
-  color: var(--white);
+  color: var(--dark-blue);
   font-size: 16px;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: border-color 0.3s;
 }
 
 .client-form-input::placeholder {
-  color: rgb(255, 255, 255);
+  color: var(--dark-gray);
 }
 
 .client-form-input:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.25);
-  border-color: var(--white);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
 select.client-form-input {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 16px;
   padding-right: 35px;
-  color: rgb(8, 0, 0) !important;
-  font-weight: 600 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: var(--dark-blue) !important;
+  font-weight: 500 !important;
 }
 
 select.client-form-input option {
-  background-color: #2c3e50 !important;
-  color: white !important;
+  background-color: var(--white) !important;
+  color: var(--dark-blue) !important;
   padding: 12px !important;
   font-weight: 500 !important;
   font-size: 16px !important;
@@ -110,18 +110,18 @@ select.client-form-input option {
 
 @-moz-document url-prefix() {
   select.client-form-input {
-    background-color: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    background-color: var(--white);
+    border: 1px solid var(--medium-gray);
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   select.client-form-input {
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--medium-gray);
   }
 
   select.client-form-input:focus {
-    border-color: white;
+    border-color: var(--primary-blue);
   }
 }
 
@@ -135,7 +135,7 @@ select.client-form-input option {
 .client-service-checkbox {
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--light-gray);
   border-radius: 20px;
   padding: 6px 12px;
   margin-right: 5px;
@@ -143,7 +143,7 @@ select.client-form-input option {
 }
 
 .client-service-checkbox:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--medium-gray);
 }
 
 .client-checkbox-input {
@@ -151,12 +151,12 @@ select.client-form-input option {
 }
 
 .client-checkbox-label {
-  color: var(--white);
+  color: var(--dark-blue);
   font-size: 14px;
   user-select: none;
 }
 
-/* Botones */
+/* Buttons */
 .client-form-buttons {
   display: flex;
   justify-content: flex-end;
@@ -175,28 +175,29 @@ select.client-form-input option {
 }
 
 .client-btn-cancel {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: var(--white);
-  border: none;
+  background-color: var(--light-gray);
+  color: var(--dark-blue);
+  border: 1px solid var(--medium-gray);
 }
 
 .client-btn-cancel:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--medium-gray);
 }
 
 .client-btn-create {
-  background-color: var(--dark-blue);
+  background-color: var(--primary-blue);
   color: var(--white);
   border: none;
 }
 
 .client-btn-create:hover {
-  background-color: #1a2530;
+  background-color: var(--secondary-blue);
 }
 
 .client-btn-create:disabled {
-  background-color: var(--dark-gray);
+  background-color: var(--medium-gray);
   cursor: not-allowed;
+  color: var(--dark-gray);
 }
 
 .client-alert-box {
@@ -207,15 +208,15 @@ select.client-form-input option {
 }
 
 .client-alert-error {
-  background-color: rgba(244, 67, 54, 0.2);
+  background-color: rgba(244, 67, 54, 0.1);
   border-left: 4px solid var(--error-red);
-  color: var(--white);
+  color: var(--error-red);
 }
 
 .client-alert-success {
-  background-color: rgba(76, 175, 80, 0.2);
+  background-color: rgba(76, 175, 80, 0.1);
   border-left: 4px solid var(--success-green);
-  color: var(--white);
+  color: var(--success-green);
 }
 
 @media (max-width: 768px) {

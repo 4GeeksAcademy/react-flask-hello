@@ -177,8 +177,8 @@ class Detalles_Facturas(db.Model):
 # TABLA DE LOGOS
 class Logo(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    image_logo_url: Mapped[str] = mapped_column(
-        String(500), nullable=False, default="https://placehold.co/600x400/EEE/31343C")
+    logo_url: Mapped[str] = mapped_column(
+        String(500), nullable=True, default="https://placehold.co/600x400/EEE/31343C")
 
     image_data: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
 
@@ -189,6 +189,6 @@ class Logo(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image_logo_url": self.image_logo_url,
+            "logo_url": self.logo_url,
             "user_id": self.user_id
         }

@@ -33,10 +33,10 @@ const Settings = () => {
     try {
       // Corregir la URL para evitar doble barra
       const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-      const apiUrl = backendUrl.endsWith('/') 
-        ? `${backendUrl}upload/inventory` 
+      const apiUrl = backendUrl.endsWith('/')
+        ? `${backendUrl}upload/inventory`
         : `${backendUrl}/upload/inventory`;
-      
+
       console.log("Subiendo a:", apiUrl);
       console.log("Token usado:", token);
 
@@ -85,7 +85,7 @@ const Settings = () => {
       });
 
       alert("Error al subir archivo: " + errorMessage);
-    } finally {a
+    } finally {
       setUploading(false); // Terminamos el proceso de carga
     }
   };

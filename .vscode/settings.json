@@ -22,13 +22,5 @@
     ]
   },
 
-  // Fuente Fira Code y ligaduras
-  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
-  "editor.fontLigatures": true,
-
-  // Opciones adicionales para mejorar la visualización
-  "editor.fontSize": 14,
-  "editor.lineHeight": 22,
-  "editor.cursorStyle": "block", // Estilo de cursor (bloque)
-  "editor.renderWhitespace": "all" // Mostrar espacios, tabs y saltos de línea
+  
 }

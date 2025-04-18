@@ -17,6 +17,7 @@ api = Blueprint('api', __name__)
 
 
 # RUTA PARA REGISTRARSE UN USUARIO Y LOGUEARCE AUTOMÁTICAMENTE (SIGNUP)
+
 @api.route('/signup', methods=['POST'])
 def signup():
     try:  # Añadir un try/except general para diagnosticar
@@ -47,10 +48,11 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
+        # Variable para almacenar la URL del logo
+        default_logo_url = "https://placehold.co/600x400/EEE/31343C"
+
         try:
             # Creamos un logo por defecto para ese usuario
-            # Asegúrate de que esto funcione con tu modelo Logo
-            default_logo_url = "https://placehold.co/600x400/EEE/31343C"
             logo = Logo(user_id=new_user.id, image_logo_url=default_logo_url)
             db.session.add(logo)
             db.session.commit()
@@ -61,16 +63,21 @@ def signup():
         from datetime import timedelta  # Asegúrate de importar esto
 
         # Creamos el access token
-        # Usa timedelta, no datetime.timedelta
         expires_delta = timedelta(days=30)
         access_token = create_access_token(
             identity=str(new_user.id),
             expires_delta=expires_delta
         )
 
+        # Obtener datos del usuario para la respuesta
+        user_data = new_user.serialize()
+
+        # Incluir la URL del logo en los datos del usuario
+        user_data["logo_url"] = default_logo_url
+
         response = jsonify({
             "access_token": access_token,
-            "user": new_user.serialize()
+            "user": user_data
         })
 
         # Añadir la cookie con el token en la respuesta
@@ -89,47 +96,37 @@ def signup():
 
 @api.route('/login', methods=['POST'])
 def login():
-    body = request.get_json()
-    email = body.get("email")
-    password = body.get("password")
-
-    if not body or not email or not password:
-        return jsonify({"error": "Email y password son requeridos"}), 400
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
 
     user = User.query.filter_by(email=email).first()
+    if not user or not user.check_password(password):
+        return jsonify({"msg": "Bad email or password"}), 401
 
-    if not user:
-        return jsonify({"error": "email incorrecto"}), 401
-
-    if not user.check_password(password):
-        return jsonify({"error": "password incorrecto"}), 401
-
-    user_data = user.serialize()
-
-    # Obtener logo si existe
+    # Obtener el logo del usuario
     logo = Logo.query.filter_by(user_id=user.id).first()
-    logo_url = logo.image_logo_url if logo else None
+    logo_url = logo.logo_url if logo else "https://placehold.co/600x400/EEE/31343C"
 
-    # Incluir información en el token
-    token_data = {
-        "id": user.id,
-        "email": user.email,
-
-    }
-    access_token = create_access_token(identity=str(user.id))
-
-    # Guardar el ID del usuario en la sesión
-    session['user_id'] = user.id
+    # Crear token usando solo el ID como identity
+    access_token = create_access_token(
+        identity=user.id,
+        additional_claims={
+            'email': user.email,
+            'firstname': user.firstname,
+            'lastname': user.lastname,
+            'shopname': user.shopname,
+            'logo_url': logo_url
+        }
+    )
 
     return jsonify({
         "access_token": access_token,
-        "user": user_data,
-
-
+        "user": user.serialize()
     }), 200
 
-
 # RUTA PARA CERRAR SESIÓN
+
+
 @api.route('/logout', methods=['POST'])
 def logout():
     # Limpiar la sesión del usuario

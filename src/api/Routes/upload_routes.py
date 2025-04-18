@@ -1,6 +1,4 @@
-"""
-Este módulo se encarga de manejar las rutas para la carga de archivos Excel
-"""
+
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from api.models import db, User, Productos, TigrisFiles
@@ -21,7 +19,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_ENDPOINT_URL_S3 = os.getenv("AWS_ENDPOINT_URL_S3")
 AWS_REGION = os.getenv("AWS_REGION", "auto")
 import uuid
-BUCKET_NAME = f"inventory-files-{uuid.uuid4().hex[:8]}"
+BUCKET_NAME = f"inventary-files-{uuid.uuid4().hex[:8]}"
 
 
 # Configuración de carga de archivos

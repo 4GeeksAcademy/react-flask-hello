@@ -8,8 +8,9 @@ from flask_cors import CORS  # IMPORTA CORS
 # IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
-from api.upload_routes import upload
+from api.Routes.routes import api
+from api.Routes.upload_routes import upload
+from api.Routes.upload_logo import up_logo
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -19,12 +20,17 @@ app = Flask(__name__)
 # Registra el Blueprint con el prefijo de URL
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(upload, url_prefix='/upload')
-
+app.register_blueprint(up_logo, url_prefix='/')
 
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
-CORS(app, supports_credentials=True)
-CORS(app, resources={r"/upload/*": {"origins": "*", "methods": ["GET", "POST"]}})
+CORS(app, resources={
+    r"/*": {
+        "origins": ["https://automatic-waddle-7vp4977w7rrx3xpr6-3000.app.github.dev"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"

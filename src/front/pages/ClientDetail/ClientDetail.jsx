@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./ClientDetail.css";
@@ -31,11 +31,44 @@ export const ClientDetail = () => {
     const [servicesLoading, setServicesLoading] = useState(false);
     const [serviceError, setServiceError] = useState(null);
 
+    // Service history modal state
+    const [showHistoryModal, setShowHistoryModal] = useState(false);
+    const [completedServices, setCompletedServices] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyError, setHistoryError] = useState(null);
+
     useEffect(() => {
         if (token && clientId) {
             fetchClientData();
             fetchClientServices();
             fetchClientNotes();
+        }
+    }, [clientId, token]);
+
+    useEffect(() => {
+        if (token && clientId) {
+
+            const loadCompletedServices = async () => {
+                try {
+                    setHistoryLoading(true);
+                    const response = await fetch(`${backendUrl}api/clients/${clientId}/completed-services`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCompletedServices(data);
+                    }
+                } catch (error) {
+                    console.error("Error pre-loading completed services:", error);
+                } finally {
+                    setHistoryLoading(false);
+                }
+            };
+            
+            loadCompletedServices();
         }
     }, [clientId, token]);
 
@@ -130,7 +163,118 @@ export const ClientDetail = () => {
         }
     };
 
-    // Function to mark a service as completed
+    // Función mejorada para obtener los servicios completados - CORREGIDA
+    const fetchCompletedServices = async () => {
+        if (!clientId || !token) return;
+
+        // Prevenir múltiples llamadas simultáneas
+        if (historyLoading) {
+            console.log("Ya está cargando servicios, evitando nueva llamada");
+            return;
+        }
+
+        setHistoryLoading(true);
+        setHistoryError(null);
+        console.log("Iniciando carga de servicios completados");
+
+        try {
+            // Llamada al endpoint principal
+            const response = await fetch(`${backendUrl}api/clients/${clientId}/completed-services`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            let completedServicesData = [];
+
+            if (response.ok) {
+                completedServicesData = await response.json();
+                console.log("Servicios completados recibidos:", completedServicesData.length);
+            } else {
+                console.warn("Endpoint no disponible, usando alternativa");
+
+                // Implementar lógica del fallback directamente en lugar de llamar a otra función
+                try {
+                    console.log("Usando método alternativo para obtener servicios completados");
+
+                    // Buscamos en el estado local primero si hay servicios con la propiedad completed
+                    let completedFromClientServices = clientServices.filter(service => service.completed === true);
+
+                    console.log("Servicios completados encontrados localmente:", completedFromClientServices.length);
+
+                    if (completedFromClientServices.length > 0) {
+                        completedServicesData = completedFromClientServices;
+                    } else {
+                        // Si no encontramos nada localmente, intentamos consultar a través de los servicios regulares
+                        const servicesResponse = await fetch(`${backendUrl}api/clients/${clientId}/services`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (servicesResponse.ok) {
+                            const allServices = await servicesResponse.json();
+
+                            for (const service of allServices) {
+                                try {
+                                    const statusResponse = await fetch(`${backendUrl}api/clients/${clientId}/services/${service.id}/status`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
+
+                                    if (statusResponse.ok) {
+                                        const statusData = await statusResponse.json();
+                                        if (statusData.completed) {
+                                            completedServicesData.push({
+                                                ...service,
+                                                completed: true,
+                                                completed_date: statusData.completed_date
+                                            });
+                                        }
+                                    }
+                                } catch (err) {
+                                    console.warn(`Error verificando estado del servicio ${service.id}:`, err);
+                                }
+                            }
+                        }
+                    }
+                } catch (fallbackError) {
+                    console.error("Error en método alternativo:", fallbackError);
+                }
+            }
+
+            // Procesar los datos obtenidos
+            const processedServices = completedServicesData.map(service => ({
+                ...service,
+                completed: true,
+                completed_date: service.completed_date || null
+            }));
+
+            // Ordenamos por fecha de completado (más reciente primero)
+            const sortedServices = processedServices.sort((a, b) => {
+                const dateA = a.completed_date ? new Date(a.completed_date) : new Date(0);
+                const dateB = b.completed_date ? new Date(b.completed_date) : new Date(0);
+                return dateB - dateA;
+            });
+
+            // Actualizar estado
+            setCompletedServices(sortedServices);
+            console.log("Estado actualizado con servicios completados");
+        } catch (error) {
+            console.error("Error al cargar servicios:", error);
+            setHistoryError("Error al cargar servicios completados");
+        } finally {
+            setHistoryLoading(false);
+        }
+    };
+
+    // Función para verificar si un servicio ya está completado
+    const isServiceCompleted = (serviceId) => {
+        return completedServices.some(service => service.id === serviceId);
+    };
+
+    // Función mejorada para marcar un servicio como completado - CORREGIDA
     const handleServiceDone = async (serviceId) => {
         try {
             const response = await fetch(`${backendUrl}api/services/${serviceId}/complete`, {
@@ -140,22 +284,37 @@ export const ClientDetail = () => {
                 }
             });
 
-            // Debug log
-            console.log("Server response:", response.status);
-
             if (!response.ok) {
                 const data = await response.json();
                 throw new Error(data.error || data.msg || "Error marking service as completed");
             }
 
-            // Get response data
+            // Obtenemos los datos de respuesta
             const data = await response.json();
             console.log("Service marked as completed:", data);
 
-            // Update services list
-            await fetchClientServices();
+            // Actualizamos la lista de servicios del cliente
+            // Removemos el servicio completado de clientServices
+            const updatedClientServices = clientServices.filter(service => service.id !== serviceId);
+            setClientServices(updatedClientServices);
 
-            // Show success message
+            // Si este era el servicio activo, actualizamos el servicio activo
+            if (activeService && activeService.id === serviceId) {
+                if (updatedClientServices.length > 0) {
+                    setActiveService(updatedClientServices[0]);
+                } else {
+                    setActiveService(null);
+                }
+            }
+
+            // CORRECCIÓN: Solo actualizamos los servicios completados si el modal está abierto
+            // Eliminamos la carga previa para evitar bucles
+            if (showHistoryModal) {
+                console.log("Modal de historial abierto, actualizando lista de servicios completados");
+                fetchCompletedServices();
+            }
+
+            // Mostrar mensaje de éxito
             alert("Service marked as completed successfully");
         } catch (error) {
             console.error("Error marking service as completed:", error);
@@ -168,7 +327,15 @@ export const ClientDetail = () => {
         if (!confirm("Are you sure you want to delete this service?")) {
             return;
         }
-
+    
+        // Verificar primero si el servicio ya está completado
+        const isCompleted = isServiceCompleted(serviceId);
+        
+        if (isCompleted) {
+            alert("Cannot delete a completed service from the history. It's part of the client's record.");
+            return;
+        }
+    
         try {
             const response = await fetch(`${backendUrl}api/clients/${clientId}/services/${serviceId}`, {
                 method: 'DELETE',
@@ -176,12 +343,12 @@ export const ClientDetail = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
+    
             if (!response.ok) {
                 const data = await response.json();
                 throw new Error(data.error || data.msg || "Error deleting the service");
             }
-
+    
             // Update services list
             fetchClientServices();
         } catch (error) {
@@ -263,6 +430,17 @@ export const ClientDetail = () => {
         setShowNoteModal(false);
         setNewNote("");
         setNoteError(null);
+    };
+
+    // Service history modal
+    const openHistoryModal = () => {
+        setShowHistoryModal(true);
+        // Cargamos los servicios completados cuando se abre el modal
+        fetchCompletedServices();
+    };
+
+    const closeHistoryModal = () => {
+        setShowHistoryModal(false);
     };
 
     const addNewNote = async () => {
@@ -606,6 +784,128 @@ export const ClientDetail = () => {
         );
     };
 
+    // Componente para el Modal de Historial de Servicios - CORREGIDO
+    const ServiceHistoryModal = () => {
+        // CORRECCIÓN: Eliminamos el useEffect que podría causar bucles infinitos
+        // El componente ahora confía en que fetchCompletedServices se llama cuando se abre el modal
+
+        // Función para formatear la fecha
+        const formatDate = (dateString) => {
+            if (!dateString) return "Fecha no disponible";
+
+            try {
+                const date = new Date(dateString);
+
+                // Verificar si la fecha es válida
+                if (isNaN(date.getTime())) return "Fecha no válida";
+
+                // Formatear la fecha como DD/MM/YYYY HH:MM
+                return date.toLocaleString();
+            } catch (e) {
+                console.error("Error formateando fecha:", e);
+                return "Fecha no válida";
+            }
+        };
+
+        return (
+            <div className="modal-overlay">
+                <div className="modal-content service-history-modal">
+                    <div className="modal-header">
+                        <h3>Historial de Servicios Completados</h3>
+                        <button className="close-button" onClick={closeHistoryModal}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        {historyError && (
+                            <div className="history-error-message" style={{
+                                backgroundColor: "#ffdddd",
+                                color: "#d8000c",
+                                padding: "10px",
+                                borderRadius: "4px",
+                                marginBottom: "15px"
+                            }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: "8px" }}></i>
+                                {historyError}
+                            </div>
+                        )}
+
+                        {historyLoading ? (
+                            <div className="services-loading">
+                                <i className="fas fa-spinner fa-spin" style={{ marginRight: "8px" }}></i>
+                                Cargando historial de servicios...
+                            </div>
+                        ) : (
+                            <>
+                                {completedServices.length === 0 ? (
+                                    <div className="no-services-message">
+                                        <i className="fas fa-info-circle" style={{ marginRight: "8px" }}></i>
+                                        {historyError ? "No se pudieron cargar los servicios." : "Este cliente no tiene servicios completados."}
+                                        <div style={{ marginTop: "10px", fontSize: "0.9rem", color: "#666" }}>
+                                            Los servicios aparecerán aquí cuando se marquen como completados.
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="history-summary">
+                                            <div className="history-count">
+                                                <strong>{completedServices.length}</strong> {completedServices.length === 1 ? 'servicio completado' : 'servicios completados'}
+                                            </div>
+                                        </div>
+                                        <div className="completed-services-list">
+                                            {completedServices.map(service => (
+                                                <div key={service.id} className="service-item completed">
+                                                    <div className="service-header">
+                                                        <div className="service-name-price">
+                                                            <span className="service-name">{service.name}</span>
+                                                            <span className="service-price">${service.price}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="service-description">
+                                                        {service.description || "Sin descripción"}
+                                                    </div>
+                                                    <div className="service-footer">
+                                                        <div className="service-status">
+                                                            <span className="status-badge completed">
+                                                                <i className="fas fa-check-circle"></i> Completado
+                                                            </span>
+                                                        </div>
+                                                        <div className="service-date">
+                                                            {formatDate(service.completed_date)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="btn-primary"
+                            onClick={closeHistoryModal}
+                            disabled={historyLoading}
+                        >
+                            Cerrar
+                        </button>
+                        <button
+                            className="btn-secondary"
+                            onClick={() => {
+                                console.log("Actualización manual solicitada");
+                                fetchCompletedServices();
+                            }}
+                            disabled={historyLoading}
+                        >
+                            <i className="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     if (loading) {
         return (
             <div className="client-detail-container">
@@ -768,10 +1068,13 @@ export const ClientDetail = () => {
 
                     {/* Action buttons */}
                     <div className="action-buttons">
-                        <Link to={`/client/${clientId}/service-history`} className="action-button history-button">
+                        <button
+                            onClick={openHistoryModal}
+                            className="action-button history-button"
+                        >
                             <i className="fas fa-history"></i>
                             <span>Service history</span>
-                        </Link>
+                        </button>
 
                         <button
                             onClick={handleEditAppointment}
@@ -796,6 +1099,9 @@ export const ClientDetail = () => {
 
                     {/* Service adding modal */}
                     {showServiceModal && <ServiceModal />}
+
+                    {/* Service history modal */}
+                    {showHistoryModal && <ServiceHistoryModal />}
                 </div>
             </div>
         </div>

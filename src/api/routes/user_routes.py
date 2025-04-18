@@ -1,6 +1,3 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models.models import db, User, PasswordResetToken
 from api.utils import generate_sitemap, APIException
@@ -11,6 +8,7 @@ from flask_mail import Message
 from api import mail
 from datetime import datetime
 from werkzeug.security import generate_password_hash
+import os
 
 user = Blueprint('user_api', __name__)
 
@@ -22,10 +20,7 @@ def signup():
     if not body or not body.get("email") or not body.get("password") or not body.get("name") or not body.get("lastname") or not body.get("dni"):
         return jsonify({"error": "You must provide email, password, name, lastname and dni"}), 400
 
-    if User.query.filter_by(email=body["email"]).first():
-        return jsonify({"error": "The user already exists"}), 400
-
-    if User.query.filter_by(dni=body["dni"]).first():
+    if User.query.filter_by(email=body["email"]).first() or User.query.filter_by(dni=body["dni"]).first():
         return jsonify({"error": "The user already exists"}), 400
 
     try:
@@ -168,6 +163,8 @@ def send_test_email():
         return jsonify({"error": "Error al enviar el correo"}), 500
 
 
+
+
 @user.route('/send-reset-link', methods=['POST'])
 def send_reset_link():
     data = request.get_json()
@@ -180,15 +177,13 @@ def send_reset_link():
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    # Crear el token y guardarlo
     token_entry = PasswordResetToken(user_id=user.id)
     db.session.add(token_entry)
     db.session.commit()
 
-    # Construir URL de recuperación
-    reset_url = f"https://dronfarm.es/reset-password/{token_entry.token}"
+    frontend_url = os.getenv("FRONTEND_URL", "https://dronfarm.es")
+    reset_url = f"{frontend_url}/reset-password/{token_entry.token}"
 
-    # Enviar el email
     try:
         msg = Message(
             subject="🔐 Recuperación de contraseña - DronFarm",

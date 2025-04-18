@@ -2,18 +2,20 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models.models import db, User
+from api.models.models import db, User, PasswordResetToken
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy import inspect
+from flask_mail import Message
+from api import mail
+from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 user = Blueprint('user_api', __name__)
 
-
 @user.route('/signup', methods=['POST'])
 def signup():
-
     body = request.get_json()
 
     if not body or not body.get("email") or not body.get("password") or not body.get("name") or not body.get("lastname") or not body.get("dni"):
@@ -37,7 +39,6 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        # ✅ Crear el token justo después del commit
         access_token = create_access_token(identity=str(new_user.id))
 
         return jsonify({
@@ -53,7 +54,6 @@ def signup():
 
 @user.route('/login', methods=['POST'])
 def login():
-
     body = request.get_json()
 
     if not body or not body.get("email") or not body.get("password"):
@@ -66,35 +66,26 @@ def login():
 
     access_token = create_access_token(identity=str(user.id))
 
-    print("Conseguido!!")
     return jsonify({
         "access_token": access_token,
         "user": user.serialize()
     }), 200
 
 
-# 👇 ❇️ Riki for the group success 👊
-# Obtener un usuario por ID
 @user.route('/user/<int:id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(id):
-    # Verificar si el usuario existe
     user = User.query.get(id)
     if not user:
         return jsonify({"error": "User not found"}), 404
-
-    # Devolver datos del usuario
     return jsonify(user.serialize()), 200
 
 
-# Obtener todos los usuarios
 @user.route('/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()
     all_users = [user.serialize() for user in users]
     return jsonify(all_users), 200
-
-# Rutas creadas por Javier.
 
 
 @user.route('/users/fullinfo', methods=['GET'])
@@ -121,9 +112,7 @@ def update_user():
     if not user_obj:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    # Verificar si el usuario tiene permisos para actualizar
-    campos_permitidos = ["email", "name",
-                         "lastname", "dni", "rolId", "password"]
+    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
             setattr(user_obj, campo, data[campo])
@@ -139,7 +128,6 @@ def update_user():
 @user.route('/users', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-
     user_id = request.args.get("id", None)
 
     if not user_id:
@@ -149,3 +137,132 @@ def delete_user():
         user_id = int(user_id)
     except ValueError:
         return jsonify({"error": "ID inválido"}), 400
+# 💥 RUTA DE ENVÍO DE CORREO DE PRUEBA
+@user.route('/send-test-email', methods=['POST'])
+def send_test_email():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email es requerido"}), 400
+
+    try:
+        msg = Message(
+            subject="📩 Correo de prueba de DroneFarm",
+            recipients=[email],
+            body="¡Hola! Este es un correo de prueba enviado desde la API de DroneFarm. 🚀"
+        )
+        mail.send(msg)
+        return jsonify({"message": f"Correo enviado correctamente a {email}"}), 200
+    except Exception as e:
+        print("❌ Error al enviar el correo:", e)
+        return jsonify({"error": "Error al enviar el correo"}), 500
+    
+@user.route('/send-reset-link', methods=['POST'])
+def send_reset_link():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email requerido"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    # Crear el token y guardarlo
+    token_entry = PasswordResetToken(user_id=user.id)
+    db.session.add(token_entry)
+    db.session.commit()
+
+    # Construir URL de recuperación
+    reset_url = f"https://dronfarm.es/reset-password/{token_entry.token}"
+
+    # Enviar el email
+    try:
+        msg = Message(
+            subject="🔐 Recuperación de contraseña - DronFarm",
+            recipients=[email],
+            body=f"Hola {user.name},\n\nHaz clic en este enlace para recuperar tu contraseña:\n\n{reset_url}\n\nEste enlace es válido durante 1 hora.\n\nSi no has solicitado esto, ignora este correo.\n\n— DronFarm"
+        )
+        mail.send(msg)
+        return jsonify({"message": "Correo enviado con enlace de recuperación"}), 200
+    except Exception as e:
+        print("❌ Error al enviar el correo:", e)
+        return jsonify({"error": "No se pudo enviar el correo"}), 500
+
+user.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    new_password = data.get("password")
+
+    if not new_password:
+        return jsonify({"error": "La nueva contraseña es requerida"}), 400
+
+    # Buscar el token
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    # Buscar usuario y actualizar contraseña
+    user = User.query.get(reset_token.user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.password = generate_password_hash(new_password)
+    reset_token.used = True
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "Contraseña actualizada con éxito"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al actualizar contraseña"}), 500
+    
+@user.route('/validate-reset-token/<token>', methods=['GET'])
+def validate_reset_token(token):
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    return jsonify({"message": "Token válido"}), 200
+
+@user.route('/reset-password/<token>', methods=['PATCH'])
+def reset_password(token):
+    body = request.get_json()
+    if not body or not body.get("password"):
+        return jsonify({"error": "La nueva contraseña es obligatoria"}), 400
+
+    token_entry = PasswordResetToken.query.filter_by(token=token, used=False).first()
+
+    if not token_entry or token_entry.expiration < datetime.utcnow():
+        return jsonify({"error": "El token es inválido o ha expirado"}), 400
+
+    user = User.query.get(token_entry.user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.set_password(body["password"])
+    token_entry.used = True
+
+    try:
+        db.session.commit()
+        return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+

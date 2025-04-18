@@ -1,0 +1,87 @@
+.aboutus-container {
+    padding: 4rem 6%;
+    background: linear-gradient(to right, #e8f5e9, #f1f8e9);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-dark);
+  }
+  
+  .aboutus-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .aboutus-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+  }
+  
+  .aboutus-hero p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .aboutus-content {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .aboutus-content h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .aboutus-content p {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .team-member {
+    background: var(--text-light);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .team-member:hover {
+    transform: translateY(-5px);
+  }
+  
+  .team-member h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+  }
+  
+  .team-member p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .aboutus-footer-note {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin-top: 3rem;
+  }
+  

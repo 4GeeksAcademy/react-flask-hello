@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import db, Clients, Services, Calendar, Appointments, ClientService, Businesses
 from flask_jwt_extended import jwt_required
 from ..api_calendar import GoogleCalendarManager
-import datetime
+from datetime import datetime, UTC
 
 clients_routes = Blueprint('clients_routes', __name__)
 

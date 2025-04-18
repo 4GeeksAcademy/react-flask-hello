@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./ClientDetail.css";
 
+
 export const ClientDetail = () => {
     const { clientId } = useParams();
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ export const ClientDetail = () => {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-                    
+
                     if (response.ok) {
                         const data = await response.json();
                         setCompletedServices(data);
@@ -67,7 +68,7 @@ export const ClientDetail = () => {
                     setHistoryLoading(false);
                 }
             };
-            
+
             loadCompletedServices();
         }
     }, [clientId, token]);
@@ -120,6 +121,8 @@ export const ClientDetail = () => {
                     new Date(b.created_at || 0) - new Date(a.created_at || 0)
                 );
                 setActiveService(sortedServices[0]);
+            } else {
+                setActiveService(null);
             }
         } catch (error) {
             console.error("Error fetching client services:", error);
@@ -163,11 +166,10 @@ export const ClientDetail = () => {
         }
     };
 
-    // Función mejorada para obtener los servicios completados - CORREGIDA
+
     const fetchCompletedServices = async () => {
         if (!clientId || !token) return;
 
-        // Prevenir múltiples llamadas simultáneas
         if (historyLoading) {
             console.log("Ya está cargando servicios, evitando nueva llamada");
             return;
@@ -178,106 +180,44 @@ export const ClientDetail = () => {
         console.log("Iniciando carga de servicios completados");
 
         try {
-            // Llamada al endpoint principal
+
             const response = await fetch(`${backendUrl}api/clients/${clientId}/completed-services`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-            let completedServicesData = [];
-
-            if (response.ok) {
-                completedServicesData = await response.json();
-                console.log("Servicios completados recibidos:", completedServicesData.length);
-            } else {
-                console.warn("Endpoint no disponible, usando alternativa");
-
-                // Implementar lógica del fallback directamente en lugar de llamar a otra función
-                try {
-                    console.log("Usando método alternativo para obtener servicios completados");
-
-                    // Buscamos en el estado local primero si hay servicios con la propiedad completed
-                    let completedFromClientServices = clientServices.filter(service => service.completed === true);
-
-                    console.log("Servicios completados encontrados localmente:", completedFromClientServices.length);
-
-                    if (completedFromClientServices.length > 0) {
-                        completedServicesData = completedFromClientServices;
-                    } else {
-                        // Si no encontramos nada localmente, intentamos consultar a través de los servicios regulares
-                        const servicesResponse = await fetch(`${backendUrl}api/clients/${clientId}/services`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-
-                        if (servicesResponse.ok) {
-                            const allServices = await servicesResponse.json();
-
-                            for (const service of allServices) {
-                                try {
-                                    const statusResponse = await fetch(`${backendUrl}api/clients/${clientId}/services/${service.id}/status`, {
-                                        headers: {
-                                            'Authorization': `Bearer ${token}`
-                                        }
-                                    });
-
-                                    if (statusResponse.ok) {
-                                        const statusData = await statusResponse.json();
-                                        if (statusData.completed) {
-                                            completedServicesData.push({
-                                                ...service,
-                                                completed: true,
-                                                completed_date: statusData.completed_date
-                                            });
-                                        }
-                                    }
-                                } catch (err) {
-                                    console.warn(`Error verificando estado del servicio ${service.id}:`, err);
-                                }
-                            }
-                        }
-                    }
-                } catch (fallbackError) {
-                    console.error("Error en método alternativo:", fallbackError);
-                }
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error loading completed services');
             }
 
-            // Procesar los datos obtenidos
-            const processedServices = completedServicesData.map(service => ({
-                ...service,
-                completed: true,
-                completed_date: service.completed_date || null
-            }));
+            const completedServicesData = await response.json();
+            console.log("Servicios completados recibidos:", completedServicesData.length);
 
-            // Ordenamos por fecha de completado (más reciente primero)
-            const sortedServices = processedServices.sort((a, b) => {
+            const sortedServices = completedServicesData.sort((a, b) => {
                 const dateA = a.completed_date ? new Date(a.completed_date) : new Date(0);
                 const dateB = b.completed_date ? new Date(b.completed_date) : new Date(0);
                 return dateB - dateA;
             });
 
-            // Actualizar estado
             setCompletedServices(sortedServices);
             console.log("Estado actualizado con servicios completados");
         } catch (error) {
-            console.error("Error al cargar servicios:", error);
+            console.error("Error al cargar servicios completados:", error);
             setHistoryError("Error al cargar servicios completados");
         } finally {
             setHistoryLoading(false);
         }
     };
 
-    // Función para verificar si un servicio ya está completado
     const isServiceCompleted = (serviceId) => {
         return completedServices.some(service => service.id === serviceId);
     };
 
-    // Función mejorada para marcar un servicio como completado - CORREGIDA
-    const handleServiceDone = async (serviceId) => {
+    const handleServiceDone = async (instanceId) => {
         try {
-            const response = await fetch(`${backendUrl}api/services/${serviceId}/complete`, {
+            const response = await fetch(`${backendUrl}api/service-instances/${instanceId}/complete`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -289,17 +229,16 @@ export const ClientDetail = () => {
                 throw new Error(data.error || data.msg || "Error marking service as completed");
             }
 
-            // Obtenemos los datos de respuesta
             const data = await response.json();
             console.log("Service marked as completed:", data);
 
-            // Actualizamos la lista de servicios del cliente
-            // Removemos el servicio completado de clientServices
-            const updatedClientServices = clientServices.filter(service => service.id !== serviceId);
+            const updatedClientServices = clientServices.filter(service =>
+                service.instance_id !== instanceId
+            );
             setClientServices(updatedClientServices);
 
             // Si este era el servicio activo, actualizamos el servicio activo
-            if (activeService && activeService.id === serviceId) {
+            if (activeService && activeService.instance_id === instanceId) {
                 if (updatedClientServices.length > 0) {
                     setActiveService(updatedClientServices[0]);
                 } else {
@@ -307,8 +246,6 @@ export const ClientDetail = () => {
                 }
             }
 
-            // CORRECCIÓN: Solo actualizamos los servicios completados si el modal está abierto
-            // Eliminamos la carga previa para evitar bucles
             if (showHistoryModal) {
                 console.log("Modal de historial abierto, actualizando lista de servicios completados");
                 fetchCompletedServices();
@@ -322,34 +259,24 @@ export const ClientDetail = () => {
         }
     };
 
-    // Function to delete a service
-    const handleServiceDelete = async (serviceId) => {
+    const handleServiceDelete = async (instanceId) => {
         if (!confirm("Are you sure you want to delete this service?")) {
             return;
         }
-    
-        // Verificar primero si el servicio ya está completado
-        const isCompleted = isServiceCompleted(serviceId);
-        
-        if (isCompleted) {
-            alert("Cannot delete a completed service from the history. It's part of the client's record.");
-            return;
-        }
-    
+
         try {
-            const response = await fetch(`${backendUrl}api/clients/${clientId}/services/${serviceId}`, {
+            const response = await fetch(`${backendUrl}api/service-instances/${instanceId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-    
+
             if (!response.ok) {
                 const data = await response.json();
                 throw new Error(data.error || data.msg || "Error deleting the service");
             }
-    
-            // Update services list
+
             fetchClientServices();
         } catch (error) {
             console.error("Error deleting service:", error);
@@ -360,7 +287,7 @@ export const ClientDetail = () => {
 
     // Function to load available services
     const fetchAvailableServices = async () => {
-        // Check if selected business exists
+
         if (!businessId) {
             setServiceError("No business selected");
             return;
@@ -393,12 +320,7 @@ export const ClientDetail = () => {
                 throw new Error("Response doesn't have the expected format (array)");
             }
 
-            // Filter services that are already assigned to the client
-            const clientServiceIds = clientServices.map(service => service.id);
-            const filteredServices = data.filter(service => !clientServiceIds.includes(service.id));
-
-            console.log("Filtered services:", filteredServices.length);
-            setAvailableServices(filteredServices);
+            setAvailableServices(data);
             setSelectedServices([]);
         } catch (error) {
             console.error("Error fetching available services:", error);
@@ -408,7 +330,6 @@ export const ClientDetail = () => {
         }
     };
 
-    // Navigation functions
     const handleEditAppointment = () => {
         if (activeService) {
             navigate(`/appointment/edit/${activeService.id}`);
@@ -443,8 +364,10 @@ export const ClientDetail = () => {
         setShowHistoryModal(false);
     };
 
-    const addNewNote = async () => {
-        if (newNote.trim() === "") {
+    const addNewNote = async (noteText = null) => {
+        const textToSave = noteText || newNote;
+
+        if (textToSave.trim() === "") {
             setNoteError("Note cannot be empty");
             return;
         }
@@ -465,7 +388,7 @@ export const ClientDetail = () => {
                 },
                 body: JSON.stringify({
                     client_email: client.email,
-                    description: newNote
+                    description: textToSave 
                 })
             });
 
@@ -606,13 +529,7 @@ export const ClientDetail = () => {
                 return;
             }
 
-            setNewNote(localNote);
-
-            if (noteError) {
-                setNoteError(null);
-            }
-
-            addNewNote();
+            addNewNote(localNote);
         };
 
         return (
@@ -784,22 +701,15 @@ export const ClientDetail = () => {
         );
     };
 
-    // Componente para el Modal de Historial de Servicios - CORREGIDO
     const ServiceHistoryModal = () => {
-        // CORRECCIÓN: Eliminamos el useEffect que podría causar bucles infinitos
-        // El componente ahora confía en que fetchCompletedServices se llama cuando se abre el modal
-
-        // Función para formatear la fecha
         const formatDate = (dateString) => {
             if (!dateString) return "Fecha no disponible";
 
             try {
                 const date = new Date(dateString);
 
-                // Verificar si la fecha es válida
                 if (isNaN(date.getTime())) return "Fecha no válida";
 
-                // Formatear la fecha como DD/MM/YYYY HH:MM
                 return date.toLocaleString();
             } catch (e) {
                 console.error("Error formateando fecha:", e);
@@ -854,7 +764,7 @@ export const ClientDetail = () => {
                                         </div>
                                         <div className="completed-services-list">
                                             {completedServices.map(service => (
-                                                <div key={service.id} className="service-item completed">
+                                                <div key={service.instance_id} className="service-item completed">
                                                     <div className="service-header">
                                                         <div className="service-name-price">
                                                             <span className="service-name">{service.name}</span>
@@ -1024,7 +934,7 @@ export const ClientDetail = () => {
                             <div className="services-list">
                                 {clientServices.length > 0 ? (
                                     clientServices.map(service => (
-                                        <div key={service.id} className="service-item">
+                                        <div key={service.instance_id} className="service-item">
                                             <div className="service-header">
                                                 <div className="service-name-price">
                                                     <span className="service-name">{service.name}</span>
@@ -1042,14 +952,14 @@ export const ClientDetail = () => {
                                             <div className="service-actions">
                                                 <button
                                                     className="service-done-button"
-                                                    onClick={() => handleServiceDone(service.id)}
+                                                    onClick={() => handleServiceDone(service.instance_id)}
                                                     title="Mark as completed"
                                                 >
                                                     <i className="fas fa-check"></i> Completed
                                                 </button>
                                                 <button
                                                     className="service-delete-button"
-                                                    onClick={() => handleServiceDelete(service.id)}
+                                                    onClick={() => handleServiceDelete(service.instance_id)}
                                                     title="Delete service"
                                                 >
                                                     <i className="fas fa-trash"></i> Delete

@@ -7,10 +7,11 @@
   background-repeat: no-repeat;
   background-position: center;
   justify-content: center;
+  min-height: 95vh;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: auto;
   width: 100%;
   margin: 0 auto;
   padding: 20px;
@@ -420,7 +421,8 @@
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: #ffffff;
+  padding: 10px;
 }
 
 .modal-body {

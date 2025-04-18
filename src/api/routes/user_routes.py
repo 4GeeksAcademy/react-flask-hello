@@ -8,15 +8,12 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy import inspect
 from flask_mail import Message
-from api import mail  # ← esto funciona con lo de `mail = Mail()` en `__init__.py`
-
+from api import mail
 
 user = Blueprint('user_api', __name__)
 
-
 @user.route('/signup', methods=['POST'])
 def signup():
-
     body = request.get_json()
 
     if not body or not body.get("email") or not body.get("password") or not body.get("name") or not body.get("lastname") or not body.get("dni"):
@@ -40,7 +37,6 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        # ✅ Crear el token justo después del commit
         access_token = create_access_token(identity=str(new_user.id))
 
         return jsonify({
@@ -56,7 +52,6 @@ def signup():
 
 @user.route('/login', methods=['POST'])
 def login():
-
     body = request.get_json()
 
     if not body or not body.get("email") or not body.get("password"):
@@ -69,35 +64,26 @@ def login():
 
     access_token = create_access_token(identity=str(user.id))
 
-    print("Conseguido!!")
     return jsonify({
         "access_token": access_token,
         "user": user.serialize()
     }), 200
 
 
-# 👇 ❇️ Riki for the group success 👊
-# Obtener un usuario por ID
 @user.route('/user/<int:id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(id):
-    # Verificar si el usuario existe
     user = User.query.get(id)
     if not user:
         return jsonify({"error": "User not found"}), 404
-
-    # Devolver datos del usuario
     return jsonify(user.serialize()), 200
 
 
-# Obtener todos los usuarios
 @user.route('/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()
     all_users = [user.serialize() for user in users]
     return jsonify(all_users), 200
-
-# Rutas creadas por Javier.
 
 
 @user.route('/users/fullinfo', methods=['GET'])
@@ -124,9 +110,7 @@ def update_user():
     if not user_obj:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    # Verificar si el usuario tiene permisos para actualizar
-    campos_permitidos = ["email", "name",
-                         "lastname", "dni", "rolId", "password"]
+    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
             setattr(user_obj, campo, data[campo])
@@ -142,7 +126,6 @@ def update_user():
 @user.route('/users', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-
     user_id = request.args.get("id", None)
     if not user_id:
         return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
@@ -158,7 +141,9 @@ def delete_user():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-    
+
+
+# 💥 RUTA DE ENVÍO DE CORREO DE PRUEBA
 @user.route('/send-test-email', methods=['POST'])
 def send_test_email():
     data = request.get_json()
@@ -178,6 +163,3 @@ def send_test_email():
     except Exception as e:
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "Error al enviar el correo"}), 500
-
-
-

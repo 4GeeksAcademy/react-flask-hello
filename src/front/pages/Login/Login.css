@@ -1,80 +1,121 @@
-/* 👇 ❇️ Riki for the group success 👊 12 Abril */
-
-/* Estilos para la página de login */
+/* Fondo general con efecto glass y fondo desenfocado */
 .login-background {
   min-height: 100vh;
   width: 100%;
-  display: block;
-  padding-top: 260px; /* ✅ más equilibrio visual */
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.05)), 
+  display: flex;
+  align-items: flex-start; /* 👈 lo sube hacia arriba */
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05)),
               url('/ruta/a/tu/fondo.jpg') no-repeat center center/cover;
+  padding-top: 250px;   /* 👈 controla cuánto sube (ajústalo a tu gusto) */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  animation: fadeIn 0.8s ease-in;
 }
-/* Contenedor del formulario */
+
+/* Contenedor del login con glassmorphism */
 .login-container {
-  position: relative;
-  top: 35px; /* ⬅️ CAMBIA ESTE VALOR PARA MOVERLO ABAJO */
-  max-width: 600px;
-  width: 90%;
-  margin: 0 auto;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.15);
+  max-width: 750px;  /* 👈 más ancho que antes (era 450px) */
+  width: 100%;
+  padding: 5rem;     /* 👈 más padding para hacerlo más amplio por dentro */
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: floatUp 0.6s ease-out;
 }
 
 
-
+/* Título */
 .login-title {
   font-family: "Montserrat", sans-serif;
   text-align: center;
-  margin-bottom: 20px;
-  color: #84adcf; /* Azul (como otros h1) o #198754 para cohesión con botones */
-  font-weight: 500;
+  font-size: 2.3rem;
+  margin-bottom: 3.5rem;
+  color: #8ab3d5;
+  font-weight: 600;
 }
 
-.login-error {
-  margin-bottom: 15px;
-}
-
+/* Formulario */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
 }
 
+/* Inputs */
 .login-input {
-  padding: 10px;
+  padding: 0.75rem 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
+.login-input:focus {
+  outline: none;
+  border-color: #198754;
+  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+}
+
+/* Botón */
 .login-button {
-  padding: 10px;
+  padding: 0.75rem 1rem;
   background-color: #198754;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #157347;
+  background-color: #81b291;
 }
 
+/* Enlaces de registro y recuperar contraseña */
 .login-footer {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  color: #1c1b1b;
 }
 
-.login-link {
-  color: #198754;
+.login-footer a {
+  color: #a7ccbb;
   text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 500;
 }
 
-.login-link:hover {
+.login-footer a:hover {
   text-decoration: underline;
+  color: #81b291;
+}
+
+/* Animaciones */
+@keyframes floatUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -1,2 +1,0 @@
-
-# GET /clima/{id}

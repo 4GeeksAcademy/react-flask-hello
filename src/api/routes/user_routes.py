@@ -141,19 +141,11 @@ def update_user():
 def delete_user():
 
     user_id = request.args.get("id", None)
+
     if not user_id:
         return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
 
-    user_obj = User.query.get(user_id)
-    if not user_obj:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-
     try:
-        db.session.delete(user_obj)
-        db.session.commit()
-        return jsonify({"msg": "Usuario eliminado correctamente"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
-
-
+        user_id = int(user_id)
+    except ValueError:
+        return jsonify({"error": "ID inválido"}), 400

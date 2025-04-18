@@ -1,69 +1,43 @@
-.report-modal-content {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  font-family: "Inter", sans-serif;
-}
-
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-  color: #1f2937;
-  text-align: center;
-}
-
-.dropzone-area {
-  border: 2px dashed #9ca3af;
-  padding: 1.5rem;
-  text-align: center;
-  border-radius: 10px;
-  background-color: #f9fafb;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
 .modal-input,
 .modal-textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  resize: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.dropzone-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #6b7280;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .modal-btn {
-  padding: 0.5rem 1.2rem;
-  border-radius: 9999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
   border: none;
-  background-color: #e5e7eb;
-  color: #111827;
-  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.modal-btn:hover {
-  background-color: #d1d5db;
 }
 
 .modal-btn.primary {
-  background-color: #3b82f6;
+  background-color: #10b981;
   color: white;
 }
 
-.modal-btn.primary:hover {
-  background-color: #2563eb;
+.modal-btn:hover {
+  opacity: 0.9;
 }

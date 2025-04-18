@@ -1,6 +1,3 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models.models import db, User, PasswordResetToken
 from api.utils import generate_sitemap, APIException
@@ -11,6 +8,7 @@ from flask_mail import Message
 from api import mail
 from datetime import datetime
 from werkzeug.security import generate_password_hash
+import os
 
 user = Blueprint('user_api', __name__)
 
@@ -21,10 +19,7 @@ def signup():
     if not body or not body.get("email") or not body.get("password") or not body.get("name") or not body.get("lastname") or not body.get("dni"):
         return jsonify({"error": "You must provide email, password, name, lastname and dni"}), 400
 
-    if User.query.filter_by(email=body["email"]).first():
-        return jsonify({"error": "The user already exists"}), 400
-
-    if User.query.filter_by(dni=body["dni"]).first():
+    if User.query.filter_by(email=body["email"]).first() or User.query.filter_by(dni=body["dni"]).first():
         return jsonify({"error": "The user already exists"}), 400
 
     try:
@@ -145,7 +140,6 @@ def delete_user():
         return jsonify({"error": str(e)}), 500
 
 
-# 💥 RUTA DE ENVÍO DE CORREO DE PRUEBA
 @user.route('/send-test-email', methods=['POST'])
 def send_test_email():
     data = request.get_json()
@@ -165,7 +159,8 @@ def send_test_email():
     except Exception as e:
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "Error al enviar el correo"}), 500
-    
+
+
 @user.route('/send-reset-link', methods=['POST'])
 def send_reset_link():
     data = request.get_json()
@@ -178,15 +173,13 @@ def send_reset_link():
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    # Crear el token y guardarlo
     token_entry = PasswordResetToken(user_id=user.id)
     db.session.add(token_entry)
     db.session.commit()
 
-    # Construir URL de recuperación
-    reset_url = f"https://dronfarm.es/reset-password/{token_entry.token}"
+    frontend_url = os.getenv("FRONTEND_URL", "https://dronfarm.es")
+    reset_url = f"{frontend_url}/reset-password/{token_entry.token}"
 
-    # Enviar el email
     try:
         msg = Message(
             subject="🔐 Recuperación de contraseña - DronFarm",
@@ -199,55 +192,6 @@ def send_reset_link():
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "No se pudo enviar el correo"}), 500
 
-user.route('/reset-password/<token>', methods=['POST'])
-def reset_password(token):
-    data = request.get_json()
-    new_password = data.get("password")
-
-    if not new_password:
-        return jsonify({"error": "La nueva contraseña es requerida"}), 400
-
-    # Buscar el token
-    reset_token = PasswordResetToken.query.filter_by(token=token).first()
-
-    if not reset_token:
-        return jsonify({"error": "Token inválido"}), 400
-
-    if reset_token.used:
-        return jsonify({"error": "Este enlace ya fue usado"}), 400
-
-    if reset_token.expiration < datetime.utcnow():
-        return jsonify({"error": "El enlace ha caducado"}), 400
-
-    # Buscar usuario y actualizar contraseña
-    user = User.query.get(reset_token.user_id)
-    if not user:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-
-    user.password = generate_password_hash(new_password)
-    reset_token.used = True
-
-    try:
-        db.session.commit()
-        return jsonify({"message": "Contraseña actualizada con éxito"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": "Error al actualizar contraseña"}), 500
-    
-@user.route('/validate-reset-token/<token>', methods=['GET'])
-def validate_reset_token(token):
-    reset_token = PasswordResetToken.query.filter_by(token=token).first()
-
-    if not reset_token:
-        return jsonify({"error": "Token inválido"}), 400
-
-    if reset_token.used:
-        return jsonify({"error": "Este enlace ya fue usado"}), 400
-
-    if reset_token.expiration < datetime.utcnow():
-        return jsonify({"error": "El enlace ha caducado"}), 400
-
-    return jsonify({"message": "Token válido"}), 200
 
 @user.route('/reset-password/<token>', methods=['PATCH'])
 def reset_password(token):
@@ -274,3 +218,16 @@ def reset_password(token):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+
+@user.route('/validate-reset-token/<token>', methods=['GET'])
+def validate_reset_token(token):
+    reset_token = PasswordResetToken.query.filter_by(token=token).first()
+
+    if not reset_token:
+        return jsonify({"error": "Token inválido"}), 400
+    if reset_token.used:
+        return jsonify({"error": "Este enlace ya fue usado"}), 400
+    if reset_token.expiration < datetime.utcnow():
+        return jsonify({"error": "El enlace ha caducado"}), 400
+
+    return jsonify({"message": "Token válido"}), 200

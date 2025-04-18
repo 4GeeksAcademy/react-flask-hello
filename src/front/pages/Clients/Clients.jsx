@@ -11,23 +11,8 @@ export const Clients = () => {
     const { token, business, selectedBusiness } = store;
     const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-    // Efecto para cargar clientes al inicio
     useEffect(() => {
         if (token) {
-            // Limpiar estado para evitar problemas con datos antiguos
-            localStorage.removeItem("clients");
-            localStorage.removeItem("selected_business");
-
-            dispatch({
-                type: "set_clients",
-                payload: []
-            });
-
-            dispatch({
-                type: "select_business",
-                payload: null
-            });
-
             fetchClients();
 
             if (!business || business.length === 0) {
@@ -42,10 +27,9 @@ export const Clients = () => {
 
     const handleBusinessChange = (e) => {
         const selectedBusinessId = e.target.value;
-        console.log("Seleccionando negocio:", selectedBusinessId);
+        console.log("Selecting business:", selectedBusinessId);
 
         if (!selectedBusinessId) {
-            // Si se selecciona "All the businesses"
             dispatch({
                 type: "select_business",
                 payload: null
@@ -53,17 +37,16 @@ export const Clients = () => {
             return;
         }
 
-        // Buscar el negocio por su ID (convertido a string para comparación segura)
         const businessObj = business.find(b => String(b.id) === String(selectedBusinessId));
 
         if (businessObj) {
-            console.log("Negocio seleccionado:", businessObj);
+            console.log("Selected business:", businessObj);
             dispatch({
                 type: "select_business",
                 payload: businessObj
             });
         } else {
-            console.error("No se encontró el negocio con ID:", selectedBusinessId);
+            console.error("Business not found with ID:", selectedBusinessId);
         }
     };
 
@@ -86,16 +69,15 @@ export const Clients = () => {
             }
 
             const data = await response.json();
-            console.log("Clientes recibidos:", data);
+            console.log("Clients received:", data);
 
-            // Asegurar que data es un array antes de establecerlo en el estado
             if (Array.isArray(data)) {
                 dispatch({
                     type: "set_clients",
                     payload: data
                 });
             } else {
-                console.error("Los datos recibidos no son un array:", data);
+                console.error("Data received is not an array:", data);
                 dispatch({
                     type: "set_clients",
                     payload: []
@@ -130,16 +112,15 @@ export const Clients = () => {
             }
 
             const data = await response.json();
-            console.log("Negocios recibidos:", data);
+            console.log("Businesses received:", data);
 
-            // Asegurar que data es un array antes de establecerlo en el estado
             if (Array.isArray(data)) {
                 dispatch({
                     type: "set_business",
                     payload: data
                 });
             } else {
-                console.error("Los datos de negocios no son un array:", data);
+                console.error("Business data is not an array:", data);
                 dispatch({
                     type: "set_business",
                     payload: []
@@ -154,6 +135,74 @@ export const Clients = () => {
             });
         }
     };
+
+    const renderBusinessOptions = () => {
+        if (!business || business.length === 0) {
+            return <option disabled>No businesses available</option>;
+        }
+
+        const options = [];
+
+        if (selectedBusiness) {
+            const businessName = selectedBusiness.name || selectedBusiness.business_name || `Business ${selectedBusiness.id}`;
+            options.push(
+                <option key={`selected-${selectedBusiness.id}`} value={selectedBusiness.id}>
+                    {businessName} 
+                </option>
+            );
+
+            options.push(
+                <option key="all" value="">
+                    All businesses
+                </option>
+            );
+        } else {
+            options.push(
+                <option key="all" value="">
+                    All businesses
+                </option>
+            );
+        }
+
+        business.forEach(b => {
+            if (selectedBusiness && String(b.id) === String(selectedBusiness.id)) {
+                return;
+            }
+
+            const businessName = b.name || b.business_name || `Business ${b.id}`;
+            options.push(
+                <option key={b.id} value={b.id}>
+                    {businessName}
+                </option>
+            );
+        });
+
+        return options;
+    };
+
+    useEffect(() => {
+
+        if (business && business.length > 0 && !selectedBusiness) {
+            const savedBusinessId = localStorage.getItem("selected_business");
+            if (savedBusinessId) {
+                const savedBusiness = business.find(b => String(b.id) === String(savedBusinessId));
+                if (savedBusiness) {
+                    dispatch({
+                        type: "select_business",
+                        payload: savedBusiness
+                    });
+                }
+            }
+        }
+    }, [business]);
+
+    useEffect(() => {
+        if (selectedBusiness) {
+            localStorage.setItem("selected_business", selectedBusiness.id);
+        } else {
+            localStorage.removeItem("selected_business");
+        }
+    }, [selectedBusiness]);
 
     return (
         <div className="clients-container">
@@ -170,17 +219,7 @@ export const Clients = () => {
                         onChange={handleBusinessChange}
                         className="business-select"
                     >
-                        <option value="">All the businesses</option>
-                        {business && business.length > 0 ? (
-                            business.map(b => (
-                                <option key={b.id} value={b.id}>
-                                    {/* Usar name según el modelo que mostraste */}
-                                    {b.name || b.business_name || `Business ${b.id}`}
-                                </option>
-                            ))
-                        ) : (
-                            <option disabled>No businesses available</option>
-                        )}
+                        {renderBusinessOptions()}
                     </select>
                 </div>
             </div>

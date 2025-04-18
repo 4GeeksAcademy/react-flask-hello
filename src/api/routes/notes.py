@@ -9,7 +9,7 @@ notes_routes = Blueprint('notes_routes', __name__)
 def get_notes():
     notes = Notes.query.all()
     if not notes:
-        return jsonify({"error": "notes not found"}), 404
+        return jsonify({"msg": "notes not found"}), 200
     serialized_notes = [note.serialize_note() for note in notes]
     return jsonify(serialized_notes), 200
 
@@ -18,7 +18,7 @@ def get_notes():
 def get_client_notes(client_id):
     notes = Notes.query.filter_by(client_id=client_id).all()
     if not notes:
-        return jsonify({"msg": "notes not found"}), 404
+        return jsonify({"msg": "notes not found"}), 200
     serialized_notes = [note.serialize_note() for note in notes]
     return jsonify(serialized_notes), 200
 

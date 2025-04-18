@@ -112,7 +112,11 @@ def update_user():
                          "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
-            setattr(user_obj, campo, data[campo])
+            if campo == "password":
+                if data[campo]:  # solo si hay valor, no si está vacío
+                    user_obj.set_password(data[campo])
+            else:
+                setattr(user_obj, campo, data[campo])
 
     try:
         db.session.commit()
@@ -163,8 +167,6 @@ def send_test_email():
         return jsonify({"error": "Error al enviar el correo"}), 500
 
 
-
-
 @user.route('/send-reset-link', methods=['POST'])
 def send_reset_link():
     data = request.get_json()
@@ -197,10 +199,8 @@ def send_reset_link():
         return jsonify({"error": "No se pudo enviar el correo"}), 500
 
 
-user.route('/reset-password/<token>', methods=['POST'])
-
-
-def reset_password(token):
+@user.route('/reset-password/<token>', methods=['POST'])
+def reset_password_post(token):
     data = request.get_json()
     new_password = data.get("password")
 

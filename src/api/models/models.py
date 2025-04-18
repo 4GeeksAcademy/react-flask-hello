@@ -36,10 +36,14 @@ class User(db.Model):
         DateTime, default=datetime.utcnow)
 
     # Relaciones
-    fields = relationship("Field", backref="user")
-    reports = relationship("Report", backref="user")
-    quotes = relationship("Quote", backref="user")
-    appointments = relationship("Appointment", backref="user")
+    fields = relationship("Field", backref="user",
+                          cascade="all, delete-orphan")
+    reports = relationship("Report", backref="user",
+                           cascade="all, delete-orphan")
+    quotes = relationship("Quote", backref="user",
+                          cascade="all, delete-orphan")
+    appointments = relationship(
+        "Appointment", backref="user", cascade="all, delete-orphan")
 
     def __init__(self, name, lastname, dni, email, password, rolId=2):
         self.name = name
@@ -90,10 +94,10 @@ class Field(db.Model):
     # ------------------------ #
 
     # Relaciones
-    images = relationship("Image", backref="field")
-    reports = relationship("Report", backref="field")
-    quotes = relationship("Quote", backref="field")
-    appointments = relationship("Appointment", backref="field")
+    images = relationship("Image", backref="field", cascade="all, delete-orphan")
+    reports = relationship("Report", backref="field", cascade="all, delete-orphan")
+    quotes = relationship("Quote", backref="field", cascade="all, delete-orphan")
+    appointments = relationship("Appointment", backref="field", cascade="all, delete-orphan")
 
     def serialize_field(self):
         return {

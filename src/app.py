@@ -25,10 +25,7 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=[
-    "http://localhost:3000",
-    "https://special-space-halibut-r4pxpqgvpw75fpjx7-3000.app.github.dev"
-])
+CORS(app)
 
 
 # CONFIGURACIÓN DE FLASK-MAIL (ANTES de mail.init_app)
@@ -115,13 +112,13 @@ def download_file(filename):
     upload_folder = os.path.join(app.root_path, 'uploads')
     return send_from_directory(upload_folder, filename, as_attachment=True)
 
+
 # Mostrar todas las rutas al iniciar el servidor
 with app.app_context():
     print("\n🔎 RUTAS REGISTRADAS EN FLASK:")
     for rule in app.url_map.iter_rules():
         print(f"{rule} → métodos: {','.join(rule.methods)}")
     print("🔚 FIN DE RUTAS\n")
-
 
 
 # MAIN

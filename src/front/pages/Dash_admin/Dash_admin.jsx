@@ -3,6 +3,8 @@ import axios from "axios";
 import "./Dash_admin.css";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import Report from "../../components/Reports/Reports";
+import UserFormModal from "../../components/UserFormModal/UserFormModal";
+
 
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
@@ -59,9 +61,12 @@ const DashboardAdmin = () => {
     }
   };
 
-  const filteredUsers = users.filter((u) =>
-    u.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users
+    .filter((u) => u.rolId !== 1)
+    .filter((u) =>
+      u.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
 
   return (
     <div className="dashboard-admin-container">
@@ -106,6 +111,29 @@ const DashboardAdmin = () => {
           </div>
         </div>
       )}
+
+      <UserFormModal
+        isOpen={editModalOpen || createModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+          setCreateModalOpen(false);
+          setEditingUser(null);
+        }}
+        userToEdit={editingUser}
+        onSave={(newOrUpdatedUser) => {
+          setUsers((prevUsers) => {
+            const exists = prevUsers.find((u) => u.id === newOrUpdatedUser.id);
+            if (exists) {
+              return prevUsers.map((u) =>
+                u.id === newOrUpdatedUser.id ? newOrUpdatedUser : u
+              );
+            } else {
+              return [...prevUsers, newOrUpdatedUser];
+            }
+          });
+        }}
+      />
+
     </div>
   );
 };

@@ -1,0 +1,121 @@
+/* Overlay oscuro */
+.user-form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor principal del modal */
+.user-form-modal {
+  position: relative;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Animación suave de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Título */
+.user-form-modal h3 {
+  margin: 0 0 20px;
+  font-size: 1.75rem;
+  color: #222;
+  text-align: center;
+}
+
+/* Formulario */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Inputs y selects */
+.user-form input,
+.user-form select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  background: #f9f9f9;
+}
+
+.user-form input:focus,
+.user-form select:focus {
+  border-color: #0a7cff;
+  background: white;
+  outline: none;
+}
+
+/* Botones del formulario */
+.user-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.user-form-buttons button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.user-form-buttons .save-btn {
+  background-color: #0a7cff;
+  color: white;
+}
+
+.user-form-buttons .save-btn:hover {
+  background-color: #005ecb;
+}
+
+.user-form-buttons .cancel-btn {
+  background-color: #e0e0e0;
+}
+
+.user-form-buttons .cancel-btn:hover {
+  background-color: #c5c5c5;
+}
+
+/* Botón de cierre (X) en la esquina superior derecha */
+.user-form-modal::after {
+  content: "×";
+  font-size: 24px;
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.user-form-modal::after:hover {
+  color: #000;
+}

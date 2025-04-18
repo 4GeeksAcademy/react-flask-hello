@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask-migrate = "*"
 flask-swagger = "*"
 python-dotenv = "*"
 gunicorn = "*"
@@ -26,6 +25,7 @@ flask-mail = "*"
 reportlab = "*"
 sqlalchemy = "*"
 flask = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.13"

@@ -2,13 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models.models import db, User
+from api.models.models import db, User, PasswordResetToken
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy import inspect
 from flask_mail import Message
 from api import mail
+from datetime import datetime
 
 user = Blueprint('user_api', __name__)
 
@@ -163,3 +164,36 @@ def send_test_email():
     except Exception as e:
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "Error al enviar el correo"}), 500
+    
+@user.route('/send-reset-link', methods=['POST'])
+def send_reset_link():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email requerido"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    # Crear el token y guardarlo
+    token_entry = PasswordResetToken(user_id=user.id)
+    db.session.add(token_entry)
+    db.session.commit()
+
+    # Construir URL de recuperación
+    reset_url = f"https://dronfarm.es/reset-password/{token_entry.token}"
+
+    # Enviar el email
+    try:
+        msg = Message(
+            subject="🔐 Recuperación de contraseña - DronFarm",
+            recipients=[email],
+            body=f"Hola {user.name},\n\nHaz clic en este enlace para recuperar tu contraseña:\n\n{reset_url}\n\nEste enlace es válido durante 1 hora.\n\nSi no has solicitado esto, ignora este correo.\n\n— DronFarm"
+        )
+        mail.send(msg)
+        return jsonify({"message": "Correo enviado con enlace de recuperación"}), 200
+    except Exception as e:
+        print("❌ Error al enviar el correo:", e)
+        return jsonify({"error": "No se pudo enviar el correo"}), 500

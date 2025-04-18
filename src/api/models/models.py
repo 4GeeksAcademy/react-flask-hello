@@ -4,6 +4,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, time as dt_time, date as dt_date
 from enum import Enum as PyEnum
+from datetime import datetime, timedelta
+import uuid
+
 
 db = SQLAlchemy()
 
@@ -224,3 +227,34 @@ class Appointment(db.Model):
 
     def __repr__(self):
         return f"<Appointment {self.id} - {self.date} {self.time}>"
+
+
+class PasswordResetToken(db.Model):
+    __tablename__ = "password_reset_tokens"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    token: Mapped[str] = mapped_column(
+        String(120), unique=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"), nullable=False)
+    expiration: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    used: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
+    user = relationship("User", backref="reset_tokens")
+
+    def __init__(self, user_id: int):
+        self.token = str(uuid.uuid4())
+        self.user_id = user_id
+        self.expiration = datetime.utcnow() + timedelta(hours=1)
+        self.used = False
+
+    def serialize(self):
+        return {
+            "token": self.token,
+            "user_id": self.user_id,
+            "expiration": self.expiration.isoformat(),
+            "used": self.used
+        }
+
+    def __repr__(self):
+        return f"<PasswordResetToken {self.id} - {self.token}>"

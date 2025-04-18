@@ -22,6 +22,7 @@ import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
 import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from './pages/ResetPassword';
 
 <Route path="/forgot-password" element={<ForgotPassword />} />
 
@@ -35,6 +36,7 @@ export const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Route>
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}

@@ -33,6 +33,7 @@ export const initialStore = () => {
     syncStatus: null,
     clients: clients || [],
     selectedClient: selectedClient || null,
+    services: [], //////////////
   };
 };
 
@@ -147,6 +148,12 @@ export default function storeReducer(store, action = {}) {
         ...store,
         error: action.payload,
       };
+
+    case "add_service":///////////
+      return {
+        ...store,
+        services: [...(store.services || []), action.payload],
+      }///////////
 
     default:
       return store;

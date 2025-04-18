@@ -14,6 +14,7 @@ from werkzeug.security import generate_password_hash
 
 user = Blueprint('user_api', __name__)
 
+
 @user.route('/signup', methods=['POST'])
 def signup():
     body = request.get_json()
@@ -112,7 +113,8 @@ def update_user():
     if not user_obj:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
-    campos_permitidos = ["email", "name", "lastname", "dni", "rolId", "password"]
+    campos_permitidos = ["email", "name",
+                         "lastname", "dni", "rolId", "password"]
     for campo in campos_permitidos:
         if campo in data:
             setattr(user_obj, campo, data[campo])
@@ -128,15 +130,22 @@ def update_user():
 @user.route('/users', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-    user_id = request.args.get("id", None)
+    user_id = request.args.get('id')
 
     if not user_id:
-        return jsonify({"error": "Debes proporcionar el id del usuario a eliminar"}), 400
+        return jsonify({'error': 'ID de usuario requerido'}), 400
 
-    try:
-        user_id = int(user_id)
-    except ValueError:
-        return jsonify({"error": "ID inválido"}), 400
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({'error': 'Usuario no encontrado'}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'Usuario eliminado con éxito'}), 200
+
+
 # 💥 RUTA DE ENVÍO DE CORREO DE PRUEBA
 @user.route('/send-test-email', methods=['POST'])
 def send_test_email():
@@ -157,7 +166,8 @@ def send_test_email():
     except Exception as e:
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "Error al enviar el correo"}), 500
-    
+
+
 @user.route('/send-reset-link', methods=['POST'])
 def send_reset_link():
     data = request.get_json()
@@ -191,7 +201,10 @@ def send_reset_link():
         print("❌ Error al enviar el correo:", e)
         return jsonify({"error": "No se pudo enviar el correo"}), 500
 
+
 user.route('/reset-password/<token>', methods=['POST'])
+
+
 def reset_password(token):
     data = request.get_json()
     new_password = data.get("password")
@@ -225,7 +238,8 @@ def reset_password(token):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error al actualizar contraseña"}), 500
-    
+
+
 @user.route('/validate-reset-token/<token>', methods=['GET'])
 def validate_reset_token(token):
     reset_token = PasswordResetToken.query.filter_by(token=token).first()
@@ -241,13 +255,15 @@ def validate_reset_token(token):
 
     return jsonify({"message": "Token válido"}), 200
 
+
 @user.route('/reset-password/<token>', methods=['PATCH'])
 def reset_password(token):
     body = request.get_json()
     if not body or not body.get("password"):
         return jsonify({"error": "La nueva contraseña es obligatoria"}), 400
 
-    token_entry = PasswordResetToken.query.filter_by(token=token, used=False).first()
+    token_entry = PasswordResetToken.query.filter_by(
+        token=token, used=False).first()
 
     if not token_entry or token_entry.expiration < datetime.utcnow():
         return jsonify({"error": "El token es inválido o ha expirado"}), 400
@@ -265,4 +281,3 @@ def reset_password(token):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-

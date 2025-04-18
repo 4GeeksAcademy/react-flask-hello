@@ -21,11 +21,11 @@ db = "*"
 alembic = "*"
 psycopg2-binary = "*"
 weasyprint = "*"
-flask-mail = "*"
 reportlab = "*"
 sqlalchemy = "*"
 flask = "*"
 flask-migrate = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.13"

@@ -37,6 +37,8 @@ def add_user():
         "username",
         "password",
         "business_tax_id",
+        "security_question",
+        "security_answer",
         "role"
     ]
 
@@ -64,6 +66,8 @@ def add_user():
             username=data["username"],
             password=data["password"],
             business_tax_id=data["business_tax_id"],
+            security_question=data["security_question"],
+            security_answer=data["security_answer"],
             role=data["role"]
         )
 

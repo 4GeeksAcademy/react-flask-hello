@@ -18,13 +18,13 @@ export const ClientDetail = () => {
     const [notes, setNotes] = useState([]);
     const [activeService, setActiveService] = useState(null);
 
-    // Estado del modal de notas
+    // Notes modal state
     const [showNoteModal, setShowNoteModal] = useState(false);
     const [newNote, setNewNote] = useState("");
     const [notesLoading, setNotesLoading] = useState(false);
     const [noteError, setNoteError] = useState(null);
 
-    // Estado del modal de servicios
+    // Services modal state
     const [showServiceModal, setShowServiceModal] = useState(false);
     const [availableServices, setAvailableServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState([]);
@@ -50,7 +50,7 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Error cargando datos del cliente');
+                throw new Error(data.error || 'Error loading client data');
             }
 
             setClient(data);
@@ -77,7 +77,7 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Error cargando servicios del cliente');
+                throw new Error(data.error || 'Error loading client services');
             }
 
             setClientServices(data);
@@ -109,28 +109,28 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Ordenamos las notas por fecha (más recientes primero)
+                // Sort notes by date (most recent first)
                 const sortedNotes = Array.isArray(data) ?
                     [...data].sort((a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now()))
                     : [];
                 setNotes(sortedNotes);
             } else {
-                // Si es 404, significa que no hay notas, lo cual es OK
+                // If 404, it means there are no notes, which is OK
                 if (response.status === 404) {
                     setNotes([]);
                 } else {
-                    setNoteError(data.error || data.msg || 'Error al cargar las notas');
+                    setNoteError(data.error || data.msg || 'Error loading notes');
                 }
             }
         } catch (error) {
             console.error("Error fetching client notes:", error);
-            setNoteError("Error de conexión al cargar las notas");
+            setNoteError("Connection error when loading notes");
         } finally {
             setNotesLoading(false);
         }
     };
 
-    // Función para marcar un servicio como realizado
+    // Function to mark a service as completed
     const handleServiceDone = async (serviceId) => {
         try {
             const response = await fetch(`${backendUrl}api/services/${serviceId}/complete`, {
@@ -140,32 +140,32 @@ export const ClientDetail = () => {
                 }
             });
 
-            // Log para depuración
-            console.log("Respuesta del servidor:", response.status);
+            // Debug log
+            console.log("Server response:", response.status);
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || data.msg || "Error al marcar el servicio como realizado");
+                throw new Error(data.error || data.msg || "Error marking service as completed");
             }
 
-            // Obtener los datos de la respuesta
+            // Get response data
             const data = await response.json();
-            console.log("Servicio marcado como completado:", data);
+            console.log("Service marked as completed:", data);
 
-            // Actualizar la lista de servicios
+            // Update services list
             await fetchClientServices();
 
-            // Mostrar mensaje de éxito
-            alert("Servicio marcado como realizado correctamente");
+            // Show success message
+            alert("Service marked as completed successfully");
         } catch (error) {
-            console.error("Error al marcar servicio como realizado:", error);
+            console.error("Error marking service as completed:", error);
             alert(`Error: ${error.message}`);
         }
     };
 
-    // Función para eliminar un servicio
+    // Function to delete a service
     const handleServiceDelete = async (serviceId) => {
-        if (!confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
+        if (!confirm("Are you sure you want to delete this service?")) {
             return;
         }
 
@@ -179,10 +179,10 @@ export const ClientDetail = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || data.msg || "Error al eliminar el servicio");
+                throw new Error(data.error || data.msg || "Error deleting the service");
             }
 
-            // Actualizar la lista de servicios
+            // Update services list
             fetchClientServices();
         } catch (error) {
             console.error("Error deleting service:", error);
@@ -191,11 +191,11 @@ export const ClientDetail = () => {
     };
 
 
-    // Función para cargar los servicios disponibles
+    // Function to load available services
     const fetchAvailableServices = async () => {
-        // Verificar si existe el negocio seleccionado
+        // Check if selected business exists
         if (!businessId) {
-            setServiceError("No hay negocio seleccionado");
+            setServiceError("No business selected");
             return;
         }
 
@@ -204,7 +204,7 @@ export const ClientDetail = () => {
 
         try {
             const requestUrl = `${backendUrl}api/business/${businessId}/services`;
-            console.log("URL de la petición:", requestUrl);
+            console.log("Request URL:", requestUrl);
 
             const response = await fetch(requestUrl, {
                 headers: {
@@ -212,25 +212,25 @@ export const ClientDetail = () => {
                 }
             });
 
-            console.log("Respuesta recibida, status:", response.status);
+            console.log("Response received, status:", response.status);
 
             if (!response.ok) {
-                const errorData = await response.json().catch(e => ({ error: "No se pudo procesar la respuesta" }));
-                throw new Error(errorData.error || `Error del servidor: ${response.status}`);
+                const errorData = await response.json().catch(e => ({ error: "Could not process response" }));
+                throw new Error(errorData.error || `Server error: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log("Datos recibidos:", data);
+            console.log("Data received:", data);
 
             if (!Array.isArray(data)) {
-                throw new Error("La respuesta no tiene el formato esperado (array)");
+                throw new Error("Response doesn't have the expected format (array)");
             }
 
-            // Filtrar servicios que el cliente ya tiene asignados
+            // Filter services that are already assigned to the client
             const clientServiceIds = clientServices.map(service => service.id);
             const filteredServices = data.filter(service => !clientServiceIds.includes(service.id));
 
-            console.log("Servicios filtrados:", filteredServices.length);
+            console.log("Filtered services:", filteredServices.length);
             setAvailableServices(filteredServices);
             setSelectedServices([]);
         } catch (error) {
@@ -241,7 +241,7 @@ export const ClientDetail = () => {
         }
     };
 
-    // Funciones de navegación
+    // Navigation functions
     const handleEditAppointment = () => {
         if (activeService) {
             navigate(`/appointment/edit/${activeService.id}`);
@@ -252,7 +252,7 @@ export const ClientDetail = () => {
         navigate(`/client/${clientId}/budget`);
     };
 
-    // Modal de notas
+    // Notes modal
     const openNoteModal = () => {
         setShowNoteModal(true);
         setNoteError(null);
@@ -267,7 +267,7 @@ export const ClientDetail = () => {
 
     const addNewNote = async () => {
         if (newNote.trim() === "") {
-            setNoteError("La nota no puede estar vacía");
+            setNoteError("Note cannot be empty");
             return;
         }
 
@@ -276,7 +276,7 @@ export const ClientDetail = () => {
 
         try {
             if (!client || !client.email) {
-                throw new Error("No se encontró información del cliente");
+                throw new Error("Client information not found");
             }
 
             const response = await fetch(`${backendUrl}api/notes`, {
@@ -294,7 +294,7 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || data.msg || "Error al guardar la nota");
+                throw new Error(data.error || data.msg || "Error saving the note");
             }
 
             await fetchClientNotes();
@@ -308,7 +308,7 @@ export const ClientDetail = () => {
     };
 
     const deleteNote = async (noteId) => {
-        if (!confirm("¿Estás seguro de que deseas eliminar esta nota?")) {
+        if (!confirm("Are you sure you want to delete this note?")) {
             return;
         }
 
@@ -322,7 +322,7 @@ export const ClientDetail = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || data.msg || "Error al eliminar la nota");
+                throw new Error(data.error || data.msg || "Error deleting the note");
             }
 
             fetchClientNotes();
@@ -332,7 +332,7 @@ export const ClientDetail = () => {
         }
     };
 
-    // Modal de servicios
+    // Services modal
     const openServiceModal = () => {
         setShowServiceModal(true);
         setServiceError(null);
@@ -344,7 +344,7 @@ export const ClientDetail = () => {
         setServiceError(null);
     };
 
-    // Cargar servicios cuando se abre el modal
+    // Load services when modal opens
     useEffect(() => {
         if (showServiceModal) {
             fetchAvailableServices();
@@ -361,7 +361,7 @@ export const ClientDetail = () => {
 
     const assignServicesToClient = async () => {
         if (selectedServices.length === 0) {
-            setServiceError("Debes seleccionar al menos un servicio");
+            setServiceError("You must select at least one service");
             return;
         }
 
@@ -383,7 +383,7 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || data.msg || "Error al asignar servicios");
+                throw new Error(data.error || data.msg || "Error assigning services");
             }
 
             await fetchClientServices();
@@ -396,13 +396,13 @@ export const ClientDetail = () => {
         }
     };
 
-    // Componente Modal de Notas
+    // Notes Modal Component
     const NoteModal = () => {
-        // Estado local para la nota
+        // Local state for the note
         const [localNote, setLocalNote] = useState("");
         const [localError, setLocalError] = useState(null);
 
-        // Inicializar el estado local cuando se abre el modal
+        // Initialize local state when modal opens
         useEffect(() => {
             if (showNoteModal) {
                 setLocalNote(newNote || "");
@@ -410,34 +410,30 @@ export const ClientDetail = () => {
             }
         }, [showNoteModal, newNote]);
 
-        // Función para manejar cambios en el textarea
+        // Function to handle changes in textarea
         const handleNoteChange = (e) => {
             const text = e.target.value;
             setLocalNote(text);
 
-            // Limpiar el error si el usuario empieza a escribir
             if (text.trim() !== "" && localError) {
                 setLocalError(null);
             }
         };
 
-        // Función para guardar la nota
+        // Function to save the note
         const handleSaveNote = () => {
-            // Validación
+            // Validation
             if (!localNote || localNote.trim() === "") {
-                setLocalError("La nota no puede estar vacía");
+                setLocalError("Note cannot be empty");
                 return;
             }
 
-            // Transferimos el contenido al estado del componente padre
             setNewNote(localNote);
 
-            // Limpiar error en el componente padre si existe
             if (noteError) {
                 setNoteError(null);
             }
 
-            // Llamar a la función que maneja el guardado
             addNewNote();
         };
 
@@ -445,7 +441,7 @@ export const ClientDetail = () => {
             <div className="modal-overlay">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h3>Agregar Nueva Nota</h3>
+                        <h3>Add new note</h3>
                         <button
                             className="close-button"
                             onClick={closeNoteModal}
@@ -455,7 +451,6 @@ export const ClientDetail = () => {
                         </button>
                     </div>
                     <div className="modal-body">
-                        {/* Mostrar el error local en lugar del error del padre */}
                         {localError && (
                             <div className="note-error-message" style={{
                                 backgroundColor: "#ffdddd",
@@ -469,7 +464,7 @@ export const ClientDetail = () => {
                         )}
 
                         <textarea
-                            placeholder="Escribe tu nota aquí..."
+                            placeholder="Write your note here..."
                             value={localNote}
                             onChange={handleNoteChange}
                             rows={4}
@@ -491,7 +486,7 @@ export const ClientDetail = () => {
                             disabled={notesLoading}
                             type="button"
                         >
-                            Cancelar
+                            Cancel
                         </button>
                         <button
                             className="save-button"
@@ -499,7 +494,7 @@ export const ClientDetail = () => {
                             disabled={notesLoading}
                             type="button"
                         >
-                            {notesLoading ? "Guardando..." : "Guardar Nota"}
+                            {notesLoading ? "Saving..." : "Save Note"}
                         </button>
                     </div>
                 </div>
@@ -507,13 +502,13 @@ export const ClientDetail = () => {
         );
     };
 
-    // Componente Modal de Servicios
+    // Services Modal Component
     const ServiceModal = () => {
         return (
             <div className="modal-overlay">
                 <div className="modal-content service-modal">
                     <div className="modal-header">
-                        <h3>Agregar Servicios</h3>
+                        <h3>Add service</h3>
                         <button className="close-button" onClick={closeServiceModal}>
                             <i className="fas fa-times"></i>
                         </button>
@@ -531,26 +526,25 @@ export const ClientDetail = () => {
                             </div>
                         )}
 
-                        {/* Información de diagnóstico sobre el negocio seleccionado */}
                         {!businessId && (
                             <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
-                                <strong>Información de diagnóstico:</strong> No se detecta un negocio seleccionado.
+                                <strong>Diagnostic information:</strong> No selected business detected.
                             </div>
                         )}
 
                         {businessId && (
                             <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
-                                <strong>Negocio seleccionado:</strong> ID: {businessId}
+                                <strong>Selected business:</strong> ID: {businessId}
                             </div>
                         )}
 
                         {servicesLoading ? (
-                            <div className="services-loading">Cargando servicios disponibles...</div>
+                            <div className="services-loading">Loading available services...</div>
                         ) : (
                             <>
                                 {availableServices.length === 0 ? (
                                     <div className="no-services-message">
-                                        No hay servicios disponibles para asignar a este cliente.
+                                        No services available to assign to this client.
                                         <div style={{ marginTop: "10px" }}>
                                             <button
                                                 onClick={fetchAvailableServices}
@@ -562,7 +556,7 @@ export const ClientDetail = () => {
                                                     cursor: "pointer"
                                                 }}
                                             >
-                                                <i className="fas fa-sync-alt"></i> Intentar nuevamente
+                                                <i className="fas fa-sync-alt"></i> Try again
                                             </button>
                                         </div>
                                     </div>
@@ -597,14 +591,14 @@ export const ClientDetail = () => {
                             onClick={closeServiceModal}
                             disabled={servicesLoading}
                         >
-                            Cancelar
+                            Cancel
                         </button>
                         <button
                             className="save-button"
                             onClick={assignServicesToClient}
                             disabled={servicesLoading || availableServices.length === 0 || selectedServices.length === 0}
                         >
-                            {servicesLoading ? "Asignando..." : "Asignar Servicios"}
+                            {servicesLoading ? "Assigning..." : "Assign Services"}
                         </button>
                     </div>
                 </div>
@@ -615,7 +609,7 @@ export const ClientDetail = () => {
     if (loading) {
         return (
             <div className="client-detail-container">
-                <div className="loading">Cargando información del cliente...</div>
+                <div className="loading">Loading client information...</div>
             </div>
         );
     }
@@ -625,7 +619,7 @@ export const ClientDetail = () => {
             <div className="client-detail-container">
                 <div className="error-message">
                     <p>Error: {error}</p>
-                    <button onClick={() => navigate(-1)}>Volver</button>
+                    <button onClick={() => navigate(-1)}>Go back</button>
                 </div>
             </div>
         );
@@ -635,8 +629,8 @@ export const ClientDetail = () => {
         return (
             <div className="client-detail-container">
                 <div className="not-found">
-                    <p>Cliente no encontrado</p>
-                    <button onClick={() => navigate(-1)}>Volver</button>
+                    <p>Client not found</p>
+                    <button onClick={() => navigate(-1)}>Go back</button>
                 </div>
             </div>
         );
@@ -648,50 +642,50 @@ export const ClientDetail = () => {
                 <div className="client-detail-container">
                     <div className="back-button">
                         <button onClick={() => navigate(-1)}>
-                            <i className="fas fa-arrow-left"></i> Volver
+                            <i className="fas fa-arrow-left"></i> Back
                         </button>
                     </div>
 
-                    {/* Información principal del cliente */}
+                    {/* Main client information */}
                     <div className="client-header">
                         <div className="client-info-main">
                             <h1>{client.name}</h1>
-                            <div className="client-id">DNI: {client.client_id_number}</div>
+                            <div className="client-id">ID: {client.client_id_number}</div>
                         </div>
                     </div>
 
                     <div className="client-details-grid">
-                        {/* Información personal */}
+                        {/* Personal information */}
                         <div className="client-info-section">
-                            <h2>Información Personal</h2>
+                            <h2>Personal Information</h2>
                             <div className="info-grid">
                                 <div className="info-item">
-                                    <span className="info-label">Dirección:</span>
-                                    <span className="info-value">{client.address || "No disponible"}</span>
+                                    <span className="info-label">Address:</span>
+                                    <span className="info-value">{client.address || "Not available"}</span>
                                 </div>
                                 <div className="info-item">
-                                    <span className="info-label">Teléfono:</span>
-                                    <span className="info-value">{client.phone || "No disponible"}</span>
+                                    <span className="info-label">Phone:</span>
+                                    <span className="info-value">{client.phone || "Not available"}</span>
                                 </div>
                                 <div className="info-item">
                                     <span className="info-label">Email:</span>
-                                    <span className="info-value">{client.email || "No disponible"}</span>
+                                    <span className="info-value">{client.email || "Not available"}</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Notas */}
+                        {/* Notes */}
                         <div className="client-notes-section">
                             <div className="section-header">
-                                <h2>Notas</h2>
+                                <h2>Notes</h2>
                                 <button className="add-note-button" onClick={openNoteModal}>
-                                    <i className="fas fa-plus"></i> Agregar nota
+                                    <i className="fas fa-plus"></i> Add note
                                 </button>
                             </div>
 
                             <div className="notes-list">
                                 {notesLoading ? (
-                                    <div className="notes-loading">Cargando notas...</div>
+                                    <div className="notes-loading">Loading notes...</div>
                                 ) : noteError ? (
                                     <div className="notes-error">{noteError}</div>
                                 ) : notes.length > 0 ? (
@@ -704,7 +698,7 @@ export const ClientDetail = () => {
                                                 <button
                                                     className="delete-note-button"
                                                     onClick={() => deleteNote(note.id)}
-                                                    title="Eliminar nota"
+                                                    title="Delete note"
                                                 >
                                                     <i className="fas fa-trash"></i>
                                                 </button>
@@ -713,18 +707,17 @@ export const ClientDetail = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="no-notes">No hay notas registradas</div>
+                                    <div className="no-notes">No notes registered</div>
                                 )}
                             </div>
                         </div>
 
-                        {/* Servicio activo */}
-                        {/* Servicios del Cliente */}
+                        {/* Client Services */}
                         <div className="client-services-section">
                             <div className="section-header">
-                                <h2>Servicios del Cliente</h2>
+                                <h2>Client Services</h2>
                                 <button className="add-service-button" onClick={openServiceModal}>
-                                    <i className="fas fa-plus"></i> Agregar servicio
+                                    <i className="fas fa-plus"></i> Add service
                                 </button>
                             </div>
 
@@ -740,44 +733,44 @@ export const ClientDetail = () => {
                                                 <div className="service-date">
                                                     {service.created_at
                                                         ? new Date(service.created_at).toLocaleDateString()
-                                                        : "Fecha no disponible"}
+                                                        : "Date not available"}
                                                 </div>
                                             </div>
                                             <div className="service-description">
-                                                {service.description || "Sin descripción"}
+                                                {service.description || "No description"}
                                             </div>
                                             <div className="service-actions">
                                                 <button
                                                     className="service-done-button"
                                                     onClick={() => handleServiceDone(service.id)}
-                                                    title="Marcar como realizado"
+                                                    title="Mark as completed"
                                                 >
-                                                    <i className="fas fa-check"></i> Realizado
+                                                    <i className="fas fa-check"></i> Completed
                                                 </button>
                                                 <button
                                                     className="service-delete-button"
                                                     onClick={() => handleServiceDelete(service.id)}
-                                                    title="Eliminar servicio"
+                                                    title="Delete service"
                                                 >
-                                                    <i className="fas fa-trash"></i> Eliminar
+                                                    <i className="fas fa-trash"></i> Delete
                                                 </button>
                                             </div>
                                         </div>
                                     ))
                                 ) : (
                                     <div className="no-services">
-                                        <p>No hay servicios asignados</p>
+                                        <p>No assigned services</p>
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
 
-                    {/* Botones de acción */}
+                    {/* Action buttons */}
                     <div className="action-buttons">
                         <Link to={`/client/${clientId}/service-history`} className="action-button history-button">
                             <i className="fas fa-history"></i>
-                            <span>Historial de servicios</span>
+                            <span>Service history</span>
                         </Link>
 
                         <button
@@ -786,7 +779,7 @@ export const ClientDetail = () => {
                             disabled={!activeService}
                         >
                             <i className="fas fa-calendar-alt"></i>
-                            <span>Modificar cita</span>
+                            <span>Modify appointment</span>
                         </button>
 
                         <button
@@ -794,14 +787,14 @@ export const ClientDetail = () => {
                             className="action-button budget-button"
                         >
                             <i className="fas fa-file-invoice-dollar"></i>
-                            <span>Ver presupuesto</span>
+                            <span>View budget</span>
                         </button>
                     </div>
 
-                    {/* Modal para agregar notas */}
+                    {/* Note adding modal */}
                     {showNoteModal && <NoteModal />}
 
-                    {/* Modal para agregar servicios */}
+                    {/* Service adding modal */}
                     {showServiceModal && <ServiceModal />}
                 </div>
             </div>

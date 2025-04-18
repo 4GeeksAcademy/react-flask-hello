@@ -69,15 +69,19 @@ class Users(db.Model):
         ForeignKey("business.business_tax_id"), nullable=False)
     role: Mapped[str] = mapped_column(
         Enum("master", "manager", "employee", name="role_enum"), nullable=False)
+    security_question: Mapped[str] = mapped_column(String(500), nullable=False)
+    security_answer: Mapped[str] = mapped_column(String(500), nullable=False)
 
     business = relationship("Businesses", back_populates="users")
     appointments = relationship("Appointments", back_populates="user",
                                 cascade="all, delete-orphan")
 
-    def __init__(self, username, password, business_tax_id, role="employee"):
+    def __init__(self, username, password, business_tax_id, security_question, security_answer, role="employee"):
         self.username = username
         self.business_tax_id = business_tax_id
         self.role = role
+        self.security_question = security_question
+        self.security_answer = security_answer 
         self.set_password(password)
 
     def set_password(self, password):
@@ -91,7 +95,7 @@ class Users(db.Model):
             "id": self.id,
             "username": self.username,
             "role": self.role,
-            "password": self.password_hash
+            "security_question": self.security_question
         }
 
 

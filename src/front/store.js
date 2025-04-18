@@ -96,12 +96,13 @@ export default function storeReducer(store, action = {}) {
         business: action.payload,
       };
 
-    case "select_business":
-      localStorage.setItem("selected_business", JSON.stringify(action.payload));
-      return {
-        ...store,
-        selectedBusiness: action.payload,
-      };
+      case "select_business":
+        console.log("Guardando selectedBusiness:", action.payload);
+        localStorage.setItem("selected_business", JSON.stringify(action.payload));
+        return {
+          ...store,
+          selectedBusiness: action.payload,
+        };
 
     case "load_calendar_events_start":
       return {

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./ClientDetail.css";
+
 
 export const ClientDetail = () => {
     const { clientId } = useParams();
@@ -31,11 +32,44 @@ export const ClientDetail = () => {
     const [servicesLoading, setServicesLoading] = useState(false);
     const [serviceError, setServiceError] = useState(null);
 
+    // Service history modal state
+    const [showHistoryModal, setShowHistoryModal] = useState(false);
+    const [completedServices, setCompletedServices] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyError, setHistoryError] = useState(null);
+
     useEffect(() => {
         if (token && clientId) {
             fetchClientData();
             fetchClientServices();
             fetchClientNotes();
+        }
+    }, [clientId, token]);
+
+    useEffect(() => {
+        if (token && clientId) {
+
+            const loadCompletedServices = async () => {
+                try {
+                    setHistoryLoading(true);
+                    const response = await fetch(`${backendUrl}api/clients/${clientId}/completed-services`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCompletedServices(data);
+                    }
+                } catch (error) {
+                    console.error("Error pre-loading completed services:", error);
+                } finally {
+                    setHistoryLoading(false);
+                }
+            };
+
+            loadCompletedServices();
         }
     }, [clientId, token]);
 
@@ -87,6 +121,8 @@ export const ClientDetail = () => {
                     new Date(b.created_at || 0) - new Date(a.created_at || 0)
                 );
                 setActiveService(sortedServices[0]);
+            } else {
+                setActiveService(null);
             }
         } catch (error) {
             console.error("Error fetching client services:", error);
@@ -130,32 +166,92 @@ export const ClientDetail = () => {
         }
     };
 
-    // Function to mark a service as completed
-    const handleServiceDone = async (serviceId) => {
+
+    const fetchCompletedServices = async () => {
+        if (!clientId || !token) return;
+
+        if (historyLoading) {
+            console.log("Ya está cargando servicios, evitando nueva llamada");
+            return;
+        }
+
+        setHistoryLoading(true);
+        setHistoryError(null);
+        console.log("Iniciando carga de servicios completados");
+
         try {
-            const response = await fetch(`${backendUrl}api/services/${serviceId}/complete`, {
+
+            const response = await fetch(`${backendUrl}api/clients/${clientId}/completed-services`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error loading completed services');
+            }
+
+            const completedServicesData = await response.json();
+            console.log("Servicios completados recibidos:", completedServicesData.length);
+
+            const sortedServices = completedServicesData.sort((a, b) => {
+                const dateA = a.completed_date ? new Date(a.completed_date) : new Date(0);
+                const dateB = b.completed_date ? new Date(b.completed_date) : new Date(0);
+                return dateB - dateA;
+            });
+
+            setCompletedServices(sortedServices);
+            console.log("Estado actualizado con servicios completados");
+        } catch (error) {
+            console.error("Error al cargar servicios completados:", error);
+            setHistoryError("Error al cargar servicios completados");
+        } finally {
+            setHistoryLoading(false);
+        }
+    };
+
+    const isServiceCompleted = (serviceId) => {
+        return completedServices.some(service => service.id === serviceId);
+    };
+
+    const handleServiceDone = async (instanceId) => {
+        try {
+            const response = await fetch(`${backendUrl}api/service-instances/${instanceId}/complete`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-            // Debug log
-            console.log("Server response:", response.status);
-
             if (!response.ok) {
                 const data = await response.json();
                 throw new Error(data.error || data.msg || "Error marking service as completed");
             }
 
-            // Get response data
             const data = await response.json();
             console.log("Service marked as completed:", data);
 
-            // Update services list
-            await fetchClientServices();
+            const updatedClientServices = clientServices.filter(service =>
+                service.instance_id !== instanceId
+            );
+            setClientServices(updatedClientServices);
 
-            // Show success message
+            // Si este era el servicio activo, actualizamos el servicio activo
+            if (activeService && activeService.instance_id === instanceId) {
+                if (updatedClientServices.length > 0) {
+                    setActiveService(updatedClientServices[0]);
+                } else {
+                    setActiveService(null);
+                }
+            }
+
+            if (showHistoryModal) {
+                console.log("Modal de historial abierto, actualizando lista de servicios completados");
+                fetchCompletedServices();
+            }
+
+            // Mostrar mensaje de éxito
             alert("Service marked as completed successfully");
         } catch (error) {
             console.error("Error marking service as completed:", error);
@@ -163,14 +259,13 @@ export const ClientDetail = () => {
         }
     };
 
-    // Function to delete a service
-    const handleServiceDelete = async (serviceId) => {
+    const handleServiceDelete = async (instanceId) => {
         if (!confirm("Are you sure you want to delete this service?")) {
             return;
         }
 
         try {
-            const response = await fetch(`${backendUrl}api/clients/${clientId}/services/${serviceId}`, {
+            const response = await fetch(`${backendUrl}api/service-instances/${instanceId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -182,7 +277,6 @@ export const ClientDetail = () => {
                 throw new Error(data.error || data.msg || "Error deleting the service");
             }
 
-            // Update services list
             fetchClientServices();
         } catch (error) {
             console.error("Error deleting service:", error);
@@ -193,7 +287,7 @@ export const ClientDetail = () => {
 
     // Function to load available services
     const fetchAvailableServices = async () => {
-        // Check if selected business exists
+
         if (!businessId) {
             setServiceError("No business selected");
             return;
@@ -226,12 +320,7 @@ export const ClientDetail = () => {
                 throw new Error("Response doesn't have the expected format (array)");
             }
 
-            // Filter services that are already assigned to the client
-            const clientServiceIds = clientServices.map(service => service.id);
-            const filteredServices = data.filter(service => !clientServiceIds.includes(service.id));
-
-            console.log("Filtered services:", filteredServices.length);
-            setAvailableServices(filteredServices);
+            setAvailableServices(data);
             setSelectedServices([]);
         } catch (error) {
             console.error("Error fetching available services:", error);
@@ -241,7 +330,6 @@ export const ClientDetail = () => {
         }
     };
 
-    // Navigation functions
     const handleEditAppointment = () => {
         if (activeService) {
             navigate(`/appointment/edit/${activeService.id}`);
@@ -265,8 +353,21 @@ export const ClientDetail = () => {
         setNoteError(null);
     };
 
-    const addNewNote = async () => {
-        if (newNote.trim() === "") {
+    // Service history modal
+    const openHistoryModal = () => {
+        setShowHistoryModal(true);
+        // Cargamos los servicios completados cuando se abre el modal
+        fetchCompletedServices();
+    };
+
+    const closeHistoryModal = () => {
+        setShowHistoryModal(false);
+    };
+
+    const addNewNote = async (noteText = null) => {
+        const textToSave = noteText || newNote;
+
+        if (textToSave.trim() === "") {
             setNoteError("Note cannot be empty");
             return;
         }
@@ -287,7 +388,7 @@ export const ClientDetail = () => {
                 },
                 body: JSON.stringify({
                     client_email: client.email,
-                    description: newNote
+                    description: textToSave 
                 })
             });
 
@@ -428,13 +529,7 @@ export const ClientDetail = () => {
                 return;
             }
 
-            setNewNote(localNote);
-
-            if (noteError) {
-                setNoteError(null);
-            }
-
-            addNewNote();
+            addNewNote(localNote);
         };
 
         return (
@@ -606,6 +701,121 @@ export const ClientDetail = () => {
         );
     };
 
+    const ServiceHistoryModal = () => {
+        const formatDate = (dateString) => {
+            if (!dateString) return "Fecha no disponible";
+
+            try {
+                const date = new Date(dateString);
+
+                if (isNaN(date.getTime())) return "Fecha no válida";
+
+                return date.toLocaleString();
+            } catch (e) {
+                console.error("Error formateando fecha:", e);
+                return "Fecha no válida";
+            }
+        };
+
+        return (
+            <div className="modal-overlay">
+                <div className="modal-content service-history-modal">
+                    <div className="modal-header">
+                        <h3>Historial de Servicios Completados</h3>
+                        <button className="close-button" onClick={closeHistoryModal}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        {historyError && (
+                            <div className="history-error-message" style={{
+                                backgroundColor: "#ffdddd",
+                                color: "#d8000c",
+                                padding: "10px",
+                                borderRadius: "4px",
+                                marginBottom: "15px"
+                            }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: "8px" }}></i>
+                                {historyError}
+                            </div>
+                        )}
+
+                        {historyLoading ? (
+                            <div className="services-loading">
+                                <i className="fas fa-spinner fa-spin" style={{ marginRight: "8px" }}></i>
+                                Cargando historial de servicios...
+                            </div>
+                        ) : (
+                            <>
+                                {completedServices.length === 0 ? (
+                                    <div className="no-services-message">
+                                        <i className="fas fa-info-circle" style={{ marginRight: "8px" }}></i>
+                                        {historyError ? "No se pudieron cargar los servicios." : "Este cliente no tiene servicios completados."}
+                                        <div style={{ marginTop: "10px", fontSize: "0.9rem", color: "#666" }}>
+                                            Los servicios aparecerán aquí cuando se marquen como completados.
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="history-summary">
+                                            <div className="history-count">
+                                                <strong>{completedServices.length}</strong> {completedServices.length === 1 ? 'servicio completado' : 'servicios completados'}
+                                            </div>
+                                        </div>
+                                        <div className="completed-services-list">
+                                            {completedServices.map(service => (
+                                                <div key={service.instance_id} className="service-item completed">
+                                                    <div className="service-header">
+                                                        <div className="service-name-price">
+                                                            <span className="service-name">{service.name}</span>
+                                                            <span className="service-price">${service.price}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="service-description">
+                                                        {service.description || "Sin descripción"}
+                                                    </div>
+                                                    <div className="service-footer">
+                                                        <div className="service-status">
+                                                            <span className="status-badge completed">
+                                                                <i className="fas fa-check-circle"></i> Completado
+                                                            </span>
+                                                        </div>
+                                                        <div className="service-date">
+                                                            {formatDate(service.completed_date)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="btn-primary"
+                            onClick={closeHistoryModal}
+                            disabled={historyLoading}
+                        >
+                            Cerrar
+                        </button>
+                        <button
+                            className="btn-secondary"
+                            onClick={() => {
+                                console.log("Actualización manual solicitada");
+                                fetchCompletedServices();
+                            }}
+                            disabled={historyLoading}
+                        >
+                            <i className="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     if (loading) {
         return (
             <div className="client-detail-container">
@@ -724,7 +934,7 @@ export const ClientDetail = () => {
                             <div className="services-list">
                                 {clientServices.length > 0 ? (
                                     clientServices.map(service => (
-                                        <div key={service.id} className="service-item">
+                                        <div key={service.instance_id} className="service-item">
                                             <div className="service-header">
                                                 <div className="service-name-price">
                                                     <span className="service-name">{service.name}</span>
@@ -742,14 +952,14 @@ export const ClientDetail = () => {
                                             <div className="service-actions">
                                                 <button
                                                     className="service-done-button"
-                                                    onClick={() => handleServiceDone(service.id)}
+                                                    onClick={() => handleServiceDone(service.instance_id)}
                                                     title="Mark as completed"
                                                 >
                                                     <i className="fas fa-check"></i> Completed
                                                 </button>
                                                 <button
                                                     className="service-delete-button"
-                                                    onClick={() => handleServiceDelete(service.id)}
+                                                    onClick={() => handleServiceDelete(service.instance_id)}
                                                     title="Delete service"
                                                 >
                                                     <i className="fas fa-trash"></i> Delete
@@ -768,10 +978,13 @@ export const ClientDetail = () => {
 
                     {/* Action buttons */}
                     <div className="action-buttons">
-                        <Link to={`/client/${clientId}/service-history`} className="action-button history-button">
+                        <button
+                            onClick={openHistoryModal}
+                            className="action-button history-button"
+                        >
                             <i className="fas fa-history"></i>
                             <span>Service history</span>
-                        </Link>
+                        </button>
 
                         <button
                             onClick={handleEditAppointment}
@@ -796,6 +1009,9 @@ export const ClientDetail = () => {
 
                     {/* Service adding modal */}
                     {showServiceModal && <ServiceModal />}
+
+                    {/* Service history modal */}
+                    {showHistoryModal && <ServiceHistoryModal />}
                 </div>
             </div>
         </div>

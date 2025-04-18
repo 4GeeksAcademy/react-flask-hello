@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo con gradiente suave -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    
+    <!-- Patrón de edificios/negocios -->
+    <pattern id="buildingPattern" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
+      <!-- Edificio tipo 1 -->
+      <rect x="10" y="30" width="30" height="50" rx="1" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.5" />
+      <rect x="15" y="40" width="8" height="8" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="27" y="40" width="8" height="8" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="15" y="55" width="8" height="8" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="27" y="55" width="8" height="8" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      
+      <!-- Edificio tipo 2 -->
+      <rect x="60" y="20" width="40" height="60" rx="1" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.5" />
+      <rect x="70" y="30" width="20" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="70" y="45" width="20" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="70" y="60" width="20" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      
+      <!-- Edificio tipo 3 -->
+      <rect x="120" y="40" width="25" height="40" rx="1" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.5" />
+      <rect x="125" y="45" width="15" height="5" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="125" y="55" width="15" height="5" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="125" y="65" width="15" height="5" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      
+      <!-- Tienda -->
+      <rect x="20" y="100" width="40" height="30" rx="1" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.5" />
+      <rect x="35" y="120" width="10" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <path d="M20,100 L40,85 L60,100" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      
+      <!-- Oficina -->
+      <rect x="80" y="100" width="50" height="35" rx="1" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.5" />
+      <rect x="85" y="105" width="10" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="100" y="105" width="10" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="115" y="105" width="10" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <rect x="85" y="120" width="40" height="10" rx="1" fill="none" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+    </pattern>
+    
+    <!-- Iconos de negocios -->
+    <symbol id="storeIcon" viewBox="0 0 40 40">
+      <rect x="5" y="15" width="30" height="20" rx="1" fill="none" stroke="#64748b" stroke-width="1.5" />
+      <path d="M5,15 L20,5 L35,15" fill="none" stroke="#64748b" stroke-width="1.5" />
+      <rect x="15" y="25" width="10" height="10" rx="1" fill="none" stroke="#64748b" stroke-width="1.5" />
+    </symbol>
+    
+    <symbol id="officeIcon" viewBox="0 0 40 40">
+      <rect x="8" y="8" width="24" height="28" rx="1" fill="none" stroke="#64748b" stroke-width="1.5" />
+      <rect x="12" y="12" width="6" height="6" rx="1" fill="none" stroke="#64748b" stroke-width="1" />
+      <rect x="22" y="12" width="6" height="6" rx="1" fill="none" stroke="#64748b" stroke-width="1" />
+      <rect x="12" y="22" width="6" height="6" rx="1" fill="none" stroke="#64748b" stroke-width="1" />
+      <rect x="22" y="22" width="6" height="6" rx="1" fill="none" stroke="#64748b" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="businessIcon" viewBox="0 0 40 40">
+      <rect x="10" y="15" width="20" height="20" rx="1" fill="none" stroke="#64748b" stroke-width="1.5" />
+      <path d="M15,15 L15,10 L25,10 L25,15" fill="none" stroke="#64748b" stroke-width="1.5" />
+      <line x1="10" y1="25" x2="30" y2="25" stroke="#64748b" stroke-width="1" />
+      <circle cx="20" cy="20" r="2" fill="none" stroke="#64748b" stroke-width="1" />
+    </symbol>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#bgGradient)" />
+  
+  <!-- Patrón de edificios como fondo -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#buildingPattern)" opacity="0.3" />
+  
+  <!-- Elementos decorativos en el fondo -->
+  <use href="#storeIcon" x="70" y="70" width="90" height="90" opacity="0.1" />
+  <use href="#officeIcon" x="600" y="150" width="100" height="100" opacity="0.1" />
+  <use href="#businessIcon" x="150" y="400" width="80" height="80" opacity="0.1" />
+  <use href="#storeIcon" x="500" y="350" width="120" height="120" opacity="0.1" />
+  <use href="#officeIcon" x="250" y="180" width="70" height="70" opacity="0.1" />
+  
+  <!-- Formas conectoras sugerentes de red -->
+  <line x1="120" y1="110" x2="250" y2="220" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  <line x1="250" y1="220" x2="500" y2="350" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  <line x1="500" y1="350" x2="600" y2="200" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  <line x1="600" y1="200" x2="120" y2="110" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  <line x1="190" y1="440" x2="500" y2="350" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  <line x1="190" y1="440" x2="250" y2="220" stroke="#cbd5e1" stroke-width="1" opacity="0.3" />
+  
+  <!-- Círculos decorativos -->
+  <circle cx="120" cy="110" r="5" fill="#3b82f6" opacity="0.2" />
+  <circle cx="250" cy="220" r="5" fill="#3b82f6" opacity="0.2" />
+  <circle cx="500" cy="350" r="5" fill="#3b82f6" opacity="0.2" />
+  <circle cx="600" cy="200" r="5" fill="#3b82f6" opacity="0.2" />
+  <circle cx="190" cy="440" r="5" fill="#3b82f6" opacity="0.2" />
+  
+  <!-- Formas abstractas adicionales -->
+  <circle cx="400" cy="300" r="150" fill="#3b82f6" opacity="0.03" />
+  <circle cx="200" cy="150" r="100" fill="#3b82f6" opacity="0.03" />
+  <circle cx="600" cy="450" r="120" fill="#3b82f6" opacity="0.03" />
+</svg>

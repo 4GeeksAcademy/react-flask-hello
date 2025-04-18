@@ -1,3 +1,6 @@
+/credentials/credentials.json
+/credentials/token.json
+
 # ignore all files starting with .
 .*
 

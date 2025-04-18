@@ -1,0 +1,54 @@
+/* Form Box */
+.formBox {
+    border: none !important;
+    border-radius: 20px;
+    background-color:white !important;
+    margin: 250px;
+    padding: 5px;
+    box-shadow: 4px 4px 10px gray;
+}
+
+/* Div Title and Logo Zone */
+.divTitleLogo {
+    display: flex;
+}
+
+/* Form Title */
+.formTitle {
+    color: black !important;
+    margin: 10px;
+    padding-bottom: 20px;
+}
+
+/* Logo Size */
+.logoFor {
+    width: 80px;
+    height: 80px;
+}
+
+/* Label Style */
+.labelStyle {
+    color: black !important;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+/* Div Button Zone*/
+.divButton {
+    margin: 15px;
+    text-align: right;
+}
+
+/* Button Style */
+.buttonStyle {
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    font-size: x-large;
+    border-radius: 10px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+}
+
+/* The Inputs are with Bootstrap */

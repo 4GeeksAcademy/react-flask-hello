@@ -1,0 +1,31 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --dark-text: #343a40;
+    --light-text: #f8f9fa;
+    --border-radius: 6px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+.search-box {
+    margin: 15px 0;
+    margin-left: 40px;
+    width: 100%;
+}
+
+.search-field {
+    width: 30rem;
+    padding: 8px 12px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.search-field:focus {
+    outline: none;
+    border-color: #3380c0;
+}

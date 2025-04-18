@@ -16,6 +16,12 @@ from api.routes.report_routes import report_routes
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail, Message
+from api import mail  # ahora lo importas desde tu paquete
+
+mail.init_app(app)
+
+
 import datetime
 
 
@@ -42,13 +48,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# add the admin
+
 setup_admin(app)
 
-# add the admin
+
 setup_commands(app)
 
-# Add all endpoints form the API with a "api" prefix
+# All endpoints form the API with a "api" prefix
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(fields_blueprint, url_prefix="/fields")
 app.register_blueprint(quote, url_prefix="/quote")
@@ -64,12 +70,23 @@ app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
 jwt = JWTManager(app)
 
+# CONFIGURACIÓN DE FLASK-MAIL PARA GMAIL
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'dronfarm.mail@gmail.com'
+app.config['MAIL_PASSWORD'] = 'bxgbafplmfduumdh'  # ¡No pongas la contraseña normal!
+app.config['MAIL_DEFAULT_SENDER'] = 'DronFarm'
+
+mail = Mail(app)
+
+
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# generate sitemap with all the endpoints
 
 
 @app.route('/')

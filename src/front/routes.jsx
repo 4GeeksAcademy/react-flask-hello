@@ -19,8 +19,12 @@ import QuoteHistory from "./pages/Quote/QuoteHistory";
 import Quote from "./pages/Quote/Quote";
 import PdfDocument from "./components/Quote/PdfDocument";
 import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
-import ProtectedRoute from "./ProtectedRoute"; // 👈 corregido también el path doble
+import ProtectedRoute from "./ProtectedRoute";
 import WeOffer from "./pages/WeOffer/WeOffer";
+import ForgotPassword from "./pages/ForgotPassword";
+
+<Route path="/forgot-password" element={<ForgotPassword />} />
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

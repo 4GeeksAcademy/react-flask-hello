@@ -7,6 +7,9 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy import inspect
+from flask_mail import Message
+from api import mail  # ← esto funciona con lo de `mail = Mail()` en `__init__.py`
+
 
 user = Blueprint('user_api', __name__)
 
@@ -155,5 +158,26 @@ def delete_user():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@user.route('/send-test-email', methods=['POST'])
+def send_test_email():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email es requerido"}), 400
+
+    try:
+        msg = Message(
+            subject="📩 Correo de prueba de DroneFarm",
+            recipients=[email],
+            body="¡Hola! Este es un correo de prueba enviado desde la API de DroneFarm. 🚀"
+        )
+        mail.send(msg)
+        return jsonify({"message": f"Correo enviado correctamente a {email}"}), 200
+    except Exception as e:
+        print("❌ Error al enviar el correo:", e)
+        return jsonify({"error": "Error al enviar el correo"}), 500
+
 
 

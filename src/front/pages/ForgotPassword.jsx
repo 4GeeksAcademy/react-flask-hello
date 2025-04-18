@@ -9,7 +9,7 @@ const ForgotPassword = () => {
 
     // Aquí puedes hacer la llamada al backend
     try {
-      const response = await fetch("https://tuapi.com/forgot-password", {
+      const response = await fetch("https://special-space-halibut-r4pxpqgvpw75fpjx7-3001.app.github.dev/user/send-reset-link", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

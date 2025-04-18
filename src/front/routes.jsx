@@ -37,6 +37,8 @@ export const router = createBrowserRouter(
         <Route path="quotehistory" element={<QuoteHistory />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
       </Route>
 
       {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}

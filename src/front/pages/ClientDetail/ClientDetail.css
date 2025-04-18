@@ -1,103 +1,104 @@
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --light-bg: #f8f9fa;
+  --dark-text: #343a40;
+  --light-text: #f8f9fa;
+  --border-radius: 6px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos generales */
 .all {
+  display: flex;
+  justify-content: center;
   background-image: url("../../assets/images/background-clientdetails.svg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
 }
 
 .client-detail-container {
-  max-width: auto;
-  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Botón de regreso */
 .back-button button {
-  background: none;
+  background-color: transparent;
   border: none;
+  color: #555;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  font-size: 16px;
-  color: #555;
+  font-size: 14px;
   margin-bottom: 20px;
+  padding: 5px 10px;
 }
 
 .back-button button:hover {
-  color: #333;
+  color: #007bff;
 }
 
+/* Encabezado del cliente */
 .client-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
   border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
 }
 
 .client-info-main h1 {
-  margin: 0;
-  font-size: 28px;
   color: #333;
+  font-size: 24px;
+  margin: 0 0 5px 0;
 }
 
 .client-id {
-  font-size: 14px;
   color: #666;
-  margin-top: 5px;
+  font-size: 14px;
 }
 
-.edit-button {
-  background: #f0f0f0;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.edit-button:hover {
-  background: #e0e0e0;
-}
-
+/* Grid de detalles */
 .client-details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-.active-service-section {
-  grid-column: 1 / 3;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-}
-
+/* Secciones comunes */
 .client-info-section,
-.client-notes-section {
-  background-color: white;
+.client-notes-section,
+.active-service-section {
+  background-color: #f9f9f9;
   border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e0e0e0;
+  padding: 15px;
 }
 
-h2 {
-  margin-top: 0;
+.client-info-section h2,
+.client-notes-section h2,
+.active-service-section h2 {
+  color: #444;
   font-size: 18px;
-  color: #333;
+  margin-top: 0;
   margin-bottom: 15px;
 }
 
+/* Sección de información personal */
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
 .info-item {
@@ -106,16 +107,18 @@ h2 {
 }
 
 .info-label {
-  font-size: 14px;
   color: #666;
+  font-size: 12px;
+  font-weight: 600;
   margin-bottom: 3px;
 }
 
 .info-value {
-  font-size: 16px;
   color: #333;
+  font-size: 14px;
 }
 
+/* Sección de notas */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -125,136 +128,533 @@ h2 {
 
 .add-note-button,
 .add-service-button {
-  background: none;
+  background-color: #007bff;
   border: none;
-  color: #0066cc;
+  border-radius: 4px;
+  color: white;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
+  font-size: 12px;
+  padding: 5px 10px;
 }
 
 .add-note-button:hover,
 .add-service-button:hover {
-  text-decoration: underline;
+  background-color: #0069d9;
 }
 
 .notes-list {
-  max-height: 180px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
 .note-item {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
-  border-left: 3px solid #0066cc;
+  padding: 10px;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .note-date {
+  color: #888;
   font-size: 12px;
-  color: #666;
-  margin-bottom: 5px;
+}
+
+.delete-note-button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
 }
 
 .note-text {
-  font-size: 14px;
   color: #333;
+  font-size: 14px;
+  white-space: pre-wrap;
 }
 
-.no-notes,
-.no-active-service {
+.no-notes {
+  color: #888;
+  font-style: italic;
   text-align: center;
-  color: #666;
-  padding: 20px 0;
+  padding: 10px;
 }
 
+/* Sección de servicio activo */
 .active-service-info {
-  padding: 15px;
   background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 12px;
 }
 
 .service-name {
-  font-size: 18px;
-  font-weight: 600;
   color: #333;
+  font-size: 16px;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
 .service-detail {
   display: flex;
+  flex-direction: column;
   margin-bottom: 8px;
 }
 
 .detail-label {
-  min-width: 100px;
-  font-size: 14px;
   color: #666;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 2px;
 }
 
 .detail-value {
-  font-size: 14px;
   color: #333;
+  font-size: 14px;
 }
 
+.no-active-service {
+  text-align: center;
+  padding: 15px;
+}
+
+.no-active-service p {
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.service-actions {
+  margin-top: 15px;
+  text-align: right;
+}
+
+/* Botones de acción */
 .action-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .action-button {
-  padding: 15px;
-  border-radius: 8px;
-  border: none;
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #555;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  color: white;
-  text-decoration: none;
+  font-size: 14px;
+  padding: 12px;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.action-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: all 0.2s;
+  width: 130px;
 }
 
 .action-button i {
-  font-size: 24px;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.action-button:hover {
+  background-color: #e9ecef;
+  color: #333;
 }
 
 .history-button {
-  background-color: #4285f4;
+  color: #17a2b8;
 }
 
 .edit-appointment-button {
-  background-color: #34a853;
+  color: #28a745;
 }
 
 .edit-appointment-button:disabled {
-  background-color: #a0c7a3;
+  background-color: #f1f1f1;
+  color: #aaa;
   cursor: not-allowed;
 }
 
 .budget-button {
-  background-color: #ea4335;
+  color: #fd7e14;
 }
 
+/* Estilos para estados de carga y error */
 .loading,
-.error-message,
-.not-found {
-  text-align: center;
-  padding: 50px 0;
+.notes-loading,
+.services-loading {
   color: #666;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-message,
+.note-error-message,
+.service-error-message {
+  background-color: #f8d7da;
+  border-radius: 4px;
+  color: #721c24;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.not-found {
+  color: #721c24;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Estilos para los modales */
+.modal-overlay {
+  align-items: center;
+  background-color: rgba(48, 45, 45, 0.5);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+}
+
+.service-modal {
+  max-width: 600px;
+}
+
+.modal-header {
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+}
+
+.modal-header h3 {
+  padding: 10px;
+  color: #fdfbfb;
+  font-size: 18px;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+}
+
+/* Elementos del modal de notas */
+.modal-body textarea {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px;
+  resize: vertical;
+  width: 100%;
+}
+
+.modal-body textarea:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+}
+
+/* Elementos del modal de servicios */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-option {
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.service-checkbox {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.service-checkbox input {
+  margin-right: 10px;
+}
+
+.service-info {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.service-name {
+  font-weight: 500;
+}
+
+.service-price {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.service-description {
+  color: #666;
+  font-size: 13px;
+  margin-left: 25px;
+}
+
+.no-services-message {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 15px;
+}
+
+/* Botones del modal */
+.cancel-button,
+.save-button {
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 15px;
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #e9ecef;
+}
+
+.save-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #0069d9;
+}
+
+.save-button:disabled,
+.cancel-button:disabled {
+  background-color: #e9ecef;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .client-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-button {
+    width: auto;
+  }
+}
+
+/* Sección de servicios del cliente */
+.client-services-section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.client-services-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.client-services-section h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.add-service-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.2s;
+}
+
+.add-service-button:hover {
+  background-color: #0069d9;
+}
+
+/* Lista de servicios */
+.services-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.service-item {
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
+  transition: box-shadow 0.2s;
+}
+
+.service-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.service-name-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.service-name {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.service-price {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.service-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.service-description {
+  color: #555;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.service-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.service-done-button,
+.service-delete-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.2s;
+}
+
+.service-done-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.service-done-button:hover {
+  background-color: #218838;
+}
+
+.service-delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.service-delete-button:hover {
+  background-color: #c82333;
+}
+
+.no-services {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Servicio completado */
+.service-item.completed {
+  border-left: 4px solid #28a745;
+}
+
+.service-item.completed .service-name {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.service-item.completed .service-done-button {
+  background-color: #6c757d;
+  cursor: default;
+}
+
+.service-item.completed .service-done-button:hover {
+  background-color: #6c757d;
 }

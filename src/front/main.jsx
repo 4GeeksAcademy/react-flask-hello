@@ -11,13 +11,13 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 const Main = () => {
     
     return (
-        <React.StrictMode>  
-            <StoreProvider>  
-                <RouterProvider router={AppRoutes}>
-                </RouterProvider>
-            </StoreProvider>
-        </React.StrictMode>
+            <React.StrictMode>  
+                <StoreProvider>  
+                    <RouterProvider router={AppRoutes}>
+                    </RouterProvider>
+                </StoreProvider>
+            </React.StrictMode>
     );
-}
+};
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Main />)

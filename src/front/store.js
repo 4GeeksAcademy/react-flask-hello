@@ -5,12 +5,14 @@ export const initialStore = () => {
   const selectedBusinessStr = localStorage.getItem("selected_business");
   const clientsStr = localStorage.getItem("clients");
   const selectedClientStr = localStorage.getItem("selectedClient");
+  const clientNotesStr = localStorage.getItem("client_notes");
 
   let user = null;
   let business = [];
   let selectedBusiness = null;
   let clients = [];
   let selectedClient = null;
+  let clientNotes = {};
 
   try {
     if (userStr) user = JSON.parse(userStr);
@@ -27,6 +29,7 @@ export const initialStore = () => {
       }
     }
     if (selectedClientStr) selectedClient = JSON.parse(selectedClientStr);
+    if (clientNotesStr) clientNotes = JSON.parse(clientNotesStr);
   } catch (e) {
     console.error("Error al parsear datos de localStorage:", e);
     // En caso de error, inicializar todo con valores seguros
@@ -35,6 +38,7 @@ export const initialStore = () => {
     selectedBusiness = null;
     clients = [];
     selectedClient = null;
+    clientNotes = {};
   }
 
   return {
@@ -49,6 +53,7 @@ export const initialStore = () => {
     syncStatus: null,
     clients: clients || [],
     selectedClient: selectedClient || null,
+    clientNotes: clientNotes || {},
   };
 };
 
@@ -72,6 +77,7 @@ export default function storeReducer(store, action = {}) {
       localStorage.removeItem("selected_business");
       localStorage.removeItem("clients");
       localStorage.removeItem("selectedClient");
+      localStorage.removeItem("client_notes");
 
       return {
         ...store,
@@ -80,6 +86,7 @@ export default function storeReducer(store, action = {}) {
         business: [],
         selectedBusiness: null,
         clients: [],
+        clientNotes: {},
       };
 
     case "set_business":
@@ -151,7 +158,7 @@ export default function storeReducer(store, action = {}) {
         ? action.payload
         : [];
 
-      console.log("Guardando clientes en el reducer:", {
+      console.log("Saving clients in the reducer:", {
         cantidad: clientsToStore.length,
         esArray: Array.isArray(clientsToStore),
       });
@@ -174,6 +181,66 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         error: action.payload,
+      };
+
+    case "set_client_notes":
+      const { clientId, notes } = action.payload;
+      const updatedClientNotes = {
+        ...store.clientNotes,
+        [clientId]: notes,
+      };
+
+      localStorage.setItem("client_notes", JSON.stringify(updatedClientNotes));
+
+      return {
+        ...store,
+        clientNotes: updatedClientNotes,
+      };
+
+    case "add_client_note":
+      const { clientId: cId, note } = action.payload;
+      const existingNotes = store.clientNotes[cId] || [];
+      const notesWithNewNote = [note, ...existingNotes];
+
+      const clientNotesWithNewNote = {
+        ...store.clientNotes,
+        [cId]: notesWithNewNote,
+      };
+
+      localStorage.setItem(
+        "client_notes",
+        JSON.stringify(clientNotesWithNewNote)
+      );
+
+      return {
+        ...store,
+        clientNotes: clientNotesWithNewNote,
+      };
+
+    case "delete_client_note":
+      const { clientId: clId, noteId } = action.payload;
+
+      if (!store.clientNotes[clId]) {
+        return store;
+      }
+
+      const filteredNotes = store.clientNotes[clId].filter(
+        (note) => note.id !== noteId
+      );
+
+      const clientNotesAfterDelete = {
+        ...store.clientNotes,
+        [clId]: filteredNotes,
+      };
+
+      localStorage.setItem(
+        "client_notes",
+        JSON.stringify(clientNotesAfterDelete)
+      );
+
+      return {
+        ...store,
+        clientNotes: clientNotesAfterDelete,
       };
 
     default:

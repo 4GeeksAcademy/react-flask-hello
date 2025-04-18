@@ -16,7 +16,10 @@
   min-height: 87vh;
   display: flex;
   flex-direction: column;
-  background-color: #b4cdf8;
+  background-image: url("../../assets/images/background-login.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 

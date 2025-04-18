@@ -2,7 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Enum, ForeignKey, Numeric, DateTime, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from typing import Optional
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -310,3 +311,14 @@ class ClientService(db.Model):
         ForeignKey("clients.id"), primary_key=True)
     service_id: Mapped[int] = mapped_column(
         ForeignKey("service.id"), primary_key=True)
+   
+    completed: Mapped[bool] = mapped_column(default=False)
+    completed_date: Mapped[Optional[datetime]] = mapped_column(nullable=True)
+    
+    def serialize(self) -> dict:
+        return {
+            "client_id": self.client_id,
+            "service_id": self.service_id,
+            "completed": self.completed,
+            "completed_date": self.completed_date.isoformat() if self.completed_date else None
+        }

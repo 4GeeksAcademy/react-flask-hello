@@ -199,24 +199,47 @@ def add_service_to_client(client_id):
 
     data = request.get_json()
 
-    if not data or "service_id" not in data:
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    if "service_id" in data:
+        service_ids = [data["service_id"]]
+
+    elif "service_ids" in data:
+        service_ids = data["service_ids"]
+    else:
         return jsonify({"error": "Service ID is required"}), 400
+    
+    if not isinstance(service_ids, list) or len(service_ids) == 0:
+        return jsonify({"error": "service_ids must be a non-empty list"}), 400
 
-    service = Services.query.get(data["service_id"])
+    added_services = []
+    errors = []
 
-    if not service:
-        return jsonify({"error": "Service not found"}), 404
+    for service_id in service_ids:
+        service = Services.query.get(service_id)
+        
+        if not service:
+            errors.append(f"Service with ID {service_id} not found")
+            continue
+            
+        if service in client.services:
+            errors.append(f"The client already has the service '{service.name}' contracted")
+            continue
+            
+        client.services.append(service)
+        added_services.append(service)
 
-    if service in client.services:
-        return jsonify({"error": "The client already has this service contracted"}), 400
-
-    client.services.append(service)
+    if not added_services and errors:
+        db.session.rollback()
+        return jsonify({"error": "; ".join(errors)}), 400
 
     try:
         db.session.commit()
         return jsonify({
-            "msg": "Service added successfully",
-            "services": [s.serialize_service() for s in client.services]
+            "msg": f"{len(added_services)} services added successfully",
+            "services": [s.serialize_service() for s in client.services],
+            "warnings": errors if errors else None
         }), 200
     except Exception as e:
         db.session.rollback()
@@ -250,3 +273,41 @@ def remove_service_from_client(client_id, service_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@clients_routes.route('/services/<int:service_id>/complete', methods=['PUT'])
+# @jwt_required()
+def complete_service(service_id):
+    
+    try:
+        client_service = ClientService.query.filter_by(service_id=service_id).first()
+        
+        if not client_service:
+            return jsonify({"error": "El servicio no se encontró o no está asignado a ningún cliente"}), 404
+        
+        client_service.completed = True
+        client_service.completed_date = db.func.now()  
+        
+        db.session.commit()
+        
+        service = Services.query.get(service_id)
+        
+        if not service:
+            return jsonify({"error": "No se pudo encontrar el servicio después de marcarlo como completado"}), 500
+        
+        response_data = {
+            "id": service.id,
+            "name": service.name,
+            "description": service.description,
+            "price": service.price,
+            "completed": True,
+            "completed_date": client_service.completed_date.isoformat() if client_service.completed_date else None
+        }
+        
+        return jsonify({
+            "message": "Servicio marcado como completado exitosamente",
+            "service": response_data
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error al marcar el servicio como completado: {str(e)}"}), 500

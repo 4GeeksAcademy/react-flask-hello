@@ -22,6 +22,7 @@ export const ServiceForm = () => {
             category,
             price,
             id: Date.now(),
+            business_id,
         };
 
         dispatch({ type: "add_service", payload: addService});

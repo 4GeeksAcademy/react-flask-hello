@@ -7,7 +7,6 @@ export const ClientList = ({ search }) => {
     const { store } = useGlobalReducer();
     const { clients, selectedBusiness } = store;
     
-    // Verificar que clients sea un array y no esté vacío
     if (!Array.isArray(clients) || clients.length === 0) {
         return (
             <div className="clients-list">
@@ -20,17 +19,16 @@ export const ClientList = ({ search }) => {
     }
     
     const filteredClients = clients.filter(client => {
-        // Verificación básica del cliente
+
         if (!client || typeof client !== 'object') {
             return false;
         }
         
-        // Búsqueda por nombre o ID
+
         const matchesSearch = search.trim() === '' || 
             (client.name && client.name.toLowerCase().includes(search.toLowerCase())) ||
             (client.client_id_number && client.client_id_number.includes(search));
 
-        // OPCIÓN 1: Si business_id es null, mostrar el cliente en todos los negocios
         const matchesBusiness = !selectedBusiness || client.business_id === null || 
             String(client.business_id) === String(selectedBusiness.id);
             

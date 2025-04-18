@@ -1,0 +1,113 @@
+/*_______________MENU__LOGIN______________*/
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 10px;
+  position: relative;
+}
+
+.log-form-content {
+  display: block;
+  width: clamp(250px, 80%, 400px);
+  padding: clamp(1em, 2vw, 2em);
+  border-radius: 20px;
+  color: hsl(206, 20%, 32%);
+  background: #5d97b3;
+  box-shadow: 9px 9px 19px #192633;
+    position: relative;
+}
+
+/*__________AREA_PARA_ESCRIBIR_____________*/
+
+.log-form-control {
+  border: 2px solid #34546a;
+  padding: 10px;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  background: #acc6cd;
+}
+.log-form-control:focus,
+.log-form-control:active {
+  background: #acc6cd;
+  border-color: white;
+  outline: none;
+  box-shadow: none;
+  border-radius: 20px;
+}
+/* Corrige el color del fondo cuando el navegador autocompleta */
+.log-form-control:-webkit-autofill,
+.log-form-control:-webkit-autofill:hover,
+.log-form-control:-webkit-autofill:focus,
+.log-form-control:-webkit-autofill:active {
+  background: #acc6cd !important;
+  -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
+  color: #2f4556 !important;
+}
+
+/*__________TEXTO_____________*/
+
+.log-form-label,
+.log-label-content {
+  color: #ddebf0;
+  background: none;
+  display: block;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+.log-form-label {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/*__________TEXTO_____________*/
+
+
+
+/*________BUTTONN___SUBMIT______________*/
+.log-btn {
+  width: 100%;
+  max-width: 120px;
+  display: block;
+  border-radius: 20px;
+  margin: 20px auto 0;
+  color: white;
+  background: none;
+  box-shadow: 3px 3px 10px #192633;
+}
+
+.log-btn:hover {
+  color: white;
+  box-shadow: 3px 3px 10px #192633;
+  background: none;
+  border-color: #415361;
+}
+
+.log-btn:active {
+  color: white;
+    background: none;
+    box-shadow: 3px 3px 10px #192633;
+    border-color: #415361;
+    transform: scale(0.95);
+}
+/*__________BUTTON___SUBMIT______________*/
+
+/*_______________RESPONCIVE______________*/
+@media (min-width: 480px) {
+  .reg-form-content {
+    max-width: 350px;
+    padding: 1.5em;
+  }
+}
+
+@media (min-width: 768px) {
+  .reg-form-content {
+    max-width: 400px;
+    padding: 2em;
+  }
+}
+
+/*_______________RESPONCIVE______________*/

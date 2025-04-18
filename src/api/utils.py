@@ -1,4 +1,6 @@
 from flask import jsonify, url_for
+from fpdf import FPDF #modificación de Javi 
+import os #modificación de Javi 
 
 class APIException(Exception):
     status_code = 400
@@ -39,3 +41,23 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+
+#Código añadido por JAVI para crear funcion pdf
+def generateBill(factura, comprador, vendedor, item):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    pdf.cell(200, 10, txt=f"Factura ID: {factura.id}", ln=True)
+    pdf.cell(200, 10, txt=f"Comprador: {comprador.firstname} {comprador.lastname}", ln=True)
+    pdf.cell(200, 10, txt=f"Vendedor: {vendedor.shopname}", ln=True)
+    pdf.cell(200, 10, txt=f"Producto: {item['title']}", ln=True)
+    pdf.cell(200, 10, txt=f"Cantidad: {item['cantidad']}", ln=True)
+    pdf.cell(200, 10, txt=f"Precio unitario: {item['precio']}", ln=True)
+    pdf.cell(200, 10, txt=f"Total: {item['cantidad'] * item['precio']} €", ln=True)
+
+    filename = f"facturas/factura_{factura.id}.pdf"
+    os.makedirs("facturas", exist_ok=True)
+    pdf.output(name=filename)
+    return f"/{filename}"

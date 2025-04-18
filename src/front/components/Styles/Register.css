@@ -1,0 +1,116 @@
+/*_______________MENU__LOGIN______________*/
+* {
+  box-sizing: border-box;
+}
+
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 10px;
+  position: relative;
+}
+
+.reg-form-content {
+  display: block;
+  width: clamp(280px, 90%, 400px);
+  padding: clamp(1em, 2vw, 2em);
+  border-radius: 20px;
+  color: var(--text2); 
+  background: var(--primary); 
+  box-shadow: 0px 0px 16px var(--shadow); 
+  position: relative;
+}
+
+/*__________AREA_PARA_ESCRIBIR_____________*/
+
+.reg-form-control {
+  border: 2px solid;
+  border-color: var(--border);
+  padding: 10px;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  background: #acc6cd;
+}
+
+.reg-form-control:focus,
+.reg-form-control:active {
+  background: #acc6cd;
+  border-color: var(--border-hover);
+  outline: none;
+  box-shadow: none;
+  border-radius: 20px;
+}
+
+/* Corrige el color del fondo cuando el navegador autocompleta */
+.reg-form-control:-webkit-autofill,
+.reg-form-control:-webkit-autofill:hover,
+.reg-form-control:-webkit-autofill:focus,
+.reg-form-control:-webkit-autofill:active {
+  background: #acc6cd !important;
+  -webkit-box-shadow: 0 0 0px 1000px #acc6cd inset !important;
+  color: #2f4556 !important;
+  
+}
+
+/*__________TEXTO_____________*/
+.reg-form-label,
+.reg-label-content {
+  color: var(--text2); 
+  background: none;
+  display: block;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.reg-form-label {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/*________BUTTON___SUBMIT______________*/
+.reg-btn {
+  all:unset;
+  width: 100%;
+  max-width: 160px;
+  display: block;
+  border-radius: 20px;
+  margin: 20px auto 0;
+  color: white;
+  background: none; 
+  box-shadow: 3px 3px 10px var(--shadow); 
+}
+
+.reg-btn:hover {
+  color: white;
+  box-shadow: 3px 3px 10px var(--shadow); 
+  background: var(--primary); 
+  border-color: var(--border); 
+}
+
+.reg-btn:active {
+  color: white;
+  background: var(--primary); 
+  box-shadow: 3px 3px 10px var(--shadow); 
+  border-color: var(--border); 
+  transform: scale(0.95);
+}
+
+/*_______________RESPONCIVE______________*/
+@media (min-width: 480px) {
+  .reg-form-content {
+    max-width: 350px;
+    padding: 1.5em;
+  }
+}
+
+@media (min-width: 768px) {
+  .reg-form-content {
+    max-width: 400px;
+    padding: 2em;
+  }
+}
+
+/*_______________RESPONCIVE______________*/

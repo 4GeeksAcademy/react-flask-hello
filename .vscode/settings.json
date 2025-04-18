@@ -1,10 +1,28 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "workbench.editorAssociations": {   
-        "*.md": "vscode.markdown.preview.editor"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-    }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+
+// CODIGO PARA EL CAMBIO DE COLOR DE LOS COMENTARIOS
+
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        
+        "scope": ["comment", "comment.line", "comment.block"],
+        "settings": {
+          
+          "foreground": "#f9ba00c5",
+          
+        }
+      }
+    ]
+  },
+
+  
 }

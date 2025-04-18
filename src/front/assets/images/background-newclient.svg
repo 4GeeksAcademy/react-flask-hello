@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- Definiciones de colores suaves -->
+  <defs>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e6eef8"/>
+      <stop offset="100%" stop-color="#d9e6f7"/>
+    </linearGradient>
+    
+    <!-- Patrón de siluetas de personas -->
+    <pattern id="peoplePattern" x="0" y="0" width="300" height="200" patternUnits="userSpaceOnUse">
+      <!-- Silueta de persona 1 -->
+      <path d="M50,150 C55,130 65,140 70,150 L70,180 L60,180 L60,160 L50,160 Z" fill="#d4e4f6" opacity="0.3" />
+      <circle cx="60" cy="125" r="10" fill="#d4e4f6" opacity="0.3" />
+      
+      <!-- Silueta de persona 2 -->
+      <path d="M150,140 C155,120 165,130 170,140 L170,170 L160,170 L160,150 L150,150 Z" fill="#d4e4f6" opacity="0.2" />
+      <circle cx="160" cy="115" r="10" fill="#d4e4f6" opacity="0.2" />
+      
+      <!-- Silueta de persona 3 -->
+      <path d="M250,160 C255,140 265,150 270,160 L270,190 L260,190 L260,170 L250,170 Z" fill="#d4e4f6" opacity="0.25" />
+      <circle cx="260" cy="135" r="10" fill="#d4e4f6" opacity="0.25" />
+    </pattern>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect width="100%" height="100%" fill="#f0f5fb"/>
+  
+  <!-- Onda superior suave -->
+  <path d="M0,0 L1200,0 L1200,200 Q900,240 600,190 T0,220 Z" fill="#e6eef8" opacity="0.7"/>
+  
+  <!-- Onda inferior suave -->
+  <path d="M0,800 L1200,800 L1200,600 Q900,550 600,620 T0,570 Z" fill="url(#waveGradient)" opacity="0.7"/>
+  
+  <!-- Círculos decorativos -->
+  <circle cx="250" cy="200" r="150" fill="#e1ebf7" opacity="0.6"/>
+  <circle cx="950" cy="220" r="100" fill="#d4e4f6" opacity="0.5"/>
+  <circle cx="450" cy="650" r="120" fill="#dde9f9" opacity="0.6"/>
+  <circle cx="1050" cy="600" r="180" fill="#e8f0fa" opacity="0.7"/>
+  
+  <!-- Iconos sutiles relacionados con clientes -->
+  <g opacity="0.15">
+    <!-- Silueta de grupo de personas (clientes) -->
+    <rect x="0" y="0" width="1200" height="800" fill="url(#peoplePattern)" opacity="0.1"/>
+    
+    <!-- Iconos de usuario -->
+    <g transform="translate(200, 350) scale(0.7)">
+      <circle cx="0" cy="-15" r="15" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <path d="M-20,20 C-20,0 20,0 20,20" stroke="#4a90e2" stroke-width="2" fill="none"/>
+    </g>
+    
+    <g transform="translate(800, 400) scale(0.8)">
+      <circle cx="0" cy="-15" r="15" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <path d="M-20,20 C-20,0 20,0 20,20" stroke="#4a90e2" stroke-width="2" fill="none"/>
+    </g>
+    
+    <!-- Iconos de documentos (contratos de clientes) -->
+    <g transform="translate(350, 250) scale(0.6)">
+      <rect x="-15" y="-20" width="30" height="40" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="-8" y1="0" x2="8" y2="0" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="-8" y1="10" x2="8" y2="10" stroke="#4a90e2" stroke-width="2"/>
+    </g>
+    
+    <g transform="translate(900, 300) scale(0.6)">
+      <rect x="-15" y="-20" width="30" height="40" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="-8" y1="0" x2="8" y2="0" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="-8" y1="10" x2="8" y2="10" stroke="#4a90e2" stroke-width="2"/>
+    </g>
+    
+    <!-- Icono de tarjeta de cliente -->
+    <g transform="translate(600, 500) scale(0.7)">
+      <rect x="-20" y="-15" width="40" height="30" rx="3" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <circle cx="-10" cy="0" r="5" stroke="#4a90e2" stroke-width="2" fill="none"/>
+      <line x1="0" y1="-5" x2="15" y2="-5" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="0" y1="0" x2="15" y2="0" stroke="#4a90e2" stroke-width="2"/>
+      <line x1="0" y1="5" x2="15" y2="5" stroke="#4a90e2" stroke-width="2"/>
+    </g>
+  </g>
+  
+  <!-- Puntos decorativos muy sutiles -->
+  <g fill="#c6dbf2" opacity="0.3">
+    <!-- Puntos distribuidos aleatoriamente -->
+    <circle cx="100" cy="300" r="1.5"/>
+    <circle cx="200" cy="350" r="1.5"/>
+    <circle cx="300" cy="400" r="1.5"/>
+    <circle cx="400" cy="250" r="1.5"/>
+    <circle cx="500" cy="300" r="1.5"/>
+    <circle cx="600" cy="350" r="1.5"/>
+    <circle cx="700" cy="400" r="1.5"/>
+    <circle cx="800" cy="250" r="1.5"/>
+    <circle cx="900" cy="300" r="1.5"/>
+    <circle cx="1000" cy="350" r="1.5"/>
+    <circle cx="1100" cy="400" r="1.5"/>
+    
+    <circle cx="150" cy="450" r="1.5"/>
+    <circle cx="250" cy="500" r="1.5"/>
+    <circle cx="350" cy="450" r="1.5"/>
+    <circle cx="450" cy="500" r="1.5"/>
+    <circle cx="550" cy="450" r="1.5"/>
+    <circle cx="650" cy="500" r="1.5"/>
+    <circle cx="750" cy="450" r="1.5"/>
+    <circle cx="850" cy="500" r="1.5"/>
+    <circle cx="950" cy="450" r="1.5"/>
+    <circle cx="1050" cy="500" r="1.5"/>
+  </g>
+</svg>

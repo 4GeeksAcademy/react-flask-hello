@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 import "./CalendarComp.css"
 
 export const CalendarComp = () => {
@@ -133,6 +134,9 @@ export const CalendarComp = () => {
                 </h1>
 
                 <div className="calendar-actions">
+                    <Link to="/appointment/create" className="create-appointment-button">
+                        <i className="fas fa-plus"></i> New appointment
+                    </Link>
                     <button
                         className="sync-button"
                         onClick={syncGoogleCalendar}

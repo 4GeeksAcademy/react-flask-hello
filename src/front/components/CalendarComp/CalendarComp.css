@@ -26,8 +26,31 @@
 
 .calendar-actions {
   display: flex;
+  justify-content: flex-end;
+  margin: 15px;
+}
+
+.create-appointment-button {
+  background-color: #db2777;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.create-appointment-button:hover {
+  background-color: #be185d;
+}
+
+.create-appointment-button i {
+  font-size: 12px;
 }
 
 .sync-button {

@@ -332,7 +332,7 @@ export const ClientDetail = () => {
 
     const handleEditAppointment = () => {
         if (activeService) {
-            navigate(`/appointment/edit/${activeService.id}`);
+            navigate(`/appointment/create/${clientId}`);
         }
     };
 

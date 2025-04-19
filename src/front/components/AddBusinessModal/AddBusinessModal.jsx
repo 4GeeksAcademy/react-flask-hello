@@ -65,7 +65,7 @@ const AddBusinessModal = () => {
             <h5 className="modal-title" id="newBusinessModalLabel">
               <i className="bi bi-building-plus"></i> Crear Nuevo Negocio
             </h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeNewBusinessModal"></button>
+            <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" id="closeNewBusinessModal"></button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleNewBusinessSubmit}>

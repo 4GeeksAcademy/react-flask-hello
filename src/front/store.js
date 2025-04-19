@@ -1,4 +1,3 @@
-js
 export const initialStore = () => {
   return {
     user: null,

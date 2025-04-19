@@ -1,0 +1,71 @@
+.login-page {
+    display: flex;
+    height: 100vh;
+    background: radial-gradient(circle, #1a1a2e, #0f0f1f);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card {
+    background-color: #111;
+    padding: 40px;
+    border-radius: 10px;
+    margin: auto;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.login-title {
+    color: #a855f7;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+input {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+.login-btn {
+    background-color: orange;
+    color: black;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.github-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.register-link span {
+    color: orange;
+    cursor: pointer;
+}
+
+.login-info {
+    margin: auto;
+    padding-left: 80px;
+    font-size: 18px;
+    line-height: 2.5;
+}

@@ -1,15 +1,12 @@
-// Añadir a useEffect en componente principal (opcional en Home o Layout)
-useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && !store.user) {
-      fetch(import.meta.env.VITE_BACKEND_URL + "/api/private", {
-        headers: { Authorization: "Bearer " + token },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.user) {
-            dispatch({ type: "set_user", payload: data.user });
-          }
-        });
-    }
-  }, []);
+import React, { createContext, useContext, useReducer } from "react";
+import storeReducer, { initialStore } from "../store";
+
+const Context = createContext(null);
+
+export const StoreProvider = ({ children }) => {
+  const [store, dispatch] = useReducer(storeReducer, initialStore());
+  return <Context.Provider value={{ store, dispatch }}>{children}</Context.Provider>;
+};
+
+const useGlobalReducer = () => useContext(Context);
+export default useGlobalReducer;

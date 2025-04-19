@@ -6,6 +6,8 @@ import { router } from "./routes";
 import { StoreProvider } from './hooks/StoreContext';  // ✅ actualizado
 import { BackendURL } from './components/BackendURL';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ScrollToTop from './components/ScrollToTop'; // Ajustá el path si está en otro lado
+
 
 const Main = () => {
     if (!import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL === "") {
@@ -18,11 +20,11 @@ const Main = () => {
 
     return (
         <React.StrictMode>
-            {/* Provee estado global a toda la app */}
             <StoreProvider>
                 <RouterProvider router={router} />
             </StoreProvider>
         </React.StrictMode>
+
     );
 };
 

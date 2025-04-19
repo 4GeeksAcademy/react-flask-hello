@@ -4,9 +4,6 @@ import React, { useState } from 'react';
 import './Contact.css';
 import { motion } from 'framer-motion';
 
-import Navbar from '../../components/Navbar/Navbar';
-import PublicNavbar from '../../components/Navbar/PublicNavbar';
-import Footer from '../../components/Footer/Footer';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -64,9 +61,6 @@ const Contact = () => {
 
   return (
     <>
-      {/* 🧠 Render navbar correcto según si hay login REAL */}
-      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
-
       <div className="contacto-container">
         {/* 🎬 Hero con animación */}
         <motion.section
@@ -213,8 +207,6 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };

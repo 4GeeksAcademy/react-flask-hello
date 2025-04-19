@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { showErrorAlert, showSuccessAlert } from '../../components/modal_alerts/modal_alerts';
-import { useGlobalReducer } from "../../hooks/useGlobalReducer"; // 👈 Import del global store
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 export const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const { dispatch } = useGlobalReducer(); // 👈 Obtenemos el dispatch global
+  const { dispatch } = useGlobalReducer();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +58,6 @@ export const Login = () => {
             navigate("/app/dash_admin");
           });
         }
-
       } else {
         showErrorAlert(data.error || "Datos incorrectos");
       }
@@ -92,19 +91,10 @@ export const Login = () => {
           <button className="login-button" type="submit">Ingresar</button>
         </form>
         <p className="login-footer">
-          ¿No tienes cuenta? <a className="login-link" href="/signup">Regístrate aquí</a>.
+          ¿No tienes cuenta? <a href="/signup">Regístrate aquí</a>
         </p>
         <p className="login-footer">
-          ¿Olvidaste tu contraseña?{' '}
-          <a
-            href="/forgot-password"
-            className="login-link"
-            style={{ textDecoration: "none", color: "#a7ccbb", fontWeight: "bold" }}
-            onMouseOver={(e) => (e.target.style.textDecoration = "underline")}
-            onMouseOut={(e) => (e.target.style.textDecoration = "none")}
-          >
-            Recuperar acceso
-          </a>
+          ¿Olvidaste tu contraseña? <a href="/forgot-password">Recuperar acceso</a>
         </p>
       </div>
     </div>

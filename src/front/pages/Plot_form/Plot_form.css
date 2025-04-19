@@ -66,9 +66,16 @@
 }
 
 .form-group {
-  flex: 1;
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
+  min-width: 200px;
+}
+
+@media (min-width: 769px) {
+  .form-row .form-group {
+    flex: 1 1 48%;
+  }
 }
 
 .form-group label {
@@ -179,6 +186,11 @@ input[type="number"].form-input::-webkit-inner-spin-button {
 }
 
 select.form-input {
-  height: 38px;
+  height: 52px; /* igual que input */
   background-color: #f9fafb;
+  padding: 0.55rem 0.9rem; /* igual que input */
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
 }

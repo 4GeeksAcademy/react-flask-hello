@@ -5,7 +5,6 @@ import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import Report from "../../components/Reports/Reports";
 import UserFormModal from "../../components/UserFormModal/UserFormModal";
 
-
 const DashboardAdmin = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -71,7 +70,6 @@ const DashboardAdmin = () => {
   return (
     <div className="dashboard-admin-container">
       <h2 className="dashboard-title">Dashboard Admin</h2>
-
       <div className="search-bar">
         <input
           type="text"

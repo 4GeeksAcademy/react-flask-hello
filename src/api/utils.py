@@ -9,6 +9,6 @@ def hash_password(password):
 def check_password(password, hashed):
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
-# Generar token único para recuperación de contraseña u otras funciones
+# Generar token único para recuperación de contraseña u otras funciones.
 def generate_token():
     return str(uuid.uuid4())

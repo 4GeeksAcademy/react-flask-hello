@@ -251,3 +251,39 @@
       font-size: 12px;
     }
   }
+
+  /* Estilos para la información del inventario actual */
+.current-inventory-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.inventory-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.inventory-name {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.inventory-date {
+  margin-left: 10px;
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+/* Ajustar la disposición del panel de acciones */
+.panel-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: var(--card);
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px var(--shadow);
+}

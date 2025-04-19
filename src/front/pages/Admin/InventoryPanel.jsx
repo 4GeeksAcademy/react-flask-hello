@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 import "../Styles/InventoryPanel.css";
+import { Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import ErrorMessage1 from "../../components/ErrorMessage1";
+import ErrorMessage2 from "../../components/ErrorMessage2";
 
 const InventoryPanel = () => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [formData, setFormData] = useState({
     product_name: "",
     price_per_unit: 0,
@@ -35,28 +41,40 @@ const InventoryPanel = () => {
     fetchProducts();
   }, []);
 
+  //---------LLAMO A LOS PRODUCTOS DEL INVENTARIO PARA TRAERLOS A MI PANEL----GET--------------
+  //-----USO CURRENTINVENTORY PARA TRAER EL NOBRE DEL DOCUMENTO Y REFLEJARO EN EL PANE---------
+
+  // ---me da el nombre del documento para reflejarlo en el panel y saber 1. que el documento esta y 2. que invetario es----
+  const [currentInventory, setCurrentInventory] = useState(null);
+
+  // ----arrancamos la funcion fetch-----------
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Primero intentamos obtener productos del usuario actual
-      const response = await axios.get(`${baseUrl}/upload/get-user-products`, {
+
+      //---- pido la informacion de los productos
+      const productsResponse = await axios.get(`${baseUrl}/upload/get-user-products`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
       });
 
-      if (response.data && response.data.productos) {
-        setProducts(response.data.productos);
-      } else {
-        // Si no hay endpoint específico, usamos el general
-        const fallbackResponse = await axios.get(`${baseUrl}/upload/get_all`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
+      if (productsResponse.data && productsResponse.data.productos) {
+        setProducts(productsResponse.data.productos);
+
+        //----- traemos la información del inventario actual-------
+        try {
+          const inventoryResponse = await axios.get(`${baseUrl}/upload/current-inventory-info`, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+
+          if (inventoryResponse.data && inventoryResponse.data.inventory_info) {
+            setCurrentInventory(inventoryResponse.data.inventory_info);
           }
-        });
-        
-        if (fallbackResponse.data && fallbackResponse.data.productos) {
-          setProducts(fallbackResponse.data.productos);
+        } catch (inventoryError) {
+          console.log("No se pudo obtener información del inventario actual", inventoryError);
         }
       }
     } catch (error) {
@@ -69,7 +87,7 @@ const InventoryPanel = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Convertir a número si el campo es numérico
     if (name === "price_per_unit" || name === "quantity") {
       setFormData({
@@ -82,6 +100,10 @@ const InventoryPanel = () => {
         [name]: value
       });
     }
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
   const startEditing = (product) => {
@@ -106,12 +128,75 @@ const InventoryPanel = () => {
     });
   };
 
+
+  //---------------ELIMINO LOS PRODUCTOS DEL INVENTARIO DESDE MI PANEL-------DELETE---------
+
+  // Función para mostrar el modal de confirmación de eliminación
+  const confirmDelete = (productId) => {
+    setProductToDelete(productId);
+    setShowDeleteConfirm(true);
+  };
+
+  // Función para cancelar la eliminación
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setProductToDelete(null);
+  };
+
+  // Función para eliminar un producto
+  const deleteProduct = async () => {
+    if (!productToDelete) return;
+
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/upload/delete-product/${productToDelete}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        // Eliminar el producto de la lista local
+        setProducts(products.filter(product => product.id !== productToDelete));
+
+        // Mostrar mensaje de éxito personalizado
+        setSuccessMessage("Producto eliminado correctamente");
+        setTimeout(() => setSuccessMessage(null), 3000);
+
+        // Cerrar el modal de confirmación
+        setShowDeleteConfirm(false);
+        setProductToDelete(null);
+      }
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+
+      if (error.response && error.response.status === 403) {
+        setErrorMessage("No tienes permiso para eliminar este producto");
+      } else {
+        setErrorMessage("Error al eliminar el producto. Por favor, intenta de nuevo.");
+      }
+
+      // Cerrar el modal de confirmación
+      setShowDeleteConfirm(false);
+      setProductToDelete(null);
+    }
+  };
+
+  //--------MODIFICO LOS PRODUCTOS DEL INVENTARIO DESDE MI PANEL-----PUT------
+
   const saveProduct = async () => {
     try {
       if (!editingProduct) return;
 
+      const baseUrl = import.meta.env.VITE_BACKEND_URL;
+      const apiUrl = baseUrl.endsWith('/')
+        ? `${baseUrl}upload/update-product/${editingProduct}`
+        : `${baseUrl}/upload/update-product/${editingProduct}`;
+
       const response = await axios.put(
-        `${baseUrl}/upload/update-product/${editingProduct}`,
+        apiUrl,
         formData,
         {
           headers: {
@@ -123,64 +208,32 @@ const InventoryPanel = () => {
 
       if (response.status === 200) {
         // Actualizar la lista de productos
-        setProducts(products.map(product => 
+        setProducts(products.map(product =>
           product.id === editingProduct ? { ...product, ...formData } : product
         ));
-        
+
         cancelEditing();
-        
-        // Mostrar mensaje de éxito
-        alert("Producto actualizado correctamente");
+
+        // Mostrar mensaje de éxito personalizado
+        setSuccessMessage("Producto actualizado correctamente");
+        setTimeout(() => setSuccessMessage(null), 3000);
       }
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
-      alert("Error al actualizar el producto. Por favor, intenta de nuevo.");
+      setErrorMessage("Error al actualizar el producto. Por favor, intenta de nuevo.");
     }
   };
 
-  const deleteProduct = async (productId) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-      return;
-    }
-
-    try {
-      const response = await axios.delete(
-        `${baseUrl}/upload/delete-product/${productId}`,
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        }
-      );
-
-      if (response.status === 200) {
-        // Eliminar el producto de la lista local
-        setProducts(products.filter(product => product.id !== productId));
-        
-        // Mostrar mensaje de éxito
-        alert("Producto eliminado correctamente");
-      }
-    } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-      alert("Error al eliminar el producto. Por favor, intenta de nuevo.");
-    }
-  };
-
-  // Maneja el cambio del archivo seleccionado
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  // Maneja la carga del archivo Excel
+  // Función para manejar la carga del archivo Excel
   const handleUpload = async (event) => {
     event.preventDefault();
     if (!file) {
-      alert("Selecciona un archivo primero.");
+      setErrorMessage("Selecciona un archivo primero.");
       return;
     }
 
     if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
-      alert("Por favor, selecciona un archivo Excel válido (.xlsx o .xls)");
+      setErrorMessage("Por favor, selecciona un archivo Excel válido (.xlsx o .xls)");
       return;
     }
 
@@ -201,7 +254,7 @@ const InventoryPanel = () => {
         }
       );
 
-      alert(response.data.message);
+      setSuccessMessage(response.data.message);
       // Recargar productos después de subir el inventario
       fetchProducts();
       setShowUpload(false);
@@ -216,7 +269,7 @@ const InventoryPanel = () => {
         errorMessage = error.message;
       }
 
-      alert("Error al subir archivo: " + errorMessage);
+      setErrorMessage("Error al subir archivo: " + errorMessage);
     } finally {
       setUploading(false);
     }
@@ -238,16 +291,65 @@ const InventoryPanel = () => {
   return (
     <div className="inventory-panel">
       <h1 className="panel-title">Panel de Administración de Inventario</h1>
-      
+
+      {/* Mensajes de error y éxito */}
+      {errorMessage && (
+        <ErrorMessage2
+          text={errorMessage}
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
+
+      {successMessage && (
+        <ErrorMessage2
+          text={successMessage}
+          onClose={() => setSuccessMessage(null)}
+        />
+      )}
+
+      {/* Modal de confirmación para eliminar producto */}
+      {showDeleteConfirm && (
+        <div className="overlay">
+          <div className="message-box error">
+            <p>¿Estás seguro de que deseas eliminar este producto?</p>
+            <div className="confirm-buttons">
+              <button type="button" className="box-btn" onClick={deleteProduct}>
+                Eliminar
+              </button>
+              <button type="button" className="box-btn" onClick={cancelDelete}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="panel-actions">
-        <button 
+        <div className="current-inventory-info">
+          {currentInventory ? (
+            <div>
+              <span className="inventory-label">Tu inventario actual es: </span>
+              <span className="inventory-name">{currentInventory.name}</span>
+              {currentInventory.last_updated && (
+                <span className="inventory-date">
+                  (Última actualización: {new Date(currentInventory.last_updated).toLocaleDateString()})
+                </span>
+              )}
+            </div>
+          ) : products.length > 0 ? (
+            <span className="inventory-label">Inventario activo</span>
+          ) : (
+            <span className="inventory-label">No tienes inventario activo</span>
+          )}
+        </div>
+
+        <button
           className="action-button upload-button"
           onClick={() => setShowUpload(!showUpload)}
         >
           {showUpload ? 'Cancelar' : 'Subir Inventario Excel'}
         </button>
       </div>
-      
+
       {showUpload && (
         <div className="upload-container">
           <h2>Cargar Inventario desde Excel</h2>
@@ -278,7 +380,7 @@ const InventoryPanel = () => {
           </form>
         </div>
       )}
-      
+
       <div className="table-container">
         <table className="inventory-table">
           <thead>
@@ -360,10 +462,10 @@ const InventoryPanel = () => {
                         className="edit-input"
                       />
                     ) : (
-                      <img 
-                        src={product.image_url} 
-                        alt={product.product_name} 
-                        className="product-thumbnail" 
+                      <img
+                        src={product.image_url}
+                        alt={product.product_name}
+                        className="product-thumbnail"
                       />
                     )}
                   </td>
@@ -393,7 +495,7 @@ const InventoryPanel = () => {
                         </button>
                         <button
                           className="delete-btn"
-                          onClick={() => deleteProduct(product.id)}
+                          onClick={() => confirmDelete(product.id)}
                         >
                           Eliminar
                         </button>
@@ -405,7 +507,7 @@ const InventoryPanel = () => {
             ) : (
               <tr>
                 <td colSpan="7" className="no-products">
-                  No hay productos en el inventario. 
+                  No hay productos en el inventario.
                   <br />
                   Puedes subir un archivo Excel para empezar.
                 </td>

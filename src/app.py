@@ -24,20 +24,41 @@ from api.commands import setup_commands
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
+
 app = Flask(__name__)
-CORS(app)
+
+# 🔐 CORS CONFIG
+CORS(app, supports_credentials=True, resources={
+    r"/*": {"origins": "https://supreme-space-computing-machine-jj4vrjqxw5q4c5rvx-3000.app.github.dev"}
+})
+
+# ✅ OPCIONES PREVIA (preflight) PARA TODAS LAS RUTAS
 
 
-# CONFIGURACIÓN DE FLASK-MAIL (ANTES de mail.init_app)
+@app.before_request
+def handle_options_global():
+    if request.method == 'OPTIONS':
+        response = app.make_default_options_response()
+        headers = response.headers
+
+        headers['Access-Control-Allow-Origin'] = request.headers.get(
+            'Origin', '*')
+        headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = request.headers.get(
+            'Access-Control-Request-Headers', 'Authorization, Content-Type')
+        headers['Access-Control-Allow-Credentials'] = 'true'
+
+        return response
+
+
+# CONFIGURACIÓN DE FLASK-MAIL
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'dronfarm.mail@gmail.com'
-# contraseña de aplicación de Gmail
-app.config['MAIL_PASSWORD'] = 'bxgbafplmfduumdh'
+app.config['MAIL_PASSWORD'] = 'bxgbafplmfduumdh'  # contraseña de aplicación
 app.config['MAIL_DEFAULT_SENDER'] = 'DronFarm'
-
-mail.init_app(app)  # ✅ ahora sí, después de configurar todo
+mail.init_app(app)
 
 app.url_map.strict_slashes = False
 
@@ -113,13 +134,12 @@ def download_file(filename):
     return send_from_directory(upload_folder, filename, as_attachment=True)
 
 
-# Mostrar todas las rutas al iniciar el servidor
+# Mostrar rutas en consola al iniciar
 with app.app_context():
     print("\n🔎 RUTAS REGISTRADAS EN FLASK:")
     for rule in app.url_map.iter_rules():
         print(f"{rule} → métodos: {','.join(rule.methods)}")
     print("🔚 FIN DE RUTAS\n")
-
 
 # MAIN
 if __name__ == '__main__':

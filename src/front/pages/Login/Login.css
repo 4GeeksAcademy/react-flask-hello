@@ -7,11 +7,11 @@
   justify-content: center;
   padding: 1rem;
   background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.05),
-                rgba(0, 0, 0, 0.05)
-              ),
-              url('/ruta/a/tu/fondo.jpg') no-repeat center center/cover;
+      135deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(0, 0, 0, 0.05)
+    ),
+    url("src/front/assets/img/Login1.jpg") no-repeat center center/cover;
 }
 
 /* Contenedor del login con glassmorphism + animación */

@@ -7,6 +7,8 @@ import WeatherForecast from '../../components/WeatherForecast/WeatherForecast';
 import Report from '../../components/Reports/Reports'; // o ajusta la ruta según tu estructura
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelectorModal";
+import bgImage from '../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg';
+
 
 
 const Dash_user = () => {
@@ -243,177 +245,204 @@ const Dash_user = () => {
                 />
             )}
 
-            <div className="dashboard-container">
-                <div className="top-section two-column-layout">
-                    <div className="left-panel">
-                        <div className="map-container">
-                            {selectedField && selectedField.coordinates ? (
-                                (() => {
-                                    const [lat, lon] = selectedField.coordinates
-                                        .split(',')
-                                        .map(coord => parseFloat(coord.trim()));
+            <div
+                className="dashboard-container"
+                style={{
+                    position: 'relative', // 👈 necesario para el overlay
+                    backgroundImage: `url(${bgImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed',
+                    backgroundRepeat: 'no-repeat',
+                    overflow: 'hidden', // 👈 por si acaso
+                }}
+            >
+                {/* ✅ CAPA OSCURA + DIFUMINADA */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                        backdropFilter: 'blur(3px)',
+                        zIndex: 0,
+                    }}
+                ></div>
 
-                                    return (
-                                        <MapboxParcel
-                                            key={selectedField.id}
-                                            latitude={lat}
-                                            longitude={lon}
-                                            fields={fieldsList}
-                                            onFieldClick={(field) => {
-                                                setSelectedField(field);
-                                                dispatch({
-                                                    type: "SET_DRAWN_FIELD",
-                                                    payload: polygon.geometry,
-                                                });
+                {/* ✅ TODO EL CONTENIDO DENTRO DE UN WRAPPER CON Z-INDEX 1 */}
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                    <div className="top-section two-column-layout">
+                        <div className="left-panel">
+                            <div className="map-container">
+                                {selectedField && selectedField.coordinates ? (
+                                    (() => {
+                                        const [lat, lon] = selectedField.coordinates
+                                            .split(',')
+                                            .map(coord => parseFloat(coord.trim()));
 
-                                                localStorage.setItem("selectedFieldId", field.id);
-                                            }}
-                                            onDraw={(info) => {
-                                                const truncate = (num, decimals = 2) => {
-                                                    const factor = Math.pow(10, decimals);
-                                                    return Math.floor(num * factor) / factor;
-                                                };
+                                        return (
+                                            <MapboxParcel
+                                                key={selectedField.id}
+                                                latitude={lat}
+                                                longitude={lon}
+                                                fields={fieldsList}
+                                                onFieldClick={(field) => {
+                                                    setSelectedField(field);
+                                                    dispatch({
+                                                        type: "SET_DRAWN_FIELD",
+                                                        payload: polygon.geometry,
+                                                    });
 
-                                                setDrawInfo({
-                                                    ...info,
-                                                    area: truncate(info.area)
-                                                });
-                                            }}
-                                        />
-                                    );
-                                })()
-                            ) : (
-                                <div className="map-placeholder">Cargando mapa...</div>
-                            )}
+                                                    localStorage.setItem("selectedFieldId", field.id);
+                                                }}
+                                                onDraw={(info) => {
+                                                    const truncate = (num, decimals = 2) => {
+                                                        const factor = Math.pow(10, decimals);
+                                                        return Math.floor(num * factor) / factor;
+                                                    };
+
+                                                    setDrawInfo({
+                                                        ...info,
+                                                        area: truncate(info.area)
+                                                    });
+                                                }}
+                                            />
+                                        );
+                                    })()
+                                ) : (
+                                    <div className="map-placeholder">Cargando mapa...</div>
+                                )}
+                            </div>
+
+                            <div className="weather-horizontal-section">
+                                <WeatherForecast daily={forecast} loading={loading.weather} />
+                            </div>
                         </div>
 
-                        <div className="weather-horizontal-section">
-                            <WeatherForecast daily={forecast} loading={loading.weather} />
-                        </div>
-                    </div>
+                        <div className="info-panel">
+                            {userData && selectedField && (
+                                <>
 
-                    <div className="info-panel">
-                        {userData && selectedField && (
-                            <>
-
-                                <div className="user-info">
-                                    <h2>{userData.name?.toUpperCase()}</h2>
-                                    {fieldsList.length > 1 && (
-                                        <button
-                                            className="change-field-button"
-                                            onClick={() => setInitialSelectionDone(false)}
-                                        >
-                                            🔄 Cambiar de cultivo
-                                        </button>
-                                    )}
-                                    <p>{selectedField.street}, {selectedField.number}</p>
-                                    <p>{selectedField.city}</p>
-                                    <div>
-                                        <p>
-                                            <strong>{selectedField.area} Ha</strong>
-                                        </p>
-                                        {drawInfo && (
-                                            <div className="area-box">
-                                                Área del polígono: {drawInfo.area} ha
-                                            </div>
+                                    <div className="user-info">
+                                        <h2>{userData.name?.toUpperCase()}</h2>
+                                        {fieldsList.length > 1 && (
+                                            <button
+                                                className="change-field-button"
+                                                onClick={() => setInitialSelectionDone(false)}
+                                            >
+                                                🔄 Cambiar de cultivo
+                                            </button>
                                         )}
+                                        <p>{selectedField.street}, {selectedField.number}</p>
+                                        <p>{selectedField.city}</p>
+                                        <div>
+                                            <p>
+                                                <strong>{selectedField.area} Ha</strong>
+                                            </p>
+                                            {drawInfo && (
+                                                <div className="area-box">
+                                                    Área del polígono: {drawInfo.area} ha
+                                                </div>
+                                            )}
+                                        </div>
+
+
+                                        <p>{selectedField.crop.toUpperCase()}</p>
                                     </div>
 
+                                    <div className="reports-section">
+                                        <h4>Mis Informes</h4>
 
-                                    <p>{selectedField.crop.toUpperCase()}</p>
-                                </div>
+                                        {loading.reports && (
+                                            <p className="loading-msg">🔄 Actualizando informes...</p>
+                                        )}
 
-                                <div className="reports-section">
-                                    <h4>Mis Informes</h4>
+                                        {filteredReports.length > 0 ? (
+                                            <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
+                                                {filteredReports.map((r, i) => (
+                                                    <li key={i}>
+                                                        <div className="report-item-header">
+                                                            <div>
+                                                                <a
+                                                                    href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="report-title"
+                                                                    style={{
+                                                                        display: 'block',
+                                                                        fontSize: '1.1rem',
+                                                                        fontWeight: '600',
+                                                                        color: '#111827',
+                                                                        textDecoration: 'none',
+                                                                        marginBottom: '0.25rem'
+                                                                    }}
+                                                                >
+                                                                    📌 {r.title || 'Sin título'}
+                                                                </a>
 
-                                    {loading.reports && (
-                                        <p className="loading-msg">🔄 Actualizando informes...</p>
-                                    )}
+                                                                <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
+                                                                    📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
+                                                                </p>
 
-                                    {filteredReports.length > 0 ? (
-                                        <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
-                                            {filteredReports.map((r, i) => (
-                                                <li key={i}>
-                                                    <div className="report-item-header">
-                                                        <div>
-                                                            <a
-                                                                href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="report-title"
-                                                                style={{
-                                                                    display: 'block',
-                                                                    fontSize: '1.1rem',
-                                                                    fontWeight: '600',
-                                                                    color: '#111827',
-                                                                    textDecoration: 'none',
-                                                                    marginBottom: '0.25rem'
-                                                                }}
-                                                            >
-                                                                📌 {r.title || 'Sin título'}
-                                                            </a>
+                                                                {r.description && (
+                                                                    <p className="report-description">📝 {r.description}</p>
+                                                                )}
+                                                            </div>
 
-                                                            <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
-                                                                📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
-                                                            </p>
+                                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                                <a
+                                                                    href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
+                                                                    className="download-report-button"
+                                                                    title="Descargar"
+                                                                >
+                                                                    ⬇️ Descargar
+                                                                </a>
 
-                                                            {r.description && (
-                                                                <p className="report-description">📝 {r.description}</p>
-                                                            )}
+                                                                <button
+                                                                    onClick={() => handleDeleteReport(r.id)}
+                                                                    className="delete-report-button"
+                                                                    title="Eliminar"
+                                                                >
+                                                                    🗑️ Eliminar
+                                                                </button>
+                                                            </div>
                                                         </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : !loading.reports ? (
+                                            <p>No hay informes disponibles</p>
+                                        ) : null}
+                                    </div>
 
-                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                            <a
-                                                                href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
-                                                                className="download-report-button"
-                                                                title="Descargar"
-                                                            >
-                                                                ⬇️ Descargar
-                                                            </a>
-
-                                                            <button
-                                                                onClick={() => handleDeleteReport(r.id)}
-                                                                className="delete-report-button"
-                                                                title="Eliminar"
-                                                            >
-                                                                🗑️ Eliminar
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : !loading.reports ? (
-                                        <p>No hay informes disponibles</p>
-                                    ) : null}
-                                </div>
-
-                                <button
-                                    className="request-report-button"
-                                    onClick={async () => {
-                                        await handleSendEmail();   // 📧 Enviar correo con PDF antes
-                                        navigate("/app/quote");    // 🚀 Luego redirigir
-                                    }}
-                                >
-                                    SOLICITAR PRESUPUESTO
-                                </button>
+                                    <button
+                                        className="request-report-button"
+                                        onClick={async () => {
+                                            await handleSendEmail();   // 📧 Enviar correo con PDF antes
+                                            navigate("/app/quote");    // 🚀 Luego redirigir
+                                        }}
+                                    >
+                                        SOLICITAR PRESUPUESTO
+                                    </button>
 
 
 
-                                <button
-                                    className="add-field-button"
-                                    onClick={() => navigate("/app/plot_form")}
-                                >
-                                    ➕ AÑADIR NUEVO CULTIVO
-                                </button>
-                            </>
-                        )}
+                                    <button
+                                        className="add-field-button"
+                                        onClick={() => navigate("/app/plot_form")}
+                                    >
+                                        ➕ AÑADIR NUEVO CULTIVO
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
+
+
                 </div>
-
-
             </div>
-
         </>
     );
 };

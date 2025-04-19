@@ -14,16 +14,22 @@
 .business-container {
   min-height: 80vh;
   padding: 20px;
-  max-width: auto;
   margin: 0 auto;
+  justify-content: flex-start;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
 }
 
 .business-card-link {
-  width: 300px;
+  width: calc(25% - 30px);
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease;
-  display: block;
+  min-width: 200px;
+  flex-grow:0;
+  flex-shrink: 0;
 }
 
 .business-card-link:hover {
@@ -41,8 +47,8 @@
   justify-content: center;
   border: 1px solid #e0e0e0;
   transition: all 0.3s ease;
-  width: 20rem;
-  margin: 20px;
+  width: 100%;
+  margin: 0;
 }
 
 .business-card:hover {
@@ -58,9 +64,23 @@
   color: #000000;
 }
 
-/* Responsive design */
-@media (max-width: 992px) {
-  .business-grid {
-    grid-template-columns: repeat(2, 1fr);
+
+@media (max-width: 1200px) {
+  .business-card-link {
+    width: calc(33.33% - 30px);
+  }
+}
+@media (max-width:992px){
+  .business-card-link {
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width:576px){
+  .business-card-link {
+    width:100%;
+    min-width: auto;
+  }
+  .business-container{
+    gap:20px
   }
 }

@@ -1,71 +1,131 @@
 .login-page {
     display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
-    background: radial-gradient(circle, #1a1a2e, #0f0f1f);
+    background: radial-gradient(circle at center, #0f0f1f, #050510);
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
 }
 
 .login-card {
     background-color: #111;
     padding: 40px;
-    border-radius: 10px;
-    margin: auto;
-    width: 400px;
+    border-radius: 20px;
+    width: 420px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
 }
 
 .login-title {
     color: #a855f7;
     font-weight: bold;
-    font-size: 28px;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-input {
-    margin-top: 15px;
-    padding: 10px;
+.login-card h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.login-card p {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="password"] {
+    margin-bottom: 15px;
+    padding: 12px;
     font-size: 16px;
-    border-radius: 5px;
     border: none;
+    border-bottom: 2px solid #444;
+    background: transparent;
+    color: white;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-bottom: 2px solid orange;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #ccc;
 }
 
 .login-btn {
     background-color: orange;
     color: black;
     font-weight: bold;
-    margin-top: 20px;
-    padding: 10px;
+    padding: 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #e69500;
 }
 
 .github-btn {
     margin-top: 10px;
-    padding: 10px;
+    padding: 12px;
     background-color: black;
     color: white;
     border: 1px solid #333;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.github-btn i {
+    margin-right: 8px;
 }
 
 .register-link {
     margin-top: 15px;
     font-size: 14px;
+    color: #ccc;
 }
 
 .register-link span {
     color: orange;
     cursor: pointer;
+    font-weight: bold;
+    margin-left: 5px;
 }
 
 .login-info {
-    margin: auto;
-    padding-left: 80px;
+    margin-left: 80px;
     font-size: 18px;
-    line-height: 2.5;
+    line-height: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-info p {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+}
+
+.login-info i {
+    color: orange;
+    font-size: 20px;
 }

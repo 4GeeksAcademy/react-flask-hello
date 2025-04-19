@@ -74,12 +74,15 @@ export default function storeReducer(store, action = {}) {
       };
 
     case "SET_DRAWN_FIELD":
-      const { fieldId, geometry } = action.payload;
+      if (!action.payload || !action.payload.fieldId) return store;
       return {
         ...store,
         drawnFields: {
           ...store.drawnFields,
-          [fieldId]: geometry,
+          [action.payload.fieldId]: {
+            geometry: action.payload.geometry,
+            area: action.payload.area,
+          },
         },
       };
 

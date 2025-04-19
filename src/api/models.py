@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Column, Integer, Float, Boolean, ForeignKey,LargeBinary
+from sqlalchemy import String, Column, Integer, Float, Boolean, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from typing import Optional
@@ -7,6 +7,8 @@ from typing import Optional
 db = SQLAlchemy()
 
 # TABLA DE USUARIO
+
+
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     firstname: Mapped[str] = mapped_column(String(120), nullable=True)
@@ -15,8 +17,9 @@ class User(db.Model):
         String(120), unique=True, nullable=True)
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
-    
-    _password: Mapped[str] = mapped_column("password", String(128), nullable=False)
+
+    _password: Mapped[str] = mapped_column(
+        "password", String(128), nullable=False)
 
     is_active: Mapped[bool] = mapped_column(
         Boolean(), nullable=False, default=False)
@@ -58,6 +61,8 @@ class User(db.Model):
         }
 
 # TABLA DE ROL
+
+
 class Rol(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
@@ -75,6 +80,8 @@ class Rol(db.Model):
         }
 
 # TABLA DE COMPRAS
+
+
 class Compras(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
@@ -86,6 +93,8 @@ class Compras(db.Model):
         }
 
 # TABLA DE STOCK
+
+
 class Stock(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
@@ -97,6 +106,8 @@ class Stock(db.Model):
         }
 
 # TABLA DE PRODUCTOS
+
+
 class Productos(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     product_name: Mapped[str] = mapped_column(String(120), nullable=False)
@@ -141,6 +152,8 @@ class TigrisFiles(db.Model):
         }
 
 # TABLA DE FACTURAS
+
+
 class Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
@@ -157,6 +170,8 @@ class Facturas(db.Model):
         }
 
 # TABLA DETALLES_FACTURA (PRODUCTOS - FACTURAS)
+
+
 class Detalles_Facturas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     # Relación muchos a uno con Facturas, la tabla "uno"
@@ -175,12 +190,15 @@ class Detalles_Facturas(db.Model):
         }
 
 # TABLA DE LOGOS
+
+
 class Logo(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     logo_url: Mapped[str] = mapped_column(
         String(500), nullable=True, default="https://placehold.co/600x400/EEE/31343C")
 
-    image_data: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
+    image_data: Mapped[Optional[bytes]] = mapped_column(
+        LargeBinary, nullable=True)
 
     # Añadimos la relación con el usuario
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)

@@ -1,54 +1,70 @@
-import React, { useEffect } from "react";
-import backgroundImage from "../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg";
-import mask from "../../assets/img/putofondo.svg?url";
-import logo from "../../assets/img/Logo_DronFarm_Icono1.png";
+import React from "react";
 import "./Landing.css";
+import logo from "../../assets/img/Logo_DronFarm_Icono1.png"; // Ajusta la ruta según la ubicación de tu logo
 
 const Landing = () => {
-  useEffect(() => {
-    document.body.classList.add("landing-page");
-    return () => {
-      document.body.classList.remove("landing-page");
-    };
-  }, []);
-
   return (
     <div className="landing-container">
-      {/* Fondo con máscara */}
-      <div
-        className="background-layer"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      ></div>
-
-      {/* Logo absoluto */}
-      <img src={logo} alt="DronFarm Logo" className="logo-absolute" />
-
-      {/* Navbar absoluto */}
-      <nav className="navbar-absolute">
-        <a href="#servicios">Servicios</a>
-        <a href="#quienes-somos">Quiénes somos</a>
-        <a href="#contacto">Contacto</a>
-
-        <a href="#login" className="cta-session">Iniciar Sesión</a>
+      {/* Navbar en la parte superior */}
+      <nav className="navbar">
+        <div className="nav-links">
+          <a href="#inituracio">Inicio</a>
+          <a href="#servicios">Servicios</a>
+          <a href="#nosotros">Nosotros</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div className="nav-buttons">
+          <button className="login-btn">Iniciar Sesión</button>
+          <button className="signup-btn">Registrarse</button>
+        </div>
       </nav>
 
-
-      {/* Bloque inferior derecho */}
-      <div className="info-box">
-        <h2 className="info-title">Plataforma integral de monitoreo agrícola</h2>
-        <p className="info-subtitle">Decisiones inteligentes con datos reales</p>
-      </div>
-
-      {/* Flecha y link separados, con control total */}
-      <div className="info-action">
-        <div className="circle">
-          <div className="triangle"></div>
+      {/* Grid de rectángulos blancos */}
+      <div className="rectangles-grid">
+        <div className="rectangle rect-1">
+          {/* Logo */}
+          <div className="logo-container">
+            <img 
+              src={logo} 
+              alt="DroneFarm Logo" 
+              className="logo-img"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/200x100?text=DroneFarm";
+              }}
+            />
+          </div>
         </div>
-        <span className="info-link-text">+ información</span>
+        <div className="rectangle rect-2">
+          <div className="rect-content">
+            <h1>Plataforma integral de monitoreo agrícola</h1>
+            <p>Tecnología de drones para monitoreo y análisis avanzado</p>
+          </div>
+        </div>
+        <div className="rectangle rect-3">
+          <div className="rect-content">
+            <h3>Servicios</h3>
+            <ul>
+              <li>Mapeo de cultivos</li>
+              <li>Análisis de suelo</li>
+              <li>Detección de plagas</li>
+            </ul>
+          </div>
+        </div>
+        <div className="rectangle rect-4">
+          <div className="rect-content">
+            <h3>20%</h3>
+            <p>De ahorro en recursos hídricos</p>
+          </div>
+        </div>
+        <div className="rectangle rect-5">
+          <div className="rect-content">
+            <h2>Revoluciona tu forma de cultivar</h2>
+            <p>Nuestras soluciones con drones te permiten optimizar recursos, aumentar rendimientos y reducir costos con decisiones basadas en datos precisos.</p>
+            <button className="cta-button">Comenzar ahora</button>
+          </div>
+        </div>
       </div>
-
     </div>
   );
 };

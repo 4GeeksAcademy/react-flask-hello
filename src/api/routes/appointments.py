@@ -160,7 +160,7 @@ def add_appointment():
             end = (new_appointment.date_time + timedelta(hours=1)).isoformat()
 
             calendar_manager = GoogleCalendarManager()
-            event = calendar_manager.crear_evento(
+            event = calendar_manager.create_event(
                 titulo=title,
                 descripcion=description,
                 inicio=start,
@@ -299,7 +299,7 @@ def update_appointment(appointment_id):
                 'extendedProperties': extended_properties
             }
 
-            calendar_manager.actualizar_evento(
+            calendar_manager.update_event(
                 event_id=calendar.google_event_id,
                 datos_actualizados=updated_data
             )
@@ -329,7 +329,7 @@ def delete_appointment(appointment_id):
             appointment_id=appointment.id).first()
         if calendar:
             calendar_manager = GoogleCalendarManager()
-            calendar_manager.eliminar_evento(calendar.google_event_id)
+            calendar_manager.delete_event(calendar.google_event_id)
             db.session.delete(calendar)
 
         db.session.delete(appointment)

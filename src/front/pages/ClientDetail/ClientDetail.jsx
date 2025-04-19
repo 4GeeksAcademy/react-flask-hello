@@ -330,9 +330,9 @@ export const ClientDetail = () => {
         }
     };
 
-    const handleEditAppointment = () => {
+    const handleCreateAppointment = () => {
         if (activeService) {
-            navigate(`/appointment/edit/${activeService.id}`);
+            navigate(`/appointment/create/${clientId}`);
         }
     };
 
@@ -987,12 +987,12 @@ export const ClientDetail = () => {
                         </button>
 
                         <button
-                            onClick={handleEditAppointment}
+                            onClick={handleCreateAppointment}
                             className="action-button edit-appointment-button"
                             disabled={!activeService}
                         >
                             <i className="fas fa-calendar-alt"></i>
-                            <span>Modify appointment</span>
+                            <span>New Appointment</span>
                         </button>
 
                         <button

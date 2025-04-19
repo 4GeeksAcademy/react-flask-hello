@@ -2,16 +2,20 @@ import axios from "axios";
 import "../Styles/InventoryPanel.css";
 import { Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import ErrorMessage1 from "../../components/ErrorMessage1";
 import ErrorMessage2 from "../../components/ErrorMessage2";
 
 const InventoryPanel = () => {
+  // Estado para mensajes y errores
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  
+  // Estado para productos y operaciones
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Estado para edición de productos
   const [editingProduct, setEditingProduct] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -22,11 +26,18 @@ const InventoryPanel = () => {
     quantity: 0,
     image_url: ""
   });
+  
+  // Estado para upload de inventario
   const [showUpload, setShowUpload] = useState(false);
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const [downloading, setDownloading] = useState(false);
+  const [currentInventory, setCurrentInventory] = useState(null);
+  
+  // Estado para gestión de vistas
+  const [activeTab, setActiveTab] = useState("productos"); // productos, uploadInventario, downloadInventario
+  
+  const baseUrl = import.meta.env.VITE_BACKEND_URL || '';
   const token = localStorage.getItem("access_token");
 
   // Verificar autenticación y cargar productos al inicio
@@ -41,19 +52,17 @@ const InventoryPanel = () => {
     fetchProducts();
   }, []);
 
-  //---------LLAMO A LOS PRODUCTOS DEL INVENTARIO PARA TRAERLOS A MI PANEL----GET--------------
-  //-----USO CURRENTINVENTORY PARA TRAER EL NOBRE DEL DOCUMENTO Y REFLEJARO EN EL PANE---------
-
-  // ---me da el nombre del documento para reflejarlo en el panel y saber 1. que el documento esta y 2. que invetario es----
-  const [currentInventory, setCurrentInventory] = useState(null);
-
-  // ----arrancamos la funcion fetch-----------
+  //---------TRAER PRODUCTOS DEL INVENTARIO-----------
   const fetchProducts = async () => {
     try {
       setLoading(true);
 
-      //---- pido la informacion de los productos
-      const productsResponse = await axios.get(`${baseUrl}/upload/get-user-products`, {
+      // Obtener productos
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/get-user-products` 
+        : `${baseUrl}/upload/get-user-products`;
+        
+      const productsResponse = await axios.get(apiUrl, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -62,9 +71,13 @@ const InventoryPanel = () => {
       if (productsResponse.data && productsResponse.data.productos) {
         setProducts(productsResponse.data.productos);
 
-        //----- traemos la información del inventario actual-------
+        // Obtener información del inventario actual
         try {
-          const inventoryResponse = await axios.get(`${baseUrl}/upload/current-inventory-info`, {
+          const inventoryApiUrl = baseUrl.endsWith('/') 
+            ? `${baseUrl}upload/current-inventory-info` 
+            : `${baseUrl}/upload/current-inventory-info`;
+            
+          const inventoryResponse = await axios.get(inventoryApiUrl, {
             headers: {
               "Authorization": `Bearer ${token}`
             }
@@ -79,12 +92,13 @@ const InventoryPanel = () => {
       }
     } catch (error) {
       console.error("Error al cargar los productos:", error);
-      setError("No se pudieron cargar los productos. Por favor, intenta de nuevo.");
+      setError("No se pudieron cargar los productos. Intenta de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
+  //-------MANEJO DE FORMULARIOS Y CAMPOS--------
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -104,6 +118,7 @@ const InventoryPanel = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setErrorMessage(null); // Limpiar mensajes de error cuando se selecciona un archivo
   };
 
   const startEditing = (product) => {
@@ -128,9 +143,7 @@ const InventoryPanel = () => {
     });
   };
 
-
-  //---------------ELIMINO LOS PRODUCTOS DEL INVENTARIO DESDE MI PANEL-------DELETE---------
-
+  //---------------ELIMINAR PRODUCTOS------------------
   // Función para mostrar el modal de confirmación de eliminación
   const confirmDelete = (productId) => {
     setProductToDelete(productId);
@@ -148,8 +161,12 @@ const InventoryPanel = () => {
     if (!productToDelete) return;
 
     try {
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/delete-product/${productToDelete}` 
+        : `${baseUrl}/upload/delete-product/${productToDelete}`;
+        
       const response = await axios.delete(
-        `${baseUrl}/upload/delete-product/${productToDelete}`,
+        apiUrl,
         {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -161,7 +178,7 @@ const InventoryPanel = () => {
         // Eliminar el producto de la lista local
         setProducts(products.filter(product => product.id !== productToDelete));
 
-        // Mostrar mensaje de éxito personalizado
+        // Mostrar mensaje de éxito
         setSuccessMessage("Producto eliminado correctamente");
         setTimeout(() => setSuccessMessage(null), 3000);
 
@@ -175,7 +192,7 @@ const InventoryPanel = () => {
       if (error.response && error.response.status === 403) {
         setErrorMessage("No tienes permiso para eliminar este producto");
       } else {
-        setErrorMessage("Error al eliminar el producto. Por favor, intenta de nuevo.");
+        setErrorMessage("Error al eliminar el producto. Intenta de nuevo.");
       }
 
       // Cerrar el modal de confirmación
@@ -184,13 +201,11 @@ const InventoryPanel = () => {
     }
   };
 
-  //--------MODIFICO LOS PRODUCTOS DEL INVENTARIO DESDE MI PANEL-----PUT------
-
+  //--------ACTUALIZAR PRODUCTOS-------------
   const saveProduct = async () => {
     try {
       if (!editingProduct) return;
 
-      const baseUrl = import.meta.env.VITE_BACKEND_URL;
       const apiUrl = baseUrl.endsWith('/')
         ? `${baseUrl}upload/update-product/${editingProduct}`
         : `${baseUrl}/upload/update-product/${editingProduct}`;
@@ -214,18 +229,18 @@ const InventoryPanel = () => {
 
         cancelEditing();
 
-        // Mostrar mensaje de éxito personalizado
+        // Mostrar mensaje de éxito
         setSuccessMessage("Producto actualizado correctamente");
         setTimeout(() => setSuccessMessage(null), 3000);
       }
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
-      setErrorMessage("Error al actualizar el producto. Por favor, intenta de nuevo.");
+      setErrorMessage("Error al actualizar el producto. Intenta de nuevo.");
     }
   };
 
-  // Función para manejar la carga del archivo Excel
-  const handleUpload = async (event) => {
+  //--------SUBIR NUEVO INVENTARIO EXCEL--------------
+  const handleUploadInventory = async (event) => {
     event.preventDefault();
     if (!file) {
       setErrorMessage("Selecciona un archivo primero.");
@@ -238,13 +253,18 @@ const InventoryPanel = () => {
     }
 
     setUploading(true);
+    setErrorMessage(null);
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/inventory` 
+        : `${baseUrl}/upload/inventory`;
+        
       const response = await axios.post(
-        `${baseUrl}/upload/inventory`,
+        apiUrl,
         formData,
         {
           headers: {
@@ -257,13 +277,15 @@ const InventoryPanel = () => {
       setSuccessMessage(response.data.message);
       // Recargar productos después de subir el inventario
       fetchProducts();
-      setShowUpload(false);
       setFile(null);
+      
+      // Cambiar a la pestaña de productos automáticamente
+      setActiveTab("productos");
     } catch (error) {
       console.error("Error al subir archivo:", error);
       let errorMessage = "Error desconocido";
 
-      if (error.response) {
+      if (error.response && error.response.data) {
         errorMessage = error.response.data.error || error.message;
       } else {
         errorMessage = error.message;
@@ -272,6 +294,140 @@ const InventoryPanel = () => {
       setErrorMessage("Error al subir archivo: " + errorMessage);
     } finally {
       setUploading(false);
+    }
+  };
+
+  //--------ACTUALIZAR INVENTARIO EXISTENTE--------------
+  const handleUpdateInventory = async (event) => {
+    event.preventDefault();
+    if (!file) {
+      setErrorMessage("Selecciona un archivo primero.");
+      return;
+    }
+
+    if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+      setErrorMessage("Por favor, selecciona un archivo Excel válido (.xlsx o .xls)");
+      return;
+    }
+
+    setUploading(true);
+    setErrorMessage(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/update_inventory` 
+        : `${baseUrl}/upload/update_inventory`;
+        
+      const response = await axios.post(
+        apiUrl,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      );
+
+      setSuccessMessage(response.data.message);
+      // Recargar productos después de actualizar el inventario
+      fetchProducts();
+      setFile(null);
+      
+      // Cambiar a la pestaña de productos automáticamente
+      setActiveTab("productos");
+    } catch (error) {
+      console.error("Error al actualizar inventario:", error);
+      let errorMessage = "Error desconocido";
+
+      if (error.response && error.response.data) {
+        errorMessage = error.response.data.error || error.message;
+      } else {
+        errorMessage = error.message;
+      }
+
+      setErrorMessage("Error al actualizar inventario: " + errorMessage);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  //--------DESCARGAR INVENTARIO ACTUAL--------------
+  const handleDownloadInventory = async () => {
+    try {
+      setDownloading(true);
+      
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/download_inventory`
+        : `${baseUrl}/upload/download_inventory`;
+      
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        responseType: 'blob', // Importante: indica que la respuesta es un blob (archivo binario)
+      });
+      
+      // Crear un objeto URL para el blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      
+      // Crear elemento de descarga
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'mi_inventario.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      
+      // Limpiar después de la descarga
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      setSuccessMessage("Inventario descargado correctamente");
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error("Error al descargar inventario:", error);
+      setErrorMessage("Error al descargar el inventario. Intenta de nuevo.");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  //--------DESCARGAR PLANTILLA DE INVENTARIO--------------
+  const handleDownloadTemplate = async () => {
+    try {
+      setDownloading(true);
+      
+      const apiUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}upload/download_template`
+        : `${baseUrl}/upload/download_template`;
+      
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        responseType: 'blob',
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'plantilla_inventario.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      setSuccessMessage("Plantilla descargada correctamente");
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (error) {
+      console.error("Error al descargar plantilla:", error);
+      setErrorMessage("Error al descargar la plantilla. Intenta de nuevo.");
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -290,7 +446,7 @@ const InventoryPanel = () => {
 
   return (
     <div className="inventory-panel">
-      <h1 className="panel-title">Panel de Administración de Inventario</h1>
+      <h1 className="panel-title">Gestión de Inventario</h1>
 
       {/* Mensajes de error y éxito */}
       {errorMessage && (
@@ -323,199 +479,302 @@ const InventoryPanel = () => {
           </div>
         </div>
       )}
-      <div className="panel-actions">
-        <div className="current-inventory-info">
-          {currentInventory ? (
-            <div>
-              <span className="inventory-label">Tu inventario actual es: </span>
-              <span className="inventory-name">{currentInventory.name}</span>
-              {currentInventory.last_updated && (
-                <span className="inventory-date">
-                  (Última actualización: {new Date(currentInventory.last_updated).toLocaleDateString()})
-                </span>
-              )}
-            </div>
-          ) : products.length > 0 ? (
-            <span className="inventory-label">Inventario activo</span>
-          ) : (
-            <span className="inventory-label">No tienes inventario activo</span>
-          )}
-        </div>
 
-        <button
-          className="action-button upload-button"
-          onClick={() => setShowUpload(!showUpload)}
+      {/* Pestañas de navegación */}
+      <div className="inventory-tabs">
+        <button 
+          className={`tab-button ${activeTab === 'productos' ? 'active' : ''}`}
+          onClick={() => setActiveTab('productos')}
         >
-          {showUpload ? 'Cancelar' : 'Subir Inventario Excel'}
+          Productos
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'uploadInventario' ? 'active' : ''}`}
+          onClick={() => setActiveTab('uploadInventario')}
+        >
+          Cargar Inventario
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'downloadInventario' ? 'active' : ''}`}
+          onClick={() => setActiveTab('downloadInventario')}
+        >
+          Descargar Inventario
         </button>
       </div>
 
-      {showUpload && (
-        <div className="upload-container">
-          <h2>Cargar Inventario desde Excel</h2>
-          <p className="upload-info">
-            El archivo Excel debe contener las siguientes columnas:
-            <strong> nombre_del_producto, precio_por_unidad, descripción, unidades</strong>
-          </p>
-          <form onSubmit={handleUpload} className="upload-form">
-            <div className="file-input-container">
-              <input
-                type="file"
-                accept=".xlsx, .xls"
-                onChange={handleFileChange}
-                disabled={uploading}
-                id="fileInput"
-              />
-              <label htmlFor="fileInput" className="file-label">
-                {file ? file.name : "Seleccionar archivo Excel"}
-              </label>
-            </div>
-            <button
-              type="submit"
-              className="action-button"
-              disabled={uploading}
-            >
-              {uploading ? "Subiendo..." : "Subir Inventario"}
-            </button>
-          </form>
+      {/* Información sobre inventario actual - visible en todas las pestañas */}
+      <div className="inventory-info">
+        {currentInventory ? (
+          <div className="current-inventory-info">
+            <span className="inventory-label">Inventario actual: </span>
+            <span className="inventory-name">{currentInventory.name}</span>
+            {currentInventory.last_updated && (
+              <span className="inventory-date">
+                (Última actualización: {new Date(currentInventory.last_updated).toLocaleDateString()})
+              </span>
+            )}
+          </div>
+        ) : products.length > 0 ? (
+          <span className="inventory-label">Inventario activo (sin archivo asociado)</span>
+        ) : (
+          <span className="inventory-label">No hay inventario activo</span>
+        )}
+      </div>
+
+      {/* Contenido de la pestaña PRODUCTOS */}
+      {activeTab === 'productos' && (
+        <div className="tab-content">
+          <div className="table-container">
+            <table className="inventory-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                  <th>Imagen</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.length > 0 ? (
+                  products.map(product => (
+                    <tr key={product.id}>
+                      <td>{product.id}</td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <input
+                            type="text"
+                            name="product_name"
+                            value={formData.product_name}
+                            onChange={handleInputChange}
+                            className="edit-input"
+                          />
+                        ) : (
+                          product.product_name
+                        )}
+                      </td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <input
+                            type="number"
+                            name="price_per_unit"
+                            value={formData.price_per_unit}
+                            onChange={handleInputChange}
+                            className="edit-input"
+                            step="0.01"
+                          />
+                        ) : (
+                          `$${product.price_per_unit.toFixed(2)}`
+                        )}
+                      </td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            className="edit-input"
+                            rows="2"
+                          />
+                        ) : (
+                          product.description
+                        )}
+                      </td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <input
+                            type="number"
+                            name="quantity"
+                            value={formData.quantity}
+                            onChange={handleInputChange}
+                            className="edit-input"
+                          />
+                        ) : (
+                          product.quantity
+                        )}
+                      </td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <input
+                            type="text"
+                            name="image_url"
+                            value={formData.image_url}
+                            onChange={handleInputChange}
+                            className="edit-input"
+                          />
+                        ) : (
+                          <img
+                            src={product.image_url}
+                            alt={product.product_name}
+                            className="product-thumbnail"
+                            onError={(e) => {e.target.src = "https://placehold.co/600x400/EEE/31343C"}}
+                          />
+                        )}
+                      </td>
+                      <td>
+                        {editingProduct === product.id ? (
+                          <div className="btn-group">
+                            <button
+                              className="save-btn"
+                              onClick={saveProduct}
+                            >
+                              Guardar
+                            </button>
+                            <button
+                              className="cancel-btn"
+                              onClick={cancelEditing}
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="btn-group">
+                            <button
+                              className="edit-btn"
+                              onClick={() => startEditing(product)}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              className="delete-btn"
+                              onClick={() => confirmDelete(product.id)}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="no-products">
+                      No hay productos en el inventario.
+                      <br />
+                      <button 
+                        className="empty-state-btn"
+                        onClick={() => setActiveTab('uploadInventario')}
+                      >
+                        Subir archivo Excel para empezar
+                      </button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      <div className="table-container">
-        <table className="inventory-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Descripción</th>
-              <th>Cantidad</th>
-              <th>Imagen</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.length > 0 ? (
-              products.map(product => (
-                <tr key={product.id}>
-                  <td>{product.id}</td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <input
-                        type="text"
-                        name="product_name"
-                        value={formData.product_name}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                      />
-                    ) : (
-                      product.product_name
-                    )}
-                  </td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <input
-                        type="number"
-                        name="price_per_unit"
-                        value={formData.price_per_unit}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                        step="0.01"
-                      />
-                    ) : (
-                      `${product.price_per_unit.toFixed(2)}`
-                    )}
-                  </td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                        rows="2"
-                      />
-                    ) : (
-                      product.description
-                    )}
-                  </td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <input
-                        type="number"
-                        name="quantity"
-                        value={formData.quantity}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                      />
-                    ) : (
-                      product.quantity
-                    )}
-                  </td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <input
-                        type="text"
-                        name="image_url"
-                        value={formData.image_url}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                      />
-                    ) : (
-                      <img
-                        src={product.image_url}
-                        alt={product.product_name}
-                        className="product-thumbnail"
-                      />
-                    )}
-                  </td>
-                  <td>
-                    {editingProduct === product.id ? (
-                      <div className="btn-group">
-                        <button
-                          className="save-btn"
-                          onClick={saveProduct}
-                        >
-                          Guardar
-                        </button>
-                        <button
-                          className="cancel-btn"
-                          onClick={cancelEditing}
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="btn-group">
-                        <button
-                          className="edit-btn"
-                          onClick={() => startEditing(product)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          className="delete-btn"
-                          onClick={() => confirmDelete(product.id)}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="no-products">
-                  No hay productos en el inventario.
-                  <br />
-                  Puedes subir un archivo Excel para empezar.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      {/* Contenido de la pestaña CARGAR INVENTARIO */}
+      {activeTab === 'uploadInventario' && (
+        <div className="tab-content upload-tab">
+          <div className="upload-container">
+            <h2>Subir Inventario</h2>
+            
+            <div className="upload-instructions">
+              <p>Sube un archivo Excel con las siguientes columnas:</p>
+              <ul>
+                <li><strong>nombre_del_producto</strong> - Nombre del producto</li>
+                <li><strong>precio_por_unidad</strong> - Precio (sólo números, usar punto para decimales)</li>
+                <li><strong>descripción</strong> - Descripción del producto</li>
+                <li><strong>unidades</strong> - Cantidad disponible (número entero)</li>
+              </ul>
+              <p><strong>¿No tienes un archivo de inventario?</strong> Descarga nuestra <button 
+                className="template-link" 
+                onClick={handleDownloadTemplate}
+                disabled={downloading}
+              >
+                plantilla de inventario
+              </button></p>
+            </div>
+
+            <div className="file-selector">
+              <div className="file-input-container">
+                <input
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileChange}
+                  disabled={uploading}
+                  id="fileInput"
+                />
+                <label htmlFor="fileInput" className="file-label">
+                  {file ? file.name : "Seleccionar archivo Excel"}
+                </label>
+              </div>
+
+              {file && (
+                <div className="file-actions">
+                  <h3>¿Cómo quieres procesar este archivo?</h3>
+                  
+                  <div className="action-buttons">
+                    <button
+                      onClick={handleUpdateInventory}
+                      disabled={uploading}
+                      className="action-button update-btn"
+                    >
+                      {uploading ? "Procesando..." : "Actualizar inventario existente"}
+                    </button>
+                    
+                    <button
+                      onClick={handleUploadInventory}
+                      disabled={uploading}
+                      className="action-button replace-btn"
+                    >
+                      {uploading ? "Procesando..." : "Reemplazar inventario completo"}
+                    </button>
+                  </div>
+                  
+                  <div className="action-description">
+                    <p><strong>Actualizar inventario:</strong> Modifica productos existentes y añade nuevos sin eliminar productos que no estén en el archivo.</p>
+                    <p><strong>Reemplazar inventario:</strong> Elimina todo el inventario anterior y lo reemplaza con el contenido del archivo.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contenido de la pestaña DESCARGAR INVENTARIO */}
+      {activeTab === 'downloadInventario' && (
+        <div className="tab-content download-tab">
+          <div className="download-container">
+            <h2>Opciones de Exportación</h2>
+            
+            <div className="download-options">
+              <div className="download-option">
+                <h3>Descargar inventario actual</h3>
+                <p>Obtén un archivo Excel con todos los productos actualmente en tu inventario.</p>
+                <button
+                  onClick={handleDownloadInventory}
+                  disabled={downloading || products.length === 0}
+                  className="action-button download-btn"
+                >
+                  {downloading ? "Descargando..." : "Descargar inventario completo"}
+                </button>
+                {products.length === 0 && (
+                  <p className="empty-notice">No hay productos que descargar</p>
+                )}
+              </div>
+              
+              <div className="download-option">
+                <h3>Descargar plantilla vacía</h3>
+                <p>Obtén una plantilla Excel vacía con las columnas correctas para crear tu inventario.</p>
+                <button
+                  onClick={handleDownloadTemplate}
+                  disabled={downloading}
+                  className="action-button template-btn"
+                >
+                  {downloading ? "Descargando..." : "Descargar plantilla"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,262 +1,64 @@
 .inventory-panel {
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-    background-color: var(--bg);
-    color: var(--text);
-  }
-  
-  .panel-title {
-    margin-bottom: 20px;
-    color: var(--primary);
-    text-align: center;
-  }
-  
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-    margin-top: 20px;
-    background-color: var(--card);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px var(--shadow);
-  }
-  
-  .inventory-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .inventory-table th,
-  .inventory-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .inventory-table th {
-    background-color: var(--primary);
-    color: white;
-    font-weight: bold;
-  }
-  
-  .inventory-table tr:last-child td {
-    border-bottom: none;
-  }
-  
-  .inventory-table tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.02);
-  }
-  
-  .inventory-table tr:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  .product-thumbnail {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  /* Contenedor de carga */
-  .upload-container {
-    background-color: var(--card);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px var(--shadow);
-  }
-  
-  .upload-info {
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-  }
-  
-  .upload-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .file-input-container {
-    position: relative;
-  }
-  
-  .file-input-container input[type="file"] {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-  
-  .file-label {
-    display: block;
-    padding: 10px;
-    background-color: var(--bg);
-    border: 1px dashed var(--border);
-    border-radius: 4px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .file-label:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  /* Botones de acción */
-  .panel-actions {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .action-button {
-    padding: 8px 16px;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .action-button:hover {
-    background-color: var(--primary-hover);
-  }
-  
-  .upload-button {
-    background-color: #28a745;
-  }
-  
-  .upload-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Containers */
-  .loading-container, .error-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    font-size: 1.2rem;
-  }
-  
-  /* Botones */
-  .btn-group {
-    display: flex;
-    gap: 5px;
-  }
-  
-  .edit-btn, .delete-btn, .save-btn, .cancel-btn {
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    transition: all 0.2s;
-  }
-  
-  .edit-btn {
-    background-color: var(--primary);
-    color: white;
-  }
-  
-  .edit-btn:hover {
-    background-color: var(--primary-hover);
-  }
-  
-  .delete-btn {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .delete-btn:hover {
-    background-color: #c82333;
-  }
-  
-  .save-btn {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .save-btn:hover {
-    background-color: #218838;
-  }
-  
-  .cancel-btn {
-    background-color: #6c757d;
-    color: white;
-  }
-  
-  .cancel-btn:hover {
-    background-color: #5a6268;
-  }
-  
-  /* Estados de carga y error */
-  .loading, .error, .no-products {
-    text-align: center;
-    padding: 20px;
-    color: var(--text);
-  }
-  
-  .error {
-    color: #dc3545;
-  }
-  
-  .no-products {
-    font-style: italic;
-    color: var(--text);
-    opacity: 0.7;
-  }
-  
-  /* Inputs en modo edición */
-  .inventory-table input,
-  .inventory-table textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background-color: var(--bg);
-    color: var(--text);
-  }
-  
-  .inventory-table input:focus,
-  .inventory-table textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .inventory-table {
-      font-size: 14px;
-    }
-    
-    .inventory-table th,
-    .inventory-table td {
-      padding: 8px 10px;
-    }
-    
-    .btn-group {
-      flex-direction: column;
-    }
-    
-    .edit-btn, .delete-btn, .save-btn, .cancel-btn {
-      padding: 5px 8px;
-      font-size: 12px;
-    }
-  }
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: var(--bg);
+  color: var(--text);
+}
 
-  /* Estilos para la información del inventario actual */
+.panel-title {
+  margin-bottom: 20px;
+  color: var(--primary);
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+/* Estilos para pestañas de navegación */
+.inventory-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.tab-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tab-button.active {
+  border-bottom: 3px solid var(--primary);
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+/* Información de inventario */
+.inventory-info {
+  background-color: var(--card);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
 .current-inventory-info {
   display: flex;
   align-items: center;
-  flex: 1;
+  flex-wrap: wrap;
 }
 
 .inventory-label {
@@ -276,14 +78,377 @@
   opacity: 0.7;
 }
 
-/* Ajustar la disposición del panel de acciones */
-.panel-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+/* Tabla de productos */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
   background-color: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow);
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.inventory-table th {
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+}
+
+.inventory-table tr:last-child td {
+  border-bottom: none;
+}
+
+.inventory-table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.inventory-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.product-thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Inputs en modo edición */
+.inventory-table input,
+.inventory-table textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.inventory-table input:focus,
+.inventory-table textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Botones */
+.btn-group {
+  display: flex;
+  gap: 5px;
+}
+
+.edit-btn, .delete-btn, .save-btn, .cancel-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: var(--primary);
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Pestaña de carga de inventario */
+.upload-tab, .download-tab {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.upload-container, .download-container {
+  background-color: var(--card);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+.upload-container h2, .download-container h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.upload-instructions {
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 5px;
+}
+
+.upload-instructions ul {
+  margin: 10px 0;
+  padding-left: 25px;
+}
+
+.file-selector {
+  margin-top: 20px;
+}
+
+.file-input-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.file-input-container input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-label {
+  display: block;
+  padding: 15px;
+  background-color: var(--bg);
+  border: 2px dashed var(--border);
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  font-weight: 500;
+}
+
+.file-label:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: var(--primary);
+}
+
+.file-actions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.file-actions h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  flex: 1;
+  min-width: 200px;
+}
+
+.update-btn {
+  background-color: var(--primary);
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.replace-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.replace-btn:hover {
+  background-color: #5a6268;
+}
+
+.download-btn {
+  background-color: var(--primary);
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.template-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.template-btn:hover {
+  background-color: #218838;
+}
+
+.template-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-weight: bold;
+}
+
+.template-link:hover {
+  color: var(--primary-hover);
+}
+
+.action-description {
+  background-color: rgba(0, 0, 0, 0.03);
   padding: 10px 15px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px var(--shadow);
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.action-description p {
+  margin: 8px 0;
+}
+
+/* Pestaña de descarga */
+.download-options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.download-option {
+  flex: 1;
+  min-width: 300px;
+  background-color: var(--bg);
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-option h3 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.empty-notice {
+  color: #dc3545;
+  font-style: italic;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.empty-state-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.empty-state-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Estados de carga y vacío */
+.loading-container, .error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+}
+
+.error-container {
+  color: #dc3545;
+}
+
+.no-products {
+  text-align: center;
+  padding: 30px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .inventory-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+  
+  .inventory-table {
+    font-size: 0.9rem;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    padding: 8px 10px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    width: 100%;
+  }
+  
+  .download-options {
+    flex-direction: column;
+  }
 }

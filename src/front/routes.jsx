@@ -7,7 +7,6 @@ import { Layout } from "./pages/Layout";
 import Home from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import Settings from "./pages/SettingsPage";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
 import Cart from "./pages/Cart";
@@ -22,7 +21,8 @@ export const router = createBrowserRouter(
       <Route path="/home" element={<Home />} />
       <Route path="/single/:theId" element={<Single />} /> 
       <Route path="/demo" element={<Demo />} />
-      <Route path="/settings" element={<Settings />} />
+      {/* Redirección de settings a inventory */}
+      <Route path="/settings" element={<InventoryPanel />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/inventory" element={<InventoryPanel />} /> 
       <Route path="/admin/store-settings" element={<StoreSettings />} /> 

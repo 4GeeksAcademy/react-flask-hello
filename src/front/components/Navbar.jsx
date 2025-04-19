@@ -57,7 +57,6 @@ const Navbar = () => {
           {isLoggedIn && (
             <>
               <Link to="/inventory" className="nav-btn">Inventario</Link>
-              <Link to="/settings" className="nav-btn">Settings</Link>
               <Link to="/admin/store-settings" className="nav-btn">Datos del Comercio</Link>
               <Link to="/cart" className="nav-btn">Cart</Link>
               <button className="nav-btn logout-btn" onClick={LogoutButton}>Cerrar sesión</button>

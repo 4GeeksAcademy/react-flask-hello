@@ -1,4 +1,4 @@
-.client-all {
+.page-appointments {
   background-image: url("../../assets/images/background-newclient.svg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -7,3 +7,4 @@
   width: 100%;
   padding: 20px;
 }
+

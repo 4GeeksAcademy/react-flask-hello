@@ -81,7 +81,7 @@ class Users(db.Model):
         self.business_tax_id = business_tax_id
         self.role = role
         self.security_question = security_question
-        self.security_answer = security_answer 
+        self.security_answer = security_answer
         self.set_password(password)
 
     def set_password(self, password):
@@ -107,14 +107,12 @@ class Services(db.Model):
     name: Mapped[str] = mapped_column(
         String(75), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(500),  nullable=False)
-    # price with numeric, but can be with Float or even Biginteger
     price: Mapped[int] = mapped_column(Numeric(10, 2), nullable=False)
 
     business = relationship("Businesses", back_populates="services")
-    clients = relationship(
-        "Clients", secondary="client_service", back_populates="services")
-    appointments = relationship("Appointments", back_populates="service",
-                                cascade="all, delete-orphan")
+    clients = relationship("Clients", secondary="client_service", back_populates="services")
+    appointments = relationship("Appointments", back_populates="service", cascade="all, delete-orphan")
+    client_instances = relationship("ClientService", back_populates="service", cascade="all, delete-orphan")
 
     def serialize_service(self):
         return {
@@ -136,14 +134,17 @@ class Clients(db.Model):
         String(20), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False)
-    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=False)
+    business_id: Mapped[int] = mapped_column(
+        ForeignKey("business.id"), nullable=False)
 
     business = relationship("Businesses", back_populates="clients")
     services = relationship("Services", secondary="client_service", back_populates="clients")
-    notes = relationship("Notes", back_populates="client", cascade="all, delete-orphan")
+    notes = relationship("Notes", back_populates="client",cascade="all, delete-orphan")
     payments = relationship("Payments", back_populates="client", cascade="all, delete-orphan")
     appointments = relationship("Appointments", back_populates="client", cascade="all, delete-orphan")
     service_history = relationship("ServiceHistory", back_populates="client", cascade="all, delete-orphan")
+    service_instances = relationship("ClientService", back_populates="client", cascade="all, delete-orphan")
+
 
     def serialize_client(self):
         return {
@@ -153,12 +154,14 @@ class Clients(db.Model):
             "phone": self.phone,
             "client_id_number": self.client_id_number,
             "email": self.email,
-            "business_id": self.business_id,  # Incluir business_id en la serialización
+            "business_id": self.business_id,
             "services": [service.serialize_service() for service in self.services] if self.services else [],
             "notes": [note.serialize_note() for note in self.notes],
             "payments": [payment.serialize_payment() for payment in self.payments] if self.payments else [],
             "appointments": [appointment.serialize_appointment() for appointment in self.appointments] if self.appointments else [],
-            "service_history": [history.serialize_history() for history in self.service_history] if self.service_history else []
+            "service_history": [history.serialize_history() for history in self.service_history] if self.service_history else [],
+            "services": [service.serialize_service() for service in self.services] if self.services else [],
+            "service_instances": [instance.serialize() for instance in self.service_instances] if self.service_instances else []
         }
 
 
@@ -220,7 +223,8 @@ class Appointments(db.Model):
         ForeignKey("clients.id"), nullable=False)
     service_id: Mapped[int] = mapped_column(
         ForeignKey("service.id"), nullable=False)
-    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=False)
+    business_id: Mapped[int] = mapped_column(
+        ForeignKey("business.id"), nullable=False)
     date_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     status: Mapped[str] = mapped_column(Enum(
         "pending", "confirmed", "cancelled", "completed", name="appointment_status"), nullable=False, default="pending")
@@ -261,7 +265,8 @@ class Calendar(db.Model):
         ForeignKey("appointments.id"), nullable=False, unique=True)
     google_event_id: Mapped[str] = mapped_column(String(255), nullable=True)
     last_sync: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
-    business_id: Mapped[int] = mapped_column(ForeignKey("business.id"), nullable=True)
+    business_id: Mapped[int] = mapped_column(
+        ForeignKey("business.id"), nullable=True)
 
     appointment = relationship("Appointments", back_populates="calendar")
     business = relationship("Businesses", backref="calendar_events")
@@ -311,18 +316,25 @@ class ServiceHistory(db.Model):
 class ClientService(db.Model):
     __tablename__ = "client_service"
 
-    client_id: Mapped[int] = mapped_column(
-        ForeignKey("clients.id"), primary_key=True)
-    service_id: Mapped[int] = mapped_column(
-        ForeignKey("service.id"), primary_key=True)
-   
+    id: Mapped[int] = mapped_column(primary_key=True)
+    client_id: Mapped[int] = mapped_column(ForeignKey("clients.id"), index=True)
+    service_id: Mapped[int] = mapped_column(ForeignKey("service.id"), index=True)
     completed: Mapped[bool] = mapped_column(default=False)
     completed_date: Mapped[Optional[datetime]] = mapped_column(nullable=True)
-    
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+
+    client = relationship("Clients", back_populates="service_instances")
+    service = relationship("Services", back_populates="client_instances")
+
     def serialize(self) -> dict:
         return {
+            "id": self.id,
             "client_id": self.client_id,
             "service_id": self.service_id,
+            "service_name": self.service.name if self.service else None,
+            "service_price": self.service.price if self.service else None,
+            "service_description": self.service.description if self.service else None,
             "completed": self.completed,
-            "completed_date": self.completed_date.isoformat() if self.completed_date else None
+            "completed_date": self.completed_date.isoformat() if self.completed_date else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }

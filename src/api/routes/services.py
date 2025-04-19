@@ -168,17 +168,15 @@ def delete_service(service_name):
 @services_routes.route('/business/<int:business_id>/services', methods=['GET'])
 # @jwt_required()
 def get_business_services(business_id):
-    """Get all services for a specific business"""
+
     business = Businesses.query.get(business_id)
     
     if not business:
         return jsonify({"error": f"Business with ID {business_id} not found"}), 404
         
-    # Get all services for this business
     services = Services.query.filter_by(business_id=business_id).all()
     
     if not services:
-        # Return an empty array instead of 404 if no services found
         return jsonify([]), 200
         
     serialized_services = [service.serialize_service() for service in services]

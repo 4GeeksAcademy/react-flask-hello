@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: af5d7733ff05
+Revision ID: 4134557ea2b4
 Revises: 
-Create Date: 2025-04-18 13:59:05.626368
+Create Date: 2025-04-18 17:45:39.951728
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'af5d7733ff05'
+revision = '4134557ea2b4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -84,14 +84,20 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('client_service',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('client_id', sa.Integer(), nullable=False),
     sa.Column('service_id', sa.Integer(), nullable=False),
     sa.Column('completed', sa.Boolean(), nullable=False),
     sa.Column('completed_date', sa.DateTime(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
     sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
-    sa.PrimaryKeyConstraint('client_id', 'service_id')
+    sa.PrimaryKeyConstraint('id')
     )
+    with op.batch_alter_table('client_service', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_client_service_client_id'), ['client_id'], unique=False)
+        batch_op.create_index(batch_op.f('ix_client_service_service_id'), ['service_id'], unique=False)
+
     op.create_table('note',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('client_id', sa.Integer(), nullable=False),
@@ -142,6 +148,10 @@ def downgrade():
     op.drop_table('calendar')
     op.drop_table('payments')
     op.drop_table('note')
+    with op.batch_alter_table('client_service', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_client_service_service_id'))
+        batch_op.drop_index(batch_op.f('ix_client_service_client_id'))
+
     op.drop_table('client_service')
     op.drop_table('appointments')
     op.drop_table('users')

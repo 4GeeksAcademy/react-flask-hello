@@ -1,150 +1,185 @@
-@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
-
+/* login.css */
 body, html {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-image: url('/path-to-your-background.jpg');
-  background-size: cover;
-  background-position: center;
-  padding: 20px;
-}
-
-.login-container {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: center;
-  width: 100%;
-  max-width: 1100px;
-  gap: 0;
-}
-
-.login-box, .info-box {
-  padding: 40px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.login-box {
-  background-color: rgba(0, 0, 0, 0.95);
-  border-radius: 20px 0 0 20px;
-  max-width: 500px;
-  color: white;
-}
-
-.info-box {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 0 20px 20px 0;
-  color: white;
-  max-width: 500px;
-  text-align: left;
-  gap: 25px;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  font-size: 20px;
-}
-
-.info-item i {
-  font-size: 26px;
-  color: orange;
-}
-
-h1 {
-  color: #a855f7;
-  font-size: 24px;
-  margin: 0 0 10px;
-  font-weight: 700;
-}
-
-h2 {
-  margin-top: 0;
-  font-weight: bold;
-}
-
-input {
-  margin-top: 15px;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: none;
-  width: 100%;
-  background-color: #333;
-  color: white;
-}
-
-.login-btn {
-  background-color: orange;
-  color: black;
-  font-weight: bold;
-  margin-top: 20px;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 16px;
-}
-
-.github-btn {
-  margin-top: 10px;
-  padding: 12px;
-  background-color: black;
-  color: white;
-  border: 1px solid #333;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 16px;
-}
-
-.register-link {
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-.register-link span {
-  color: orange;
-  cursor: pointer;
-}
-
-.remember-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-@media (max-width: 900px) {
-  .login-container {
-    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-
-  .login-box {
-    border-radius: 20px 20px 0 0;
-  }
-
-  .info-box {
-    border-radius: 0 0 20px 20px;
+  
+  .login-page {
+    background: url('/workspaces/Proyecto_Final_4Geeks_DavidFarewell/src/front/assets/styles/images/waves_2k_upscaled.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    text-align: center;
+    padding: 20px;
   }
-
-  .info-item {
+  
+  .login-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    background: transparent;
+  }
+  
+  .login-box {
+    width: 50%;
+    box-sizing: border-box;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
   }
-}
+  
+  .login-left {
+    background-color: rgba(0, 0, 0, 0.9);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+  
+  .login-right {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px);
+    color: white;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    align-items: space-between;
+    justify-content: space-between;
+  }
+  
+  .login-title {
+    color: #a855f7;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    color: white;
+    margin: 0 0 10px;
+  }
+  
+  p {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    width: 94,5% !important;
+    padding: 12px !important;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2e2e2e;
+    color: white;
+    font-size: 16px;
+  }
+  
+  input::placeholder {
+    color: #ccc;
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+  
+  .login-btn {
+    background-color: orange;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .github-btn {
+    background-color: black;
+    color: white;
+    border: 1px solid #444;
+  }
+  
+  .signup-link {
+    font-size: 14px;
+    color: white;
+    text-align: center;
+  }
+  
+  .signup-link span {
+    color: orange;
+    cursor: pointer;
+  }
+  
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 25%;
+    gap: 20px;
+    justify-content: space-evenly;
+    align-items:flex-start;
+    height: 100%;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+    color: white;
+  }
+  
+  .info-item i {
+    font-size: 32px;
+    color: orange;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .login-container {
+      flex-direction: column;
+      border-radius: 0;
+      max-width: 500px;
+    }
+  
+    .login-box {
+      width: 100%;
+      border-radius: 0 !important;
+      padding: 30px 20px;
+    }
+  
+    .login-left {
+      border-radius: 16px 16px 0 0;
+    }
+  
+    .login-right {
+      border-radius: 0 0 16px 16px;
+      align-items: center;
+    }
+  
+    .info-list {
+      align-items: right;
+      padding-left: 40px;
+    }
+  
+    .info-item {
+      justify-content: center;
+      text-align: right;
+    }
+  }
+  

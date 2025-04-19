@@ -42,6 +42,62 @@
   scale: 1.1;
 }
 
-
-
 /*--------BUTTONS------*/
+
+
+/* Contenedor para el saludo y botón de logout */
+.user-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 15px;
+  position: relative;
+  min-width: 120px;
+}
+
+/* Texto de saludo */
+.greeting-text {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-primary, #333);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+/* Enlace de logout */
+.logout-link {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  padding: 2px 0;
+  text-align: right;
+  text-decoration: underline;
+}
+
+.logout-link:hover {
+  color: var(--accent, #ff0000);
+}
+
+/* Para móviles, ajustar el diseño responsivo */
+@media (max-width: 768px) {
+  .nav-content {
+    flex-direction: column;
+  }
+  
+  .nav_buttons {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .user-greeting {
+    margin: 10px 0;
+    align-items: center;
+    width: 100%;
+  }
+}

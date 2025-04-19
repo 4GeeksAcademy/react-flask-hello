@@ -26,6 +26,8 @@ def upgrade():
         batch_op.add_column(sa.Column('user_id', sa.Integer(), nullable=False))
         batch_op.create_foreign_key(None, 'user', ['user_id'], ['id'])
 
+       
+
     # ### end Alembic commands ###
 
 

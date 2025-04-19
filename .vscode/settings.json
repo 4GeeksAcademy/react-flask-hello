@@ -14,7 +14,7 @@
       {
         "scope": ["comment", "comment.line", "comment.block"],
         "settings": {
-
+          "fontStyle": "underline",
           "foreground": "#eaff00"
 
         }
@@ -28,7 +28,7 @@
 
   // Opciones adicionales para mejorar la visualización
   "editor.fontSize": 14,
-  "editor.lineHeight": 22,
-  "editor.cursorStyle": "block", // Estilo de cursor (bloque)
+  "editor.lineHeight": 25,
+  "editor.cursorStyle": "line", // Estilo de cursor
   "editor.renderWhitespace": "all" // Mostrar espacios, tabs y saltos de línea
 }

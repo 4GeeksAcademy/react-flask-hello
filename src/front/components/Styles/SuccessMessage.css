@@ -1,0 +1,94 @@
+/* Estilos para el mensaje de éxito */
+.success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5em;
+    border-radius: 20px;
+    color: hsl(206, 20%, 32%);
+    background: #d9d9d9;
+    box-shadow: 9px 9px 19px #192633;
+    text-align: center;
+    z-index: 1010;
+  }
+  
+  .success-message p {
+    background: none;
+    margin-bottom: 15px;
+  }
+  
+  /* Estilo del botón dentro del mensaje de éxito */
+  .success-message .box-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #d9d9d9;
+    color: #415361;
+    border: none;
+    border-radius: 15px;
+    border-color: #415361;
+    border-style: solid;
+    box-shadow: 3px 3px 15px #192633;
+    cursor: pointer;
+  }
+  
+  /* Efecto al pasar el mouse sobre el botón */
+  .success-message .box-btn:hover {
+    box-shadow: 9px 9px 19px #192633;
+    scale: 1.1;
+    transition: 0.1s;
+  }
+  
+  /* Estilos para mostrar la información del inventario actual */
+  .current-inventory-info {
+    background: var(--card);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-right: 15px;
+    flex: 1;
+  }
+  
+  .inventory-label {
+    font-weight: 500;
+    color: var(--text);
+  }
+  
+  .inventory-name {
+    font-weight: bold;
+    color: var(--primary);
+    margin-left: 5px;
+  }
+  
+  .inventory-date {
+    font-size: 0.8em;
+    color: var(--text);
+    opacity: 0.7;
+    margin-left: 10px;
+  }
+  /* Estilos para los botones de confirmación */
+.confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .confirm-buttons .box-btn:first-child {
+    background-color: #d9d9d9;
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .confirm-buttons .box-btn:first-child:hover {
+    scale: 1.1;
+    box-shadow: 9px 9px 19px #192633;
+  }
+  
+  .confirm-buttons .box-btn:last-child {
+    background-color: #d9d9d9;
+    color: #415361;
+  }
+  
+  /* Puedes agregar estos estilos a tu archivo MessageBox2.css existente */

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Styles/Navbar.css";
 import LogoFrame from "./Logo";
 import { useTheme } from '../Contexts/ThemeContext.jsx';
@@ -26,10 +26,8 @@ const Navbar = () => {
       setIsLoggedIn(!!localStorage.getItem("access_token"));
     };
 
-
     // Inicializa el estado al cargar el componente
     checkLoginStatus();
-
 
     // Escuchar cambios en localStorage
     window.addEventListener("storage", checkLoginStatus);
@@ -50,22 +48,25 @@ const Navbar = () => {
         <div className="nav_buttons">
           {!isLoggedIn && (
             <>
-              <button className="nav-btn" onClick={() => navigate("/")}>Register</button>
-              <button className="nav-btn" onClick={() => navigate("/login")}>Login</button>
+              <Link to="/" className="nav-btn">Register</Link>
+              <Link to="/login" className="nav-btn">Login</Link>
             </>
           )}
-          <button className="nav-btn" onClick={() => navigate("/home")}>Home</button>
-          <button className="nav-btn" onClick={() => navigate("/settings")}>Settings</button>
-          <button className="nav-btn"  onClick={() => navigate("/cart")}>Cart</button>
-
+          <Link to="/home" className="nav-btn">Home</Link>
+          
           {isLoggedIn && (
-            <button className="nav-btn" onClick={LogoutButton}>Cerrar sesión</button>
+            <>
+              <Link to="/inventory" className="nav-btn">Inventario</Link>
+              <Link to="/admin/store-settings" className="nav-btn">Datos del Comercio</Link>
+              <Link to="/cart" className="nav-btn">Cart</Link>
+              <button className="nav-btn logout-btn" onClick={LogoutButton}>Cerrar sesión</button>
+            </>
           )}
           
           {/* BOTÓN DE CAMBIO DE TEMA */}
           <button
             onClick={toggleTheme}
-            className="nav-btn"
+            className="nav-btn theme-btn"
             style={{
               backgroundColor: "var(--primary)",
               color: "white",

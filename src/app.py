@@ -8,8 +8,9 @@ from flask_cors import CORS  # IMPORTA CORS
 # IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
-from api.upload_routes import upload
+from api.Routes.routes import api
+from api.Routes.upload_routes import upload
+from api.Routes.store_routes import store
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -19,12 +20,12 @@ app = Flask(__name__)
 # Registra el Blueprint con el prefijo de URL
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(upload, url_prefix='/upload')
-
-
+app.register_blueprint(store, url_prefix='/api')  # Registrar el nuevo Blueprint
 
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app, supports_credentials=True)
 CORS(app, resources={r"/upload/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -58,20 +59,15 @@ app.config["JWT_HEADER_TYPE"] = "Bearer"
 jwt = JWTManager(app)
 
 # CONFIGURAR EL MANEJO DE ERRORES PARA LAS EXCEPCIONES PERSONALIZADAS
-
-
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
-
 
 # CONFIGURAR EL ADMINISTRADOR Y COMANDOS PERSONALIZADOS
 setup_admin(app)
 setup_commands(app)
 
 # RUTA PARA GENERAR EL SITEMAP DE LA API
-
-
 @app.route('/')
 def sitemap():
     if ENV == "development":
@@ -79,8 +75,6 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # RUTA PARA SERVIR CUALQUIER OTRO ARCHIVO ESTÁTICO, COMO IMÁGENES, JS, CSS, ETC.
-
-
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
@@ -88,7 +82,6 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # EVITAR CACHÉ
     return response
-
 
 # EJECUTAR LA APLICACIÓN SI EL ARCHIVO ES EJECUTADO DIRECTAMENTE
 if __name__ == '__main__':

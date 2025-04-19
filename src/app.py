@@ -1,18 +1,21 @@
 import os
+import re
 import datetime
-from flask import Flask, jsonify, send_from_directory
+from slugify import slugify
+from ..models.user import User
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS  # IMPORTA CORS
+from flask import Flask, jsonify, send_from_directory
 
 # IMPORTACIONES DEL PROYECTO
-from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.Routes.routes import api
-from api.Routes.upload_routes import upload
-from api.Routes.upload_logo import up_logo
 from api.admin import setup_admin
 from api.commands import setup_commands
+from api.Routes.upload_logo import up_logo
+from api.Routes.upload_routes import upload
+from api.utils import APIException, generate_sitemap
 
 # CREAR LA INSTANCIA DE LA APLICACIÓN FLASK
 app = Flask(__name__)
@@ -100,3 +103,53 @@ if __name__ == '__main__':
     # OBTENER EL PUERTO DE LA VARIABLE DE ENTORNO O USAR EL VALOR PREDETERMINADO 3001
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+
+# -----------GENERA UNA URL BASADA EN EL NOMBRE DE LA TIENDA DEL USUARIO------------
+
+def generate_store_url(store_name):
+    # Convertir el nombre a un formato URL válido (slug)
+    base_slug = slugify(store_name)
+    
+    # Verificar si el slug ya existe
+    slug = base_slug
+    counter = 1
+    
+    while User.query.filter_by(store_slug=slug).first() is not None:
+        # Si ya existe, añadir un número
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+        
+    return slug
+
+def update_store_info(user_id, data):
+    """Actualiza los datos del comercio para un usuario"""
+    user = User.query.get(user_id)
+    
+    if not user:
+        return None, "Usuario no encontrado"
+    
+    # Actualizar los datos del comercio
+    if 'store_name' in data:
+        user.store_name = data['store_name']
+        # Si se cambia el nombre, generar una nueva URL
+        if not user.store_slug or user.store_name != data.get('original_store_name', ''):
+            user.store_slug = generate_store_url(data['store_name'])
+    
+    if 'store_description' in data:
+        user.store_description = data['store_description']
+    
+    if 'bank_account' in data:
+        user.bank_account = data['bank_account']
+    
+    # Otros campos como la información de contacto, etc.
+    
+    db.session.commit()
+    
+    return {
+        'id': user.id,
+        'store_name': user.store_name,
+        'store_slug': user.store_slug,
+        'store_url': f"https://{user.store_slug}.tudominio.com" # o f"https://tudominio.com/tienda/{user.store_slug}"
+    }, None

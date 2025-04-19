@@ -6,6 +6,7 @@ from datetime import datetime, time as dt_time, date as dt_date
 from enum import Enum as PyEnum
 from datetime import datetime, timedelta
 import uuid
+from sqlalchemy.dialects.postgresql import JSON
 
 
 db = SQLAlchemy()
@@ -91,6 +92,7 @@ class Field(db.Model):
         ForeignKey("users.id"), nullable=False)
     # 👇 ❇️ Riki * Nuevo campo para coordenadas GPS
     coordinates: Mapped[str] = mapped_column(String(50), nullable=True)
+    geometry = db.Column(JSON, nullable=True)
     # ------------------------ #
 
     # Relaciones
@@ -111,6 +113,7 @@ class Field(db.Model):
             "city": self.city,
             "user_id": self.user_id,
             "coordinates": self.coordinates,
+            "geometry": self.geometry
         }
 
     def __repr__(self):

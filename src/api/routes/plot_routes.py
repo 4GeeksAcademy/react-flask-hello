@@ -180,3 +180,28 @@ def delete_field(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+
+# 👇 ✅ PUT /fields/<int:id>/geometry - Guardar geometría para una parcela
+
+@fields.route('/<int:id>/geometry', methods=['PUT'])
+@jwt_required()
+def save_field_geometry(id):
+    field = Field.query.get(id)
+    if not field:
+        return jsonify({"error": "Field not found"}), 404
+
+    body = request.get_json()
+    geometry = body.get("geometry")
+
+    if not geometry:
+        return jsonify({"error": "Missing geometry in request"}), 400
+
+    try:
+        field.geometry = geometry
+        db.session.commit()
+        db.session.refresh(field)
+        return jsonify({"message": "Geometry saved successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

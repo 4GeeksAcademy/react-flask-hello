@@ -24,6 +24,7 @@ const Dash_user = () => {
         reports: true
     });
     const [initialSelectionDone, setInitialSelectionDone] = useState(false);
+    const [drawInfo, setDrawInfo] = useState(null);
 
 
     useEffect(() => {
@@ -261,11 +262,22 @@ const Dash_user = () => {
                                             onFieldClick={(field) => {
                                                 setSelectedField(field);
                                                 dispatch({
-                                                    type: "SET_DRAWN_FIELD", 
+                                                    type: "SET_DRAWN_FIELD",
                                                     payload: polygon.geometry,
                                                 });
 
                                                 localStorage.setItem("selectedFieldId", field.id);
+                                            }}
+                                            onDraw={(info) => {
+                                                const truncate = (num, decimals = 2) => {
+                                                    const factor = Math.pow(10, decimals);
+                                                    return Math.floor(num * factor) / factor;
+                                                };
+
+                                                setDrawInfo({
+                                                    ...info,
+                                                    area: truncate(info.area)
+                                                });
                                             }}
                                         />
                                     );
@@ -296,7 +308,18 @@ const Dash_user = () => {
                                     )}
                                     <p>{selectedField.street}, {selectedField.number}</p>
                                     <p>{selectedField.city}</p>
-                                    <p><strong>{selectedField.area} HCT</strong></p>
+                                    <div>
+                                        <p>
+                                            <strong>{selectedField.area} Ha</strong>
+                                        </p>
+                                        {drawInfo && (
+                                            <div className="area-box">
+                                                Área del polígono: {drawInfo.area} ha
+                                            </div>
+                                        )}
+                                    </div>
+
+
                                     <p>{selectedField.crop.toUpperCase()}</p>
                                 </div>
 

@@ -1,3 +1,31 @@
+// 👆 ❇️ Riki for the group success 👊
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  Navigate
+} from "react-router-dom";
+
+import { Layout } from "./pages/Layout";
+import PublicLayout from "./pages/PublicLayout";
+import { Login } from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import Dash_user from "./pages/Dash_user/Dash_user";
+import Dash_admin from "./pages/Dash_admin/Dash_admin";
+import Plot_form from "./pages/Plot_form/Plot_form";
+import Landing from "./pages/Landing/Landing";
+import Contact from "./pages/Contact/Contact";
+import QuoteHistory from "./pages/Quote/QuoteHistory";
+import Quote from "./pages/Quote/Quote";
+import PdfDocument from "./components/Quote/PdfDocument";
+import PdfDocumentWrapper from "./components/Quote/PdfDocumentWrapper";
+import ProtectedRoute from "./ProtectedRoute";
+import WeOffer from "./pages/WeOffer/WeOffer";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import AboutUs from "./pages/AboutUs/AboutUs";
+
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>

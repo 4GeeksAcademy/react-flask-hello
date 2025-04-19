@@ -20,6 +20,7 @@ export const initialStore = () => {
       userId: localStorage.getItem("user_id"),
     },
     selectedField: null,
+    drawnFields: {},
   };
 };
 
@@ -70,6 +71,16 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         selectedField: action.payload,
+      };
+
+    case "SET_DRAWN_FIELD":
+      const { fieldId, geometry } = action.payload;
+      return {
+        ...store,
+        drawnFields: {
+          ...store.drawnFields,
+          [fieldId]: geometry,
+        },
       };
 
     default:

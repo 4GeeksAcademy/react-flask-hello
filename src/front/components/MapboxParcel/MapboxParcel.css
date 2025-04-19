@@ -4,21 +4,25 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
+/* Estilo del marcador personalizado */
 .map-marker {
   width: 14px;
   height: 14px;
-  background-color: blue;
+  background-color: #1d4ed8; /* azul intenso */
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 0 2px white;
+  transition: transform 0.2s ease;
 }
 
 .map-marker:hover {
   transform: scale(1.2);
 }
 
+/* Popup de información del campo */
 .mapboxgl-popup .popup-content {
   font-size: 0.9rem;
   font-family: "Arial", sans-serif;
@@ -31,4 +35,35 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+/* Botones de control Mapbox (fullscreen, zoom) */
+.mapboxgl-ctrl {
+  font-family: inherit;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/* Dibujando */
+.mapbox-gl-draw_polygon,
+.mapbox-gl-draw_trash {
+  background-color: #2563eb !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  transition: background-color 0.3s ease;
+}
+
+.mapbox-gl-draw_polygon:hover,
+.mapbox-gl-draw_trash:hover {
+  background-color: #1e40af !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mapbox-parcel {
+    height: 300px;
+  }
 }

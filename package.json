@@ -56,7 +56,9 @@
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
 		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@mapbox/mapbox-gl-draw": "^1.5.0",
 		"@react-pdf/renderer": "^4.3.0",
+		"@turf/turf": "^7.2.0",
 		"axios": "^1.8.4",
 		"cors": "^2.8.5",
 		"framer-motion": "^12.7.4",

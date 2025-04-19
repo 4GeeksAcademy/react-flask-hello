@@ -35,45 +35,156 @@ body.landing-page {
   z-index: 1;
 }
 
-/* Capa superior: logo y navbar */
-.ui-layer {
+/* ✅ LOGO en absolute */
+.logo-absolute {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  top: 8rem;
+  left: 6rem;
+  height: 180px;
+  width: auto;
   z-index: 10;
 }
 
-/* Logo */
-.logo {
-  height: 60px;
-  width: auto;
-}
-
-/* Navbar */
-.navbar {
+/* ✅ NAVBAR en absolute */
+.navbar-absolute {
+  position: absolute;
+  top: 6rem;
+  right: 15rem;
   display: flex;
-  gap: 1.5rem;
+  align-items: center; /* ✅ Esto centra verticalmente */
+  gap: 8rem;
   padding: 0.75rem 1.5rem;
   border-radius: 1rem;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
+  z-index: 10;
 }
 
-.navbar a {
+.navbar-absolute a {
   color: #000;
   text-decoration: none;
   font-size: 1.1rem;
   transition: color 0.3s ease;
 }
 
-.navbar a:hover {
+.navbar-absolute a:hover {
+  color: #4682B4;
+}
+
+/* TEXTO INFERIOR DERECHO */
+.info-box {
+  position: absolute;
+  bottom: 13rem;
+  right: 12rem;
+  text-align: left;
+  z-index: 10;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.info-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.info-subtitle {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+/* FLECHA + "+ información" */
+.info-action {
+  position: absolute;
+  bottom: 10rem;         /* 🔼 ajusta altura */
+  right: 90rem;         /* 🔁 ajusta horizontal */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+/* Flecha triangular */
+.triangle {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid black;
+}
+
+.info-link-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  color: #000;
+}
+
+.info-link-text:hover {
+  color: #4682B4;
+}
+
+
+.cta-session {
+  backdrop-filter: blur(2px); /* más glass */
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cta-session:hover {
+  background: rgba(70, 130, 180, 0.4); /* tu azul con más glass */
+  color: white;
+}
+
+.info-action {
+  position: absolute;
+  bottom: 7rem;
+  right: 12rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+/* Círculo verde */
+.circle {
+  width: 30px;
+  height: 30px;
+  background-color: #198754;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Flechita dentro del círculo */
+.triangle {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid black;
+}
+
+/* Texto a la derecha */
+.info-link-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  color: #000;
+}
+
+.info-link-text:hover {
   color: #4682B4;
 }

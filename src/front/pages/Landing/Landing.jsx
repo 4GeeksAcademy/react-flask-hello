@@ -14,26 +14,41 @@ const Landing = () => {
 
   return (
     <div className="landing-container">
-      {/* Capa del fondo con máscara */}
+      {/* Fondo con máscara */}
       <div
         className="background-layer"
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          WebkitMaskImage: `url(${mask})`,
-          maskImage: `url(${mask})`,
         }}
       ></div>
 
-      {/* Capa por encima con logo y navbar */}
-      <div className="ui-layer">
-        <img src={logo} alt="DronFarm Logo" className="logo" />
-        <nav className="navbar glass">
-          <a href="#servicios">Servicios</a>
-          <a href="#quienes-somos">Quiénes somos</a>
-          <a href="#contacto">Contacto</a>
-          <a href="#login">Iniciar Sesión</a>
-        </nav>
+      {/* Logo absoluto */}
+      <img src={logo} alt="DronFarm Logo" className="logo-absolute" />
+
+      {/* Navbar absoluto */}
+      <nav className="navbar-absolute">
+        <a href="#servicios">Servicios</a>
+        <a href="#quienes-somos">Quiénes somos</a>
+        <a href="#contacto">Contacto</a>
+
+        <a href="#login" className="cta-session">Iniciar Sesión</a>
+      </nav>
+
+
+      {/* Bloque inferior derecho */}
+      <div className="info-box">
+        <h2 className="info-title">Plataforma integral de monitoreo agrícola</h2>
+        <p className="info-subtitle">Decisiones inteligentes con datos reales</p>
       </div>
+
+      {/* Flecha y link separados, con control total */}
+      <div className="info-action">
+        <div className="circle">
+          <div className="triangle"></div>
+        </div>
+        <span className="info-link-text">+ información</span>
+      </div>
+
     </div>
   );
 };

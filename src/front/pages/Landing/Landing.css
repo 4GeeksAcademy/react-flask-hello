@@ -4,7 +4,7 @@
 .landing-container {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to bottom, #6B9071, #E3EED4);
+  background: linear-gradient(to bottom, #405744, #E3EED4);
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -28,9 +28,10 @@
   background-color: rgba(255, 255, 255, 0.1);
   padding: 5px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Navbar */
+/* Navbar con efecto glassmorphic */
 .navbar {
   width: 100%;
   height: 60px;
@@ -38,22 +39,24 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo más transparente */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
+  -webkit-backdrop-filter: blur(10px); /* Para Safari */
   border-radius: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
   z-index: 1000;
 }
-
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 50px;
 }
 
 .nav-links a {
-  color: #375534;
+  color: #303E4E;
   text-decoration: none;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .nav-buttons {
@@ -62,12 +65,12 @@
 }
 
 .login-btn, .signup-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .login-btn {
@@ -168,7 +171,7 @@
 
 /* Botón CTA */
 .cta-button {
-  background-color: #375534;
+  background-color: #303E4E;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -243,7 +246,7 @@
 
 /* Estilos específicos para logo */
 .logo-container {
-  width: 180px;
+  width: 400px;
   height: auto;
   margin: 0 auto;
 }

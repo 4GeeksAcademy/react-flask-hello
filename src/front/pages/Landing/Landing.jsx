@@ -1,6 +1,6 @@
 import React from "react";
 import "./Landing.css";
-import logo from "../../assets/img/logo-dronefarm.png"; // Ajusta la ruta según la ubicación de tu logo
+import logo from "../../assets/img/Logo_DronFarm_Icono1.png"; // Ajusta la ruta según la ubicación de tu logo
 
 const Landing = () => {
   return (
@@ -42,7 +42,7 @@ const Landing = () => {
           </div>
           <div className="rectangle rect-2">
             <div className="rect-content">
-              <h3>Optimiza tu Agricultura</h3>
+              <h1>Plataforma integral de monitoreo agrícola</h1>
               <p>Tecnología de drones para monitoreo y análisis avanzado</p>
             </div>
           </div>

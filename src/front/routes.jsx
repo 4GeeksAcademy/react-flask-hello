@@ -29,24 +29,20 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {/* Rutas públicas con PublicLayout */}
+      {/* Todas las rutas públicas deben estar dentro de PublicLayout */}
       <Route path="/" element={<PublicLayout />} errorElement={<h1>Not found!</h1>}>
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="quotehistory" element={<QuoteHistory />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-
+        <Route path="reset-password/:token" element={<ResetPassword />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="contacto" element={<Contact />} />
+        <Route path="servicios" element={<WeOffer />} />
+        <Route path="nosotros" element={<AboutUs />} />
       </Route>
 
-      {/* Ruta contacto fuera del layout para controlar Navbar dinámicamente */}
-      <Route path="/contacto" element={<Contact />} />
-      <Route path="//servicios" element={<WeOffer />} />
-      <Route path="/nosotros" element={<AboutUs />} />
-
-
+      {/* Rutas privadas */}
       <Route
         path="/app"
         element={
@@ -64,7 +60,7 @@ export const router = createBrowserRouter(
         <Route path="pdfdocumentwrapper" element={<PdfDocumentWrapper />} />
       </Route>
 
-      {/* Ruta para redireccionar URLs no encontradas */}
+      {/* Redirección para 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </>
   )

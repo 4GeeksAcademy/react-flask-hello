@@ -1,25 +1,27 @@
-import { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+// src/components/ScrollToTop.jsx
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-// This component allows the scroll to go to the beginning when changing the view,
-// otherwise it would remain in the position of the previous view. 
-
-const ScrollToTop = ({ location, children }) => {
-    const prevLocation = useRef(location);
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
 
     useEffect(() => {
-        if (location !== prevLocation.current) {
-            window.scrollTo(0, 0);
-        }
-        prevLocation.current = location;
-    }, [location]);
+        const candidates = [
+            document.querySelector(".content-container"),
+            document.querySelector(".app-root"),
+            document.getElementById("root"),
+            document.body,
+            document.documentElement,
+        ];
 
-    return children;
+        for (let el of candidates) {
+            if (el && typeof el.scrollTo === "function") {
+                el.scrollTo({ top: 0, behavior: "smooth" }); // 🧈 animación suave activada
+            }
+        }
+    }, [pathname]);
+
+    return null;
 };
 
 export default ScrollToTop;
-
-ScrollToTop.propTypes = {
-    location: PropTypes.object,
-    children: PropTypes.any
-};

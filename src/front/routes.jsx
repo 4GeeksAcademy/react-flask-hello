@@ -6,7 +6,8 @@ import {
 import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Login/Login.jsx";
 import { Business } from "./pages/Business/Business.jsx";
-import { Appointment } from "./pages/Appointments/Appointments.jsx";
+import { Appointments } from "./pages/Appointments/Appointments.jsx";
+import { AppointmentForm } from "./components/AppointmentForm/AppointmentForm.jsx";
 import { Clients } from "./pages/Clients/Clients.jsx"
 import { NewClient } from "./pages/NewClient/NewClient.jsx";
 import { NewService } from "./pages/NewService/NewService.jsx"
@@ -28,8 +29,9 @@ export const AppRoutes = createBrowserRouter(
             <Route path="/newservice" element={<NewService />} />
             <Route path="/clients/:clientId" element={<ClientDetail />} />
             <Route path="/assignservice" element={<AssignService />} />
-            <Route path="/appointment/create" element={<Appointment />} />
-            <Route path="/appointment/create/:clientId" element={<Appointment />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/appointment/create" element={<AppointmentForm />} />
+            <Route path="/appointment/create/:clientId" element={<AppointmentForm />} />
         </Route>
     )
 );

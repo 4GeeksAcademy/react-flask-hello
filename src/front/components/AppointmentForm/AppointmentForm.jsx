@@ -226,140 +226,145 @@ export const AppointmentForm = ({ clientId = null }) => {
     }
 
     return (
-        <div className="appointment-form-container">
-            <div className="form-header">
-                <h2>Create new appointment</h2>
-                <button className="back-button" onClick={() => navigate(-1)}>
-                    <i className="fas fa-arrow-left"></i> Back
-                </button>
+        
+        <div className="all-appointment-form">
+            <div className="container">
+                <div className="appointment-form-container">
+                    <div className="form-header">
+                        <h2>Create new appointment</h2>
+                        <button className="back-button" onClick={() => navigate(-1)}>
+                            <i className="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+
+                    {success && (
+                        <div className="success-message">
+                            <i className="fas fa-check-circle"></i>
+                            <p>Appointment created successfully! Redirecting to calendar...</p>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="appointment-form">
+                        <div className="form-group">
+                            <label htmlFor="clientEmail">Client:</label>
+                            <select
+                                id="clientEmail"
+                                name="clientEmail"
+                                value={formData.clientEmail}
+                                onChange={handleChange}
+                                disabled={loading || clientId}
+                                className={formErrors.clientEmail ? "error" : ""}
+                            >
+                                <option value="">Select a client</option>
+                                {clients.map(client => (
+                                    <option key={client.id} value={client.email}>
+                                        {client.name} ({client.email})
+                                    </option>
+                                ))}
+                            </select>
+                            {formErrors.clientEmail && <div className="error-text">{formErrors.clientEmail}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="serviceName">Service:</label>
+                            <select
+                                id="serviceName"
+                                name="serviceName"
+                                value={formData.serviceName}
+                                onChange={handleChange}
+                                disabled={loading}
+                                className={formErrors.serviceName ? "error" : ""}
+                            >
+                                <option value="">Select a service</option>
+                                {services.map(service => (
+                                    <option key={service.id} value={service.name}>
+                                        {service.name} (${service.price})
+                                    </option>
+                                ))}
+                            </select>
+                            {formErrors.serviceName && <div className="error-text">{formErrors.serviceName}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="username">Professional:</label>
+                            <select
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                disabled={loading}
+                                className={formErrors.username ? "error" : ""}
+                            >
+                                <option value="">Select a professional</option>
+                                {users.map(user => (
+                                    <option key={user.id} value={user.username}>
+                                        {user.username}
+                                    </option>
+                                ))}
+                            </select>
+                            {formErrors.username && <div className="error-text">{formErrors.username}</div>}
+                        </div>
+
+                        <div className="date-time-container">
+                            <div className="form-group">
+                                <label htmlFor="date">Fecha:</label>
+                                <input
+                                    type="date"
+                                    id="date"
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleChange}
+                                    disabled={loading}
+                                    min={new Date().toISOString().split('T')[0]}
+                                    className={formErrors.date ? "error" : ""}
+                                />
+                                {formErrors.date && <div className="error-text">{formErrors.date}</div>}
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="time">Hour:</label>
+                                <select
+                                    id="time"
+                                    name="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
+                                    disabled={loading}
+                                    className={formErrors.time ? "error" : ""}
+                                >
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                </select>
+                                {formErrors.time && <div className="error-text">{formErrors.time}</div>}
+                            </div>
+                        </div>
+
+                        <div className="form-actions">
+                            <button
+                                type="button"
+                                className="cancel-button"
+                                onClick={() => navigate(-1)}
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="submit-button"
+                                disabled={loading}
+                            >
+                                {loading ? 'Creating...' : 'Create Appointment'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            {success && (
-                <div className="success-message">
-                    <i className="fas fa-check-circle"></i>
-                    <p>Appointment created successfully! Redirecting to calendar...</p>
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="appointment-form">
-                <div className="form-group">
-                    <label htmlFor="clientEmail">Client:</label>
-                    <select
-                        id="clientEmail"
-                        name="clientEmail"
-                        value={formData.clientEmail}
-                        onChange={handleChange}
-                        disabled={loading || clientId}
-                        className={formErrors.clientEmail ? "error" : ""}
-                    >
-                        <option value="">Select a client</option>
-                        {clients.map(client => (
-                            <option key={client.id} value={client.email}>
-                                {client.name} ({client.email})
-                            </option>
-                        ))}
-                    </select>
-                    {formErrors.clientEmail && <div className="error-text">{formErrors.clientEmail}</div>}
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="serviceName">Service:</label>
-                    <select
-                        id="serviceName"
-                        name="serviceName"
-                        value={formData.serviceName}
-                        onChange={handleChange}
-                        disabled={loading}
-                        className={formErrors.serviceName ? "error" : ""}
-                    >
-                        <option value="">Select a service</option>
-                        {services.map(service => (
-                            <option key={service.id} value={service.name}>
-                                {service.name} (${service.price})
-                            </option>
-                        ))}
-                    </select>
-                    {formErrors.serviceName && <div className="error-text">{formErrors.serviceName}</div>}
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="username">Professional:</label>
-                    <select
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        disabled={loading}
-                        className={formErrors.username ? "error" : ""}
-                    >
-                        <option value="">Select a professional</option>
-                        {users.map(user => (
-                            <option key={user.id} value={user.username}>
-                                {user.username}
-                            </option>
-                        ))}
-                    </select>
-                    {formErrors.username && <div className="error-text">{formErrors.username}</div>}
-                </div>
-
-                <div className="date-time-container">
-                    <div className="form-group">
-                        <label htmlFor="date">Fecha:</label>
-                        <input
-                            type="date"
-                            id="date"
-                            name="date"
-                            value={formData.date}
-                            onChange={handleChange}
-                            disabled={loading}
-                            min={new Date().toISOString().split('T')[0]}
-                            className={formErrors.date ? "error" : ""}
-                        />
-                        {formErrors.date && <div className="error-text">{formErrors.date}</div>}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="time">Hour:</label>
-                        <select
-                            id="time"
-                            name="time"
-                            value={formData.time}
-                            onChange={handleChange}
-                            disabled={loading}
-                            className={formErrors.time ? "error" : ""}
-                        >
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                        </select>
-                        {formErrors.time && <div className="error-text">{formErrors.time}</div>}
-                    </div>
-                </div>
-
-                <div className="form-actions">
-                    <button
-                        type="button"
-                        className="cancel-button"
-                        onClick={() => navigate(-1)}
-                        disabled={loading}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="submit-button"
-                        disabled={loading}
-                    >
-                        {loading ? 'Creating...' : 'Create Appointment'}
-                    </button>
-                </div>
-            </form>
         </div>
     );
 };

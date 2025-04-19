@@ -1,5 +1,13 @@
+.all-appointment-form {
+  background-image: url("../../assets/images/background-calendar.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 90vh;
+}
+
 .appointment-form-container {
-  max-width: 700px;
+  max-width: auto;
   margin: 0 auto;
   padding: 20px;
   background-color: #ffffff;

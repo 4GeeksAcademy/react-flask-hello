@@ -1,131 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: radial-gradient(circle at center, #0f0f1f, #050510);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('/path-to-your-background.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
 }
 
-.login-card {
-    background-color: #111;
-    padding: 40px;
-    border-radius: 20px;
-    width: 420px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+.login-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  gap: 0;
 }
 
-.login-title {
-    color: #a855f7;
-    font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 10px;
+.login-box, .info-box {
+  padding: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.login-card h2 {
-    font-size: 22px;
-    margin-bottom: 5px;
+.login-box {
+  background-color: rgba(0, 0, 0, 0.95);
+  border-radius: 20px 0 0 20px;
+  max-width: 500px;
+  color: white;
 }
 
-.login-card p {
-    color: #ccc;
-    font-size: 14px;
-    margin-bottom: 20px;
+.info-box {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0 20px 20px 0;
+  color: white;
+  max-width: 500px;
+  text-align: left;
+  gap: 25px;
 }
 
-input[type="email"],
-input[type="password"] {
-    margin-bottom: 15px;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-bottom: 2px solid #444;
-    background: transparent;
-    color: white;
-    outline: none;
-    transition: border-color 0.3s ease;
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-bottom: 2px solid orange;
+.info-item i {
+  font-size: 26px;
+  color: orange;
 }
 
-.remember-me {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #ccc;
+h1 {
+  color: #a855f7;
+  font-size: 24px;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+h2 {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+input {
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  background-color: #333;
+  color: white;
 }
 
 .login-btn {
-    background-color: orange;
-    color: black;
-    font-weight: bold;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.login-btn:hover {
-    background-color: #e69500;
+  background-color: orange;
+  color: black;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
 }
 
 .github-btn {
-    margin-top: 10px;
-    padding: 12px;
-    background-color: black;
-    color: white;
-    border: 1px solid #333;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.github-btn i {
-    margin-right: 8px;
+  margin-top: 10px;
+  padding: 12px;
+  background-color: black;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
 }
 
 .register-link {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #ccc;
+  margin-top: 15px;
+  font-size: 14px;
 }
 
 .register-link span {
-    color: orange;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 5px;
+  color: orange;
+  cursor: pointer;
 }
 
-.login-info {
-    margin-left: 80px;
-    font-size: 18px;
-    line-height: 3;
-    display: flex;
+.remember-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .login-container {
     flex-direction: column;
-    justify-content: center;
-}
+  }
 
-.login-info p {
-    display: flex;
+  .login-box {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .info-box {
+    border-radius: 0 0 20px 20px;
     align-items: center;
-    gap: 12px;
-    font-size: 17px;
-}
+    text-align: center;
+  }
 
-.login-info i {
-    color: orange;
-    font-size: 20px;
+  .info-item {
+    justify-content: center;
+  }
 }

@@ -1,0 +1,253 @@
+.inventory-panel {
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+  
+  .panel-title {
+    margin-bottom: 20px;
+    color: var(--primary);
+    text-align: center;
+  }
+  
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    background-color: var(--card);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--shadow);
+  }
+  
+  .inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .inventory-table th {
+    background-color: var(--primary);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .inventory-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .inventory-table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  .inventory-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .product-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  /* Contenedor de carga */
+  .upload-container {
+    background-color: var(--card);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+  
+  .upload-info {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .file-input-container {
+    position: relative;
+  }
+  
+  .file-input-container input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .file-label {
+    display: block;
+    padding: 10px;
+    background-color: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .file-label:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Botones de acción */
+  .panel-actions {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .action-button {
+    padding: 8px 16px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .action-button:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .upload-button {
+    background-color: #28a745;
+  }
+  
+  .upload-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Containers */
+  .loading-container, .error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 1.2rem;
+  }
+  
+  /* Botones */
+  .btn-group {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  
+  .edit-btn {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .save-btn {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .save-btn:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-btn {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Estados de carga y error */
+  .loading, .error, .no-products {
+    text-align: center;
+    padding: 20px;
+    color: var(--text);
+  }
+  
+  .error {
+    color: #dc3545;
+  }
+  
+  .no-products {
+    font-style: italic;
+    color: var(--text);
+    opacity: 0.7;
+  }
+  
+  /* Inputs en modo edición */
+  .inventory-table input,
+  .inventory-table textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+  
+  .inventory-table input:focus,
+  .inventory-table textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .inventory-table {
+      font-size: 14px;
+    }
+    
+    .inventory-table th,
+    .inventory-table td {
+      padding: 8px 10px;
+    }
+    
+    .btn-group {
+      flex-direction: column;
+    }
+    
+    .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+  }

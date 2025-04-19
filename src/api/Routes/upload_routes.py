@@ -304,6 +304,116 @@ def delete_inventory_from_tigris(inventory_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+#-------------ACTUALIZA PRODUCTOS DE LA BASE DE DATOS DESDE EL PANEL-------------------------------
+
+@upload.route("/update-product/<int:product_id>", methods=['PUT'])
+@jwt_required()
+def update_product(product_id):
+    """Actualiza un producto específico por su ID"""
+    try:
+        # Verificar el usuario actual
+        user_id = get_jwt_identity()
+        
+        # Obtener datos de la solicitud
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No se proporcionaron datos para actualizar"}), 400
+            
+        # Encontrar el producto
+        product = Productos.query.get(product_id)
+        
+        if not product:
+            return jsonify({"error": "Producto no encontrado"}), 404
+            
+        # Verificar que el producto pertenece al usuario actual
+        if product.user_id != user_id:
+            return jsonify({"error": "No tienes permiso para modificar este producto"}), 403
+            
+        # Actualizar los campos del producto
+        if 'product_name' in data:
+            product.product_name = data['product_name']
+            
+        if 'price_per_unit' in data:
+            product.price_per_unit = float(data['price_per_unit'])
+            
+        if 'description' in data:
+            product.description = data['description']
+            
+        if 'quantity' in data:
+            product.quantity = int(data['quantity'])
+            
+        if 'image_url' in data:
+            product.image_url = data['image_url']
+            
+        # Guardar los cambios
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Producto actualizado correctamente",
+            "product": product.serialize()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@upload.route("/get-user-products", methods=['GET'])
+@jwt_required()
+def get_user_products():
+    """Obtiene todos los productos del usuario autenticado"""
+    try:
+        user_id = get_jwt_identity()
+        
+        # Buscar productos del usuario actual
+        products = Productos.query.filter_by(user_id=user_id).all()
+        
+        # Serializar los resultados
+        products_serialized = [product.serialize() for product in products]
+        
+        return jsonify({"productos": products_serialized}), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+#-------------ACTUALIZA LA IMAGEN DEL PRODUCTO DESDE EL PANEL--------------------------------
+
+@upload.route("/upload-product-image", methods=['POST'])
+@jwt_required()
+def upload_product_image():
+    """Sube una imagen para un producto y devuelve la URL"""
+    user_id = get_jwt_identity()
+    
+    if "image" not in request.files:
+        return jsonify({"error": "No se encontró imagen en la solicitud"}), 400
+        
+    file = request.files["image"]
+    
+    if file.filename == '':
+        return jsonify({"error": "No se seleccionó ningún archivo"}), 400
+        
+    if file and allowed_file(file.filename):
+        # Crear nombre único para el archivo
+        filename = secure_filename(file.filename)
+        ext = filename.rsplit('.', 1)[1].lower()
+        unique_filename = f"product_{user_id}_{uuid.uuid4().hex}.{ext}"
+        
+        # Subir a Tigris
+        try:
+            url = upload_to_tigris_s3(file.read(), unique_filename, 'product-images')
+            
+            return jsonify({"url": url}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    return jsonify({"error": "Tipo de archivo no permitido"}), 400
+
+
+def allowed_file(filename):
+    """Verifica si el archivo tiene una extensión permitida"""
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 #-------------CONFIGURACION DE TIGRIS DATA BASE--------------------------------
 

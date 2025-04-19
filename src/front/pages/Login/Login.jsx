@@ -17,23 +17,47 @@ export const Login = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+
       const data = await response.json();
 
       if (response.ok) {
+        const { id, rolId } = data.user;
+        const token = data.access_token;
+
         dispatch({
           type: "LOGIN",
           payload: {
-            token: data.access_token,
-            rolId: data.user.rolId,
-            userId: data.user.id
+            token,
+            rolId,
+            userId: id,
           }
         });
 
         localStorage.setItem("fromLogin", "true");
 
-        showSuccessAlert("¡Inicio de sesión exitoso!", () => {
-          navigate(Number(data.user.rolId) === 2 ? "/app/dashboard" : "/app/dash_admin");
-        });
+        if (Number(rolId) === 2) {
+          // ✅ Usuario normal → verificar si tiene tierras
+          const fieldRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/fields/user/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+
+          const userFields = await fieldRes.json();
+
+          if (Array.isArray(userFields) && userFields.length > 0) {
+            showSuccessAlert("¡Inicio de sesión exitoso!", () => {
+              navigate("/app/dashboard");
+            });
+          } else {
+            showSuccessAlert("¡Bienvenido! Registra tu primer cultivo 🌱", () => {
+              navigate("/app/plot_form");
+            });
+          }
+        } else {
+          // 👨‍💻 Admin → redirigir directamente
+          showSuccessAlert("¡Inicio de sesión exitoso!", () => {
+            navigate("/app/dash_admin");
+          });
+        }
       } else {
         showErrorAlert(data.error || "Datos incorrectos");
       }
@@ -41,6 +65,7 @@ export const Login = () => {
       showErrorAlert("Error de conexión con el servidor");
     }
   };
+
 
   return (
     <div className="login-background">

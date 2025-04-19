@@ -189,6 +189,6 @@ class Logo(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image_logo_url": self.image_logo_url,
+            "logo_url": self.logo_url,
             "user_id": self.user_id
         }

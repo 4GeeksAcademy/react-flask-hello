@@ -26,7 +26,6 @@ app.register_blueprint(up_logo, url_prefix='/')
 # CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
 CORS(app, resources={
     r"/*": {
-        "origins": ["https://automatic-waddle-7vp4977w7rrx3xpr6-3000.app.github.dev"],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
     }

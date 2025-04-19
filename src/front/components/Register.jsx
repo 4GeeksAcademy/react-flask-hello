@@ -54,7 +54,7 @@ import ErrorMessage2 from "../components/ErrorMessage2";
             if (response.ok) {
                 // Guardar token - usar "access_token" para ser consistente con login
                 localStorage.setItem("access_token", data.access_token);
-                navigate("/settings");
+                navigate("/Settings");
             } else {
                 console.error("Error en respuesta:", {
                     status: response.status,

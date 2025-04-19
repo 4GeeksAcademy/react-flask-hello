@@ -14,7 +14,7 @@
       {
         "scope": ["comment", "comment.line", "comment.block"],
         "settings": {
-
+          "fontStyle": "underline",
           "foreground": "#eaff00"
 
         }
@@ -22,5 +22,13 @@
     ]
   },
 
-  
+  // Fuente Fira Code y ligaduras
+  "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
+  "editor.fontLigatures": true,
+
+  // Opciones adicionales para mejorar la visualización
+  "editor.fontSize": 14,
+  "editor.lineHeight": 25,
+  "editor.cursorStyle": "line", // Estilo de cursor
+  "editor.renderWhitespace": "all" // Mostrar espacios, tabs y saltos de línea
 }

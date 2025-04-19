@@ -8,7 +8,7 @@ import { Layout } from "./pages/Layout";
 import  Home  from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import Settings from "./components/Settings";
+import Settings from "./pages/SettingsPage";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
 import Cart from "./pages/Cart";
@@ -25,7 +25,7 @@ export const router = createBrowserRouter(
       <Route path= "/home" element={<Home />} />
       <Route path="/single/:theId" element={ <Single />} />  {}
       <Route path="/demo" element={<Demo />} />
-      <Route path="/settings" element={<Settings />} />
+      <Route path="/Settings" element={<Settings />} />
       <Route path="/cart" element={<Cart />} />
 
     </Route>

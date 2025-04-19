@@ -162,12 +162,12 @@ const Navbar = () => {
       const currentTheme = localStorage.getItem('userTheme') || theme;
       console.log("Guardando tema actual antes de logout:", currentTheme);
       
-      if (token) {
+      if (access_token) {
         // Notificar al backend sobre el logout (si tienes esta API disponible)
         try {
           await axios.post(`${baseUrl}api/logout`, {}, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${access_token}`
             }
           });
         } catch (error) {

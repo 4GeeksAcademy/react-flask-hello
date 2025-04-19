@@ -1,17 +1,17 @@
-from flask import request, jsonify, url_for, Blueprint, session
-from api.models import db, User, Logo
-from api.utils import generate_sitemap, APIException
-from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import request, jsonify, url_for, Blueprint, session
+from api.utils import generate_sitemap, APIException
+from werkzeug.utils import secure_filename
+from datetime import timedelta, datetime
+from api.models import db, User, Logo
+from flask import make_response
+from flask_cors import CORS
 from flask import send_from_directory
-import os
+import secrets
 import random
 import string
 import time
-from werkzeug.utils import secure_filename
-from flask import make_response
-from datetime import datetime
-import secrets
+import os
 
 api = Blueprint('api', __name__)
 
@@ -58,7 +58,6 @@ def signup():
             print(f"Error al crear el logo: {str(logo_error)}")
             # No fallamos si hay un problema con el logo
 
-        from datetime import timedelta  # Asegúrate de importar esto
 
         # Creamos el access token
         expires_delta = timedelta(days=30)

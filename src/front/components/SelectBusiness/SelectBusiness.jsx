@@ -11,7 +11,7 @@ export const SelectBusiness = ({ searchTerm = "" }) => {
 
 
 	useEffect(() => {
-		if (store.business.length === 0) {
+		{
 			const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
 			const fetchBusinesses = async () => {
@@ -58,7 +58,7 @@ export const SelectBusiness = ({ searchTerm = "" }) => {
 	};
 
 	return (
-
+		
 		<div className="business-container ">
 			{filteredBusinesses.map((business) => (
 				<Link

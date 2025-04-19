@@ -12,7 +12,7 @@ export const Business = () => {
 	};
 
 	return (
-
+		
 		<div className="business-container">
 			<SearchInput
 				value={search}

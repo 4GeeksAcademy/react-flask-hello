@@ -38,15 +38,18 @@ CORS(app, supports_credentials=True, resources={
 @app.before_request
 def handle_options_global():
     if request.method == 'OPTIONS':
-        response = app.make_default_options_response()
-        headers = response.headers
+        origin = request.headers.get('Origin')
+        print(f"🔥 OPTIONS request from Origin: {origin}")  # 👈 log de control
 
-        headers['Access-Control-Allow-Origin'] = request.headers.get(
-            'Origin', '*')
-        headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        headers['Access-Control-Allow-Headers'] = request.headers.get(
-            'Access-Control-Request-Headers', 'Authorization, Content-Type')
-        headers['Access-Control-Allow-Credentials'] = 'true'
+        response = jsonify({})
+        response.status_code = 204
+
+        if origin:
+            response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = request.headers.get(
+            'Access-Control-Request-Headers', 'Authorization,Content-Type')
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
 
         return response
 

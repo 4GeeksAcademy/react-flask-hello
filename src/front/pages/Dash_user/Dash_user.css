@@ -1,5 +1,21 @@
+/* ================================
+   FUENTES Y VARIABLES GLOBALES
+================================= */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap");
 
+:root {
+  --green-light: #8cc63f;
+  --green-medium: #4d9a64;
+  --green-dark: #355b2b;
+  --black-soft: #0a0a0a;
+  --text-dark: #1f2937;
+  --gray-soft: #f3f4f6;
+  --white: #ffffff;
+}
+
+/* ================================
+   ESTILOS GLOBALES
+================================= */
 html,
 body {
   margin: 0;
@@ -12,120 +28,145 @@ body {
   background-size: cover;
 }
 
+/* ================================
+   CONTENEDOR PRINCIPAL DEL DASHBOARD
+================================= */
 .dashboard-container {
   width: 100%;
-  min-height: 100vh;
+  max-width: 1300px;
   padding: 2rem;
-  margin: 0 auto;
+  margin: 1rem auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   backdrop-filter: blur(4px);
-  background-color: rgba(249, 250, 251, 0.8);
+  background-color: rgba(249, 250, 251, 0.85);
   border-radius: 1rem;
-  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
 }
 
-.top-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.dashboard-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+  border-radius: 1rem;
 }
 
-@media (min-width: 768px) {
-  .top-section {
-    flex-direction: row;
-  }
-}
-
+/* ================================
+   LAYOUT PRINCIPAL EN DOS COLUMNAS
+================================= */
+.top-section,
 .two-column-layout {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  align-items: stretch;
 }
-
 @media (min-width: 768px) {
+  .top-section,
   .two-column-layout {
     flex-direction: row;
     align-items: stretch;
   }
 }
 
+/* ================================
+   PANEL IZQUIERDO: MAPA + CLIMA
+================================= */
 .left-panel {
   flex: 3;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  height: 100%;
 }
 
 .map-container {
   flex: 2;
-  min-height: 0;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .weather-horizontal-section {
   flex: 1;
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  width: 100%;
-}
-
-.map-placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  color: gray;
-  background-color: #f0f0f0;
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* ================================
+   PANEL DERECHO: USUARIO + BOTONES
+================================= */
 .info-panel {
   flex: 1;
-  background: #ffffff;
+  background: var(--white);
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 100%;
-  transition: all 0.3s ease-in-out;
 }
 
+/* ================================
+   INFO DEL USUARIO Y PARCELA
+================================= */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+}
 .user-info h2 {
   font-family: "Poppins", sans-serif;
-  font-size: 1.5rem;
-  color: #111827;
-  letter-spacing: 0.5px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--black-soft);
+}
+.user-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #374151;
+}
+.user-info p strong {
+  font-weight: 600;
+  color: var(--green-dark);
+}
+.area-box {
+  margin-top: 0.25rem;
+  background: var(--gray-soft);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 0.4rem;
+  color: #374151;
+  font-weight: 500;
+  display: inline-block;
 }
 
-.user-info p,
-.reports-section p {
-  font-size: 0.95rem;
-  color: #4b5563;
-}
-
+/* ================================
+   SECCIÓN DE INFORMES
+================================= */
 .reports-section {
   margin-top: 0.25rem;
 }
-
 .reports-section h4 {
   font-weight: 600;
   font-family: "Poppins", sans-serif;
   margin-bottom: 0.5rem;
 }
 
+/* Lista de informes (no usada si hay modal) */
 .reports-section ul {
   list-style: none;
   padding-left: 0;
-  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -133,180 +174,143 @@ body {
   overflow-y: auto;
   padding-right: 0.5rem;
 }
-
 .reports-section ul::-webkit-scrollbar {
   width: 8px;
 }
-
 .reports-section ul::-webkit-scrollbar-thumb {
-  background: #10b981;
+  background: var(--green-medium);
   border-radius: 4px;
 }
-
 .reports-section ul::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: var(--gray-soft);
 }
 
-.reports-section li {
-  background-color: #f3f4f6;
+/* ================================
+   TARJETAS DE INFORMES
+================================= */
+.report-card {
+  background-color: var(--gray-soft);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.4s ease;
-  opacity: 0;
-  animation: fadeIn 0.4s ease forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-.reports-section li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.07);
-}
-
-.reports-section a {
-  font-size: 1rem;
-  color: #1f2937;
-  text-decoration: none;
-}
-
-.reports-section a:hover {
-  text-decoration: underline;
-  color: #111827;
-}
-
-.report-description {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
-}
-
-.download-report-button,
-.delete-report-button {
-  padding: 0.4rem 0.9rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.1s ease,
-    box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
   display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+.report-card:hover {
+  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.report-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.report-meta {
+  flex: 1;
+}
+.report-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--black-soft);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.report-date {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+.report-description {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+.report-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ================================
+   BOTONES GENERALES — UNIFICADOS
+================================= */
+.download-report-button,
+.delete-report-button,
+.request-report-button,
+.add-field-button,
+.change-field-button {
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.6rem; /* 🔄 Cambiado de 9999px a 0.6rem para forma cuadrada redondeada */
+  width: 100%; /* 🟢 Fuerza que todos sean igual de anchos */
+  min-width: 140px; /* ✅ Igual ancho mínimo */
+  height: 42px; /* ✅ Altura fija */
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
-  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
+/* ⬇️ Descargar */
 .download-report-button {
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--green-dark);
+  color: var(--white);
+  border: none;
 }
-
 .download-report-button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
-  box-shadow: 0 0 8px #3b82f6;
+  background-color: #1c4020;
+  box-shadow: 0 0 8px var(--green-dark);
 }
 
+/* ⬇️ Eliminar */
 .delete-report-button {
   background-color: #ef4444;
-  color: #ffffff;
+  color: var(--white);
+  border: none;
 }
-
 .delete-report-button:hover {
   background-color: #dc2626;
-  transform: translateY(-1px);
   box-shadow: 0 0 8px #f87171;
 }
 
-.request-report-button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background-color: #10b981;
-  color: white;
-  border-radius: 9999px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.request-report-button:hover {
-  background-color: #059669;
-  box-shadow: 0 0 12px #10b981;
-}
-
+/* ⬇️ Presupuesto / Añadir */
+.request-report-button,
 .add-field-button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #10b981;
-  color: white;
-  font-weight: bold;
+  background-color: var(--green-light);
+  color: var(--black-soft);
   border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-
+.request-report-button:hover,
 .add-field-button:hover {
-  background-color: #059669;
-  box-shadow: 0 0 10px #10b981;
+  background-color: #76b42f;
+  box-shadow: 0 0 10px var(--green-light);
 }
 
+/* ⬇️ Cambiar campo */
 .change-field-button {
   background-color: transparent;
-  border: 1px solid #10b981;
-  color: #10b981;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-  display: block;
-  width: 100%;
-  text-align: center;
+  border: 2px solid var(--green-medium);
+  color: var(--green-medium);
 }
-
 .change-field-button:hover {
-  background-color: #d1fae5;
-  color: #065f46;
-  border-color: #059669;
+  background-color: #e3fcec;
+  color: var(--green-dark);
+  border-color: var(--green-dark);
 }
 
-.weather-card,
-.forecast-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  background-color: #fafafa;
-}
-
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.temp {
-  font-size: 1.75rem;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  padding: 1rem;
-  text-align: center;
-  font-weight: 600;
-}
-
+/* ================================
+   MODAL GENERAL
+================================= */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -321,22 +325,27 @@ body {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--white);
   padding: 30px;
   border-radius: 10px;
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
 }
 
+/* ================================
+   UTILIDADES
+================================= */
 .loading-msg {
   color: #6b7280;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
-.reports-list.loading {
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+.error-message {
+  color: red;
+  padding: 1rem;
+  text-align: center;
+  font-weight: 600;
 }
 
 .polygon-area-info {

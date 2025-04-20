@@ -8,6 +8,8 @@ import Report from '../../components/Reports/Reports'; // o ajusta la ruta segú
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelectorModal";
 import bgImage from '../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg';
+import ReportModal from "../../components/ReportModal/ReportModal";
+
 
 
 
@@ -27,6 +29,8 @@ const Dash_user = () => {
     });
     const [initialSelectionDone, setInitialSelectionDone] = useState(false);
     const [drawInfo, setDrawInfo] = useState(null);
+    const [isReportModalOpen, setReportModalOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -224,40 +228,33 @@ const Dash_user = () => {
 
 
     return (
-
         <>
             {(!initialSelectionDone && fieldsList.length > 1) && (
                 <FieldSelectorModal
                     fields={fieldsList}
                     setSelected={(field) => {
                         setSelectedField(field);
-                        dispatch({
-                            type: "SET_SELECTED_FIELD",
-                            payload: field
-                        });
-                        localStorage.setItem("selectedFieldId", field.id); // ✅ Guardamos selección
+                        dispatch({ type: "SET_SELECTED_FIELD", payload: field });
+                        localStorage.setItem("selectedFieldId", field.id);
                         setInitialSelectionDone(true);
-
                     }}
-
                     onClose={() => setInitialSelectionDone(true)}
-                    selected={selectedField} // no olvides pasar esto si lo usas en la clase `selected`
+                    selected={selectedField}
                 />
             )}
 
             <div
                 className="dashboard-container"
                 style={{
-                    position: 'relative', // 👈 necesario para el overlay
+                    position: 'relative',
                     backgroundImage: `url(${bgImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundAttachment: 'fixed',
                     backgroundRepeat: 'no-repeat',
-                    overflow: 'hidden', // 👈 por si acaso
+                    overflow: 'hidden',
                 }}
             >
-                {/* ✅ CAPA OSCURA + DIFUMINADA */}
                 <div
                     style={{
                         position: 'absolute',
@@ -271,47 +268,30 @@ const Dash_user = () => {
                     }}
                 ></div>
 
-                {/* ✅ TODO EL CONTENIDO DENTRO DE UN WRAPPER CON Z-INDEX 1 */}
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     <div className="top-section two-column-layout">
                         <div className="left-panel">
                             <div className="map-container">
-                                {selectedField && selectedField.coordinates ? (
-                                    (() => {
-                                        const [lat, lon] = selectedField.coordinates
-                                            .split(',')
-                                            .map(coord => parseFloat(coord.trim()));
-
-                                        return (
-                                            <MapboxParcel
-                                                key={selectedField.id}
-                                                latitude={lat}
-                                                longitude={lon}
-                                                fields={fieldsList}
-                                                onFieldClick={(field) => {
-                                                    setSelectedField(field);
-                                                    dispatch({
-                                                        type: "SET_DRAWN_FIELD",
-                                                        payload: polygon.geometry,
-                                                    });
-
-                                                    localStorage.setItem("selectedFieldId", field.id);
-                                                }}
-                                                onDraw={(info) => {
-                                                    const truncate = (num, decimals = 2) => {
-                                                        const factor = Math.pow(10, decimals);
-                                                        return Math.floor(num * factor) / factor;
-                                                    };
-
-                                                    setDrawInfo({
-                                                        ...info,
-                                                        area: truncate(info.area)
-                                                    });
-                                                }}
-                                            />
-                                        );
-                                    })()
-                                ) : (
+                                {selectedField && selectedField.coordinates ? (() => {
+                                    const [lat, lon] = selectedField.coordinates.split(',').map(coord => parseFloat(coord.trim()));
+                                    return (
+                                        <MapboxParcel
+                                            key={selectedField.id}
+                                            latitude={lat}
+                                            longitude={lon}
+                                            fields={fieldsList}
+                                            onFieldClick={(field) => {
+                                                setSelectedField(field);
+                                                dispatch({ type: "SET_DRAWN_FIELD", payload: polygon.geometry });
+                                                localStorage.setItem("selectedFieldId", field.id);
+                                            }}
+                                            onDraw={(info) => {
+                                                const truncate = (num, decimals = 2) => Math.floor(num * 10 ** decimals) / 10 ** decimals;
+                                                setDrawInfo({ ...info, area: truncate(info.area) });
+                                            }}
+                                        />
+                                    );
+                                })() : (
                                     <div className="map-placeholder">Cargando mapa...</div>
                                 )}
                             </div>
@@ -324,7 +304,6 @@ const Dash_user = () => {
                         <div className="info-panel">
                             {userData && selectedField && (
                                 <>
-
                                     <div className="user-info">
                                         <h2>{userData.name?.toUpperCase()}</h2>
                                         {fieldsList.length > 1 && (
@@ -337,97 +316,41 @@ const Dash_user = () => {
                                         )}
                                         <p>{selectedField.street}, {selectedField.number}</p>
                                         <p>{selectedField.city}</p>
-                                        <div>
-                                            <p>
-                                                <strong>{selectedField.area} Ha</strong>
-                                            </p>
-                                            {drawInfo && (
-                                                <div className="area-box">
-                                                    Área del polígono: {drawInfo.area} ha
-                                                </div>
-                                            )}
-                                        </div>
+                                        <p><strong>{selectedField.area} Ha</strong></p>
 
+                                        {drawInfo && (
+                                            <div className="area-box">
+                                                Área del polígono: {drawInfo.area} ha
+                                            </div>
+                                        )}
 
                                         <p>{selectedField.crop.toUpperCase()}</p>
                                     </div>
 
                                     <div className="reports-section">
                                         <h4>Mis Informes</h4>
-
-                                        {loading.reports && (
+                                        {loading.reports ? (
                                             <p className="loading-msg">🔄 Actualizando informes...</p>
+                                        ) : (
+                                            <p>{filteredReports.length} informes disponibles</p>
                                         )}
-
-                                        {filteredReports.length > 0 ? (
-                                            <ul className={`reports-list ${loading.reports ? 'loading' : ''}`}>
-                                                {filteredReports.map((r, i) => (
-                                                    <li key={i}>
-                                                        <div className="report-item-header">
-                                                            <div>
-                                                                <a
-                                                                    href={`${import.meta.env.VITE_BACKEND_URL}${r.url}`}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="report-title"
-                                                                    style={{
-                                                                        display: 'block',
-                                                                        fontSize: '1.1rem',
-                                                                        fontWeight: '600',
-                                                                        color: '#111827',
-                                                                        textDecoration: 'none',
-                                                                        marginBottom: '0.25rem'
-                                                                    }}
-                                                                >
-                                                                    📌 {r.title || 'Sin título'}
-                                                                </a>
-
-                                                                <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
-                                                                    📄 {new Date(r.date).toLocaleDateString('es-ES')} - {r.file_name}
-                                                                </p>
-
-                                                                {r.description && (
-                                                                    <p className="report-description">📝 {r.description}</p>
-                                                                )}
-                                                            </div>
-
-                                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                                <a
-                                                                    href={`${import.meta.env.VITE_BACKEND_URL}/download/${r.file_name}`}
-                                                                    className="download-report-button"
-                                                                    title="Descargar"
-                                                                >
-                                                                    ⬇️ Descargar
-                                                                </a>
-
-                                                                <button
-                                                                    onClick={() => handleDeleteReport(r.id)}
-                                                                    className="delete-report-button"
-                                                                    title="Eliminar"
-                                                                >
-                                                                    🗑️ Eliminar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        ) : !loading.reports ? (
-                                            <p>No hay informes disponibles</p>
-                                        ) : null}
+                                        <button
+                                            className="request-report-button"
+                                            onClick={() => setReportModalOpen(true)}
+                                        >
+                                            📂 VER TODOS LOS INFORMES
+                                        </button>
                                     </div>
 
                                     <button
                                         className="request-report-button"
                                         onClick={async () => {
-                                            await handleSendEmail();   // 📧 Enviar correo con PDF antes
-                                            navigate("/app/quote");    // 🚀 Luego redirigir
+                                            await handleSendEmail();
+                                            navigate("/app/quote");
                                         }}
                                     >
                                         SOLICITAR PRESUPUESTO
                                     </button>
-
-
 
                                     <button
                                         className="add-field-button"
@@ -439,10 +362,16 @@ const Dash_user = () => {
                             )}
                         </div>
                     </div>
-
-
                 </div>
             </div>
+
+            {/* Modal de informes */}
+            <ReportModal
+                isOpen={isReportModalOpen}
+                onClose={() => setReportModalOpen(false)}
+                reports={filteredReports}
+                onDelete={handleDeleteReport}
+            />
         </>
     );
 };

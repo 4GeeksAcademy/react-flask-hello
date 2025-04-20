@@ -9,7 +9,7 @@ import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import FieldSelectorModal from "../../components/FieldSelectorModal/FieldSelectorModal";
 import bgImage from '../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg';
 import ReportModal from "../../components/ReportModal/ReportModal";
-
+import FieldManagerModal from "../../components/FieldManagerModal/FieldManagerModal";
 
 
 
@@ -30,8 +30,7 @@ const Dash_user = () => {
     const [initialSelectionDone, setInitialSelectionDone] = useState(false);
     const [drawInfo, setDrawInfo] = useState(null);
     const [isReportModalOpen, setReportModalOpen] = useState(false);
-
-
+    const [isFieldModalOpen, setFieldModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -175,6 +174,70 @@ const Dash_user = () => {
         (report) => report.field_id === selectedField?.id
     );
 
+    // ✅ Eliminar tierra
+    const handleDeleteField = async (fieldId) => {
+        const confirm = window.confirm("¿Seguro que quieres eliminar esta tierra?");
+        if (!confirm) return;
+
+        try {
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/fields/fields/${fieldId}`, {
+                headers: {
+                    Authorization: `Bearer ${store.auth.token}`
+                }
+            });
+
+            // Filtrar la eliminada
+            setFieldsList(prev => prev.filter(f => f.id !== fieldId));
+
+            // Si la eliminada era la seleccionada, cambiarla
+            if (selectedField?.id === fieldId) {
+                const newSelected = fieldsList.find(f => f.id !== fieldId);
+                setSelectedField(newSelected || null);
+            }
+
+        } catch (err) {
+            console.error("Error al eliminar la tierra:", err);
+            alert("No se pudo eliminar la tierra.");
+        }
+    };
+
+    // ✅ Editar/Actualizar tierra
+    const handleUpdateField = async (updatedField) => {
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_BACKEND_URL}/fields/fields/${updatedField.id}`,
+                updatedField,
+                {
+                    headers: {
+                        Authorization: `Bearer ${store.auth.token}`, // Asegúrate de enviar el token
+                    }
+                }
+            );
+
+            // Después de la actualización exitosa, actualizamos el estado del campo
+            const updatedFieldData = response.data;
+
+            // Actualizamos las coordenadas y la información del campo en el estado
+            setSelectedField(updatedFieldData);
+
+            // Aquí actualizamos las coordenadas si se modificaron (mapa)
+            const [lat, lon] = updatedFieldData.coordinates.split(',').map(coord => parseFloat(coord.trim()));
+
+            // Actualizar el mapa con las nuevas coordenadas
+            setDrawInfo({
+                ...drawInfo,
+                latitude: lat,
+                longitude: lon
+            });
+
+            alert('La tierra ha sido actualizada correctamente');
+        } catch (error) {
+            console.error('Error al actualizar la parcela:', error);
+            alert('Hubo un problema al actualizar la tierra.');
+        }
+    };
+
+
 
     const handleSendEmail = async () => {
         if (!userData?.email || !selectedField) return;
@@ -220,7 +283,6 @@ const Dash_user = () => {
             console.error("❌ Error al enviar el correo:", error);
         }
     };
-
 
 
 
@@ -276,13 +338,11 @@ const Dash_user = () => {
                                     const [lat, lon] = selectedField.coordinates.split(',').map(coord => parseFloat(coord.trim()));
                                     return (
                                         <MapboxParcel
-                                            key={selectedField.id}
-                                            latitude={lat}
-                                            longitude={lon}
+                                            latitude={drawInfo?.latitude || lat} // Aseguramos que drawInfo se pase si existe
+                                            longitude={drawInfo?.longitude || lon} // Aseguramos que drawInfo se pase si existe
                                             fields={fieldsList}
                                             onFieldClick={(field) => {
                                                 setSelectedField(field);
-                                                dispatch({ type: "SET_DRAWN_FIELD", payload: polygon.geometry });
                                                 localStorage.setItem("selectedFieldId", field.id);
                                             }}
                                             onDraw={(info) => {
@@ -358,6 +418,18 @@ const Dash_user = () => {
                                     >
                                         ➕ AÑADIR NUEVO CULTIVO
                                     </button>
+                                    <button onClick={() => setFieldModalOpen(true)} className="request-report-button">
+                                        🛠️ GESTIONAR TIERRAS
+                                    </button>
+
+                                    {isFieldModalOpen && (
+                                        <FieldManagerModal
+                                            fields={fieldsList}
+                                            onClose={() => setFieldModalOpen(false)}
+                                            onDelete={handleDeleteField}
+                                            onUpdate={handleUpdateField}
+                                        />
+                                    )}
                                 </>
                             )}
                         </div>

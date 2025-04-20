@@ -300,13 +300,13 @@
 
 /* === MODO OSCURO: botón login más luminoso === */
 .dark-mode .login-btn {
-  background-color: #9ccc8a !important; /* igual que íconos */
-  color: #92cc8b !important;
+  background-color: rgba(56, 60, 170, 0.856); /* igual que íconos */
+  color: #cfd3ce !important;
   font-weight: 700;
 }
 
 .dark-mode .login-btn:hover {
-  background-color: #b6f5a0 !important; /* tono más claro al pasar el mouse */
+  background-color: #2e4a2c; /* tono más claro al pasar el mouse */
 }
 
 /* === HAMBURGUESA EN MODO OSCURO SIEMPRE VERDE SOCIAL === */

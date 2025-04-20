@@ -1,11 +1,20 @@
 /* === LANDING.CSS COMPLETO ACTUALIZADO === */
 
+:root {
+  --card-main-bg: rgba(255, 255, 255, 0.85);
+  --card-support-bg: rgba(234, 247, 235, 0.85);
+  --card-terms-bg: rgba(245, 245, 245, 0.85);
+  --card-social-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
 .landing-container {
   width: 100vw;
   height: 100vh;
   background-image: 
     url("../../assets/img/background-shape.svg"),
-    linear-gradient(to top right, #405744, #E3EED4);
+    linear-gradient(to top right, #509e5d, #E3EED4);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 900px 1000px, cover;
@@ -18,7 +27,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 30px;
+  padding-top: 70px;
   font-family: 'Arial', sans-serif;
   color: #333;
   box-sizing: border-box;
@@ -31,85 +40,123 @@
   box-sizing: border-box;
 }
 
-/* === NAVBAR === */
-
-.landing-container .navbar-container {
-  width: 1300px;
-  max-width: 90%;
-  margin: 30px 0 20px 0;
-  padding: 0;
-  box-shadow: none;
-  background: none;
-  border: none;
-  position: relative;
-  top: 0;
-}
-
+/* === NAVBAR REESTRUCTURADO === */
 .landing-container .navbar {
   width: 100%;
   height: 60px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 30px;
-  background-color: transparent;
-  border-radius: 8px;
-  border: none;
-  box-shadow: none;
+  padding: 0;
+  background-color: transparent !important;
   z-index: 1000;
+  box-shadow: none !important;
+  border: none !important;
+  margin: 0;
+  position: fixed;
+  top: 70px; /* Mismo valor que el padding-top del contenedor */
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* Centrado horizontal */
 }
 
 .landing-container .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(5px); /* Efecto de cristal opcional */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* Sombra muy sutil solo al hacer scroll */
 }
 
+.landing-container .navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  position: relative;
+  padding: 0 30px; /* Mueve el padding aquí en lugar del navbar */
+  margin: 0;
+}
+
+/* Logo */
+.landing-container .logo-navbar {
+  width: 390px;
+  height: auto;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s ease;
+  margin-right: auto; /* Empuja todo lo demás a la derecha */
+}
+
+.landing-container .logo-navbar:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Enlaces - ahora centrados absolutamente */
 .landing-container .nav-links {
   display: flex;
-  gap: 40px;
+  gap: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .landing-container .nav-links a {
   color: #1e1e1e;
   background-color: rgba(255, 255, 255, 0.3);
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
   text-decoration: none;
-  position: relative;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
+.landing-container .nav-links a:hover {
+  background-color: #375534;
+  color: white;
+}
+
+/* Botones */
 .landing-container .nav-buttons {
   display: flex;
   gap: 15px;
+  margin-left: auto; /* Los empuja a la derecha */
 }
 
 .landing-container .login-btn,
 .landing-container .signup-btn {
-  padding: 6px 12px;
+  padding: 8px 20px;
   font-size: 16px;
   border-radius: 6px;
   border: none;
   font-weight: 600;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 120px;
+  text-align: center;
+}
+
+.landing-container .login-btn {
+  background-color: rgba(255, 255, 255, 0.3);
   color: #1e1e1e;
+}
+
+.landing-container .signup-btn {
+  background-color: #375534;
+  color: white;
 }
 
 .landing-container .signup-btn:hover {
   background-color: #2e4a2c;
-  color: white;
+  transform: scale(1.05);
 }
 
-/* === TARJETAS - NUEVO LAYOUT DE 4 CAJAS === */
-
+/* === TARJETAS - 4 CAJAS (MANTENIDO IGUAL) === */
 .landing-container .cards-container {
   width: 90%;
-  max-width: 1300px; /* ⬅️ MÁS ANCHO */
-  margin: 100px auto 30px;
+  max-width: 1300px;
+  margin: 150px auto 30px;
   display: grid;
   grid-template-columns: 5fr 3.2fr 2.2fr;
   grid-template-rows: 1fr 1fr;
@@ -152,7 +199,7 @@
 }
 
 .landing-container .card-logo img {
-  max-width: 120px;
+  max-width: 420px;
   height: auto;
 }
 
@@ -173,12 +220,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 60px;
 }
 
 .landing-container .card h2 {
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   color: #033547;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .landing-container .card p,
@@ -192,11 +240,11 @@
 .landing-container .social-icons {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 80px;
 }
 
 .landing-container .social-icons a {
-  font-size: 24px;
+  font-size: 50px;
   color: #033547;
   transition: transform 0.3s ease, color 0.3s ease;
 }
@@ -206,18 +254,12 @@
   color: #375534;
 }
 
-/* === MODO OSCURO === */
-
+/* === MODO OSCURO (MANTENIDO IGUAL) === */
 .landing-container.dark-mode {
   background-image: 
     url("../../assets/img/background-shape.svg"),
     linear-gradient(to bottom, #111, #1d1d1d);
   color: #eee;
-}
-
-.landing-container.dark-mode .navbar {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .landing-container.dark-mode .nav-links a,
@@ -232,27 +274,92 @@
   color: #f5f5f5;
 }
 
-.landing-container.dark-mode .card a {
-  color: #9ccc8a;
-}
-
+.landing-container.dark-mode .card a,
 .landing-container.dark-mode .social-icons a {
   color: #9ccc8a;
 }
 
-/* === ANIMACIONES === */
+.landing-container.dark-mode .cta-button {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
+.landing-container.dark-mode .cta-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* === ANIMACIONES (MANTENIDO IGUAL) === */
 @keyframes fadeInOnly {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* === RESPONSIVE === */
+@keyframes pulseLogo {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* === RESPONSIVE ACTUALIZADO === */
+@media (max-width: 1200px) {
+  .landing-container .logo-navbar {
+    width: 320px;
+  }
+  .landing-container .nav-links {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .landing-container .navbar-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    height: auto;
+  }
+  .landing-container .logo-navbar {
+    margin-right: 0;
+    width: 280px;
+    order: 1;
+  }
+  .landing-container .nav-links {
+    position: static;
+    transform: none;
+    left: auto;
+    order: 2;
+    margin: 10px 0;
+  }
+  .landing-container .nav-buttons {
+    margin-left: 0;
+    order: 3;
+  }
+}
 
 @media (max-width: 768px) {
   .landing-container .cards-container {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto;
+    margin-top: 180px;
+  }
+
+  .landing-container .logo-navbar {
+    width: 250px;
+  }
+
+  .landing-container .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .landing-container .nav-links a {
+    padding: 6px 12px;
+    font-size: 15px;
   }
 
   .landing-container .card-main {
@@ -275,10 +382,12 @@
     grid-row: 3 / 4;
     flex-direction: row;
     justify-content: center;
+    gap: 40px;
   }
 
   .landing-container .social-icons {
     flex-direction: row;
+    gap: 40px;
   }
 
   .landing-container .card {
@@ -298,6 +407,26 @@
   .landing-container .cards-container {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+    margin-top: 220px;
+  }
+
+  .landing-container .logo-navbar {
+    width: 220px;
+  }
+
+  .landing-container .nav-links {
+    gap: 8px;
+  }
+
+  .landing-container .nav-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .landing-container .login-btn,
+  .landing-container .signup-btn {
+    padding: 8px 16px;
+    min-width: 110px;
   }
 
   .landing-container .card-main,
@@ -313,26 +442,19 @@
   .landing-container .card-social { grid-row: 4; }
   
   .landing-container .card-social .social-icons {
-    flex-direction: row;
+    gap: 30px;
   }
 }
 
-/* === Estilo para el botón del modo oscuro (cuando .dark-mode está activo) === */
-
-.landing-container.dark-mode .cta-button {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #f0f0f0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Copyright dentro de card-main */
+.landing-container .card-main .copyright-text {
+  font-size: 0.85rem;
+  margin-top: 20px;
+  color: #555;
+  text-align: left;
 }
 
-.landing-container.dark-mode .cta-button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-}
-
-/* Wrapper que agrupa enlaces y botones dentro del navbar */
-.landing-container .navbar-content {
-  display: flex;
-  align-items: center;
-  gap: 140px; /* 👈 Ajusta aquí la separación entre enlaces y botones */
+/* Versión modo oscuro */
+.landing-container.dark-mode .card-main .copyright-text {
+  color: #bbb;
 }

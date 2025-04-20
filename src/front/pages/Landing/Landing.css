@@ -12,14 +12,13 @@
 .landing-container {
   width: 100vw;
   height: 100vh;
-  background-image: 
-    url("../../assets/img/background-shape-verdeOscuro.svg"),
-    linear-gradient(to top right, #B0DAD3, #E3EED4);
+  background-image: url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #b0dad3, #e3eed4);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 900px 1000px, cover;
   overflow-x: hidden; /* ✅ Permitimos scroll horizontal bloqueado */
-  overflow-y: auto;   /* ✅ Permitimos scroll vertical si hace falta */
+  overflow-y: auto; /* ✅ Permitimos scroll vertical si hace falta */
   position: fixed;
   top: 0;
   left: 0;
@@ -29,7 +28,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 70px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   color: #333;
   box-sizing: border-box;
   animation: fadeInOnly 1.2s ease-out forwards;
@@ -39,26 +38,6 @@
 .landing-container *::before,
 .landing-container *::after {
   box-sizing: border-box;
-}
-
-/* === NAVBAR REESTRUCTURADO === */
-.landing-container .navbar {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  background-color: transparent !important;
-  z-index: 1000;
-  box-shadow: none !important;
-  border: none !important;
-  margin: 0;
-  position: fixed;
-  top: 70px; /* Mismo valor que el padding-top del contenedor */
-  left: 0;
-  right: 0;
-  margin: 0 auto; /* Centrado horizontal */
 }
 
 .landing-container .navbar.scrolled {
@@ -144,7 +123,7 @@
 }
 
 .landing-container .signup-btn {
-  background-color: #F19A3E;
+  background-color: #f19a3e;
   color: white;
 }
 
@@ -204,7 +183,6 @@
   border-radius: 12px;
   opacity: 0.9;
 }
-
 
 .landing-container .card-social {
   background-color: var(--card-social-bg);
@@ -277,9 +255,8 @@
   --card-support-bg: rgba(25, 35, 25, 0.85);
   --card-terms-bg: rgba(28, 28, 28, 0.85);
   --card-social-bg: rgba(22, 22, 22, 0.7);
-  
-  background-image: 
-    url("../../assets/img/background-shape.svg"),
+
+  background-image: url("../../assets/img/background-shape.svg"),
     linear-gradient(to bottom, #111, #1d1d1d);
   color: #eee;
 }
@@ -318,12 +295,17 @@
 
 /* === ANIMACIONES (MANTENIDO IGUAL) === */
 @keyframes fadeInOnly {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulseLogo {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -462,11 +444,19 @@
     grid-column: 1;
   }
 
-  .landing-container .card-main { grid-row: 1; }
-  .landing-container .card-support { grid-row: 2; }
-  .landing-container .card-terms { grid-row: 3; }
-  .landing-container .card-social { grid-row: 4; }
-  
+  .landing-container .card-main {
+    grid-row: 1;
+  }
+  .landing-container .card-support {
+    grid-row: 2;
+  }
+  .landing-container .card-terms {
+    grid-row: 3;
+  }
+  .landing-container .card-social {
+    grid-row: 4;
+  }
+
   .landing-container .card-social .social-icons {
     gap: 30px;
   }
@@ -487,19 +477,39 @@
 
 /* COLORES DE TARJETAS - MÁS DIFERENCIADOS */
 .landing-container .card-main {
-  background-color: rgba(220, 240, 220, 0.85) !important; /* Blanco para la tarjeta principal */
+  background-color: rgba(
+    220,
+    240,
+    220,
+    0.85
+  ) !important; /* Blanco para la tarjeta principal */
 }
 
 .landing-container .card-support {
-  background-color: rgba(220, 240, 220, 0.85) !important; /* Verde claro para soporte */
+  background-color: rgba(
+    220,
+    240,
+    220,
+    0.85
+  ) !important; /* Verde claro para soporte */
 }
 
 .landing-container .card-terms {
-  background-color: rgba(240, 240, 220, 0.85) !important; /* Amarillo muy clarito para términos */
+  background-color: rgba(
+    240,
+    240,
+    220,
+    0.85
+  ) !important; /* Amarillo muy clarito para términos */
 }
 
 .landing-container .card-social {
-  background-color: rgba(220, 240, 220, 0.85) !important; /* Lavanda claro para social */
+  background-color: rgba(
+    220,
+    240,
+    220,
+    0.85
+  ) !important; /* Lavanda claro para social */
 }
 
 /* Modo oscuro con colores más diferenciados */
@@ -592,7 +602,7 @@
     gap: 15px;
     flex-wrap: wrap;
   }
-  
+
   .landing-container .bottom-nav-links a {
     padding: 6px 12px;
     font-size: 15px;
@@ -603,11 +613,11 @@
   .landing-container .bottom-nav {
     padding: 10px;
   }
-  
+
   .landing-container .bottom-nav-links {
     gap: 8px;
   }
-  
+
   .landing-container .bottom-nav-links a {
     padding: 6px 10px;
     font-size: 14px;
@@ -713,7 +723,7 @@
 
 /* Triángulo decorativo en la parte superior del menú */
 .dropdown-menu::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -8px;
   left: 50%;
@@ -750,13 +760,89 @@
   .navbar-right {
     gap: 10px;
   }
-  
+
   .hamburger-icon {
     width: 25px;
     height: 20px;
   }
-  
+
   .dropdown-menu {
     width: 180px;
   }
+}
+
+/* === ANIMACIÓN GENERAL DE ENTRADA === */
+.fade-in {
+  animation: fadeInLanding 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInLanding {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === MODO OSCURO: texto blanco en Soporte === */
+.landing-container.dark-mode .card-support {
+  color: #fff;
+}
+
+.landing-container.dark-mode .card-support p,
+.landing-container.dark-mode .card-support strong {
+  color: #e6e3e3;
+}
+
+.landing-container.dark-mode .card-support a {
+  color: #9ccc8a;
+}
+
+.landing-container.dark-mode .card-support a:hover {
+  color: #c0f3a5;
+}
+
+.landing-container.dark-mode .card-support a {
+  color: #9ccc8a;
+}
+
+/* === MODO OSCURO: botón Iniciar Sesión más luminoso === */
+.landing-container.dark-mode .login-btn {
+  background-color: rgba(156, 204, 138, 0.12);
+  color: #e0ffe0;
+  border: 1px solid rgba(156, 204, 138, 0.3);
+}
+
+/* === HAMBURGUESA CON ANIMACIÓN EN X === */
+.hamburger-menu-container.active .hamburger-icon span:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+.hamburger-menu-container.active .hamburger-icon span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-menu-container.active .hamburger-icon span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+/* MODO OSCURO: menú con estilo de social-icons */
+.landing-container.dark-mode .dropdown-menu {
+  background-color: rgba(25, 35, 25, 0.9);
+  border: 1px solid rgba(156, 204, 138, 0.2);
+}
+
+.landing-container.dark-mode .dropdown-menu::before {
+  border-bottom-color: rgba(25, 35, 25, 0.9);
+}
+
+.landing-container.dark-mode .dropdown-menu a {
+  color: #9ccc8a;
+}
+
+.landing-container.dark-mode .dropdown-menu a:hover {
+  background-color: rgba(156, 204, 138, 0.1);
+  color: #ffffff;
 }

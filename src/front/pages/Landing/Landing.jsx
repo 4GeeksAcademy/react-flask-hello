@@ -1,74 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Landing.css";
-import logo from "../../assets/img/Logo_DronFarm_Iconocolor_sinmarco.png";
-import logodark from "../../assets/img/Logo_DronFarm_IconoBlanco_sinmarco.png";
-import logonaked from "../../assets/img/Logo_DronFarm_Icono1_sinmarco.png";
 import DarkModeToggle from "../../components/DarkModeToggle/DarkModeToggle";
 import mavicImage from "../../assets/img/Mavic 3 volando.png";
-import Footer from "../../components/Footer/Footer"; // 👈 IMPORTANTE
 
 const Landing = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false); // ⬅️ Detectar modo oscuro
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // ⬇️ Detecta si .landing-container tiene la clase dark-mode
-  useEffect(() => {
-    const landing = document.querySelector(".landing-container");
-    const observer = new MutationObserver(() => {
-      setIsDarkMode(landing.classList.contains("dark-mode"));
-    });
-
-    observer.observe(landing, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   return (
-    <div className="landing-container">
+    <div className="landing-container fade-in">
       <DarkModeToggle />
-
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="navbar-content">
-          {/* Logo que cambia con el modo */}
-          <img
-            src={isDarkMode ? logoDark : logo}
-            alt="Logo DronFarm"
-            className="logo-navbar"
-          />
-
-          <div className="navbar-right">
-            <div className={`hamburger-menu-container ${menuOpen ? "active" : ""}`}>
-              <div className="hamburger-icon" onClick={toggleMenu}>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div className="dropdown-menu">
-                <a href="#inicio">Inicio</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#nosotros">Nosotros</a>
-                <a href="#contacto">Contacto</a>
-              </div>
-            </div>
-
-            <div className="nav-buttons">
-              <button className="login-btn">Iniciar Sesión</button>
-              <button className="signup-btn">Registrarse</button>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       <div className="cards-container">
         <div className="card card-main">
@@ -102,8 +40,6 @@ const Landing = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

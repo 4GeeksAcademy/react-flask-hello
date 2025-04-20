@@ -1,121 +1,75 @@
-/* 👇 ❇️ Riki for the group success 10 Abril👊 */
-
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import logo from "../../assets/img/Logo_DronFarm2.png";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+import logo from "../../assets/img/Logo_DronFarm_Iconocolor_sinmarco.png";
+import logoDark from "../../assets/img/Logo_DronFarm_IconoBlanco_sinmarco.png";
 
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { store, dispatch } = useGlobalReducer();
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
-  );
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const isDashboard = location.pathname.includes("/app");
 
   useEffect(() => {
-    setIsAuthenticated(
-      !!localStorage.getItem("token") &&
-      localStorage.getItem("token") !== "undefined" &&
-      localStorage.getItem("token") !== "null" &&
-      localStorage.getItem("token").trim() !== ""
-    );
-  }, [location]);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-    navigate("/");
-  };
+  useEffect(() => {
+    const landing = document.querySelector(".landing-container");
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(landing.classList.contains("dark-mode"));
+    });
+
+    observer.observe(landing, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setMenuOpen(!menuOpen);
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+  const goTo = (path) => {
+    navigate(path);
+    setMenuOpen(false); // cerrar menú hamburguesa al hacer clic
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        {/* Logo con redirección y cierre del menú */}
-        <Link
-          to={isAuthenticated ? "/app/dashboard" : "/"}
-          className="navbar-logo"
-          onClick={closeMenu}
-        >
-          <img src={logo} alt="DronFarm Logo" className="logo-img" />
-        </Link>
-
-        {/* Menú Hamburguesa (Mobile) */}
-        <input
-          type="checkbox"
-          id="navbar-toggle"
-          className="navbar-toggle"
-          checked={isMenuOpen}
-          onChange={toggleMenu}
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="navbar-content">
+        <img
+          src={isDarkMode ? logoDark : logo}
+          alt="Logo DronFarm"
+          className="logo-navbar"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
         />
-        <label htmlFor="navbar-toggle" className="navbar-toggle-label">
-          <span></span>
-          <span></span>
-          <span></span>
-        </label>
 
-        {/* Menú de navegación */}
-        <ul className="navbar-menu">
-          {isDashboard || isAuthenticated ? (
-            <>
-              <li className="navbar-item">
-                <Link to="/contacto" className="navbar-link" onClick={closeMenu}>
-                  Contacto
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <button
-                  onClick={() => {
-                    closeMenu();
-                    handleLogout();
-                  }}
-                  className="navbar-button navbar-button-logout"
-                >
-                  Cerrar Sesión
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li className="navbar-item">
-                <Link to="/" className="navbar-link" onClick={closeMenu}>
-                  Inicio
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/nosotros" className="navbar-link" onClick={closeMenu}>
-                  Nosotros
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/servicios" className="navbar-link" onClick={closeMenu}>
-                  Servicios
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/contacto" className="navbar-link" onClick={closeMenu}>
-                  Contacto
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/login" className="navbar-button" onClick={closeMenu}>
-                  Iniciar Sesión
-                </Link>
-              </li>
-            </>
-          )}
-        </ul>
+        <div className="navbar-right">
+          <div className={`hamburger-menu-container ${menuOpen ? "active" : ""}`}>
+            <div className="hamburger-icon" onClick={toggleMenu}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div className={`dropdown-menu ${menuOpen ? "show" : ""}`}>
+              <a onClick={() => goTo("/")}>Inicio</a>
+              <a onClick={() => goTo("/servicios")}>Servicios</a>
+              <a onClick={() => goTo("/nosotros")}>Nosotros</a>
+              <a onClick={() => goTo("/contacto")}>Contacto</a>
+            </div>
+          </div>
+
+          <div className="nav-buttons">
+            <button className="login-btn" onClick={() => goTo("/login")}>
+              Iniciar Sesión
+            </button>
+            <button className="signup-btn" onClick={() => goTo("/signup")}>
+              Registrarse
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   );

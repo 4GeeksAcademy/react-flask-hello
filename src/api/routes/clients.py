@@ -8,7 +8,7 @@ clients_routes = Blueprint('clients_routes', __name__)
 
 
 @clients_routes.route('/clients', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_clients():
     clients = Clients.query.all()
     serialized_clients = [client.serialize_client() for client in clients]
@@ -16,7 +16,7 @@ def get_clients():
 
 
 @clients_routes.route('/clients/<int:client_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client(client_id):
     client = Clients.query.get(client_id)
     if not client:
@@ -25,7 +25,7 @@ def get_client(client_id):
 
 
 @clients_routes.route('/clients', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_client():
     data = request.get_json()
     if not data:
@@ -52,7 +52,7 @@ def add_client():
 
     business = Businesses.query.get(data["business_id"])
     if not business:
-        return jsonify({"error": f"El negocio con ID {data['business_id']} no existe"}), 404
+        return jsonify({"error": f"The business with ID {data['business_id']} does not exist"}), 404
 
     try:
         new_client = Clients(
@@ -86,7 +86,7 @@ def add_client():
 
 
 @clients_routes.route('/clients/<int:client_id>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_client(client_id):
     data = request.get_json()
 
@@ -117,7 +117,7 @@ def update_client(client_id):
 
 
 @clients_routes.route('/clients/<int:client_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_client(client_id):
     try:
         client = Clients.query.get(client_id)
@@ -177,20 +177,18 @@ def delete_client(client_id):
 
 
 @clients_routes.route('/clients/<int:client_id>/services', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_services(client_id):
     client = Clients.query.get(client_id)
 
     if not client:
         return jsonify({"error": "client not found"}), 404
 
-    # Obtener solo las instancias de servicio no completadas
     active_instances = ClientService.query.filter_by(
         client_id=client_id,
         completed=False
     ).order_by(ClientService.created_at.desc()).all()
 
-    # Serializar las instancias con información del servicio
     services_data = []
     for instance in active_instances:
         service = Services.query.get(instance.service_id)
@@ -206,7 +204,7 @@ def get_client_services(client_id):
 
 
 @clients_routes.route('/clients/<int:client_id>/services', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_service_to_client(client_id):
     client = Clients.query.get(client_id)
 
@@ -265,7 +263,7 @@ def add_service_to_client(client_id):
 
 
 @clients_routes.route('/clients/<int:client_id>/services/<int:service_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def remove_service_from_client(client_id, service_id):
     client = Clients.query.get(client_id)
 
@@ -294,7 +292,7 @@ def remove_service_from_client(client_id, service_id):
 
 
 @clients_routes.route('/services/<int:service_id>/complete', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def complete_service(service_id):
     try:
 
@@ -302,7 +300,7 @@ def complete_service(service_id):
             service_id=service_id).first()
 
         if not client_service:
-            return jsonify({"error": "El servicio no se encontró o no está asignado a ningún cliente"}), 404
+            return jsonify({"error": "The service was not found or is not assigned to any client"}), 404
 
         client_service.completed = True
         client_service.completed_date = db.func.now()
@@ -311,7 +309,7 @@ def complete_service(service_id):
         client = Clients.query.get(client_service.client_id)
 
         if not service:
-            return jsonify({"error": "No se pudo encontrar el servicio después de marcarlo como completado"}), 500
+            return jsonify({"error": "Could not find the service after marking it as completed"}), 500
 
         db.session.commit()
 
@@ -327,22 +325,22 @@ def complete_service(service_id):
         }
 
         return jsonify({
-            "message": "Servicio marcado como completado exitosamente",
+            "message": "Service marked as completed successfully",
             "service": response_data
         }), 200
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Error al marcar el servicio como completado: {str(e)}"}), 500
+        return jsonify({"error": f"Error marking service as completed: {str(e)}"}), 500
 
 
 @clients_routes.route('/clients/<int:client_id>/completed-services', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_completed_services(client_id):
     client = Clients.query.get(client_id)
 
     if not client:
-        return jsonify({"error": "Cliente no encontrado"}), 404
+        return jsonify({"error": "Client not found"}), 404
 
     try:
         completed_instances = ClientService.query.filter_by(
@@ -365,29 +363,28 @@ def get_client_completed_services(client_id):
         return jsonify(completed_services), 200
 
     except Exception as e:
-        print(f"Error al obtener servicios completados: {str(e)}")
-        return jsonify({"error": f"Error al obtener servicios completados: {str(e)}"}), 500
+        print(f"Error getting completed services: {str(e)}")
+        return jsonify({"error": f"Error getting completed services: {str(e)}"}), 500
 
 
 @clients_routes.route('/clients/<int:client_id>/services/<int:service_id>/status', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_service_status(client_id, service_id):
     client = Clients.query.get(client_id)
     if not client:
-        return jsonify({"error": "Cliente no encontrado"}), 404
+        return jsonify({"error": "Client not found"}), 404
 
     service = Services.query.get(service_id)
     if not service:
-        return jsonify({"error": "Servicio no encontrado"}), 404
+        return jsonify({"error": "Service not found"}), 404
 
-    # Verificamos la relación y su estado
     client_service = ClientService.query.filter_by(
         client_id=client_id,
         service_id=service_id
     ).first()
 
     if not client_service:
-        return jsonify({"error": "El cliente no tiene este servicio asignado"}), 404
+        return jsonify({"error": "The client does not have this service assigned"}), 404
 
     return jsonify({
         "completed": client_service.completed,
@@ -396,7 +393,7 @@ def get_client_service_status(client_id, service_id):
 
 
 @clients_routes.route('/service-instances/<int:instance_id>/complete', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def complete_service_instance(instance_id):
     try:
         client_service = ClientService.query.get(instance_id)
@@ -435,10 +432,10 @@ def complete_service_instance(instance_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Error marking service as completed: {str(e)}"}), 500
-    
+
 
 @clients_routes.route('/service-instances/<int:instance_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def remove_service_instance(instance_id):
     instance = ClientService.query.get(instance_id)
 
@@ -450,12 +447,12 @@ def remove_service_instance(instance_id):
     try:
         db.session.delete(instance)
         db.session.commit()
-        
+
         active_instances = ClientService.query.filter_by(
-            client_id=client_id, 
+            client_id=client_id,
             completed=False
         ).all()
-        
+
         services_data = []
         for active_instance in active_instances:
             service = Services.query.get(active_instance.service_id)
@@ -466,7 +463,7 @@ def remove_service_instance(instance_id):
                     "created_at": active_instance.created_at.isoformat() if active_instance.created_at else None
                 })
                 services_data.append(service_data)
-        
+
         return jsonify({
             "msg": "Service instance removed successfully",
             "active_services": services_data

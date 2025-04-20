@@ -7,10 +7,13 @@ from .appointments import appointments_routes
 from .payments import payments_routes
 from .notes import notes_routes
 from .history import history_routes  
+from .admins import admin_routes
 from .password_reset import password_reset
+
 
 def register_routes(api):
 
+    api.register_blueprint(admin_routes)
     api.register_blueprint(auth_routes)
     api.register_blueprint(users_routes)
     api.register_blueprint(businesses_routes)
@@ -21,3 +24,4 @@ def register_routes(api):
     api.register_blueprint(notes_routes)
     api.register_blueprint(history_routes) 
     api.register_blueprint(password_reset)
+

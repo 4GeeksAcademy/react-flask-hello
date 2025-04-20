@@ -33,7 +33,6 @@ class Admins(db.Model):
             "id": self.id,
             "username": self.username,
             "role": self.role,
-            "password": self.password_hash
         }
 
 
@@ -322,8 +321,8 @@ class ClientService(db.Model):
     completed_date: Mapped[Optional[datetime]] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
-    client = relationship("Clients", back_populates="service_instances")
-    service = relationship("Services", back_populates="client_instances")
+    client = relationship("Clients", back_populates="service_instances", overlaps="services,clients")
+    service = relationship("Services", back_populates="client_instances", overlaps="clients,services")
 
     def serialize(self) -> dict:
         return {

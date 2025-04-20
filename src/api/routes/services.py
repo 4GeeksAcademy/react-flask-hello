@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 services_routes = Blueprint('services_routes', __name__)
 
 @services_routes.route('/services', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_services():
     services = Services.query.all()
     serialized_service = [service.serialize_service()
@@ -13,7 +13,7 @@ def get_services():
     return jsonify(serialized_service), 200
 
 @services_routes.route('/services/<string:name>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_service(name):
     service = Services.query.filter_by(name=name).first()
     if not service:
@@ -21,7 +21,7 @@ def get_service(name):
     return jsonify(service.serialize_service()), 200
 
 @services_routes.route('/services', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_service():
     data = request.get_json()
     if not data:
@@ -67,7 +67,7 @@ def add_service():
         }), 500
 
 @services_routes.route('/services/multiple', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_multiple_services():
     data = request.get_json()
     if not data or not isinstance(data, list):
@@ -114,7 +114,7 @@ def add_multiple_services():
         }), 500
 
 @services_routes.route('/services/<string:service_name>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_service(service_name):
     data = request.get_json()
 
@@ -145,7 +145,7 @@ def update_service(service_name):
         return jsonify({"error": str(e)}), 500
 
 @services_routes.route('/services/<string:service_name>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_service(service_name):
     service = Services.query.filter_by(name=service_name).first()
 
@@ -166,7 +166,7 @@ def delete_service(service_name):
         return jsonify({"error": str(e)}), 500
     
 @services_routes.route('/business/<int:business_id>/services', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_business_services(business_id):
 
     business = Businesses.query.get(business_id)

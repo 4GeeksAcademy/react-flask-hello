@@ -13,8 +13,8 @@
   width: 100vw;
   height: 100vh;
   background-image: 
-    url("../../assets/img/background-shape.svg"),
-    linear-gradient(to top right, #509e5d, #E3EED4);
+    url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #B0DAD3, #E3EED4);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 900px 1000px, cover;
@@ -138,12 +138,12 @@
 }
 
 .landing-container .login-btn {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(24, 26, 102, 0.179);
   color: #1e1e1e;
 }
 
 .landing-container .signup-btn {
-  background-color: #375534;
+  background-color: #F19A3E;
   color: white;
 }
 
@@ -152,7 +152,7 @@
   transform: scale(1.05);
 }
 
-/* === TARJETAS - 4 CAJAS (MANTENIDO IGUAL) === */
+/* === TARJETAS - 4 CAJAS (ACTUALIZADO CON COLORES INDIVIDUALES) === */
 .landing-container .cards-container {
   width: 90%;
   max-width: 1300px;
@@ -165,7 +165,6 @@
 }
 
 .landing-container .card {
-  background-color: white;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -173,21 +172,48 @@
 }
 
 .landing-container .card-main {
+  background-color: var(--card-main-bg);
   grid-column: 1 / 2;
   grid-row: 1 / 3;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.landing-container .card-support {
+  background-color: var(--card-support-bg);
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.landing-container .card-terms {
+  background-color: var(--card-terms-bg);
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.landing-container .card-social {
+  background-color: var(--card-social-bg);
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
 }
 
 .landing-container .card-main h1 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: #033547;
   margin-bottom: 15px;
 }
 
 .landing-container .card-main h2 {
-  font-size: 1.2rem;
+  font-size: 1.5rem !important;
   color: #405744;
   font-weight: normal;
   margin: 0;
@@ -201,26 +227,6 @@
 .landing-container .card-logo img {
   max-width: 420px;
   height: auto;
-}
-
-.landing-container .card-support {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-}
-
-.landing-container .card-terms {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-}
-
-.landing-container .card-social {
-  grid-column: 3 / 4;
-  grid-row: 1 / 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
 }
 
 .landing-container .card h2 {
@@ -254,8 +260,13 @@
   color: #375534;
 }
 
-/* === MODO OSCURO (MANTENIDO IGUAL) === */
+/* === MODO OSCURO (ACTUALIZADO CON COLORES DE TARJETAS) === */
 .landing-container.dark-mode {
+  --card-main-bg: rgba(30, 30, 30, 0.85);
+  --card-support-bg: rgba(25, 35, 25, 0.85);
+  --card-terms-bg: rgba(28, 28, 28, 0.85);
+  --card-social-bg: rgba(22, 22, 22, 0.7);
+  
   background-image: 
     url("../../assets/img/background-shape.svg"),
     linear-gradient(to bottom, #111, #1d1d1d);
@@ -270,7 +281,11 @@
 }
 
 .landing-container.dark-mode .card {
-  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .card h1,
+.landing-container.dark-mode .card h2 {
   color: #f5f5f5;
 }
 
@@ -457,4 +472,274 @@
 /* Versión modo oscuro */
 .landing-container.dark-mode .card-main .copyright-text {
   color: #bbb;
+}
+
+/* COLORES DE TARJETAS - MÁS DIFERENCIADOS */
+.landing-container .card-main {
+  background-color: rgba(241, 154, 62, 0.50) !important; /* Blanco para la tarjeta principal */
+}
+
+.landing-container .card-support {
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Verde claro para soporte */
+}
+
+.landing-container .card-terms {
+  background-color: rgba(240, 240, 220, 0.85) !important; /* Amarillo muy clarito para términos */
+}
+
+.landing-container .card-social {
+  background-color: rgba(241, 154, 62, 0.50) !important; /* Lavanda claro para social */
+}
+
+/* Modo oscuro con colores más diferenciados */
+.landing-container.dark-mode .card-main {
+  background-color: rgba(30, 30, 30, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-support {
+  background-color: rgba(20, 40, 20, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-terms {
+  background-color: rgba(40, 40, 20, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-social {
+  background-color: rgba(30, 20, 40, 0.9) !important;
+}
+
+/* === SEPARAR ELEMENTOS DEL NAVBAR === */
+
+/* Ocultar los enlaces en el navbar superior */
+.landing-container .navbar .nav-links {
+  display: none; /* Ocultar los enlaces del navbar superior */
+}
+
+/* Ajustar el navbar superior para que solo tenga logo y botones */
+.landing-container .navbar-content {
+  justify-content: space-between; /* Para mantener logo a la izquierda y botones a la derecha */
+}
+
+/* Crear una barra de navegación con enlaces debajo de las tarjetas */
+.landing-container .bottom-nav {
+  width: 90%;
+  max-width: 1300px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin-top: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Estilos para los enlaces en la barra inferior */
+.landing-container .bottom-nav-links {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.landing-container .bottom-nav-links a {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.landing-container .bottom-nav-links a:hover {
+  background-color: #375534;
+  color: white;
+}
+
+/* Estilos para modo oscuro */
+.landing-container.dark-mode .bottom-nav {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.landing-container.dark-mode .bottom-nav-links a {
+  color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-container.dark-mode .bottom-nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landing-container .bottom-nav-links {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .landing-container .bottom-nav-links a {
+    padding: 6px 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .landing-container .bottom-nav {
+    padding: 10px;
+  }
+  
+  .landing-container .bottom-nav-links {
+    gap: 8px;
+  }
+  
+  .landing-container .bottom-nav-links a {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+/* === MENÚ HAMBURGUESA CORREGIDO === */
+
+/* Reordenar elementos en la barra de navegación */
+.landing-container .navbar-content {
+  display: flex;
+  justify-content: space-between; /* Esto separa el logo de los demás elementos */
+  align-items: center;
+  width: 100%;
+}
+
+/* Agrupar hamburguesa y botones */
+.landing-container .navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espacio entre el menú hamburguesa y los botones */
+}
+
+/* Contenedor del menú hamburguesa */
+.hamburger-menu-container {
+  position: relative;
+  /* Sin margen derecho fijo */
+}
+
+/* Icono de hamburguesa */
+.hamburger-icon {
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Líneas del icono hamburguesa */
+.hamburger-icon span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #1e1e1e;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover en el icono */
+.hamburger-icon:hover span {
+  background-color: #375534;
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: 200px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 10px 0;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+/* Modificar la activación del menú para que sea por clic en lugar de hover */
+.hamburger-menu-container.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Enlaces del menú desplegable */
+.dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #1e1e1e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(55, 85, 52, 0.1);
+  color: #375534;
+}
+
+/* Triángulo decorativo en la parte superior del menú */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Estilos para modo oscuro */
+.landing-container.dark-mode .hamburger-icon span {
+  background-color: #f0f0f0;
+}
+
+.landing-container.dark-mode .dropdown-menu {
+  background-color: rgba(30, 30, 30, 0.9);
+}
+
+.landing-container.dark-mode .dropdown-menu::before {
+  border-bottom-color: rgba(30, 30, 30, 0.9);
+}
+
+.landing-container.dark-mode .dropdown-menu a {
+  color: #f0f0f0;
+}
+
+.landing-container.dark-mode .dropdown-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #9ccc8a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-right {
+    gap: 10px;
+  }
+  
+  .hamburger-icon {
+    width: 25px;
+    height: 20px;
+  }
+  
+  .dropdown-menu {
+    width: 180px;
+  }
 }

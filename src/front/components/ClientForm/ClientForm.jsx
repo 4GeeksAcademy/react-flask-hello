@@ -26,11 +26,15 @@ export const ClientForm = () => {
     useEffect(() => {
         const fetchBusinesses = async () => {
             try {
-                const response = await fetch(`${backendUrl}api/businesses`);
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${backendUrl}api/businesses`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setBusinesses(data);
-
                     if (data.length > 0) {
                         setFormData(prev => ({ ...prev, business_id: data[0].id }));
                     }
@@ -44,7 +48,12 @@ export const ClientForm = () => {
 
         const fetchServices = async () => {
             try {
-                const response = await fetch(`${backendUrl}api/services`);
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${backendUrl}api/services`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setServices(data);

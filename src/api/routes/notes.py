@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 notes_routes = Blueprint('notes_routes', __name__)
 
 @notes_routes.route('/notes', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_notes():
     notes = Notes.query.all()
     if not notes:
@@ -14,7 +14,7 @@ def get_notes():
     return jsonify(serialized_notes), 200
 
 @notes_routes.route('/notes/<int:client_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_notes(client_id):
     notes = Notes.query.filter_by(client_id=client_id).all()
     if not notes:
@@ -23,7 +23,7 @@ def get_client_notes(client_id):
     return jsonify(serialized_notes), 200
 
 @notes_routes.route('/notes', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_note():
     data = request.get_json()
     if not data:
@@ -63,7 +63,7 @@ def add_note():
         return jsonify({"error": str(e)}), 500
 
 @notes_routes.route('/notes/<int:note_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_note(note_id):
     
     note = Notes.query.get(note_id)

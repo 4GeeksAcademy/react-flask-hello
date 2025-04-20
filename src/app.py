@@ -36,13 +36,25 @@ setup_admin(app)
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(calendar_api, url_prefix='/calendar_api')
 
-
+app.config["JWT_IDENTITY_CLAIM"] = "sub"
 app.config["JWT_SECRET_KEY"] = "tu-clave-secreta"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=1)
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
+
 jwt = JWTManager(app)
+
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    if isinstance(user, dict):
+        return user
+    return str(user)
+
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data["sub"]
+    return identity
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):

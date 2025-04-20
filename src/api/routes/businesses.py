@@ -5,14 +5,14 @@ from flask_jwt_extended import jwt_required
 businesses_routes = Blueprint('businesses_routes', __name__)
 
 @businesses_routes.route('/businesses', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_businesses():
     businesses = Businesses.query.all()
     serialized_business = [business.serialize_business() for business in businesses]
     return jsonify(serialized_business), 200
 
 @businesses_routes.route('/businesses/<string:business_tax_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_business(business_tax_id):
     business = Businesses.query.filter_by(business_tax_id=business_tax_id).first()
     if not business:
@@ -20,7 +20,7 @@ def get_business(business_tax_id):
     return jsonify(business.serialize_business()), 200
 
 @businesses_routes.route('/businesses', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_business():
     data = request.get_json()
     if not data:
@@ -64,7 +64,7 @@ def add_business():
         }), 500
 
 @businesses_routes.route('/businesses/<int:business_id>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_business(business_id):
     data = request.get_json()
 
@@ -94,7 +94,7 @@ def update_business(business_id):
         return jsonify({"error": str(e)}), 500
 
 @businesses_routes.route('/businesses/<int:business_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_business(business_id):
     business = Businesses.query.get(business_id)
 

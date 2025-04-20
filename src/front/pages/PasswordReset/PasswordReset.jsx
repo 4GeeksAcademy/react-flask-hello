@@ -138,7 +138,7 @@ export const PasswordReset = () => {
 
     return (
         <div className="password-reset-page">
-            <div className="password-reset-container">
+            <div className="password-reset container">
                 <div className="form-header">
                     <h2>Reset Password</h2>
                     <p>Follow the steps to reset your password</p>

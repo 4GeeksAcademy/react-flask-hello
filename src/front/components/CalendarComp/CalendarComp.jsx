@@ -216,9 +216,6 @@ export const CalendarComp = () => {
                 </h1>
 
                 <div className="calendar-actions">
-                    <Link to="/appointment/create" className="create-appointment-button">
-                        <i className="fas fa-plus"></i> New appointment
-                    </Link>
                     <button
                         className="sync-button"
                         onClick={syncGoogleCalendar}

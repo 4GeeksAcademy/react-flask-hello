@@ -4,7 +4,7 @@ import useGlobalReducer from "../../hooks/useGlobalReducer";
 
 import "./Navbar.css";
 import logo from "../../assets/images/flow-logo.svg";
-import AddBusinessModal from "../AddBusinessModal/AddBusinessModal";
+import { AddBusinessModal } from "../AddBusinessModal/AddBusinessModal";
 
 export const Navbar = () => {
 

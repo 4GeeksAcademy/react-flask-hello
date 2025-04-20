@@ -42,7 +42,6 @@
   gap: 1rem;
 }
 
-/* Nuevos estilos para el filtro de negocios */
 .services-filters {
   display: column;
   gap: 1rem;
@@ -72,7 +71,6 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
-/* Fin de los nuevos estilos */
 
 .add-service-button {
   background-color: #3498db;
@@ -189,7 +187,6 @@
   color: #c0392b;
 }
 
-/* Loading state */
 .services-loading {
   display: flex;
   flex-direction: column;
@@ -218,7 +215,6 @@
   }
 }
 
-/* Error state */
 .services-error {
   text-align: center;
   padding: 3rem;
@@ -250,7 +246,6 @@
   background-color: #c0392b;
 }
 
-/* Empty state */
 .services-empty {
   text-align: center;
   padding: 4rem 2rem;
@@ -287,7 +282,6 @@
   background-color: #2980b9;
 }
 
-/* Modal styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -482,7 +476,6 @@
   animation: spin 1s ease-in-out infinite;
 }
 
-/* Notification */
 .notification {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -542,7 +535,6 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .services-actions {
     flex-direction: column;

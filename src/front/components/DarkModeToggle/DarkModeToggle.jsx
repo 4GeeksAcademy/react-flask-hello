@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./DarkModeToggle.css"; // ✅ Importa el CSS separado
 
 const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -20,15 +21,8 @@ const DarkModeToggle = () => {
 
   return (
     <button
+      className={`dark-mode-toggle ${darkMode ? "dark" : "light"}`}
       onClick={() => setDarkMode(!darkMode)}
-      className="cta-button"
-      style={{
-        position: "fixed",
-        top: "20px",
-        right: "20px",
-        zIndex: 9999,
-        fontSize: "0.85rem"
-      }}
     >
       {darkMode ? "Modo claro ☀️" : "Modo oscuro 🌙"}
     </button>

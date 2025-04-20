@@ -1,6 +1,5 @@
-/* Landing.css - Versión optimizada y limpia */
+/* === LANDING.CSS COMPLETO ACTUALIZADO === */
 
-/* Reset específico para el contenedor del landing */
 .landing-container {
   width: 100vw;
   height: 100vh;
@@ -19,51 +18,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 30px;
   font-family: 'Arial', sans-serif;
   color: #333;
   box-sizing: border-box;
   animation: fadeInOnly 1.2s ease-out forwards;
 }
 
-/* Resetear box-sizing para todos los elementos del landing */
 .landing-container *,
 .landing-container *::before,
 .landing-container *::after {
   box-sizing: border-box;
 }
 
-/* Contenedores principales - propiedades compartidas */
-.landing-container .navbar-container, 
-.landing-container .grid-container {
-  width: 1400px;
-  max-width: 90%;
-  border: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.1);
-  box-sizing: border-box;
-  overflow: hidden;
-}
+/* === NAVBAR === */
 
-/* Propiedades específicas del navbar-container */
 .landing-container .navbar-container {
-  margin-bottom: 20px;
-  border-radius: 8px;
-  padding: 5px;
-  background-color: transparent;
+  width: 1300px;
+  max-width: 90%;
+  margin: 30px 0 20px 0;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+  border: none;
+  position: relative;
+  top: 0;
 }
 
-/* Propiedades específicas del grid-container */
-.landing-container .grid-container {
-  flex: 1;
-  margin-bottom: 40px;
-  border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Navbar glassmorphic mejorado y sticky */
 .landing-container .navbar {
   width: 100%;
   height: 60px;
@@ -72,28 +53,20 @@
   align-items: center;
   padding: 0 30px;
   background-color: transparent;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  will-change: backdrop-filter;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   border: none;
+  box-shadow: none;
   z-index: 1000;
-  transform: translateZ(0);
 }
 
-/* Estilo cuando haces scroll: cambia fondo y sombra */
 .landing-container .navbar.scrolled {
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Enlaces de navegación */
 .landing-container .nav-links {
   display: flex;
-  gap: 50px;
-  margin: 0;
-  padding: 0;
+  gap: 40px;
 }
 
 .landing-container .nav-links a {
@@ -103,187 +76,74 @@
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
-  border: none;
   text-decoration: none;
-  transition: all 0.3s ease;
   position: relative;
+  transition: all 0.3s ease;
 }
 
-.landing-container .nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  height: 2px;
-  width: 0%;
-  background-color: #375534;
-  transition: width 0.3s ease;
-}
-
-.landing-container .nav-links a:hover::after {
-  width: 100%;
-}
-
-.landing-container .nav-links a:hover {
-  color: #375534;
-  text-decoration: underline;
-}
-
-.landing-container .nav-links a:focus {
-  outline: 2px solid #375534;
-  outline-offset: 2px;
-}
-
-/* Indicador visual para foco con teclado */
-.landing-container .nav-links a:focus:not(:focus-visible) {
-  outline: none;
-}
-
-.landing-container .nav-links a:focus-visible {
-  outline: 2px solid #375534;
-  outline-offset: 2px;
-}
-
-/* Botones de navegación */
 .landing-container .nav-buttons {
   display: flex;
   gap: 15px;
-  margin: 0;
-  padding: 0;
 }
 
-/* Estilos para los botones de login y signup */
-.landing-container .login-btn, 
+.landing-container .login-btn,
 .landing-container .signup-btn {
-  padding: 8px 16px;
-  border-radius: 5px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  position: relative;
-  min-width: 100px; /* Asegura un tamaño mínimo para el área clicable */
-}
-
-.landing-container .login-btn {
-  color: #1e1e1e;
-  background-color: rgba(255, 255, 255, 0.3);
   padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 600;
   font-size: 16px;
+  border-radius: 6px;
   border: none;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.landing-container .login-btn:hover {
-  background-color: rgba(55, 85, 52, 0.1);
-}
-
-.landing-container .login-btn:focus {
-  outline: 2px solid #375534;
-  outline-offset: 2px;
-}
-
-.landing-container .signup-btn {
-  color: #1e1e1e;
   background-color: rgba(255, 255, 255, 0.3);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
   transition: all 0.3s ease;
+  color: #1e1e1e;
 }
 
 .landing-container .signup-btn:hover {
   background-color: #2e4a2c;
-}
-
-.landing-container .signup-btn:focus {
-  outline: 2px solid #2e4a2c;
-  outline-offset: 2px;
-}
-
-/* Botón CTA */
-.landing-container .cta-button {
-  background-color: #303E4E;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 10px;
-  position: relative;
-  /* Mejorar contraste para accesibilidad */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  min-width: 140px;
 }
 
-.landing-container .cta-button:hover {
-  background-color: #2e4a2c;
-  transform: translateY(-2px);
-}
+/* === TARJETAS - NUEVO LAYOUT DE 4 CAJAS === */
 
-.landing-container .cta-button:active {
-  transform: translateY(1px);
-}
-
-.landing-container .cta-button:focus {
-  outline: 2px solid #303E4E;
-  outline-offset: 2px;
-}
-
-/* NUEVO LAYOUT DE 4 CAJAS ESTILO GIVINGLI */
 .landing-container .cards-container {
-  width: 90%; /* Reducido del 100% al 90% */
-  max-width: 1000px; /* Reducido de 1200px a 1000px */
-  margin: 110px auto 30px; /* Aumentado aún más el margen superior */
+  width: 90%;
+  max-width: 1300px; /* ⬅️ MÁS ANCHO */
+  margin: 100px auto 30px;
   display: grid;
-  /* Diseño de 3 columnas y 2 filas, con una columna estrecha a la derecha */
-  grid-template-columns: 5fr 3fr 2fr;
+  grid-template-columns: 5fr 3.2fr 2.2fr;
   grid-template-rows: 1fr 1fr;
-  gap: 25px; /* Reducido de 30px a 25px para acercar las cajas */
+  gap: 25px;
   z-index: 10;
 }
 
-/* Estilos base para todas las tarjetas */
 .landing-container .card {
   background-color: white;
   border-radius: 15px;
-  padding: 25px; /* Reducido de 30px */
+  padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-/* Tarjeta principal (izquierda, ocupa todo el alto) */
 .landing-container .card-main {
   grid-column: 1 / 2;
   grid-row: 1 / 3;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 25px; /* Reducido de 30px */
 }
 
 .landing-container .card-main h1 {
-  font-size: 3rem; /* Reducido de 3.5rem */
+  font-size: 2.5rem;
   color: #033547;
-  line-height: 1.2;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .landing-container .card-main h2 {
-  font-size: 1.3rem; /* Reducido de 1.5rem */
+  font-size: 1.2rem;
   color: #405744;
   font-weight: normal;
-  margin-top: 0;
+  margin: 0;
 }
 
 .landing-container .card-logo {
@@ -292,62 +152,20 @@
 }
 
 .landing-container .card-logo img {
-  max-width: 150px;
+  max-width: 120px;
   height: auto;
 }
 
-/* Tarjeta de soporte (arriba a la derecha) */
 .landing-container .card-support {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 }
 
-.landing-container .card-support h2 {
-  font-size: 1.8rem;
-  color: #033547;
-  margin-bottom: 20px;
-}
-
-.landing-container .card-support p {
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
-.landing-container .card-support a {
-  color: #033547;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.landing-container .card-support a:hover {
-  text-decoration: underline;
-}
-
-/* Tarjeta para enlaces (abajo a la derecha, mismo ancho que soporte) */
 .landing-container .card-terms {
   grid-column: 2 / 3;
   grid-row: 2 / 3;
 }
 
-.landing-container .card-terms h2 {
-  font-size: 1.5rem;
-  color: #033547;
-  margin-bottom: 20px;
-}
-
-.landing-container .card-terms a {
-  display: block;
-  color: #033547;
-  text-decoration: none;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-}
-
-.landing-container .card-terms a:hover {
-  text-decoration: underline;
-}
-
-/* Tarjeta para redes sociales (extrema derecha, ocupa toda la altura) */
 .landing-container .card-social {
   grid-column: 3 / 4;
   grid-row: 1 / 3;
@@ -357,24 +175,30 @@
   justify-content: center;
 }
 
-.landing-container .card-social h2 {
-  font-size: 1.5rem;
+.landing-container .card h2 {
+  font-size: 1.4rem;
   color: #033547;
-  margin-bottom: 30px;
-  text-align: center;
+  margin-bottom: 15px;
+}
+
+.landing-container .card p,
+.landing-container .card a {
+  font-size: 0.9rem;
+  color: #033547;
+  margin-bottom: 10px;
+  text-decoration: none;
 }
 
 .landing-container .social-icons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 25px;
+  gap: 20px;
 }
 
 .landing-container .social-icons a {
+  font-size: 24px;
   color: #033547;
-  font-size: 28px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .landing-container .social-icons a:hover {
@@ -382,109 +206,8 @@
   color: #375534;
 }
 
-/* Keyframes y animaciones */
-@keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0);
-  }
-}
+/* === MODO OSCURO === */
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes slideRight {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInOnly {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Aplicación de animaciones a elementos */
-@media (prefers-reduced-motion: no-preference) {
-  .landing-container .navbar {
-    animation: fadeIn 0.6s ease-out;
-  }
-  
-  .landing-container .card-main {
-    animation: fadeIn 0.8s ease-out 0.2s both;
-  }
-  
-  .landing-container .card-support {
-    animation: fadeIn 0.8s ease-out 0.4s both;
-  }
-  
-  .landing-container .card-terms {
-    animation: fadeIn 0.8s ease-out 0.6s both;
-  }
-  
-  .landing-container .card-social {
-    animation: fadeIn 0.8s ease-out 0.8s both;
-  }
-  
-  .landing-container .cta-button {
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .landing-container .cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .landing-container .signup-btn:hover {
-    animation: pulse 1s ease-in-out infinite;
-  }
-}
-
-/* Respetar preferencia de reducción de movimiento */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* Hover y Focus para todos los elementos */
-.landing-container .nav-links a:hover,
-.landing-container .login-btn:hover,
-.landing-container .signup-btn:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.landing-container .nav-links a:focus,
-.landing-container .login-btn:focus,
-.landing-container .signup-btn:focus {
-  outline: 2px solid #375534;
-  outline-offset: 2px;
-}
-
-/* === MODO OSCURO DELUXE PARA LANDING === */
 .landing-container.dark-mode {
   background-image: 
     url("../../assets/img/background-shape.svg"),
@@ -492,14 +215,11 @@
   color: #eee;
 }
 
-/* Navbar oscuro */
 .landing-container.dark-mode .navbar {
   background-color: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Enlaces y botones */
 .landing-container.dark-mode .nav-links a,
 .landing-container.dark-mode .login-btn,
 .landing-container.dark-mode .signup-btn {
@@ -507,191 +227,86 @@
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.landing-container.dark-mode .nav-links a:hover,
-.landing-container.dark-mode .login-btn:hover,
-.landing-container.dark-mode .signup-btn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Tarjetas en modo oscuro */
 .landing-container.dark-mode .card {
   background-color: #1e1e1e;
   color: #f5f5f5;
 }
 
-.landing-container.dark-mode .card-main h1,
-.landing-container.dark-mode .card-support h2,
-.landing-container.dark-mode .card-terms h2,
-.landing-container.dark-mode .card-social h2 {
-  color: #f5f5f5;
+.landing-container.dark-mode .card a {
+  color: #9ccc8a;
 }
 
-.landing-container.dark-mode .card-main h2 {
-  color: #ccc;
-}
-
-.landing-container.dark-mode .card-support a,
-.landing-container.dark-mode .card-terms a,
 .landing-container.dark-mode .social-icons a {
   color: #9ccc8a;
 }
 
-/* === Mantener estructura de .navbar-container pero invisible === */
-.landing-container .navbar-container {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-  width: 1400px;
-  max-width: 90%;
-  box-sizing: border-box;
+/* === ANIMACIONES === */
+
+@keyframes fadeInOnly {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Responsive */
-/* Pantallas extra grandes (desktops, 1600px y superiores) */
-@media (min-width: 1600px) {
-  .landing-container .navbar-container,
-  .landing-container .grid-container {
-    width: 1600px;
-    max-width: 90%;
-  }
-  
-  .landing-container .cards-container {
-    max-width: 1600px;
-  }
-  
-  .landing-container .card-main h1 {
-    font-size: 4rem;
-  }
-  
-  .landing-container .card-main h2 {
-    font-size: 1.8rem;
-  }
-}
+/* === RESPONSIVE === */
 
-/* Pantallas grandes (desktops, entre 1200px y 1599px) */
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .landing-container .navbar-container,
-  .landing-container .grid-container {
-    width: 1200px;
-  }
-}
-
-/* Tablets y pantallas medianas (entre 769px y 1199px) */
-@media (min-width: 769px) and (max-width: 1199px) {
-  .landing-container .navbar-container,
-  .landing-container .grid-container {
-    width: 90%;
-  }
-  
-  .landing-container .nav-links {
-    gap: 30px;
-  }
-  
-  .landing-container .cards-container {
-    width: 90%;
-  }
-}
-
-/* Móviles y pantallas pequeñas (máximo 768px) */
 @media (max-width: 768px) {
-  .landing-container .navbar-container, 
-  .landing-container .grid-container {
-    max-width: 95%;
-  }
-
-  .landing-container .navbar {
-    padding: 10px 15px;
-    height: auto;
-    flex-wrap: wrap;
-  }
-
-  .landing-container .nav-links {
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .landing-container .nav-links a {
-    font-size: 16px;
-  }
-  
   .landing-container .cards-container {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto;
-    gap: 15px;
-    padding: 0 10px;
   }
-  
+
   .landing-container .card-main {
     grid-column: 1 / 2;
     grid-row: 1 / 3;
   }
-  
+
   .landing-container .card-support {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
   }
-  
+
   .landing-container .card-terms {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
   }
-  
+
   .landing-container .card-social {
     grid-column: 1 / 3;
     grid-row: 3 / 4;
-  }
-  
-  .landing-container .card-social .social-icons {
     flex-direction: row;
     justify-content: center;
   }
-  
-  .landing-container .card {
-    padding: 20px;
+
+  .landing-container .social-icons {
+    flex-direction: row;
   }
-  
+
+  .landing-container .card {
+    padding: 15px;
+  }
+
   .landing-container .card-main h1 {
     font-size: 2rem;
   }
-  
+
   .landing-container .card-main h2 {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 }
 
-/* Móviles pequeños (máximo 576px) */
 @media (max-width: 576px) {
   .landing-container .cards-container {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
-  
-  .landing-container .navbar {
-    flex-direction: column;
-    height: auto;
-    padding: 15px;
-  }
-  
-  .landing-container .nav-links {
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  .landing-container .nav-buttons {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
+
   .landing-container .card-main,
   .landing-container .card-support,
   .landing-container .card-terms,
   .landing-container .card-social {
     grid-column: 1;
   }
-  
+
   .landing-container .card-main { grid-row: 1; }
   .landing-container .card-support { grid-row: 2; }
   .landing-container .card-terms { grid-row: 3; }
@@ -700,8 +315,24 @@
   .landing-container .card-social .social-icons {
     flex-direction: row;
   }
-  
-  .landing-container .card-main h1 {
-    font-size: 1.8rem;
-  }
+}
+
+/* === Estilo para el botón del modo oscuro (cuando .dark-mode está activo) === */
+
+.landing-container.dark-mode .cta-button {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.landing-container.dark-mode .cta-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* Wrapper que agrupa enlaces y botones dentro del navbar */
+.landing-container .navbar-content {
+  display: flex;
+  align-items: center;
+  gap: 140px; /* 👈 Ajusta aquí la separación entre enlaces y botones */
 }

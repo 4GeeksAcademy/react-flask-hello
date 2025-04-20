@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Landing.css";
 import logo from "../../assets/img/Logo_DronFarm_Icono1.png";
-import DarkModeToggle from "../../components/DarkModeToggle";
+import DarkModeToggle from "../../components/DarkModeToggle/DarkModeToggle";
 
 const Landing = () => {
-  // Para detectar el scroll y cambiar el estilo del navbar
   const [scrolled, setScrolled] = useState(false);
   
   useEffect(() => {
@@ -27,22 +26,23 @@ const Landing = () => {
       {/* Navbar superior */}
       <div className="navbar-container">
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-          <div className="nav-links">
-            <a href="#inicio">Inicio</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#nosotros">Nosotros</a>
-            <a href="#contacto">Contacto</a>
-          </div>
-          <div className="nav-buttons">
-            <button className="login-btn">Iniciar Sesión</button>
-            <button className="signup-btn">Registrarse</button>
+          <div className="navbar-content">
+            <div className="nav-links">
+              <a href="#inicio">Inicio</a>
+              <a href="#servicios">Servicios</a>
+              <a href="#nosotros">Nosotros</a>
+              <a href="#contacto">Contacto</a>
+            </div>
+            <div className="nav-buttons">
+              <button className="login-btn">Iniciar Sesión</button>
+              <button className="signup-btn">Registrarse</button>
+            </div>
           </div>
         </nav>
       </div>
 
       {/* Contenedor de tarjetas - nuevo layout de 4 cajas */}
       <div className="cards-container">
-        {/* Tarjeta principal (izquierda) - ocupa toda la altura */}
         <div className="card card-main">
           <h1>Cada hectárea cuenta.</h1>
           <h2>Optimiza tus cultivos con tecnología de drones de última generación</h2>
@@ -58,7 +58,6 @@ const Landing = () => {
           </div>
         </div>
 
-        {/* Tarjeta de soporte (arriba a la derecha) */}
         <div className="card card-support">
           <h2>Soporte</h2>
           <p>¿Tienes preguntas? Ponte en contacto con nuestro equipo o visita nuestro centro de ayuda.</p>
@@ -69,14 +68,12 @@ const Landing = () => {
           </p>
         </div>
 
-        {/* Tarjeta de enlaces (abajo a la derecha) */}
         <div className="card card-terms">
           <h2>Enlaces</h2>
           <a href="#terminos">Términos de uso</a>
           <a href="#privacidad">Política de privacidad</a>
         </div>
 
-        {/* Tarjeta de redes sociales (extrema derecha) - ocupa toda la altura */}
         <div className="card card-social">
           <h2>Síguenos</h2>
           <div className="social-icons">

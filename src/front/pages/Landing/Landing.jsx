@@ -1,48 +1,109 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import './Landing.css';
-import heroImage from '../../assets/img/Login1.jpg';
-import Logo from '../../assets/img/Logo_DronFarm2.png';
-
+import React, { useState, useEffect } from "react";
+import "./Landing.css";
+import logo from "../../assets/img/Logo_DronFarm_Iconocolor_sinmarco.png";
+import logodark from "../../assets/img/Logo_DronFarm_IconoBlanco_sinmarco.png";
+import logonaked from "../../assets/img/Logo_DronFarm_Icono1_sinmarco.png";
+import DarkModeToggle from "../../components/DarkModeToggle/DarkModeToggle";
+import mavicImage from "../../assets/img/Mavic 3 volando.png";
+import Footer from "../../components/Footer/Footer"; // 👈 IMPORTANTE
 
 const Landing = () => {
-  const features = [
-    { title: "Análisis Multiespectral", desc: "Mapas detallados de salud vegetal" },
-    { title: "Detección Temprana", desc: "Identificación de plagas antes de su propagación" },
-    { title: "Riego Inteligente", desc: "Optimización del uso de agua en tiempo real" },
-    { title: "Informes Personalizados", desc: "Dashboard interactivo con métricas clave" }
-  ];
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false); // ⬅️ Detectar modo oscuro
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // ⬇️ Detecta si .landing-container tiene la clase dark-mode
+  useEffect(() => {
+    const landing = document.querySelector(".landing-container");
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(landing.classList.contains("dark-mode"));
+    });
+
+    observer.observe(landing, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
     <div className="landing-container">
-      {/* Hero Section */}
-      <motion.section className="hero-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-        <div className="hero-content">
-          <h1>Agricultura de Precisión con Tecnología Drone</h1>
-          <p>Maximiza tu producción con análisis de cultivos en tiempo real</p>
-        </div>
-        <div className="hero-image-container">
-          <img src={heroImage} alt="Monitoreo agrícola con drones" className="hero-image" />
-        </div>
-      </motion.section>
+      <DarkModeToggle />
 
-      {/* Features Grid con fondo verde */}
-      <section className="features-section" id="features">
-        <h2 className="section-title">Nuestra Tecnología</h2>
-        <div className="bento-grid">
-          {features.map((feature, index) => (
-            <motion.div key={index} className="feature-card"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: index * 0.2 }}
-            >
-              <div className="card-number">0{index + 1}</div>
-              <h3>{feature.title}</h3>
-              <p>{feature.desc}</p>
-            </motion.div>
-          ))}
+      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+        <div className="navbar-content">
+          {/* Logo que cambia con el modo */}
+          <img
+            src={isDarkMode ? logoDark : logo}
+            alt="Logo DronFarm"
+            className="logo-navbar"
+          />
+
+          <div className="navbar-right">
+            <div className={`hamburger-menu-container ${menuOpen ? "active" : ""}`}>
+              <div className="hamburger-icon" onClick={toggleMenu}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div className="dropdown-menu">
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#contacto">Contacto</a>
+              </div>
+            </div>
+
+            <div className="nav-buttons">
+              <button className="login-btn">Iniciar Sesión</button>
+              <button className="signup-btn">Registrarse</button>
+            </div>
+          </div>
         </div>
-      </section>
+      </nav>
+
+      <div className="cards-container">
+        <div className="card card-main">
+          <h1>Plataforma integral de monitoreo agrícola</h1>
+          <h2>Decisiones inteligentes con datos reales</h2>
+        </div>
+
+        <div className="card card-support">
+          <h2>Soporte</h2>
+          <p>
+            ¿Tienes preguntas? Ponte en contacto con nuestro equipo o visita
+            nuestro centro de ayuda.
+          </p>
+          <p>
+            También puedes contactar al equipo:<br />
+            <strong>+34 911 23 45 67</strong><br />
+            <a href="mailto:soporte@dronfarm.com">soporte@dronfarm.com</a>
+          </p>
+        </div>
+
+        <div className="card card-terms">
+          <img src={mavicImage} alt="Drone Mavic 3 volando" />
+        </div>
+
+        <div className="card card-social">
+          <h2>Síguenos</h2>
+          <div className="social-icons">
+            <a href="#instagram" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+            <a href="#facebook" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+            <a href="#twitter" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 };

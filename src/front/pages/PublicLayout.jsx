@@ -3,18 +3,30 @@ import { useEffect } from "react";
 import ScrollToTop from "../components/ScrollToTop";
 import PublicNavbar from "../components/Navbar/PublicNavbar";
 import Footer from "../components/Footer/Footer";
-import "./Layout.css";
+import "./Layout.css";  // Mantienes tus estilos de layout
 
-const PublicLayout = () => {
+export const PublicLayout = () => {
+  const location = useLocation();
+  const isLanding = location.pathname === "/"; // 👈 Detectamos si estás en la landing
+
+  useEffect(() => {
+    const routeName = location.pathname.substring(1) || "landing";
+    document.body.setAttribute("data-route", routeName);
+
+    return () => {
+      document.body.removeAttribute("data-route");
+    };
+  }, [location]);
+
   return (
     <>
       <ScrollToTop />
       <div className="app-root">
-        <PublicNavbar />
+        {!isLanding && <PublicNavbar />}  {/* 👈 Ocultamos el navbar si estás en la landing */}
         <div className="content-container">
           <Outlet />
         </div>
-        <Footer />
+        {!isLanding && <Footer />}  {/* 👈 Ocultamos el footer si estás en la landing */}
       </div>
     </>
   );

@@ -1,204 +1,762 @@
-:root {
-  --primary-green: #2e7d32;
-  --accent-blue: #1976d2;
-  --text-dark: #2c3e50;
-  --text-light: #ffffff;
-}
+/* === LANDING.CSS COMPLETO ACTUALIZADO === */
 
-/* Reset y estilos base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", system-ui;
+:root {
+  --card-main-bg: rgba(255, 255, 255, 0.85);
+  --card-support-bg: rgba(234, 247, 235, 0.85);
+  --card-terms-bg: rgba(245, 245, 245, 0.85);
+  --card-social-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
 .landing-container {
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #B0DAD3, #E3EED4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 900px 1000px, cover;
+  overflow-x: hidden; /* ✅ Permitimos scroll horizontal bloqueado */
+  overflow-y: auto;   /* ✅ Permitimos scroll vertical si hace falta */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  box-sizing: border-box;
+  animation: fadeInOnly 1.2s ease-out forwards;
 }
 
-/* Navbar */
-.landing-nav {
-  padding: 1.5rem 6%;
+.landing-container *,
+.landing-container *::before,
+.landing-container *::after {
+  box-sizing: border-box;
+}
+
+/* === NAVBAR REESTRUCTURADO === */
+.landing-container .navbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: transparent !important;
+  z-index: 1000;
+  box-shadow: none !important;
+  border: none !important;
+  margin: 0;
+  position: fixed;
+  top: 70px; /* Mismo valor que el padding-top del contenedor */
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* Centrado horizontal */
+}
+
+.landing-container .navbar.scrolled {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(5px); /* Efecto de cristal opcional */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* Sombra muy sutil solo al hacer scroll */
+}
+
+.landing-container .navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--text-light);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-logo {
-  height: 51px;
-  width: auto;
-}
-
-.nav-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-links a {
-  color: var(--text-dark);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: var(--primary-green);
-}
-
-/* Hero Section */
-.hero-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 4rem 7%;
-  background: linear-gradient(to right, #e8f5e9, #c8e6c9);
-}
-
-.hero-content {
-  max-width: 600px;
-}
-
-.hero-content h1 {
-  font-size: 2.8rem;
-  color: var(--text-dark);
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-}
-
-.hero-content p {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 2rem;
-}
-
-.hero-image-container {
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.hero-image {
   width: 100%;
-  height: 500px;
-  object-fit: cover;
+  max-width: 1600px;
+  padding: 0 30px;
+  gap: 30px; /* ⬅️ Aumenta el espacio entre logo y menú derecho */
 }
 
-/* Features Grid - ACTUALIZADO CON FONDO VERDE */
-.features-section {
-  padding: 4rem 5%;
-  background-color: #938ba1; /* Verde similar al del navbar */
+/* Logo */
+.landing-container .logo-navbar {
+  width: 420px;
+  height: auto;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s ease;
+  margin-right: auto; /* Empuja todo lo demás a la derecha */
 }
 
-.section-title {
+.landing-container .logo-navbar:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Enlaces - ahora centrados absolutamente */
+.landing-container .nav-links {
+  display: flex;
+  gap: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.landing-container .nav-links a {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.landing-container .nav-links a:hover {
+  background-color: #375534;
+  color: white;
+}
+
+/* Botones */
+.landing-container .nav-buttons {
+  display: flex;
+  gap: 15px;
+  margin-left: auto; /* Los empuja a la derecha */
+}
+
+.landing-container .login-btn,
+.landing-container .signup-btn {
+  padding: 8px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 120px;
   text-align: center;
-  font-size: 2.5rem;
-  color: var(
-    --text-light
-  ); /* Cambiado a blanco para contrastar con fondo verde */
-  margin-bottom: 3rem;
 }
 
-.bento-grid {
+.landing-container .login-btn {
+  background-color: rgba(24, 26, 102, 0.179);
+  color: #1e1e1e;
+}
+
+.landing-container .signup-btn {
+  background-color: #F19A3E;
+  color: white;
+}
+
+.landing-container .signup-btn:hover {
+  background-color: #2e4a2c;
+  transform: scale(1.05);
+}
+
+/* === TARJETAS - 4 CAJAS (ACTUALIZADO CON COLORES INDIVIDUALES) === */
+.landing-container .cards-container {
+  width: 90%;
+  max-width: 1300px;
+  margin: 150px auto 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 5fr 3.2fr 2.2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 25px;
+  z-index: 10;
 }
 
-.feature-card {
-  background: var(--text-light);
-  padding: 2rem;
+.landing-container .card {
   border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Sombra ligeramente más oscura para destacar sobre fondo verde */
-  transition: transform 0.3s ease;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
+.landing-container .card-main {
+  background-color: var(--card-main-bg);
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
 }
 
-.card-number {
-  font-size: 2rem;
-  color: var(--primary-green);
-  font-weight: 700;
-  margin-bottom: 1rem;
+.landing-container .card-support {
+  background-color: var(--card-support-bg);
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 }
 
-/* Footer */
-.landing-footer {
-  margin-top: auto;
-  background: var(--primary-green);
-  color: var(--text-light);
-  padding: 3rem 5%;
+.landing-container .card-terms {
+  background-color: var(--card-terms-bg);
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
+.landing-container .card-terms img {
+  width: 100%;
+  border-radius: 12px;
+  opacity: 0.9;
+}
+
+
+.landing-container .card-social {
+  background-color: var(--card-social-bg);
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
+  gap: 60px;
 }
 
-.footer-logo {
-  height: 60px;
-  width: auto;
+.landing-container .card-main h1 {
+  font-size: 2.2rem;
+  color: #033547;
+  margin-bottom: 55px;
 }
 
-.footer-links {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+.landing-container .card-main h2 {
+  font-size: 1.5rem !important;
+  color: #405744;
+  font-weight: normal;
+  margin: 0;
 }
 
-.footer-links a {
-  color: var(--text-light);
-  text-decoration: none;
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-.footer-links a:hover {
-  opacity: 1;
-}
-
-.copyright {
+.landing-container .card-logo {
+  margin-top: auto;
   text-align: center;
-  opacity: 0.7;
-  font-size: 0.9rem;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    text-align: center;
-  }
+.landing-container .card-logo img {
+  max-width: 420px;
+  height: auto;
+}
 
-  .hero-image {
-    height: 400px;
+.landing-container .card h2 {
+  font-size: 2.4rem;
+  color: #033547;
+  margin-bottom: 5px;
+}
+
+.landing-container .card p,
+.landing-container .card a {
+  font-size: 0.9rem;
+  color: #033547;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+.landing-container .social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.landing-container .social-icons a {
+  font-size: 50px;
+  color: #033547;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.landing-container .social-icons a:hover {
+  transform: translateY(-3px);
+  color: #375534;
+}
+
+/* === MODO OSCURO (ACTUALIZADO CON COLORES DE TARJETAS) === */
+.landing-container.dark-mode {
+  --card-main-bg: rgba(30, 30, 30, 0.85);
+  --card-support-bg: rgba(25, 35, 25, 0.85);
+  --card-terms-bg: rgba(28, 28, 28, 0.85);
+  --card-social-bg: rgba(22, 22, 22, 0.7);
+  
+  background-image: 
+    url("../../assets/img/background-shape.svg"),
+    linear-gradient(to bottom, #111, #1d1d1d);
+  color: #eee;
+}
+
+.landing-container.dark-mode .nav-links a,
+.landing-container.dark-mode .login-btn,
+.landing-container.dark-mode .signup-btn {
+  color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-container.dark-mode .card {
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .card h1,
+.landing-container.dark-mode .card h2 {
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .card a,
+.landing-container.dark-mode .social-icons a {
+  color: #9ccc8a;
+}
+
+.landing-container.dark-mode .cta-button {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.landing-container.dark-mode .cta-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* === ANIMACIONES (MANTENIDO IGUAL) === */
+@keyframes fadeInOnly {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulseLogo {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* === RESPONSIVE ACTUALIZADO === */
+@media (max-width: 1200px) {
+  .landing-container .logo-navbar {
+    width: 320px;
+  }
+  .landing-container .nav-links {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .landing-container .navbar-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    height: auto;
+  }
+  .landing-container .logo-navbar {
+    margin-right: 0;
+    width: 280px;
+    order: 1;
+  }
+  .landing-container .nav-links {
+    position: static;
+    transform: none;
+    left: auto;
+    order: 2;
+    margin: 10px 0;
+  }
+  .landing-container .nav-buttons {
+    margin-left: 0;
+    order: 3;
   }
 }
 
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
+  .landing-container .cards-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    margin-top: 180px;
   }
 
-  .hero-content h1 {
+  .landing-container .logo-navbar {
+    width: 250px;
+  }
+
+  .landing-container .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .landing-container .nav-links a {
+    padding: 6px 12px;
+    font-size: 15px;
+  }
+
+  .landing-container .card-main {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+  }
+
+  .landing-container .card-support {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  .landing-container .card-terms {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  .landing-container .card-social {
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .landing-container .social-icons {
+    flex-direction: row;
+    gap: 40px;
+  }
+
+  .landing-container .card {
+    padding: 15px;
+  }
+
+  .landing-container .card-main h1 {
     font-size: 2rem;
   }
 
-  .bento-grid {
+  .landing-container .card-main h2 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .landing-container .cards-container {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    margin-top: 220px;
+  }
+
+  .landing-container .logo-navbar {
+    width: 220px;
+  }
+
+  .landing-container .nav-links {
+    gap: 8px;
+  }
+
+  .landing-container .nav-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .landing-container .login-btn,
+  .landing-container .signup-btn {
+    padding: 8px 16px;
+    min-width: 110px;
+  }
+
+  .landing-container .card-main,
+  .landing-container .card-support,
+  .landing-container .card-terms,
+  .landing-container .card-social {
+    grid-column: 1;
+  }
+
+  .landing-container .card-main { grid-row: 1; }
+  .landing-container .card-support { grid-row: 2; }
+  .landing-container .card-terms { grid-row: 3; }
+  .landing-container .card-social { grid-row: 4; }
+  
+  .landing-container .card-social .social-icons {
+    gap: 30px;
+  }
+}
+
+/* Copyright dentro de card-main */
+.landing-container .card-main .copyright-text {
+  font-size: 0.85rem;
+  margin-top: 20px;
+  color: #555;
+  text-align: left;
+}
+
+/* Versión modo oscuro */
+.landing-container.dark-mode .card-main .copyright-text {
+  color: #bbb;
+}
+
+/* COLORES DE TARJETAS - MÁS DIFERENCIADOS */
+.landing-container .card-main {
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Blanco para la tarjeta principal */
+}
+
+.landing-container .card-support {
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Verde claro para soporte */
+}
+
+.landing-container .card-terms {
+  background-color: rgba(240, 240, 220, 0.85) !important; /* Amarillo muy clarito para términos */
+}
+
+.landing-container .card-social {
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Lavanda claro para social */
+}
+
+/* Modo oscuro con colores más diferenciados */
+.landing-container.dark-mode .card-main {
+  background-color: rgba(30, 30, 30, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-support {
+  background-color: rgba(20, 40, 20, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-terms {
+  background-color: rgba(40, 40, 20, 0.9) !important;
+}
+
+.landing-container.dark-mode .card-social {
+  background-color: rgba(30, 20, 40, 0.9) !important;
+}
+
+/* === SEPARAR ELEMENTOS DEL NAVBAR === */
+
+/* Ocultar los enlaces en el navbar superior */
+.landing-container .navbar .nav-links {
+  display: none; /* Ocultar los enlaces del navbar superior */
+}
+
+/* Ajustar el navbar superior para que solo tenga logo y botones */
+.landing-container .navbar-content {
+  justify-content: space-between; /* Para mantener logo a la izquierda y botones a la derecha */
+}
+
+/* Crear una barra de navegación con enlaces debajo de las tarjetas */
+.landing-container .bottom-nav {
+  width: 90%;
+  max-width: 1300px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin-top: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Estilos para los enlaces en la barra inferior */
+.landing-container .bottom-nav-links {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.landing-container .bottom-nav-links a {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.landing-container .bottom-nav-links a:hover {
+  background-color: #375534;
+  color: white;
+}
+
+/* Estilos para modo oscuro */
+.landing-container.dark-mode .bottom-nav {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.landing-container.dark-mode .bottom-nav-links a {
+  color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-container.dark-mode .bottom-nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landing-container .bottom-nav-links {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .landing-container .bottom-nav-links a {
+    padding: 6px 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .landing-container .bottom-nav {
+    padding: 10px;
+  }
+  
+  .landing-container .bottom-nav-links {
+    gap: 8px;
+  }
+  
+  .landing-container .bottom-nav-links a {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+/* === MENÚ HAMBURGUESA CORREGIDO === */
+
+/* Reordenar elementos en la barra de navegación */
+.landing-container .navbar-content {
+  display: flex;
+  justify-content: space-between; /* Esto separa el logo de los demás elementos */
+  align-items: center;
+  width: 100%;
+}
+
+/* Agrupar hamburguesa y botones */
+.landing-container .navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espacio entre el menú hamburguesa y los botones */
+}
+
+/* Contenedor del menú hamburguesa */
+.hamburger-menu-container {
+  position: relative;
+  /* Sin margen derecho fijo */
+}
+
+/* Icono de hamburguesa */
+.hamburger-icon {
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Líneas del icono hamburguesa */
+.hamburger-icon span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #1e1e1e;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover en el icono */
+.hamburger-icon:hover span {
+  background-color: #375534;
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: 200px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 10px 0;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+.hamburger-menu-container.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Modificar la activación del menú para que sea por clic en lugar de hover */
+.hamburger-menu-container.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Enlaces del menú desplegable */
+.dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #1e1e1e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(55, 85, 52, 0.1);
+  color: #375534;
+}
+
+/* Triángulo decorativo en la parte superior del menú */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Estilos para modo oscuro */
+.landing-container.dark-mode .hamburger-icon span {
+  background-color: #f0f0f0;
+}
+
+.landing-container.dark-mode .dropdown-menu {
+  background-color: rgba(30, 30, 30, 0.9);
+}
+
+.landing-container.dark-mode .dropdown-menu::before {
+  border-bottom-color: rgba(30, 30, 30, 0.9);
+}
+
+.landing-container.dark-mode .dropdown-menu a {
+  color: #f0f0f0;
+}
+
+.landing-container.dark-mode .dropdown-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #9ccc8a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-right {
+    gap: 10px;
+  }
+  
+  .hamburger-icon {
+    width: 25px;
+    height: 20px;
+  }
+  
+  .dropdown-menu {
+    width: 180px;
   }
 }

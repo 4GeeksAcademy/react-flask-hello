@@ -1,72 +1,90 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+import datetime
+from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
-from flask_swagger import swagger
+from flask_jwt_extended import JWTManager
+from flask_cors import CORS  # IMPORTA CORS
+
+# IMPORTACIONES DEL PROYECTO
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
+from api.Routes.routes import api
+from api.Routes.upload_routes import upload
+from api.Routes.store_routes import store
 from api.admin import setup_admin
 from api.commands import setup_commands
 
-# from models import Person
+# CREAR LA INSTANCIA DE LA APLICACIÓN FLASK
+app = Flask(__name__)
 
+# Registra el Blueprint con el prefijo de URL
+app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(upload, url_prefix='/upload')
+app.register_blueprint(store, url_prefix='/api')  # Registrar el nuevo Blueprint
+
+# CONFIGURACIÓN CORS: PERMITIR MÚLTIPLES ORÍGENES SI ES NECESARIO
+CORS(app, supports_credentials=True)
+CORS(app, resources={r"/upload/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+# CONFIGURACIÓN DEL ENTORNO: USAR "DEVELOPMENT" SI FLASK_DEBUG ESTÁ ACTIVADO
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
-app = Flask(__name__)
-app.url_map.strict_slashes = False
 
-# database condiguration
+# CONFIGURACIÓN DE LA BASE DE DATOS
 db_url = os.getenv("DATABASE_URL")
-if db_url is not None:
+if db_url:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
         "postgres://", "postgresql://")
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+    # SI NO HAY UNA URL DE BASE DE DATOS, SE USA SQLITE PARA DESARROLLO
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
 
+# DESHABILITAR LA MODIFICACIÓN DEL OBJETO DE LA BASE DE DATOS (PARA OPTIMIZACIÓN)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# INICIALIZAR LA MIGRACIÓN DE LA BASE DE DATOS
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# add the admin
-setup_admin(app)
+# CONFIGURAR JWT (JSON WEB TOKENS) CON CLAVES Y EXPIRACIÓN
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=365)  # 1 AÑO
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
 
-# add the admin
-setup_commands(app)
+# INICIALIZAR EL GESTOR DE JWT
+jwt = JWTManager(app)
 
-# Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
-
-# Handle/serialize errors like a JSON object
-
-
+# CONFIGURAR EL MANEJO DE ERRORES PARA LAS EXCEPCIONES PERSONALIZADAS
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# CONFIGURAR EL ADMINISTRADOR Y COMANDOS PERSONALIZADOS
+setup_admin(app)
+setup_commands(app)
 
-
+# RUTA PARA GENERAR EL SITEMAP DE LA API
 @app.route('/')
 def sitemap():
     if ENV == "development":
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# any other endpoint will try to serve it like a static file
+# RUTA PARA SERVIR CUALQUIER OTRO ARCHIVO ESTÁTICO, COMO IMÁGENES, JS, CSS, ETC.
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
     response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
+    response.cache_control.max_age = 0  # EVITAR CACHÉ
     return response
 
-
-# this only runs if `$ python src/main.py` is executed
+# EJECUTAR LA APLICACIÓN SI EL ARCHIVO ES EJECUTADO DIRECTAMENTE
 if __name__ == '__main__':
+    # OBTENER EL PUERTO DE LA VARIABLE DE ENTORNO O USAR EL VALOR PREDETERMINADO 3001
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)

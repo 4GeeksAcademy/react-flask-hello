@@ -1,0 +1,59 @@
+
+body {
+    background-color: transparent;
+    color: var(--text);
+  }
+  
+  button {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  input {
+    border-color: var(--border);
+  }
+  
+  .theme-light ::placeholder {
+    color: var(--primary);
+    opacity: 0.6;
+  }
+  
+  .theme-dark ::placeholder {
+    color: var(--primary);
+    opacity: 0.5;
+  }
+  
+:root {
+    --transition: 0.3s ease;
+    --bg: white;
+    --text: black;
+    --primary: #007bff;
+    --primary-hover: #0056b3;
+    --card: #f5f5f5;
+    --border: #ddd;
+  }
+  
+  /* Tema claro */
+  .theme-light {
+    --bg: #91bccf;
+    --text: #192633;
+    --primary: #427b98;
+    --primary-hover: #396581;
+    --card: #ddebf0;
+    --border: #bed8e3;
+    --shadow: #2f455670;
+  }
+  
+  /* Tema oscuro */
+  .theme-dark {
+    --bg: #282828;
+    --text: #34546a;
+    --text2: #ddebf0;
+    --primary: #3d3d3d;
+    --primary-hover: #34546a;
+    --card: #2c3e4d;
+    --border: #5d97b3;
+    --border-hover: #ddebf0;
+    --shadow: #000000;
+  }
+  

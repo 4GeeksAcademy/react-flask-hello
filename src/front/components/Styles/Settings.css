@@ -1,0 +1,39 @@
+.option_panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+  margin-left: 20vh;
+  width: 50vh;
+  height: 50vh;
+  border-radius: 30px;
+  background: #c9c5c5;
+  box-shadow: 4px 4px 10px #2f45566f;
+}
+
+.inventary_btn {
+  background: none;
+}
+
+.inventary {
+  color: #2f4556;
+  all: unset;
+  background: none;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 5px;
+  transition: all 0.3s ease;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.inventary:hover {
+  scale: 1.1;
+}
+.inventary:active {
+  background: none;
+  color: #2f4556;
+  transition: all 0.3s ease;
+}

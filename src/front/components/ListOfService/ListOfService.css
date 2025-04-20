@@ -1,0 +1,23 @@
+
+
+/* boxService */
+.boxService {
+    border: none;
+    background-color: white;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px gray;
+    border-left: 4px solid #007BFF;
+    border-bottom: 4px solid #007BFF;
+}
+
+
+/* Service Title */
+.serviceTitle {
+    text-align: center;
+
+}
+
+/* Queda por definir color, si necesita margin/padding, sombreado (box shadow) */

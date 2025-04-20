@@ -16,7 +16,7 @@ import { ListOfService } from "./components/ListOfService/ListOfService.jsx";
 import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
 import AssignService from "./pages/AssignService.jsx";
 
-import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
+
 
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(

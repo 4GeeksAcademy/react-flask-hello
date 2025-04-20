@@ -1,28 +1,53 @@
-import React from "react";
-import "./ListOfService.css"
-import useGlobalReducer from "../../hooks/useGlobalReducer";
 
+import React, { useEffect, useState } from "react";
+import "./ListOfService.css";
+import { SearchInput } from "../SearchInput/SearchInput";
 export const ListOfService = () => {
-    const { store } = useGlobalReducer();
+    const [services, setServices] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+                const response = await fetch(`${backendUrl}api/services`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || "Error fetching services");
+                }
+                setServices(data);
+            } catch (error) {
+                console.error("Error loading services:", error);
+            }
+        };
+        fetchServices();
+    }, []);
+    const filteredServices = services.filter(service =>
+        service.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     return (
         <>
-            {store.services.map((service, index) => (
-                <div key={index} className="boxService container"> {/* Box Service */}
-                    <div className="serviceTitle row"> {/* Name Service */}
-                        <h2>{service.name}</h2> {/* añadido */}
+        < SearchInput
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search services..." />
+            {filteredServices.map((service, index) => (
+                <div key={index} className="boxService container">
+                    <div className="serviceTitle row">
+                        <h1>{service.name}</h1>
                     </div>
-                    <div> {/* Description */}
+                    <div className="serviceDescription">
                         <h4>Description:</h4>
-                        <span>{service.description}</span> {/* añadido */}
+                        <span>{service.description}</span>
                     </div>
-                    <div className="row"> {/* Category and Price */}
-                        <div className="col-8">
-                            <h5>Category:</h5>
-                            <span>{service.category}</span> {/* añadido */}
-                        </div>
-                        <div className="col-4">
+                    <div className="row">
+                        <div className="servicePrice">
                             <h5>Price:</h5>
-                            <span>{service.price}</span> {/* añadido */}
+                            <span>{service.price}</span>
                         </div>
                     </div>
                 </div>
@@ -30,9 +55,3 @@ export const ListOfService = () => {
         </>
     );
 };
-
-//Agregar Filtro busqueda creado por Angel
-
-//Nose si agregarle CSS margin-left al "<h4>Description"
-
-//Agregar Margin entre cada dato

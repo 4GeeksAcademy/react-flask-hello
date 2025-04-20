@@ -1,61 +1,200 @@
-.formBox {
-    border: solid !important;
-    border-radius: 20px;
-    background-color:white !important;
-    margin: 250px;
-    padding: 5px;
-    box-shadow: 4px 4px 10px gray;
-}
-/* Div Title and Logo Zone */
-.divTitleLogo {
-    display: flex;
-}
-/* Form Title */
-.formTitle {
-    color: black !important;
-    margin: 10px;
-    padding-bottom: 20px;
-}
-/* Logo Size */
-.logoFor {
-    width: 80px;
-    height: 80px;
-}
-/* Label Style */
-.labelStyle {
-    color: black !important;
-    font-weight: bold;
-    font-size: x-large;
-}
-/* Div Button Zone*/
-.divButton {
-    margin: 15px;
-    text-align: right;
-}
-/* Button Style */
+/* ServiceForm.css */
 
-.buttonCancel{
-    width: 100px;
-    height: 40px;
-    font-weight: bold;
-    font-size: x-large;
-    border-radius: 10px;
-    border: none;
-    margin-right: 10px;
-    background-color: red;
-    color: white;
+.service-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
+  background-color: #f8f9fa;
 }
 
-.buttonCreated {
-    width: 100px;
-    height: 40px;
-    font-weight: bold;
-    font-size: x-large;
-    border-radius: 10px;
-    border: none;
-    background-color: #3498DB;
-    color: white;
+.service-form-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 720px;
+  overflow: hidden;
 }
 
+.service-form-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid #f1f1f1;
+}
 
-/* The Inputs are with Bootstrap */
+.service-form-header h1 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.service-form-header p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.service-form {
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.service-form-error {
+  background-color: #feeaea;
+  color: #e74c3c;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.service-form-error i {
+  font-size: 1.2rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f1f1;
+}
+
+.cancel-button,
+.submit-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  color: #7f8c8d;
+  border: 1px solid #e0e0e0;
+  text-decoration: none;
+}
+
+.cancel-button:hover {
+  background-color: #f1f1f1;
+  color: #34495e;
+}
+
+.submit-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+}
+
+.submit-button:hover {
+  background-color: #2980b9;
+}
+
+.submit-button:disabled {
+  background-color: #a0c6e7;
+  cursor: not-allowed;
+}
+
+.button-loader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .service-form-container {
+    padding: 1rem;
+  }
+
+  .service-form-card {
+    max-width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .service-form-header,
+  .service-form {
+    padding: 1.5rem;
+  }
+
+  .service-form-error {
+    margin: 0 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

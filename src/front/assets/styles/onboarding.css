@@ -1,0 +1,63 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
+
+h1{
+    font-size: 96px;
+    font-family: 'Satoshi', sans-serif;
+    color: #7E1DFF;
+}
+
+h2{
+    font-size: 48px;
+    font-family: 'Satoshi', sans-serif;
+    color: #f5f5f5;
+}
+
+p{
+    font-size: 16px;
+    color: #f5f5f5;
+}
+
+.onboarding-page{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(45deg, #000000, #120621);
+}
+
+.onboarding-first{
+    width: 100vw;
+    height: 1100px;
+    background-image: url('src/front/assets/styles/images/ChatGPT Image 19 abr 2025, 13_30_02.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 150px;
+}
+
+.text-onboarding-first{
+    padding-top: 75px;
+}
+
+.register-button{
+    background-color: #E67E22;
+    border-radius: 6px;
+    color: #f5f5f5;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    margin-top: 50px;
+}
+
+.register-button:hover{
+    background-color: #e59b5b;
+}
+
+.register-button:active{
+    background-color: #ae5e18;
+}

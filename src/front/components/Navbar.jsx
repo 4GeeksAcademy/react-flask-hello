@@ -14,7 +14,9 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">LevelUp</Link>
+        <Link to="/">
+          <img src="src/front/assets/styles/images/logo.png" alt="Logo" style={{width:"100px"}}/>
+        </Link>
         <div className="ml-auto">
           {store.user ? (
             <>

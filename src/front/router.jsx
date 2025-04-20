@@ -2,9 +2,10 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 import App from "./App";
 import { Home } from "./pages/Home";
 import Login from "./pages/Login"; // Importación por defecto
-import { Register } from "./pages/Register";
+import Register from "./pages/Register";
 import { Profile } from "./pages/Profile";
 import { Landing } from "./pages/Landing";
+import { Onboarding } from "./pages/Onboarding";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,6 +15,7 @@ export const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="onboarding" element={<Onboarding />}/>
     </Route>
   )
 );

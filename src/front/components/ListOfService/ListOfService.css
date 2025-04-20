@@ -9,6 +9,13 @@
     border-left: 4px solid #007BFF;
     border-bottom: 4px solid #007BFF;
 }
+
+.buttonAdd{
+    background-color: #3498DB;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
 /* Service Title */
 .serviceTitle {
     text-align: center;

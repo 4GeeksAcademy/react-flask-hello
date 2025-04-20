@@ -1,5 +1,5 @@
-formBox {
-    border: none !important;
+.formBox {
+    border: solid !important;
     border-radius: 20px;
     background-color:white !important;
     margin: 250px;
@@ -33,7 +33,20 @@ formBox {
     text-align: right;
 }
 /* Button Style */
-.buttonStyle {
+
+.buttonCancel{
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    font-size: x-large;
+    border-radius: 10px;
+    border: none;
+    margin-right: 10px;
+    background-color: red;
+    color: white;
+}
+
+.buttonCreated {
     width: 100px;
     height: 40px;
     font-weight: bold;
@@ -43,4 +56,6 @@ formBox {
     background-color: #3498DB;
     color: white;
 }
+
+
 /* The Inputs are with Bootstrap */

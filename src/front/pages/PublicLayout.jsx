@@ -1,36 +1,23 @@
-import { Outlet, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+// src/pages/PublicLayout.jsx
+import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
-import PublicNavbar from "../components/Navbar/PublicNavbar";
+import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import "./Layout.css";  // Mantienes tus estilos de layout
+import "./PublicLayout.css"; // opcional, solo si necesitas estilos específicos
 
-export const PublicLayout = () => {
-  const location = useLocation();
-  const isLanding = location.pathname === "/"; // 👈 Detectamos si estás en la landing
-
-  useEffect(() => {
-    const routeName = location.pathname.substring(1) || "landing";
-    document.body.setAttribute("data-route", routeName);
-
-    return () => {
-      document.body.removeAttribute("data-route");
-    };
-  }, [location]);
-
+const PublicLayout = () => {
   return (
     <>
+      <Navbar />
       <ScrollToTop />
       <div className="app-root">
-        {!isLanding && <PublicNavbar />}  {/* 👈 Ocultamos el navbar si estás en la landing */}
         <div className="content-container">
           <Outlet />
         </div>
-        {!isLanding && <Footer />}  {/* 👈 Ocultamos el footer si estás en la landing */}
+        <Footer />
       </div>
     </>
   );
 };
-
 
 export default PublicLayout;

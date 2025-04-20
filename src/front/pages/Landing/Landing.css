@@ -1,36 +1,30 @@
-/* Landing.css - Versión optimizada con prevención de conflictos y mejoras de accesibilidad */
+/* Landing.css - Versión optimizada y limpia */
 
+/* Reset específico para el contenedor del landing */
 .landing-container {
   width: 100vw;
   height: 100vh;
-
   background-image: 
     url("../../assets/img/background-shape.svg"),
-    linear-gradient(to bottom, #405744, #E3EED4);
+    linear-gradient(to top right, #405744, #E3EED4);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 900px 1000px, cover;
-
   overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
-
   font-family: 'Arial', sans-serif;
   color: #333;
   box-sizing: border-box;
-
   animation: fadeInOnly 1.2s ease-out forwards;
 }
-
-
 
 /* Resetear box-sizing para todos los elementos del landing */
 .landing-container *,
@@ -44,7 +38,7 @@
 .landing-container .grid-container {
   width: 1400px;
   max-width: 90%;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: none;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
@@ -56,7 +50,7 @@
   margin-bottom: 20px;
   border-radius: 8px;
   padding: 5px;
-  background-color: transparent; /* 👈 esto elimina el fondo */
+  background-color: transparent;
 }
 
 /* Propiedades específicas del grid-container */
@@ -77,24 +71,22 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  background-color: transparent; /* 👈 sin color de fondo */
-  backdrop-filter: blur(15px);   /* 👈 mantenemos el desenfoque */
+  background-color: transparent;
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   will-change: backdrop-filter;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: none;
   z-index: 1000;
   transform: translateZ(0);
 }
-
 
 /* Estilo cuando haces scroll: cambia fondo y sombra */
 .landing-container .navbar.scrolled {
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
-
 
 /* Enlaces de navegación */
 .landing-container .nav-links {
@@ -117,8 +109,6 @@
   position: relative;
 }
 
-
-
 .landing-container .nav-links a::after {
   content: '';
   position: absolute;
@@ -133,7 +123,6 @@
 .landing-container .nav-links a:hover::after {
   width: 100%;
 }
-
 
 .landing-container .nav-links a:hover {
   color: #375534;
@@ -189,7 +178,6 @@
   transition: all 0.3s ease;
 }
 
-
 .landing-container .login-btn:hover {
   background-color: rgba(55, 85, 52, 0.1);
 }
@@ -211,7 +199,6 @@
   transition: all 0.3s ease;
 }
 
-
 .landing-container .signup-btn:hover {
   background-color: #2e4a2c;
 }
@@ -219,90 +206,6 @@
 .landing-container .signup-btn:focus {
   outline: 2px solid #2e4a2c;
   outline-offset: 2px;
-}
-
-/* Grid de rectángulos */
-.landing-container .rectangles-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 25px;
-  padding: 20px;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  margin: 0;
-}
-
-/* Estilos para los rectángulos */
-.landing-container .rectangle {
-  background-color: white;
-  border-radius: 15px;
-  /* Optimizar sombra para rendimiento */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-  /* Mejora la renderización en dispositivos móviles */
-  transform: translateZ(0);
-  /* Prevenir flickering durante transiciones */
-  backface-visibility: hidden;
-}
-
-/* Contenido de los rectángulos */
-.landing-container .rect-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Estilos para textos */
-.landing-container .rect-content h2 {
-  color: #375534;
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-  font-weight: 600;
-  line-height: 1.2;
-  /* Mejora de contraste para accesibilidad */
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.landing-container .rect-content h3 {
-  color: #375534;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-  line-height: 1.3;
-  /* Mejora de contraste para accesibilidad */
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.landing-container .rect-content p {
-  /* Color más oscuro para mejorar el contraste y la legibilidad */
-  color: #3a5737;
-  font-size: 0.95rem;
-  line-height: 1.6; /* Incrementado para mejor legibilidad */
-  margin-bottom: 15px;
-}
-
-.landing-container .rect-content ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0 0 15px 0;
-  text-align: center;
-}
-
-.landing-container .rect-content li {
-  color: #4a6b47;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-  line-height: 1.4;
 }
 
 /* Botón CTA */
@@ -337,81 +240,146 @@
   outline-offset: 2px;
 }
 
-/* Tamaños y posiciones de los rectángulos */
-.landing-container .rect-1 {
-  grid-column: 1 / 3;
+/* NUEVO LAYOUT DE 4 CAJAS ESTILO GIVINGLI */
+.landing-container .cards-container {
+  width: 90%; /* Reducido del 100% al 90% */
+  max-width: 1000px; /* Reducido de 1200px a 1000px */
+  margin: 110px auto 30px; /* Aumentado aún más el margen superior */
+  display: grid;
+  /* Diseño de 3 columnas y 2 filas, con una columna estrecha a la derecha */
+  grid-template-columns: 5fr 3fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 25px; /* Reducido de 30px a 25px para acercar las cajas */
+  z-index: 10;
+}
+
+/* Estilos base para todas las tarjetas */
+.landing-container .card {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px; /* Reducido de 30px */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Tarjeta principal (izquierda, ocupa todo el alto) */
+.landing-container .card-main {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px; /* Reducido de 30px */
+}
+
+.landing-container .card-main h1 {
+  font-size: 3rem; /* Reducido de 3.5rem */
+  color: #033547;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.landing-container .card-main h2 {
+  font-size: 1.3rem; /* Reducido de 1.5rem */
+  color: #405744;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+.landing-container .card-logo {
+  margin-top: auto;
+  text-align: center;
+}
+
+.landing-container .card-logo img {
+  max-width: 150px;
+  height: auto;
+}
+
+/* Tarjeta de soporte (arriba a la derecha) */
+.landing-container .card-support {
+  grid-column: 2 / 3;
   grid-row: 1 / 2;
 }
 
-.landing-container .rect-2 {
-  grid-column: 3 / 6;
-  grid-row: 1 / 3;
-  background-image: url('../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
+.landing-container .card-support h2 {
+  font-size: 1.8rem;
+  color: #033547;
+  margin-bottom: 20px;
 }
 
-.landing-container .rect-2::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
+.landing-container .card-support p {
+  margin-bottom: 15px;
+  line-height: 1.6;
 }
 
-.landing-container .rect-2 .rect-content {
-  position: relative;
-  z-index: 2;
+.landing-container .card-support a {
+  color: #033547;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.landing-container .rect-2 h3, 
-.landing-container .rect-2 p {
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  /* Mejora de contraste para texto sobre imágenes */
-  font-weight: bold;
-  /* Asegura que el texto sea legible sobre la imagen de fondo */
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 5px 10px;
-  border-radius: 4px;
+.landing-container .card-support a:hover {
+  text-decoration: underline;
 }
 
-.landing-container .rect-3 {
-  grid-column: 1 / 2;
-  grid-row: 2 / 4;
-}
-
-.landing-container .rect-4 {
+/* Tarjeta para enlaces (abajo a la derecha, mismo ancho que soporte) */
+.landing-container .card-terms {
   grid-column: 2 / 3;
   grid-row: 2 / 3;
 }
 
-.landing-container .rect-5 {
-  grid-column: 2 / 6;
-  grid-row: 3 / 4;
-  text-align: left;
+.landing-container .card-terms h2 {
+  font-size: 1.5rem;
+  color: #033547;
+  margin-bottom: 20px;
 }
 
-.landing-container .rect-5 .rect-content {
-  align-items: flex-start;
-  padding: 0 20px;
-}
-
-/* Estilos específicos para logo */
-.landing-container .logo-container {
-  width: 400px;
-  height: auto;
-  margin: 0 auto;
-}
-
-.landing-container .logo-img {
-  max-width: 100%;
-  height: auto;
+.landing-container .card-terms a {
   display: block;
+  color: #033547;
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.landing-container .card-terms a:hover {
+  text-decoration: underline;
+}
+
+/* Tarjeta para redes sociales (extrema derecha, ocupa toda la altura) */
+.landing-container .card-social {
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-container .card-social h2 {
+  font-size: 1.5rem;
+  color: #033547;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.landing-container .social-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.landing-container .social-icons a {
+  color: #033547;
+  font-size: 28px;
+  transition: all 0.3s ease;
+}
+
+.landing-container .social-icons a:hover {
+  transform: translateY(-3px);
+  color: #375534;
 }
 
 /* Keyframes y animaciones */
@@ -449,30 +417,35 @@
   }
 }
 
+@keyframes fadeInOnly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Aplicación de animaciones a elementos */
 @media (prefers-reduced-motion: no-preference) {
   .landing-container .navbar {
     animation: fadeIn 0.6s ease-out;
   }
   
-  .landing-container .rect-1 {
+  .landing-container .card-main {
     animation: fadeIn 0.8s ease-out 0.2s both;
   }
   
-  .landing-container .rect-2 {
+  .landing-container .card-support {
     animation: fadeIn 0.8s ease-out 0.4s both;
   }
   
-  .landing-container .rect-3 {
+  .landing-container .card-terms {
     animation: fadeIn 0.8s ease-out 0.6s both;
   }
   
-  .landing-container .rect-4 {
+  .landing-container .card-social {
     animation: fadeIn 0.8s ease-out 0.8s both;
-  }
-  
-  .landing-container .rect-5 {
-    animation: fadeIn 0.8s ease-out 1s both;
   }
   
   .landing-container .cta-button {
@@ -487,21 +460,6 @@
   .landing-container .signup-btn:hover {
     animation: pulse 1s ease-in-out infinite;
   }
-  
-  .landing-container .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #375534;
-    transition: width 0.3s ease;
-  }
-  
-  .landing-container .nav-links a:hover::after {
-    width: 100%;
-  }
 }
 
 /* Respetar preferencia de reducción de movimiento */
@@ -510,6 +468,84 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Hover y Focus para todos los elementos */
+.landing-container .nav-links a:hover,
+.landing-container .login-btn:hover,
+.landing-container .signup-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.landing-container .nav-links a:focus,
+.landing-container .login-btn:focus,
+.landing-container .signup-btn:focus {
+  outline: 2px solid #375534;
+  outline-offset: 2px;
+}
+
+/* === MODO OSCURO DELUXE PARA LANDING === */
+.landing-container.dark-mode {
+  background-image: 
+    url("../../assets/img/background-shape.svg"),
+    linear-gradient(to bottom, #111, #1d1d1d);
+  color: #eee;
+}
+
+/* Navbar oscuro */
+.landing-container.dark-mode .navbar {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Enlaces y botones */
+.landing-container.dark-mode .nav-links a,
+.landing-container.dark-mode .login-btn,
+.landing-container.dark-mode .signup-btn {
+  color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-container.dark-mode .nav-links a:hover,
+.landing-container.dark-mode .login-btn:hover,
+.landing-container.dark-mode .signup-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Tarjetas en modo oscuro */
+.landing-container.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .card-main h1,
+.landing-container.dark-mode .card-support h2,
+.landing-container.dark-mode .card-terms h2,
+.landing-container.dark-mode .card-social h2 {
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .card-main h2 {
+  color: #ccc;
+}
+
+.landing-container.dark-mode .card-support a,
+.landing-container.dark-mode .card-terms a,
+.landing-container.dark-mode .social-icons a {
+  color: #9ccc8a;
+}
+
+/* === Mantener estructura de .navbar-container pero invisible === */
+.landing-container .navbar-container {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  width: 1400px;
+  max-width: 90%;
+  box-sizing: border-box;
 }
 
 /* Responsive */
@@ -521,16 +557,16 @@
     max-width: 90%;
   }
   
-  .landing-container .rect-content h2 {
-    font-size: 2.2rem;
+  .landing-container .cards-container {
+    max-width: 1600px;
   }
   
-  .landing-container .rect-content h3 {
-    font-size: 1.6rem;
+  .landing-container .card-main h1 {
+    font-size: 4rem;
   }
   
-  .landing-container .rect-content p {
-    font-size: 1.1rem;
+  .landing-container .card-main h2 {
+    font-size: 1.8rem;
   }
 }
 
@@ -553,34 +589,8 @@
     gap: 30px;
   }
   
-  .landing-container .rectangles-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  
-  .landing-container .rect-1 {
-    grid-column: 1 / 3;
-    grid-row: 1 / 2;
-  }
-  
-  .landing-container .rect-2 {
-    grid-column: 3 / 5;
-    grid-row: 1 / 3;
-  }
-  
-  .landing-container .rect-3 {
-    grid-column: 1 / 2;
-    grid-row: 2 / 4;
-  }
-  
-  .landing-container .rect-4 {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-  }
-  
-  .landing-container .rect-5 {
-    grid-column: 2 / 5;
-    grid-row: 3 / 4;
+  .landing-container .cards-container {
+    width: 90%;
   }
 }
 
@@ -606,50 +616,58 @@
   .landing-container .nav-links a {
     font-size: 16px;
   }
-
-  .landing-container .rectangles-grid {
+  
+  .landing-container .cards-container {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(5, 1fr);
-    gap: 20px;
-    padding: 15px;
+    grid-template-rows: auto auto auto;
+    gap: 15px;
+    padding: 0 10px;
   }
   
-  .landing-container .rect-1 {
-    grid-column: 1 / 3;
+  .landing-container .card-main {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+  }
+  
+  .landing-container .card-support {
+    grid-column: 2 / 3;
     grid-row: 1 / 2;
   }
   
-  .landing-container .rect-2 {
-    grid-column: 1 / 2;
-    grid-row: 2 / 4;
-  }
-  
-  .landing-container .rect-3 {
+  .landing-container .card-terms {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
   }
   
-  .landing-container .rect-4 {
-    grid-column: 2 / 3;
-    grid-row: 3 / 5;
-  }
-  
-  .landing-container .rect-5 {
+  .landing-container .card-social {
     grid-column: 1 / 3;
-    grid-row: 5 / 6;
+    grid-row: 3 / 4;
   }
   
-  .landing-container .rect-content h2 {
-    font-size: 1.5rem;
+  .landing-container .card-social .social-icons {
+    flex-direction: row;
+    justify-content: center;
   }
   
-  .landing-container .rect-content h3 {
+  .landing-container .card {
+    padding: 20px;
+  }
+  
+  .landing-container .card-main h1 {
+    font-size: 2rem;
+  }
+  
+  .landing-container .card-main h2 {
     font-size: 1.2rem;
   }
 }
 
-/* Móviles pequeños (máximo 480px) */
-@media (max-width: 480px) {
+/* Móviles pequeños (máximo 576px) */
+@media (max-width: 576px) {
+  .landing-container .cards-container {
+    grid-template-columns: 1fr;
+  }
+  
   .landing-container .navbar {
     flex-direction: column;
     height: auto;
@@ -667,46 +685,23 @@
     justify-content: space-between;
   }
   
-  .landing-container .rectangles-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-  
-  .landing-container .rect-1,
-  .landing-container .rect-2,
-  .landing-container .rect-3,
-  .landing-container .rect-4,
-  .landing-container .rect-5 {
+  .landing-container .card-main,
+  .landing-container .card-support,
+  .landing-container .card-terms,
+  .landing-container .card-social {
     grid-column: 1;
   }
   
-  .landing-container .rect-1 { grid-row: 1; }
-  .landing-container .rect-2 { grid-row: 2; }
-  .landing-container .rect-3 { grid-row: 3; }
-  .landing-container .rect-4 { grid-row: 4; }
-  .landing-container .rect-5 { grid-row: 5; }
-}
-
-/* Hover y Focus para todos los elementos */
-.landing-container .nav-links a:hover,
-.landing-container .login-btn:hover,
-.landing-container .signup-btn:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.landing-container .nav-links a:focus,
-.landing-container .login-btn:focus,
-.landing-container .signup-btn:focus {
-  outline: 2px solid #375534;
-  outline-offset: 2px;
-}
-
-@keyframes fadeInOnly {
-  from {
-    opacity: 0;
+  .landing-container .card-main { grid-row: 1; }
+  .landing-container .card-support { grid-row: 2; }
+  .landing-container .card-terms { grid-row: 3; }
+  .landing-container .card-social { grid-row: 4; }
+  
+  .landing-container .card-social .social-icons {
+    flex-direction: row;
   }
-  to {
-    opacity: 1;
+  
+  .landing-container .card-main h1 {
+    font-size: 1.8rem;
   }
 }
-

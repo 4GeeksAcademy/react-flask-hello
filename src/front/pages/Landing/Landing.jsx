@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Landing.css";
-import logo from "../../assets/img/Logo_DronFarm_Icono1.png"; // Ajusta la ruta según la ubicación de tu logo
+import logo from "../../assets/img/Logo_DronFarm_Icono1.png";
+import DarkModeToggle from "../../components/DarkModeToggle";
 
 const Landing = () => {
+  // Para detectar el scroll y cambiar el estilo del navbar
+  const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="landing-container">
-      {/* Container para el navbar */}
+      <DarkModeToggle /> {/* Botón para modo oscuro */}
+
+      {/* Navbar superior */}
       <div className="navbar-container">
-        {/* Navbar en la parte superior */}
-        <nav className="navbar">
+        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
           <div className="nav-links">
             <a href="#inicio">Inicio</a>
             <a href="#servicios">Servicios</a>
@@ -22,52 +40,55 @@ const Landing = () => {
         </nav>
       </div>
 
-      {/* Contenedor con borde para el grid */}
-      <div className="grid-container">
-        {/* Grid de rectángulos blancos */}
-        <div className="rectangles-grid">
-          <div className="rectangle rect-1">
-            {/* Logo */}
-            <div className="logo-container">
-              <img 
-                src={logo} 
-                alt="DroneFarm Logo" 
-                className="logo-img"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "https://via.placeholder.com/200x100?text=DroneFarm";
-                }}
-              />
-            </div>
+      {/* Contenedor de tarjetas - nuevo layout de 4 cajas */}
+      <div className="cards-container">
+        {/* Tarjeta principal (izquierda) - ocupa toda la altura */}
+        <div className="card card-main">
+          <h1>Cada hectárea cuenta.</h1>
+          <h2>Optimiza tus cultivos con tecnología de drones de última generación</h2>
+          <div className="card-logo">
+            <img 
+              src={logo} 
+              alt="DroneFarm Logo" 
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/150?text=DronFarm";
+              }}
+            />
           </div>
-          <div className="rectangle rect-2">
-            <div className="rect-content">
-              <h1>Plataforma integral de monitoreo agrícola</h1>
-              <p>Tecnología de drones para monitoreo y análisis avanzado</p>
-            </div>
-          </div>
-          <div className="rectangle rect-3">
-            <div className="rect-content">
-              <h3>Servicios</h3>
-              <ul>
-                <li>Mapeo de cultivos</li>
-                <li>Análisis de suelo</li>
-                <li>Detección de plagas</li>
-              </ul>
-            </div>
-          </div>
-          <div className="rectangle rect-4">
-            <div className="rect-content">
-              <h3>20%</h3>
-              <p>De ahorro en recursos hídricos</p>
-            </div>
-          </div>
-          <div className="rectangle rect-5">
-            <div className="rect-content">
-              <h2>Revoluciona tu forma de cultivar</h2>
-              <p>Nuestras soluciones con drones te permiten optimizar recursos, aumentar rendimientos y reducir costos con decisiones basadas en datos precisos.</p>
-              <button className="cta-button">Comenzar ahora</button>
-            </div>
+        </div>
+
+        {/* Tarjeta de soporte (arriba a la derecha) */}
+        <div className="card card-support">
+          <h2>Soporte</h2>
+          <p>¿Tienes preguntas? Ponte en contacto con nuestro equipo o visita nuestro centro de ayuda.</p>
+          <p><a href="#ayuda">Centro de ayuda</a></p>
+          <p>También puedes contactar a nuestro equipo al:<br />
+            <strong>+34 911 23 45 67</strong> o escribir a<br />
+            <a href="mailto:soporte@dronfarm.com">soporte@dronfarm.com</a>
+          </p>
+        </div>
+
+        {/* Tarjeta de enlaces (abajo a la derecha) */}
+        <div className="card card-terms">
+          <h2>Enlaces</h2>
+          <a href="#terminos">Términos de uso</a>
+          <a href="#privacidad">Política de privacidad</a>
+        </div>
+
+        {/* Tarjeta de redes sociales (extrema derecha) - ocupa toda la altura */}
+        <div className="card card-social">
+          <h2>Síguenos</h2>
+          <div className="social-icons">
+            <a href="#instagram" aria-label="Instagram">
+              <i className="fab fa-instagram"></i>
+            </a>
+            <a href="#facebook" aria-label="Facebook">
+              <i className="fab fa-facebook-f"></i>
+            </a>
+            <a href="#twitter" aria-label="Twitter">
+              <i className="fab fa-twitter"></i>
+            </a>
           </div>
         </div>
       </div>

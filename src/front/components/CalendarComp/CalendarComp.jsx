@@ -1,10 +1,71 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 import "./CalendarComp.css"
+
+const EventTooltip = ({ position, eventData, onClose }) => {
+    const tooltipRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
+
+    if (!eventData) return null;
+
+    const style = {
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+    };
+
+    return (
+        <div className="event-tooltip" style={style} ref={tooltipRef}>
+            <div className="event-tooltip-header">
+                <h3>{eventData.title}</h3>
+                <button className="tooltip-close-button" onClick={onClose}>×</button>
+            </div>
+            <div className="event-tooltip-content">
+                <p><strong>Inicio:</strong> {new Date(eventData.start).toLocaleString()}</p>
+                <p><strong>Fin:</strong> {new Date(eventData.end).toLocaleString()}</p>
+                {eventData.location && <p><strong>Ubicación:</strong> {eventData.location}</p>}
+                {eventData.description && (
+                    <div className="event-description-fields">
+                        <h4>Detalles:</h4>
+                        {eventData.description.split('\n').map((line, index) => {
+                            if (line.trim() === '') return null;
+
+
+                            const parts = line.split(':');
+                            if (parts.length > 1) {
+                                const key = parts[0].trim();
+                                const value = parts.slice(1).join(':').trim();
+                                return (
+                                    <p key={index} className="description-field">
+                                        <strong>{key}:</strong> {value}
+                                    </p>
+                                );
+                            } else {
+                                return <p key={index} className="description-field">{line}</p>;
+                            }
+                        })}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
 
 export const CalendarComp = () => {
     const { store, dispatch } = useGlobalReducer();
@@ -17,11 +78,15 @@ export const CalendarComp = () => {
         token
     } = store;
 
+    // Estado para el tooltip
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
     const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
     const fetchCalendarEvents = async () => {
         try {
-
             dispatch({ type: "load_calendar_events_start" });
 
             const options = {
@@ -74,12 +139,11 @@ export const CalendarComp = () => {
             const options = {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Corregido "Autorization" a "Authorization"
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             };
 
-            // Si hay un negocio seleccionado, incluirlo en el body de la petición
             if (selectedBusiness) {
                 options.body = JSON.stringify({
                     business_id: selectedBusiness.id
@@ -99,7 +163,6 @@ export const CalendarComp = () => {
                 payload: data
             });
 
-            // Actualizar los eventos después de sincronizar
             fetchCalendarEvents();
 
         } catch (error) {
@@ -113,14 +176,35 @@ export const CalendarComp = () => {
 
     useEffect(() => {
         fetchCalendarEvents();
-    }, [selectedBusiness]); // Volver a cargar cuando cambie el negocio seleccionado
+    }, [selectedBusiness]);
 
     const handleDateClick = (arg) => {
         console.log("Selected date:", arg.dateStr);
+        setTooltipVisible(false);
     };
 
     const handleEventClick = (clickInfo) => {
-        console.log("Selected event", clickInfo.event);
+        clickInfo.jsEvent.preventDefault();
+
+        const x = clickInfo.jsEvent.pageX;
+        const y = clickInfo.jsEvent.pageY;
+
+        setSelectedEvent({
+            id: clickInfo.event.id,
+            title: clickInfo.event.title,
+            start: clickInfo.event.start,
+            end: clickInfo.event.end,
+            description: clickInfo.event.extendedProps.description,
+            location: clickInfo.event.extendedProps.location,
+            extendedProps: clickInfo.event.extendedProps
+        });
+
+        setTooltipPosition({ x, y });
+        setTooltipVisible(true);
+    };
+
+    const closeTooltip = () => {
+        setTooltipVisible(false);
     };
 
     return (
@@ -133,6 +217,9 @@ export const CalendarComp = () => {
                 </h1>
 
                 <div className="calendar-actions">
+                    <Link to="/appointment/create" className="create-appointment-button">
+                        <i className="fas fa-plus"></i> New appointment
+                    </Link>
                     <button
                         className="sync-button"
                         onClick={syncGoogleCalendar}
@@ -181,6 +268,14 @@ export const CalendarComp = () => {
                     locale="en"
                 />
             </div>
+
+            {tooltipVisible && (
+                <EventTooltip
+                    position={tooltipPosition}
+                    eventData={selectedEvent}
+                    onClose={closeTooltip}
+                />
+            )}
         </div>
     );
 };

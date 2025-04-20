@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Definición de gradientes -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1f6ff" />
+      <stop offset="100%" stop-color="#e2ecfc" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b78e7" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#3b78e7" stop-opacity="0.25" />
+    </linearGradient>
+    <linearGradient id="sideGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b78e7" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#3b78e7" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect width="100%" height="100%" fill="url(#bgGradient)" />
+  
+  <!-- Barra lateral para dar sensación de "portal" -->
+  <rect x="0" y="0" width="400" height="100%" fill="url(#sideGradient)" />
+  
+  <!-- Elementos decorativos - formas para login -->
+  <circle cx="950" cy="200" r="180" fill="url(#accentGradient)" opacity="0.5" />
+  <circle cx="250" cy="650" r="200" fill="url(#accentGradient)" opacity="0.6" />
+  
+  <!-- Patrones de "seguridad" - símbolos minimalistas -->
+  <g opacity="0.07" fill="#3b78e7">
+    <path d="M780,320 L820,320 L820,280 L780,280 Z M800,260 L800,230 L760,230 L760,260 Z M840,260 L840,230 L800,230 L800,260 Z" />
+    <path d="M840,380 C840,358.9 823.1,342 802,342 C780.9,342 764,358.9 764,380 C764,399.3 777.7,415.3 796,418.6 L796,438 L808,438 L808,418.6 C826.3,415.3 840,399.3 840,380 Z M802,354 C816.4,354 828,365.6 828,380 C828,394.4 816.4,406 802,406 C787.6,406 776,394.4 776,380 C776,365.6 787.6,354 802,354 Z" />
+    <circle cx="500" cy="350" r="10" />
+    <circle cx="540" cy="350" r="10" />
+    <circle cx="580" cy="350" r="10" />
+  </g>
+  
+  <!-- Líneas diagonales sutiles -->
+  <g stroke="#3b78e7" opacity="0.05" stroke-width="1.5">
+    <line x1="0" y1="0" x2="1200" y2="800" />
+    <line x1="200" y1="0" x2="1200" y2="670" />
+    <line x1="400" y1="0" x2="1200" y2="540" />
+    <line x1="600" y1="0" x2="1200" y2="400" />
+    <line x1="800" y1="0" x2="1200" y2="270" />
+    <line x1="1000" y1="0" x2="1200" y2="130" />
+  </g>
+  
+  <!-- Puntos formando patrones de acceso -->
+  <g fill="#3b78e7" opacity="0.15">
+    <!-- Patrón tipo "matriz" pequeño -->
+    <circle cx="100" cy="100" r="3" />
+    <circle cx="130" cy="100" r="3" />
+    <circle cx="160" cy="100" r="3" />
+    <circle cx="100" cy="130" r="3" />
+    <circle cx="130" cy="130" r="3" />
+    <circle cx="160" cy="130" r="3" />
+    <circle cx="100" cy="160" r="3" />
+    <circle cx="130" cy="160" r="3" />
+    <circle cx="160" cy="160" r="3" />
+    
+    <!-- Otros puntos distribuidos -->
+    <circle cx="350" cy="230" r="4" />
+    <circle cx="350" cy="330" r="4" />
+    <circle cx="350" cy="430" r="4" />
+    <circle cx="350" cy="530" r="4" />
+    
+    <circle cx="950" cy="150" r="3" />
+    <circle cx="950" cy="250" r="3" />
+    <circle cx="950" cy="350" r="3" />
+    <circle cx="850" cy="150" r="3" />
+    <circle cx="850" cy="250" r="3" />
+    <circle cx="850" cy="350" r="3" />
+    <circle cx="1050" cy="150" r="3" />
+    <circle cx="1050" cy="250" r="3" />
+    <circle cx="1050" cy="350" r="3" />
+  </g>
+  
+  <!-- Marco sutil para el área de login -->
+  <rect x="400" y="200" width="400" height="400" stroke="#3b78e7" stroke-width="1" fill="none" opacity="0.1" rx="10" ry="10" />
+</svg>

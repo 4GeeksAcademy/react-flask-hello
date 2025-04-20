@@ -10,7 +10,7 @@ from .history import history_routes
 
 
 def register_routes(api):
-    """Registrar todos los blueprints de rutas con el blueprint principal de la API"""
+
     api.register_blueprint(auth_routes)
     api.register_blueprint(users_routes)
     api.register_blueprint(businesses_routes)

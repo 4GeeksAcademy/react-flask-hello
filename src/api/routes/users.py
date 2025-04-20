@@ -37,6 +37,8 @@ def add_user():
         "username",
         "password",
         "business_tax_id",
+        "security_question",
+        "security_answer",
         "role"
     ]
 
@@ -64,6 +66,8 @@ def add_user():
             username=data["username"],
             password=data["password"],
             business_tax_id=data["business_tax_id"],
+            security_question=data["security_question"],
+            security_answer=data["security_answer"],
             role=data["role"]
         )
 
@@ -145,3 +149,16 @@ def delete_user(username):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@users_routes.route('/business/<int:business_id>/users', methods=['GET'])
+# @jwt_required()
+def get_business_users(business_id):
+    business = Businesses.query.get(business_id)
+    if not business:
+        return jsonify({"error": f"Business with ID {business_id} not found"}), 404
+        
+    business_tax_id = business.business_tax_id
+    users = Users.query.filter_by(business_tax_id=business_tax_id).all()
+    
+    serialized_users = [user.serialize_user() for user in users]
+    return jsonify(serialized_users), 200

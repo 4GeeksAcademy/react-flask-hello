@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: ebdca273a1bd
+Revision ID: bb8252005f02
 Revises: 
-Create Date: 2025-04-14 10:03:49.038275
+Create Date: 2025-04-19 11:09:11.893615
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ebdca273a1bd'
+revision = 'bb8252005f02'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,10 +41,63 @@ def upgrade():
     sa.Column('phone', sa.String(length=15), nullable=False),
     sa.Column('client_id_number', sa.String(length=20), nullable=False),
     sa.Column('email', sa.String(length=100), nullable=False),
+    sa.Column('business_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('client_id_number'),
     sa.UniqueConstraint('email')
     )
+    op.create_table('service',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('business_id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=75), nullable=False),
+    sa.Column('description', sa.String(length=500), nullable=False),
+    sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=False),
+    sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
+    )
+    op.create_table('users',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=50), nullable=False),
+    sa.Column('password_hash', sa.String(length=255), nullable=False),
+    sa.Column('business_tax_id', sa.String(length=15), nullable=False),
+    sa.Column('role', sa.Enum('master', 'manager', 'employee', name='role_enum'), nullable=False),
+    sa.Column('security_question', sa.String(length=500), nullable=False),
+    sa.Column('security_answer', sa.String(length=500), nullable=False),
+    sa.ForeignKeyConstraint(['business_tax_id'], ['business.business_tax_id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('username')
+    )
+    op.create_table('appointments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('client_id', sa.Integer(), nullable=False),
+    sa.Column('service_id', sa.Integer(), nullable=False),
+    sa.Column('business_id', sa.Integer(), nullable=False),
+    sa.Column('date_time', sa.DateTime(), nullable=False),
+    sa.Column('status', sa.Enum('pending', 'confirmed', 'cancelled', 'completed', name='appointment_status'), nullable=False),
+    sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
+    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('client_service',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('client_id', sa.Integer(), nullable=False),
+    sa.Column('service_id', sa.Integer(), nullable=False),
+    sa.Column('completed', sa.Boolean(), nullable=False),
+    sa.Column('completed_date', sa.DateTime(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
+    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('client_service', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_client_service_client_id'), ['client_id'], unique=False)
+        batch_op.create_index(batch_op.f('ix_client_service_service_id'), ['service_id'], unique=False)
+
     op.create_table('note',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('client_id', sa.Integer(), nullable=False),
@@ -63,45 +116,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('service',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('business_id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=75), nullable=False),
-    sa.Column('description', sa.String(length=500), nullable=False),
-    sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=False),
-    sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
-    )
-    op.create_table('users',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('username', sa.String(length=50), nullable=False),
-    sa.Column('password_hash', sa.String(length=255), nullable=False),
-    sa.Column('business_tax_id', sa.String(length=15), nullable=False),
-    sa.Column('role', sa.Enum('master', 'manager', 'employee', name='role_enum'), nullable=False),
-    sa.ForeignKeyConstraint(['business_tax_id'], ['business.business_tax_id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('username')
-    )
-    op.create_table('appointments',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('client_id', sa.Integer(), nullable=False),
-    sa.Column('service_id', sa.Integer(), nullable=False),
-    sa.Column('date_time', sa.DateTime(), nullable=False),
-    sa.Column('status', sa.Enum('pending', 'confirmed', 'cancelled', 'completed', name='appointment_status'), nullable=False),
-    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
-    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('client_service',
-    sa.Column('client_id', sa.Integer(), nullable=False),
-    sa.Column('service_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
-    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
-    sa.PrimaryKeyConstraint('client_id', 'service_id')
-    )
     op.create_table('calendar',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('start_date_time', sa.DateTime(), nullable=False),
@@ -109,7 +123,9 @@ def upgrade():
     sa.Column('appointment_id', sa.Integer(), nullable=False),
     sa.Column('google_event_id', sa.String(length=255), nullable=True),
     sa.Column('last_sync', sa.DateTime(), nullable=True),
+    sa.Column('business_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['appointment_id'], ['appointments.id'], ),
+    sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('appointment_id')
     )
@@ -130,12 +146,16 @@ def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('service_history')
     op.drop_table('calendar')
+    op.drop_table('payments')
+    op.drop_table('note')
+    with op.batch_alter_table('client_service', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_client_service_service_id'))
+        batch_op.drop_index(batch_op.f('ix_client_service_client_id'))
+
     op.drop_table('client_service')
     op.drop_table('appointments')
     op.drop_table('users')
     op.drop_table('service')
-    op.drop_table('payments')
-    op.drop_table('note')
     op.drop_table('clients')
     op.drop_table('business')
     op.drop_table('admins')

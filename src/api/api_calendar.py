@@ -20,12 +20,10 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 class GoogleCalendarManager:
     def __init__(self):
-        """Initialize the class and get credentials."""
         self.creds = self.get_credentials()
         self.service = self.create_service() if self.creds else None
 
     def get_credentials(self):
-        """Get and refresh credentials if necessary."""
         creds = None
 
         credentials_path = os.getenv("CREDENTIALS_PATH")
@@ -86,7 +84,6 @@ class GoogleCalendarManager:
         return creds
 
     def create_service(self):
-        """Create the Google Calendar service."""
         try:
             service = build("calendar", "v3", credentials=self.creds)
             print("Google Calendar service created successfully")
@@ -96,7 +93,6 @@ class GoogleCalendarManager:
             return None
 
     def get_upcoming_events(self, max_results=100, calendar_id="primary"):
-        """Get upcoming events from Google Calendar."""
         if not self.service:
             return None
 
@@ -127,7 +123,6 @@ class GoogleCalendarManager:
             return None
 
     def create_event(self, title, description, start, end, location=None, extended_properties=None, calendar_id="primary"):
-        """Create an event in Google Calendar."""
         if not self.service:
             return None
 
@@ -159,7 +154,6 @@ class GoogleCalendarManager:
             return None
 
     def update_event(self, event_id, updated_data, calendar_id="primary"):
-        """Update an existing event in Google Calendar."""
         if not self.service:
             return None
 
@@ -174,7 +168,6 @@ class GoogleCalendarManager:
                     if 'timeZone' in value:
                         event[key]['timeZone'] = value['timeZone']
                 elif key == 'extendedProperties':
-                    # Manejar específicamente extendedProperties
                     if 'extendedProperties' not in event:
                         event['extendedProperties'] = {}
                     if 'private' in value:
@@ -213,7 +206,6 @@ class GoogleCalendarManager:
 @calendar_api.route('/calendar/events', methods=['GET'])
 # @jwt_required()
 def get_calendar_events():
-    """Get upcoming events from Google Calendar."""
 
     business_id = request.args.get('business_id')
 
@@ -249,7 +241,6 @@ def get_calendar_events():
 @calendar_api.route('/calendar/sync', methods=['POST'])
 # @jwt_required()
 def sync_appointments_with_google():
-    """Sync appointments from the database with Google Calendar."""
 
     data = request.get_json(silent=True) or {}
     business_id = data.get('business_id')
@@ -309,7 +300,7 @@ def sync_appointments_with_google():
                 description=description,
                 start=start,
                 end=end,
-                extended_properties=extended_properties 
+                extended_properties=extended_properties
             )
 
             if event:
@@ -319,7 +310,7 @@ def sync_appointments_with_google():
                     end_date_time=appointment.date_time +
                     datetime.timedelta(hours=1),
                     google_event_id=event['id'],
-                    business_id=appointment.business_id, 
+                    business_id=appointment.business_id,
                     last_sync=datetime.datetime.now()
                 )
 
@@ -345,7 +336,6 @@ def sync_appointments_with_google():
 @calendar_api.route('/calendar/appointments/<int:appointment_id>', methods=['POST'])
 # @jwt_required()
 def create_event_for_appointment(appointment_id):
-    """Create a Google Calendar event for a specific appointment."""
     appointment = Appointments.query.get(appointment_id)
 
     if not appointment:
@@ -396,7 +386,7 @@ def create_event_for_appointment(appointment_id):
         description=description,
         start=start,
         end=end,
-        extended_properties=extended_properties  # Añadir extended properties
+        extended_properties=extended_properties
     )
 
     if not event:
@@ -407,7 +397,7 @@ def create_event_for_appointment(appointment_id):
         start_date_time=appointment.date_time,
         end_date_time=appointment.date_time + datetime.timedelta(hours=1),
         google_event_id=event['id'],
-        business_id=appointment.business_id,  # Guardar business_id en la tabla Calendar
+        business_id=appointment.business_id,
         last_sync=datetime.datetime.now()
     )
 
@@ -432,7 +422,7 @@ def create_event_for_appointment(appointment_id):
 @calendar_api.route('/calendar/events/<int:appointment_id>', methods=['PUT'])
 # @jwt_required()
 def update_appointment_event(appointment_id):
-    """Update a Google Calendar event when an appointment is updated."""
+
     appointment = Appointments.query.get(appointment_id)
 
     if not appointment:
@@ -493,7 +483,6 @@ def update_appointment_event(appointment_id):
 
     try:
         calendar.last_sync = datetime.datetime.now()
-        # Actualizar business_id en la tabla Calendar
         calendar.business_id = appointment.business_id
         db.session.commit()
 
@@ -514,8 +503,7 @@ def update_appointment_event(appointment_id):
 @calendar_api.route('/calendar/events/<int:appointment_id>', methods=['DELETE'])
 # @jwt_required()
 def delete_appointment_event(appointment_id):
-    """Delete a Google Calendar event when an appointment is deleted."""
-    # Look for the record in the Calendar table
+
     calendar = Calendar.query.filter_by(appointment_id=appointment_id).first()
     if not calendar:
         return jsonify({"error": "This appointment does not have an associated event in Google Calendar"}), 404
@@ -549,3 +537,33 @@ if calendar.service:
     print("✅ Google Calendar service initialized correctly")
 else:
     print("❌ Error initializing Google Calendar service")
+
+
+# -------------------------------------------------- Para eventos puntuales sin citas ----------------
+
+@calendar_api.route('/calendar/events/google/<string:event_id>', methods=['DELETE'])
+# @jwt_required()
+def delete_google_event_by_id(event_id):
+    """Delete a Google Calendar event directly by its Google event ID."""
+    calendar_manager = GoogleCalendarManager()
+
+    if not calendar_manager.service:
+        return jsonify({"error": "Could not initialize Google Calendar service"}), 500
+
+    success = calendar_manager.delete_event(event_id=event_id)
+
+    if not success:
+        return jsonify({"error": "Could not delete event from Google Calendar"}), 500
+
+    calendar_entry = Calendar.query.filter_by(google_event_id=event_id).first()
+    if calendar_entry:
+        try:
+            db.session.delete(calendar_entry)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"Error deleting from database: {str(e)}"}), 500
+
+    return jsonify({
+        "msg": "Event deleted successfully from Google Calendar"
+    }), 200

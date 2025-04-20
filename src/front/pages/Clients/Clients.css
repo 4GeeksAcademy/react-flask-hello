@@ -1,6 +1,7 @@
 .clients-container {
-    background-image: url("../../assets/images/background-clients.svg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
+  background-image: url("../../assets/images/background-clients.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 95vh;
+}

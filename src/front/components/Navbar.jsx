@@ -3,6 +3,7 @@ import "./Styles/Navbar.css";
 import LogoFrame from "./Logo";
 import { useTheme } from '../Contexts/ThemeContext.jsx';
 import { useState, useEffect } from "react";
+import Shop from "../Shop.jsx";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -59,6 +60,7 @@ const Navbar = () => {
               <Link to="/inventory" className="nav-btn">Inventario</Link>
               <Link to="/admin/store-settings" className="nav-btn">Datos del Comercio</Link>
               <Link to="/cart" className="nav-btn">Cart</Link>
+              <button className="nav-btn"  onClick={() => navigate("/Shop")}>Shop</button> {/* BOTÓN SHOP */}
               <button className="nav-btn logout-btn" onClick={LogoutButton}>Cerrar sesión</button>
             </>
           )}

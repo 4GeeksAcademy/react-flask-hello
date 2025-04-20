@@ -298,7 +298,7 @@ export const AppointmentsList = () => {
                             {filteredAppointments.map(appointment => (
                                 <tr key={appointment.id} className={`appointment-row status-${appointment.status}`}>
                                     <td>
-                                        <Link to={`/client/${appointment.client_id}`} className="client-link">
+                                        <Link to={`/clients/${appointment.client_id}`} className="client-link">
                                             {appointment.client_name}
                                         </Link>
                                     </td>

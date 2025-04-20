@@ -206,6 +206,9 @@ def update_appointment(appointment_id):
     if not appointment:
         return jsonify({"error": "appointment not found"}), 404
 
+    if "status" in data:
+        appointment.status = data["status"]
+
     if "service_name" in data:
         service = Services.query.filter_by(
             name=data["service_name"]).first()
@@ -248,7 +251,8 @@ def update_appointment(appointment_id):
 
         calendar = Calendar.query.filter_by(
             appointment_id=appointment.id).first()
-        if calendar and ("date_time" in data or "service_name" in data or "username" in data or "business_id" in data):
+
+        if calendar and ("date_time" in data or "service_name" in data or "username" in data or "business_id" in data or "status" in data):
             client = Clients.query.get(appointment.client_id)
             service = Services.query.get(appointment.service_id)
             user = Users.query.get(appointment.user_id)
@@ -279,7 +283,8 @@ def update_appointment(appointment_id):
             extended_properties = {
                 'private': {
                     'businessId': str(appointment.business_id),
-                    'appointmentId': str(appointment.id)
+                    'appointmentId': str(appointment.id),
+                    'status': appointment.status
                 }
             }
 
@@ -301,7 +306,7 @@ def update_appointment(appointment_id):
 
             calendar_manager.update_event(
                 event_id=calendar.google_event_id,
-                datos_actualizados=updated_data
+                updated_data=updated_data
             )
 
             calendar.last_sync = datetime.now(timezone.utc)

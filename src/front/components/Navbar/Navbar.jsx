@@ -4,6 +4,7 @@ import useGlobalReducer from "../../hooks/useGlobalReducer";
 
 import "./Navbar.css";
 import logo from "../../assets/images/flow-logo.svg";
+import AddBusinessModal from "../AddBusinessModal/AddBusinessModal";
 
 export const Navbar = () => {
 
@@ -139,6 +140,15 @@ export const Navbar = () => {
 											data-bs-target="#newUserModal"
 										>
 											<i className="bi bi-person-plus"></i> Create User
+										</button>
+									</li>
+									<li>
+										<button
+											className="dropdown-item"
+											data-bs-toggle="modal"
+											data-bs-target="#newBusinessModal"
+										>
+											<i className="bi bi-building-plus"></i> Add business
 										</button>
 									</li>
 									<li>
@@ -373,6 +383,7 @@ export const Navbar = () => {
 					</div>
 				</div>
 			</div>
+			<AddBusinessModal/>
 		</>
 	);
 };

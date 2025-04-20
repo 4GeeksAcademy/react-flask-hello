@@ -1,0 +1,25 @@
+.boxService {
+    border: none;
+    background-color: white;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px gray;
+    border-left: 4px solid #007BFF;
+    border-bottom: 4px solid #007BFF;
+}
+/* Service Title */
+.serviceTitle {
+    text-align: center;
+    color: red;
+}
+.serviceDescription {
+    padding: 10px;
+    box-shadow: 0 4px 8px gray;
+}
+.servicePrice {
+    text-align: right;
+    padding: 20px 50px 20px 0px !important;
+    color: red;
+}

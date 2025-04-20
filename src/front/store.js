@@ -53,6 +53,7 @@ export const initialStore = () => {
     syncStatus: null,
     clients: clients || [],
     selectedClient: selectedClient || null,
+    services: [], //////////////
     clientNotes: clientNotes || {},
   };
 };
@@ -183,6 +184,12 @@ export default function storeReducer(store, action = {}) {
         ...store,
         error: action.payload,
       };
+
+    case "add_service":
+      return {
+        ...store,
+        services: [...(store.services || []), action.payload],
+      }
 
     case "set_client_notes":
       const { clientId, notes } = action.payload;

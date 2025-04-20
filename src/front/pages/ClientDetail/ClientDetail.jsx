@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./ClientDetail.css";
 
-
 export const ClientDetail = () => {
     const { clientId } = useParams();
     const navigate = useNavigate();
@@ -85,6 +84,7 @@ export const ClientDetail = () => {
 
             if (!response.ok) {
                 throw new Error(data.error || 'Error loading client data');
+
             }
 
             setClient(data);
@@ -103,6 +103,7 @@ export const ClientDetail = () => {
     const fetchClientServices = async () => {
         try {
             const response = await fetch(`${backendUrl}api/clients/${clientId}/services`, {
+
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -123,6 +124,7 @@ export const ClientDetail = () => {
                 setActiveService(sortedServices[0]);
             } else {
                 setActiveService(null);
+
             }
         } catch (error) {
             console.error("Error fetching client services:", error);
@@ -130,6 +132,7 @@ export const ClientDetail = () => {
     };
 
     const fetchClientNotes = async () => {
+
         if (!clientId) return;
 
         setNotesLoading(true);
@@ -337,6 +340,7 @@ export const ClientDetail = () => {
     };
 
     const handleViewBudget = () => {
+      
         navigate(`/client/${clientId}/budget`);
     };
 
@@ -829,7 +833,9 @@ export const ClientDetail = () => {
             <div className="client-detail-container">
                 <div className="error-message">
                     <p>Error: {error}</p>
+
                     <button onClick={() => navigate(-1)}>Go back</button>
+
                 </div>
             </div>
         );
@@ -839,8 +845,10 @@ export const ClientDetail = () => {
         return (
             <div className="client-detail-container">
                 <div className="not-found">
+
                     <p>Client not found</p>
                     <button onClick={() => navigate(-1)}>Go back</button>
+
                 </div>
             </div>
         );

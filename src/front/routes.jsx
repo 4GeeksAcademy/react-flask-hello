@@ -12,8 +12,10 @@ import { Clients } from "./pages/Clients/Clients.jsx"
 import { NewClient } from "./pages/NewClient/NewClient.jsx";
 import { NewService } from "./pages/NewService/NewService.jsx"
 import { Calendar } from "./pages/Calendar/Calendar.jsx";
+import { ListOfService } from "./components/ListOfService/ListOfService.jsx";
 import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
 import AssignService from "./pages/AssignService.jsx";
+
 
 
 export const AppRoutes = createBrowserRouter(
@@ -27,6 +29,7 @@ export const AppRoutes = createBrowserRouter(
             <Route path="/clients" element={<Clients />} />
             <Route path="/newclient" element={<NewClient />} />
             <Route path="/newservice" element={<NewService />} />
+            <Route path="/services" element={<ListOfService />} />
             <Route path="/clients/:clientId" element={<ClientDetail />} />
             <Route path="/assignservice" element={<AssignService />} />
             <Route path="/appointments" element={<Appointments />} />

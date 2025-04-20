@@ -58,7 +58,6 @@ class Businesses(db.Model):
             "postal_code": self.business_postal_code
         }
 
-
 class Users(db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(primary_key=True)

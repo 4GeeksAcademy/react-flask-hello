@@ -26,11 +26,15 @@ export const ClientForm = () => {
     useEffect(() => {
         const fetchBusinesses = async () => {
             try {
-                const response = await fetch(`${backendUrl}api/businesses`);
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${backendUrl}api/businesses`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setBusinesses(data);
-
                     if (data.length > 0) {
                         setFormData(prev => ({ ...prev, business_id: data[0].id }));
                     }
@@ -44,7 +48,12 @@ export const ClientForm = () => {
 
         const fetchServices = async () => {
             try {
-                const response = await fetch(`${backendUrl}api/services`);
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${backendUrl}api/services`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setServices(data);
@@ -256,34 +265,6 @@ export const ClientForm = () => {
                             </select>
                         </div>
                     </div>
-
-                    {services.length > 0 && (
-                        <div className="client-form-row">
-                            <div className="client-form-col client-full-width">
-                                <label className="client-form-label">Services</label>
-                                <div className="client-services-checkbox-container">
-                                    {services.map(service => (
-                                        <div key={service.id} className="client-service-checkbox">
-                                            <input
-                                                type="checkbox"
-                                                id={`service-${service.id}`}
-                                                value={service.id}
-                                                checked={formData.services_ids.includes(service.id)}
-                                                onChange={handleServiceChange}
-                                                className="client-checkbox-input"
-                                            />
-                                            <label
-                                                htmlFor={`service-${service.id}`}
-                                                className="client-checkbox-label"
-                                            >
-                                                {service.name}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
 
                     <div className="client-form-buttons">
                         <button

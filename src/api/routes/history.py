@@ -6,7 +6,7 @@ history_routes = Blueprint('history_routes', __name__)
 
 
 @history_routes.route('/history/client/<int:client_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_history(client_id):
     client = Clients.query.get(client_id)
 
@@ -25,7 +25,7 @@ def get_client_history(client_id):
 
 
 @history_routes.route('/history', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_history():
     data = request.get_json()
 
@@ -86,7 +86,7 @@ def add_history():
 
 
 @history_routes.route('/history/<int:history_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_history(history_id):
     
     history = ServiceHistory.query.get(history_id)

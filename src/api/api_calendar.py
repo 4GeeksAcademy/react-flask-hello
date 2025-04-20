@@ -189,7 +189,7 @@ class GoogleCalendarManager:
             return None
 
     def delete_event(self, event_id, calendar_id="primary"):
-        """Delete an event from Google Calendar."""
+
         if not self.service:
             return False
 
@@ -204,7 +204,7 @@ class GoogleCalendarManager:
 
 
 @calendar_api.route('/calendar/events', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_calendar_events():
 
     business_id = request.args.get('business_id')
@@ -239,7 +239,7 @@ def get_calendar_events():
 
 
 @calendar_api.route('/calendar/sync', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def sync_appointments_with_google():
 
     data = request.get_json(silent=True) or {}
@@ -334,7 +334,7 @@ def sync_appointments_with_google():
 
 
 @calendar_api.route('/calendar/appointments/<int:appointment_id>', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_event_for_appointment(appointment_id):
     appointment = Appointments.query.get(appointment_id)
 
@@ -420,7 +420,7 @@ def create_event_for_appointment(appointment_id):
 
 
 @calendar_api.route('/calendar/events/<int:appointment_id>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_appointment_event(appointment_id):
 
     appointment = Appointments.query.get(appointment_id)
@@ -501,7 +501,7 @@ def update_appointment_event(appointment_id):
 
 
 @calendar_api.route('/calendar/events/<int:appointment_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_appointment_event(appointment_id):
 
     calendar = Calendar.query.filter_by(appointment_id=appointment_id).first()
@@ -542,9 +542,9 @@ else:
 # -------------------------------------------------- Para eventos puntuales sin citas ----------------
 
 @calendar_api.route('/calendar/events/google/<string:event_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_google_event_by_id(event_id):
-    """Delete a Google Calendar event directly by its Google event ID."""
+
     calendar_manager = GoogleCalendarManager()
 
     if not calendar_manager.service:

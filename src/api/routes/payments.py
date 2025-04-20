@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 payments_routes = Blueprint('payments_routes', __name__)
 
 @payments_routes.route('/payments', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_payments():
     payments = Payments.query.all()
     if not payments:
@@ -15,7 +15,7 @@ def get_payments():
     return jsonify(serialized_payments), 200
 
 @payments_routes.route('/payments/<int:client_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_payment(client_id):
     payments = Payments.query.filter_by(client_id=client_id).all()
     if not payments:
@@ -25,7 +25,7 @@ def get_payment(client_id):
     return jsonify(payments_made), 200
 
 @payments_routes.route('/payments', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_payment():
     data = request.get_json()
     if not data:

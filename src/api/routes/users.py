@@ -5,21 +5,21 @@ from flask_jwt_extended import jwt_required
 users_routes = Blueprint('users_routes', __name__)
 
 @users_routes.route('/admins', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_admins():
     admins = Admins.query.all()
     serialized_admins = [admin.serialize_admins() for admin in admins]
     return jsonify(serialized_admins)
 
 @users_routes.route('/users', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_users():
     users = Users.query.all()
     serialized_users = [user.serialize_user() for user in users]
     return jsonify(serialized_users), 200
 
 @users_routes.route('/users/<int:user_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_user(user_id):
     user = Users.query.get(user_id)
     if not user:
@@ -27,7 +27,7 @@ def get_user(user_id):
     return jsonify(user.serialize_user()), 200
 
 @users_routes.route('/users', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_user():
     data = request.get_json()
     if not data:
@@ -86,7 +86,7 @@ def add_user():
         }), 500
 
 @users_routes.route('/users', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_user():
     data = request.get_json()
 
@@ -130,7 +130,7 @@ def update_user():
         return jsonify({"error": str(e)}), 500
 
 @users_routes.route('/users/<string:username>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_user(username):
     user = Users.query.filter_by(username=username).first()
 
@@ -151,7 +151,7 @@ def delete_user(username):
         return jsonify({"error": str(e)}), 500
     
 @users_routes.route('/business/<int:business_id>/users', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_business_users(business_id):
     business = Businesses.query.get(business_id)
     if not business:

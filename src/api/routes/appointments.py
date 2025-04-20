@@ -9,7 +9,7 @@ appointments_routes = Blueprint('appointments_routes', __name__)
 
 
 @appointments_routes.route('/appointments', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_appointments():
 
     business_id = request.args.get('business_id')
@@ -28,7 +28,7 @@ def get_appointments():
 
 
 @appointments_routes.route('/appointments/<int:client_id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_client_appointments(client_id):
     appointments = Appointments.query.filter_by(client_id=client_id).all()
     if not appointments:
@@ -37,7 +37,7 @@ def get_client_appointments(client_id):
 
 
 @appointments_routes.route('/appointments', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_appointment():
     data = request.get_json()
     if not data:
@@ -195,7 +195,7 @@ def add_appointment():
 
 
 @appointments_routes.route('/appointments/<int:appointment_id>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_appointment(appointment_id):
     data = request.get_json()
 
@@ -323,7 +323,7 @@ def update_appointment(appointment_id):
 
 
 @appointments_routes.route('/appointments/<int:appointment_id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_appointment(appointment_id):
     appointment = Appointments.query.filter_by(id=appointment_id).first()
     if not appointment:

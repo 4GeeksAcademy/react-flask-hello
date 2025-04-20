@@ -3,7 +3,7 @@ import "./Styles/Navbar.css";
 import LogoFrame from "./Logo";
 import { useTheme } from '../Contexts/ThemeContext.jsx';
 import { useState, useEffect } from "react";
-import Shop from "../Shop.jsx";
+import Shop from "../pages/shop.jsx";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();

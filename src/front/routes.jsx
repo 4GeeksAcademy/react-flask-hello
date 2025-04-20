@@ -9,7 +9,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
-import Cart from "./pages/Cart";
+import Cart from "./pages/cart";
+import Shop from "./pages/shop"; /*Modificado Javi*/ 
 import InventoryPanel from "./pages/Admin/InventoryPanel"; 
 import StoreSettings from "./pages/Admin/StoreSettings"; 
 
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
       {/* Redirección de settings a inventory */}
       <Route path="/settings" element={<InventoryPanel />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/shop" element={<Shop />} />{/*Modificado Javi*/ }
       <Route path="/inventory" element={<InventoryPanel />} /> 
       <Route path="/admin/store-settings" element={<StoreSettings />} /> 
     </Route>

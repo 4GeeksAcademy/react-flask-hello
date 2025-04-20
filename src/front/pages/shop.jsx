@@ -70,7 +70,12 @@ export default function Shop() {
               <span className="text-sm font-bold">${product.price}</span>
               <button
                 className="bg-black text-white px-2 py-1 rounded-lg hover:bg-gray-800 transition text-xs"
-                onClick={() => addCarrito({ id: product.id, title: product.name, precio: product.price })}
+                onClick={() => addCarrito({
+                  id: product.id,
+                  title: product.name,
+                  price: product.price,
+                  image: product.image 
+                })}
               >
                 Agregar
               </button>

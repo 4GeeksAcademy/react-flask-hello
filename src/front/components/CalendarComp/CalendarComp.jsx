@@ -37,15 +37,14 @@ const EventTooltip = ({ position, eventData, onClose }) => {
                 <button className="tooltip-close-button" onClick={onClose}>×</button>
             </div>
             <div className="event-tooltip-content">
-                <p><strong>Inicio:</strong> {new Date(eventData.start).toLocaleString()}</p>
-                <p><strong>Fin:</strong> {new Date(eventData.end).toLocaleString()}</p>
-                {eventData.location && <p><strong>Ubicación:</strong> {eventData.location}</p>}
+                <p><strong>Start:</strong> {new Date(eventData.start).toLocaleString()}</p>
+                <p><strong>End:</strong> {new Date(eventData.end).toLocaleString()}</p>
+                {eventData.location && <p><strong>Location:</strong> {eventData.location}</p>}
                 {eventData.description && (
                     <div className="event-description-fields">
-                        <h4>Detalles:</h4>
+                        <h4>Details:</h4>
                         {eventData.description.split('\n').map((line, index) => {
                             if (line.trim() === '') return null;
-
 
                             const parts = line.split(':');
                             if (parts.length > 1) {
@@ -78,7 +77,7 @@ export const CalendarComp = () => {
         token
     } = store;
 
-    // Estado para el tooltip
+    // Tooltip state
     const [tooltipVisible, setTooltipVisible] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -217,9 +216,6 @@ export const CalendarComp = () => {
                 </h1>
 
                 <div className="calendar-actions">
-                    <Link to="/appointment/create" className="create-appointment-button">
-                        <i className="fas fa-plus"></i> New appointment
-                    </Link>
                     <button
                         className="sync-button"
                         onClick={syncGoogleCalendar}

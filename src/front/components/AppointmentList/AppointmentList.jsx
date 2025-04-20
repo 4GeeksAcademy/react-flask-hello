@@ -147,7 +147,6 @@ export const AppointmentsList = () => {
                 throw new Error(data.error || "Error deleting the appointment");
             }
 
-            // Actualizar lista de citas
             setAppointments(appointments.filter(app => app.id !== appointmentId));
             alert("Cita eliminada correctamente");
         } catch (error) {
@@ -158,7 +157,6 @@ export const AppointmentsList = () => {
         }
     };
 
-    // Actualizar estado de cita
     const handleUpdateStatus = async (appointmentId, newStatus) => {
         try {
             setLoading(true);
@@ -180,7 +178,6 @@ export const AppointmentsList = () => {
                 throw new Error(data.error || "Error updating the appointment");
             }
 
-            // Actualizar lista de citas
             const updatedAppointments = appointments.map(app =>
                 app.id === appointmentId ? { ...app, status: newStatus } : app
             );

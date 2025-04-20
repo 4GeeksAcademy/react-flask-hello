@@ -1,5 +1,5 @@
 import React from "react";
-import { FormularioLogin } from "../../components/FormularioLogin/FormularioLogin";
+import { LoginForm } from "../../components/LoginForm/LoginForm";
 
 import "./Login.css";
 import logo from "../../assets/images/flow-logo.svg";
@@ -10,11 +10,8 @@ export const Login = () => {
 
 	return (
 		<div className="login-page">
-			{/* Contenido principal */}
 			<div className="login-container">
-				
 				<div className="login-content">
-					{/* Panel de bienvenida */}
 					<div className="welcome-panel">
 						<div className="welcome-content">
 							<div className="welcome-icon">
@@ -38,10 +35,8 @@ export const Login = () => {
 							</div>
 						</div>
 					</div>
-
-					{/* Formulario de inicio de sesión */}
 					<div className="login-form-container">
-						<FormularioLogin />
+						<LoginForm />
 					</div>
 				</div>
 			</div>

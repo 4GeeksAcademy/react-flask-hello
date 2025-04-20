@@ -1,79 +1,73 @@
-
 #newBusinessModal .modal-content {
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    border: none;
-  }
-  
- 
-  #newBusinessModal .modal-header {
-    background-color: #1b2530;
-    border-bottom: 1px solid #e9ecef;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding: 1rem 1.5rem;
-  }
-  
-  #newBusinessModal .modal-title {
-    color: white;
-    font-weight: 600;
-  }
-  
-  #newBusinessModal .modal-title i {
-    color: #6c757d;
-    margin-right: 0.5rem;
-  }
-  
-  
-  #newBusinessModal .modal-body {
-    padding: 1.5rem;
-  }
-  
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: none;
+}
 
-  #newBusinessModal .form-label {
-    font-weight: 500;
-    color: #212529;
-    margin-bottom: 0.5rem;
-  }
-  
-  #newBusinessModal .form-control {
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    padding: 0.5rem 0.75rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  
-  #newBusinessModal .form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  
-  
-  #newBusinessModal .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.25rem;
-    margin-bottom: 1rem;
-  }
-  
- 
-  #newBusinessModal .btn-submit {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    width: 100%;
-    transition: background-color 0.15s ease-in-out;
-  }
-  
-  #newBusinessModal .btn-submit:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-  }
-  
-  #newBusinessModal .btn-submit i {
-    margin-right: 0.5rem;
-  }
+#newBusinessModal .modal-header {
+  background-color: #1b2530;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 1rem 1.5rem;
+}
+
+#newBusinessModal .modal-title {
+  color: white;
+  font-weight: 600;
+}
+
+#newBusinessModal .modal-title i {
+  color: #6c757d;
+  margin-right: 0.5rem;
+}
+
+#newBusinessModal .modal-body {
+  padding: 1.5rem;
+}
+
+#newBusinessModal .form-label {
+  font-weight: 500;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+#newBusinessModal .form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#newBusinessModal .form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#newBusinessModal .alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+#newBusinessModal .btn-submit {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  width: 100%;
+  transition: background-color 0.15s ease-in-out;
+}
+
+#newBusinessModal .btn-submit:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+#newBusinessModal .btn-submit i {
+  margin-right: 0.5rem;
+}

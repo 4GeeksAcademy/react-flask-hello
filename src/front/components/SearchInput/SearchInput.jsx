@@ -7,7 +7,7 @@ export const SearchInput = ({ value, onChange, placeholder }) => {
       <input
         type="text"
         className="search-field"
-        placeholder={placeholder || "Buscar..."}
+        placeholder={placeholder || "Search..."}
         value={value}
         onChange={onChange}
       />

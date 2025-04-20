@@ -3,40 +3,55 @@
   gap: 0.75rem;
   overflow-x: auto;
   padding: 0.5rem 0;
-  background: none;
+  width: 100%;
+  flex-grow: 1;
+  justify-content: center;
+  box-sizing: border-box;
 
-  width: 100%; /* ✅ ocupa el 100% del ancho disponible */
-  flex-grow: 1; /* ✅ permite que crezca */
-  justify-content: start; /* asegura que el contenido arranque a la izquierda */
-  box-sizing: border-box; /* asegura que padding no altere el ancho real */
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 
 /* Tarjeta del día */
 .forecast-day {
   flex: 0 0 auto;
-  padding: 0.8rem 1rem;
+  padding: 1rem;
   border-radius: 1rem;
   text-align: center;
-  min-width: 100px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-width: 110px;
   font-size: 0.85rem;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease forwards;
+  scroll-snap-align: center;
 }
 
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Día actual */
+.forecast-day.today-highlight {
+  border: 2px solid #38bdf8;
+}
+
+/* Hover efecto */
 .forecast-day:hover {
-  border-color: #38bdf8;
+  transform: scale(1.02);
   background-color: #f0fbff;
 }
 
-/* Día actual destacado */
-.forecast-day.today-highlight {
-  border: 2px solid #38bdf8;
-  background-color: #e0f7ff;
-}
-
-/* Nombre del día */
+/* Día */
 .day-name {
   font-weight: 600;
   font-size: 0.8rem;
@@ -45,11 +60,9 @@
   text-transform: capitalize;
 }
 
-/* Icono */
-.forecast-day img {
-  width: 40px;
-  height: 40px;
-  margin: 0.4rem auto;
+/* Icono react */
+.weather-icon {
+  margin: 0.4rem 0;
 }
 
 /* Temperaturas */
@@ -66,9 +79,77 @@
   line-height: 1.1;
 }
 
-/* Datos extra (solo para hoy) */
-.extra {
-  font-size: 0.7rem;
-  color: #333;
-  margin-top: 0.1rem;
+/* 🌞 Soleado */
+.weather-01d {
+  background-color: #fef9c3;
+  border-color: #facc15;
+}
+.weather-01n {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+}
+
+/* 🌤 Parcialmente nublado */
+.weather-02d,
+.weather-03d {
+  background-color: #e0f2fe;
+  border-color: #60a5fa;
+}
+.weather-02n,
+.weather-03n {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+}
+
+/* ☁️ Muy nublado */
+.weather-04d,
+.weather-04n {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+/* 🌧 Lluvia */
+.weather-09d,
+.weather-10d {
+  background-color: #bae6fd;
+  border-color: #0ea5e9;
+}
+.weather-09n,
+.weather-10n {
+  background-color: #bfdbfe;
+  border-color: #0284c7;
+}
+
+/* ⛈ Tormenta */
+.weather-11d,
+.weather-11n {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+}
+
+/* ❄️ Nieve */
+.weather-13d,
+.weather-13n {
+  background-color: #f0f9ff;
+  border-color: #93c5fd;
+}
+
+/* 🌫 Niebla */
+.weather-50d,
+.weather-50n {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.forecast-day {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -19,7 +19,8 @@ export const PublicLayout = () => {
   }, [location]);
 
   return (
-    <ScrollToTop>
+    <>
+      <ScrollToTop />
       <div className="app-root">
         {!isLanding && <PublicNavbar />}  {/* 👈 Ocultamos el navbar si estás en la landing */}
         <div className="content-container">
@@ -27,8 +28,9 @@ export const PublicLayout = () => {
         </div>
         {!isLanding && <Footer />}  {/* 👈 Ocultamos el footer si estás en la landing */}
       </div>
-    </ScrollToTop>
+    </>
   );
 };
+
 
 export default PublicLayout;

@@ -2,9 +2,6 @@ import React from 'react';
 import './AboutUs.css';
 import { motion } from 'framer-motion';
 
-import Navbar from '../../components/Navbar/Navbar';
-import PublicNavbar from '../../components/Navbar/PublicNavbar';
-import Footer from '../../components/Footer/Footer';
 
 const AboutUs = () => {
   const token = localStorage.getItem('token');
@@ -13,7 +10,6 @@ const AboutUs = () => {
 
   return (
     <>
-      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
 
       <div className="aboutus-container">
         <motion.section
@@ -63,9 +59,8 @@ const AboutUs = () => {
             📍 Nuestra sede se encuentra en Londres, Reino Unido.
           </p>
         </motion.section>
-      </div>
 
-      <Footer />
+      </div>
     </>
   );
 };

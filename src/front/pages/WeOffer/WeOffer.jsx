@@ -2,8 +2,7 @@ import React from 'react';
 import './WeOffer.css';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import PublicNavbar from '../../components/Navbar/PublicNavbar';
-import Footer from '../../components/Footer/Footer';
+
 
 const services = [
   {
@@ -37,8 +36,6 @@ const WeOffer = () => {
 
   return (
     <>
-      {/* ✅ Aquí se usa el navbar */}
-      <PublicNavbar />
 
       <section className="weoffer-container">
         <motion.h1
@@ -90,8 +87,7 @@ const WeOffer = () => {
         </div>
       </section>
 
-      {/* ✅ Aquí se usa el footer */}
-      <Footer />
+
     </>
   );
 };

@@ -20,6 +20,7 @@ const CROP_OPTIONS = {
 const PlotForm = () => {
   const { store } = useGlobalReducer();
   const navigate = useNavigate();
+  const [showTooltip, setShowTooltip] = useState(true);
 
   const [plotData, setPlotData] = useState({
     name: "",
@@ -192,6 +193,11 @@ const PlotForm = () => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => setShowTooltip(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="plot-form-container">
       <div className="plot-form-card">
@@ -324,30 +330,34 @@ const PlotForm = () => {
                   className="form-input"
                   style={{ flex: 1 }}
                 />
-                <button
-                  type="button"
-                  onClick={handleGetLocation}
-                  className="location-button"
-                  style={{
-                    padding: '0.5rem',
-                    background: '#f8f9fa',
-                    border: '1px solid #ced4da',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  📍
-                </button>
+                <div className="location-button-wrapper">
+                  <button
+                    type="button"
+                    onClick={handleGetLocation}
+                    className="location-button"
+                  >
+                    📍
+                  </button>
+
+                  <span className={`tooltip-initial ${showTooltip ? '' : 'hidden'}`}>
+                    Utilizar ubicación actual
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
-          <MapPicker
-            initialCoordinates={plotData.coordinates}
-            onCoordinatesChange={(coords) =>
-              setPlotData((prev) => ({ ...prev, coordinates: coords }))
-            }
-          />
+          <div className="map-section">
+            <p className="map-note">🎯 Selecciona con precisión la parcela en el mapa:</p>
+
+            <MapPicker
+              initialCoordinates={plotData.coordinates}
+              onCoordinatesChange={(coords) =>
+                setPlotData((prev) => ({ ...prev, coordinates: coords }))
+              }
+            />
+          </div>
+
 
           <div className="button-row">
             <button type="submit" className="submit-button">

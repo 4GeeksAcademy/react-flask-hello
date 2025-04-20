@@ -1,5 +1,5 @@
 import React from "react";
-import { FormularioLogin } from "../../components/FormularioLogin/FormularioLogin";
+import { LoginForm } from "../../components/LoginForm/LoginForm";
 
 import "./Login.css";
 import logo from "../../assets/images/flow-logo.svg";
@@ -36,7 +36,7 @@ export const Login = () => {
 						</div>
 					</div>
 					<div className="login-form-container">
-						<FormularioLogin />
+						<LoginForm />
 					</div>
 				</div>
 			</div>

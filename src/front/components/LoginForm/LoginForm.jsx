@@ -3,7 +3,7 @@ import useGlobalReducer from "../../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
 import { ForgotPasswordModal } from "../ForgotPasswordModal/ForgotPasswordModal";
 
-import "./FormularioLogin.css";
+import "./LoginForm.css";
 
 export const LoginForm = () => {
     const navigate = useNavigate();

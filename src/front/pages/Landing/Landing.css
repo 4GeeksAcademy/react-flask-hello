@@ -1,4 +1,4 @@
-/* Landing.css - Solución directa con anchos iguales */
+/* Landing.css - Versión optimizada con prevención de conflictos y mejoras de accesibilidad */
 
 /* Reset específico para el contenedor del landing */
 .landing-container {
@@ -15,94 +15,202 @@
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
+  font-family: 'Arial', sans-serif; /* Asegura consistencia tipográfica */
+  color: #333; /* Establece un color base para textos */
+  box-sizing: border-box; /* Garantiza que el box-model sea consistente */
 }
 
-/* Container para el navbar - exactamente igual que grid-container */
-.navbar-container {
-  width: 1200px;
+/* Resetear box-sizing para todos los elementos del landing */
+.landing-container *,
+.landing-container *::before,
+.landing-container *::after {
+  box-sizing: border-box;
+}
+
+/* Contenedores principales - propiedades compartidas */
+.landing-container .navbar-container, 
+.landing-container .grid-container {
+  width: 1400px;
   max-width: 90%;
-  margin-bottom: 20px;
   border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.1);
-  padding: 5px;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* Navbar con efecto glassmorphic */
-.navbar {
+/* Propiedades específicas del navbar-container */
+.landing-container .navbar-container {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 5px;
+  background-color: transparent; /* 👈 esto elimina el fondo */
+}
+
+/* Propiedades específicas del grid-container */
+.landing-container .grid-container {
+  flex: 1;
+  margin-bottom: 40px;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar glassmorphic mejorado y sticky */
+.landing-container .navbar {
   width: 100%;
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  background-color: rgba(255, 255, 255, 0.2); /* Fondo más transparente */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque */
-  -webkit-backdrop-filter: blur(10px); /* Para Safari */
-  border-radius: 15px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
+  background-color: transparent; /* 👈 sin color de fondo */
+  backdrop-filter: blur(15px);   /* 👈 mantenemos el desenfoque */
+  -webkit-backdrop-filter: blur(15px);
+  will-change: backdrop-filter;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   z-index: 1000;
+  transform: translateZ(0);
 }
-.nav-links {
+
+
+/* Estilo cuando haces scroll: cambia fondo y sombra */
+.landing-container .navbar.scrolled {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Enlaces de navegación */
+.landing-container .nav-links {
   display: flex;
   gap: 50px;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links a {
-  color: #303E4E;
+.landing-container .nav-links a {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.nav-buttons {
+
+
+.landing-container .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: #375534;
+  transition: width 0.3s ease;
+}
+
+.landing-container .nav-links a:hover::after {
+  width: 100%;
+}
+
+
+.landing-container .nav-links a:hover {
+  color: #375534;
+  text-decoration: underline;
+}
+
+.landing-container .nav-links a:focus {
+  outline: 2px solid #375534;
+  outline-offset: 2px;
+}
+
+/* Indicador visual para foco con teclado */
+.landing-container .nav-links a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.landing-container .nav-links a:focus-visible {
+  outline: 2px solid #375534;
+  outline-offset: 2px;
+}
+
+/* Botones de navegación */
+.landing-container .nav-buttons {
   display: flex;
   gap: 15px;
+  margin: 0;
+  padding: 0;
 }
 
-.login-btn, .signup-btn {
+/* Estilos para los botones de login y signup */
+.landing-container .login-btn, 
+.landing-container .signup-btn {
   padding: 8px 16px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 100px; /* Asegura un tamaño mínimo para el área clicable */
 }
 
-.login-btn {
-  background-color: transparent;
-  border: 1px solid #375534;
-  color: #375534;
+.landing-container .login-btn {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.signup-btn {
-  background-color: #375534;
-  color: white;
+
+.landing-container .login-btn:hover {
+  background-color: rgba(55, 85, 52, 0.1);
 }
 
-/* Contenedor principal con borde visible - exactamente igual que navbar-container */
-.grid-container {
-  width: 1200px;
-  max-width: 90%;
-  flex: 1;
-  margin-bottom: 40px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
+.landing-container .login-btn:focus {
+  outline: 2px solid #375534;
+  outline-offset: 2px;
+}
+
+.landing-container .signup-btn {
+  color: #1e1e1e;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.landing-container .signup-btn:hover {
+  background-color: #2e4a2c;
+}
+
+.landing-container .signup-btn:focus {
+  outline: 2px solid #2e4a2c;
+  outline-offset: 2px;
 }
 
 /* Grid de rectángulos */
-.rectangles-grid {
+.landing-container .rectangles-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -111,22 +219,29 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  margin: 0;
 }
 
 /* Estilos para los rectángulos */
-.rectangle {
+.landing-container .rectangle {
   background-color: white;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  /* Optimizar sombra para rendimiento */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
+  /* Mejora la renderización en dispositivos móviles */
+  transform: translateZ(0);
+  /* Prevenir flickering durante transiciones */
+  backface-visibility: hidden;
 }
 
 /* Contenido de los rectángulos */
-.rect-content {
+.landing-container .rect-content {
   width: 100%;
   height: 100%;
   display: flex;
@@ -136,41 +251,50 @@
 }
 
 /* Estilos para textos */
-.rect-content h2 {
+.landing-container .rect-content h2 {
   color: #375534;
   font-size: 1.8rem;
   margin-bottom: 15px;
   font-weight: 600;
+  line-height: 1.2;
+  /* Mejora de contraste para accesibilidad */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.rect-content h3 {
+.landing-container .rect-content h3 {
   color: #375534;
   font-size: 1.4rem;
   margin-bottom: 10px;
   font-weight: 600;
+  line-height: 1.3;
+  /* Mejora de contraste para accesibilidad */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.rect-content p {
-  color: #4a6b47;
+.landing-container .rect-content p {
+  /* Color más oscuro para mejorar el contraste y la legibilidad */
+  color: #3a5737;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.6; /* Incrementado para mejor legibilidad */
   margin-bottom: 15px;
 }
 
-.rect-content ul {
+.landing-container .rect-content ul {
   list-style-type: none;
   padding: 0;
+  margin: 0 0 15px 0;
   text-align: center;
 }
 
-.rect-content li {
+.landing-container .rect-content li {
   color: #4a6b47;
   font-size: 0.9rem;
   margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 /* Botón CTA */
-.cta-button {
+.landing-container .cta-button {
   background-color: #303E4E;
   color: white;
   border: none;
@@ -179,21 +303,35 @@
   font-weight: 500;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 10px;
+  position: relative;
+  /* Mejorar contraste para accesibilidad */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  min-width: 140px;
 }
 
-.cta-button:hover {
+.landing-container .cta-button:hover {
   background-color: #2e4a2c;
+  transform: translateY(-2px);
 }
 
-/* Tamaños de los rectángulos */
-.rect-1 {
+.landing-container .cta-button:active {
+  transform: translateY(1px);
+}
+
+.landing-container .cta-button:focus {
+  outline: 2px solid #303E4E;
+  outline-offset: 2px;
+}
+
+/* Tamaños y posiciones de los rectángulos */
+.landing-container .rect-1 {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
 }
 
-.rect-2 {
+.landing-container .rect-2 {
   grid-column: 3 / 6;
   grid-row: 1 / 3;
   background-image: url('../../assets/img/DJI-Mavic-3-Multispectral-from-above-scaled.jpg');
@@ -202,7 +340,7 @@
   position: relative;
 }
 
-.rect-2::before {
+.landing-container .rect-2::before {
   content: '';
   position: absolute;
   top: 0;
@@ -213,107 +351,340 @@
   border-radius: 15px;
 }
 
-.rect-2 .rect-content {
+.landing-container .rect-2 .rect-content {
   position: relative;
   z-index: 2;
 }
 
-.rect-2 h3, .rect-2 p {
+.landing-container .rect-2 h3, 
+.landing-container .rect-2 p {
   color: white;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  /* Mejora de contraste para texto sobre imágenes */
+  font-weight: bold;
+  /* Asegura que el texto sea legible sobre la imagen de fondo */
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
-.rect-3 {
+.landing-container .rect-3 {
   grid-column: 1 / 2;
   grid-row: 2 / 4;
 }
 
-.rect-4 {
+.landing-container .rect-4 {
   grid-column: 2 / 3;
   grid-row: 2 / 3;
 }
 
-.rect-5 {
+.landing-container .rect-5 {
   grid-column: 2 / 6;
   grid-row: 3 / 4;
   text-align: left;
 }
 
-.rect-5 .rect-content {
+.landing-container .rect-5 .rect-content {
   align-items: flex-start;
   padding: 0 20px;
 }
 
 /* Estilos específicos para logo */
-.logo-container {
+.landing-container .logo-container {
   width: 400px;
   height: auto;
   margin: 0 auto;
 }
 
-.logo-img {
+.landing-container .logo-img {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
+/* Keyframes y animaciones */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Aplicación de animaciones a elementos */
+@media (prefers-reduced-motion: no-preference) {
+  .landing-container .navbar {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .landing-container .rect-1 {
+    animation: fadeIn 0.8s ease-out 0.2s both;
+  }
+  
+  .landing-container .rect-2 {
+    animation: fadeIn 0.8s ease-out 0.4s both;
+  }
+  
+  .landing-container .rect-3 {
+    animation: fadeIn 0.8s ease-out 0.6s both;
+  }
+  
+  .landing-container .rect-4 {
+    animation: fadeIn 0.8s ease-out 0.8s both;
+  }
+  
+  .landing-container .rect-5 {
+    animation: fadeIn 0.8s ease-out 1s both;
+  }
+  
+  .landing-container .cta-button {
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .landing-container .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .landing-container .signup-btn:hover {
+    animation: pulse 1s ease-in-out infinite;
+  }
+  
+  .landing-container .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #375534;
+    transition: width 0.3s ease;
+  }
+  
+  .landing-container .nav-links a:hover::after {
+    width: 100%;
+  }
+}
+
+/* Respetar preferencia de reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* Responsive */
+/* Pantallas extra grandes (desktops, 1600px y superiores) */
+@media (min-width: 1600px) {
+  .landing-container .navbar-container,
+  .landing-container .grid-container {
+    width: 1600px;
+    max-width: 90%;
+  }
+  
+  .landing-container .rect-content h2 {
+    font-size: 2.2rem;
+  }
+  
+  .landing-container .rect-content h3 {
+    font-size: 1.6rem;
+  }
+  
+  .landing-container .rect-content p {
+    font-size: 1.1rem;
+  }
+}
+
+/* Pantallas grandes (desktops, entre 1200px y 1599px) */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .landing-container .navbar-container,
+  .landing-container .grid-container {
+    width: 1200px;
+  }
+}
+
+/* Tablets y pantallas medianas (entre 769px y 1199px) */
+@media (min-width: 769px) and (max-width: 1199px) {
+  .landing-container .navbar-container,
+  .landing-container .grid-container {
+    width: 90%;
+  }
+  
+  .landing-container .nav-links {
+    gap: 30px;
+  }
+  
+  .landing-container .rectangles-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .landing-container .rect-1 {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+  }
+  
+  .landing-container .rect-2 {
+    grid-column: 3 / 5;
+    grid-row: 1 / 3;
+  }
+  
+  .landing-container .rect-3 {
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+  }
+  
+  .landing-container .rect-4 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  
+  .landing-container .rect-5 {
+    grid-column: 2 / 5;
+    grid-row: 3 / 4;
+  }
+}
+
+/* Móviles y pantallas pequeñas (máximo 768px) */
 @media (max-width: 768px) {
-  .navbar-container,
-  .grid-container {
+  .landing-container .navbar-container, 
+  .landing-container .grid-container {
     max-width: 95%;
   }
 
-  .navbar {
-    padding: 0 15px;
+  .landing-container .navbar {
+    padding: 10px 15px;
     height: auto;
     flex-wrap: wrap;
-    padding: 10px;
   }
 
-  .nav-links {
+  .landing-container .nav-links {
     gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
   }
+  
+  .landing-container .nav-links a {
+    font-size: 16px;
+  }
 
-  .rectangles-grid {
+  .landing-container .rectangles-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(5, 1fr);
     gap: 20px;
     padding: 15px;
   }
   
-  .rect-1 {
+  .landing-container .rect-1 {
     grid-column: 1 / 3;
     grid-row: 1 / 2;
   }
   
-  .rect-2 {
+  .landing-container .rect-2 {
     grid-column: 1 / 2;
     grid-row: 2 / 4;
   }
   
-  .rect-3 {
+  .landing-container .rect-3 {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
   }
   
-  .rect-4 {
+  .landing-container .rect-4 {
     grid-column: 2 / 3;
     grid-row: 3 / 5;
   }
   
-  .rect-5 {
+  .landing-container .rect-5 {
     grid-column: 1 / 3;
     grid-row: 5 / 6;
   }
   
-  .rect-content h2 {
+  .landing-container .rect-content h2 {
     font-size: 1.5rem;
   }
   
-  .rect-content h3 {
+  .landing-container .rect-content h3 {
     font-size: 1.2rem;
   }
+}
+
+/* Móviles pequeños (máximo 480px) */
+@media (max-width: 480px) {
+  .landing-container .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .landing-container .nav-links {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .landing-container .nav-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .landing-container .rectangles-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .landing-container .rect-1,
+  .landing-container .rect-2,
+  .landing-container .rect-3,
+  .landing-container .rect-4,
+  .landing-container .rect-5 {
+    grid-column: 1;
+  }
+  
+  .landing-container .rect-1 { grid-row: 1; }
+  .landing-container .rect-2 { grid-row: 2; }
+  .landing-container .rect-3 { grid-row: 3; }
+  .landing-container .rect-4 { grid-row: 4; }
+  .landing-container .rect-5 { grid-row: 5; }
+}
+
+/* Hover y Focus para todos los elementos */
+.landing-container .nav-links a:hover,
+.landing-container .login-btn:hover,
+.landing-container .signup-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.landing-container .nav-links a:focus,
+.landing-container .login-btn:focus,
+.landing-container .signup-btn:focus {
+  outline: 2px solid #375534;
+  outline-offset: 2px;
 }

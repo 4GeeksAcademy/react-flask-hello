@@ -22,11 +22,9 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #333; /* Color base del texto */
 }
 
 h1, h2, h3 {
   font-family: 'Montserrat', sans-serif; /* Fuente para encabezados */
   font-weight: 700;
-  color: #4682B4; /* Ejemplo de color para títulos */
 }

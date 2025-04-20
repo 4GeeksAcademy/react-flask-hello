@@ -266,34 +266,6 @@ export const ClientForm = () => {
                         </div>
                     </div>
 
-                    {services.length > 0 && (
-                        <div className="client-form-row">
-                            <div className="client-form-col client-full-width">
-                                <label className="client-form-label">Services</label>
-                                <div className="client-services-checkbox-container">
-                                    {services.map(service => (
-                                        <div key={service.id} className="client-service-checkbox">
-                                            <input
-                                                type="checkbox"
-                                                id={`service-${service.id}`}
-                                                value={service.id}
-                                                checked={formData.services_ids.includes(service.id)}
-                                                onChange={handleServiceChange}
-                                                className="client-checkbox-input"
-                                            />
-                                            <label
-                                                htmlFor={`service-${service.id}`}
-                                                className="client-checkbox-label"
-                                            >
-                                                {service.name}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
                     <div className="client-form-buttons">
                         <button
                             type="button"

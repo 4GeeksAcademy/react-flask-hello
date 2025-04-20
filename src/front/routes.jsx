@@ -15,6 +15,7 @@ import { Calendar } from "./pages/Calendar/Calendar.jsx";
 import { ListOfService } from "./components/ListOfService/ListOfService.jsx";
 import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
 import AssignService from "./pages/AssignService.jsx";
+import { PasswordReset } from "./pages/PasswordReset/PasswordReset.jsx";
 
 
 
@@ -23,6 +24,7 @@ export const AppRoutes = createBrowserRouter(
 
         <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
             <Route index element={<Login />} />
+            <Route path = "/reset-password" element = {<PasswordReset/>}/>
 
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/business" element={<Business />} />

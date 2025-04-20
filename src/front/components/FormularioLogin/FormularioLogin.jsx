@@ -109,7 +109,6 @@ export const FormularioLogin = () => {
                 <div className="form-group">
                     <div className="password-label-row">
                         <label htmlFor="password" className="form-label">Password</label>
-                        {/* Enlace modificado para abrir el modal de Bootstrap */}
                         <a href="#" className="forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
                             Forgot your password?
                         </a>

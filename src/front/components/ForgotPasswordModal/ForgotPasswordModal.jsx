@@ -29,12 +29,12 @@ export const ForgotPasswordModal = () => {
                 throw new Error(data.error || "Usuario no encontrado");
             }
 
-           
+
             const modalElement = document.getElementById('forgotPasswordModal');
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
-            
-            // Redirigir a la página de cambio de contraseña
+
+
             navigate(`/reset-password?username=${encodeURIComponent(username)}`);
         } catch (err) {
             console.error("Error al buscar usuario:", err);

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./ServiceForm.css";
 import Logo from "../../assets/images/flow-logo.svg";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export const ServiceForm = () => {
     const [name, setName] = useState("");
@@ -10,6 +11,8 @@ export const ServiceForm = () => {
     const [price, setPrice] = useState("");
     const [selectedBusinessId, setSelectedBusinessId] = useState("");
     const { store, dispatch } = useGlobalReducer();
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (store.business.length === 0) {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
@@ -32,6 +35,7 @@ export const ServiceForm = () => {
     }, [store.business, store.token, dispatch]);
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!selectedBusinessId) {
             alert("Por favor selecciona un negocio");
             return;
@@ -63,6 +67,7 @@ export const ServiceForm = () => {
             console.error("Error:", err);
             alert("Error al crear el servicio");
         }
+        navigate("/services");
     };
     return (
         <div className="modal-overlay">

@@ -1,17 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./Landing.css";
-import logo from "../../assets/img/Logo_DronFarm_Icono1.png";
+import logo from "../../assets/img/Logo_DronFarm_Iconocolor_sinmarco.png";
+import logodark from "../../assets/img/Logo_DronFarm_IconoBlanco_sinmarco.png";
 import logonaked from "../../assets/img/Logo_DronFarm_Icono1_sinmarco.png";
 import DarkModeToggle from "../../components/DarkModeToggle/DarkModeToggle";
+import mavicImage from "../../assets/img/Mavic 3 volando.png";
+import Footer from "../../components/Footer/Footer"; // 👈 IMPORTANTE
 
 const Landing = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false); // ⬅️ Detectar modo oscuro
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // ⬇️ Detecta si .landing-container tiene la clase dark-mode
+  useEffect(() => {
+    const landing = document.querySelector(".landing-container");
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(landing.classList.contains("dark-mode"));
+    });
+
+    observer.observe(landing, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
   }, []);
 
   const toggleMenu = () => {
@@ -24,13 +40,15 @@ const Landing = () => {
 
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
         <div className="navbar-content">
-          {/* Logo a la izquierda */}
-          <img src={logo} alt="Logo DronFarm" className="logo-navbar" />
-          
-          {/* Parte derecha: menú hamburguesa + botones */}
+          {/* Logo que cambia con el modo */}
+          <img
+            src={isDarkMode ? logoDark : logo}
+            alt="Logo DronFarm"
+            className="logo-navbar"
+          />
+
           <div className="navbar-right">
-            {/* Menú hamburguesa a la izquierda de los botones */}
-            <div className={`hamburger-menu-container ${menuOpen ? 'active' : ''}`}>
+            <div className={`hamburger-menu-container ${menuOpen ? "active" : ""}`}>
               <div className="hamburger-icon" onClick={toggleMenu}>
                 <span></span>
                 <span></span>
@@ -44,7 +62,6 @@ const Landing = () => {
               </div>
             </div>
 
-            {/* Botones de inicio de sesión y registro */}
             <div className="nav-buttons">
               <button className="login-btn">Iniciar Sesión</button>
               <button className="signup-btn">Registrarse</button>
@@ -57,12 +74,6 @@ const Landing = () => {
         <div className="card card-main">
           <h1>Plataforma integral de monitoreo agrícola</h1>
           <h2>Decisiones inteligentes con datos reales</h2>
-          <div className="card-logo">
-            <img src={logonaked} alt="DronFarm Naked Logo" />
-          </div>
-          <p className="copyright-text">
-            © 2025 Todos los derechos reservados DronFarm Inc.
-          </p>
         </div>
 
         <div className="card card-support">
@@ -79,9 +90,7 @@ const Landing = () => {
         </div>
 
         <div className="card card-terms">
-          <h2>Enlaces</h2>
-          <a href="#terminos">Términos de uso</a>
-          <a href="#privacidad">Política de privacidad</a>
+          <img src={mavicImage} alt="Drone Mavic 3 volando" />
         </div>
 
         <div className="card card-social">
@@ -93,6 +102,8 @@ const Landing = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

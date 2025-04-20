@@ -18,7 +18,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 900px 1000px, cover;
-  overflow: hidden;
+  overflow-x: hidden; /* ✅ Permitimos scroll horizontal bloqueado */
+  overflow-y: auto;   /* ✅ Permitimos scroll vertical si hace falta */
   position: fixed;
   top: 0;
   left: 0;
@@ -68,17 +69,17 @@
 
 .landing-container .navbar-content {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1400px;
-  position: relative;
-  padding: 0 30px; /* Mueve el padding aquí en lugar del navbar */
-  margin: 0;
+  max-width: 1600px;
+  padding: 0 30px;
+  gap: 30px; /* ⬅️ Aumenta el espacio entre logo y menú derecho */
 }
 
 /* Logo */
 .landing-container .logo-navbar {
-  width: 390px;
+  width: 420px;
   height: auto;
   transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s ease;
   margin-right: auto; /* Empuja todo lo demás a la derecha */
@@ -180,7 +181,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 80px;
+  padding-top: 10px;
 }
 
 .landing-container .card-support {
@@ -193,7 +194,17 @@
   background-color: var(--card-terms-bg);
   grid-column: 2 / 3;
   grid-row: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.landing-container .card-terms img {
+  width: 100%;
+  border-radius: 12px;
+  opacity: 0.9;
+}
+
 
 .landing-container .card-social {
   background-color: var(--card-social-bg);
@@ -209,7 +220,7 @@
 .landing-container .card-main h1 {
   font-size: 2.2rem;
   color: #033547;
-  margin-bottom: 15px;
+  margin-bottom: 55px;
 }
 
 .landing-container .card-main h2 {
@@ -476,7 +487,7 @@
 
 /* COLORES DE TARJETAS - MÁS DIFERENCIADOS */
 .landing-container .card-main {
-  background-color: rgba(241, 154, 62, 0.50) !important; /* Blanco para la tarjeta principal */
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Blanco para la tarjeta principal */
 }
 
 .landing-container .card-support {
@@ -488,7 +499,7 @@
 }
 
 .landing-container .card-social {
-  background-color: rgba(241, 154, 62, 0.50) !important; /* Lavanda claro para social */
+  background-color: rgba(220, 240, 220, 0.85) !important; /* Lavanda claro para social */
 }
 
 /* Modo oscuro con colores más diferenciados */
@@ -670,6 +681,12 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 1000;
+}
+
+.hamburger-menu-container.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Modificar la activación del menú para que sea por clic en lugar de hover */

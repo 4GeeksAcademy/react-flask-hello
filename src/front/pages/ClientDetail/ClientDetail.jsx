@@ -326,11 +326,6 @@ export const ClientDetail = () => {
         }
     };
 
-    const handleViewBudget = () => {
-
-        navigate(`/client/${clientId}/budget`);
-    };
-
     const openNoteModal = () => {
         setShowNoteModal(true);
         setNoteError(null);
@@ -972,14 +967,6 @@ export const ClientDetail = () => {
                         >
                             <i className="fas fa-calendar-alt"></i>
                             <span>New Appointment</span>
-                        </button>
-
-                        <button
-                            onClick={handleViewBudget}
-                            className="action-button budget-button"
-                        >
-                            <i className="fas fa-file-invoice-dollar"></i>
-                            <span>View budget</span>
                         </button>
                     </div>
 

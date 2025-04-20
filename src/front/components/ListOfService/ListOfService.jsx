@@ -10,11 +10,9 @@ export const ListOfService = () => {
     const [error, setError] = useState(null);
     const [selectedBusinessId, setSelectedBusinessId] = useState("");
 
-    // Modal state
     const [showModal, setShowModal] = useState(false);
     const [notification, setNotification] = useState(null);
 
-    // Form state
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -32,7 +30,6 @@ export const ListOfService = () => {
     useEffect(() => {
         fetchServices();
 
-        // Load businesses if not already loaded
         if (business.length === 0) {
             fetchBusinesses();
         }
@@ -131,7 +128,7 @@ export const ListOfService = () => {
     };
 
     const handleDeleteService = async (serviceName) => {
-        if (!window.confirm(`¿Estás seguro que deseas eliminar el servicio "${serviceName}"?`)) {
+        if (!window.confirm(`Are you sure you want to delete the service "${serviceName}"?`)) {
             return;
         }
 
@@ -146,27 +143,24 @@ export const ListOfService = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || "Error al eliminar el servicio");
+                throw new Error(data.error || "Error deleting the service");
             }
 
-            // Actualizar la lista de servicios
             setServices(services.filter(service => service.name !== serviceName));
 
-            // Mostrar notificación
             setNotification({
                 type: "success",
-                message: "Servicio eliminado correctamente"
+                message: "Service deleted successfully"
             });
 
-            // Limpiar notificación después de 5 segundos
             setTimeout(() => {
                 setNotification(null);
             }, 5000);
         } catch (error) {
-            console.error("Error al eliminar el servicio:", error);
+            console.error("Error deleting the service:", error);
             setNotification({
                 type: "error",
-                message: error.message || "Error al eliminar el servicio"
+                message: error.message || "Error deleting the service"
             });
 
             setTimeout(() => {
@@ -181,7 +175,7 @@ export const ListOfService = () => {
         setFormError(null);
 
         if (!formData.business_id) {
-            setFormError("Por favor selecciona un negocio");
+            setFormError("Please select a business");
             setFormLoading(false);
             return;
         }
@@ -189,7 +183,6 @@ export const ListOfService = () => {
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
-            // Determinar si es una actualización o creación
             const isUpdate = !!editingService;
 
             const url = isUpdate
@@ -198,7 +191,6 @@ export const ListOfService = () => {
 
             const method = isUpdate ? "PUT" : "POST";
 
-            // Para actualización, solo enviamos los campos que se pueden actualizar
             const body = isUpdate
                 ? JSON.stringify({
                     description: formData.description,
@@ -216,9 +208,9 @@ export const ListOfService = () => {
             });
 
             const data = await response.json();
-            if (!response.ok) throw new Error(data.error || `Error ${isUpdate ? "actualizando" : "creando"} el servicio`);
+            if (!response.ok) throw new Error(data.error || `Error ${isUpdate ? "updating" : "creating"} the service`);
 
-            // Actualizar lista de servicios
+            // Update service list
             if (isUpdate) {
                 setServices(services.map(service =>
                     service.name === editingService.name ? data.service : service
@@ -227,22 +219,19 @@ export const ListOfService = () => {
                 setServices([...services, data.service]);
             }
 
-            // Mostrar notificación
             setNotification({
                 type: "success",
-                message: isUpdate ? "Servicio actualizado correctamente" : "Servicio creado correctamente"
+                message: isUpdate ? "Service updated successfully" : "Service created successfully"
             });
 
-            // Cerrar modal y limpiar estado
             handleCloseModal();
 
-            // Limpiar notificación después de 5 segundos
             setTimeout(() => {
                 setNotification(null);
             }, 5000);
         } catch (err) {
             console.error("Error:", err);
-            setFormError(err.message || `Error ${editingService ? "actualizando" : "creando"} el servicio`);
+            setFormError(err.message || `Error ${editingService ? "updating" : "creating"} the service`);
         } finally {
             setFormLoading(false);
         }
@@ -360,7 +349,6 @@ export const ListOfService = () => {
                     </div>
                 )}
 
-                {/* Service Form Modal */}
                 {showModal && (
                     <div className="modal-overlay" onClick={handleCloseModal}>
                         <div className="service-form-modal" onClick={(e) => e.stopPropagation()}>

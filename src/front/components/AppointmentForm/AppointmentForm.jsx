@@ -29,7 +29,7 @@ export const AppointmentForm = ({ clientId = null }) => {
 
     useEffect(() => {
         if (!token || !selectedBusiness) {
-            setError("Se requiere iniciar sesión y seleccionar un negocio");
+            setError("Login and business selection required");
             setLoading(false);
             return;
         }
@@ -219,14 +219,14 @@ export const AppointmentForm = ({ clientId = null }) => {
                 <div className="error-message">
                     <h3>Error</h3>
                     <p>{error}</p>
-                    <button onClick={() => navigate(-1)}>Volver</button>
+                    <button onClick={() => navigate(-1)}>Back</button>
                 </div>
             </div>
         );
     }
 
     return (
-        
+
         <div className="all-appointment-form">
             <div className="container">
                 <div className="appointment-form-container">
@@ -307,7 +307,7 @@ export const AppointmentForm = ({ clientId = null }) => {
 
                         <div className="date-time-container">
                             <div className="form-group">
-                                <label htmlFor="date">Fecha:</label>
+                                <label htmlFor="date">Date:</label>
                                 <input
                                     type="date"
                                     id="date"

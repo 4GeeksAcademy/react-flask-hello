@@ -5,7 +5,7 @@ import { ForgotPasswordModal } from "../ForgotPasswordModal/ForgotPasswordModal"
 
 import "./FormularioLogin.css";
 
-export const FormularioLogin = () => {
+export const LoginForm = () => {
     const navigate = useNavigate();
     const { store, dispatch } = useGlobalReducer();
 
@@ -35,7 +35,7 @@ export const FormularioLogin = () => {
 
             const data = await response.json();
 
-            console.log("Respuesta del login:", data);
+            console.log("Login response:", data);
 
             if (!response.ok) {
                 throw new Error(data.error || "Login failed");
@@ -55,7 +55,7 @@ export const FormularioLogin = () => {
                 }
             });
 
-            console.log("Estado después del login:", {
+            console.log("State after login:", {
                 token,
                 user: data.user
             });
@@ -65,7 +65,7 @@ export const FormularioLogin = () => {
             }, 100);
 
         } catch (err) {
-            console.error("Error en login:", err);
+            console.error("Login error:", err);
             setError(err.message || "Login failed");
         } finally {
             setIsLoading(false);
@@ -86,7 +86,6 @@ export const FormularioLogin = () => {
             )}
 
             <form className="login-form" onSubmit={handleSubmit}>
-                {/* Campo de usuario */}
                 <div className="form-group">
                     <label htmlFor="username" className="form-label">Username</label>
                     <div className="input-group">
@@ -105,7 +104,6 @@ export const FormularioLogin = () => {
                     </div>
                 </div>
 
-                {/* Campo de contraseña */}
                 <div className="form-group">
                     <div className="password-label-row">
                         <label htmlFor="password" className="form-label">Password</label>
@@ -129,7 +127,6 @@ export const FormularioLogin = () => {
                     </div>
                 </div>
 
-                {/* Botón de inicio de sesión */}
                 <button
                     type="submit"
                     className="login-button"
@@ -142,8 +139,7 @@ export const FormularioLogin = () => {
             <div className="login-footer-text">
                 <p>Don't have an account?<a href="#"> Contact the administrator</a></p>
             </div>
-
-            {/* Importar el componente del modal */}
+            
             <ForgotPasswordModal />
         </div>
     );

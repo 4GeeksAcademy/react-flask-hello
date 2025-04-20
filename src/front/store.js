@@ -20,10 +20,9 @@ export const initialStore = () => {
     if (selectedBusinessStr) selectedBusiness = JSON.parse(selectedBusinessStr);
     if (clientsStr) {
       clients = JSON.parse(clientsStr);
-      // Asegurarse de que clients sea siempre un array
       if (!Array.isArray(clients)) {
         console.warn(
-          "clients en localStorage no es un array, inicializando como array vacío"
+          "Clients in localStorage is not an array, initializing as an empty array"
         );
         clients = [];
       }
@@ -31,8 +30,7 @@ export const initialStore = () => {
     if (selectedClientStr) selectedClient = JSON.parse(selectedClientStr);
     if (clientNotesStr) clientNotes = JSON.parse(clientNotesStr);
   } catch (e) {
-    console.error("Error al parsear datos de localStorage:", e);
-    // En caso de error, inicializar todo con valores seguros
+    console.error("Error parsing localStorage data:", e);
     user = null;
     business = [];
     selectedBusiness = null;
@@ -53,7 +51,7 @@ export const initialStore = () => {
     syncStatus: null,
     clients: clients || [],
     selectedClient: selectedClient || null,
-    services: [], //////////////
+    services: [],
     clientNotes: clientNotes || {},
   };
 };
@@ -97,13 +95,12 @@ export default function storeReducer(store, action = {}) {
         business: action.payload,
       };
 
-      case "select_business":
-        console.log("Guardando selectedBusiness:", action.payload);
-        localStorage.setItem("selected_business", JSON.stringify(action.payload));
-        return {
-          ...store,
-          selectedBusiness: action.payload,
-        };
+    case "select_business":
+      localStorage.setItem("selected_business", JSON.stringify(action.payload));
+      return {
+        ...store,
+        selectedBusiness: action.payload,
+      };
 
     case "load_calendar_events_start":
       return {
@@ -155,7 +152,6 @@ export default function storeReducer(store, action = {}) {
       };
 
     case "set_clients":
-      // Asegurarse de que lo que guardamos en localStorage es un array
       const clientsToStore = Array.isArray(action.payload)
         ? action.payload
         : [];
@@ -189,7 +185,7 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         services: [...(store.services || []), action.payload],
-      }
+      };
 
     case "set_client_notes":
       const { clientId, notes } = action.payload;

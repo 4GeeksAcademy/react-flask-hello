@@ -18,20 +18,17 @@ export const ClientDetail = () => {
     const [notes, setNotes] = useState([]);
     const [activeService, setActiveService] = useState(null);
 
-    // Notes modal state
     const [showNoteModal, setShowNoteModal] = useState(false);
     const [newNote, setNewNote] = useState("");
     const [notesLoading, setNotesLoading] = useState(false);
     const [noteError, setNoteError] = useState(null);
 
-    // Services modal state
     const [showServiceModal, setShowServiceModal] = useState(false);
     const [availableServices, setAvailableServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState([]);
     const [servicesLoading, setServicesLoading] = useState(false);
     const [serviceError, setServiceError] = useState(null);
 
-    // Service history modal state
     const [showHistoryModal, setShowHistoryModal] = useState(false);
     const [completedServices, setCompletedServices] = useState([]);
     const [historyLoading, setHistoryLoading] = useState(false);
@@ -148,13 +145,11 @@ export const ClientDetail = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Sort notes by date (most recent first)
                 const sortedNotes = Array.isArray(data) ?
                     [...data].sort((a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now()))
                     : [];
                 setNotes(sortedNotes);
             } else {
-                // If 404, it means there are no notes, which is OK
                 if (response.status === 404) {
                     setNotes([]);
                 } else {
@@ -174,13 +169,12 @@ export const ClientDetail = () => {
         if (!clientId || !token) return;
 
         if (historyLoading) {
-            console.log("Ya está cargando servicios, evitando nueva llamada");
+            console.log("It is already loading services, avoiding new calls");
             return;
         }
 
         setHistoryLoading(true);
         setHistoryError(null);
-        console.log("Iniciando carga de servicios completados");
 
         try {
 
@@ -196,7 +190,6 @@ export const ClientDetail = () => {
             }
 
             const completedServicesData = await response.json();
-            console.log("Servicios completados recibidos:", completedServicesData.length);
 
             const sortedServices = completedServicesData.sort((a, b) => {
                 const dateA = a.completed_date ? new Date(a.completed_date) : new Date(0);
@@ -205,10 +198,9 @@ export const ClientDetail = () => {
             });
 
             setCompletedServices(sortedServices);
-            console.log("Estado actualizado con servicios completados");
         } catch (error) {
-            console.error("Error al cargar servicios completados:", error);
-            setHistoryError("Error al cargar servicios completados");
+            console.error("Error loading completed services:", error);
+            setHistoryError("Error loading completed services");
         } finally {
             setHistoryLoading(false);
         }
@@ -240,7 +232,6 @@ export const ClientDetail = () => {
             );
             setClientServices(updatedClientServices);
 
-            // Si este era el servicio activo, actualizamos el servicio activo
             if (activeService && activeService.instance_id === instanceId) {
                 if (updatedClientServices.length > 0) {
                     setActiveService(updatedClientServices[0]);
@@ -250,11 +241,9 @@ export const ClientDetail = () => {
             }
 
             if (showHistoryModal) {
-                console.log("Modal de historial abierto, actualizando lista de servicios completados");
                 fetchCompletedServices();
             }
 
-            // Mostrar mensaje de éxito
             alert("Service marked as completed successfully");
         } catch (error) {
             console.error("Error marking service as completed:", error);
@@ -287,8 +276,6 @@ export const ClientDetail = () => {
         }
     };
 
-
-    // Function to load available services
     const fetchAvailableServices = async () => {
 
         if (!businessId) {
@@ -340,11 +327,10 @@ export const ClientDetail = () => {
     };
 
     const handleViewBudget = () => {
-      
+
         navigate(`/client/${clientId}/budget`);
     };
 
-    // Notes modal
     const openNoteModal = () => {
         setShowNoteModal(true);
         setNoteError(null);
@@ -357,10 +343,8 @@ export const ClientDetail = () => {
         setNoteError(null);
     };
 
-    // Service history modal
     const openHistoryModal = () => {
         setShowHistoryModal(true);
-        // Cargamos los servicios completados cuando se abre el modal
         fetchCompletedServices();
     };
 
@@ -392,7 +376,7 @@ export const ClientDetail = () => {
                 },
                 body: JSON.stringify({
                     client_email: client.email,
-                    description: textToSave 
+                    description: textToSave
                 })
             });
 
@@ -437,7 +421,6 @@ export const ClientDetail = () => {
         }
     };
 
-    // Services modal
     const openServiceModal = () => {
         setShowServiceModal(true);
         setServiceError(null);
@@ -449,7 +432,6 @@ export const ClientDetail = () => {
         setServiceError(null);
     };
 
-    // Load services when modal opens
     useEffect(() => {
         if (showServiceModal) {
             fetchAvailableServices();
@@ -501,13 +483,11 @@ export const ClientDetail = () => {
         }
     };
 
-    // Notes Modal Component
     const NoteModal = () => {
-        // Local state for the note
+
         const [localNote, setLocalNote] = useState("");
         const [localError, setLocalError] = useState(null);
 
-        // Initialize local state when modal opens
         useEffect(() => {
             if (showNoteModal) {
                 setLocalNote(newNote || "");
@@ -515,7 +495,6 @@ export const ClientDetail = () => {
             }
         }, [showNoteModal, newNote]);
 
-        // Function to handle changes in textarea
         const handleNoteChange = (e) => {
             const text = e.target.value;
             setLocalNote(text);
@@ -525,9 +504,7 @@ export const ClientDetail = () => {
             }
         };
 
-        // Function to save the note
         const handleSaveNote = () => {
-            // Validation
             if (!localNote || localNote.trim() === "") {
                 setLocalError("Note cannot be empty");
                 return;
@@ -601,7 +578,6 @@ export const ClientDetail = () => {
         );
     };
 
-    // Services Modal Component
     const ServiceModal = () => {
         return (
             <div className="modal-overlay">
@@ -707,17 +683,17 @@ export const ClientDetail = () => {
 
     const ServiceHistoryModal = () => {
         const formatDate = (dateString) => {
-            if (!dateString) return "Fecha no disponible";
+            if (!dateString) return "Date not available";
 
             try {
                 const date = new Date(dateString);
 
-                if (isNaN(date.getTime())) return "Fecha no válida";
+                if (isNaN(date.getTime())) return "Invalid date";
 
                 return date.toLocaleString();
             } catch (e) {
-                console.error("Error formateando fecha:", e);
-                return "Fecha no válida";
+                console.error("Error formatting date:", e);
+                return "Invalid date";
             }
         };
 
@@ -725,7 +701,7 @@ export const ClientDetail = () => {
             <div className="modal-overlay">
                 <div className="modal-content service-history-modal">
                     <div className="modal-header">
-                        <h3>Historial de Servicios Completados</h3>
+                        <h3>Completed Services History</h3>
                         <button className="close-button" onClick={closeHistoryModal}>
                             <i className="fas fa-times"></i>
                         </button>
@@ -747,23 +723,23 @@ export const ClientDetail = () => {
                         {historyLoading ? (
                             <div className="services-loading">
                                 <i className="fas fa-spinner fa-spin" style={{ marginRight: "8px" }}></i>
-                                Cargando historial de servicios...
+                                Loading service history...
                             </div>
                         ) : (
                             <>
                                 {completedServices.length === 0 ? (
                                     <div className="no-services-message">
                                         <i className="fas fa-info-circle" style={{ marginRight: "8px" }}></i>
-                                        {historyError ? "No se pudieron cargar los servicios." : "Este cliente no tiene servicios completados."}
+                                        {historyError ? "Services could not be loaded." : "This client has no completed services."}
                                         <div style={{ marginTop: "10px", fontSize: "0.9rem", color: "#666" }}>
-                                            Los servicios aparecerán aquí cuando se marquen como completados.
+                                            Services will appear here when they are marked as completed.
                                         </div>
                                     </div>
                                 ) : (
                                     <>
                                         <div className="history-summary">
                                             <div className="history-count">
-                                                <strong>{completedServices.length}</strong> {completedServices.length === 1 ? 'servicio completado' : 'servicios completados'}
+                                                <strong>{completedServices.length}</strong> {completedServices.length === 1 ? 'completed service' : 'completed services'}
                                             </div>
                                         </div>
                                         <div className="completed-services-list">
@@ -776,12 +752,12 @@ export const ClientDetail = () => {
                                                         </div>
                                                     </div>
                                                     <div className="service-description">
-                                                        {service.description || "Sin descripción"}
+                                                        {service.description || "No description"}
                                                     </div>
                                                     <div className="service-footer">
                                                         <div className="service-status">
                                                             <span className="status-badge completed">
-                                                                <i className="fas fa-check-circle"></i> Completado
+                                                                <i className="fas fa-check-circle"></i> Completed
                                                             </span>
                                                         </div>
                                                         <div className="service-date">
@@ -802,17 +778,17 @@ export const ClientDetail = () => {
                             onClick={closeHistoryModal}
                             disabled={historyLoading}
                         >
-                            Cerrar
+                            Close
                         </button>
                         <button
                             className="btn-secondary"
                             onClick={() => {
-                                console.log("Actualización manual solicitada");
+                                console.log("Manual update requested");
                                 fetchCompletedServices();
                             }}
                             disabled={historyLoading}
                         >
-                            <i className="fas fa-sync-alt"></i> Actualizar
+                            <i className="fas fa-sync-alt"></i> Update
                         </button>
                     </div>
                 </div>
@@ -864,7 +840,6 @@ export const ClientDetail = () => {
                         </button>
                     </div>
 
-                    {/* Main client information */}
                     <div className="client-header">
                         <div className="client-info-main">
                             <h1>{client.name}</h1>
@@ -873,7 +848,6 @@ export const ClientDetail = () => {
                     </div>
 
                     <div className="client-details-grid">
-                        {/* Personal information */}
                         <div className="client-info-section">
                             <h2>Personal Information</h2>
                             <div className="info-grid">
@@ -892,7 +866,6 @@ export const ClientDetail = () => {
                             </div>
                         </div>
 
-                        {/* Notes */}
                         <div className="client-notes-section">
                             <div className="section-header">
                                 <h2>Notes</h2>
@@ -930,7 +903,6 @@ export const ClientDetail = () => {
                             </div>
                         </div>
 
-                        {/* Client Services */}
                         <div className="client-services-section">
                             <div className="section-header">
                                 <h2>Client Services</h2>
@@ -984,7 +956,6 @@ export const ClientDetail = () => {
                         </div>
                     </div>
 
-                    {/* Action buttons */}
                     <div className="action-buttons">
                         <button
                             onClick={openHistoryModal}
@@ -1012,13 +983,10 @@ export const ClientDetail = () => {
                         </button>
                     </div>
 
-                    {/* Note adding modal */}
                     {showNoteModal && <NoteModal />}
 
-                    {/* Service adding modal */}
                     {showServiceModal && <ServiceModal />}
 
-                    {/* Service history modal */}
                     {showHistoryModal && <ServiceHistoryModal />}
                 </div>
             </div>

@@ -18,14 +18,12 @@ export const PasswordReset = () => {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const usernameParam = params.get("username");
-        //primero se coge automaticamente la pregunta de seguridad (que la guardamos en la base de datos a la hora de crear usuarios)
         if (usernameParam) {
             setUsername(usernameParam);
             fetchSecurityQuestion(usernameParam);
         } else {
             navigate("/");
         }
-        //con esto devuelve al login si no existiera usuario
     }, [location]);
 
     const fetchSecurityQuestion = async (username) => {
@@ -73,9 +71,9 @@ export const PasswordReset = () => {
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     username,
-                    security_answer: securityAnswer 
+                    security_answer: securityAnswer
                 })
             });
 
@@ -102,7 +100,7 @@ export const PasswordReset = () => {
             setError("Passwords don't match");
             return;
         }
-//comprobación de contraseña para confirmar
+
         setIsLoading(true);
 
         try {
@@ -113,10 +111,10 @@ export const PasswordReset = () => {
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     username,
                     security_answer: securityAnswer,
-                    new_password: newPassword 
+                    new_password: newPassword
                 })
             });
 

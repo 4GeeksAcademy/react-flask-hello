@@ -1,7 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import "./ListOfService.css";
 import { SearchInput } from "../SearchInput/SearchInput";
+import { Link } from "react-router-dom"
+
 export const ListOfService = () => {
     const [services, setServices] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -31,10 +32,17 @@ export const ListOfService = () => {
     );
     return (
         <>
+        <div className="container d-flex">
         < SearchInput
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search services..." />
+        
+            <Link to="/newservice">
+            <button className="buttonAdd"><strong>Add Service</strong></button>
+            </Link>
+
+        </div>
             {filteredServices.map((service, index) => (
                 <div key={index} className="boxService container">
                     <div className="serviceTitle row">

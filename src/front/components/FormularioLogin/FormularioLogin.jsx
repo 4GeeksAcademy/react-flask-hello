@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ForgotPasswordModal } from "../ForgotPasswordModal/ForgotPasswordModal";
 
 import "./FormularioLogin.css";
 
@@ -108,7 +109,10 @@ export const FormularioLogin = () => {
                 <div className="form-group">
                     <div className="password-label-row">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <a href="#" className="forgot-password">Forgot your password?</a>
+                        {/* Enlace modificado para abrir el modal de Bootstrap */}
+                        <a href="#" className="forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                            Forgot your password?
+                        </a>
                     </div>
                     <div className="input-group">
                         <span className="input-icon">
@@ -139,6 +143,9 @@ export const FormularioLogin = () => {
             <div className="login-footer-text">
                 <p>Don't have an account?<a href="#"> Contact the administrator</a></p>
             </div>
+
+            {/* Importar el componente del modal */}
+            <ForgotPasswordModal />
         </div>
     );
 };

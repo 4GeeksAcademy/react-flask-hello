@@ -11,7 +11,7 @@ const Cart = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/productos')//Conecta con BackEnd
+    fetch('https://fluffy-space-spoon-v6q9vgr5vqjx2w5vx-3001.app.github.dev/productos')
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error(err))
@@ -75,8 +75,11 @@ const Cart = () => {
       })
 
       if (response.ok) {
+        const data = await response.json() 
+        localStorage.setItem('factura', data.facturaUrl) //Guarda la URL de la facturapara descargarla
+
         vaciarCarrito()
-        navigate('/success') //Compra exitosa y descarga factura
+        navigate('/successpay')
       } else {
         alert("Error al procesar la compra.")
       }
@@ -117,7 +120,7 @@ const Cart = () => {
         <tfoot>
           <tr>
             {totalCantidad === 0 ? (
-              <th colSpan="5">Carrito vacío - comience a comprar!</th>
+              <th colSpan="5">Carrito vacío - ¡comienza a comprar!</th>
             ) : (
               <>
                 <th colSpan="2">Total productos</th>

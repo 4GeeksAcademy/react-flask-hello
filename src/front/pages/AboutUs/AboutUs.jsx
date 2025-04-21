@@ -1,19 +1,17 @@
 import React from 'react';
 import './AboutUs.css';
 import { motion } from 'framer-motion';
-
+import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
 
 const AboutUs = () => {
-  const token = localStorage.getItem('token');
-  const isLoggedIn =
-    token && token !== 'undefined' && token !== 'null' && token.trim() !== '';
-
   return (
-    <>
+    <div className="landing-container fade-in">
+      <DarkModeToggle />
 
       <div className="aboutus-container">
+        {/* HERO PRINCIPAL */}
         <motion.section
-          className="aboutus-hero"
+          className="aboutus-card aboutus-hero-card"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -26,8 +24,9 @@ const AboutUs = () => {
           </p>
         </motion.section>
 
+        {/* MISIÓN */}
         <motion.section
-          className="aboutus-content"
+          className="aboutus-card"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -38,30 +37,64 @@ const AboutUs = () => {
             Nuestro objetivo es proporcionar datos climáticos históricos, actuales y futuros para cualquier punto del planeta,
             así como acceso a la API Agro para desarrolladores y empresas agrícolas.
           </p>
+        </motion.section>
 
-          <h2>El equipo</h2>
-          <div className="team-grid">
-            <div className="team-member">
-              <h3>Yenesey</h3>
-              <p>Especialista en inteligencia artificial aplicada a la agricultura. Su experiencia en visión por computadora y sistemas de análisis multiespectral permite interpretar datos desde el dron hasta el agricultor.</p>
-            </div>
-            <div className="team-member">
-              <h3>Ricardo</h3>
-              <p>Ingeniero de datos con más de 10 años de experiencia en big data y visualización geoespacial. Diseña la infraestructura que hace posible DronFarm.</p>
-            </div>
-            <div className="team-member">
-              <h3>Javier</h3>
-              <p>Desarrollador full stack con pasión por el campo y la tecnología. Se encarga de transformar la información en soluciones prácticas para el usuario.</p>
-            </div>
-          </div>
+        {/* COLABORADORES EN FILA */}
+        <div className="team-row">
+          <motion.section
+            className="team-member-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <h3>Yenesey</h3>
+            <p>
+              Especialista en inteligencia artificial aplicada a la agricultura. Su experiencia en visión por computadora y sistemas de análisis multiespectral permite interpretar datos desde el dron hasta el agricultor.
+            </p>
+          </motion.section>
 
+          <motion.section
+            className="team-member-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <h3>Ricardo</h3>
+            <p>
+              Ingeniero de datos con más de 10 años de experiencia en big data y visualización geoespacial. Diseña la infraestructura que hace posible DronFarm.
+            </p>
+          </motion.section>
+
+          <motion.section
+            className="team-member-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <h3>Javier</h3>
+            <p>
+              Desarrollador full stack con pasión por el campo y la tecnología. Se encarga de transformar la información en soluciones prácticas para el usuario.
+            </p>
+          </motion.section>
+        </div>
+
+        {/* SEDE */}
+        <motion.section
+          className="aboutus-card aboutus-footer-card"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+        >
           <p className="aboutus-footer-note">
             📍 Nuestra sede se encuentra en Londres, Reino Unido.
           </p>
         </motion.section>
-
       </div>
-    </>
+    </div>
   );
 };
 

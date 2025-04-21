@@ -81,18 +81,6 @@ const AboutUs = () => {
           </motion.section>
         </div>
 
-        {/* SEDE */}
-        <motion.section
-          className="aboutus-card aboutus-footer-card"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <p className="aboutus-footer-note">
-            📍 Nuestra sede se encuentra en Londres, Reino Unido.
-          </p>
-        </motion.section>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 1300px;
   padding: 2rem;
-  padding-top: 50px;
+  padding-top: 100px;
   margin: 0 auto;
 
   display: flex;
@@ -13,7 +13,7 @@
 /* === Tarjetas generales === */
 .aboutus-card {
   width: 100%;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -26,7 +26,7 @@
 .aboutus-hero-card h1 {
   font-family: "Montserrat", sans-serif;
   font-size: 2.5rem;
-  color: #375534;
+  color: #033547;
   margin-bottom: 1rem;
 }
 
@@ -42,7 +42,7 @@
 .aboutus-card h2 {
   font-family: "Montserrat", sans-serif;
   font-size: 1.8rem;
-  color: #375534;
+  color: #033547;
   margin-bottom: 1rem;
 }
 
@@ -64,7 +64,7 @@
 
 .team-member-card {
   flex: 1 1 30%;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -100,7 +100,7 @@
 /* === DARK MODE === */
 body.dark-mode .aboutus-card,
 body.dark-mode .team-member-card {
-  background: rgba(30, 30, 30, 0.85);
+  background: rgba(30, 30, 30, 0.55);
   color: #eee;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }

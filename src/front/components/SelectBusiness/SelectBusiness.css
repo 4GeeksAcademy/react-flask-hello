@@ -1,0 +1,86 @@
+/* Variables para colores y sombras - consistentes con el resto de la aplicación */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --light-bg: #f8f9fa;
+  --dark-text: #343a40;
+  --light-text: #f8f9fa;
+  --border-radius: 6px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.business-container {
+  min-height: 80vh;
+  padding: 20px;
+  margin: 0 auto;
+  justify-content: flex-start;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+}
+
+.business-card-link {
+  width: calc(25% - 30px);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+  min-width: 200px;
+  flex-grow:0;
+  flex-shrink: 0;
+}
+
+.business-card-link:hover {
+  transform: translateY(-5px);
+}
+
+.business-card {
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin: 0;
+}
+
+.business-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #3498db;
+}
+
+.business-name {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  color: #000000;
+}
+
+
+@media (max-width: 1200px) {
+  .business-card-link {
+    width: calc(33.33% - 30px);
+  }
+}
+@media (max-width:992px){
+  .business-card-link {
+    width: calc(50% - 30px);
+  }
+}
+@media (max-width:576px){
+  .business-card-link {
+    width:100%;
+    min-width: auto;
+  }
+  .business-container{
+    gap:20px
+  }
+}

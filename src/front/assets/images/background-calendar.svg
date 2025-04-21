@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo con gradiente suave -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f7fa" />
+      <stop offset="100%" stop-color="#e4e8ed" />
+    </linearGradient>
+    
+    <!-- Patrón de elementos de calendario -->
+    <pattern id="calendarPattern" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect x="10" y="10" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="45" y="10" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="80" y="10" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="10" y="45" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="45" y="45" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="80" y="45" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="10" y="80" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="45" y="80" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+      <rect x="80" y="80" width="25" height="25" rx="3" fill="none" stroke="#b8c2cc" stroke-width="1" opacity="0.4" />
+    </pattern>
+    
+    <!-- Iconos -->
+    <symbol id="clockIcon" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#90a4ae" stroke-width="2" />
+      <line x1="20" y1="20" x2="20" y2="10" stroke="#90a4ae" stroke-width="2" stroke-linecap="round" />
+      <line x1="20" y1="20" x2="28" y2="20" stroke="#90a4ae" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    
+    <symbol id="calendarIcon" viewBox="0 0 40 40">
+      <rect x="6" y="6" width="28" height="28" rx="2" fill="none" stroke="#90a4ae" stroke-width="2" />
+      <line x1="6" y1="14" x2="34" y2="14" stroke="#90a4ae" stroke-width="2" />
+      <line x1="14" y1="6" x2="14" y2="10" stroke="#90a4ae" stroke-width="2" />
+      <line x1="26" y1="6" x2="26" y2="10" stroke="#90a4ae" stroke-width="2" />
+    </symbol>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#bgGradient)" />
+  
+  <!-- Patrón de calendario como fondo -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#calendarPattern)" opacity="0.5" />
+  
+  <!-- Elementos decorativos en el fondo -->
+  <use href="#clockIcon" x="100" y="100" width="80" height="80" opacity="0.15" />
+  <use href="#calendarIcon" x="600" y="120" width="80" height="80" opacity="0.15" />
+  <use href="#clockIcon" x="200" y="450" width="70" height="70" opacity="0.15" />
+  <use href="#calendarIcon" x="550" y="400" width="70" height="70" opacity="0.15" />
+  
+  <!-- Líneas decorativas -->
+  <line x1="0" y1="0" x2="800" y2="600" stroke="#d9e2ec" stroke-width="1" opacity="0.5" />
+  <line x1="800" y1="0" x2="0" y2="600" stroke="#d9e2ec" stroke-width="1" opacity="0.5" />
+  
+  <!-- Círculos decorativos -->
+  <circle cx="150" cy="250" r="100" fill="#4299e1" opacity="0.05" />
+  <circle cx="650" cy="350" r="120" fill="#4299e1" opacity="0.05" />
+  <circle cx="400" cy="500" r="80" fill="#4299e1" opacity="0.05" />
+  <circle cx="400" cy="100" r="70" fill="#4299e1" opacity="0.05" />
+</svg>

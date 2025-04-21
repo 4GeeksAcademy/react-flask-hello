@@ -1,0 +1,9 @@
+.client-all {
+  background-image: url("../../assets/images/background-newclient.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 95vh;
+  width: 100%;
+  padding: 90px;
+}

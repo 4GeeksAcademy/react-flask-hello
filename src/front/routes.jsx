@@ -1,30 +1,37 @@
-// Import necessary components and functions from react-router-dom.
-
 import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
 } from "react-router-dom";
+
 import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
+import { Login } from "./pages/Login/Login.jsx";
+import { Business } from "./pages/Business/Business.jsx";
+import { Appointments } from "./pages/Appointments/Appointments.jsx";
+import { AppointmentForm } from "./components/AppointmentForm/AppointmentForm.jsx";
+import { Clients } from "./pages/Clients/Clients.jsx"
+import { NewClient } from "./pages/NewClient/NewClient.jsx";
+import { Calendar } from "./pages/Calendar/Calendar.jsx";
+import { ListOfService } from "./components/ListOfService/ListOfService.jsx";
+import { ClientDetail } from "./pages/ClientDetail/ClientDetail.jsx";
+import { PasswordReset } from "./pages/PasswordReset/PasswordReset.jsx";
 
-export const router = createBrowserRouter(
+
+export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
-      </Route>
+        <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+            <Route index element={<Login />} />
+            <Route path="/reset-password" element = {<PasswordReset/>}/>
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/newclient" element={<NewClient />} />
+            <Route path="/services" element={<ListOfService />} />
+            <Route path="/clients/:clientId" element={<ClientDetail />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/appointment/create" element={<AppointmentForm />} />
+            <Route path="/appointment/create/:clientId" element={<AppointmentForm />} />
+        </Route>
     )
 );

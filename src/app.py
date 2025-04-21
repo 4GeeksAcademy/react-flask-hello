@@ -32,6 +32,15 @@ CORS(app, supports_credentials=True, resources={
     r"/*": {"origins": "https://supreme-space-computing-machine-jj4vrjqxw5q4c5rvx-3000.app.github.dev"}
 })
 
+
+@app.route('/')
+def sitemap():
+    if ENV == "development":
+        print(":lupa_derecha: RUTAS REGISTRADAS EN FLASK:")
+        for rule in app.url_map.iter_rules():
+            print(f"{rule} → métodos: {','.join(rule.methods)}")
+        return generate_sitemap(app)
+    return send_from_directory(static_file_dir, 'index.html')
 # ✅ OPCIONES PREVIA (preflight) PARA TODAS LAS RUTAS
 
 

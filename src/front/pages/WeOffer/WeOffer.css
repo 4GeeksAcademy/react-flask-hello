@@ -1,46 +1,78 @@
-/* 👇 Estilo unificado para la sección WeOffer - DroneFarm */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "Arial", sans-serif;
+}
 
-.weoffer-container {
-  padding: 4rem 6%;
-  background: linear-gradient(to right, #e8f5e9, #f1f8e9); /* fondo verde suave */
+.landing-container {
+  width: 100%;
+  min-height: 100vh; /* para ocupar toda la pantalla siempre */
+  background-image: url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #b0dad3, #e3eed4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 900px 1000px, cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #333;
+  box-sizing: border-box;
+  animation: fadeInOnly 1.2s ease-out forwards;
+
+  padding-top: 120px; /* 👈 Aumentado claramente para compensar posición del Navbar */
+  padding-bottom: 120px; /* 👈 Espacio suficiente para Footer */
+}
+
+.weoffer-content {
   max-width: 1200px;
-  margin: auto;
-  font-family: 'Roboto', sans-serif;
-  color: var(--text-dark);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Título de sección */
-.section-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.5rem;
-  color: var(--primary-green);
+.weoffer-header-box {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  max-width: 1000px;
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+  margin-top: 60px;
 }
 
-/* Párrafo introductorio */
+.section-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+  color: #033547;
+  margin-bottom: 1.2rem;
+}
+
 .weoffer-text {
   font-size: 1.1rem;
-  margin-bottom: 2rem;
   line-height: 1.6;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  color: #555;
+  color: #444;
 }
 
-/* Grid de servicios */
 .weoffer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  margin-top: 2rem;
+  width: 100%;
+  max-width: 1100px;
 }
 
-/* Tarjetas */
 .weoffer-card {
-  background: var(--text-light);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 15px;
   padding: 2rem;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
@@ -52,30 +84,21 @@
   transform: translateY(-5px);
 }
 
-/* Títulos dentro de las tarjetas */
 .weoffer-card h3 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.4rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.3rem;
   margin-bottom: 0.8rem;
-  color: var(--text-dark);
+  color: #375534;
 }
 
-/* Texto dentro de las tarjetas */
 .weoffer-card p {
   font-size: 1rem;
   color: #555;
-  line-height: 1.5;
-}
-
-/* Botón de presupuesto */
-.quote-button-container {
-  text-align: center;
-  margin-top: 3rem;
 }
 
 .quote-button {
-  background: rgba(70, 130, 180, 0.3); /* azul con transparencia */
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(63, 189, 63, 0.3);
+  border: 1px solid rgba(1, 185, 84, 0.952);
   color: white;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -92,7 +115,15 @@
   transform: scale(1.05);
 }
 
-/* Responsive tweaks */
+@keyframes fadeInOnly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 768px) {
   .section-title {
     font-size: 2rem;
@@ -103,7 +134,60 @@
     padding: 0 1rem;
   }
 
+  .weoffer-header-box {
+    padding: 1.5rem 1.2rem;
+  }
+
   .weoffer-grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* Dark mode styles */
+body.dark-mode .landing-container {
+  background-image: url("../../assets/img/background-shape.svg"),
+    linear-gradient(to bottom, #111, #1d1d1d);
+  color: #eee;
+}
+
+body.dark-mode .weoffer-header-box,
+body.dark-mode .weoffer-card {
+  background: rgba(30, 30, 30, 0.85);
+  color: #f5f5f5;
+}
+
+body.dark-mode .section-title {
+  color: #f5f5f5;
+}
+
+body.dark-mode .weoffer-text {
+  color: #ddd;
+}
+
+body.dark-mode .weoffer-card h3 {
+  color: #9ccc8a;
+}
+
+body.dark-mode .weoffer-card p {
+  color: #bbb;
+}
+
+body.dark-mode .quote-button {
+  background: rgba(63, 189, 63, 0.2);
+  color: #f0f0f0;
+  border: 1px solid rgba(1, 185, 84, 0.5);
+}
+
+body.dark-mode .quote-button:hover {
+  background: rgba(63, 189, 63, 0.3);
+}
+
+body.dark-mode .dark-mode-toggle {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(156, 204, 138, 0.3);
+}
+
+body.dark-mode .dark-mode-toggle i {
+  color: #f0f0f0;
 }

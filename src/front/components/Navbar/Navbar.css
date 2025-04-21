@@ -12,10 +12,11 @@
   border: none;
   margin: 0;
   position: fixed;
-  top: 70px; /* 👈 como en landing-container */
+  top: 70px; /* Mantiene tu posición actual exacta */
   left: 0;
   right: 0;
 }
+
 
 .navbar.scrolled {
   background: rgba(255, 255, 255, 0.2);

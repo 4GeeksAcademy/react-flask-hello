@@ -1,15 +1,16 @@
-// 👇 ❇️ Riki for the group success 👊
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { showErrorAlert, showSuccessAlert } from "../../components/modal_alerts/modal_alerts";
-import "./Signup.css";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+import DarkModeToggle from "../../components/DarkModeToggle/DarkModeToggle";
+import "./Signup.css";
+import { Link } from "react-router-dom";
 
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { dispatch } = useGlobalReducer(); // 👈 Hook global
+  const { dispatch } = useGlobalReducer();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -17,6 +18,20 @@ const Signup = () => {
     email: "",
     password: ""
   });
+
+  useEffect(() => {
+    const root = document.body;
+    if (!root) return;
+
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(root.classList.contains("dark-mode"));
+    });
+
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    setIsDarkMode(root.classList.contains("dark-mode"));
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,7 +49,6 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // 👇 Despachar login si el backend responde con token y user
         if (data.access_token && data.user) {
           dispatch({
             type: "LOGIN",
@@ -46,17 +60,8 @@ const Signup = () => {
           });
         }
         navigate("/app/plot_form");
-        showSuccessAlert(data.msg || "¡Registro realizado con éxito!", () => {
-          
-        });
-        setFormData({
-          name: "",
-          lastname: "",
-          dni: "",
-          email: "",
-          password: ""
-        });
-
+        showSuccessAlert(data.msg || "¡Registro realizado con éxito!");
+        setFormData({ name: "", lastname: "", dni: "", email: "", password: "" });
       } else {
         showErrorAlert(data.error || "Error en el registro");
       }
@@ -66,10 +71,11 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-background">
-      <div className="signup-container">
-        <h2 className="signup-title">Registro</h2>
-        <form className="signup-form" onSubmit={handleSubmit}>
+    <div className={`landing-container fade-in ${isDarkMode ? "dark-mode" : ""}`}>
+      <DarkModeToggle />
+      <div className="login-card">
+        <h2 className="login-title">Registro</h2>
+        <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="text"
             name="name"
@@ -77,7 +83,7 @@ const Signup = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="signup-input"
+            className="login-input"
           />
           <input
             type="text"
@@ -86,7 +92,7 @@ const Signup = () => {
             value={formData.lastname}
             onChange={handleChange}
             required
-            className="signup-input"
+            className="login-input"
           />
           <input
             type="text"
@@ -95,7 +101,7 @@ const Signup = () => {
             value={formData.dni}
             onChange={handleChange}
             required
-            className="signup-input"
+            className="login-input"
           />
           <input
             type="email"
@@ -104,7 +110,7 @@ const Signup = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="signup-input"
+            className="login-input"
           />
           <input
             type="password"
@@ -113,12 +119,12 @@ const Signup = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="signup-input"
+            className="login-input"
           />
-          <button type="submit" className="signup-button">Registrarse</button>
+          <button type="submit" className="login-btn-submit">Registrarse</button>
         </form>
-        <p className="signup-footer">
-          ¿Ya tienes cuenta? <a href="/" className="signup-link">Inicia sesión</a>
+        <p className="login-footer">
+          ¿Ya tienes cuenta? <Link to="/login" className="login-link">Inicia sesión</Link>
         </p>
       </div>
     </div>

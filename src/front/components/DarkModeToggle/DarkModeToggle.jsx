@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./DarkModeToggle.css"; // ✅ Importa el CSS separado
+import "./DarkModeToggle.css";
 
 const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -7,13 +7,12 @@ const DarkModeToggle = () => {
   });
 
   useEffect(() => {
-    const landing = document.querySelector(".landing-container");
-    if (!landing) return;
+    const root = document.body;
 
     if (darkMode) {
-      landing.classList.add("dark-mode");
+      root.classList.add("dark-mode");
     } else {
-      landing.classList.remove("dark-mode");
+      root.classList.remove("dark-mode");
     }
 
     localStorage.setItem("darkMode", darkMode);
@@ -22,7 +21,7 @@ const DarkModeToggle = () => {
   return (
     <button
       className={`dark-mode-toggle ${darkMode ? "dark" : "light"}`}
-      onClick={() => setDarkMode(!darkMode)}
+      onClick={() => setDarkMode((prev) => !prev)}
     >
       {darkMode ? "Modo claro ☀️" : "Modo oscuro 🌙"}
     </button>

@@ -17,12 +17,15 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const landing = document.querySelector(".landing-container");
+    const root = document.body;
     const observer = new MutationObserver(() => {
-      setIsDarkMode(landing.classList.contains("dark-mode"));
+      setIsDarkMode(root.classList.contains("dark-mode"));
     });
 
-    observer.observe(landing, { attributes: true, attributeFilter: ["class"] });
+    // Set initial state and observe body
+    setIsDarkMode(root.classList.contains("dark-mode"));
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
     return () => observer.disconnect();
   }, []);
 

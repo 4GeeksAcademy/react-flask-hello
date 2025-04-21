@@ -1,83 +1,121 @@
-/* 👆 🤟🏼 ❇️ Riki for the group success 9_Abril 👊 */
-
-/* Estilos para la página de contacto - coherente con el sistema de diseño */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap');
-
-.contacto-container {
-  font-family: 'Roboto', sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+/* === LAYOUT GLOBAL COMPARTIDO === */
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #b0dad3, #e3eed4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 900px 1000px, cover;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  padding-top: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
   color: #333;
+  box-sizing: border-box;
+  animation: fadeInOnly 1.2s ease-out forwards;
 }
 
-/* Hero section - Glassmorphism */
+body.dark-mode .landing-container {
+  background-image: url("../../assets/img/background-shape.svg"),
+    linear-gradient(to bottom, #111, #1d1d1d);
+  color: #eee;
+}
+
+/* === CONTENEDOR GENERAL === */
+.contacto-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* === HERO === */
 .contacto-hero {
   text-align: center;
-  margin-bottom: 3rem;
   padding: 3rem 1.5rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 30px rgba(25, 135, 84, 0.1);
 }
 
 .contacto-hero h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
   font-size: 2.5rem;
+  color: #375534;
   margin-bottom: 1rem;
-  color: #198754; /* Verde principal coherente con el navbar */
 }
 
 .contacto-hero p {
   font-size: 1.2rem;
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
   line-height: 1.6;
+  color: #444;
 }
 
-/* Layout principal de contacto */
-.contacto-content {
+body.dark-mode .contacto-hero {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .contacto-hero h1 {
+  color: #9ccc8a;
+}
+
+body.dark-mode .contacto-hero p {
+  color: #ccc;
+}
+
+/* === COLUMNS === */
+.contacto-columns {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  background-color: rgba(25, 135, 84, 0.1);
+  gap: 2rem; /* Espacio entre las columnas */
+  align-items: stretch; /* Asegura que ambas columnas tengan la misma altura */
+  justify-content: space-between;
+}
+
+/* === INFO COLUMN === */
+.contacto-info {
+  flex: 1; /* Hace que la columna de la información ocupe el mismo espacio que la del formulario */
+  min-width: 300px;
+  background-color: rgba(31, 110, 65, 0.9);
+  color: #fff;
   padding: 2rem;
   border-radius: 12px;
-}
-
-/* Columna de información */
-.contacto-info {
-  flex: 1;
-  min-width: 300px;
-  background-color: #1f6e41; /* Verde claro del logo */
-  color: #ffffff; /* Texto blanco para mejor contraste */
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .contacto-info h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
+  font-family: "Montserrat", sans-serif;
   font-size: 1.8rem;
-  color: white; /* Asegurando buen contraste */
+  margin-bottom: 1.5rem;
 }
 
 .info-item {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .info-item i {
   margin-right: 1rem;
   font-size: 1.2rem;
-  color: #e8f7ee; /* Color claro para iconos que contrasta con el verde del logo */
+  color: #e8f7ee;
 }
 
 .contacto-social {
@@ -85,10 +123,8 @@
 }
 
 .contacto-social h3 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
   margin-bottom: 1rem;
-  color: white;
 }
 
 .social-icons {
@@ -97,40 +133,48 @@
 }
 
 .social-icons a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
   transition: all 0.3s;
   text-decoration: none;
 }
 
 .social-icons a:hover {
-  background-color: white;
-  color: #4cc480; /* Verde claro del logo */
+  background: white;
+  color: #1f6e41;
   transform: translateY(-3px);
 }
 
-/* Columna del formulario */
+/* === FORM COLUMN === */
 .contacto-form-container {
-  flex: 2;
+  flex: 1; /* Hace que la columna del formulario ocupe el mismo espacio que la de información */
   min-width: 300px;
   padding: 2rem;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
 }
 
 .contacto-form-container h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: #198754;
+  font-family: "Montserrat", sans-serif;
   font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #375534;
+}
+
+body.dark-mode .contacto-form-container {
+  background-color: rgba(45, 45, 45, 0.8);
+}
+
+body.dark-mode .contacto-form-container h2 {
+  color: #9ccc8a;
 }
 
 .contacto-form {
@@ -152,15 +196,15 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
+  text-align: left;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
@@ -172,12 +216,24 @@
   box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
 }
 
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background-color: rgba(30, 30, 30, 0.85);
+  color: #eee;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder {
+  color: #aaa;
+}
+
 .submit-button {
   background-color: #198754;
   color: white;
   border: none;
   padding: 0.8rem 2rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   border-radius: 5px;
   cursor: pointer;
@@ -191,12 +247,20 @@
   transform: translateY(-2px);
 }
 
-/* Mensajes de éxito y error */
+body.dark-mode .submit-button {
+  background-color: #4cc480;
+  color: #1a1a1a;
+}
+
+body.dark-mode .submit-button:hover {
+  background-color: #9ccc8a;
+}
+
+/* === MENSAJES === */
 .mensaje-exito,
 .mensaje-error {
   padding: 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 5px;
+  border-radius: 6px;
   font-weight: 500;
 }
 
@@ -212,18 +276,64 @@
   border: 1px solid #f5c2c7;
 }
 
-/* Responsive */
+body.dark-mode .mensaje-exito {
+  background-color: rgba(40, 90, 60, 0.4);
+  color: #aef9c5;
+  border: 1px solid rgba(100, 200, 150, 0.4);
+}
+
+body.dark-mode .mensaje-error {
+  background-color: rgba(110, 30, 30, 0.3);
+  color: #f4bebe;
+  border: 1px solid rgba(255, 100, 100, 0.2);
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
-  .contacto-content {
+  .contacto-columns {
     flex-direction: column;
   }
-  
+
   .contacto-info,
   .contacto-form-container {
     width: 100%;
   }
-  
+
   .form-group {
     flex: 1 1 100%;
   }
+}
+
+/* === FADE IN === */
+@keyframes fadeInOnly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.contacto-social .social-icons {
+  display: flex;
+  gap: 1rem; /* Espacio entre los iconos */
+  align-items: center; /* Alineación vertical de los iconos */
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  background: white;
+  color: #1f6e41;
+  transform: translateY(-3px);
 }

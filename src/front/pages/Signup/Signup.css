@@ -1,98 +1,164 @@
-/* 👇 ❇️ Riki for the group success 👊 12 Abril */
+/* === Signup.css - Estilo Moderno con Soporte para Dark Mode === */
 
-
-/* Contenedor del formulario con posicionamiento */
-.signup-background {
-  min-height: 100vh;
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/img/background-shape-verdeOscuro.svg"),
+    linear-gradient(to top right, #b0dad3, #e3eed4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 900px 1000px, cover;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
-  align-items: center;
   justify-content: center;
-  /* Eliminamos las propiedades de background-image que ahora están en Layout.css */
+  align-items: center;
+  padding-top: 70px;
+  font-family: "Arial", sans-serif;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
-/* Contenedor del formulario */
-.signup-container {
-  max-width: 400px;
-  width: 100%;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-}
-
-.signup-title {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center;
-  margin-bottom: 25px;
-  color: #198754; /* Verde (coherente con botones) */
-  font-size: 24px;
-  font-weight: 700; /* Negrita */
-}
-
-.signup-form {
+/* === Tarjeta === */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  animation: fadeInOnly 1s ease-out forwards;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: stretch;
+  gap: 1rem;
+  margin-bottom: 80px; /* ✅ Espacio inferior extra */
 }
 
-.signup-input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
+.login-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #033547;
+  margin-bottom: 30px;
 }
 
-.signup-input:focus {
+/* === Formulario === */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-input {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.login-input:focus {
   outline: none;
-  border-color: #198754;
+  border-color: #375534;
+  box-shadow: 0 0 0 2px rgba(55, 85, 52, 0.2);
 }
 
-.signup-button {
-  padding: 12px;
-  background-color: #198754;
-  color: white;
+/* === Botón === */
+.login-btn-submit {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background-color: #9ccc8a;
+  color: #1e1e1e;
+  font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.login-btn-submit:hover {
+  background-color: #b6f5a0;
+}
+
+/* === Footer === */
+.login-footer {
+  text-align: center;
   margin-top: 10px;
-  transition: background-color 0.3s;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-.signup-button:hover {
-  background-color: #157347;
-}
-
-.signup-message {
-  text-align: center;
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.signup-message.success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.signup-message.error {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.signup-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: #555;
-}
-
-.signup-link {
-  color: #198754;
+.login-footer a {
+  color: #375534;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
 }
 
-.signup-link:hover {
+.login-footer a:hover {
   text-decoration: underline;
+}
+
+/* === Modo Oscuro === */
+.landing-container.dark-mode {
+  background-image: url("../../assets/img/background-shape.svg"),
+    linear-gradient(to bottom, #111, #1d1d1d);
+}
+
+.landing-container.dark-mode .login-card {
+  background-color: rgba(30, 30, 30, 0.85);
+  color: #eee;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.landing-container.dark-mode .login-title {
+  color: #f5f5f5;
+}
+
+.landing-container.dark-mode .login-input {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #f5f5f5;
+  border: 1px solid #555;
+}
+
+.landing-container.dark-mode .login-input::placeholder {
+  color: #bbb;
+}
+
+.landing-container.dark-mode .login-input:focus {
+  border-color: #9ccc8a;
+  box-shadow: 0 0 0 2px rgba(156, 204, 138, 0.2);
+}
+
+.landing-container.dark-mode .login-btn-submit {
+  background-color: #9ccc8a;
+  color: #1e1e1e;
+}
+
+.landing-container.dark-mode .login-btn-submit:hover {
+  background-color: #b6f5a0;
+}
+
+.landing-container.dark-mode .login-footer {
+  color: #ccc;
+}
+
+.landing-container.dark-mode .login-footer a {
+  color: #9ccc8a;
+}
+
+/* === Animación === */
+@keyframes fadeInOnly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

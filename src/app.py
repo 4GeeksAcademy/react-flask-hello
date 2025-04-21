@@ -103,16 +103,6 @@ def handle_invalid_usage(error):
 
 # SITEMAP
 
-
-@app.route('/')
-def sitemap():
-    if ENV == "development":
-        print("🔎 RUTAS REGISTRADAS EN FLASK:")
-        for rule in app.url_map.iter_rules():
-            print(f"{rule} → métodos: {','.join(rule.methods)}")
-        return generate_sitemap(app)
-    return send_from_directory(static_file_dir, 'index.html')
-
 # SERVIR ARCHIVOS ESTÁTICOS
 
 

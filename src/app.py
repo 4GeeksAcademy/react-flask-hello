@@ -23,7 +23,7 @@ from api.commands import setup_commands
 # INICIALIZACIÓN DE FLASK
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), '../public/')
+    os.path.realpath(__file__)), '../dist/')
 
 app = Flask(__name__)
 

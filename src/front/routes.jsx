@@ -9,6 +9,7 @@ import { Login } from "./pages/Login/Login.jsx";
 import { Business } from "./pages/Business/Business.jsx";
 import { Clients } from "./pages/Clients/Clients.jsx";
 import AssignService  from "./pages/AssignService.jsx";
+import Calendar  from "./pages/Calendar/Calendar.jsx";
 
 
 export const AppRoutes = createBrowserRouter(
@@ -18,7 +19,8 @@ export const AppRoutes = createBrowserRouter(
             <Route index element={<Login />} />
             <Route path="/negocios" element={<Business />} />
             <Route path="/clientes" element={<Clients />} />
-            <Route path="/assignservice" element={<AssignService />} />
+            <Route path="/servicios" element={<AssignService />} />
+            <Route path="/calendario" element={<Calendar />} />
         </Route>
     )
 );

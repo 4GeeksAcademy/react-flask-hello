@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-
+import ClientModal from '../components/Modal/ Assign_Customers';
 
 const AssignService = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [assignedDate, setAssignedDate] = useState(null);
   const [notes, setNotes] = useState('');
+  const [selectedClient, setSelectedClient] = useState(null); // Nuevo: cliente seleccionado
 
   const handleAssignDate = async () => {
     try {
@@ -17,7 +18,10 @@ const AssignService = () => {
   };
 
   const handleSave = () => {
-    // Aquí se enviaría cliente, profesional, servicio, fecha y notas
+    // Aquí puedes enviar cliente, servicio, fecha, notas, etc.
+    console.log("Cliente:", selectedClient);
+    console.log("Fecha:", selectedDate);
+    console.log("Notas:", notes);
     alert('Appointment saved successfully');
   };
 
@@ -27,7 +31,7 @@ const AssignService = () => {
 
       <div className="mb-3">
         <button className="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#clientModal">
-          Select Client
+          {selectedClient ? `Client: ${selectedClient.name}` : 'Select Client'}
         </button>
         <button className="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#notesModal">
           Notes
@@ -57,24 +61,8 @@ const AssignService = () => {
         </button>
       </div>
 
-      {/* Client Modal */}
-      <div className="modal fade" id="clientModal" tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Select Client</h5>
-              <button className="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div className="modal-body">
-              <ul className="list-group">
-                <li className="list-group-item">Client 1</li>
-                <li className="list-group-item">Client 2</li>
-                <li className="list-group-item">Client 3</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Modal Dinámico de Cliente */}
+      <ClientModal onClientSelect={setSelectedClient} />
 
       {/* Notes Modal */}
       <div className="modal fade" id="notesModal" tabIndex="-1">
@@ -119,12 +107,12 @@ const AssignService = () => {
                 <label className="form-check-label" htmlFor="service3">Corte de pelo Mujer</label>
               </div>
               <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="service3" />
-                <label className="form-check-label" htmlFor="service3">Tinte</label>
+                <input className="form-check-input" type="checkbox" id="service4" />
+                <label className="form-check-label" htmlFor="service4">Tinte</label>
               </div>
               <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="service3" />
-                <label className="form-check-label" htmlFor="service3">Permanente</label>
+                <input className="form-check-input" type="checkbox" id="service5" />
+                <label className="form-check-label" htmlFor="service5">Permanente</label>
               </div>
             </div>
           </div>

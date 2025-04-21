@@ -1,81 +1,85 @@
-# Plantilla de WebApp con React JS y Flask API
+# Flow
 
-Construye aplicaciones web usando React.js para el front end y python/flask para tu API backend.
+Flow es una aplicación web diseñada para la gestión integral de clientes dentro de una empresa. Permite agendar citas, llevar un historial detallado de cada cliente y organizar la información de forma clara y accesible. Es ideal para negocios que buscan mantener un control eficiente sobre su base de datos de clientes y optimizar la relación con ellos.
 
-- La documentación se puede encontrar aquí: https://4geeks.com/docs/start/react-flask-template
-- Aquí hay un video sobre [cómo usar esta plantilla](https://www.youtube.com/watch?v=qBz6Ddd2m38)
-- Integrado con Pipenv para la gestión de paquetes.
-- Despliegue rápido a Render [en solo unos pocos pasos aquí](https://4geeks.com/es/docs/start/despliega-con-render-com).
-- Uso del archivo .env.
-- Integración de SQLAlchemy para la abstracción de bases de datos.
+## Contenido
 
-### 1) Instalación:
+- [Demostración](#demostración)
+- [Características](#características)
+- [Tecnologías utilizadas](#tecnologías-utilizadas)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Autores](#autores)
 
-> Si usas Github Codespaces (recomendado) o Gitpod, esta plantilla ya vendrá con Python, Node y la base de datos Posgres instalados. Si estás trabajando localmente, asegúrate de instalar Python 3.10, Node.
 
-Se recomienda instalar el backend primero, asegúrate de tener Python 3.10, Pipenv y un motor de base de datos (se recomienda Posgres).
+## Demostración
 
-1. Instala los paquetes de python: `$ pipenv install`
-2. Crea un archivo .env basado en el .env.example: `$ cp .env.example .env`
-3. Instala tu motor de base de datos y crea tu base de datos, dependiendo de tu base de datos, debes crear una variable DATABASE_URL con uno de los valores posibles, asegúrate de reemplazar los valores con la información de tu base de datos:
+(Agrega aquí un enlace a una demo en vivo o capturas de pantalla)
 
-| Motor     | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgres  | postgres://username:password@localhost:5432/example |
+## Características
 
-4. Migra las migraciones: `$ pipenv run migrate` (omite si no has hecho cambios en los modelos en `./src/api/models.py`)
-5. Ejecuta las migraciones: `$ pipenv run upgrade`
-6. Ejecuta la aplicación: `$ pipenv run start`
+- Registro y gestión de clientes  
+- Agenda de citas  
+- Historial de interacciones por cliente  
+- Interfaz amigable e intuitiva  
+- Acceso centralizado para los miembros de la empresa  
 
-> Nota: Los usuarios de Codespaces pueden conectarse a psql escribiendo: `psql -h localhost -U gitpod example`
+## Tecnologías utilizadas
 
-### Deshacer una migración
+### Frontend
+- HTML5  
+- CSS3  
+- JavaScript  
+- React.js (JSX)
 
-También puedes deshacer una migración ejecutando
+### Backend
+- Python (por ejemplo, Flask o Django)
 
-```sh
-$ pipenv run downgrade
-```
+## Instalación
 
-### Población de la tabla de usuarios en el backend
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
-Para insertar usuarios de prueba en la base de datos, ejecuta el siguiente comando:
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/4GeeksAcademy/Spain-94-Flow
 
-```sh
-$ flask insert-test-users 5
-```
+2. Entra en la carpeta del proyecto:
+	- cd flow
 
-Y verás el siguiente mensaje:
+3. Instala las dependencias:
+	### Si el frontend está en una carpeta 'frontend'
+	- cd frontend
+	- npm install
 
-```
-    Creating test users
-    test_user1@test.com created.
-    test_user2@test.com created.
-    test_user3@test.com created.
-    test_user4@test.com created.
-    test_user5@test.com created.
-    Users created successfully!
-```
+	### Si el backend está en una carpeta 'backend'
+	- cd ../backend
+	- pip install -r requirements.txt
 
-### **Nota importante para la base de datos y los datos dentro de ella**
+4. Inicia la aplicación:
 
-Cada entorno de Github Codespace tendrá **su propia base de datos**, por lo que si estás trabajando con más personas, cada uno tendrá una base de datos diferente y diferentes registros dentro de ella. Estos datos **se perderán**, así que no pases demasiado tiempo creando registros manualmente para pruebas, en su lugar, puedes automatizar la adición de registros a tu base de datos editando el archivo ```commands.py``` dentro de la carpeta ```/src/api```. Edita la línea 32 de la función ```insert_test_data``` para insertar los datos según tu modelo (usa la función ```insert_test_users``` anterior como ejemplo). Luego, todo lo que necesitas hacer es ejecutar ```pipenv run insert-test-data```.
+	### En la carpeta del frontend
+	- npm run start
 
-### Instalación manual del Front-End:
+	### En la carpeta del backend
+	- python app.py  # o el archivo principal de tu servidor
 
--   Asegúrate de estar usando la versión 20 de node y de que ya hayas instalado y ejecutado correctamente el backend.
 
-1. Instala los paquetes: `$ npm install`
-2. ¡Empieza a codificar! inicia el servidor de desarrollo de webpack `$ npm run start`
+## Uso
+Una vez en funcionamiento, podrás:
 
-## ¡Publica tu sitio web!
+Crear y administrar perfiles de clientes
 
-Esta plantilla está 100% lista para desplegarse con Render.com y Heroku en cuestión de minutos. Por favor, lee la [documentación oficial al respecto](https://4geeks.com/docs/start/deploy-to-render-com).
+Programar citas fácilmente
 
-### Contribuyentes
+Consultar el historial de cada cliente desde su perfil
 
-Esta plantilla fue construida como parte del [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) de 4Geeks Academy por [Alejandro Sanchez](https://twitter.com/alesanchezr) y muchos otros contribuyentes. Descubre más sobre nuestro [Curso de Desarrollador Full Stack](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer) y [Bootcamp de Ciencia de Datos](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
+## Autores
+Este proyecto fue desarrollado como trabajo final para la academia 4Geeks Academy por:
 
-Puedes encontrar otras plantillas y recursos como este en la [página de github de la escuela](https://github.com/4geeksacademy/).
+- Github (AngelDPL)
+
+- Github (Ziilgc)
+
+- Github (PabloPh95)
+
+- Github (joangallego)

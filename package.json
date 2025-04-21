@@ -60,6 +60,7 @@
 		"@fullcalendar/interaction": "^6.1.17",
 		"@fullcalendar/react": "^6.1.17",
 		"@fullcalendar/timegrid": "^6.1.17",
+		"axios": "^1.8.4",
 		"bootstrap": "^5.3.5",
 		"events": "^3.3.0",
 		"googleapis": "^148.0.0",

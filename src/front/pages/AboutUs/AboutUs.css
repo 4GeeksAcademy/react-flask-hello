@@ -1,87 +1,143 @@
 .aboutus-container {
-    padding: 4rem 6%;
-    background: linear-gradient(to right, #e8f5e9, #f1f8e9);
-    font-family: 'Roboto', sans-serif;
-    color: var(--text-dark);
+  width: 100%;
+  max-width: 1300px;
+  padding: 2rem;
+  padding-top: 50px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* === Tarjetas generales === */
+.aboutus-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* HERO SECTION */
+.aboutus-hero-card h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+  color: #375534;
+  margin-bottom: 1rem;
+}
+
+.aboutus-hero-card p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* MISIÓN + SECCIONES GENERALES */
+.aboutus-card h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  color: #375534;
+  margin-bottom: 1rem;
+}
+
+.aboutus-card p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* === COLABORADORES agrupados en una fila === */
+.team-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.team-member-card {
+  flex: 1 1 30%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.team-member-card h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #033547;
+}
+
+.team-member-card p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* FOOTER */
+.aboutus-footer-note {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* === DARK MODE === */
+body.dark-mode .aboutus-card,
+body.dark-mode .team-member-card {
+  background: rgba(30, 30, 30, 0.85);
+  color: #eee;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .aboutus-card h1,
+body.dark-mode .aboutus-card h2,
+body.dark-mode .team-member-card h3 {
+  color: #9ccc8a;
+}
+
+body.dark-mode .aboutus-card p,
+body.dark-mode .team-member-card p,
+body.dark-mode .aboutus-footer-note {
+  color: #ccc;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+  .team-member-card {
+    flex: 1 1 100%;
   }
-  
-  .aboutus-hero {
-    text-align: center;
-    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .aboutus-card h1 {
+    font-size: 2rem;
   }
-  
-  .aboutus-hero h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
-    color: var(--primary-green);
-    margin-bottom: 1rem;
+
+  .aboutus-card h2 {
+    font-size: 1.5rem;
   }
-  
-  .aboutus-hero p {
-    font-size: 1.1rem;
-    color: #555;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.6;
+
+  .team-member-card h3 {
+    font-size: 1.2rem;
   }
-  
-  .aboutus-content {
-    max-width: 1000px;
-    margin: 0 auto;
+
+  .team-member-card p {
+    font-size: 0.9rem;
   }
-  
-  .aboutus-content h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.8rem;
-    color: var(--primary-green);
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .aboutus-content p {
-    font-size: 1rem;
-    color: #444;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
-  
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .team-member {
-    background: var(--text-light);
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .team-member:hover {
-    transform: translateY(-5px);
-  }
-  
-  .team-member h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-dark);
-  }
-  
-  .team-member p {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.5;
-  }
-  
-  .aboutus-footer-note {
-    text-align: center;
-    font-style: italic;
-    color: #666;
-    margin-top: 3rem;
-  }
-  
+}

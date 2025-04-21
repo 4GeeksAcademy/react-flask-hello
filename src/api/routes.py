@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
-from src.api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
+from api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
 from datetime import datetime
-from src.api.utils import (
+from api.utils import (
     hash_password,
     check_password,
     generate_token,
@@ -25,6 +25,7 @@ def register_user():
             return jsonify({"msg": "Este email ya está registrado"}), 400
 
         hashed_pw = hash_password(data['password'])
+        print(hashed_pw)
         new_user = AppUser(
             username=data['username'],
             email=data['email'],

@@ -1,6 +1,6 @@
 import os
 from flask_admin import Admin
-from src.api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
+from api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
 from flask_admin.contrib.sqla import ModelView
 
 # ❌ Comentado porque no estás usando esto todavía:

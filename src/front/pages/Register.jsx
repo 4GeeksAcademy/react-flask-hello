@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/register`, {
+      const resp = await fetch(`https://opulent-lamp-g759pj7vvq43gvw-3001.app.github.dev/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),

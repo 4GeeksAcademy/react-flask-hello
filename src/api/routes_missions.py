@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from src.api.models import db, Mission, UserMission
+from api.models import db, Mission, UserMission
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 

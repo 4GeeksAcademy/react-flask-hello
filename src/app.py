@@ -4,9 +4,20 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
-from src.api.routes import api
-from src.api.db import db
-from src.api.admin import setup_admin
+from api.routes import api
+from api.admin import setup_admin
+from api.models import db
+
+
+# import os
+# from flask import Flask, request, jsonify, url_for, send_from_directory
+# from flask_migrate import Migrate
+# from flask_swagger import swagger
+# from api.utils import APIException, generate_sitemap
+# from api.models import db
+# from api.routes import api
+# from api.admin import setup_admin
+# from api.commands import setup_commands
 
 def create_app():
     app = Flask(__name__)
@@ -19,12 +30,12 @@ def create_app():
     app.secret_key = 'super secret key'
 
     # Inicialización de extensiones
-    db.init_app(app)
     Migrate(app, db)
+    db.init_app(app)
+
     JWTManager(app)
     frontend_origin = "https://opulent-lamp-g759pj7vvq43gvw-3000.app.github.dev"
 
-    
     from flask_cors import CORS
 
     CORS(app,

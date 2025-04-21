@@ -1,6 +1,6 @@
 import click
 from flask.cli import with_appcontext
-from src.api.models import db, AppUser, Mission
+from api.models import db, AppUser, Mission
 import datetime
 
 # 🔧 Comando para insertar datos de prueba en la base de datos

@@ -163,6 +163,29 @@
   padding-top: 10px;
 }
 
+/* Contenedor para la imagen dentro de card-main */
+.landing-container .main-image-container {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-container .main-image-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.landing-container .main-image-container img:hover {
+  transform: scale(1.02);
+}
+
 .landing-container .card-support {
   background-color: var(--card-support-bg);
   grid-column: 2 / 3;
@@ -174,14 +197,9 @@
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-}
-
-.landing-container .card-terms img {
-  width: 100%;
-  border-radius: 12px;
-  opacity: 0.9;
+  padding: 20px;
 }
 
 .landing-container .card-social {
@@ -199,12 +217,13 @@
   font-size: 2.2rem;
   color: #033547;
   margin-bottom: 55px;
+  font-weight: 550;
 }
 
 .landing-container .card-main h2 {
   font-size: 1.5rem !important;
   color: #405744;
-  font-weight: normal;
+  font-weight: 520;
   margin: 0;
 }
 
@@ -226,7 +245,7 @@
 
 .landing-container .card p,
 .landing-container .card a {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #033547;
   margin-bottom: 10px;
   text-decoration: none;
@@ -853,3 +872,29 @@ body.dark-mode .landing-container .card-social {
 }
 
 /* (El resto del CSS no se modifica: mantiene estructura base, responsive, animaciones, etc.) */
+
+.landing-container .card-support h2 {
+  font-weight: 550; /* Menos bold que el predeterminado */
+}
+
+.landing-container .card-support p,
+.landing-container .card-support strong {
+  font-weight: 400; /* Normal para texto regular */
+}
+
+.landing-container .card-support strong {
+  font-weight: 500; /* Medium para texto destacado en lugar de bold */
+}
+
+.landing-container .card-terms h2 {
+  font-weight: 550;
+}
+
+.landing-container .card-terms p,
+.landing-container .card-terms strong {
+  font-weight: 400;
+}
+
+.landing-container .card-terms strong {
+  font-weight: 500;
+}

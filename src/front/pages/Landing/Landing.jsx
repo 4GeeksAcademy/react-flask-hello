@@ -12,23 +12,34 @@ const Landing = () => {
         <div className="card card-main">
           <h1>Plataforma integral de monitoreo agrícola</h1>
           <h2>Decisiones inteligentes con datos reales</h2>
+          
+          {/* Contenedor para la imagen (antes estaba en card-terms) */}
+          <div className="main-image-container">
+            <img src={mavicImage} alt="Drone Mavic 3 volando" />
+          </div>
         </div>
 
         <div className="card card-support">
-          <h2>Soporte</h2>
-          <p>
-            ¿Tienes preguntas? Ponte en contacto con nuestro equipo o visita
-            nuestro centro de ayuda.
-          </p>
-          <p>
-            También puedes contactar al equipo:<br />
-            <strong>+34 911 23 45 67</strong><br />
-            <a href="mailto:soporte@dronfarm.com">soporte@dronfarm.com</a>
-          </p>
+          {/* Contenido que estaba en card-terms */}
+          <h2>Agricultura de Precisión</h2>
+          <p>Optimiza tus cultivos con tecnología de vanguardia. Nuestros drones capturan datos precisos que transforman la forma de gestionar tus campos.</p>
+          <div className="terms-logo">
+            <i className="fas fa-seedling"></i>
+          </div>
         </div>
 
         <div className="card card-terms">
-          <img src={mavicImage} alt="Drone Mavic 3 volando" />
+          {/* Contenido que estaba en card-support */}
+          <h2>Soporte</h2>
+          <p>
+            ¿Tienes preguntas? Contacta con nuestro equipo o visita
+            el centro de ayuda.
+          </p>
+          <p>
+            <br />
+            <strong>+34 911 23 45 67</strong><br />
+            <a href="mailto:soporte@dronfarm.com">soporte@dronfarm.com</a>
+          </p>
         </div>
 
         <div className="card card-social">

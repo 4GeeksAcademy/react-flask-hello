@@ -1,32 +1,69 @@
 from flask import Blueprint, jsonify, request
 from src.api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
 from datetime import datetime
-from src.api.utils import hash_password, check_password, generate_token
+from src.api.utils import (
+    hash_password,
+    check_password,
+    generate_token,
+    generate_auth_token,
+    token_required
+)
 
 api = Blueprint('api', __name__)
 
-# --- USER ROUTES ---
+# --- AUTHENTICATION ---
 
 @api.route('/register', methods=['POST'])
 def register_user():
-    data = request.json
-    hashed_pw = hash_password(data['password'])
-    user = AppUser(
-        username=data['username'],
-        email=data['email'],
-        password_hash=hashed_pw
-    )
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"msg": "Usuario creado exitosamente"}), 201
+    try:
+        data = request.json
+
+        if not all(k in data for k in ("email", "username", "password")):
+            return jsonify({"msg": "Faltan campos obligatorios"}), 400
+
+        if AppUser.query.filter_by(email=data["email"]).first():
+            return jsonify({"msg": "Este email ya está registrado"}), 400
+
+        hashed_pw = hash_password(data['password'])
+        new_user = AppUser(
+            username=data['username'],
+            email=data['email'],
+            password_hash=hashed_pw
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"msg": "Usuario creado exitosamente"}), 201
+
+    except Exception as e:
+        print("⚠️ ERROR en /register:", e)
+        return jsonify({"msg": "Error interno del servidor"}), 500
+
 
 @api.route('/login', methods=['POST'])
 def login():
     data = request.json
+    if not all(k in data for k in ("email", "password")):
+        return jsonify({"msg": "Faltan credenciales"}), 400
     user = AppUser.query.filter_by(email=data['email']).first()
     if not user or not check_password(data['password'], user.password_hash):
         return jsonify({"msg": "Credenciales inválidas"}), 401
-    return jsonify({"msg": "Login correcto", "user_id": user.id}), 200
+    token = generate_auth_token(user.id)
+    return jsonify({
+        "msg": "Login correcto",
+        "token": token,
+        "user_id": user.id
+    }), 200
+
+@api.route('/perfil', methods=['GET'])
+@token_required
+def perfil(user_id):
+    user = AppUser.query.get(user_id)
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+    return jsonify(user.serialize()), 200
+
+# --- USERS ---
 
 @api.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
@@ -35,8 +72,7 @@ def get_user(user_id):
         return jsonify({"msg": "Usuario no encontrado"}), 404
     return jsonify(user.serialize()), 200
 
-
-# --- MISSION ROUTES ---
+# --- MISSIONS ---
 
 @api.route('/missions', methods=['GET'])
 def get_all_missions():
@@ -49,7 +85,6 @@ def get_mission(mission_id):
     if not mission:
         return jsonify({"msg": "Misión no encontrada"}), 404
     return jsonify(mission.serialize()), 200
-
 
 # --- FAVORITES ---
 
@@ -66,7 +101,6 @@ def add_favorite():
     db.session.commit()
     return jsonify({"msg": "Favorito añadido"}), 201
 
-
 # --- MOOD TAGS ---
 
 @api.route('/users/<int:user_id>/mood', methods=['POST'])
@@ -76,7 +110,6 @@ def set_mood(user_id):
     db.session.add(mood)
     db.session.commit()
     return jsonify({"msg": "Estado de ánimo actualizado"}), 200
-
 
 # --- USER MISSIONS ---
 
@@ -109,14 +142,12 @@ def complete_mission(usermission_id):
     db.session.commit()
     return jsonify({"msg": "Misión completada"}), 200
 
-
 # --- STATS ---
 
 @api.route('/users/<int:user_id>/stats', methods=['GET'])
 def get_stats(user_id):
     stats = Stat.query.filter_by(user_id=user_id).all()
     return jsonify([s.serialize() for s in stats]), 200
-
 
 # --- ACHIEVEMENTS ---
 
@@ -129,7 +160,6 @@ def get_user_achievements(user_id):
 def get_all_achievements():
     achievements = Achievement.query.all()
     return jsonify([a.serialize() for a in achievements]), 200
-
 
 # --- LEVEL FRAMES ---
 

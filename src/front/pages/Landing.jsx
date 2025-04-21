@@ -1,6 +1,13 @@
-export const Landing = () => (
-    <div className="container text-center mt-5">
-      <h1 className="display-4">Bienvenido a LevelUp</h1>
-      <p className="lead">Descubre un nuevo enfoque de crecimiento personal a través de misiones semanales, estadísticas y recompensas.</p>
-    </div>
-  );
+import AnimatedPage from "../components/AnimatedPage";
+import "../assets/styles/landing.css";
+
+export const Landing = () => {
+    return (
+        <AnimatedPage>
+            <div className="landing-page">
+                <h1>Welcome to LEVEL UP</h1>
+                <p>This is your dashboard.</p>
+            </div>
+        </AnimatedPage>
+    );
+};

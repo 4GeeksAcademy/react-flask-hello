@@ -1,0 +1,29 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #1f1f1f, #121212);
+    color: white;
+  }
+  
+  .landing-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  .landing-page h1 {
+    font-size: 3rem;
+    color: orange;
+    margin-bottom: 20px;
+  }
+  
+  .landing-page p {
+    font-size: 1.2rem;
+  }
+  

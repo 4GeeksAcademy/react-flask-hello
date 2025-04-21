@@ -22,9 +22,19 @@ def create_app():
     db.init_app(app)
     Migrate(app, db)
     JWTManager(app)
-    CORS(app)
+    frontend_origin = "https://opulent-lamp-g759pj7vvq43gvw-3000.app.github.dev"
 
-    # Admin y rutas
+    
+    from flask_cors import CORS
+
+    CORS(app,
+     origins=["https://opulent-lamp-g759pj7vvq43gvw-3000.app.github.dev"],
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     expose_headers=["Content-Type"],
+     methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
+
+
     setup_admin(app)
     app.register_blueprint(api, url_prefix="/api")
 
@@ -35,7 +45,7 @@ def create_app():
 
     return app
 
-# Solo necesario si ejecutas este archivo directamente (opcional en Codespaces)
+# Solo necesario si ejecutas este archivo directamente
 if __name__ == "__main__":
     app = create_app()
     app.run(host="0.0.0.0", port=3001, debug=True)

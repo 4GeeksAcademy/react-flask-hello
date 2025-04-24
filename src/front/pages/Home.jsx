@@ -36,6 +36,7 @@ export const Home = () => {
 		<div className="text-center mt-5">
 			<h1 className="display-4">Couch Potato</h1>
 			<p className="lead">
+				<h1>Yo</h1>
 				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
 			</p>
 			<div className="alert alert-info">

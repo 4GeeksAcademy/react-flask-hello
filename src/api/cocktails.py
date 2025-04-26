@@ -28,7 +28,7 @@ class CocktailList(Resource):
 
     @token_required
     def post(self, current_user):
-        """Add a new cocktail (Protected route)"""
+        """Add a new cocktail"""
         data = request.get_json()
         if not data or 'name' not in data or 'instructions' not in data:
             return jsonify({'message': 'Invalid data'}), 400

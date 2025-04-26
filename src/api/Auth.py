@@ -1,4 +1,4 @@
-import jwt  # Import PyJWT for handling JSON Web Tokens
+import jwt  # Import PyJWT for handling JSON Web Tokens,download if needed.
 import datetime  # For timestamps and time calculations
 from flask import request, jsonify, current_app  # Flask utilities
 from functools import wraps  # To create decorators

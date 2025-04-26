@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB, and Adding th
 """
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-from flask_restx import Api, Namespace
+from flask_restx import Api, Namespace # install needed!!!
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from api.Auth import generate_token  # Ensure you have this function implemented

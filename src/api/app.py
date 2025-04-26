@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from flask_restx import Api, Namespace, Resource  # Include Namespace and Resource for API documentation
+from flask_restx import Api, Namespace, Resource  # Include Namespace and Resource for API documentation,install needed.
 from flask_migrate import Migrate
 from config import Config
 from api.utils import APIException, generate_sitemap

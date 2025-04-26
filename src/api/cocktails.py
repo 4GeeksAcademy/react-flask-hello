@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models import db, Cocktail, Ingredient, CocktailIngredient
 from Auth import token_required  # Ensure the file is named auth.py
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource # install needed!!!
 
 # Blueprint for cocktails
 cocktail_bp = Blueprint('cocktail_bp', __name__)

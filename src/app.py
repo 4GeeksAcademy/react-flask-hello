@@ -38,7 +38,7 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api') #==>With url_prefix='/api', every route defined in your blueprint (like @api.route('/places') in routes.py) becomes reachable at /api/places.
 
 # Handle/serialize errors like a JSON object
 

@@ -5,10 +5,10 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
+	const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 	const loadMessage = async () => {
 		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
 
@@ -28,6 +28,30 @@ export const Home = () => {
 
 	}
 
+	const signup = () => {
+		const option = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				"email": "email@email.com",
+				"password": "password123",
+				"name": "Jon",
+				"age": 32,
+
+			})
+		}
+		fetch(backendUrl  + "/api/signup", option)
+			.then((resp) => {
+				return resp.json()
+			})
+
+			.then((data) => {
+				console.log(data)
+			})
+	}
+
 	useEffect(() => {
 		// loadMessage()
 	}, [])
@@ -40,6 +64,9 @@ export const Home = () => {
 				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
 			</p>
 			<div className="alert alert-info">
+			<button onClick={()=>signup()}>
+			signup
+			</button>
 				{/* {store.message ? (
 					<span>{store.message}</span>
 				) : (

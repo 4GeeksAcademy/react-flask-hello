@@ -60,6 +60,15 @@ const Favorites = () => {
 
   return (
     <div className="favorites-container" style={{ padding: "20px" }}>
+      {/* Logo Section */}
+      <div className="logo-container" style={{ position: "absolute", top: "60px", left: "20px" }}>
+        <img
+          src="/path-to-your-logo.png" // Replace with the actual path to your logo
+          alt="Logo"
+          style={{ width: "100px", height: "auto" }}
+        />
+      </div>
+
       <h1>My Favorite Cocktails</h1>
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}

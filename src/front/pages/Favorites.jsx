@@ -4,6 +4,7 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
 
   // Fetch favorites from the API
   const fetchFavorites = async () => {
@@ -31,6 +32,12 @@ const Favorites = () => {
     }
   };
 
+  // Fetch username from the API or local storage
+  const fetchUsername = () => {
+    const storedUsername = localStorage.getItem("username"); // Assuming username is stored locally
+    setUsername(storedUsername || "Guest"); // Default to "Guest" if no username is available
+  };
+
   // Remove a favorite cocktail
   const removeFavorite = async (cocktailId) => {
     try {
@@ -56,6 +63,7 @@ const Favorites = () => {
 
   useEffect(() => {
     fetchFavorites();
+    fetchUsername();
   }, []);
 
   return (
@@ -67,6 +75,23 @@ const Favorites = () => {
           alt="Logo"
           style={{ width: "100px", height: "auto" }}
         />
+      </div>
+
+      {/* User Info Section */}
+      <div
+        className="user-info"
+        style={{
+          position: "absolute",
+          top: "60px",
+          right: "20px",
+          textAlign: "right",
+          fontSize: "16px",
+        }}
+      >
+        <p>
+          Welcome, <strong>{username}</strong>!
+        </p>
+        <p style={{ color: "gray", fontStyle: "italic" }}>Enjoy your favorite cocktails and mocktails!</p>
       </div>
 
       <h1>My Favorite Cocktails</h1>

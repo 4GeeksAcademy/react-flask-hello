@@ -430,7 +430,208 @@ const cocktails = [
         {item: "Lemon peel", "quantity": "For garnish"}
     ],
     instructions: "Combine brandy, triple sec, and aromatic bitters with ice in a shaker. Shake well and strain into a coupe glass. Top with champagne and garnish with a lemon peel."
-},
+},{
+    name: "Clover Club",
+    image_url: "https://stevethebartender.com.au/wp-content/uploads/2016/05/clover-club-cocktail-fb.jpg",
+    glass_type: "Coupe glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Gin", "quantity": "2 oz"},
+        {item: "Fresh lemon juice", "quantity": "0.5 oz"},
+        {item: "Raspberry syrup", "quantity": "0.5 oz"},
+        {item: "Egg white", "quantity": "1"}
+    ],
+    instructions: "Combine gin, lemon juice, raspberry syrup, and egg white in a shaker without ice. Shake vigorously to emulsify. Add ice and shake again until chilled. Strain into a chilled coupe glass and garnish with fresh raspberries."
+},{
+    name: "Daiquiri",
+    image_url: "https://th.bing.com/th/id/OIP.5Bw4-XXwKFg3FqmJsPa4xwHaLG?rs=1&pid=ImgDetMain",
+    glass_type: "Cocktail glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "White rum", "quantity": "2 oz"},
+        {item: "Fresh lime juice", "quantity": "1 oz"},
+        {item: "Simple syrup", "quantity": "0.5 oz"},
+        {item: "Ice", "quantity": "As needed"}
+    ],
+    instructions: "Combine white rum, lime juice, and simple syrup in a shaker with ice. Shake well and strain into a chilled cocktail glass. Garnish with a lime wheel if desired."
+},{
+    name: "Dark and Stormy",
+    image_url: "https://th.bing.com/th/id/OIP.hWhmjYhfzVyQ6aVdDdAndAHaLH?rs=1&pid=ImgDetMain",
+    glass_type: "Highball glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Dark rum", "quantity": "2 oz"},
+        {item: "Ginger beer", "quantity": "4 oz"},
+        {item: "Fresh lime juice", "quantity": "0.5 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Lime wedge", "quantity": "For garnish"}
+    ],
+    instructions: "Fill a glass with ice. Add ginger beer and lime juice, stir to combine. Carefully pour the dark rum on top to create a layered effect. Garnish with a lime wedge and serve."
+},{
+    name: "French 75",
+    image_url: "https://images.cocktailwave.com/french-75.png",
+    glass_type: "Champagne flute",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Gin", "quantity": "2 oz"},
+        {item: "Fresh lemon juice", "quantity": "0.5 oz"},
+        {item: "Simple syrup", "quantity": "0.5 oz"},
+        {item: "Champagne", "quantity": "3 oz"},
+        {item: "Lemon twist", "quantity": "For garnish"}
+    ],
+    instructions: "Combine gin, lemon juice, and simple syrup in a shaker with ice. Shake well and strain into a chilled Champagne flute. Top with Champagne and garnish with a lemon twist."
+},{
+    name: "Gimlet",
+    image_url: "https://th.bing.com/th/id/OIP.uzur1yoyIrw4Mt6pQiLRHAAAAA?rs=1&pid=ImgDetMain",
+    glass_type: "Cocktail glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Gin", "quantity": "2 oz"},
+        {item: "Fresh lime juice", "quantity": "1 oz"},
+        {item: "Simple syrup", "quantity": "0.5 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Lime wheel", "quantity": "For garnish"}
+    ],
+    instructions: "Combine gin, lime juice, and simple syrup in a shaker with ice. Shake well and strain into a chilled cocktail glass. Garnish with a lime wheel."
+},{
+    name: "Zombie",
+    image_url: "https://www.thelittleepicurean.com/wp-content/uploads/2016/08/zombie-cocktail.jpg",
+    glass_type: "Tiki mug",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Jamaican rum", "quantity": "1.5 oz"},
+        {item: "Puerto Rican gold rum", "quantity": "1.5 oz"},
+        {item: "151-proof demerara rum", "quantity": "1 oz"},
+        {item: "Lime juice", "quantity": "0.75 oz"},
+        {item: "Don's Mix", "quantity": "0.5 oz"},
+        {item: "Falernum", "quantity": "0.5 oz"},
+        {item: "Grenadine", "quantity": "1 tsp"},
+        {item: "Pernod", "quantity": "4 dashes"},
+        {item: "Angostura bitters", "quantity": "1 dash"},
+        {item: "Mint sprig", "quantity": "For garnish"}
+    ],
+    instructions: "Add all ingredients into a blender with 6 oz of crushed ice. Blend at high speed for no more than 5 seconds. Pour into a tall glass or Tiki mug and garnish with a mint sprig."
+},{
+    name: "Apple Pie Shot",
+    image_url: "https://www.thefoodblog.net/wp-content/uploads/2021/09/Apple-Pie-Shots-2-2.jpg",
+    glass_type: "Shot glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Apple cider", "quantity": "1.5 oz"},
+        {item: "Fireball whiskey", "quantity": "0.5 oz"},
+        {item: "Whipped cream", "quantity": "Optional, for garnish"},
+        {item: "Cinnamon stick", "quantity": "Optional, for garnish"}
+    ],
+    instructions: "Pour apple cider into a shot glass. Add Fireball whiskey. Top with whipped cream and garnish with a cinnamon stick. Serve and enjoy!"
+},{
+    name: "Apple Pie Shot",
+    image_url: "https://www.thefoodblog.net/wp-content/uploads/2021/09/Apple-Pie-Shots-2-2.jpg",
+    glass_type: "Shot glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Apple cider", "quantity": "1.5 oz"},
+        {item: "Fireball whiskey", "quantity": "0.5 oz"},
+        {item: "Whipped cream", "quantity": "Optional, for garnish"},
+        {item: "Cinnamon stick", "quantity": "Optional, for garnish"}
+    ],
+    instructions: "Pour apple cider into a shot glass. Add Fireball whiskey. Top with whipped cream and garnish with a cinnamon stick. Serve and enjoy!"
+},{
+    name: "Black Magic",
+    image_url: "https://assets3.thrillist.com/v1/image/1811908/1200x600/scale;",
+    glass_type: "Cocktail glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Black vodka", "quantity": "1.5 oz"},
+        {item: "Lime juice", "quantity": "0.5 oz"},
+        {item: "Simple syrup", "quantity": "0.5 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Lime wheel", "quantity": "For garnish"}
+    ],
+    instructions: "Combine black vodka, lime juice, and simple syrup in a shaker with ice. Shake well and strain into a chilled glass. Garnish with a lime wheel."
+},{
+    name: "Black Rose",
+    image_url: "https://heybairtender.s3.amazonaws.com/recipes/black-rose-cocktail4551.png",
+    glass_type: "Cocktail glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Bourbon whiskey", "quantity": "1 oz"},
+        {item: "Cognac", "quantity": "1 oz"},
+        {item: "Grenadine syrup", "quantity": "0.25 oz"},
+        {item: "Creole bitters", "quantity": "3 dashes"},
+        {item: "Aromatic bitters", "quantity": "1 dash"}
+    ],
+    instructions: "Combine bourbon, cognac, grenadine syrup, Creole bitters, and aromatic bitters in a mixing glass with ice. Stir well and strain into a chilled glass. Serve neat and garnish with a lemon zest twist."
+},{
+    name: "Blood and Sand",
+    image_url: "https://th.bing.com/th/id/OIP.mBUd9XD5JFn7xknvLurKGAHaHa?rs=1&pid=ImgDetMain",
+    glass_type: "Coupe glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Scotch whisky", "quantity": "0.75 oz"},
+        {item: "Sweet vermouth", "quantity": "0.75 oz"},
+        {item: "Cherry brandy", "quantity": "0.75 oz"},
+        {item: "Orange juice", "quantity": "0.75 oz"},
+        {item: "Orange peel", "quantity": "For garnish"}
+    ],
+    instructions: "Combine scotch whisky, sweet vermouth, cherry brandy, and orange juice in a shaker with ice. Shake well and strain into a chilled coupe glass. Garnish with an orange peel."
+},{
+    name: "Pina Colada",
+    image_url: "https://th.bing.com/th/id/R.2a4cd5979c1a99a05de9698e4f2cff87?rik=UTe04PzOxbWKDA&pid=ImgRaw&r=0",
+    glass_type: "Hurricane glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "White rum", "quantity": "1.5 oz"},
+        {item: "Coconut cream", "quantity": "2 oz"},
+        {item: "Pineapple juice", "quantity": "3 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Pineapple wedge", "quantity": "For garnish"},
+        {item: "Cherry", "quantity": "For garnish"}
+    ],
+    instructions: "Combine rum, coconut cream, pineapple juice, and ice in a blender. Blend until smooth and pour into a chilled hurricane glass. Garnish with a pineapple wedge and cherry."
+},{
+    name: "Tom Collins",
+    image_url: "https://craftybartending.com/wp-content/uploads/2018/04/Tom-Collins-Cocktail.jpg",
+    glass_type: "Collins glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Gin", "quantity": "2 oz"},
+        {item: "Fresh lemon juice", "quantity": "1 oz"},
+        {item: "Simple syrup", "quantity": "0.5 oz"},
+        {item: "Club soda", "quantity": "Top up"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Lemon wedge", "quantity": "For garnish"}
+    ],
+    instructions: "Combine gin, lemon juice, and simple syrup in a shaker with ice. Shake well and strain into a Collins glass filled with ice. Top with club soda and garnish with a lemon wedge."
+},{
+    name: "Mai Tai",
+    image_url: "https://th.bing.com/th/id/OIP.EMkZKFb7XbXAvUd-H0o9bQAAAA?rs=1&pid=ImgDetMain",
+    glass_type: "Rocks glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Light rum", "quantity": "1 oz"},
+        {item: "Dark rum", "quantity": "1 oz"},
+        {item: "Orange curacao", "quantity": "0.5 oz"},
+        {item: "Orgeat syrup", "quantity": "0.5 oz"},
+        {item: "Fresh lime juice", "quantity": "1 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Mint sprig", "quantity": "For garnish"}
+    ],
+    instructions: "Combine light rum, orange curacao, orgeat syrup, and lime juice in a shaker with ice. Shake well and pour into a rocks glass filled with ice. Float dark rum on top and garnish with a mint sprig."
+},{
+    name: "Espresso Martini",
+    image_url: "https://th.bing.com/th/id/OIP.4AqzHl1BaDKHk7qg01mtnwHaL2?rs=1&pid=ImgDetMain",
+    glass_type: "Martini glass",
+    alcoholic: "Yes",
+    ingredients: [
+        {item: "Vodka", "quantity": "2 oz"},
+        {item: "Coffee liqueur", "quantity": "1 oz"},
+        {item: "Freshly brewed espresso (cooled)", "quantity": "1 oz"},
+        {item: "Simple syrup (optional)", "quantity": "0.5 oz"},
+        {item: "Ice", "quantity": "As needed"},
+        {item: "Coffee beans", "quantity": "For garnish"}
+    ],
+    instructions: "Add vodka, coffee liqueur, espresso, and simple syrup (if using) to a cocktail shaker filled with ice. Shake vigorously until well-chilled. Strain into a chilled martini glass and garnish with three coffee beans."
+}
 ];
 
 const App = () => {

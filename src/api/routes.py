@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import create_access_token
 
 api = Blueprint('api', __name__)
@@ -23,7 +23,7 @@ def signup():
 
     new_signup = User (
         email = email, 
-        password = password, 
+        password = generate_password_hash(password), 
         name = name, 
         age = age, 
     )
@@ -36,9 +36,11 @@ def signup():
 
 @api.route('/login', methods=['POST'])
 def login():
-    email = request.json.get("email")
-    password = request.json.get("password")
-    find_user = User.query.filter_by(email = email)
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+    find_user = User.query.filter_by(email = email).first()
+    print(find_user.password, "where is my user?!!??!?")
 
     if not check_password_hash(find_user.password,password):                # <--this will return a true or false about password that was entered-->
 

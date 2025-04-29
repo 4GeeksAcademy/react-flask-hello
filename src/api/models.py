@@ -7,11 +7,9 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(
-        String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    name: Mapped[str] = mapped_column(
-        String(120), nullable=False, unique=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False, unique=False)
     age: Mapped[int] = mapped_column(nullable=False, unique=False)
 
     def serialize(self):
@@ -25,8 +23,7 @@ class User(db.Model):
 
 class Login(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(
-        String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(20), nullable=False)
 
     def serialize(self):

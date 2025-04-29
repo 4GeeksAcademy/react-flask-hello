@@ -8,8 +8,7 @@ export const Home = () => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 	const[email,setEmail] = useState("")
 	const[password,setPassword] = useState("")
-	const[name,setName] = useState("")
-	const[age,setAge] = useState("")
+
 
 	const loadMessage = async () => {
 		try {
@@ -39,10 +38,10 @@ export const Home = () => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "email@email.com",
+				"email": "lov@email.com",
 				"password": "password123",
-				"name": "Jon",
-				"age": 32,
+				"name": "Lov",
+				"age": 34,
 
 			})
 		}
@@ -63,8 +62,8 @@ export const Home = () => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "user10@gmail.com",
-				"password": "password 123"
+				"email": "lov@email.com",
+				"password": "password123"
 			})
 		}
 		fetch(backendUrl  + "/api/login", option)
@@ -89,18 +88,16 @@ export const Home = () => {
 				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
 			</p>
 			<div className="alert alert-info">
-			<div>
-				<input onChange={(e) => setName(e.target.value)} value={name}  type="text" placeholder="Name" />
-				<input onChange={(e) => setAge(e.target.value)} value={age}  type="text" placeholder="Age" />
-				<input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Email" />
-            	<input onChange={(e) => setPassword(e.target.value)} value={password}  type="text" placeholder="Password" />
 				<button onClick={()=>signup()}>
 					Signup
 				</button>
-			</div>
+			<div>
+				<input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Email" />
+				<input onChange={(e) => setPassword(e.target.value)} value={password}  type="text" placeholder="Password" />
 				<button onClick={()=>login()}>
 					Login
 				</button>
+			</div>
 				{/* {store.message ? (
 					<span>{store.message}</span>
 				) : (

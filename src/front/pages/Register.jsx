@@ -55,7 +55,7 @@ const Register = () => {
         </div>
 
         <div className="register-box register-right">
-          <h1 className="register-title">LEVEL UP</h1>
+          <h1><span className="level-text-register">LEVEL</span><span className="up-text-register">UP</span></h1>
           <h2>Register</h2>
           <p>Create your account to begin your journey</p>
 

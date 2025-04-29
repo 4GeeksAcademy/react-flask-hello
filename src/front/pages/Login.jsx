@@ -47,7 +47,7 @@ const Login = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="login-box login-left">
-          <h1 className="login-title">LEVEL UP</h1>
+          <h1><span className="level-text-login">LEVEL</span><span className="up-text-login">UP</span></h1>
           <h2>Log in</h2>
           <p>Please enter your details or click here to register</p>
 

@@ -1,5 +1,5 @@
 body, html {
-  margin: 0;
+  margin: auto;
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -7,7 +7,7 @@ body, html {
 
 .login-page {
   position: relative;
-  background: url('/workspaces/Proyecto_Final_4Geeks_DavidFarewell/src/front/assets/styles/images/waves_2k_upscaled.jpg') no-repeat center center fixed;
+  background: url('/workspaces/Proyecto_Final_4Geeks_DavidFarewell/src/front/assets/styles/images/Landing_images/waves_2k_upscaled.jpg') no-repeat center center fixed;
   background-size: cover;
   height: 100vh;
   display: flex;
@@ -24,7 +24,7 @@ body, html {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.3); /* Nivel de oscuridad del fondo */
+  background-color: rgba(0, 0, 0, 0.6); /* Nivel de oscuridad del fondo */
   z-index: 2;
 }
 
@@ -34,7 +34,7 @@ body, html {
   max-width: 1000px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.282);
   background: transparent;
   position: relative;
   z-index: 3;
@@ -64,8 +64,15 @@ body, html {
   justify-content: center;
 }
 
-.login-title {
-  color: #a855f7;
+.level-text-login {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.up-text-login {
+  color: #ff4f4f;
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 25px;
@@ -117,7 +124,7 @@ button {
 }
 
 .login-btn {
-  background-color: orange;
+  background-color: #ff5c5c;
   color: black;
   font-weight: bold;
 }

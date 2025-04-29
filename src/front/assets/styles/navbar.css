@@ -1,0 +1,82 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 1.6rem;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  
+  .level-text {
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .level-text:hover {
+    color: #a259ff; /* Morado bonito al hacer hover jiji */
+  }
+  
+  .up-text {
+    color: #ff4f4f;
+  }
+  
+  .navbar-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .navbar-buttons span {
+    color: white;
+    font-weight: 500;
+  }
+  
+  .btn {
+    font-weight: bold;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    transition: background 0.3s;
+  }
+  .btn-outline-primary{
+    text-decoration: none;
+    color: azure;
+  }
+  
+  .btn-outline-success{
+    text-decoration: none;
+    color: azure;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #00000039;
+    color: rgb(185, 63, 255);
+  }
+  
+  .btn-outline-success:hover {
+    background-color: #00000033;
+    color: #ff4f4f;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }

@@ -1,9 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import "../assets/styles/navbar.css";
 
-export const Navbar = () => {
+const Navbar = () => {
   const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Solo mostrar el navbar en la página de inicio (landing)
+  const isLanding = location.pathname === "/";
+
+  if (!isLanding) return null;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -11,19 +18,27 @@ export const Navbar = () => {
     navigate("/");
   };
 
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container">
-        <Link className="navbar-brand" to="/">LevelUp</Link>
-        <div className="ml-auto">
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link className="navbar-brand" to="/" onClick={handleLogoClick}>
+          <span className="level-text">LEVEL</span><span className="up-text">UP</span>
+        </Link>
+        <div className="navbar-buttons">
           {store.user ? (
             <>
-              <span className="me-3">{store.user.email}</span>
-              <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+              <span>{store.user.email}</span>
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
+                Logout
+              </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="btn btn-outline-primary me-2">Login</Link>
+              <Link to="/login" className="btn btn-outline-primary">Login</Link>
               <Link to="/register" className="btn btn-outline-success">Register</Link>
             </>
           )}
@@ -32,3 +47,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+export default Navbar;

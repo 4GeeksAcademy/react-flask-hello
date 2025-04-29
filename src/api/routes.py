@@ -17,12 +17,12 @@ CORS(api)
 def post_show():
 
     showTitle = request.json.get('showTitle')
-    favorite_id = request.json.get('favorite_id')
+    favorites_id = request.json.get('favorites_id')
 
     new_show = Show(
 
         showTitle=showTitle,
-        favorite_id=favorite_id
+        favorites_id=favorites_id
 
     )
 
@@ -56,9 +56,17 @@ def signup():
 def post_favorites():
     data = request.json
     new_favorite = Favorites(
-        showTitle=data["showTitle"],
-        favorites_id=data["favorites_id"]
+        user=data["user_id"]
     )
     db.session.add(new_favorite)
     db.session.commit()
     return jsonify(new_favorite.serialize()), 200
+
+
+
+@api.route("/favorites", methods=["GET"])
+def get_favorites():
+
+    favorites = Favorites.query.all()
+    favoriteList = [fav.serialize() for fav in favorites]
+    return jsonify(favoriteList)

@@ -30,7 +30,7 @@ export const Search = () => {
         <div className="search mt-auto py-3 text-center">
             <div className="cocktail">
                 <input
-                    placeholder="Search for a cocktail..."
+                    placeholder="Search for a cocktail"
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>

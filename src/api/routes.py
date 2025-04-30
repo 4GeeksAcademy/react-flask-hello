@@ -44,6 +44,9 @@ def signup():
     password = request.json.get("password")
     name = request.json.get("name")
     age = request.json.get("age")
+    find_user = User.query.filter_by(email = email).first()
+    if find_user: 
+        return jsonify("email already in use"), 500 
 
     new_signup = User(
         email=email,

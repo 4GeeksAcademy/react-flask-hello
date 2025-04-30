@@ -13,6 +13,7 @@ export const Home = () => {
 
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 
+
 	const signup = () => {
 		const option = {
 			method: "POST",
@@ -37,6 +38,30 @@ export const Home = () => {
 			})
 	}
 
+	const login = () => {
+		const option = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				"email": "lov@email.com",
+				"password": "password123"
+			})
+		}
+		fetch(backendUrl  + "/api/login", option)
+			.then((resp) => {
+				return resp.json()
+			})
+
+			.then((data) => {
+				console.log(data)
+			})
+	}
+
+	useEffect(() => {
+		// loadMessage()
+	}, [])
 
 	return (
 		<div className="text-center mt-5">
@@ -67,9 +92,16 @@ export const Home = () => {
 
 
 			<div className="alert alert-info">
-				<button onClick={() => signup()}>
-					Create Account
+				<button onClick={()=>signup()}>
+					Signup
 				</button>
+			<div>
+				<input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Email" />
+				<input onChange={(e) => setPassword(e.target.value)} value={password}  type="text" placeholder="Password" />
+				<button onClick={()=>login()}>
+					Login
+				</button>
+			</div>
 				{/* {store.message ? (
 					<span>{store.message}</span>
 				) : (

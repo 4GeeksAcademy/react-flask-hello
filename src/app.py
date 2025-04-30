@@ -34,16 +34,14 @@ def create_app():
     db.init_app(app)
 
     JWTManager(app)
-    frontend_origin = "https://opulent-lamp-g759pj7vvq43gvw-3000.app.github.dev"
-
-    from flask_cors import CORS
 
     CORS(app,
-     origins=["https://opulent-lamp-g759pj7vvq43gvw-3000.app.github.dev"],
-     supports_credentials=True,
-     allow_headers=["Content-Type", "Authorization"],
-     expose_headers=["Content-Type"],
-     methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
+    origins=["*"],
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    expose_headers=["Content-Type"],
+    methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"]
+    )
 
 
     setup_admin(app)

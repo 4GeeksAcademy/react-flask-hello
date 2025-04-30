@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../assets/styles/register.css";
 
+const URL = import.meta.env.VITE_BACKEND_URL;
+
 const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -17,7 +19,7 @@ const Register = () => {
     }
 
     try {
-      const resp = await fetch(`https://opulent-lamp-g759pj7vvq43gvw-3001.app.github.dev/api/register`, {
+      const resp = await fetch(`${URL}api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),

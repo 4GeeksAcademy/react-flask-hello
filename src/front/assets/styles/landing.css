@@ -50,7 +50,7 @@ body {
   bottom: 0;
   height: 300px;
   background: linear-gradient(to bottom, rgba(11, 10, 24, 0) 0%, #0b0a18 100%);
-  z-index: 2;
+  z-index: 3;
 }
 
 .hero h1,

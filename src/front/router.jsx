@@ -10,6 +10,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import VideosCarousel from "./components/VideosCarousel";
 import PodcastCarousel from "./components/PodcastCarousel";
 import TasksCarousel from "./components/TasksCarousel";
+import Profile2 from "./pages/Profile2";
+import Onboarding from "./components/OnboardingContent";
+import Journey from "../front/pages/Journey";
 
 
 export const router = createBrowserRouter(
@@ -22,6 +25,9 @@ export const router = createBrowserRouter(
       <Route path="videoscarousel" element={<VideosCarousel />} />
       <Route path="podcastcarousel" element={<PodcastCarousel />} />
       <Route path="taskscarousel" element={<TasksCarousel />} />
+      <Route path="profile2" element={<Profile2 />} />
+      <Route path="onboarding" element={<Onboarding />} />
+      <Route path="journey" element={<Journey />} />
 
       
       {/* Rutas protegidas */}

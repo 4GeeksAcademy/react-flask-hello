@@ -2,16 +2,40 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Favorites, Show
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from werkzeug.security import check_password_hash, generate_password_hash
-from flask_jwt_extended import create_access_token
+
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+# test the "try block" to ensure it works well then add to the favorites post method as well.
+try: 
+    @api.route('/show', methods=['POST'])
+    def post_show():
+
+        showTitle = request.json.get('showTitle')
+        favorites_id = request.json.get('favorites_id')
+
+        new_show = Show(
+
+            showTitle=showTitle,
+            favorites_id=favorites_id
+
+        )
+
+        db.session.add(new_show)
+        db.session.commit()
+
+        return jsonify("SHOW CREATED"), 200
+       
+except:
+    print("Error has occured. Please try to favorite show again.")
+
+
 
 
 @api.route('/signup', methods=['POST'])
@@ -24,11 +48,11 @@ def signup():
     if find_user: 
         return jsonify("email already in use"), 500 
 
-    new_signup = User (
-        email = email, 
-        password = generate_password_hash(password), 
-        name = name, 
-        age = age, 
+    new_signup = User(
+        email=email,
+        password=password,
+        name=name,
+        age=age
     )
     db.session.add(new_signup)
     db.session.commit()
@@ -37,20 +61,21 @@ def signup():
 
 
 
-@api.route('/login', methods=['POST'])
-def login():
+@api.route('/favorites', methods=['POST'])
+def post_favorites():
     data = request.json
-    email = data.get("email")
-    password = data.get("password")
-    find_user = User.query.filter_by(email = email).first()
-    print(find_user.password, "where is my user?!!??!?")
+    new_favorite = Favorites(
+        user=data["user_id"]
+    )
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify(new_favorite.serialize()), 200
 
-    if not check_password_hash(find_user.password,password):                # <--this will return a true or false about password that was entered-->
 
-        return jsonify("login failed!")
 
-    token = create_access_token(identity = email)
-         # ^--this creates 'token' for you,--->  <--- the [identity=email] gives access to the 'User'-->
+@api.route("/favorites", methods=["GET"])
+def get_favorites():
 
-    return jsonify(token_value = token), 200
-
+    favorites = Favorites.query.all()
+    favoriteList = [fav.serialize() for fav in favorites]
+    return jsonify(favoriteList)

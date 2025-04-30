@@ -58,6 +58,7 @@ export const Home = () => {
 				console.log(data)
 			})
 	}
+	
 
 	useEffect(() => {
 		// loadMessage()

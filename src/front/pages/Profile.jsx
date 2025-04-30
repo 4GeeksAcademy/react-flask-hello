@@ -1,11 +1,17 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-export const Home = () => {
+export default function Profile() {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
+
+	// added this becuase we are filling the favorites object 
+	const [fav, setFav] = useState("")
+
+	// added this in case it is needed to map a list
+	const favoritedShow = []; 
 
 	const loadMessage = async () => {
 		try {
@@ -28,21 +34,19 @@ export const Home = () => {
 
 	}
 
-	const signup = () => {
+	const post_favorites = () => {
 		const option = {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "email@email.com",
-				"password": "password123",
-				"name": "Jon",
-				"age": 32,
+				"user": "Brandon-Ray",
+			
 
 			})
 		}
-		fetch(backendUrl  + "/api/signup", option)
+		fetch(backendUrl  + "/api/post_favorites", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -51,19 +55,50 @@ export const Home = () => {
 				console.log(data)
 			})
 	}
-	
 
-	useEffect(() => {
-		// loadMessage()
-	}, [])
+	const post_show = () => {
+		const option = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				"showTitle": "Breaking Bad",
+				"favorites_id":2
+			
+
+			})
+		}
+		fetch(backendUrl  + "/api/post_show", option)
+			.then((resp) => {
+				return resp.json()
+			})
+
+			.then((data) => {
+				console.log(data)
+			})
+	}
+
+
+
 
 	return (
 		<div className="text-center mt-5">
-			<h1 className="display-4">Couch Potato</h1>
+			<h1 className="display-4">Profile Page</h1>
 			<p className="lead">
-				<h1>Yo</h1>
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
+				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
+				{/* <img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" /> */}
+			<div>
+				<h1>Favorites List</h1>
+					{/* should take in each favorited item into the state then in a list */}
+				{fav.map((favoritedShow)=> (	
+					<ul>
+					<li favoritedShow={favoritedShow}></li>
+				</ul>
+				))}
+			</div>
 			</p>
+
 			<div className="alert alert-info">
 			<button onClick={()=>signup()}>
 			signup

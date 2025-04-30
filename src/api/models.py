@@ -38,7 +38,7 @@ class Show(db.Model):
     __tablename__ = "show"
     id: Mapped[int] = mapped_column(primary_key=True)
     showTitle: Mapped[str] = mapped_column(String(50), unique=False, nullable=True)
-    favorites_id: Mapped[int] = mapped_column(ForeignKey("favorites.id")) #ask about this
+    favorites_id: Mapped[int] = mapped_column(ForeignKey("favorites.id")) 
 
 
     def serialize(self):

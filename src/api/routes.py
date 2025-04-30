@@ -12,24 +12,30 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
+# test the "try block" to ensure it works well then add to the favorites post method as well.
+try: 
+    @api.route('/show', methods=['POST'])
+    def post_show():
 
-@api.route('/show', methods=['POST'])
-def post_show():
+        showTitle = request.json.get('showTitle')
+        favorites_id = request.json.get('favorites_id')
 
-    showTitle = request.json.get('showTitle')
-    favorites_id = request.json.get('favorites_id')
+        new_show = Show(
 
-    new_show = Show(
+            showTitle=showTitle,
+            favorites_id=favorites_id
 
-        showTitle=showTitle,
-        favorites_id=favorites_id
+        )
 
-    )
+        db.session.add(new_show)
+        db.session.commit()
 
-    db.session.add(new_show)
-    db.session.commit()
+        return jsonify("SHOW CREATED"), 200
+       
+except:
+    print("Error has occured. Please try to favorite show again.")
 
-    return jsonify("SHOW CREATED"), 200
+
 
 
 @api.route('/signup', methods=['POST'])
@@ -51,7 +57,7 @@ def signup():
     return jsonify("user signedup"), 200
 
 
-# POST method for Favorites// still working on this... very similar to routes
+
 @api.route('/favorites', methods=['POST'])
 def post_favorites():
     data = request.json

@@ -14,6 +14,7 @@ import { SignUp } from "./pages/signUp";
 import { Search } from "./pages/Search";
 
 import { SignIn } from "./pages/signIn";
+import { MainPage } from "./pages/mainpage";
 
 
 export const router = createBrowserRouter(
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
         <Route path="/search" element={<Search />} />
 
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/mainpage" element={<MainPage />} />
 
       </Route>
     )

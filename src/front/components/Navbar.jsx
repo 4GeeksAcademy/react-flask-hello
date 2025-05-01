@@ -18,6 +18,12 @@ export const Navbar = () => {
 					   <button className="btn btn-primary">Google Api</button>
 					</Link>
 				</div>
+				<div className="ml-auto">
+					<Link to ="/custom">
+					   <button className="btn btn-primary">Custom ingredients</button>
+					</Link>
+				</div>
+				
 			</div>
 		</nav>
 	);

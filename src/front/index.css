@@ -32,17 +32,17 @@
 .modal button:hover {
   background: #0056b3;
 }
-body {
+/* body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* Gradient background */
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); Gradient background
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Full screen height */
-  color: #333; /* Text color */
-}
+  min-height: 100vh; Full screen height
+  color: #333; Text color
+} */
 
 h1, h2, h3 {
   font-family: 'Helvetica', sans-serif;

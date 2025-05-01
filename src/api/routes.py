@@ -26,6 +26,7 @@ CORS(api)
 def get_places_of_drinks():  
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY") # ==>> get the google api key from the environment variables  
     data = request.get_json()# ==>>Looks at the body of the incoming HTTP request and it parses the JSON text and returns a Python dict (or list) representing that JSON.
+   
     if not isinstance(data, dict):  # ==>> check if the data is a dictionary        
         return jsonify({"error": "Payload must be a JSON object"}), 400  # ==>> if the data is not a dictionary, return a 400 error   
        
@@ -66,13 +67,16 @@ def get_places_of_drinks():
      if opennow:  # ==>> check if the opennow parameter is present in the request
         params["opennow"] = "true"  # ==>> add the opennow parameter to the request
 
+    
     res = requests.get(url, params=params) # ==>> make a request to the google api with the parameters
+    
     if res.status_code != 200:  # ==>> check if the request was successful
         return jsonify({
             "error": "Failed to fetch data from Google",
             "details": res.text
         }), 500    
     body = res.json()
+    print("📄 [Flask] Google JSON:", body)
     places = body.get("results", [])
     next_page_token = body.get("next_page_token")
 

@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Favorites, Show
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 api = Blueprint('api', __name__)
@@ -13,7 +14,7 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 # test the "try block" to ensure it works well then add to the favorites post method as well.
-try: 
+try:
     @api.route('/show', methods=['POST'])
     def post_show():
 
@@ -31,12 +32,25 @@ try:
         db.session.commit()
 
         return jsonify("SHOW CREATED"), 200
-       
+
 except:
     print("Error has occured. Please try to favorite show again.")
 
 
+@api.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+    find_user = User.query.filter_by(email=email).first()
 
+    user = {"name":find_user.name, "email":find_user.email}
+    print(find_user.password, "where is my user?!!??!?")
+
+    # <--this will return a true or false about password that was entered-->
+    if not check_password_hash(find_user.password, password):
+        return jsonify({"Wrong Password!!"})
+    return jsonify({"user":user})
 
 @api.route('/signup', methods=['POST'])
 def signup():
@@ -44,13 +58,13 @@ def signup():
     password = request.json.get("password")
     name = request.json.get("name")
     age = request.json.get("age")
-    find_user = User.query.filter_by(email = email).first()
-    if find_user: 
-        return jsonify("email already in use"), 500 
+    find_user = User.query.filter_by(email=email).first()
+    if find_user:
+        return jsonify("email already in use"), 500
 
     new_signup = User(
         email=email,
-        password=password,
+        password=generate_password_hash(password),
         name=name,
         age=age
     )
@@ -58,7 +72,6 @@ def signup():
     db.session.commit()
 
     return jsonify("user signedup"), 200
-
 
 
 @api.route('/favorites', methods=['POST'])
@@ -70,7 +83,6 @@ def post_favorites():
     db.session.add(new_favorite)
     db.session.commit()
     return jsonify(new_favorite.serialize()), 200
-
 
 
 @api.route("/favorites", methods=["GET"])

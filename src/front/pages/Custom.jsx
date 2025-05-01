@@ -1,44 +1,32 @@
 import React, { useState, useEffect } from "react";
 
-const handleFetch = (setDrinks) => {
+const handleFetch = (setIngredients) => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
         .then((res) => res.json())
         .then((data) => {
             if (data.drinks) {
-                setDrinks(data.drinks);
+                // Add placeholder images for each ingredient
+                const ingredientsWithImages = data.drinks.map((drink) => ({
+                    ...drink,
+                    image: `https://www.thecocktaildb.com/images/ingredients/${drink.strIngredient1}-Medium.png`,
+                }));
+                setIngredients(ingredientsWithImages);
             } else {
-                setDrinks([]);
+                setIngredients([]);
             }
         })
         .catch((err) => console.error(err));
 };
 
 export const Custom = () => {
-    const [drinks, setDrinks] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const [matches, setMatches] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        // Fetch cocktails on app load
-        handleFetch(setDrinks);
-        // Extract ingredients from fetched data
-        const extractIngredients = (cocktails) => {
-            const allIngredients = cocktails.reduce((acc, drink) => {
-                [...Array(15).keys()].forEach((i) => {
-                    const ingredient = drink[`strIngredient${i + 1}`];
-                    if (ingredient && !acc.includes(ingredient)) {
-                        acc.push(ingredient);
-                    }
-                });
-                return acc;
-            }, []);
-            setIngredients(allIngredients);
-        };
-        handleFetch((cocktails) => {
-            extractIngredients(cocktails);
-        });
+        // Fetch ingredients with images when the component mounts
+        handleFetch(setIngredients);
     }, []);
 
     const handleIngredientToggle = (ingredient) => {
@@ -47,16 +35,6 @@ export const Custom = () => {
             : [...selectedIngredients, ingredient];
 
         setSelectedIngredients(newSelected);
-
-        // Calculate matches
-        const matchCount = drinks.filter((drink) =>
-            newSelected.every((ing) => {
-                return [...Array(15).keys()]
-                    .map((i) => drink[`strIngredient${i + 1}`])
-                    .includes(ing);
-            })
-        ).length;
-        setMatches(matchCount);
     };
 
     const saveCustomSet = () => {
@@ -68,49 +46,48 @@ export const Custom = () => {
         localStorage.setItem("customSets", JSON.stringify([...savedSets, customSet]));
         setIsModalOpen(false);
     };
-    console.log("drinks!!!", drinks)
+
     return (
         <div className="app mt-auto py-3 text-center">
             <button onClick={() => setIsModalOpen(true)}>My Ingredients</button>
 
-            {/* Cocktail list */}
+            {/* Ingredient list (cards for each ingredient) */}
             <div className="Cocktail">
-                {drinks.length > 0 && drinks && drinks !== "no data found" ?
-                    drinks.map((drink) => (
+                {ingredients.length > 0
+                    ? ingredients.map((drink) => (
                         <div key={drink.strIngredient1} className="drink">
                             <h2>{drink.strIngredient1}</h2>
-                            {/* <img src={drink.strDrinkThumb} alt={drink.strDrink} />
-                            <p><strong>Glass:</strong> {drink.strGlass}</p>
-                            <p><strong>Category:</strong> {drink.strCategory}</p>
-                            <p><strong>Ingredients:</strong></p>
-                            <ul>
-                                {[...Array(15).keys()].map((i) => {
-                                    const ingredient = drink[`strIngredient${i + 1}`];
-                                    return ingredient && <li key={i}>{ingredient}</li>;
-                                })}
-                            </ul>
-                            <p><strong>Instructions:</strong> {drink.strInstructions}</p> */}
+                            <img
+                                src={drink.image}
+                                alt={drink.strIngredient1}
+                                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                            />
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedIngredients.includes(drink.strIngredient1)}
+                                    onChange={() => handleIngredientToggle(drink.strIngredient1)}
+                                />
+                                <label>Select</label>
+                            </div>
                         </div>
-                    )
-                    )
-                    :
-                    "No Drinks availabale!!!"
-
+                    ))
+                    : "No Ingredients Available!"
                 }
             </div>
 
-            {/* Modal for My Ingredients */}
+            {/* Modal for selecting ingredients */}
             {isModalOpen && (
                 <div className="modal">
                     <h2>Select Your Ingredients</h2>
-                    {ingredients.map((ingredient) => (
-                        <div key={ingredient}>
+                    {ingredients.map((drink) => (
+                        <div key={drink.strIngredient1} className="ingredient-card">
                             <input
                                 type="checkbox"
-                                checked={selectedIngredients.includes(ingredient)}
-                                onChange={() => handleIngredientToggle(ingredient)}
+                                checked={selectedIngredients.includes(drink.strIngredient1)}
+                                onChange={() => handleIngredientToggle(drink.strIngredient1)}
                             />
-                            <label>{ingredient}</label>
+                            <label>{drink.strIngredient1}</label>
                         </div>
                     ))}
                     <div>Matches: {matches} cocktails</div>

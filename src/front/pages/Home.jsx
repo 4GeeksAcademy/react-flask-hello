@@ -5,8 +5,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
-	const [FirstName, setFirstName] = useState("")
-	const [LastName, setLastName] = useState("")
+	const [name, setName] = useState("")
 	const [birthday, setBirthday] = useState("")
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
@@ -23,7 +22,7 @@ export const Home = () => {
 			body: JSON.stringify({
 				"email": email,
 				"password": password,
-				"name": FirstName,   
+				"name": name,   
 				"age": birthday,
 
 			})
@@ -32,10 +31,13 @@ export const Home = () => {
 			.then((resp) => {
 				return resp.json()
 			})
-
+			.catch(()=> {
+				console.log(error, "The data did not load!!!")
+			})
 			.then((data) => {
 				console.log(data,"Where is my data????")
 			})
+			
 	}
 
 	const login = () => {
@@ -60,24 +62,20 @@ export const Home = () => {
 	}
 	
 
-	useEffect(() => {
-		// loadMessage()
-	}, [])
+	// useEffect(() => {
+	// 	// loadMessage()
+	// }, [])
 
 	return (
 		<div className="text-center mt-5">
 			<h1 className="display-4">Couch Potato</h1>
 			<div>
-				<label>Enter First Name</label>
-				<input onChange={(e) => setFirstName(e.target.value)} value={FirstName}  type="text" placeholder="first name" />
-			</div>
-			<div>
-				<label>Enter Last Name</label>
-				<input onChange={(e) => setLastName(e.target.value)} value={LastName} type="text" placeholder="last name" />
+				<label>Enter Your Name</label>
+				<input onChange={(e) => setName(e.target.value)} value={name} type="text" placeholder="full name" />
 			</div>
 			<div>
 				<label>Enter Age</label>
-				<input onChange={(e) => setBirthday(e.target.value)} value={birthday} type="number" placeholder="19" />
+				<input onChange={(e) => setBirthday(e.target.value)} value={birthday} type="age" placeholder="19" />
 			</div>
 			{/* fix 'type' back to date */}
 			<div>
@@ -93,12 +91,11 @@ export const Home = () => {
 
 
 			<div className="alert alert-info">
+			<div>
 				<button onClick={()=>signup()}>
 					Signup
 				</button>
-			<div>
-				<input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Email" />
-				<input onChange={(e) => setPassword(e.target.value)} value={password}  type="text" placeholder="Password" />
+				
 				<button onClick={()=>login()}>
 					Login
 				</button>

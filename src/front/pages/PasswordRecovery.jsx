@@ -5,15 +5,19 @@ import { Link, useParams } from "react-router-dom";
 export const PasswordRecovery = () => {
 
 
-}
 
-// useEffect(()=> {
-// },[]);
+
+useEffect(()=> {
+},[]);
 
 return (
     <div >
-        PW Recovery Page
-
+        <h1>Forgot Password</h1>
+        <p>Enter your email address and we will send you a link to reset your password</p>
+        <input/>
+        <button>
+            Send Reset Link
+        </button>
     </div>
 
 )

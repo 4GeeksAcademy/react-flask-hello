@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Link, useParams } from "react-router-dom";
 
 export const Home = () => {
 
@@ -102,6 +103,7 @@ export const Home = () => {
 				<button onClick={()=>login()}>
 					Login
 				</button>
+				<Link to="/resetpassword">Forgot Password?</Link>
 			</div>
 				{/* {store.message ? (
 					<span>{store.message}</span>
@@ -112,5 +114,6 @@ export const Home = () => {
 				)} */}
 			</div>
 		</div>
+		
 	);
 }; 

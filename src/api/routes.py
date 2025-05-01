@@ -109,6 +109,7 @@ def get_places_of_drinks():
     }), 200   # ==>> return the filtered places as a json object with a 200 status code
 
     
+    
 
 # ==>> Search Places in a specific location:Accepts E.G: { zip_code: "10001" } Returns { latitude: 40.75, longitude: -73.99}
 @api.route('/places/by-location', methods=['POST'])
@@ -218,6 +219,7 @@ def get_places_by_location():
         "places":            filtered_places,
         "next_page_token":   next_page_token
     }), 200
+
 
 @api.route('/places/details', methods=['POST'])  # ==>> Endpoint for the Place Details API within the Google Maps Platform. It allows you to request detailed information about a specific place, such as a business or point of interest.
 def get_place_details():

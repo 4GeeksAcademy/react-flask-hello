@@ -19,8 +19,11 @@ flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
 sqlalchemy = "*"
 requests = "*"
+<<<<<<< HEAD
 flask-cors = "*"
 python-dotenv = "*"
+=======
+>>>>>>> cfd5594c59bfe7a03081100a746d782ca9bec721
 
 [requires]
 python_version = "3.13"

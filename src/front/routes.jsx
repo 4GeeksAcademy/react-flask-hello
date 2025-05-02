@@ -15,7 +15,8 @@ import { Search } from "./pages/Search";
 import { Custom } from "./pages/Custom";
 
 import { SignIn } from "./pages/signIn";
-import { Password } from "./pages/password";
+import { Password } from "./pages/password";import { MainPage } from "./pages/mainpage";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +51,7 @@ export const router = createBrowserRouter(
         <Route path="/search" element={<Search />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/password" element={<Password />} />
+        <Route path="/mainpage" element={<MainPage />} />
 
       </Route>
     )

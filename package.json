@@ -54,6 +54,7 @@
 		]
 	},
 	"dependencies": {
+		"@auth0/auth0-react": "^2.3.0",
 		"@fortawesome/fontawesome-free": "^6.7.2",
 		"framer-motion": "^12.7.4",
 		"prop-types": "^15.8.1",

@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import "../assets/styles/register.css";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { loginWithRedirect } = useAuth0();
+
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -88,7 +92,7 @@ const Register = () => {
 
           <button className="register-btn" onClick={handleRegister}>Register</button>
 
-          <button className="github-btn">
+          <button className="github-btn" onClick={() => loginWithRedirect()}>
             <i className="fab fa-github"></i> Sign up with Github
           </button>
 

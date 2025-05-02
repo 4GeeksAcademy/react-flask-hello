@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
+import React, { useEffect, useState } from "react";
+import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
+import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-export default function Profile() {
+export const Profile = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -83,33 +84,40 @@ export default function Profile() {
 
 
 	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Profile Page</h1>
+		<div className="bg-secondary text-center mt-5 d-inline">
+			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
-				{/* <img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" /> */}
-			<div>
-				<h1>Favorites List</h1>
-					{/* should take in each favorited item into the state then in a list */}
-				{fav.map((favoritedShow)=> (	
-					<ul>
-					<li favoritedShow={favoritedShow}></li>
-				</ul>
-				))}
-			</div>
 			</p>
+			<div>
+				<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 
-			<div className="alert alert-info">
-			<button onClick={()=>signup()}>
-			signup
-			</button>
-				{/* {store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)} */}
+				</div>
+				<div className="d-inline-flex col-3 mt-4">
+					<div>
+						<h2 className="text-center mt-7 ">Favorites List</h2>
+							{/* should take in each favorited item into the state then in a list */}
+						{/* {fav.map((favoritedShow)=> (	
+						))} */}
+						<div className="text-start">
+							<ul className="list-unstyled display-8">
+								<li className="m-1" favoritedShow={favoritedShow}>
+								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
+								Game of Thrones
+								</li>
+								<li className="m-1" favoritedShow={favoritedShow}>
+								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
+								Breaking Bad
+								</li>
+								<li className="m-1" favoritedShow={favoritedShow}>
+								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
+								Prison Break
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// import '../style.css';
+
+
+
+
 
 export const Profile = () => {
 
@@ -14,26 +19,6 @@ export const Profile = () => {
 	// added this in case it is needed to map a list
 	const favoritedShow = []; 
 
-	const loadMessage = async () => {
-		try {
-
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
-
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
-
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
 
 	const post_favorites = () => {
 		const option = {
@@ -78,13 +63,30 @@ export const Profile = () => {
 			.then((data) => {
 				console.log(data)
 			})
+
+
+		
 	}
 
+	const getFavorites=() => {
+		fetch(backendUrl + "/api/favorites")
+			.then((resp)=> {
+				return resp.json()
+			})
 
+			.then((data)=> {
+				setFav(data)
+			})
+	}
+
+	useEffect(() =>{
+		getFavorites()
+
+	},[])
 
 
 	return (
-		<div className="bg-secondary text-center mt-5 d-inline">
+		<div className="text-center mt-5 d-inline bg-purple">
 			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
@@ -97,25 +99,22 @@ export const Profile = () => {
 				<div className="d-inline-flex col-3 mt-4">
 					<div>
 						<h2 className="text-center mt-7 ">Favorites List</h2>
-							{/* should take in each favorited item into the state then in a list */}
-						{/* {fav.map((favoritedShow)=> (	
-						))} */}
-						<div className="text-start">
-							<ul className="list-unstyled display-8">
-								<li className="m-1" favoritedShow={favoritedShow}>
-								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
-								Game of Thrones
-								</li>
-								<li className="m-1" favoritedShow={favoritedShow}>
-								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
-								Breaking Bad
-								</li>
-								<li className="m-1" favoritedShow={favoritedShow}>
-								<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
-								Prison Break
-								</li>
-							</ul>
-						</div>
+						
+						{fav.length > 0 ? 
+						fav.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
+
+						)
+						}):
+						 alert("please select your favorite shows")}
 					</div>
 				</div>
 			</div>

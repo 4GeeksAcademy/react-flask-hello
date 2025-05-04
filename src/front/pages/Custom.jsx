@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "./Custom.css";  // ✅ Import unique CSS
 
-const handleFetch = (setDrinks) => {
+const handleFetch = (setIngredients) => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
         .then((res) => res.json())
         .then((data) => {
             if (data.drinks) {
-                setDrinks(data.drinks);
+                // Add placeholder images for each ingredient
+                const ingredientsWithImages = data.drinks.map((drink) => ({
+                    ...drink,
+                    image: `https://www.thecocktaildb.com/images/ingredients/${drink.strIngredient1}-Medium.png`,
+                }));
+                setIngredients(ingredientsWithImages);
             } else {
-                setDrinks([]);
+                setIngredients([]);
             }
         })
         .catch((err) => console.error(err));
 };
 
 export const Custom = () => {
-    const [drinks, setDrinks] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const [matches, setMatches] = useState(0);
@@ -47,6 +51,7 @@ export const Custom = () => {
 
         setSelectedIngredients(newSelected);
 
+        // Calculate matches
         const matchCount = drinks.filter((drink) =>
             newSelected.every((ing) => {
                 return [...Array(15).keys()]
@@ -72,30 +77,43 @@ export const Custom = () => {
             <button onClick={() => setIsModalOpen(true)}>My Ingredients</button>
 
             {/* Cocktail list */}
-            <div className="custom-cocktail-list">
-                {drinks.length > 0 && drinks && drinks !== "no data found" ? (
+            <div className="Cocktail">
+                {drinks.length > 0 && drinks && drinks !== "no data found" ?
                     drinks.map((drink) => (
-                        <div key={drink.strIngredient1} className="custom-drink-card">
+                        <div key={drink.strIngredient1} className="drink">
                             <h2>{drink.strIngredient1}</h2>
+                            {/* <img src={drink.strDrinkThumb} alt={drink.strDrink} />
+                            <p><strong>Glass:</strong> {drink.strGlass}</p>
+                            <p><strong>Category:</strong> {drink.strCategory}</p>
+                            <p><strong>Ingredients:</strong></p>
+                            <ul>
+                                {[...Array(15).keys()].map((i) => {
+                                    const ingredient = drink[`strIngredient${i + 1}`];
+                                    return ingredient && <li key={i}>{ingredient}</li>;
+                                })}
+                            </ul>
+                            <p><strong>Instructions:</strong> {drink.strInstructions}</p> */}
                         </div>
-                    ))
-                ) : (
-                    "No Drinks available!!!"
-                )}
+                    )
+                    )
+                    :
+                    "No Drinks availabale!!!"
+
+                }
             </div>
 
-            {/* Modal for My Ingredients */}
+            {/* Modal for selecting ingredients */}
             {isModalOpen && (
                 <div className="custom-modal">
                     <h2>Select Your Ingredients</h2>
                     {ingredients.map((ingredient) => (
-                        <div key={ingredient} className="custom-ingredient">
+                        <div key={ingredient}>
                             <input
                                 type="checkbox"
-                                checked={selectedIngredients.includes(ingredient)}
-                                onChange={() => handleIngredientToggle(ingredient)}
+                                checked={selectedIngredients.includes(drink.strIngredient1)}
+                                onChange={() => handleIngredientToggle(drink.strIngredient1)}
                             />
-                            <label>{ingredient}</label>
+                            <label>{drink.strIngredient1}</label>
                         </div>
                     ))}
                     <div className="custom-matches">Matches: {matches} cocktails</div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Custom.css";  // ✅ Import unique CSS
 
 const handleFetch = (setDrinks) => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
@@ -21,9 +22,7 @@ export const Custom = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        // Fetch cocktails on app load
         handleFetch(setDrinks);
-        // Extract ingredients from fetched data
         const extractIngredients = (cocktails) => {
             const allIngredients = cocktails.reduce((acc, drink) => {
                 [...Array(15).keys()].forEach((i) => {
@@ -48,7 +47,6 @@ export const Custom = () => {
 
         setSelectedIngredients(newSelected);
 
-        // Calculate matches
         const matchCount = drinks.filter((drink) =>
             newSelected.every((ing) => {
                 return [...Array(15).keys()]
@@ -68,43 +66,30 @@ export const Custom = () => {
         localStorage.setItem("customSets", JSON.stringify([...savedSets, customSet]));
         setIsModalOpen(false);
     };
-    console.log("drinks!!!", drinks)
+
     return (
-        <div className="app mt-auto py-3 text-center">
+        <div className="custom-app mt-auto py-3 text-center">
             <button onClick={() => setIsModalOpen(true)}>My Ingredients</button>
 
             {/* Cocktail list */}
-            <div className="Cocktail">
-                {drinks.length > 0 && drinks && drinks !== "no data found" ?
+            <div className="custom-cocktail-list">
+                {drinks.length > 0 && drinks && drinks !== "no data found" ? (
                     drinks.map((drink) => (
-                        <div key={drink.strIngredient1} className="drink">
+                        <div key={drink.strIngredient1} className="custom-drink-card">
                             <h2>{drink.strIngredient1}</h2>
-                            {/* <img src={drink.strDrinkThumb} alt={drink.strDrink} />
-                            <p><strong>Glass:</strong> {drink.strGlass}</p>
-                            <p><strong>Category:</strong> {drink.strCategory}</p>
-                            <p><strong>Ingredients:</strong></p>
-                            <ul>
-                                {[...Array(15).keys()].map((i) => {
-                                    const ingredient = drink[`strIngredient${i + 1}`];
-                                    return ingredient && <li key={i}>{ingredient}</li>;
-                                })}
-                            </ul>
-                            <p><strong>Instructions:</strong> {drink.strInstructions}</p> */}
                         </div>
-                    )
-                    )
-                    :
-                    "No Drinks availabale!!!"
-
-                }
+                    ))
+                ) : (
+                    "No Drinks available!!!"
+                )}
             </div>
 
             {/* Modal for My Ingredients */}
             {isModalOpen && (
-                <div className="modal">
+                <div className="custom-modal">
                     <h2>Select Your Ingredients</h2>
                     {ingredients.map((ingredient) => (
-                        <div key={ingredient}>
+                        <div key={ingredient} className="custom-ingredient">
                             <input
                                 type="checkbox"
                                 checked={selectedIngredients.includes(ingredient)}
@@ -113,9 +98,9 @@ export const Custom = () => {
                             <label>{ingredient}</label>
                         </div>
                     ))}
-                    <div>Matches: {matches} cocktails</div>
-                    <button onClick={saveCustomSet}>Save</button>
-                    <button onClick={() => setIsModalOpen(false)}>Close</button>
+                    <div className="custom-matches">Matches: {matches} cocktails</div>
+                    <button className="custom-save-btn" onClick={saveCustomSet}>Save</button>
+                    <button className="custom-close-btn" onClick={() => setIsModalOpen(false)}>Close</button>
                 </div>
             )}
         </div>

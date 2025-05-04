@@ -1,34 +1,66 @@
-.logo {
-  margin-top: 4rem;
-  margin-left: 20px;
+/* ✅ Custom Component Styles */
+.custom-app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  text-align: center;
 }
 
-.modal {
+.custom-cocktail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.custom-drink-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  width: 250px;
+}
+
+.custom-drink-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.custom-modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
+  width: 300px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  z-index: 1000;
+  background: white;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.modal h2 {
-  margin-bottom: 20px;
+.custom-ingredient {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
 }
 
-.modal button {
-  margin: 10px;
-  padding: 10px 15px;
+.custom-matches {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.custom-save-btn,
+.custom-close-btn {
+  margin-top: 10px;
+  padding: 10px;
   border: none;
-  background: #007bff;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
-.modal button:hover {
-  background: #0056b3;
+.custom-save-btn:hover,
+.custom-close-btn:hover {
+  background-color: #0056b3;
 }

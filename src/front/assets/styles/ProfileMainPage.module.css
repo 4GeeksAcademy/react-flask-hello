@@ -1,0 +1,303 @@
+
+/* ProfileMainPage.module.css */
+
+:local(.container) {
+    background-color: #0b0a18;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  :local(.layoutGrid) {
+    width: 100%;
+    max-width: 1600px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+    padding: 2rem 2.5rem;
+    box-sizing: border-box;
+  }
+  
+  /* Cards */
+  :local(.card),
+  :local(.heroCard) {
+    background-color: #1d172d;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  :local(.card1) { grid-column: span 2; }
+  :local(.card2) { grid-column: span 2; }
+  :local(.heroCard) {
+    grid-column: span 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+  }
+  :local(.card4) { grid-column: span 2; }
+  :local(.card5) { grid-column: span 4; }
+  :local(.card6) { grid-column: span 4; }
+  :local(.card7) { grid-column: span 4; }
+  :local(.card8) { grid-column: span 6; }
+  :local(.card9) { grid-column: span 6; }
+  
+  :local(.cardTitle) {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  :local(.editButton) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: #ff5c5c;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  /* Task list */
+  :local(.taskList) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  :local(.taskItem) {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
+  }
+  :local(.statusDot) {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  :local(.done) { background-color: #4caf50; }
+  :local(.inProgress) { background-color: #ffc107; }
+  :local(.pending) { background-color: #f44336; }
+  
+  :local(.button),
+  :local(.journeyButton),
+  :local(.seeAllBtn) {
+    margin-top: 1rem;
+    background-color: #ff5c5c;
+    border: none;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+  }
+  
+  /* Hero section */
+  :local(.heroText h2) {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  :local(.heroText p) {
+    margin: 0.2rem 0;
+  }
+  :local(.heroImage) {
+    width: 120px;
+    height: auto;
+    border-radius: 1rem;
+    max-width: 100%;
+  }
+  
+  /* Avatar */
+  :local(.avatarBlock) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  :local(.avatarImage) {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Level Bar */
+  :local(.levelBar) {
+    background-color: #333;
+    height: 10px;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+    overflow: hidden;
+    width: 100%;
+  }
+  :local(.levelFill) {
+    height: 100%;
+    background-color: #a066ff;
+    width: 60%;
+  }
+  
+  /* Calendar */
+  :local(.calendarHeader) {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  :local(.calendarGrid) {
+    display: grid;
+    height: auto;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+  }
+  :local(.calendarDay) {
+    font-weight: bold;
+    color: #ccc;
+  }
+  :local(.calendarDate) {
+    background-color: #2e2e2e;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: #fff;
+  }
+  :local(.highlightedDate) {
+    background-color: #ff5c5c;
+  }
+  
+  /* Stats */
+  :local(.statsGrid) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  :local(.statLabel) {
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  :local(.statValue) {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Achievements */
+  :local(.cardHeaderWithBtn) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  :local(.achievementsGrid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 0.5rem;
+    justify-items: center;
+  }
+  :local(.achievementIcon) {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 0.3rem;
+  }
+  
+  /* ===================== MEDIA QUERIES ===================== */
+  
+  /* Tablets y ventanas medianas */
+  @media (max-width: 1024px) {
+    :local(.container) {
+      position: static;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      align-items: flex-start;
+    }
+  
+    :local(.layoutGrid) {
+      grid-template-columns: repeat(6, 1fr);
+      padding: 1.5rem;
+      gap: 1rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+  
+    :local(.card1),
+    :local(.card2),
+    :local(.card4),
+    :local(.card5),
+    :local(.card6),
+    :local(.card7),
+    :local(.card8),
+    :local(.card9),
+    :local(.heroCard) {
+      grid-column: span 6 !important;
+    }
+  
+    :local(.heroCard) {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+  }
+  
+  /* Móviles */
+  @media (max-width: 768px) {
+    :local(.container) {
+      position: static;
+      height: auto;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      align-items: flex-start;
+    }
+  
+    :local(.layoutGrid) {
+      grid-template-columns: 1fr;
+      padding: 1rem;
+      gap: 1rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+  
+    :local(.card1),
+    :local(.card2),
+    :local(.card4),
+    :local(.card5),
+    :local(.card6),
+    :local(.card7),
+    :local(.card8),
+    :local(.card9),
+    :local(.heroCard) {
+      grid-column: span 1 !important;
+    }
+  
+    :local(.heroCard) {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+  }
+  

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
-from datetime import datetime
+from datetime import datetime, timedelta
 from api.utils import (
     hash_password,
     check_password,
@@ -168,3 +168,69 @@ def get_all_achievements():
 def get_level_frames():
     frames = LevelFrame.query.all()
     return jsonify([f.serialize() for f in frames]), 200
+
+# --- PROFILE ---
+
+@api.route('/profile/<int:user_id>', methods=['GET'])
+def get_full_profile(user_id):
+    user = AppUser.query.get(user_id)
+    if not user:
+        return jsonify({'msg': 'Usuario no encontrado'}), 404
+
+    today = datetime.utcnow().date()
+
+    # Misiones diarias aceptadas hoy
+    missions_today = UserMission.query.join(Mission).filter(
+        UserMission.user_id == user_id,
+        Mission.is_daily == True,
+        db.func.date(UserMission.accepted_at) == today
+    ).all()
+
+    missions_today_data = [{
+        'title': m.mission.title,
+        'status': m.status,
+        'completed_at': m.completed_at
+    } for m in missions_today]
+
+    # Stats agregadas
+    stats = Stat.query.filter_by(user_id=user_id).all()
+    total_tasks = sum(s.missions_completed or 0 for s in stats)
+    total_xp = sum(s.xp_earned or 0 for s in stats)
+    first_day = min((s.date for s in stats), default=today)
+    days_in_app = (today - first_day).days + 1 if stats else 0
+
+    # Semana actual
+    start_week = today - timedelta(days=today.weekday())
+    week_stats = [s for s in stats if s.date >= start_week]
+    week_xp = sum(s.xp_earned or 0 for s in week_stats)
+
+    # Logros del usuario
+    achievements = UserAchievement.query.filter_by(user_id=user_id).all()
+    achievement_data = [{
+        'title': a.achievement.title,
+        'icon_url': a.achievement.icon_url,
+        'unlocked_at': a.unlocked_at.isoformat()
+    } for a in achievements]
+
+    # Actividad en el calendario del mes
+    calendar_data = [{
+        'date': s.date.isoformat(),
+        'missions_completed': s.missions_completed
+    } for s in stats if s.missions_completed and s.date.month == today.month]
+
+    return jsonify({
+        'user': user.serialize(),  # ya incluye user_id como id
+        'missions_today': missions_today_data,
+        'stats': {
+            'tasks_completed': total_tasks,
+            'time_in_app_days': days_in_app,
+            'daily_missions_today': len(missions_today)
+        },
+        'weekly_progress': {
+            'xp': week_xp
+        },
+        'calendar': calendar_data,
+        'achievements': achievement_data,
+        'reflection': user.mood_actual or ''
+    }), 200
+

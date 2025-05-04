@@ -1,57 +1,57 @@
-import React, { useState } from 'react';
-import '../assets/styles/videoscarousel.css';
+import React, { useRef } from "react";
+import "../assets/styles/videoscarousel.css";
 
-const videos = [
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
-  "/example-video.jpg",
+const videoUrls = [
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/sample1.mp4",
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/sample2.mp4",
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/sample3.mp4",
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/sample4.mp4",
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/sample5.mp4",
 ];
 
-const VideosCarousel = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const visibleItems = 4;
-    const itemWidth = 240; // Ancho de cada item + margen (puedes ajustar)
-  
-    const handlePrev = () => {
-      if (currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
-      }
-    };
-  
-    const handleNext = () => {
-      if (currentIndex < videos.length - visibleItems) {
-        setCurrentIndex(currentIndex + 1);
-      }
-    };
-  
-    return (
-      <div className="carousel-section">
-        <h2>Videos</h2>
-        <div className="carousel-container">
-          <button onClick={handlePrev} className="scroll-button">←</button>
-  
-          <div className="carousel-viewport">
-            <div
-              className="carousel-track"
-              style={{ transform: `translateX(-${currentIndex * itemWidth}px)` }}
-            >
-              {videos.map((src, index) => (
-                <div key={index} className="carousel-item">
-                  <img src={src} alt={`Video ${index}`} />
-                </div>
-              ))}
-            </div>
-          </div>
-  
-          <button onClick={handleNext} className="scroll-button">→</button>
-        </div>
-      </div>
-    );
+const SingleVideoRow = () => {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const scrollAmount = 260;
+
+    if (direction === "left") {
+      container.scrollLeft -= scrollAmount;
+    } else {
+      container.scrollLeft += scrollAmount;
+    }
   };
 
-export default VideosCarousel;
+  return (
+    <div className="carousel-wrapper">
+      <h1>
+        Level<span style={{ color: "#FB645C" }}>UP</span>
+      </h1>
+      <div className="carousel-row">
+        <button className="arrow__btn" onClick={() => scroll("left")}>
+          ‹
+        </button>
+        <div className="carousel-track no-auto-scroll" ref={scrollRef}>
+          {videoUrls.map((url, idx) => (
+            <div key={idx} className="item">
+              <video
+                src={url}
+                controls
+                width="240"
+                height="140"
+                style={{ borderRadius: "10px", objectFit: "cover" }}
+              />
+            </div>
+          ))}
+        </div>
+        <button className="arrow__btn" onClick={() => scroll("right")}>
+          ›
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default SingleVideoRow;

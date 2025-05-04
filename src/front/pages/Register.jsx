@@ -1,11 +1,10 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import "../assets/styles/register.css";
+import { useAuth0 } from '@auth0/auth0-react';
+import styles from "../assets/styles/Register.module.css";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
-
 
 const Register = () => {
   const navigate = useNavigate();
@@ -43,60 +42,76 @@ const Register = () => {
   };
 
   return (
-    <div className="register-page">
+    <div className={styles.registerPage}>
+      <div className={styles.registerPageOverlay}></div> {/* Filtro oscuro */}
       <motion.div
-        className="register-container"
+        className={styles.registerContainer}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="register-box register-left">
-          <div className="info-list">
-            <div className="info-item"><i className="fas fa-check-circle"></i> <span>Accept missions</span></div>
-            <div className="info-item"><i className="fas fa-chart-line"></i> <span>Level up your life</span></div>
-            <div className="info-item"><i className="fas fa-tasks"></i> <span>Track your progress</span></div>
-            <div className="info-item"><i className="fas fa-trophy"></i> <span>Unlock achievements</span></div>
+        <div className={`${styles.registerBox} ${styles.registerLeft}`}>
+          <div className={styles.registerInfoList}>
+            <div className={styles.registerInfoItem}>
+              <i className="fas fa-check-circle"></i> <span>Accept missions</span>
+            </div>
+            <div className={styles.registerInfoItem}>
+              <i className="fas fa-chart-line"></i> <span>Level up your life</span>
+            </div>
+            <div className={styles.registerInfoItem}>
+              <i className="fas fa-tasks"></i> <span>Track your progress</span>
+            </div>
+            <div className={styles.registerInfoItem}>
+              <i className="fas fa-trophy"></i> <span>Unlock achievements</span>
+            </div>
           </div>
         </div>
 
-        <div className="register-box register-right">
-          <h1><span className="level-text-register">LEVEL</span><span className="up-text-register">UP</span></h1>
-          <h2>Register</h2>
-          <p>Create your account to begin your journey</p>
+        <div className={`${styles.registerBox} ${styles.registerRight}`}>
+          <h1>
+            <span className={styles.registerLevelText}>LEVEL</span>
+            <span className={styles.registerUpText}>UP</span>
+          </h1>
+          <h2 className={styles.registerHeading}>Register</h2>
+          <p className={styles.registerParagraph}>Create your account to begin your journey</p>
 
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className={styles.registerInput}
           />
           <input
             type="email"
             placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={styles.registerInput}
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className={styles.registerInput}
           />
           <input
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            className={styles.registerInput}
           />
 
-          <button className="register-btn" onClick={handleRegister}>Register</button>
+          <button className={styles.registerBtn} onClick={handleRegister}>Register</button>
 
           <button className="github-btn" onClick={() => loginWithRedirect()}>
             <i className="fab fa-github"></i> Sign up with Github
           </button>
 
-          <p className="login-link">
+          <p className={styles.registerLoginLink}>
             Already have an account?{" "}
             <span onClick={() => navigate("/login")}>Log in</span>
           </p>

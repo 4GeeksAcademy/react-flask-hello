@@ -36,7 +36,7 @@ def create_app():
     JWTManager(app)
 
     CORS(app,
-    origins=["*"],
+    origins=["https://upgraded-space-cod-rpr9xqp5xvgc5wrr-3000.app.github.dev"],
     supports_credentials=True,
     allow_headers=["Content-Type", "Authorization"],
     expose_headers=["Content-Type"],

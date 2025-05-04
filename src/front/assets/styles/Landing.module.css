@@ -1,4 +1,6 @@
-body {
+/* Landing.module.css adaptado para CSS Modules sin colisiones */
+
+.landingBody {
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
@@ -6,7 +8,11 @@ body {
   color: #ffffff;
 }
 
-.section {
+.landingContainer {
+  overflow-x: hidden;
+}
+
+.landingSection {
   min-height: 100vh;
   padding: 4rem 2rem;
   display: flex;
@@ -15,7 +21,7 @@ body {
   justify-content: center;
 }
 
-.hero {
+.landingHero {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -34,34 +40,30 @@ body {
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
+.landingHeroOverlay {
   position: absolute;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.45);
   z-index: 2;
 }
 
-.hero::after {
-  content: "";
+.landingHeroGradient {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 300px;
-  background: linear-gradient(to bottom, rgba(11, 10, 24, 0) 0%, #0b0a18 100%);
-  z-index: 3;
+  height: 500px;
+  background: linear-gradient(to bottom, rgba(24, 10, 10, 0) 0%, #0b0a18 100%);
+  z-index: 2;
 }
 
-.hero h1,
-.hero p,
-.hero .cta-button {
+.landingHeroContent {
   position: relative;
   z-index: 3;
-  max-width: 500px;
+  max-width: 600px;
 }
 
-.hero h1 {
+.landingHeroTitle {
   font-size: 3rem;
   line-height: 1.2;
   font-weight: 700;
@@ -69,21 +71,21 @@ body {
   color: #ffffff;
 }
 
-.hero h1 span {
+.landingHeroTitle span {
   display: block;
   color: #ffffff;
   font-size: 3.5rem;
   font-weight: 800;
 }
 
-.hero p {
+.landingHeroText {
   color: #cccccc;
   font-size: 1rem;
   margin-top: 1.5rem;
   line-height: 1.6;
 }
 
-.cta-button {
+.landingCtaButton {
   margin-top: 1.5rem;
   padding: 0.7rem 1.6rem;
   background: #ff5c5c;
@@ -97,13 +99,12 @@ body {
   box-shadow: 0px 4px 12px rgba(255, 92, 92, 0.4);
 }
 
-.cta-button:hover {
+.landingCtaButton:hover {
   background: #ff7373;
   transform: scale(1.05);
 }
 
-/* BRANDS CAROUSEL */
-.brand-carousel {
+.landingBrandCarousel {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -116,14 +117,14 @@ body {
   -webkit-mask-image: linear-gradient(to right, transparent, #0b0a18 10%, #0b0a18 90%, transparent);
 }
 
-.brand-track {
+.landingBrandTrack {
   display: flex;
   align-items: center;
   gap: 3rem;
-  animation: scroll-left 40s linear infinite;
+  animation: landingScrollLeft 40s linear infinite;
 }
 
-.brand-logo {
+.landingBrandLogo {
   height: 32px;
   flex-shrink: 0;
   filter: brightness(0) invert(1);
@@ -131,12 +132,12 @@ body {
   transition: transform 0.3s ease;
 }
 
-.brand-logo:hover {
+.landingBrandLogo:hover {
   transform: scale(1.1);
   opacity: 1;
 }
 
-@keyframes scroll-left {
+@keyframes landingScrollLeft {
   0% {
     transform: translateX(0);
   }
@@ -145,8 +146,7 @@ body {
   }
 }
 
-/* UNLOCK CARDS */
-.unlock-cards {
+.landingUnlockCards {
   display: flex;
   gap: 2.5rem;
   flex-wrap: wrap;
@@ -155,7 +155,7 @@ body {
   margin-top: 1rem;
 }
 
-.unlock-cards .card {
+.landingCard {
   background: #1d172d;
   border-radius: 1.5rem;
   padding: 2.5rem 2rem;
@@ -168,7 +168,7 @@ body {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.section.unlock {
+.landingUnlockSection {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -177,27 +177,26 @@ body {
   padding-bottom: 5rem;
 }
 
-.card .icon {
+.landingIcon {
   font-size: 2.5rem;
   color: #ff7373;
   margin-bottom: 1rem;
 }
 
-/* HOW IT WORKS */
-.section.how {
+.landingHow {
   width: 100%;
   max-width: 1050px;
   margin: 0 auto;
   background: #1d172d;
   border-radius: 1.5rem;
-  padding: .05rem 2rem;
+  padding: 0.05rem 2rem;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.tabs {
+.landingTabs {
   display: flex;
   gap: 1rem;
   margin: 1rem 0;
@@ -205,7 +204,7 @@ body {
   justify-content: center;
 }
 
-.tabs button {
+.landingTabButton {
   padding: 1rem 2.5rem;
   background: #2a223d;
   border: none;
@@ -219,17 +218,17 @@ body {
   position: relative;
 }
 
-.tabs button:hover {
-  background: #3a2f5c;
+.landingTabButton:hover {
+  background: #473a64;
 }
 
-.tabs .active {
-  background: #ff5c5c;
-  color: white;
+.activeTab {
+  background: #ff7373 !important;
+  color: white !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
-.tab-content {
+.landingTabContent {
   margin-top: 0.2rem;
   display: flex;
   flex-direction: column;
@@ -237,22 +236,21 @@ body {
   text-align: center;
 }
 
-.tab-content img {
+.landingTabContent img {
   width: 100%;
   max-width: 700px;
   border-radius: 15px;
   margin-bottom: 1rem;
 }
 
-.tab-content p {
+.landingTabDescription {
   color: #cccccc;
   font-size: 1rem;
   max-width: 600px;
   line-height: 1.6;
 }
 
-/* SUBSCRIPTIONS */
-.section.subscriptions {
+.landingSubscriptions {
   width: 100%;
   max-width: 1100px;
   margin: 4rem auto 0;
@@ -262,46 +260,35 @@ body {
   align-items: center;
 }
 
-.section.subscriptions .unlock-cards {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 2.5rem;
+.landingSubscriptions .landingUnlockCards {
   flex-wrap: nowrap;
 }
 
-.section.subscriptions .unlock-cards .card {
-  background: #1d172d;
-  border-radius: 1.5rem;
-  padding: 2.5rem 2rem;
+.landingSubscriptions .landingCard {
   width: 300px;
   min-height: 380px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-.section.subscriptions .unlock-cards .card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.section.subscriptions .unlock-cards .card .price {
+.landingCardTitle {
+  margin-top: 0px;
   font-size: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+.landingPrice {
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0.5rem 0 1rem;
   color: #ffffff;
 }
 
-.section.subscriptions .unlock-cards .card ul {
+.landingCard ul {
   list-style: none;
   padding: 0;
   margin: 0 0 1rem 0;
 }
 
-.section.subscriptions .unlock-cards .card ul li {
+.landingCard ul li {
   margin-bottom: 0.7rem;
   color: #cccccc;
   font-size: 0.95rem;
@@ -310,12 +297,12 @@ body {
   gap: 0.5rem;
 }
 
-.section.subscriptions .unlock-cards .card ul li::before {
+.landingCard ul li::before {
   content: "✔️";
   color: #bb86fc;
 }
 
-.section.subscriptions .unlock-cards .card button {
+.landingCardButton {
   background: #ff5c5c;
   border: none;
   color: white;
@@ -328,22 +315,20 @@ body {
   box-shadow: 0px 4px 12px rgba(255, 92, 92, 0.4);
 }
 
-.section.subscriptions .unlock-cards .card button:hover {
+.landingCardButton:hover {
   background: #ff7373;
   transform: scale(1.05);
 }
 
-/* RESPONSIVE */
 @media (max-width: 992px) {
-  .section.subscriptions .unlock-cards {
+  .landingSubscriptions .landingUnlockCards {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
   }
 }
 
-/* TESTIMONIAL CAROUSEL */
-.carousel-wrapper {
+.landingCarouselWrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -352,28 +337,19 @@ body {
   margin: 2rem 0;
 }
 
-.carousel-track {
+.landingCarouselTrack {
   display: flex;
   gap: 4rem;
   margin: 5px;
   width: max-content;
-  animation: scroll-left 90s linear infinite;
+  animation: landingScrollLeft 90s linear infinite;
 }
 
-.carousel-wrapper.reverse .carousel-track {
-  animation: scroll-left-reverse 180s linear infinite;
+.landingCarouselWrapper.reverse .landingCarouselTrack {
+  animation: landingScrollLeftReverse 180s linear infinite;
 }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes scroll-left-reverse {
+@keyframes landingScrollLeftReverse {
   0% {
     transform: translateX(-50%);
   }
@@ -382,7 +358,7 @@ body {
   }
 }
 
-.testimonial-card {
+.landingTestimonialCard {
   background-color: #1c162e;
   border-radius: 1.5rem;
   padding: 2rem;
@@ -398,7 +374,7 @@ body {
   text-align: center;
 }
 
-.testimonial-card img {
+.landingTestimonialCard img {
   width: 70px;
   height: 70px;
   border-radius: 100%;
@@ -406,25 +382,26 @@ body {
   object-fit: cover;
 }
 
-.testimonial-card .stars {
+.landingStars {
   font-size: 1.3rem;
   color: gold;
   margin: 0.5rem 0;
 }
 
-.testimonial-card .review-text {
+.landingReviewText {
   font-size: 1rem;
   color: #cccccc;
   margin-top: 0.5rem;
 }
 
-.testimonial-card:hover {
+.landingTestimonialCard:hover {
   transform: scale(1.05);
 }
 
-/* FOOTER */
-.footer {
+.landingFooter {
+  display: flex;
   padding: 1rem;
+  justify-content: center;
   text-align: center;
   background: #0b0a18;
   color: #cccccc;

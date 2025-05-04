@@ -1,34 +1,33 @@
-body, html {
-  margin: auto;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
 
-.login-page {
-  position: relative;
+.registerPage {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100vw;
   background: url('/workspaces/Proyecto_Final_4Geeks_DavidFarewell/src/front/assets/styles/images/Landing_images/waves_2k_upscaled.jpg') no-repeat center center fixed;
   background-size: cover;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  overflow: hidden;
   z-index: 1;
 }
 
-.login-page::before {
+.registerPage::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Nivel de oscuridad del fondo */
+  height: 100dvh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 2;
 }
 
-.login-container {
+.registerContainer {
   display: flex;
   width: 100%;
   max-width: 1000px;
@@ -40,7 +39,7 @@ body, html {
   z-index: 3;
 }
 
-.login-box {
+.registerBox {
   width: 50%;
   box-sizing: border-box;
   padding: 40px;
@@ -49,49 +48,48 @@ body, html {
   justify-content: center;
 }
 
-.login-left {
-  background-color: rgba(0, 0, 0, 0.9);
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
-}
-
-.login-right {
+.registerLeft {
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px);
   color: white;
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
-  justify-content: center;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  align-items: flex-start;
 }
 
-.level-text-login {
+.registerRight {
+  background-color: rgba(0, 0, 0, 0.9);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.registerLevelText {
   color: #ffffff;
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 25px;
 }
 
-.up-text-login {
+.registerUpText {
   color: #ff4f4f;
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 25px;
 }
 
-h2 {
+.registerHeading {
   color: white;
   margin: 0 0 10px;
 }
 
-p {
+.registerParagraph {
   color: white;
   font-size: 14px;
   margin-bottom: 20px;
 }
 
-input[type="email"],
-input[type="password"] {
-  width: 100%;
+.registerInput {
+  width: 94,5%;
   padding: 12px;
   margin-bottom: 15px;
   border: none;
@@ -101,61 +99,56 @@ input[type="password"] {
   font-size: 16px;
 }
 
-input::placeholder {
+.registerInput::placeholder {
   color: #ccc;
 }
 
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-button {
+.registerBtn {
   padding: 12px;
   font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   margin-bottom: 12px;
-}
-
-.login-btn {
   background-color: #ff5c5c;
   color: black;
   font-weight: bold;
 }
 
-.github-btn {
+.registerGithubBtn {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 12px;
   background-color: black;
   color: white;
   border: 1px solid #444;
 }
 
-.signup-link {
+.registerLoginLink {
   font-size: 14px;
   color: white;
   text-align: center;
 }
 
-.signup-link span {
+.registerLoginLink span {
   color: orange;
   cursor: pointer;
 }
 
-.info-list {
+.registerInfoList {
   display: flex;
   flex-direction: column;
   padding-left: 25%;
   gap: 20px;
+  justify-content: space-evenly;
   align-items: flex-start;
   height: 100%;
 }
 
-.info-item {
+.registerInfoItem {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -163,41 +156,43 @@ button {
   color: white;
 }
 
-.info-item i {
+.registerInfoItem i {
   font-size: 32px;
-  color: orange;
+  color: #ff5c5c;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-  .login-container {
+  .registerContainer {
     flex-direction: column;
-    border-radius: 0;
     max-width: 500px;
   }
 
-  .login-box {
+  .registerBox {
     width: 100%;
-    border-radius: 0 !important;
     padding: 30px 20px;
   }
 
-  .login-left {
-    border-radius: 16px 16px 0 0;
-  }
-
-  .login-right {
+  .registerRight {
     border-radius: 0 0 16px 16px;
-    align-items: center;
   }
 
-  .info-list {
+  .registerLeft {
+    border-radius: 16px 16px 0 0;
     align-items: center;
+    justify-content: center; /* NUEVO: centrar verticalmente */
+  }
+
+  .registerInfoList {
+    align-items: center;;
     padding-left: 0;
+    padding-right: 0;
+    width: 100%; /* NUEVO: asegurar centrado horizontal */
   }
 
-  .info-item {
-    justify-content: center;
-    text-align: center;
+  .registerInfoItem {
+    justify-content: left;
+    text-align:left;
+    margin-left: 250px;
+    width: 100%; /* NUEVO: asegurar que no se desplacen */
   }
 }

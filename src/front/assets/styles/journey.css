@@ -1,3 +1,4 @@
+/*
 p {
     font-size: clamp(16px, 2vw, 20px);
 }
@@ -6,13 +7,11 @@ h3 {
     font-size: clamp(28px, 3vw, 36px);
 }
 
-/* Imagen */
 img {
     width: clamp(120px, 12vw, 175px);
     height: clamp(120px, 12vw, 175px);
 }
 
-/* Elementos principales */
 .navbar {
     position: relative;
 }
@@ -47,7 +46,7 @@ img {
     position: relative;
     min-width: 200px; /* Aseguramos que no se haga más pequeño que 200px */
 }
-
+/*
 .menu_text p {
     margin: 0px 0px clamp(10px, 4vh, 20px) clamp(15px, 6vw, 30px);
     cursor: pointer;
@@ -93,7 +92,6 @@ img {
     background-color: #4E465C;
 }
 
-/* Click animation */
 .card1:active,
 .card2:active,
 .card3:active {
@@ -101,9 +99,7 @@ img {
     transform: translateY(11px);
 }
 
-/* ---- MEDIA QUERIES ---- */
 
-/* Escalar progresivamente hasta 1100px */
 @media (max-width: 2500px) {
     .moty {
         top: clamp(20px, 5vh, 50px);
@@ -158,10 +154,10 @@ img {
         top: 50%;
         transform: translateY(-50%);
         left: 0;
-        width: 180px; /* Asegurar que el ancho mínimo es 180px */
+        width: 180px; 
         min-width: 180px;
     }
-
+/*
     .button {
         flex-direction: column;
         align-items: center;
@@ -176,12 +172,12 @@ img {
         margin-left: 0;
         overflow-x: unset; /* Eliminar el scroll horizontal */
     }
-
+/*
     .card1, .card2, .card3 {
-        width: 125px; /* Mantener tamaño fijo */
-        height: 125px; /* Mantener tamaño fijo */
+        width: 125px; /* Mantener tamaño fijo *
+        height: 125px; 
     }
-
+/*
     .card1 img {
         width: 125px;
         height: 125px;

@@ -10,6 +10,9 @@ export const GoogleApi = () => {
   const [reviews, setReviews] = useState([]) // State to hold reviews of the selected place
   const [selectedReview, setSelectedReview] = useState(null);
   const [showPhotos, setShowPhotos] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [modalReviewText, setModalReviewText] = useState("");
+
 
 
   const handleSearch = () => { // Function to handle the search button click 
@@ -122,7 +125,8 @@ export const GoogleApi = () => {
                   }}
                 />
               )}
-              <div className="text-wrapper p-2 flex-grow-1">
+              <div className="text-wrapper p-2" style={{ overflowY: 'auto', flexShrink: 1, maxHeight: '400px' }}
+              >
                 <h5>{selectedPlace.name}</h5>
                 <p><strong className={selectedPlace.opening_hours?.open_now ? "text-success" : "text-danger"}>
                   {selectedPlace.opening_hours?.open_now ? "Open" : "Closed"}
@@ -154,6 +158,11 @@ export const GoogleApi = () => {
 
         {/* CENTER: Photos */}
         <div className="col-4 h-100 overflow-auto d-flex flex-column gap-2">
+          {(!showPhotos || !selectedPlace || !selectedPlace.photos || selectedPlace.photos.length <= 1) && (
+            <div className="text-muted fst-italic m-auto text-center p-2">
+              Click <strong>"See more photos"</strong> to view the gallery.
+            </div>
+          )}
           {showPhotos && selectedPlace.photos && selectedPlace.photos.slice(1).map((photoUrl, idx) => (
             <img
               key={idx}
@@ -205,6 +214,12 @@ export const GoogleApi = () => {
               justifyContent: "space-evenly"   // NEW LINE instead of margin-right on cards
             }}
           >
+            {reviews.length === 0 && (
+              <div className="text-muted fst-italic m-auto">
+                Please click on <strong>See Reviews</strong> above to see all the reviews.
+              </div>
+            )}
+
             {reviews.map((r, index) => (
               <div key={index}
                 className="card border-dark mb-3"
@@ -220,8 +235,8 @@ export const GoogleApi = () => {
                   <div>
                     <h5 className="card-title">{r.author_name}:</h5>
                     <p className="card-text" style={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: 5,
+                      display: selectedReview === r ? "block" : "-webkit-box",
+                      WebkitLineClamp: selectedReview === r ? "unset" : 5,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                       textOverflow: "ellipsis"
@@ -229,10 +244,16 @@ export const GoogleApi = () => {
                       {r.text}
                     </p>
                     {r.text && r.text.length > 150 && (
-                      <a href="#" onClick={() => setSelectedReview(r)}>
+                      <a href="#" onClick={e => {
+                        e.preventDefault();
+                        setModalReviewText(r.text);
+                        setShowReviewModal(true);
+                      }}>
                         See full review
                       </a>
                     )}
+
+
                     <br />
                     <small className="text-muted d-block mt-2">
                       {r.relative_time_description || "No date available"}
@@ -254,6 +275,24 @@ export const GoogleApi = () => {
       <Link to="/">
         <button className="btn btn-primary">Back home</button>
       </Link>
+      {showReviewModal && (
+        <div className="modal d-block" tabIndex="-1" role="dialog" onClick={() => setShowReviewModal(false)}>
+          <div className="modal-dialog" role="document" onClick={e => e.stopPropagation()}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Full Review</h5>
+                <button type="button" className="close" onClick={() => setShowReviewModal(false)}>
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>{modalReviewText}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
 
     </div>
   );

@@ -1,3 +1,4 @@
+-i https://pypi.org/simple
 alembic==1.13.1
 certifi==2023.11.17
 click==8.1.7
@@ -23,3 +24,4 @@ sqlalchemy==2.0.23
 urllib3==2.1.0
 werkzeug==2.3.7
 wtforms==3.0.1
+flask_jwt_extended==4.5.3

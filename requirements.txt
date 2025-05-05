@@ -25,3 +25,4 @@ urllib3==2.1.0
 werkzeug==2.3.7
 wtforms==3.0.1
 flask_jwt_extended==4.5.3
+bcrypt==4.3.0

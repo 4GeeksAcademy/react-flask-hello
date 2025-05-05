@@ -9,6 +9,7 @@ export const GoogleApi = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [reviews, setReviews] = useState([]) // State to hold reviews of the selected place
   const [selectedReview, setSelectedReview] = useState(null);
+  const [showPhotos, setShowPhotos] = useState(false);
 
 
   const handleSearch = () => { // Function to handle the search button click 
@@ -94,34 +95,85 @@ export const GoogleApi = () => {
     setReviews(reviews); // Set the reviews state with the reviews of the selected place    
   }
 
+  const showMorePhotos = () => {
+    setShowPhotos(!showPhotos); // Toggle the showPhotos state to show or hide photos
+  }
+
 
 
   return (
     <div className="container-fluid min-vh-100" style={{ height: "100vh" }}>
       <div className="row px-md-5" style={{ height: "70%" }}>
-        <div className="col-9 h-100 ">
-          {selectedPlace ? <div className="card mb-3" style={{ maxWidth: "400px" }}>
-            {selectedPlace.photos[0] && (
-              <img src={selectedPlace.photos[0]} className="card-img-top" alt={selectedPlace.name} />
-            )}
-            <div className="text-wrapper flex-grow-1">
-              <h5 className="card-title">{selectedPlace.name}</h5>
-              <p className="review-text clamp-3"><a href={selectedPlace.website}><strong>Go to the website</strong></a></p>
-              <div
-                className="d-flex flex-row flex-nowrap overflow-auto"
-                style={{ gap: "1rem", padding: "0.5rem", maxWidth: "100%", height: "200px" }}
-                onClick={() => showsReviews(selectedPlace.reviews)}>
-                <strong>Reviews:</strong>
 
+        {/* LEFT: Place details */}
+        <div className="col-4 h-100 d-flex flex-column">
+          {selectedPlace ? (
+            <div className="card flex-grow-1">
+              {selectedPlace.photos[0] && (
+                <img
+                  src={selectedPlace.photos[0]}
+                  className="card-img-top"
+                  alt={selectedPlace.name}
+                  style={{
+                    width: "100%",
+                    height: "250px",
+                    objectFit: "contain",
+                    backgroundColor: "#f8f9fa"
+                  }}
+                />
+              )}
+              <div className="text-wrapper p-2 flex-grow-1">
+                <h5>{selectedPlace.name}</h5>
+                <p><strong className={selectedPlace.opening_hours?.open_now ? "text-success" : "text-danger"}>
+                  {selectedPlace.opening_hours?.open_now ? "Open" : "Closed"}
+                </strong></p>
+                <p>{selectedPlace.formatted_address}</p>
+                <p>{selectedPlace.formatted_phone_number}</p>
+                <p><a href={selectedPlace.website}><strong>Go to the website</strong></a></p>
+                {selectedPlace.opening_hours?.weekday_text && (
+                  <div>
+                    <strong>Opening hours:</strong>
+                    <ul>
+                      {selectedPlace.opening_hours.weekday_text.map((day, idx) => (
+                        <li key={idx}>{day}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <a href="#" onClick={e => { e.preventDefault(); showsReviews(selectedPlace.reviews); }}>
+                  <strong>See Reviews</strong>
+                </a>
+                <br />
+                <a href="#" onClick={showMorePhotos}>
+                  {showPhotos ? "Hide photos" : "See more photos"}
+                </a>
               </div>
             </div>
-          </div>
-            :
-            <p>
-              <strong>Click a place to see more details</strong>
-            </p>}
+          ) : <p><strong>Click a place to see more details</strong></p>}
         </div>
-        <div className="col-3 h-100  d-flex flex-column">
+
+        {/* CENTER: Photos */}
+        <div className="col-4 h-100 overflow-auto d-flex flex-column gap-2">
+          {showPhotos && selectedPlace.photos && selectedPlace.photos.slice(1).map((photoUrl, idx) => (
+            <img
+              key={idx}
+              src={photoUrl}
+              alt={`Photo ${idx + 2}`}
+              style={{
+                width: "100%",
+                maxHeight: "180px",
+                objectFit: "contain", // ✅ will prevent cropping
+                objectPosition: "center center",
+                backgroundColor: "#f8f9fa", // optional clean background
+                borderRadius: "5px"
+              }}
+            />
+          ))}
+
+        </div>
+
+        {/* RIGHT: List of places */}
+        <div className="col-4 h-100 d-flex flex-column">
           <div className="flex-grow-1 overflow-auto">
             {error && <div className="alert alert-danger">{error}</div>}
             {places.length > 0 ? (
@@ -132,18 +184,15 @@ export const GoogleApi = () => {
                     <p>{place.address}</p>
                     <p><strong>Rating:</strong> {place.rating}<i className="bi bi-star-fill"></i></p>
                     <p><strong>Reviews:</strong> {place.user_ratings_total}</p>
-                    <img />
                     <button onClick={() => handleSelect(place.place_id)} className="btn btn-success">More info</button>
                   </li>
                 ))}
-
               </ul>
-            ) : (<p>No places found.</p>)}
-
-
+            ) : <p>No places found.</p>}
           </div>
         </div>
       </div>
+
       <hr></hr>
       <div className="row px-md-5" style={{ height: "30%" }}>
         <div className="col-12 h-100">

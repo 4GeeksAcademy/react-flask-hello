@@ -9,6 +9,8 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 # ==>> loads the environment variables from the .env file, pip install python-dotenv
 from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash
+
 load_dotenv()    # reads .env and sets those variables into your environment
 
 
@@ -254,4 +256,31 @@ def get_place_details():
  "reviews": details.get("reviews", [])
 }), 200
 
+#Jackie
+@api.route("/signup", methods=["POST"])
+def signup():
+   name = request.json.get ("name", None)
+   email = request.json.get("email", None)
+   password = request.json.get("password", None)
+
+   if not name or not email or not password:
+      return jsonify({"msg": "Name, email and password are required"}), 400
+   
+   user = User.query.filter_by(email=email).first()
+   if user:
+      return jsonify({"msg": "User already exists"}),409
+   
+   hashed_password = generate_password_hash(password)
+
+   new_user = User(
+      name=name,
+      email=email,
+      password= hashed_password,
+      is_active=True
+   )
+    
+   db.session.add(new_user)     
+   db.session.commit()         
+
+   return jsonify ("User created sucessfully"),201
 

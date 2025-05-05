@@ -1,5 +1,4 @@
-// Import necessary components and functions from react-router-dom.
-
+// Import necessary components and functions from react-router-dom
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,31 +12,25 @@ import { SignUp } from "./pages/signUp";
 import { GoogleApi } from "./pages/GoogleApi";
 import { Search } from "./pages/Search";
 import { Custom } from "./pages/Custom";
-
 import { SignIn } from "./pages/signIn";
 import { Password } from "./pages/password";
+import { MainPage } from "./pages/mainpage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+    // Root Route: All navigation will start from Layout
+    <Route path="/" element={<Layout />} errorElement={<h1>Not Found!</h1>}>
 
-//<<<<<<< 53-add-pictures-to-all-of-the-ingredients
-    // Root Route: All navigation will start from here.
-    <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-
-      {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-      <Route path="/" element={<Home />} />
-      <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
-      <Route path="/demo" element={<Demo />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/custom" element={<Custom />} />
-      <Route path="/password" element={<Password />} />
-      <Route path="/google-api" element={<GoogleApi />} />
+      {/* Nested Routes */}
+      <Route index element={<Home />} /> {/* Default homepage */}
+      <Route path="single/:theId" element={<Single />} /> {/* Dynamic route */}
+      <Route path="demo" element={<Demo />} />
+      <Route path="signup" element={<SignUp />} />
+      <Route path="search" element={<Search />} />
+      <Route path="custom" element={<Custom />} />
+      <Route path="signin" element={<SignIn />} />
+      <Route path="password" element={<Password />} />
+      <Route path="mainpage" element={<MainPage />} />
     </Route>
-)
+  )
 );

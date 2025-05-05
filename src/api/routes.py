@@ -44,13 +44,14 @@ def login():
     password = data.get("password")
     find_user = User.query.filter_by(email=email).first()
 
-    user = {"name":find_user.name, "email":find_user.email}
+    user = {"name": find_user.name, "email": find_user.email}
     print(find_user.password, "where is my user?!!??!?")
 
     # <--this will return a true or false about password that was entered-->
     if not check_password_hash(find_user.password, password):
-        return jsonify({"Wrong Password!!"})
-    return jsonify({"user":user})
+        return jsonify({"message":"Wrong Password!!"}), 500
+    return jsonify({"user": user})
+
 
 @api.route('/signup', methods=['POST'])
 def signup():
@@ -91,3 +92,15 @@ def get_favorites():
     favorites = Favorites.query.all()
     favoriteList = [fav.serialize() for fav in favorites]
     return jsonify(favoriteList)
+
+
+@api.route('/reset_password', methods=['PUT'])
+def reset_password():
+    email = request.json.get("email")
+    user = User.query.filter_by(email=email).first()
+    new_password = request.json.get("password")
+    user.password = generate_password_hash(new_password),
+
+
+    db.session.commit()
+    return jsonify({"password":"Password Reset"}), 200

@@ -32,17 +32,17 @@
 .modal button:hover {
   background: #0056b3;
 }
-body {
+/* body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* Gradient background */
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); Gradient background
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Full screen height */
-  color: #333; /* Text color */
-}
+  min-height: 100vh; Full screen height
+  color: #333; Text color
+} */
 
 h1, h2, h3 {
   font-family: 'Helvetica', sans-serif;
@@ -116,6 +116,22 @@ button:hover {
   margin: auto;
 }
 
+.card-text {
+  display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
+  
+  -webkit-box-orient: vertical; /* Orientación vertical */
+  overflow: hidden; /* Ocultar el contenido que excede */
+  text-overflow: ellipsis; /* Mostrar "..." al truncar */
+}
+
+
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  position: relative; /* so your "…see more" button can be positioned */
+}
 /* Search Bar */
 .search-bar {
   display: flex;

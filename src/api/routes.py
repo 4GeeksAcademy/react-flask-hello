@@ -28,6 +28,7 @@ CORS(api)
 def get_places_of_drinks():  
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY") # ==>> get the google api key from the environment variables  
     data = request.get_json()# ==>>Looks at the body of the incoming HTTP request and it parses the JSON text and returns a Python dict (or list) representing that JSON.
+   
     if not isinstance(data, dict):  # ==>> check if the data is a dictionary        
         return jsonify({"error": "Payload must be a JSON object"}), 400  # ==>> if the data is not a dictionary, return a 400 error   
        
@@ -68,13 +69,16 @@ def get_places_of_drinks():
      if opennow:  # ==>> check if the opennow parameter is present in the request
         params["opennow"] = "true"  # ==>> add the opennow parameter to the request
 
+    
     res = requests.get(url, params=params) # ==>> make a request to the google api with the parameters
+    
     if res.status_code != 200:  # ==>> check if the request was successful
         return jsonify({
             "error": "Failed to fetch data from Google",
             "details": res.text
         }), 500    
     body = res.json()
+    print("📄 [Flask] Google JSON:", body)
     places = body.get("results", [])
     next_page_token = body.get("next_page_token")
 
@@ -110,6 +114,7 @@ def get_places_of_drinks():
     "next_page_token": next_page_token
     }), 200   # ==>> return the filtered places as a json object with a 200 status code
 
+    
     
 
 # ==>> Search Places in a specific location:Accepts E.G: { zip_code: "10001" } Returns { latitude: 40.75, longitude: -73.99}
@@ -221,6 +226,7 @@ def get_places_by_location():
         "next_page_token":   next_page_token
     }), 200
 
+
 @api.route('/places/details', methods=['POST'])  # ==>> Endpoint for the Place Details API within the Google Maps Platform. It allows you to request detailed information about a specific place, such as a business or point of interest.
 def get_place_details():
  GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY") # ==>> get the google api key from the environment variables
@@ -235,7 +241,7 @@ def get_place_details():
  url = "https://maps.googleapis.com/maps/api/place/details/json" # ==>> url for the google api
  params = {
      "place_id": place_id,
-     "fields":"name,formatted_phone_number,opening_hours,website,reviews",
+     "fields":"name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address", # ==>> fields to be returned in the response
      "key": GOOGLE_API_KEY 
  }
  res = requests.get(url, params=params) # ==>> make a request to the google api with the parameters
@@ -247,13 +253,24 @@ def get_place_details():
  if not details: # ==>> check if the details are present in the response
     return jsonify({"error": "No details found"}), 404 # ==>> return a 404 error if the details are missing
  
+ photo_urls = [] # ==>> initialize an empty list for the photo urls
+ for i in details.get("photos", []): # ==>> iterate over the photos in the details
+    ref = i.get("photo_reference") # ==>> get the photo reference from the photo
+    photo_urls.append(
+       f"https://maps.googleapis.com/maps/api/place/photo"
+       f"?maxwidth=400"
+       f"&photoreference={ref}"
+       f"&key={GOOGLE_API_KEY}"
+    )
+ 
  return jsonify({
  "name": details.get("name"),
  "formatted_address": details.get("formatted_address"),
  "formatted_phone_number": details.get("formatted_phone_number", "N/A"),
  "opening_hours": details.get("opening_hours", {}),
  "website": details.get("website"),
- "reviews": details.get("reviews", [])
+ "reviews": details.get("reviews", []),
+ "photos": photo_urls, # ==>> return the photo urls as a list
 }), 200
 
 #Jackie
@@ -283,4 +300,5 @@ def signup():
    db.session.commit()         
 
    return jsonify ("User created sucessfully"),201
+
 

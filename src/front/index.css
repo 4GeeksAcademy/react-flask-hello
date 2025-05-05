@@ -102,3 +102,20 @@ button:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
+.card-text {
+  display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
+  
+  -webkit-box-orient: vertical; /* Orientación vertical */
+  overflow: hidden; /* Ocultar el contenido que excede */
+  text-overflow: ellipsis; /* Mostrar "..." al truncar */
+}
+
+
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  position: relative; /* so your "…see more" button can be positioned */
+}

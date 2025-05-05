@@ -239,7 +239,7 @@ def get_place_details():
  url = "https://maps.googleapis.com/maps/api/place/details/json" # ==>> url for the google api
  params = {
      "place_id": place_id,
-     "fields":"name,formatted_phone_number,opening_hours,website,reviews",
+     "fields":"name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address", # ==>> fields to be returned in the response
      "key": GOOGLE_API_KEY 
  }
  res = requests.get(url, params=params) # ==>> make a request to the google api with the parameters
@@ -251,13 +251,25 @@ def get_place_details():
  if not details: # ==>> check if the details are present in the response
     return jsonify({"error": "No details found"}), 404 # ==>> return a 404 error if the details are missing
  
+ photo_urls = [] # ==>> initialize an empty list for the photo urls
+ for i in details.get("photos", []): # ==>> iterate over the photos in the details
+    ref = i.get("photo_reference") # ==>> get the photo reference from the photo
+    photo_urls.append(
+       f"https://maps.googleapis.com/maps/api/place/photo"
+       f"?maxwidth=400"
+       f"&photoreference={ref}"
+       f"&key={GOOGLE_API_KEY}"
+    )
+ 
  return jsonify({
  "name": details.get("name"),
  "formatted_address": details.get("formatted_address"),
  "formatted_phone_number": details.get("formatted_phone_number", "N/A"),
  "opening_hours": details.get("opening_hours", {}),
  "website": details.get("website"),
- "reviews": details.get("reviews", [])
+ "reviews": details.get("reviews", []),
+ "photos": photo_urls, # ==>> return the photo urls as a list
 }), 200
+
 
 

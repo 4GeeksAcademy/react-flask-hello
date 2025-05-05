@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useState } from "react";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 export const GoogleApi = () => {
-  const { store, dispatch } = useGlobalReducer();
   const [places, setPlaces] = useState([]);
   const [error, setError] = useState("");
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [reviews, setReviews] = useState([]) // State to hold reviews of the selected place
+  const [selectedReview, setSelectedReview] = useState(null);
+
 
   const handleSearch = () => { // Function to handle the search button click 
+    setSelectedPlace(null);    // clear out old details
+    setError("");              // clear any past error
     if (!navigator.geolocation) { // Check if geolocation is supported on browser // Function to handle the search button click--object is provided by the browser's JavaScript engine 
       setError("Geolocation is not supported by this browser."); // If geolocation is not supported, set an error message
       return; // Exit the function if geolocation is not supported
@@ -52,15 +58,71 @@ export const GoogleApi = () => {
     );
   };
 
+  const handleSelect = async (placeId) => { // Function to handle the selection of a place
+    const payload = { place_id: placeId }; // Create a payload with the selected place ID
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }, // Fixed header key
+      body: JSON.stringify(payload), // Send the selected place ID to the backend
+    }
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/places/details`, options); // Fetch details of the selected place from the backend API
+      console.log("==>> DATA SENT:", res);
+      if (!res.ok) {
+        console.log("!!!Error fetching place details:", res.statusText);
+        setError("Failed to fetch place details. Please try again later.");
+        return; // Exit the function if the response is not OK so that you don’t try to parse an empty or error body.
+      }
+      const details = await res.json(); // Parse the response JSON to get the place details
+      setSelectedPlace(details); // Set the selected place details in the state// //update state so React re-renders your detail pane
+      setSelectedReview(null); // Clear any previously selected review
+      setReviews([]); // Clear the reviews state when a new place is selected
+      console.log("▶️  Place details:", details); // Log the place details to the console   
+    }
+    catch (err) {
+      console.log("!!!Error fetching place details:", err);
+      setError(err.message); // Set the error state with the error message
+    }
+  };
+
+  const showsReviews = (reviews) => { // Function to show reviews of the selected place
+    if (!reviews || reviews.length === 0) { // Check if reviews are undefined or empty
+      console.log("!!!No reviews found for this place or undefined reviews:", reviews);
+      setReviews([]); // Clear the reviews state if no reviews are found    
+      return; // Exit the function if no reviews are available //stops the function if something's wrong → no unnecessary code runs after it.
+    }
+    setReviews(reviews); // Set the reviews state with the reviews of the selected place    
+  }
+
+
+
   return (
     <div className="container-fluid min-vh-100" style={{ height: "100vh" }}>
       <div className="row px-md-5" style={{ height: "70%" }}>
-        <div className="col-9 h-100 bg-primary">
-          <button onClick={handleSearch} className="btn btn-success mb-3">Search drinks</button>
+        <div className="col-9 h-100 ">
+          {selectedPlace ? <div className="card mb-3" style={{ maxWidth: "400px" }}>
+            {selectedPlace.photos[0] && (
+              <img src={selectedPlace.photos[0]} className="card-img-top" alt={selectedPlace.name} />
+            )}
+            <div className="text-wrapper flex-grow-1">
+              <h5 className="card-title">{selectedPlace.name}</h5>
+              <p className="review-text clamp-3"><a href={selectedPlace.website}><strong>Go to the website</strong></a></p>
+              <div
+                className="d-flex flex-row flex-nowrap overflow-auto"
+                style={{ gap: "1rem", padding: "0.5rem", maxWidth: "100%", height: "200px" }}
+                onClick={() => showsReviews(selectedPlace.reviews)}>
+                <strong>Reviews:</strong>
+
+              </div>
+            </div>
+          </div>
+            :
+            <p>
+              <strong>Click a place to see more details</strong>
+            </p>}
         </div>
         <div className="col-3 h-100  d-flex flex-column">
           <div className="flex-grow-1 overflow-auto">
-
             {error && <div className="alert alert-danger">{error}</div>}
             {places.length > 0 ? (
               <ul className="list-group">
@@ -68,9 +130,10 @@ export const GoogleApi = () => {
                   <li key={index} className="list-group-item">
                     <h5>{place.name}</h5>
                     <p>{place.address}</p>
-                    <p><strong>Rating:</strong> {place.rating}</p>
-                    <p><strong>Opinions:</strong> {place.user_ratings_total}</p>
-                    <button onClick={()=> handleSelect(place.place_id)} className="btn btn-success">More info</button>
+                    <p><strong>Rating:</strong> {place.rating}<i className="bi bi-star-fill"></i></p>
+                    <p><strong>Reviews:</strong> {place.user_ratings_total}</p>
+                    <img />
+                    <button onClick={() => handleSelect(place.place_id)} className="btn btn-success">More info</button>
                   </li>
                 ))}
 
@@ -81,9 +144,64 @@ export const GoogleApi = () => {
           </div>
         </div>
       </div>
+      <hr></hr>
       <div className="row px-md-5" style={{ height: "30%" }}>
-        <div className="col-12 h-100 bg-danger">bbb</div>
+        <div className="col-12 h-100">
+          <div className="reviews-container d-flex flex-row flex-nowrap overflow-auto"
+            style={{
+              height: "100%",
+              overflowY: "hidden",
+              paddingLeft: "1rem",
+              paddingRight: "1rem",
+              justifyContent: "space-evenly"   // NEW LINE instead of margin-right on cards
+            }}
+          >
+            {reviews.map((r, index) => (
+              <div key={index}
+                className="card border-dark mb-3"
+                style={{
+                  maxWidth: "18rem",
+                  flex: "1 1 auto",     // 👈 this allows cards to grow/shrink evenly
+                  overflow: "hidden"
+                }}>
+                <div className="card-header">
+                  <strong>Rating: {r.rating}<i className="bi bi-star-fill"></i></strong>
+                </div>
+                <div className="card-body d-flex flex-column justify-content-between" style={{ height: "100%" }}>
+                  <div>
+                    <h5 className="card-title">{r.author_name}:</h5>
+                    <p className="card-text" style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 5,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis"
+                    }}>
+                      {r.text}
+                    </p>
+                    {r.text && r.text.length > 150 && (
+                      <a href="#" onClick={() => setSelectedReview(r)}>
+                        See full review
+                      </a>
+                    )}
+                    <br />
+                    <small className="text-muted d-block mt-2">
+                      {r.relative_time_description || "No date available"}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+
+
+
+
+          </div>
+
+        </div>
       </div>
+      <button onClick={handleSearch} className="btn btn-success mb-3">Search drinks</button>
       <Link to="/">
         <button className="btn btn-primary">Back home</button>
       </Link>
@@ -101,20 +219,3 @@ export const GoogleApi = () => {
 
 
 
-
-// {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if exists */}
-// {places.length > 0 ? (
-//   <ul className="list-group">
-//     {places.map((place, index) => (
-//       <li key={index} className="list-group-item">
-//         <h5>{place.name}</h5>
-//         <p>{place.address}</p>
-//         <p>Rating: {place.rating}</p>
-//         <a href="#" className="btn btn-primary">Go somewhere</a>
-//       </li>
-//     ))}
-//   </ul>
-// ) : (
-//   <p>No places found.</p>
-// )}
-// {/* Display the list of places if available */}

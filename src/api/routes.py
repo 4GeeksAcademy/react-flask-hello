@@ -94,6 +94,14 @@ def get_favorites():
     return jsonify(favoriteList)
 
 
+@api.route("/showlist", methods=["GET"])
+def get_showlist():
+
+    showList = Show.query.all()
+                        #^--- this is going to shuffle through all the shows in 'Show Model'
+    showChoices = [list.serialize() for list in showList]
+                         # must have loop in order to serialize 
+    return jsonify(showChoices) 
 @api.route('/reset_password', methods=['PUT'])
 def reset_password():
     email = request.json.get("email")

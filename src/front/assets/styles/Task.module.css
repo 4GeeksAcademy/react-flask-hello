@@ -1,0 +1,160 @@
+
+:local(.taskContainer){
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 1;
+  }
+  
+  :local(.taskContent){
+    display: flex;
+    height: 90vh;
+  }
+  
+  :local(.taskPhoto){
+    width: 40%;
+    height: 90vh;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  
+  :local(.taskPhoto img){
+    width: 75%;
+    height: 75%;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  :local(.taskTextContainer){
+    width: 60%;
+    display: flex;
+    padding: 0rem 2rem;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  :local(.taskText),
+  :local(.task) {
+    background-color: #221833;
+    padding: 2rem;
+    width: 60%;
+    min-width: 280px;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    gap: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  :local(.taskButtons){
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 2rem 0;
+    gap: 2rem;
+    width: 60%;
+    justify-content: center;
+    min-width: 280px;
+  }
+  
+  :local(.taskAccept),
+  :local(.taskDeny){
+    width: 10rem;
+    min-width: 8rem;
+    height: 5rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0.7rem 0 rgba(9, 3, 19, 1);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #221833;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  :local(.taskAccept:active),
+  :local(.taskDeny:active) {
+    box-shadow: none;
+    transform: translateY(0.7rem);
+  }
+  
+  :local(.taskAccept){
+    background-color: #5CFB7E;
+  }
+  
+  :local(.taskDeny){
+    background-color: #F05E5E;
+  }
+  
+  /* --- TABLET --- */
+  @media (max-width: 1024px) {
+    :local(.taskContent) {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      padding: 2vh 0;
+    }
+  
+    :local(.taskPhoto),
+    :local(.taskTextContainer) {
+      width: 75%;
+      height: auto;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 2rem;
+    }
+  
+    :local(.taskPhoto img) {
+        width: 25rem;
+        height: 25rem;
+      }
+
+    :local(.taskText),
+    :local(.taskButtons) {
+      width: 90%;
+    }
+  
+    :local(.taskButtons) {
+      flex-wrap: nowrap;
+    }
+  }
+  
+  /* --- MÓVIL --- */
+  @media (max-width: 768px) {
+    :local(.taskPhoto img) {
+      width: 20rem;
+      height: 20rem;
+    }
+  
+    :local(.taskText),
+    :local(.taskButtons) {
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+  
+    :local(.taskButtons) {
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+  
+    :local(.taskAccept),
+    :local(.taskDeny) {
+      width: 8rem;
+      height: 4rem;
+      font-size: 1rem;
+    }
+  }
+  

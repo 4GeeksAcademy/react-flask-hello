@@ -1,0 +1,10 @@
+.particles-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #030303;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none; /* Esto es clave para que no bloquee clics */
+  }

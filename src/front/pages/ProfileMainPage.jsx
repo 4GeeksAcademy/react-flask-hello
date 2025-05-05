@@ -73,7 +73,12 @@ const ProfileMainPage = () => {
               </li>
             ))}
           </ul>
-          <button className={styles.button}>ALL CONTENT</button>
+          <button
+            className={styles.button}
+            onClick={() => navigate('/task')}
+          >
+            ALL CONTENT
+          </button>
         </div>
 
         {/* CARD 3: Hero */}
@@ -82,7 +87,12 @@ const ProfileMainPage = () => {
             <h2>Hello, <strong>{user.username}!</strong></h2>
             <p>Your inner journey continues today.</p>
             <p>Your path to a stronger, wiser, and more focused version of yourself begins with a single step.</p>
-            <button className={styles.journeyButton}>See your journey</button>
+            <button
+            className={styles.button}
+            onClick={() => navigate('/journey')}
+            >
+              ALL CONTENT
+            </button>
           </div>
           <img src={genieImg} alt="Genie" className={styles.heroImage} />
         </div>
@@ -154,7 +164,12 @@ const ProfileMainPage = () => {
         <div className={`${styles.card} ${styles.card7}`}>
           <div className={styles.cardHeaderWithBtn}>
             <h4 className={styles.cardTitle}>Achievements</h4>
-            <button className={styles.seeAllBtn}>See all</button>
+            <button
+            className={styles.button}
+            onClick={() => navigate('/achievements')}
+            >
+              ALL CONTENT
+            </button>
           </div>
           <div className={styles.achievementsGrid}>
             {achievements.map((ach, i) => (

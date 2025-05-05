@@ -1,0 +1,121 @@
+/* Achievements.module.css */
+
+:local(.achievementsContainer) {
+    background-color: transparent;
+    color: F5F5F5;
+    font-family: "Poppins", sans-serif;
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+:local(.achievementsNavbarGrid) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+:local(.achievementsGrid) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* Reducción del espacio entre filas */
+    padding: 2rem;
+    box-sizing: border-box;
+    height: calc(100vh - 5rem); /* Ajuste para navbar */
+    margin-top: 5rem;
+}
+
+:local(.achievementsCard) {
+    background-color: #221833;
+    border-radius: 1rem;
+    width: 35rem;
+    min-height: 5rem; /* Usar min-height en lugar de height */
+    padding: 1.5rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+:local(.achievementsCardText){
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+:local(.achievementsCard):hover {
+    transform: translateY(-5px);
+}
+
+:local(.achievementsIcon) {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #FB645C;
+}
+
+:local(.achievementsTitle) {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+:local(.achievementsDescription) {
+    font-size: 0.95rem;
+    color: #B1A7E0;
+}
+
+:local(.achievementsLocked) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* Estilo para tarjetas bloqueadas */
+:local(.achievementsLockedCard) {
+    background-color: #444;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+:local(.achievementsLockedCard i) {
+    color: #F5F5F5;
+}
+
+:local(.achievementsLockedCard .description) {
+    color:#bababa
+}
+  
+:local(.achievementsLockedCard):hover {
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* Responsive – Tablets y medianas */
+@media (max-width: 1024px) {
+  :local(.achievementsCard) {
+    width: 90%;
+  }
+}
+
+/* Responsive – Móviles */
+@media (max-width: 768px) {
+  :local(.achievementsGrid) {
+    padding: 1rem;
+  }
+
+  :local(.achievementsCard) {
+    width: 100%;
+  }
+}

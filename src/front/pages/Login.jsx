@@ -27,7 +27,7 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user_id", data.user_id);
         alert("Login exitoso");
-        navigate("/landing");
+        navigate("/profilemainpage");
       } else {
         alert(data.msg || "Invalid credentials");
       }

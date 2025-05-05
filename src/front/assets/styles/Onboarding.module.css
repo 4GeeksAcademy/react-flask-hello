@@ -13,12 +13,12 @@ img{
     object-fit: cover;
 }
 
-.text p {
+.onboardingText p {
     max-width: 650px;
     word-wrap: break-word;
 }
 
-.page{
+.onboardingPage{
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -28,22 +28,22 @@ img{
     flex-direction: column;
 }
 
-.moty_text{
+.onboardingMotyText{
     display: flex;
     flex-direction: row;
     padding-right: 250px;
 }
-.text{
+.onboardingText{
     padding-top: 50px;
 }
 
-.button_space{
+.onboardingButtonSpace{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.next_button{
+.onboardingNextButton{
     background-color: #FB645C;
     width: 150px;
     height: 70px;
@@ -57,13 +57,13 @@ img{
     cursor: pointer;
 }
 
-.next_button:active{
+.onboardingNextButton:active{
     box-shadow: none;
     transform: translateY(11px);
 }
 
 @media (max-width: 1600px) {
-    .moty_text{
+    .onboardingMotyText{
         margin-left: clamp(100px, 0vw, 0px);
     }
 }
@@ -76,7 +76,7 @@ img{
         object-fit: cover;
     }
 
-    .moty_text{
+    .onboardingMotyText{
         flex-direction: column;
         text-align: center;
         margin-left: 0px;
@@ -84,6 +84,7 @@ img{
         padding-bottom: 50px;
         padding-left: 20px;
     }
+}
 
 @media (max-width: 500px) {
     img{
@@ -99,11 +100,10 @@ img{
         font-size: 16px;
     }
 
-    .next_button{
+    .onboardingNextButton{
         background-color: #FB645C;
         width: 100px;
         height: 40px;
         box-shadow: 0px 8px 0px rgba(9, 3, 19, 1);
     }
-}
 }

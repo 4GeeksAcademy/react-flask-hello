@@ -1,5 +1,5 @@
 import { div } from "framer-motion/client";
-import "../assets/styles/onboarding.css";
+import "../assets/styles/Onboarding.module.css";
 
 import { useState } from "react";
 

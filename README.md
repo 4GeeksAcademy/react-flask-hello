@@ -13,3 +13,8 @@ Solution: An application that matches 2 or more users based off the show season 
 Future Updates:
 
 App iNtegrated with faceboook for reward system when sharing.
+
+avoid target database error:
+Dev A modifies models.py → generate migration → push PR → get merged
+
+Dev B modifies models.py → wait for Dev A → pull latest → generate migration → push PR

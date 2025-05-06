@@ -273,32 +273,33 @@ def get_place_details():
  "photos": photo_urls, # ==>> return the photo urls as a list
 }), 200
 
-#Jackie
+# Jackie
 @api.route("/signup", methods=["POST"])
 def signup():
-   name = request.json.get ("name", None)
-   email = request.json.get("email", None)
-   password = request.json.get("password", None)
+    name = request.json.get("name", None)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
 
-   if not name or not email or not password:
-      return jsonify({"msg": "Name, email and password are required"}), 400
-   
-   user = User.query.filter_by(email=email).first()
-   if user:
-      return jsonify({"msg": "User already exists"}),409
-   
-   hashed_password = generate_password_hash(password)
+    if not name or not email or not password:
+        return jsonify({"msg": "Name, email and password are required"}), 400
 
-   new_user = User(
-      name=name,
-      email=email,
-      password= hashed_password,
-      is_active=True
-   )
-    
-   db.session.add(new_user)     
-   db.session.commit()         
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"msg": "User already exists"}), 409
 
-   return jsonify ("User created sucessfully"),201
+    hashed_password = generate_password_hash(password)
+
+    new_user = User(
+        name=name,
+        email=email,
+        password=hashed_password,
+        is_active=True
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify("User created successfully"), 201
+
 
 

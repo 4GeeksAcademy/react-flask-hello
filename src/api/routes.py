@@ -102,6 +102,8 @@ def get_showlist():
     showChoices = [list.serialize() for list in showList]
                          # must have loop in order to serialize 
     return jsonify(showChoices) 
+
+
 @api.route('/reset_password', methods=['PUT'])
 def reset_password():
     email = request.json.get("email")

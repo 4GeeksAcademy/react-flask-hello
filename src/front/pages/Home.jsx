@@ -62,6 +62,24 @@ export const Home = () => {
 			})
 	}
 	
+	const showList = () => {
+		fetch("https://api.watchmode.com/v1/list-titles/?apiKey=OSwKHt6TDcNeYrY10mwshTj6aEZfN0XUJkuFG8Zq" + "/api/showlist")
+			.then((resp) => {
+				return resp.json()
+			})
+
+			.then((data) => {
+				console.log(data)
+			})
+			.catch((error)=> {
+				console.log(error, "There was an error!!!")
+			})
+	}
+	
+
+
+
+
 
 	// useEffect(() => {
 	// 	// loadMessage()
@@ -86,6 +104,7 @@ export const Home = () => {
 			<div>
 				<label>Enter Password</label>
 				<input onChange={(e) => setPassword(e.target.value)} value={[password]} type="password" placeholder="" />
+				<button onClick={() => showList()}>button here</button>
 			</div>
       {/* <-- add a button to see what youre typing---> */}
 	  {/* try to see if can add 2nd password input for 'password confirmation' */}

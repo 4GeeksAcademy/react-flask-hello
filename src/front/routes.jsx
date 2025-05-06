@@ -31,6 +31,7 @@ export const router = createBrowserRouter(
       <Route path="signin" element={<SignIn />} />
       <Route path="password" element={<Password />} />
       <Route path="mainpage" element={<MainPage />} />
+      <Route path="google-api" element={<GoogleApi />} />
     </Route>
   )
 );

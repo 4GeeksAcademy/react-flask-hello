@@ -1,38 +1,27 @@
-import React, { useEffect, useState } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
+import React, { useEffect, useState } from "react";
+import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
+import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// import '../style.css';
 
-export default function Profile() {
+
+
+
+
+export const Profile = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 	// added this becuase we are filling the favorites object 
-	const [fav, setFav] = useState("")
+	const [fav, setFav] = useState("");
 
 	// added this in case it is needed to map a list
 	const favoritedShow = []; 
 
-	const loadMessage = async () => {
-		try {
+	// added this becuase we want to render show list
+	const [showList, setshowList] = useState("");
 
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
-
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
-
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
 
 	const post_favorites = () => {
 		const option = {
@@ -42,8 +31,6 @@ export default function Profile() {
 			},
 			body: JSON.stringify({
 				"user": "Brandon-Ray",
-			
-
 			})
 		}
 		fetch(backendUrl  + "/api/post_favorites", option)
@@ -77,40 +64,98 @@ export default function Profile() {
 			.then((data) => {
 				console.log(data)
 			})
+
+
+		
+	}
+
+	const getFavorites=() => {
+		fetch(backendUrl + "/api/favorites")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setFav(data)
+			})
 	}
 
 
+// this is used to render the shows in tandem with the get request 
+// Shae's creating & the useState above:
+
+	const getShowList=() => {
+		fetch(backendUrl + "/api/showList")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setshowList(data)
+			})
+	}
+
+	useEffect(() =>{
+		getFavorites()
+		getShowList()
+	},[])
 
 
 	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Profile Page</h1>
+		<div className="text-center mt-5 d-inline bg-purple">
+			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
-				{/* <img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" /> */}
-			<div>
-				<h1>Favorites List</h1>
-					{/* should take in each favorited item into the state then in a list */}
-				{fav.map((favoritedShow)=> (	
-					<ul>
-					<li favoritedShow={favoritedShow}></li>
-				</ul>
-				))}
-			</div>
 			</p>
+			<div>
+				<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 
-			<div className="alert alert-info">
-			<button onClick={()=>signup()}>
-			signup
-			</button>
-				{/* {store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)} */}
+				</div>
+				<div className="d-inline-flex col-3 mt-4">
+				<div>
+						<h2 className="text-center mt-7 ">Favorite List</h2>
+						
+						{fav.length > 0 ? 
+						fav.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										<img src= {star} className="m-3" width="20" height="20" alt="Star-Image" />
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
+
+						)
+						}):
+						"please select your favorite shows"}
+					</div>
+
+
+					<div className="d-inline-flex col-3 mt-4">
+					<div>
+						<h2 className="text-center mt-7 ">Show List</h2>
+						
+						{showList.length > 0 ? 
+						showList.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
+
+						)
+						}):
+						 "Error. Please refresh page"}
+					</div>
+				</div>
 			</div>
+		</div>
 		</div>
 	);
 }; 

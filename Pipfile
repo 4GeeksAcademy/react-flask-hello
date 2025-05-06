@@ -21,6 +21,7 @@ sqlalchemy = "*"
 requests = "*"
 flask-cors = "*"
 python-dotenv = "*"
+werkzeug = "*"
 
 [requires]
 python_version = "3.13"

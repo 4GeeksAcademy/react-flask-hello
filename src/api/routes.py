@@ -26,6 +26,7 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
+
 # ==>> this is the endpoint that will be called from the front end
 # ==>> Search Places by coordinates: Accepts E.G: { latitude: 40.75, longitude: -73.99, cocktail: "Mojito" }
 @api.route('/places', methods=['POST'])
@@ -334,4 +335,11 @@ def sign_in_user():
         return jsonify({"error": "User not found"}), 404
     if not check_password_hash(user.password, password):
         return jsonify({"error": "Invalid password"}), 401
+    
+    access_token = create_access_token(identity=user.id)
+
+    return jsonify({
+    "token": access_token,
+    "user": user.serialize()
+}), 200
         

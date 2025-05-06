@@ -14,10 +14,13 @@ export const Profile = () => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 	// added this becuase we are filling the favorites object 
-	const [fav, setFav] = useState("")
+	const [fav, setFav] = useState("");
 
 	// added this in case it is needed to map a list
 	const favoritedShow = []; 
+
+	// added this becuase we want to render show list
+	const [showList, setshowList] = useState("");
 
 
 	const post_favorites = () => {
@@ -28,8 +31,6 @@ export const Profile = () => {
 			},
 			body: JSON.stringify({
 				"user": "Brandon-Ray",
-			
-
 			})
 		}
 		fetch(backendUrl  + "/api/post_favorites", option)
@@ -79,9 +80,24 @@ export const Profile = () => {
 			})
 	}
 
+
+// this is used to render the shows in tandem with the get request 
+// Shae's creating & the useState above:
+
+	const getShowList=() => {
+		fetch(backendUrl + "/api/showList")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setshowList(data)
+			})
+	}
+
 	useEffect(() =>{
 		getFavorites()
-
+		getShowList()
 	},[])
 
 
@@ -97,8 +113,8 @@ export const Profile = () => {
 
 				</div>
 				<div className="d-inline-flex col-3 mt-4">
-					<div>
-						<h2 className="text-center mt-7 ">Favorites List</h2>
+				<div>
+						<h2 className="text-center mt-7 ">Favorite List</h2>
 						
 						{fav.length > 0 ? 
 						fav.map((show)=> {
@@ -114,10 +130,32 @@ export const Profile = () => {
 
 						)
 						}):
-						 alert("please select your favorite shows")}
+						"please select your favorite shows"}
+					</div>
+
+
+					<div className="d-inline-flex col-3 mt-4">
+					<div>
+						<h2 className="text-center mt-7 ">Show List</h2>
+						
+						{showList.length > 0 ? 
+						showList.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
+
+						)
+						}):
+						 "Error. Please refresh page"}
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 	);
 }; 

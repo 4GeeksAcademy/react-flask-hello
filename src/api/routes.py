@@ -351,13 +351,13 @@ def sign_in_user():
 
 @api.route("/signup", methods=["POST"])
 def signup():
-    name = request.json.get("name")
-    email = request.json.get("email")
-    password = request.json.get("password")
-    phone = request.json.get("phone")
+    name = request.json.get("name", None)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    phone = request.json.get("phone", None)
 
-    if not name or not email or not password:
-        return jsonify({"msg": "Name, email and password are required"}), 400
+    if not name or not email or not password or not phone:
+        return jsonify({"msg": "Name, email, phone and password are required"}), 400
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -368,9 +368,9 @@ def signup():
     new_user = User(
         name=name,
         email=email,
+        phone=phone,
         password=hashed_password,
         is_active=True,
-        phone=phone
     )
 
     db.session.add(new_user)

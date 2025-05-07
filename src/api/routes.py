@@ -323,7 +323,7 @@ def get_place_details():
     }), 200
 
 
-@api.route('/sigin', methods=['POST'])
+@api.route('/signin', methods=['POST'])
 def sign_in_user():
     data = request.get_json() ## ==>> get the data from the request
     if not data:
@@ -351,9 +351,10 @@ def signup():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    phone = request.json.get("phone", None)
 
-    if not name or not email or not password:
-        return jsonify({"msg": "Name, email and password are required"}), 400
+    if not name or not email or not password or not phone:
+        return jsonify({"msg": "Name, email, phone and password are required"}), 400
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -364,6 +365,7 @@ def signup():
     new_user = User(
         name=name,
         email=email,
+        phone=phone,
         password=hashed_password,
         is_active=True
     )

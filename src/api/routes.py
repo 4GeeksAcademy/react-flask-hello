@@ -371,7 +371,6 @@ def signup():
         phone=phone,
         password=hashed_password,
         is_active=True,
-        phone=phone
     )
 
     db.session.add(new_user)

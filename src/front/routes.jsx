@@ -15,6 +15,8 @@ import { Custom } from "./pages/Custom";
 import { SignIn } from "./pages/signIn";
 import { Password } from "./pages/password";
 import { MainPage } from "./pages/mainpage";
+import { Profile} from "./pages/Profile";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +34,7 @@ export const router = createBrowserRouter(
       <Route path="password" element={<Password />} />
       <Route path="mainpage" element={<MainPage />} />
       <Route path="google-api" element={<GoogleApi />} />
+      <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
     </Route>
   )
 );

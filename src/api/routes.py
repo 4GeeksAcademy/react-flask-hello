@@ -323,7 +323,7 @@ def get_place_details():
     }), 200
 
 
-@api.route('/sigin', methods=['POST'])
+@api.route('/signin', methods=['POST'])
 def sign_in_user():
     data = request.get_json() ## ==>> get the data from the request
     if not data:
@@ -348,9 +348,10 @@ def sign_in_user():
 # Jackie
 @api.route("/signup", methods=["POST"])
 def signup():
-    name = request.json.get("name", None)
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+    name = request.json.get("name")
+    email = request.json.get("email")
+    password = request.json.get("password")
+    phone = request.json.get("phone") 
 
     if not name or not email or not password:
         return jsonify({"msg": "Name, email and password are required"}), 400
@@ -361,17 +362,29 @@ def signup():
 
     hashed_password = generate_password_hash(password)
 
+    
     new_user = User(
         name=name,
         email=email,
         password=hashed_password,
-        is_active=True
+        is_active=True,
+        phone=phone  
     )
 
     db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print("Error al guardar usuario:", e)
+        return jsonify({"msg": "Database error"}), 500
 
-    return jsonify("User created successfully"), 201
+    return jsonify({"msg": "User created successfully"}), 201
 
+
+@api.route("/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
+    return jsonify([user.serialize() for user in users]), 200
 
 

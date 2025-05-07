@@ -63,13 +63,13 @@ export const Home = () => {
 	}
 	
 	const showList = () => {
-		fetch("https://api.watchmode.com/v1/list-titles/?apiKey=OSwKHt6TDcNeYrY10mwshTj6aEZfN0XUJkuFG8Zq" + "/api/showlist")
+		fetch("https://api.watchmode.com/v1/list-titles/?apiKey=OSwKHt6TDcNeYrY10mwshTj6aEZfN0XUJkuFG8Zq")
 			.then((resp) => {
 				return resp.json()
 			})
 
 			.then((data) => {
-				console.log(data)
+				console.log(data,"Here is my list of shows!!")
 			})
 			.catch((error)=> {
 				console.log(error, "There was an error!!!")
@@ -104,7 +104,6 @@ export const Home = () => {
 			<div>
 				<label>Enter Password</label>
 				<input onChange={(e) => setPassword(e.target.value)} value={[password]} type="password" placeholder="" />
-				<button onClick={() => showList()}>button here</button>
 			</div>
       {/* <-- add a button to see what youre typing---> */}
 	  {/* try to see if can add 2nd password input for 'password confirmation' */}
@@ -112,6 +111,7 @@ export const Home = () => {
 
 			<div className="alert alert-info">
 			<div>
+			<button onClick={() => showList()}>Show list button</button>
 				<button onClick={()=>signup()}>
 					Signup
 				</button>

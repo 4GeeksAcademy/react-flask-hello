@@ -11,9 +11,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     phone : Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    
-
-
+     
 
 
     def serialize(self):
@@ -21,7 +19,7 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
-            "phone": self.phone
+            "phone": self.phone,
             # do not serialize the password, its a security breach
         }
     

@@ -28,7 +28,6 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-
 # ==>> this is the endpoint that will be called from the front end
 # ==>> Search Places by coordinates: Accepts E.G: { latitude: 40.75, longitude: -73.99, cocktail: "Mojito" }
 @api.route('/places', methods=['POST'])
@@ -325,33 +324,37 @@ def get_place_details():
 
 @api.route('/signin', methods=['POST'])
 def sign_in_user():
-    data = request.get_json() ## ==>> get the data from the request
+    data = request.get_json()  # ==>> get the data from the request
     if not data:
-        return jsonify({"error": "Missing data"}), 400 ## ==>> check if the data is present
+        # ==>> check if the data is present
+        return jsonify({"error": "Missing data"}), 400
     email = data.get("email")
     password = data.get("password")
     if not email or not password:
         return jsonify({"error": "Missing email or password"}), 400
-    user =User.query.filter_by(email=email).first() ## ==>> query the database for the user first value is the column name, second is the value from the request.
+    # ==>> query the database for the user first value is the column name, second is the value from the request.
+    user = User.query.filter_by(email=email).first()
     if not user:
         return jsonify({"error": "User not found"}), 404
     if not check_password_hash(user.password, password):
         return jsonify({"error": "Invalid password"}), 401
-    
+
     access_token = create_access_token(identity=user.id)
 
     return jsonify({
-    "token": access_token,
-    "user": user.serialize()
-}), 200
+        "token": access_token,
+        "user": user.serialize()
+    }), 200
 
 # Jackie
+
+
 @api.route("/signup", methods=["POST"])
 def signup():
     name = request.json.get("name")
     email = request.json.get("email")
     password = request.json.get("password")
-    phone = request.json.get("phone") 
+    phone = request.json.get("phone")
 
     if not name or not email or not password:
         return jsonify({"msg": "Name, email and password are required"}), 400
@@ -362,13 +365,12 @@ def signup():
 
     hashed_password = generate_password_hash(password)
 
-    
     new_user = User(
         name=name,
         email=email,
         password=hashed_password,
         is_active=True,
-        phone=phone  
+        phone=phone
     )
 
     db.session.add(new_user)
@@ -376,7 +378,7 @@ def signup():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        print("Error al guardar usuario:", e)
+        print("Error saving user:", e)
         return jsonify({"msg": "Database error"}), 500
 
     return jsonify({"msg": "User created successfully"}), 201
@@ -386,5 +388,3 @@ def signup():
 def get_users():
     users = User.query.all()
     return jsonify([user.serialize() for user in users]), 200
-
-

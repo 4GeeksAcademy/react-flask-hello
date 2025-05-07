@@ -24,6 +24,7 @@ class User(db.Model):
 class Favorites(db.Model):
     __tablename__ = "favorites"
     id: Mapped[int] = mapped_column(primary_key=True)
+    # add issue to convert user to a foreign key 
     user: Mapped[str] = mapped_column(String(50), unique=False, nullable=True)
     show = relationship("Show",backref="favorites")
 

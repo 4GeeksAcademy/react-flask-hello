@@ -9,11 +9,14 @@ import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { SignUp } from "./pages/signUp";
+import { GoogleApi } from "./pages/GoogleApi";
 import { Search } from "./pages/Search";
 import { Custom } from "./pages/Custom";
 import { SignIn } from "./pages/signIn";
 import { Password } from "./pages/password";
 import { MainPage } from "./pages/mainpage";
+import { Profile} from "./pages/Profile";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +33,8 @@ export const router = createBrowserRouter(
       <Route path="signin" element={<SignIn />} />
       <Route path="password" element={<Password />} />
       <Route path="mainpage" element={<MainPage />} />
-
+      <Route path="google-api" element={<GoogleApi />} />
+      <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
     </Route>
   )
 );

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 
+
 const handleFetch = (setIngredients) => {
-    fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
+    fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list") // Fetch all ingredients
         .then((res) => res.json())
         .then((data) => {
             if (data.drinks) {
-                // Add placeholder images for each ingredient
-                const ingredientsWithImages = data.drinks.map((drink) => ({
-                    ...drink,
-                    image: `https://www.thecocktaildb.com/images/ingredients/${drink.strIngredient1}-Medium.png`,
-                }));
-                setIngredients(ingredientsWithImages);
+                setIngredients(data.drinks.map((drink) => drink.strIngredient1)); // Extract ingredient names
             } else {
                 setIngredients([]);
             }
@@ -18,14 +14,23 @@ const handleFetch = (setIngredients) => {
         .catch((err) => console.error(err));
 };
 
+// Function to generate a random cocktail name
+const generateCocktailName = () => {
+    const adjectives = ["Zesty", "Smooth", "Fiery", "Refreshing", "Bold", "Exotic", "Mystic", "Golden"];
+    const nouns = ["Sunset", "Storm", "Delight", "Twist", "Fusion", "Bliss", "Sensation", "Elixir"];
+
+    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+
+    return `${randomAdjective} ${randomNoun}`;
+};
+
 export const Custom = () => {
     const [ingredients, setIngredients] = useState([]);
     const [selectedIngredients, setSelectedIngredients] = useState([]);
-    const [matches, setMatches] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [cocktailCreated, setCocktailCreated] = useState(null);
 
     useEffect(() => {
-        // Fetch ingredients with images when the component mounts
         handleFetch(setIngredients);
     }, []);
 
@@ -37,62 +42,61 @@ export const Custom = () => {
         setSelectedIngredients(newSelected);
     };
 
-    const saveCustomSet = () => {
-        const customSet = {
-            name: `Custom Set ${new Date().toISOString()}`,
+    const createCocktail = () => {
+        if (selectedIngredients.length === 0) {
+            alert("Please select at least one ingredient to create a cocktail!");
+            return;
+        }
+
+        setCocktailCreated({
+            name: generateCocktailName(), // Generate random cocktail name
             ingredients: selectedIngredients,
-        };
-        const savedSets = JSON.parse(localStorage.getItem("customSets")) || [];
-        localStorage.setItem("customSets", JSON.stringify([...savedSets, customSet]));
-        setIsModalOpen(false);
+        });
     };
 
     return (
-        <div className="app mt-auto py-3 text-center">
-            <button onClick={() => setIsModalOpen(true)}>My Ingredients</button>
+        <div className="custom-app mt-auto py-3 text-center">
+            <h1>Ingredients List</h1>
 
-            {/* Ingredient list (cards for each ingredient) */}
-            <div className="Cocktail">
-                {ingredients.length > 0
-                    ? ingredients.map((drink) => (
-                        <div key={drink.strIngredient1} className="drink">
-                            <h2>{drink.strIngredient1}</h2>
+            <div className="custom-ingredient-list">
+                {ingredients.length > 0 ? (
+                    ingredients.map((ingredient) => (
+                        <div key={ingredient} className="ingredient-card">
+                            <h2>{ingredient}</h2>
                             <img
-                                src={drink.image}
-                                alt={drink.strIngredient1}
-                                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                                src={`https://www.thecocktaildb.com/images/ingredients/${ingredient}-Medium.png`}
+                                alt={ingredient}
                             />
-                            <div>
+                            <div className="ingredient-checkbox">
                                 <input
                                     type="checkbox"
-                                    checked={selectedIngredients.includes(drink.strIngredient1)}
-                                    onChange={() => handleIngredientToggle(drink.strIngredient1)}
+                                    checked={selectedIngredients.includes(ingredient)}
+                                    onChange={() => handleIngredientToggle(ingredient)}
                                 />
-                                <label>Select</label>
+                                <label>Select Ingredient</label>
                             </div>
                         </div>
                     ))
-                    : "No Ingredients Available!"
-                }
+                ) : (
+                    "No Ingredients available!!!"
+                )}
             </div>
 
-            {/* Modal for selecting ingredients */}
-            {isModalOpen && (
-                <div className="modal">
-                    <h2>Select Your Ingredients</h2>
-                    {ingredients.map((drink) => (
-                        <div key={drink.strIngredient1} className="ingredient-card">
-                            <input
-                                type="checkbox"
-                                checked={selectedIngredients.includes(drink.strIngredient1)}
-                                onChange={() => handleIngredientToggle(drink.strIngredient1)}
-                            />
-                            <label>{drink.strIngredient1}</label>
-                        </div>
-                    ))}
-                    <div>Matches: {matches} cocktails</div>
-                    <button onClick={saveCustomSet}>Save</button>
-                    <button onClick={() => setIsModalOpen(false)}>Close</button>
+            {/* Button to create cocktail */}
+            <button className="create-cocktail-btn" onClick={createCocktail}>
+                Create Cocktail
+            </button>
+
+            {/* Display created cocktail */}
+            {cocktailCreated && (
+                <div className="cocktail-card">
+                    <h2>{cocktailCreated.name}</h2>
+                    <p><strong>Ingredients:</strong></p>
+                    <ul>
+                        {cocktailCreated.ingredients.map((ingredient, index) => (
+                            <li key={index}>{ingredient}</li>
+                        ))}
+                    </ul>
                 </div>
             )}
         </div>

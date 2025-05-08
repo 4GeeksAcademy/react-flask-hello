@@ -103,11 +103,13 @@ def get_showlist():
                          # must have loop in order to serialize 
     return jsonify(showChoices) 
 @api.route('/reset_password', methods=['PUT'])
+
+
 def reset_password():
     email = request.json.get("email")
     user = User.query.filter_by(email=email).first()
     new_password = request.json.get("password")
-    user.password = generate_password_hash(new_password),
+    user.password = generate_password_hash(new_password)
 
 
     db.session.commit()

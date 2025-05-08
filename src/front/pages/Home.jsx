@@ -48,8 +48,8 @@ export const Home = () => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "lov@email.com",
-				"password": "password123"
+				"email": email,
+				"password": password
 			})
 		}
 		fetch(backendUrl  + "/api/login", option)

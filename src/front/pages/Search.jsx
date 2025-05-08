@@ -25,6 +25,15 @@ const handleSearch = (searchItem, setDrinks) => {
 export const Search = () => {
     const [search, setSearch] = useState("");
     const [drinks, setDrinks] = useState([]);
+    const [favorites, setFavorites] = useState([]);
+
+    const toggleFavorite = (drink) => {
+        setFavorites((prevFavorites) =>
+            prevFavorites.some(fav => fav.idDrink === drink.idDrink)
+                ? prevFavorites.filter(fav => fav.idDrink !== drink.idDrink)
+                : [...prevFavorites, drink]
+        );
+    };
 
     return (
         <div className="search-container">
@@ -64,6 +73,18 @@ export const Search = () => {
                                 })}
                             </ul>
                             <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p>
+                            
+                            {/* Favorite Button with Image */}
+                            <button 
+                                className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
+                                onClick={() => toggleFavorite(drink)}
+                            >
+                                <img 
+                                    src="https://img.icons8.com/?size=64&id=qOp2Va50blig&format=png" 
+                                    alt="Favorite Icon" 
+                                    className="favorite-icon"
+                                />
+                            </button>
                         </div>
                     ))
                 ) : (

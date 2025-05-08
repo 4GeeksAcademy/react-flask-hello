@@ -246,4 +246,7 @@ button:hover {
   color: red;
   margin-top: 20px;
 }
+.favorite-button.favorited .favorite-icon {
+  filter: hue-rotate(0deg) saturate(100%) brightness(0.8) sepia(1) hue-rotate(-50deg);
+}
 

@@ -32,7 +32,7 @@ export const Home = () => {
 			.then((resp) => {
 				return resp.json()
 			})
-			.catch(()=> {
+			.catch((error)=> {
 				console.log(error, "The data did not load!!!")
 			})
 			.then((data) => {

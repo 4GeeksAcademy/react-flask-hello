@@ -63,7 +63,7 @@ export const Home = () => {
 	}
 	
 	const showList = () => {
-		fetch("https://api.watchmode.com/v1/list-titles/?apiKey=OSwKHt6TDcNeYrY10mwshTj6aEZfN0XUJkuFG8Zq")
+		fetch(import.meta.env.VITE_API_URL)
 			.then((resp) => {
 				return resp.json()
 			})

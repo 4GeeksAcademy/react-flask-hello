@@ -125,13 +125,7 @@ button:hover {
 }
 
 
-.clamp-3 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  position: relative; /* so your "…see more" button can be positioned */
-}
+
 /* Search Bar */
 .search-bar {
   display: flex;

@@ -62,6 +62,24 @@ export const Home = () => {
 			})
 	}
 	
+	const showList = () => {
+		fetch(import.meta.env.VITE_API_URL)
+			.then((resp) => {
+				return resp.json()
+			})
+
+			.then((data) => {
+				console.log(data,"Here is my list of shows!!")
+			})
+			.catch((error)=> {
+				console.log(error, "There was an error!!!")
+			})
+	}
+	
+
+
+
+
 
 	// useEffect(() => {
 	// 	// loadMessage()
@@ -93,6 +111,7 @@ export const Home = () => {
 
 			<div className="alert alert-info">
 			<div>
+			<button onClick={() => showList()}>Show list button</button>
 				<button onClick={()=>signup()}>
 					Signup
 				</button>

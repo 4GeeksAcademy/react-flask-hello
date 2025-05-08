@@ -47,20 +47,19 @@ export const ResetPassword = () => {
                     },
                     body: JSON.stringify(payload) //==> We send the payload object to the backend
                 })
-
-            const body = await callResetPassword.json()
-            console.log("ok?", callResetPassword.ok, "body.error:", body.error);
-
+            const body = await callResetPassword.json();
+            if (!callResetPassword.ok) {
+                const errMsg = body.error || "Something went wrong. Please try again.";
+                setError(errMsg)
+                return; //==> early exit the function stopping the execution of the code below.
+            }
             console.log("==>>>Server said:", body);
-            if (callResetPassword.ok) {
-                alert("Password successfully changed")
-                navigate("/signin", {replace: true}) //==> If the API call is successful, we navigate to the sign in page // It swaps the history entry so users can’t hit “Back” and re-submit the form.
-                return;
-            }
-            else {
-                setError(body.error || "Unknown Error")
-            }
+
+            alert("Password successfully changed")
+            navigate("/signin", { replace: true }) //==> If the API call is successful, we navigate to the sign in page // It swaps the history entry so users can’t hit “Back” and re-submit the form.
+            return;
         }
+
         catch (err) {
             setError(err.message || "Unknown Error") //==> If the API call fails, we set the error message to the error message returned by the API or to "Unknown Error" if no error message is returned.
         }
@@ -72,32 +71,52 @@ export const ResetPassword = () => {
 
 
     return (
-        <div className="container">
+
+        <div className="container justify-content-center d-flex flex-column  vh-100 align-items-center">
+            {/* 100vh means “100% of the viewport’s height.” min-height ensures the container can grow taller if its content overflows. */}
             {!token ? (<p style={{ color: "red", marginTop: "0.5rem" }}>
                 Invalid link.
                 <a href="/password">Request a new reset email</a>
-                </p>) :
+            </p>) :
                 (
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="password">New password:</label>
-                            <input
-                                id="password"
-                                type="password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)} />
+                    <>
+                        <h2 className="display-6 text-primary text-center mb-4">
+                            <i className="bi bi-lock-fill me-2"></i>
+                            Reset your password
+                        </h2>
+                        <div
+                            className="card shadow-sm"
+                            style={{ maxWidth: "400px", width: "100%" }}>
+                            <div className="card-body">
+                                <form className=" d-flex flex-column gap-3" onSubmit={handleSubmit}>
+                                    <div className="mb-3">
+                                        <label htmlFor="password" className="form-label">New password:</label>
+                                        <input
+                                            className="form-control"
+                                            id="password"
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="confirm-password" className="form-label">Confirm Password:</label>
+                                        <input
+                                            className="form-control"
+                                            id="confirm-password"
+                                            type="password"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)} />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary w-100">{loading ? "Saving..." : "Save new password"}</button>
+                                    {error && (<div className="alert alert-danger mt-3">
+                                        {error}
+                                    </div>)}
+                                </form>
+                            </div>
+
                         </div>
-                        <div>
-                            <label htmlFor="confirm-password">Confirm Password:</label>
-                            <input
-                                id="confirm-password"
-                                type="password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)} />
-                        </div>
-                        <button type="submit">{loading ? "Saving..." : "Save new password"}</button>
-                        {error && (<p style={{ color: "red", marginTop: "0.5rem" }}>{error}</p>)}
-                    </form>
+
+                    </>
                 )}
         </div>
     );

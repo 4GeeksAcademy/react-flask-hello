@@ -11,6 +11,7 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { PasswordRecovery } from "./pages/PasswordRecovery";
 import { Profile } from "./pages/Profile";
+import { LoginPage } from "./pages/LoginPage";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
         <Route path="/demo" element={<Demo />} />
         <Route path="/resetpassword" element={<PasswordRecovery />} />
         <Route path="/profile" element={ <Profile />} />
+        <Route path="/login" element={ <LoginPage />} />
       </Route>
     )
 );

@@ -116,10 +116,13 @@ export const Home = () => {
 					Signup
 				</button>
 				
-				<button onClick={()=>login()}>
-					Login
-				</button>
-				<Link to="/resetpassword">Forgot Password?</Link>
+				
+				<div>
+					<Link to="/login">Already Have An Account?</Link>
+				</div>
+				<div>
+					<Link to="/resetpassword">Forgot Password?</Link>
+				</div>
 			</div>
 				{/* {store.message ? (
 					<span>{store.message}</span>

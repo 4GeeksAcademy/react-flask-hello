@@ -8,34 +8,34 @@ export const PasswordRecovery = () => {
     const [email, setEmail] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 
-const resetPassword = () => {
-    const options ={
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json",
-            // "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            email: email,
-            password: newPassword
-        })
+    const resetPassword = () => {
+        const options ={
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                // "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                email: email,
+                password: newPassword
+            })
+        }
+        fetch(backendUrl+ "/api/passwordrecovery", options)
+        .then((resp) => {
+            return resp.json()
+        .then((data) => {
+            if (resp.ok){
+                console.log(data);
+            } else setErrorMessage(data.error || "An error occured during password reset.");
+        });
+    })
     }
-    fetch(backendUrl+ "/api/passwordrecovery", options)
-    .then((resp) => {
-        return resp.json()
-    .then((data) => {
-        if (resp.ok){
-            console.log(data);
-        } else setErrorMessage(data.error || "An error occured during password reset.");
-    });
-})
-}
 
-useEffect(() => {
-	}, [])
+    useEffect(() => {
+        }, [])
 
 return (
     <div className= "text-center" >

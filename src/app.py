@@ -23,6 +23,8 @@ CORS(app)
 app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 jwt = JWTManager(app)
+print("🔒  JWT secret is:", app.config["JWT_SECRET_KEY"])
+
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

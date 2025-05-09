@@ -2,6 +2,9 @@ import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Link } from "react-router-dom";
 
+import logo from "../assets/img/logo.png";
+
+
 
 export const Home = () => {
 	return (
@@ -20,7 +23,14 @@ export const Home = () => {
 					borderRadius: "8px",
 				}}
 			>
-				<h4 className="text-center mb-4">LOGO</h4>
+				<div className="logo text-center mb-4">
+					<img
+						src={logo}    // ← this file must live in public/
+						alt="My App Logo"
+						style={{  }}
+					/>
+				</div>
+
 			</div>
 			<div className="ml-auto">
 				<Link to="/custom">

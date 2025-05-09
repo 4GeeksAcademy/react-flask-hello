@@ -1,20 +1,60 @@
 import React, { useState, useEffect } from "react";
 
-
 export const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
-    const [user, setUser] = useState({ name: "John Doe", email: "john@example.com" });
+    const [user, setUser] = useState({ name: "", email: "" });
 
     useEffect(() => {
-        // Load favorites from localStorage or API
-        const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        setFavorites(savedFavorites);
+        fetchUserData();
+        fetchFavorites();
     }, []);
 
-    const removeFavorite = (item) => {
-        const updatedFavorites = favorites.filter((fav) => fav.id !== item.id);
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    // Fetch user data from backend
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setUser({ name: data.name, email: data.email });
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
+
+    // Fetch favorites from backend
+    const fetchFavorites = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setFavorites(data);
+        } catch (error) {
+            console.error("Error fetching favorites:", error);
+        }
+    };
+
+    // Remove favorite from backend
+    const removeFavorite = async (item) => {
+        try {
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites/${item.drinkId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+
+            setFavorites(favorites.filter((fav) => fav.drinkId !== item.drinkId));
+        } catch (error) {
+            console.error("Error removing favorite:", error);
+        }
     };
 
     return (
@@ -30,11 +70,9 @@ export const Favorites = () => {
             <div className="favorites-list">
                 {favorites.length > 0 ? (
                     favorites.map((item) => (
-                        <div key={item.id} className="favorite-card">
-                            <h2>{item.name}</h2>
-                            <img src={item.image} alt={item.name} />
-                            <p><strong>Category:</strong> {item.category || "N/A"}</p>
-                            <p><strong>Description:</strong> {item.description || "No description available."}</p>
+                        <div key={item.drinkId} className="favorite-card">
+                            <h2>{item.drinkName}</h2>
+                            <img src={item.drinkImage} alt={item.drinkName} />
                             <button className="remove-favorite-btn" onClick={() => removeFavorite(item)}>
                                 Remove from Favorites
                             </button>

@@ -32,7 +32,7 @@ export const Home = () => {
 			.then((resp) => {
 				return resp.json()
 			})
-			.catch(()=> {
+			.catch((error)=> {
 				console.log(error, "The data did not load!!!")
 			})
 			.then((data) => {
@@ -48,8 +48,8 @@ export const Home = () => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "lov@email.com",
-				"password": "password123"
+				"email": email,
+				"password": password
 			})
 		}
 		fetch(backendUrl  + "/api/login", option)
@@ -116,10 +116,11 @@ export const Home = () => {
 					Signup
 				</button>
 				
-				<button onClick={()=>login()}>
-					Login
-				</button>
-				<Link to="/resetpassword">Forgot Password?</Link>
+				
+				<div>
+					<Link to="/login">Already Have An Account?</Link>
+				</div>
+				
 			</div>
 				{/* {store.message ? (
 					<span>{store.message}</span>

@@ -9,11 +9,11 @@ import { ReactTogether } from 'react-together'
 
 const Main = () => {
 
-    // if(! import.meta.env.VITE_BACKEND_URL ||  import.meta.env.VITE_BACKEND_URL == "") return (
-    //     <React.StrictMode>
-    //           <BackendURL/ >
-    //     </React.StrictMode>
-    //     );
+    if(! import.meta.env.VITE_BACKEND_URL ||  import.meta.env.VITE_BACKEND_URL == "") return (
+        <React.StrictMode>
+              <BackendURL/ >
+        </React.StrictMode>
+        );
     return (
         <React.StrictMode>
             {/* Provide global state to all components */}
@@ -33,7 +33,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
     <ReactTogether
     sessionParams={{
-        // appId: import.meta.env['VITE_APP_ID'],
         apiKey: import.meta.env['VITE_API_KEY'],
   
         // The options below will make every user immediately join session 'hello-world'

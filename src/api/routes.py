@@ -105,11 +105,13 @@ def get_showlist():
 
 
 @api.route('/reset_password', methods=['PUT'])
+
+
 def reset_password():
     email = request.json.get("email")
     user = User.query.filter_by(email=email).first()
     new_password = request.json.get("password")
-    user.password = generate_password_hash(new_password),
+    user.password = generate_password_hash(new_password)
 
 
     db.session.commit()

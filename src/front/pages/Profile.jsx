@@ -22,6 +22,28 @@ export const Profile = () => {
 	// added this becuase we want to render show list
 	const [showList, setshowList] = useState("");
 
+	// added this for the search functionality
+	const [search, setSearch] = useState("");
+
+	const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const matchesSearch = (showList, search) => {
+    return showList.title.toLowerCase().includes(search.toLowerCase());
+  };
+
+  // allows us to filter through the shows within the use state via the map method,
+  //  meaning that only the title searched will be mapped.
+
+
+  const filteredShows = getShowList.filter(
+    (getShowList) =>
+      matchesSearch(getShowList, search)
+  );
+
+
+
 
 	const post_favorites = () => {
 		const option = {
@@ -112,10 +134,10 @@ export const Profile = () => {
 					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 
 				</div>
+		</div>
 				<div className="d-inline-flex col-3 mt-4">
 				<div>
 						<h2 className="text-center mt-7 ">Favorite List</h2>
-						
 						{fav.length > 0 ? 
 						fav.map((show)=> {
 						return (
@@ -127,17 +149,36 @@ export const Profile = () => {
 									</li>
 								</ul>
 							</div>
-
 						)
 						}):
 						"please select your favorite shows"}
 					</div>
 
 
-					<div className="d-inline-flex col-3 mt-4">
+					<div className="d-inline-flex col-10 mt-4">
 					<div>
-						<h2 className="text-center mt-7 ">Show List</h2>
-						
+						<h2 className="text-center mt-7 ">What Are You Watching?</h2>
+							{/* search bar for shows */}
+							<div className="container col-10 mt-4">
+						<form className="d-flex" role="search">
+						<input
+							className="form-control me-2"
+							type="search"
+							placeholder="Search shows..."
+							aria-label="Search"
+							value= {search}
+							onChange={handleSearchChange}
+						/>
+						<div>
+							{filteredShows.map((getShowList)=> (
+								getShowList={getShowList}
+
+							))}
+						</div>
+						<button className="btn btn-outline-primary" type="submit">
+							Search
+						</button>
+						</form>
 						{showList.length > 0 ? 
 						showList.map((show)=> {
 						return (

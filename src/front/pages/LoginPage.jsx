@@ -44,10 +44,13 @@ export const LoginPage = () => {
         
             <div>
                 <label>Enter your Password </label>
-                <input onChange={(e) => setPassword(e.target.value)} value={password} type="text" placeholder="password" />
+                <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="password" />
                 <button onClick={login}>
                     Login
                 </button>
+                <div>
+					<Link to="/resetpassword">Forgot Password?</Link>
+				</div>
             </div>
         </div>
     )

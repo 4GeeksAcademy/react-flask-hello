@@ -23,7 +23,7 @@ export const PasswordRecovery = () => {
                 password: newPassword
             })
         }
-        fetch(backendUrl+ "/api/passwordrecovery", options)
+        fetch(backendUrl+ "/api/reset_password", options)
         .then((resp) => {
             return resp.json()
         .then((data) => {
@@ -50,6 +50,9 @@ return (
             Reset Password
         </button>
         {/* {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} */}
+        <div>
+            <Link to="/login">Return to Login</Link>
+        </div>
     </div>
 
 )

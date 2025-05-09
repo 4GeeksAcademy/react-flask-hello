@@ -86,6 +86,19 @@ button:hover {
   margin: auto;
 }
 
+<<<<<<< HEAD
+.card-text {
+  display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
+  
+  -webkit-box-orient: vertical; /* Orientación vertical */
+  overflow: hidden; /* Ocultar el contenido que excede */
+  text-overflow: ellipsis; /* Mostrar "..." al truncar */
+}
+
+
+
+=======
+>>>>>>> b07e83156ee80382d60c961f69380336ddf72d63
 /* Search Bar */
 .search-bar {
   display: flex;
@@ -144,19 +157,21 @@ button:hover {
   padding: 20px;
   background-color: #f8f9fa;
   text-align: center;
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
 }
 
-/* User Info Section (Now Positioned to the Left) */
+/* User Info Section (Fixed to the Left) */
 .user-info {
-  position: absolute;
+  position: fixed;
   top: 100px; /* Adjust based on navbar height */
   left: 20px;
   background-color: white;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 220px;
   text-align: left;
 }
 
@@ -169,6 +184,13 @@ button:hover {
   margin: 5px 0;
   font-size: 14px;
   color: gray;
+}
+
+/* Favorites Content (Ensuring Proper Spacing) */
+.favorites-content {
+  margin-left: 250px; /* Adjust to prevent overlap with user info */
+  flex-grow: 1;
+  padding: 20px;
 }
 
 /* Favorites Banner */

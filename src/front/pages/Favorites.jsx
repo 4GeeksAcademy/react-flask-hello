@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-export const Favorites = () => {
-    const [favorites, setFavorites] = useState([]);
+const UserInfo = () => {
     const [user, setUser] = useState({ name: "", email: "" });
 
     useEffect(() => {
         fetchUserData();
-        fetchFavorites();
     }, []);
 
-    // Fetch user data from backend
     const fetchUserData = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, {
@@ -25,7 +22,21 @@ export const Favorites = () => {
         }
     };
 
-    // Fetch favorites from backend
+    return (
+        <div className="user-info">
+            <h3>{user.name}</h3>
+            <p>{user.email}</p>
+        </div>
+    );
+};
+
+export const Favorites = () => {
+    const [favorites, setFavorites] = useState([]);
+
+    useEffect(() => {
+        fetchFavorites();
+    }, []);
+
     const fetchFavorites = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites`, {
@@ -41,45 +52,50 @@ export const Favorites = () => {
         }
     };
 
-    // Remove favorite from backend
-    const removeFavorite = async (item) => {
+    const removeFavorite = async (drinkId) => {
         try {
-            await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites/${item.drinkId}`, {
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites/${drinkId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             });
 
-            setFavorites(favorites.filter((fav) => fav.drinkId !== item.drinkId));
+            setFavorites(favorites.filter(fav => fav.drinkId !== drinkId));
         } catch (error) {
             console.error("Error removing favorite:", error);
         }
     };
 
     return (
-        <div className="favorites-app">
-            {/* User Info Section */}
-            <div className="user-info">
-                <h3>{user.name}</h3>
-                <p>{user.email}</p>
-            </div>
+        <div className="favorites-container">
+            {/* Sidebar for User Info */}
+            <UserInfo />
 
-            <h1>My Favorites</h1>
-
-            <div className="favorites-list">
+            {/* Favorites List */}
+            <div className="favorites-content">
+                <h2>My Favorite Cocktails</h2>
                 {favorites.length > 0 ? (
-                    favorites.map((item) => (
-                        <div key={item.drinkId} className="favorite-card">
-                            <h2>{item.drinkName}</h2>
-                            <img src={item.drinkImage} alt={item.drinkName} />
-                            <button className="remove-favorite-btn" onClick={() => removeFavorite(item)}>
-                                Remove from Favorites
-                            </button>
-                        </div>
-                    ))
+                    <div className="cocktail-list">
+                        {favorites.map((drink) => (
+                            <div key={drink.drinkId} className="cocktail-card">
+                                <h2 className="cocktail-title">{drink.drinkName}</h2>
+                                <img className="cocktail-image" src={drink.drinkImage} alt={drink.drinkName} />
+                                <p className="cocktail-glass"><strong>Glass:</strong> {drink.glass || "N/A"}</p>
+                                <p className="cocktail-category"><strong>Category:</strong> {drink.category || "N/A"}</p>
+                                
+                                {/* Remove Favorite Button */}
+                                <button 
+                                    className="remove-favorite-button"
+                                    onClick={() => removeFavorite(drink.drinkId)}
+                                >
+                                    Remove Favorite
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
-                    <p>No favorites added yet!</p>
+                    <p className="no-favorites">You haven't added any favorites yet.</p>
                 )}
             </div>
         </div>

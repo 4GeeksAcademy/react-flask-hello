@@ -3,6 +3,7 @@ import styles from "../assets/styles/Task.module.css";
 import { h4, style } from "framer-motion/client";
 import Navbar from "../components/Navbar"
 import AnimatedPage from "../components/AnimatedPage";
+import Navbar2 from "../components/Navbar2";
 import Particles from "../components/Particles";
 
 const content = [
@@ -79,6 +80,7 @@ const Task = () => {
           alphaParticles={false}
           disableRotation={false}
         />
+        <Navbar2 />
         <div style={{ position: "relative", zIndex: 1 }}>
         <div className={styles.taskContainer}>
                 <Navbar />
@@ -93,10 +95,10 @@ const Task = () => {
                     </div>
                     <div className={styles.taskButtons}>
                         <div className={styles.taskAccept}>
-                            Accept
+                            Completed
                         </div>
                         <div className={styles.taskDeny}>
-                            Deny
+                            Pass
                         </div>
                     </div>
                 </div>

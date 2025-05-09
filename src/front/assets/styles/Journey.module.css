@@ -1,108 +1,156 @@
-:local(.backgroundWrapper) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    pointer-events: none; /* Para que no bloquee clics */
-  }
-  
-  :local(.journeyContainer) {
-    position: relative;
-    z-index: 1;
-    background: transparent;
-    width: 100vw;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem; /* Para evitar desbordes laterales en móviles */
-    box-sizing: border-box;
-  }
-    
+:local(.journeyContainer) {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:local(.journeyCalendarButtons) {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  width: 100%;
+  max-width: 35%;
+  justify-items: center;
+}
+
+:local(.journeyButton) {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  border-radius: 50%;
+  border: 8px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset -4px -4px 8px rgba(255, 255, 255, 0.3),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 0 rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  background: transparent;
+}
+
+:local(.flipEnabled):hover {
+  transform: rotateY(180deg);
+}
+
+:local(.cardFront),
+:local(.cardBack) {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  transform: translate(0, 0);
+}
+
+
+:local(.cardFront) {
+  z-index: 2;
+}
+
+:local(.cardBack) {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+  box-shadow:
+    inset -4px -4px 8px rgba(255, 255, 255, 0.3),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Evita que la sombra o img desborde */
+  padding: 0; /* Elimina cualquier desplazamiento accidental */
+  box-sizing: border-box; /* Asegura que el padding no altere el tamaño */
+}
+
+:local(.cardBack)::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 30%;
+  height: 50%;
+  border-radius: 20%;
+  box-shadow:
+    inset -2px -2px 3px rgba(255, 255, 255, 0.4),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+:local(.cardBack img) {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  margin-left: 2rem;
+}
+
+:local(.journeyButton)::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 30%;
+  height: 50%;
+  border-radius: 20%;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset -2px -2px 3px rgba(255, 255, 255, 0.4),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+:local(.journeyButton) h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
   :local(.journeyCalendarButtons) {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3rem;
-    width: 100%;
-    max-width: 35%;
-    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 60%;
   }
-    
-  :local(.journeyButton) {
-    width: 150px; /* Tamaño fijo del botón */
-    height: 150px; /* Aseguramos que sea un círculo */
-    position: relative;
-    border-radius: 50%;
-    border: 8px solid rgba(255, 255, 255, 0.5);
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
-    box-shadow:
-      inset -4px -4px 8px rgba(255, 255, 255, 0.3),
-      inset 4px 4px 8px rgba(0, 0, 0, 0.2),
-      0 8px 0 rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  :local(.journeyCalendarButtons) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 80%;
   }
-  
-  :local(.journeyButton):hover {
-    transform: translateY(-5px);
-    box-shadow:
-      inset -4px -4px 8px rgba(255, 255, 255, 0.3),
-      inset 4px 4px 8px rgba(0, 0, 0, 0.2),
-      0 12px 0 rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 480px) {
+  :local(.journeyCalendarButtons) {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+    max-width: 90%;
   }
-  
-  :local(.journeyButton)::after {
-    content: "";
-    position: absolute;
-    top: 25%;
-    left: 35%;
-    width: 30%;
-    height: 50%;
-    border-radius: 20%;
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow:
-      inset -2px -2px 3px rgba(255, 255, 255, 0.4),
-      inset 2px 2px 3px rgba(0, 0, 0, 0.4);
-  }
-  
-  :local(.journeyButton) h1 {
-    margin: 0; /* Elimina el margen por defecto */
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    opacity: 0.5;
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
-  }
-    
-  
-    @media (max-width: 1024px) {
-      :local(.journeyCalendarButtons) {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 60%;
-      }
-    }
-    
-    /* Móviles */
-    @media (max-width: 768px) {
-      :local(.journeyCalendarButtons) {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-        max-width: 80%;
-      }
-    }
-  
-    @media (max-width: 480px) {
-      :local(.journeyCalendarButtons) {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 1.5rem;
-        max-width: 90%;
-      }
-    }
+}
     

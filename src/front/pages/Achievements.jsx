@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../assets/styles/Achievements.module.css";
 import { style } from "framer-motion/client";
-import Navbar from "../components/Navbar"
+import Navbar2 from "../components/Navbar2"
 import Particles from "../components/Particles";
 
 const achievements = [
@@ -128,7 +128,7 @@ const Achievements = () =>{
         <div style={{ position: "relative", zIndex: 1 }}>
         <div className={styles.achievementsContainer}>
             <div className={styles.achievementsNavbarGrid}>
-                <Navbar />
+            <Navbar2 />
             </div>
             <div className={styles.achievementsGrid}>
                 {achievements.map((achievement) => (

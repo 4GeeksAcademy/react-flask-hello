@@ -88,12 +88,12 @@ export const ResetPassword = () => {
         // 🔥 Bring payload back
         const payload = { token, new_password: newPassword };
 
-        console.log("Payload going to server:", payload);
-        console.log("VITE_BACKEND_URL is:", import.meta.env.VITE_BACKEND_URL);
+        console.log("!!!!Payload going to server:", payload);
+
 
         try {
             const res = await fetch(
-                console.log(`${import.meta.env.VITE_BACKEND_URL}/api/reset-password`)
+                `${import.meta.env.VITE_BACKEND_URL}/api/reset-password`
                 ,
                 {
                     method: "PUT",
@@ -101,6 +101,8 @@ export const ResetPassword = () => {
                     body: JSON.stringify(payload),
                 }
             );
+            console.log("!!!!!Fetch URL was:", res );
+            console.log("!!!!!!Response status:", res.status, res.statusText, res.url);
 
             // parse before checking ok
             const json = await res.json().catch(() => ({}));

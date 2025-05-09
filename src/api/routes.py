@@ -409,7 +409,7 @@ def reset_password():
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error":"User not found"}), 404 
-    print(VITE_BACKEND_URL = os.environ.get("VITE_BACKEND_URL"))
+    
     
     user.password = generate_password_hash(new_password)
     db.session.commit()  

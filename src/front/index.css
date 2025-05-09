@@ -1,32 +1,9 @@
-.logo {
-  margin-top: 4rem;
-  margin-left: 20px;
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
+/* General Styles */
+.custom-app {
+  font-family: Arial, sans-serif;
+  text-align: center;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  z-index: 1000;
-}
-
-.modal h2 {
-  margin-bottom: 20px;
-}
-
-.modal button {
-  margin: 10px;
-  padding: 10px 15px;
-  border: none;
-  background: #007bff;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
+  background-color: #f8f9fa;
 }
 
 .modal button:hover {
@@ -65,47 +42,40 @@ button:hover {
   transform: scale(1.05); /* Slight zoom on hover */
 }
 /* .Cocktail {
+/* Ingredient List */
+.custom-ingredient-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.drink {
-  width: 150px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Ingredient Card */
+.ingredient-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
   text-align: center;
-  background: white;
-  transition: transform 0.2s;
 }
 
-.drink img {
-  border-radius: 50%;
+.ingredient-card img {
+  width: 100px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.ingredient-card h2 {
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
-.drink div {
+/* Checkbox Styling */
+.ingredient-checkbox {
   margin-top: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.drink input[type="checkbox"] {
-  margin-bottom: 5px;
-}
-
-.drink:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-} */
-/* Container for the search functionality */
-.search-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -116,6 +86,7 @@ button:hover {
   margin: auto;
 }
 
+<<<<<<< HEAD
 .card-text {
   display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
   
@@ -126,6 +97,8 @@ button:hover {
 
 
 
+=======
+>>>>>>> b07e83156ee80382d60c961f69380336ddf72d63
 /* Search Bar */
 .search-bar {
   display: flex;
@@ -133,111 +106,149 @@ button:hover {
   gap: 10px;
 }
 
-/* Search Input */
-.search-input {
-  flex: 1;
-  padding: 10px;
-  border: 2px solid #007bff;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.search-input:focus {
-  border-color: #0056b3;
-  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
-  outline: none;
-}
-
-/* Search Button */
-.search-button {
-  padding: 10px 15px;
-  background-color: #007bff;
+/* Create Cocktail Button */
+.create-cocktail-btn {
+  background-color: #28a745;
   color: white;
-  font-size: 1rem;
   border: none;
-  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.search-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.search-button:active {
-  background-color: #004494;
-  transform: scale(0.95);
-}
-
-/* Cocktail List */
-.cocktail-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  border-radius: 5px;
   margin-top: 20px;
 }
 
-/* Individual Cocktail Cards */
+.create-cocktail-btn:hover {
+  background-color: #218838;
+}
+
+/* Cocktail Card */
 .cocktail-card {
-  width: 250px;
+  background-color: white;
+  border-radius: 10px;
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
   text-align: center;
-  transition: transform 0.2s;
+  margin: 20px auto;
 }
 
-.cocktail-card:hover {
-  transform: scale(1.05);
-}
-
-/* Cocktail Titles */
-.cocktail-title {
-  font-size: 1.5rem;
-  color: #333;
+.cocktail-card h2 {
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
-/* Cocktail Images */
-.cocktail-image {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-/* Glass and Category */
-.cocktail-glass, .cocktail-category {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Ingredients List */
-.ingredient-list {
-  list-style: none;
+.cocktail-card ul {
+  list-style-type: none;
   padding: 0;
+}
+
+.cocktail-card ul li {
+  background-color: #ff6f61;
+  color: white;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 5px;
+}
+
+/* General Styles */
+.favorites-app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* User Info Section (Fixed to the Left) */
+.user-info {
+  position: fixed;
+  top: 100px; /* Adjust based on navbar height */
+  left: 20px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 220px;
   text-align: left;
 }
 
-.ingredient-item {
-  font-size: 0.9rem;
-  color: #555;
+.user-info h3 {
+  margin: 0;
+  font-size: 18px;
 }
 
-/* Instructions */
-.cocktail-instructions {
-  font-size: 1rem;
-  color: #444;
+.user-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: gray;
 }
 
-/* No Results Message */
-.no-results {
-  font-size: 1.2rem;
-  color: red;
+/* Favorites Content (Ensuring Proper Spacing) */
+.favorites-content {
+  margin-left: 250px; /* Adjust to prevent overlap with user info */
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Favorites Banner */
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Favorites List */
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   margin-top: 20px;
 }
+
+/* Favorite Card */
+.favorite-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+}
+
+.favorite-card img {
+  width: 100px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.favorite-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.favorite-card p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Remove Favorite Button */
+.remove-favorite-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.remove-favorite-btn:hover {
+  background-color: #c82333;
+}
+
+
 

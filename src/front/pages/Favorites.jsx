@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from "react";
 
 const UserInfo = () => {
-    // Example user data (Replace with actual user data from local storage or backend)
-    const user = JSON.parse(localStorage.getItem("user")) || {
-        name: "John Doe",
-        email: "johndoe@example.com",
+    const [user, setUser] = useState({ name: "", email: "" });
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setUser({ name: data.name, email: data.email });
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     };
 
     return (
@@ -18,17 +33,38 @@ const UserInfo = () => {
 export const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
 
-    // Load favorites from local storage on mount
     useEffect(() => {
-        const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        setFavorites(storedFavorites);
+        fetchFavorites();
     }, []);
 
-    // Remove favorite and update local storage
-    const removeFavorite = (drinkId) => {
-        const updatedFavorites = favorites.filter(fav => fav.idDrink !== drinkId);
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    const fetchFavorites = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setFavorites(data);
+        } catch (error) {
+            console.error("Error fetching favorites:", error);
+        }
+    };
+
+    const removeFavorite = async (drinkId) => {
+        try {
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/favorites/${drinkId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+
+            setFavorites(favorites.filter(fav => fav.drinkId !== drinkId));
+        } catch (error) {
+            console.error("Error removing favorite:", error);
+        }
     };
 
     return (
@@ -42,16 +78,16 @@ export const Favorites = () => {
                 {favorites.length > 0 ? (
                     <div className="cocktail-list">
                         {favorites.map((drink) => (
-                            <div key={drink.idDrink} className="cocktail-card">
-                                <h2 className="cocktail-title">{drink.strDrink}</h2>
-                                <img className="cocktail-image" src={drink.strDrinkThumb} alt={drink.strDrink} />
-                                <p className="cocktail-glass"><strong>Glass:</strong> {drink.strGlass}</p>
-                                <p className="cocktail-category"><strong>Category:</strong> {drink.strCategory}</p>
+                            <div key={drink.drinkId} className="cocktail-card">
+                                <h2 className="cocktail-title">{drink.drinkName}</h2>
+                                <img className="cocktail-image" src={drink.drinkImage} alt={drink.drinkName} />
+                                <p className="cocktail-glass"><strong>Glass:</strong> {drink.glass || "N/A"}</p>
+                                <p className="cocktail-category"><strong>Category:</strong> {drink.category || "N/A"}</p>
                                 
                                 {/* Remove Favorite Button */}
                                 <button 
                                     className="remove-favorite-button"
-                                    onClick={() => removeFavorite(drink.idDrink)}
+                                    onClick={() => removeFavorite(drink.drinkId)}
                                 >
                                     Remove Favorite
                                 </button>

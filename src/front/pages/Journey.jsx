@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../assets/styles/Journey.module.css";
 import AnimatedPage from "../components/AnimatedPage";
 import Navbar2 from "../components/Navbar2";
 import Particles from "../components/Particles";
 
-// Función para mezclar los números
 const shuffleArray = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -14,24 +14,35 @@ const shuffleArray = (arr) => {
 };
 
 const Journey = () => {
+  const navigate = useNavigate();
   const [numbers, setNumbers] = useState([]);
   const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
 
   useEffect(() => {
-    const savedNumbers = localStorage.getItem("shuffledNumbers");
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return;
+
+    const savedNumbers = localStorage.getItem(`${userId}_shuffledNumbers`);
+    const savedCurrent = localStorage.getItem(`${userId}_currentClickedNumber`);
 
     if (savedNumbers) {
       setNumbers(JSON.parse(savedNumbers));
     } else {
-      const shuffledNumbers = shuffleArray(Array.from({ length: 16 }, (_, i) => i + 1));
-      setNumbers(shuffledNumbers);
-      localStorage.setItem("shuffledNumbers", JSON.stringify(shuffledNumbers));
+      const shuffled = shuffleArray(Array.from({ length: 16 }, (_, i) => i + 1));
+      setNumbers(shuffled);
+      localStorage.setItem(`${userId}_shuffledNumbers`, JSON.stringify(shuffled));
+    }
+
+    if (savedCurrent) {
+      setCurrentClickedNumber(parseInt(savedCurrent));
     }
   }, []);
 
   const handleClick = (num) => {
+    const userId = localStorage.getItem("user_id");
     if (num === currentClickedNumber) {
-      setCurrentClickedNumber((prev) => prev + 1);
+      localStorage.setItem(`${userId}_currentMission`, JSON.stringify(num));
+      navigate("/task");
     }
   };
 
@@ -55,7 +66,6 @@ const Journey = () => {
               {numbers.map((num) => {
                 const isCurrent = num === currentClickedNumber;
                 const isCompleted = num < currentClickedNumber;
-                const isLocked = num > currentClickedNumber;
 
                 const background = isCurrent
                   ? "radial-gradient(circle at 30% 30%, #FF8F84, #FB645C)"
@@ -68,14 +78,9 @@ const Journey = () => {
                     key={num}
                     className={`${styles.journeyButton} ${isCurrent ? styles.flipEnabled : ""}`}
                     onClick={() => handleClick(num)}
-                    style={{
-                      background,
-                      cursor: isCurrent ? "pointer" : "not-allowed",
-                    }}
+                    style={{ background, cursor: isCurrent ? "pointer" : "not-allowed" }}
                   >
-                    <div className={styles.cardFront}>
-                      <h1>{num}</h1>
-                    </div>
+                    <div className={styles.cardFront}><h1>{num}</h1></div>
                     <div className={styles.cardBack}>
                       <img src="src/front/assets/styles/images/MISSION_TAREA_MANUAL_ROSITA.webp" alt="MotyActive" />
                     </div>

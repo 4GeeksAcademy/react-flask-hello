@@ -1,37 +1,40 @@
 import click
 from flask.cli import with_appcontext
-from api.models import db, AppUser, Mission
-import datetime
+from api.models import db, Achievement, Mission
 
-# 🔧 Comando para insertar datos de prueba en la base de datos
-@click.command('create-dummy-data')
+@click.command('populate-achievements')
 @with_appcontext
-def create_dummy_data():
-    user = AppUser(
-        username="testuser",
-        email="test@example.com",
-        password_hash="hashedpassword",
-        avatar_url="https://example.com/avatar.jpg",
-        level=1,
-        xp_total=0,
-        mood_actual="motivated",
-        objetivo_personal="Ser mi mejor versión"
-    )
-    db.session.add(user)
-    db.session.commit()
+def populate_achievements():
+    asociaciones = [
+        {"achievement_title": "First Level", "mission_title": "First Mission"},
+        {"achievement_title": "Perfect Combo", "mission_title": "Combo Mission"},
+        {"achievement_title": "Zen Mode", "mission_title": "Meditate"},
+        {"achievement_title": "Breathe and Recharge", "mission_title": "Breathing"},
+        {"achievement_title": "Knowledge Initiate", "mission_title": "Podcast"},
+        {"achievement_title": "Strength Level", "mission_title": "Workout"},
+        {"achievement_title": "Legendary Day", "mission_title": "Yoga and Meditate"},
+        {"achievement_title": "Supreme Explorer", "mission_title": "Explore"},
+        {"achievement_title": "Unstoppable Mission", "mission_title": "Consistency"},
+        {"achievement_title": "Labyrinth King", "mission_title": "Skill Tree"},
+        {"achievement_title": "Mindfulness Jedi Master", "mission_title": "10 Meditations"},
+        {"achievement_title": "Serenity Winds", "mission_title": "Breath Master"},
+        {"achievement_title": "Virtual Gymnast", "mission_title": "5 Yoga Sessions"},
+        {"achievement_title": "Digital Bibliophile", "mission_title": "Podcast Explorer"},
+        {"achievement_title": "Burst Mode", "mission_title": "Mission Burst"}
+    ]
 
-    mission = Mission(
-        title="Camina 30 minutos",
-        description="Sal a caminar durante media hora",
-        type="manual",
-        category="ejercicio",
-        duration_minutes=30,
-        xp_reward=50,
-        content_url="",
-        is_daily=True,
-        is_weekly=False
-    )
-    db.session.add(mission)
-    db.session.commit()
+    linked = 0
+    for pair in asociaciones:
+        achievement = Achievement.query.filter_by(title=pair["achievement_title"]).first()
+        mission = Mission.query.filter_by(title=pair["mission_title"]).first()
 
-    click.echo("✔️ Usuario y misión de prueba creados exitosamente")
+        if achievement and mission:
+            mission.achievement_id = achievement.id
+            db.session.commit()
+            linked += 1
+        elif not mission:
+            click.echo(f"⚠️ Misión '{pair['mission_title']}' no encontrada.")
+        elif not achievement:
+            click.echo(f"⚠️ Logro '{pair['achievement_title']}' no encontrado.")
+
+    click.echo(f"🔗 {linked} logros correctamente vinculados a misiones.")

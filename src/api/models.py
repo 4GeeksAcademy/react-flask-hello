@@ -46,6 +46,7 @@ class Mission(db.Model):
     is_daily = db.Column(db.Boolean, default=False)
     is_weekly = db.Column(db.Boolean, default=False)
 
+    achievement_id = db.Column(db.Integer, db.ForeignKey('achievement.id'))
     user_missions = db.relationship('UserMission', backref='mission', lazy=True)
     favorites = db.relationship('Favorite', backref='mission', lazy=True)
 

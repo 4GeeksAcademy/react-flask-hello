@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
+from api.models import db, AppUser, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
 from datetime import datetime, timedelta
+from flask_jwt_extended import create_access_token
 from api.utils import (
     hash_password,
     check_password,
@@ -25,7 +26,6 @@ def register_user():
             return jsonify({"msg": "Este email ya está registrado"}), 400
 
         hashed_pw = hash_password(data['password'])
-        print(hashed_pw)
         new_user = AppUser(
             username=data['username'],
             email=data['email'],
@@ -39,7 +39,6 @@ def register_user():
     except Exception as e:
         print("⚠️ ERROR en /register:", e)
         return jsonify({"msg": "Error interno del servidor"}), 500
-
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -73,20 +72,6 @@ def get_user(user_id):
         return jsonify({"msg": "Usuario no encontrado"}), 404
     return jsonify(user.serialize()), 200
 
-# --- MISSIONS ---
-
-@api.route('/missions', methods=['GET'])
-def get_all_missions():
-    missions = Mission.query.all()
-    return jsonify([m.serialize() for m in missions]), 200
-
-@api.route('/missions/<int:mission_id>', methods=['GET'])
-def get_mission(mission_id):
-    mission = Mission.query.get(mission_id)
-    if not mission:
-        return jsonify({"msg": "Misión no encontrada"}), 404
-    return jsonify(mission.serialize()), 200
-
 # --- FAVORITES ---
 
 @api.route('/users/<int:user_id>/favorites', methods=['GET'])
@@ -111,37 +96,6 @@ def set_mood(user_id):
     db.session.add(mood)
     db.session.commit()
     return jsonify({"msg": "Estado de ánimo actualizado"}), 200
-
-# --- USER MISSIONS ---
-
-@api.route('/users/<int:user_id>/missions', methods=['GET'])
-def get_user_missions(user_id):
-    user_missions = UserMission.query.filter_by(user_id=user_id).all()
-    return jsonify([um.serialize() for um in user_missions]), 200
-
-@api.route('/usermission', methods=['POST'])
-def accept_mission():
-    data = request.json
-    user_mission = UserMission(
-        user_id=data['user_id'],
-        mission_id=data['mission_id'],
-        status="in_progress",
-        accepted_at=datetime.utcnow()
-    )
-    db.session.add(user_mission)
-    db.session.commit()
-    return jsonify({"msg": "Misión aceptada"}), 201
-
-@api.route('/usermission/<int:usermission_id>', methods=['PUT'])
-def complete_mission(usermission_id):
-    um = UserMission.query.get(usermission_id)
-    if not um:
-        return jsonify({"msg": "Misión no encontrada"}), 404
-    um.status = "completed"
-    um.completed_at = datetime.utcnow()
-    um.completion_percentage = 100
-    db.session.commit()
-    return jsonify({"msg": "Misión completada"}), 200
 
 # --- STATS ---
 
@@ -178,8 +132,8 @@ def get_full_profile(user_id):
         return jsonify({'msg': 'Usuario no encontrado'}), 404
 
     today = datetime.utcnow().date()
+    from api.models import Mission, UserMission
 
-    # Misiones diarias aceptadas hoy
     missions_today = UserMission.query.join(Mission).filter(
         UserMission.user_id == user_id,
         Mission.is_daily == True,
@@ -192,19 +146,16 @@ def get_full_profile(user_id):
         'completed_at': m.completed_at
     } for m in missions_today]
 
-    # Stats agregadas
     stats = Stat.query.filter_by(user_id=user_id).all()
     total_tasks = sum(s.missions_completed or 0 for s in stats)
     total_xp = sum(s.xp_earned or 0 for s in stats)
     first_day = min((s.date for s in stats), default=today)
     days_in_app = (today - first_day).days + 1 if stats else 0
 
-    # Semana actual
     start_week = today - timedelta(days=today.weekday())
     week_stats = [s for s in stats if s.date >= start_week]
     week_xp = sum(s.xp_earned or 0 for s in week_stats)
 
-    # Logros del usuario
     achievements = UserAchievement.query.filter_by(user_id=user_id).all()
     achievement_data = [{
         'title': a.achievement.title,
@@ -212,14 +163,13 @@ def get_full_profile(user_id):
         'unlocked_at': a.unlocked_at.isoformat()
     } for a in achievements]
 
-    # Actividad en el calendario del mes
     calendar_data = [{
         'date': s.date.isoformat(),
         'missions_completed': s.missions_completed
     } for s in stats if s.missions_completed and s.date.month == today.month]
 
     return jsonify({
-        'user': user.serialize(),  # ya incluye user_id como id
+        'user': user.serialize(),
         'missions_today': missions_today_data,
         'stats': {
             'tasks_completed': total_tasks,
@@ -233,4 +183,3 @@ def get_full_profile(user_id):
         'achievements': achievement_data,
         'reflection': user.mood_actual or ''
     }), 200
-

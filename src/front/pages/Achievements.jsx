@@ -1,44 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../assets/styles/Achievements.module.css";
-import { style } from "framer-motion/client";
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar";
 import Particles from "../components/Particles";
 
-const achievements = [
+const initialAchievements = [
     {
         id: 1,
         title: "First Level",
         description: "Complete your first weekly mission.",
         icon: <i className="fas fa-rocket"></i>,
-        unlocked: true
+        unlocked: false
     },
     {
         id: 2,
         title: "Perfect Combo",
         description: "Complete 3 missions in one week.",
         icon: <i className="fas fa-fire"></i>,
-        unlocked: true
+        unlocked: false
     },
     {
         id: 3,
         title: "Zen Mode",
         description: "Do a guided meditation.",
         icon: <i className="fas fa-spa"></i>,
-        unlocked: true
+        unlocked: false
     },
     {
         id: 4,
         title: "Breathe and Recharge",
         description: "Complete a conscious breathing session.",
         icon: <i className="fas fa-wind"></i>,
-        unlocked: true
+        unlocked: false
     },
     {
         id: 5,
         title: "Knowledge Initiate",
         description: "Listen to your first full podcast.",
         icon: <i className="fas fa-headphones-alt"></i>,
-        unlocked: true
+        unlocked: false
     },
     {
         id: 6,
@@ -110,47 +109,77 @@ const achievements = [
         icon: <i className="fas fa-bolt"></i>,
         unlocked: false
     }
-  ];
+];
 
-const Achievements = () =>{
-    return(
+const Achievements = () => {
+    const [achievements, setAchievements] = useState(initialAchievements);
+
+    useEffect(() => {
+        const fetchUnlocked = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await fetch("http://localhost:5000/user/achievements", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const unlockedList = await response.json(); // [{ id, title, ... }]
+
+                // Mapear logros desbloqueados al arreglo original
+                const updated = initialAchievements.map((item) => {
+                    const unlocked = unlockedList.some(unlocked => unlocked.title === item.title);
+                    return { ...item, unlocked };
+                });
+
+                setAchievements(updated);
+            } catch (error) {
+                console.error("Error loading achievements:", error);
+            }
+        };
+
+        fetchUnlocked();
+    }, []);
+
+    return (
         <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
-        <Particles
-          particleColors={['#6725D8', '#6725D8']}
-          particleCount={300}
-          particleSpread={5}
-          speed={0.2}
-          particleBaseSize={50}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
-        />
-        <div style={{ position: "relative", zIndex: 1 }}>
-        <div className={styles.achievementsContainer}>
-            <div className={styles.achievementsNavbarGrid}>
-                <Navbar />
-            </div>
-            <div className={styles.achievementsGrid}>
-                {achievements.map((achievement) => (
-                    <div
-                    className={`${styles.achievementsCard} ${!achievement.unlocked ? styles.achievementsLockedCard : ''}`}
-                    key={achievement.id}
-                    >
-                    <div className={styles.achievementsIcon}>{achievement.icon}</div>
-                    <div className={styles.achievementsCardText}>
-                        <div className={styles.achievementsTitle}>{achievement.title}</div>
-                        <div className={styles.achievementsDescription}>{achievement.description}</div>
+            <Particles
+                particleColors={['#6725D8', '#6725D8']}
+                particleCount={300}
+                particleSpread={5}
+                speed={0.2}
+                particleBaseSize={50}
+                moveParticlesOnHover={true}
+                alphaParticles={false}
+                disableRotation={false}
+            />
+            <div style={{ position: "relative", zIndex: 1 }}>
+                <div className={styles.achievementsContainer}>
+                    <div className={styles.achievementsNavbarGrid}>
+                        <Navbar />
                     </div>
-                    {!achievement.unlocked && (
-                        <div className={styles.achievementsLocked}><i className="fa-solid fa-lock"></i></div>
-                    )}
+                    <div className={styles.achievementsGrid}>
+                        {achievements.map((achievement) => (
+                            <div
+                                className={`${styles.achievementsCard} ${!achievement.unlocked ? styles.achievementsLockedCard : ''}`}
+                                key={achievement.id}
+                            >
+                                <div className={styles.achievementsIcon}>{achievement.icon}</div>
+                                <div className={styles.achievementsCardText}>
+                                    <div className={styles.achievementsTitle}>{achievement.title}</div>
+                                    <div className={styles.achievementsDescription}>{achievement.description}</div>
+                                </div>
+                                {!achievement.unlocked && (
+                                    <div className={styles.achievementsLocked}>
+                                        <i className="fa-solid fa-lock"></i>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </div>
             </div>
         </div>
-    </div>
-    )
-}
+    );
+};
 
 export default Achievements;

@@ -389,3 +389,41 @@ h2 {
     max-width: 600px;
     margin: auto;
 }
+/* General Logout Page Styling */
+.logout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+/* Logout Message */
+.logout-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.logout-container p {
+    font-size: 18px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+/* Logout Button */
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}

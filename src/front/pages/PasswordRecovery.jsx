@@ -1,6 +1,9 @@
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom";
+
+
+
 
 export const PasswordRecovery = () => {
 
@@ -40,18 +43,27 @@ export const PasswordRecovery = () => {
 return (
     <div className= "text-center" >
         <h1>Forgot Password</h1>
+        <br/>
         <p>Please enter your email and new password. If an account exists with the email you provided, 
             your password will be reset successfully.
         </p>
-        <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Enter your email" />
-        <input onChange={(e)=> setNewPassword(e.target.value)} value={newPassword} type="password" placeholder="Enter New password"/>
-         {/* <input onChnage={(e)=> setNewPassword(e.target.value)} value={newPassword} type="password" placeholder="Confirm New PAssword"/>  */}
-        <button onClick={resetPassword}>
-            Reset Password
-        </button>
-        {/* {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} */}
-        <div>
-            <Link to="/login">Return to Login</Link>
+        <div className="border p-5 mx-auto w-50">
+            <div className="passwordReset" >
+                <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Enter Your Email" />
+            </div>
+            <br/>
+            <div>
+                <input onChange={(e)=> setNewPassword(e.target.value)} value={newPassword} type="password" placeholder="Enter New Password"/>
+            </div>
+            <br/>
+            {/* <input onChnage={(e)=> setNewPassword(e.target.value)} value={newPassword} type="password" placeholder="Confirm New PAssword"/>  */}
+            <button className= "btn btn-secondary rounded" onClick={resetPassword}>
+                Reset Password
+            </button>
+            {/* {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} */}
+            <div>
+                <Link to="/login">Return to Login</Link>
+            </div>
         </div>
     </div>
 

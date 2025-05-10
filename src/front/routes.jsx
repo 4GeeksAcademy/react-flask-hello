@@ -17,6 +17,9 @@ import { Password } from "./pages/password";
 import { MainPage } from "./pages/mainpage";
 import { Profile} from "./pages/Profile";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { ResetPassword } from "./pages/ResetPassword";
+import {PasswordRequestReset} from "./pages/passwordResetRequest";
+
 import { Favorites } from "./pages/Favorites";
 
 export const router = createBrowserRouter(
@@ -36,6 +39,8 @@ export const router = createBrowserRouter(
       <Route path="mainpage" element={<MainPage />} />
       <Route path="google-api" element={<GoogleApi />} />
       <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path="reset-password" element={<ResetPassword />} />
+      <Route path="request-reset" element={<PasswordRequestReset/>} />
       <Route path="favorites" element={<Favorites />} />
     </Route>
   )

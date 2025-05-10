@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const handleFetch = (setIngredients) => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list") // Fetch all ingredients
@@ -29,6 +29,7 @@ export const Custom = () => {
     const [ingredients, setIngredients] = useState([]);
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const [cocktailCreated, setCocktailCreated] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         handleFetch(setIngredients);
@@ -54,9 +55,19 @@ export const Custom = () => {
         });
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Clear authentication token
+        navigate("/logout"); // Redirect to logout page
+    };
+
     return (
         <div className="custom-app mt-auto py-3 text-center">
             <h1>Ingredients List</h1>
+
+            {/* Logout Button */}
+            <button className="logout-button" onClick={handleLogout}>
+                Logout
+            </button>
 
             <div className="custom-ingredient-list">
                 {ingredients.length > 0 ? (

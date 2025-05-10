@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const handleSearch = (searchItem, setDrinks) => {
     if (!searchItem.trim()) {
@@ -26,6 +27,7 @@ export const Search = () => {
     const [search, setSearch] = useState("");
     const [drinks, setDrinks] = useState([]);
     const [favorites, setFavorites] = useState([]);
+    const navigate = useNavigate();
 
     // Load favorites from local storage on mount
     useEffect(() => {
@@ -45,6 +47,11 @@ export const Search = () => {
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Clear authentication token
+        navigate("/logout"); // Redirect to logout page
+    };
+
     return (
         <div className="search-container">
             <div className="search-bar">
@@ -56,6 +63,10 @@ export const Search = () => {
                 />
                 <button onClick={() => handleSearch(search, setDrinks)} className="search-button">
                     Search
+                </button>
+                {/* Logout Button */}
+                <button className="logout-button" onClick={handleLogout}>
+                    Logout
                 </button>
             </div>
 

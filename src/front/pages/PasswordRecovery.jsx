@@ -48,7 +48,7 @@ return (
             your password will be reset successfully.
         </p>
         <div className="border p-5 mx-auto w-50">
-            <div className="passwordReset" >
+            <div >
                 <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="Enter Your Email" />
             </div>
             <br/>

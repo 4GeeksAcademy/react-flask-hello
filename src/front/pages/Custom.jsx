@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 const handleFetch = (setIngredients) => {
-    fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list") // Fetch all ingredients
+    fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
         .then((res) => res.json())
         .then((data) => {
             if (data.drinks) {
-                setIngredients(data.drinks.map((drink) => drink.strIngredient1)); // Extract ingredient names
+                setIngredients(data.drinks.map((drink) => drink.strIngredient1));
             } else {
                 setIngredients([]);
             }
@@ -14,7 +15,6 @@ const handleFetch = (setIngredients) => {
         .catch((err) => console.error(err));
 };
 
-// Function to generate a random cocktail name
 const generateCocktailName = () => {
     const adjectives = ["Zesty", "Smooth", "Fiery", "Refreshing", "Bold", "Exotic", "Mystic", "Golden"];
     const nouns = ["Sunset", "Storm", "Delight", "Twist", "Fusion", "Bliss", "Sensation", "Elixir"];
@@ -50,24 +50,42 @@ export const Custom = () => {
         }
 
         setCocktailCreated({
-            name: generateCocktailName(), // Generate random cocktail name
+            name: generateCocktailName(),
             ingredients: selectedIngredients,
         });
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("token"); // Clear authentication token
-        navigate("/logout"); // Redirect to logout page
+        localStorage.removeItem("token");
+        navigate("/logout");
     };
 
     return (
-        <div className="custom-app mt-auto py-3 text-center">
-            <h1>Ingredients List</h1>
+        <div className="custom-app">
+            {/* Button Container */}
+            <div className="button-container">
+                <button className="logout-button" onClick={handleLogout}>
+                    Logout
+                </button>
+                <button className="create-cocktail-btn" onClick={createCocktail}>
+                    Create Cocktail
+                </button>
+            </div>
 
-            {/* Logout Button */}
-            <button className="logout-button" onClick={handleLogout}>
-                Logout
-            </button>
+            {/* Display created cocktail at the top */}
+            {cocktailCreated && (
+                <div className="cocktail-card">
+                    <h2>{cocktailCreated.name}</h2>
+                    <p><strong>Ingredients:</strong></p>
+                    <ul>
+                        {cocktailCreated.ingredients.map((ingredient, index) => (
+                            <li key={index}>{ingredient}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            <h1>Ingredients List</h1>
 
             <div className="custom-ingredient-list">
                 {ingredients.length > 0 ? (
@@ -92,24 +110,6 @@ export const Custom = () => {
                     "No Ingredients available!!!"
                 )}
             </div>
-
-            {/* Button to create cocktail */}
-            <button className="create-cocktail-btn" onClick={createCocktail}>
-                Create Cocktail
-            </button>
-
-            {/* Display created cocktail */}
-            {cocktailCreated && (
-                <div className="cocktail-card">
-                    <h2>{cocktailCreated.name}</h2>
-                    <p><strong>Ingredients:</strong></p>
-                    <ul>
-                        {cocktailCreated.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
         </div>
     );
 };

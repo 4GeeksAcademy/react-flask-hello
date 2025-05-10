@@ -52,6 +52,14 @@ export const Search = () => {
 
     return (
         <div className="search-page-container">
+            {/* Button Container */}
+            <div className="button-container">
+                <button className="logout-action-button" onClick={handleLogout}>
+                    Logout
+                </button>
+            </div>
+
+            {/* Search Bar */}
             <div className="search-header">
                 <input 
                     className="search-input-field"
@@ -62,12 +70,10 @@ export const Search = () => {
                 <button onClick={() => handleSearch(search, setDrinks)} className="search-action-button">
                     Search
                 </button>
-                <button className="logout-action-button" onClick={handleLogout}>
-                    Logout
-                </button>
             </div>
 
-            <div className="cocktail-results">
+            {/* Display Results */}
+            <div className="results-container">
                 {drinks.length > 0 ? (
                     drinks.map((drink) => (
                         <div key={drink.idDrink} className="cocktail-card-container">

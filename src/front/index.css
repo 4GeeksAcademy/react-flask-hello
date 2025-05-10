@@ -21,8 +21,10 @@
   color: #333; Text color
 } */
 
-h1, h2, h3 {
-  font-family: 'Helvetica', sans-serif;
+h1,
+h2,
+h3 {
+  font-family: "Helvetica", sans-serif;
   color: #444; /* Darker text color for headers */
 }
 
@@ -86,19 +88,6 @@ button:hover {
   margin: auto;
 }
 
-<<<<<<< HEAD
-.card-text {
-  display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
-  
-  -webkit-box-orient: vertical; /* Orientación vertical */
-  overflow: hidden; /* Ocultar el contenido que excede */
-  text-overflow: ellipsis; /* Mostrar "..." al truncar */
-}
-
-
-
-=======
->>>>>>> b07e83156ee80382d60c961f69380336ddf72d63
 /* Search Bar */
 .search-bar {
   display: flex;
@@ -249,6 +238,26 @@ h1 {
 .remove-favorite-btn:hover {
   background-color: #c82333;
 }
+.logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
 
+.logout-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
 
-
+.logout-button:hover {
+  background-color: #0056b3;
+}

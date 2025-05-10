@@ -32,35 +32,34 @@ export const Home = () => {
 			.then((resp) => {
 				return resp.json()
 			})
-			.catch((error)=> {
-				console.log(error, "The data did not load!!!")
-			})
 			.then((data) => {
 				console.log(data,"Where is my data????")
+			})
+			.catch((error)=> {
+				console.log(error, "The data did not load!!!")
 			})
 			
 	}
 
-	const login = () => {
-		const option = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				"email": email,
-				"password": password
-			})
-		}
-		fetch(backendUrl  + "/api/login", option)
-			.then((resp) => {
-				return resp.json()
-			})
-
-			.then((data) => {
-				console.log(data)
-			})
-	}
+	// const login = () => {
+	// 	const option = {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json"
+	// 		},
+	// 		body: JSON.stringify({
+	// 			"email": email,
+	// 			"password": password
+	// 		})
+	// 	}
+	// 	fetch(backendUrl  + "/api/login", option)
+	// 		.then((resp) => {
+	// 			return resp.json()
+	// 		})
+	// 		.then((data) => {
+	// 			console.log(data)
+	// 		})
+	// }
 	
 	const showList = () => {
 		fetch(import.meta.env.VITE_API_URL)
@@ -76,11 +75,6 @@ export const Home = () => {
 			})
 	}
 	
-
-
-
-
-
 	// useEffect(() => {
 	// 	// loadMessage()
 	// }, [])

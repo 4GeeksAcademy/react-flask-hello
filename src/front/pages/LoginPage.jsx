@@ -37,15 +37,15 @@ export const LoginPage = () => {
         <div className= "text-center">
             <div>
                 <h1 className="main">Welcome to Couch Potato!</h1>
-                <h3>Login to your Account </h3>
-                <label>Enter your Email</label>
+                <h3 className="p-3">Login to your Account </h3>
+                <label className="p-3">Enter your Email</label>
                 <input onChange={(e) => setEmail(e.target.value)} value={email} type="text" placeholder="email" />
             </div>
         
             <div>
-                <label>Enter your Password </label>
+                <label className="p-3">Enter your Password </label>
                 <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="password" />
-                <button onClick={login}>
+                <button className="m-2"onClick={login}>
                     Login
                 </button>
                 <div>

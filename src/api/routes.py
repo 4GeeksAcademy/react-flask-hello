@@ -17,29 +17,18 @@ api = Blueprint('api', __name__)
 def register_user():
     try:
         data = request.json
-
         if not all(k in data for k in ("email", "username", "password")):
             return jsonify({"msg": "Faltan campos obligatorios"}), 400
-
         if AppUser.query.filter_by(email=data["email"]).first():
             return jsonify({"msg": "Este email ya está registrado"}), 400
-
         hashed_pw = hash_password(data['password'])
-        print(hashed_pw)
-        new_user = AppUser(
-            username=data['username'],
-            email=data['email'],
-            password_hash=hashed_pw
-        )
+        new_user = AppUser(username=data['username'], email=data['email'], password_hash=hashed_pw)
         db.session.add(new_user)
         db.session.commit()
-
         return jsonify({"msg": "Usuario creado exitosamente"}), 201
-
     except Exception as e:
         print("⚠️ ERROR en /register:", e)
         return jsonify({"msg": "Error interno del servidor"}), 500
-
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -50,11 +39,7 @@ def login():
     if not user or not check_password(data['password'], user.password_hash):
         return jsonify({"msg": "Credenciales inválidas"}), 401
     token = generate_auth_token(user.id)
-    return jsonify({
-        "msg": "Login correcto",
-        "token": token,
-        "user_id": user.id
-    }), 200
+    return jsonify({"msg": "Login correcto", "token": token, "user_id": user.id}), 200
 
 @api.route('/perfil', methods=['GET'])
 @token_required
@@ -140,6 +125,27 @@ def complete_mission(usermission_id):
     um.status = "completed"
     um.completed_at = datetime.utcnow()
     um.completion_percentage = 100
+
+    user_id = um.user_id
+    mission = Mission.query.get(um.mission_id)
+
+    # Desbloqueo: Zen Mode
+    if mission.title.lower() == "meditation":
+        achievement = Achievement.query.filter_by(title="Zen Mode").first()
+        if achievement:
+            already = UserAchievement.query.filter_by(user_id=user_id, achievement_id=achievement.id).first()
+            if not already:
+                db.session.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
+
+    # Desbloqueo: Perfect Combo si tiene 3 completadas
+    completed_missions = UserMission.query.filter_by(user_id=user_id, status="completed").count()
+    if completed_missions == 3:
+        achievement = Achievement.query.filter_by(title="Perfect Combo").first()
+        if achievement:
+            already = UserAchievement.query.filter_by(user_id=user_id, achievement_id=achievement.id).first()
+            if not already:
+                db.session.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
+
     db.session.commit()
     return jsonify({"msg": "Misión completada"}), 200
 
@@ -152,15 +158,37 @@ def get_stats(user_id):
 
 # --- ACHIEVEMENTS ---
 
-@api.route('/users/<int:user_id>/achievements', methods=['GET'])
-def get_user_achievements(user_id):
+@api.route('/achievements/<int:user_id>', methods=['GET'])
+def get_user_achievement_keys(user_id):
     records = UserAchievement.query.filter_by(user_id=user_id).all()
-    return jsonify([a.serialize() for a in records]), 200
+    keys = []
+    for ua in records:
+        achievement = Achievement.query.get(ua.achievement_id)
+        if achievement:
+            keys.append(achievement.key)
+    return jsonify({"unlocked_achievements": keys}), 200
 
 @api.route('/achievements', methods=['GET'])
 def get_all_achievements():
     achievements = Achievement.query.all()
     return jsonify([a.serialize() for a in achievements]), 200
+
+@api.route('/achievements/unlock', methods=['POST'])
+def unlock_achievements():
+    data = request.json
+    user_id = data.get("user_id")
+    keys = data.get("achievements", [])
+
+    for key in keys:
+        achievement = Achievement.query.filter_by(key=key).first()
+        if achievement:
+            exists = UserAchievement.query.filter_by(user_id=user_id, achievement_id=achievement.id).first()
+            if not exists:
+                ua = UserAchievement(user_id=user_id, achievement_id=achievement.id)
+                db.session.add(ua)
+
+    db.session.commit()
+    return jsonify({"msg": "Logros desbloqueados"}), 200
 
 # --- LEVEL FRAMES ---
 
@@ -178,8 +206,6 @@ def get_full_profile(user_id):
         return jsonify({'msg': 'Usuario no encontrado'}), 404
 
     today = datetime.utcnow().date()
-
-    # Misiones diarias aceptadas hoy
     missions_today = UserMission.query.join(Mission).filter(
         UserMission.user_id == user_id,
         Mission.is_daily == True,
@@ -192,19 +218,16 @@ def get_full_profile(user_id):
         'completed_at': m.completed_at
     } for m in missions_today]
 
-    # Stats agregadas
     stats = Stat.query.filter_by(user_id=user_id).all()
     total_tasks = sum(s.missions_completed or 0 for s in stats)
     total_xp = sum(s.xp_earned or 0 for s in stats)
     first_day = min((s.date for s in stats), default=today)
     days_in_app = (today - first_day).days + 1 if stats else 0
 
-    # Semana actual
     start_week = today - timedelta(days=today.weekday())
     week_stats = [s for s in stats if s.date >= start_week]
     week_xp = sum(s.xp_earned or 0 for s in week_stats)
 
-    # Logros del usuario
     achievements = UserAchievement.query.filter_by(user_id=user_id).all()
     achievement_data = [{
         'title': a.achievement.title,
@@ -212,14 +235,13 @@ def get_full_profile(user_id):
         'unlocked_at': a.unlocked_at.isoformat()
     } for a in achievements]
 
-    # Actividad en el calendario del mes
     calendar_data = [{
         'date': s.date.isoformat(),
         'missions_completed': s.missions_completed
     } for s in stats if s.missions_completed and s.date.month == today.month]
 
     return jsonify({
-        'user': user.serialize(),  # ya incluye user_id como id
+        'user': user.serialize(),
         'missions_today': missions_today_data,
         'stats': {
             'tasks_completed': total_tasks,
@@ -233,4 +255,3 @@ def get_full_profile(user_id):
         'achievements': achievement_data,
         'reflection': user.mood_actual or ''
     }), 200
-

@@ -69,12 +69,24 @@ class Achievement(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     icon_url = db.Column(db.String(255))
+    key = db.Column(db.String(100), unique=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "icon_url": self.icon_url,
+            "key": self.key
+        }
 
 class UserAchievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('app_user.id'))
     achievement_id = db.Column(db.Integer, db.ForeignKey('achievement.id'))
     unlocked_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    achievement = db.relationship('Achievement', backref='user_achievements')
 
 class MoodTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

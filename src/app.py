@@ -34,6 +34,11 @@ def create_app():
     setup_admin(app)
     app.register_blueprint(api, url_prefix="/api")
 
+    # 🔁 Carga automática de logros
+    from api.seed_achievements import seed_achievements
+    with app.app_context():
+        seed_achievements()
+
     # Ruta raíz para comprobar si funciona
     @app.route("/")
     def home():

@@ -4,11 +4,59 @@ import styles from "../assets/styles/ProfileMainPage.module.css";
 import avatarImg from "../assets/styles/images/Moti_Feliz.png";
 import genieImg from "../assets/styles/images/Moti_Feliz.png";
 
+const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
+const monthNames = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+function getDaysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function getFirstDayOfWeek(year, month) {
+  let day = new Date(year, month, 1).getDay();
+  return day === 0 ? 6 : day - 1; // Lunes = 0
+}
+
 const ProfileMainPage = () => {
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("user_id");
+
+    const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+
+  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  const firstDayOfWeek = getFirstDayOfWeek(currentYear, currentMonth);
+
+  const calendarDays = [];
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    calendarDays.push(null);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    calendarDays.push(d);
+  }
+
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
 
   useEffect(() => {
     if (!userId) {
@@ -111,26 +159,28 @@ const ProfileMainPage = () => {
           </div>
         </div>
 
-        {/* CARD 5: Calendar */}
+          {/* CARD 5: Calendar */}
         <div className={`${styles.card} ${styles.card5}`}>
           <div className={styles.calendarHeader}>
-            <span>&lt;</span>
-            <span>May 2025</span>
-            <span>&gt;</span>
+            <span onClick={handlePrevMonth} className={styles.calendarArrow}>&lt;</span>
+            <span>{monthNames[currentMonth]} {currentYear}</span>
+            <span onClick={handleNextMonth} className={styles.calendarArrow}>&gt;</span>
           </div>
           <div className={styles.calendarGrid}>
-            {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+            {weekDays.map((d, i) => (
               <div key={i} className={styles.calendarDay}>{d}</div>
             ))}
-            {[...Array(31)].map((_, i) => {
-              const date = i + 1;
-              const isCompleted = calendar.some(c => new Date(c.date).getDate() === date);
+            {calendarDays.map((day, i) => {
+              const isToday =
+                day === today.getDate() &&
+                currentMonth === today.getMonth() &&
+                currentYear === today.getFullYear();
               return (
                 <div
                   key={i}
-                  className={`${styles.calendarDate} ${isCompleted ? styles.highlightedDate : ""}`}
+                  className={`${styles.calendarDate} ${isToday ? styles.highlightedDate : ""}`}
                 >
-                  {date}
+                  {day ? day : ""}
                 </div>
               );
             })}

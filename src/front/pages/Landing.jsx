@@ -11,6 +11,9 @@ import facebook from "../assets/styles/images/Landing_images/facebook-logo-white
 import headspace from "../assets/styles/images/Landing_images/Headspace.webp";
 import twilio from "../assets/styles/images/Landing_images/Twilio.png";
 import verizon from "../assets/styles/images/Landing_images/Verizon.png";
+import motiFeliz from "../assets/styles/images/Moti_Feliz.png";
+import loginBg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import waves from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
 
 // Tabs
 import missionsImg from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
@@ -25,12 +28,12 @@ const fadeInUp = {
 };
 
 const reviews = [
-  { name: "Lou Logico - Humorist", img: "/assets/img/user1.png" },
-  { name: "Jean Pierre - Front-End Dev", img: "/assets/img/user2.png" },
-  { name: "Jagger Meister - Boxer", img: "/assets/img/user3.png" },
-  { name: "Jonas Jimbo - Singer", img: "/assets/img/user4.png" },
-  { name: "Javy Kardashian - Nurse", img: "/assets/img/user5.png" },
-  { name: "Juan Albertillo - Trucker", img: "/assets/img/user6.png" },
+  { name: "Lou Logico - Humorist", img: motiFeliz },
+  { name: "Jean Pierre - Front-End Dev", img: loginBg },
+  { name: "Jagger Meister - Boxer", img: amazon },
+  { name: "Jonas Jimbo - Singer", img: waves },
+  { name: "Javy Kardashian - Nurse", img: motiFeliz },
+  { name: "Juan Albertillo - Trucker", img: loginBg },
 ];
 
 const subscriptions = [
@@ -128,7 +131,7 @@ const Landing = () => {
         <motion.h2 variants={fadeInUp} initial="hidden" whileInView="visible">Unlock True Balance</motion.h2>
         <div className={styles.landingUnlockCards}>
           {[
-            { icon: "fa-bullseye", title: "Boost your wellness", desc: "With each mission you complete, you’ll see tangible progress in your well-being." },
+            { icon: "fa-bullseye", title: "Boost your wellness", desc: "With each mission you complete, you'll see tangible progress in your well-being." },
             { icon: "fa-chart-line", title: "Constant motivation", desc: "Missions and achievements will keep you moving forward, growing along the way." },
             { icon: "fa-cogs", title: "Move at your own pace", desc: "Advance on your own path to wellness with a system that adapts to your needs." }
           ].map((card, i) => (
@@ -151,7 +154,7 @@ const Landing = () => {
         <motion.div className={styles.landingTabContent} variants={fadeInUp} initial="hidden" whileInView="visible">
           <img src={getImageByTab()} alt={activeTab} />
           <p className={styles.landingTabDescription}>
-            {activeTab === "MISSIONS" && "Every week, you’ll get missions tailored to your interests..."}
+            {activeTab === "MISSIONS" && "Every week, you'll get missions tailored to your interests..."}
             {activeTab === "PROGRESS" && "Track your daily and weekly progress easily..."}
             {activeTab === "RESOURCES" && "Access personalized tips, articles..."}
             {activeTab === "ACHIEVEMENTS" && "Celebrate every milestone..."}

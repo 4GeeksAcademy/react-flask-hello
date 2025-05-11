@@ -12,6 +12,7 @@ import { Layout } from "./pages/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 import Task from "./pages/Task";
 import Achievements from "./pages/Achievements";
+import EditProfile from "./pages/EditProfile";
 
 
 
@@ -56,6 +57,10 @@ export const router = createBrowserRouter(
 
       <Route path="profilemainpage" element={
         DEV_MODE ? <ProfileMainPage /> : <PrivateRoute><ProfileMainPage /></PrivateRoute>
+      } />
+
+      <Route path="edit-profile" element={
+        DEV_MODE ? <EditProfile /> : <PrivateRoute><EditProfile /></PrivateRoute>
       } />
 
       <Route path="layout" element={

@@ -60,6 +60,9 @@ export const Profile = () => {
 	);
 
 
+	// added this becuase we want to render show season list
+	const [seasons, setSeasons] = useState("");
+
 
 	const post_favorites = () => {
 		const option = {
@@ -115,6 +118,19 @@ export const Profile = () => {
 
 			.then((data) => {
 				setFav(data)
+			})
+	}
+
+// adding to pull show seasons from api
+
+		const getSeasons=() => {
+		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setSeasons(data)
 			})
 	}
 

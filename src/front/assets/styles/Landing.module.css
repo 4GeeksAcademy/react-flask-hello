@@ -125,7 +125,8 @@
 }
 
 .landingBrandLogo {
-  height: 32px;
+  height: auto;
+  width: 8rem;
   flex-shrink: 0;
   filter: brightness(0) invert(1);
   opacity: 0.9;

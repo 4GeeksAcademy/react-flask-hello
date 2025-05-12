@@ -107,7 +107,7 @@ const Register = () => {
 
           <button className={styles.registerBtn} onClick={handleRegister}>Register</button>
 
-          <button className="github-btn" onClick={() => loginWithRedirect()}>
+          <button className={styles.registerGithubBtn} onClick={() => loginWithRedirect()}>
             <i className="fab fa-github"></i> Sign up with Github
           </button>
 

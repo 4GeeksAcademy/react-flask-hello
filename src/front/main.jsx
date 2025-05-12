@@ -8,7 +8,7 @@ import { BackendURL } from './components/BackendURL';
 import { ReactTogether } from 'react-together'
 
 const Main = () => {
-
+    console.log(import.meta.env.VITE_API_KEY, "HERE IT ISSSS!!!")
     if(! import.meta.env.VITE_BACKEND_URL ||  import.meta.env.VITE_BACKEND_URL == "") return (
         <React.StrictMode>
               <BackendURL/ >
@@ -33,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
     <ReactTogether
     sessionParams={{
-        apiKey: import.meta.env['VITE_API_KEY'],
+        apiKey: import.meta.env.VITE_API_KEY,
   
         // The options below will make every user immediately join session 'hello-world'
         name: 'hello-world',

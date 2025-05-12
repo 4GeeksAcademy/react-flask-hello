@@ -31,12 +31,3 @@ flask db migrate -m "Initial migration"
 echo "Applying migration..."
 flask db upgrade
 echo "Database reset complete!"
-
-
-
-
-
-
-
-
-

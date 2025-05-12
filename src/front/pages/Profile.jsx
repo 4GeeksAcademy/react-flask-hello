@@ -189,7 +189,8 @@ export const Profile = () => {
 									Search
 								</button> */}
 							</form>
-							{showList.length > 0 ?
+							{search && showList.length === 0 ?
+							  "Search Not Found. Please Try again.":
 								showList.map((show) => {
 									return (
 										<div className="text-start">
@@ -201,8 +202,7 @@ export const Profile = () => {
 										</div>
 
 									)
-								}) :
-								"Error. Please refresh page"}
+								})}
 						</div>
 					</div>
 				</div>
@@ -213,4 +213,4 @@ export const Profile = () => {
 
 
 
-// you'll need to find a way to set a condition to where if array is empty we see a string otherwise, it shows content.
+// you'll need to find a way to set a condition to where if array is empty we see a string that say's "search not found. please try again" otherwise, it shows content.

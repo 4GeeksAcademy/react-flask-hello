@@ -22,6 +22,7 @@ requests = "*"
 flask-cors = "*"
 python-dotenv = "*"
 werkzeug = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_version = "3.13"

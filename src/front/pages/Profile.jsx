@@ -12,6 +12,7 @@ export const Profile = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
+	const apiKey = import.meta.env.VITE_API_KEY
 
 	// added this becuase we are filling the favorites object 
 	const [fav, setFav] = useState("");
@@ -94,6 +95,17 @@ export const Profile = () => {
 				setshowList(data)
 			})
 	}
+
+	console.log(apiKey + "/v1/title/`{$title_id}`/seasons/")
+
+	// const seasonList = showList.filter(
+	// 	(show) => {
+	// 		const showTitleLower = show.title.toLowerCase()
+	// 		const searchLower = search.toLowerCase()
+	// 		return showTitleLower.includes(searchLower)
+	// 	}
+
+	// );
 
 	useEffect(() =>{
 		getFavorites()

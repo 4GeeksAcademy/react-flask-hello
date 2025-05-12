@@ -38,6 +38,7 @@ export const Profile = () => {
 			.then((data) => {
 				const arrayofMedia = data.titles
 				const onlyShows = arrayofMedia.filter((show) => show.type == "tv_series")
+				console.log(onlyShows, "HEREEEEEEEE")
 				setshowList(onlyShows)
 			})
 			.catch((error) => {
@@ -189,14 +190,14 @@ export const Profile = () => {
 									Search
 								</button> */}
 							</form>
-							{search && showList.length === 0 ?
+							{showList.length === 0 ?
 							  "Search Not Found. Please Try again.":
 								showList.map((show) => {
 									return (
 										<div className="text-start">
 											<ul className="list-unstyled display-8">
 												<li className="m-1">
-													{show.showTitle}
+													{show.title}
 												</li>
 											</ul>
 										</div>

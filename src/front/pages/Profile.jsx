@@ -19,8 +19,11 @@ export const Profile = () => {
 	// added this in case it is needed to map a list
 	const favoritedShow = []; 
 
-	// added this becuase we want to render show list
+	// added this becuase we want to render show title list
 	const [showList, setshowList] = useState("");
+
+	// added this becuase we want to render show season list
+	const [seasons, setSeasons] = useState("");
 
 
 	const post_favorites = () => {
@@ -77,6 +80,19 @@ export const Profile = () => {
 
 			.then((data)=> {
 				setFav(data)
+			})
+	}
+
+// adding to pull show seasons from api
+
+		const getSeasons=() => {
+		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setSeasons(data)
 			})
 	}
 

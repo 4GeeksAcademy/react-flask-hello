@@ -11,10 +11,14 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.security import check_password_hash, generate_password_hash
 # ==>> this is used to create a JWT token for the user, pip install flask-jwt-extended
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, decode_token
+from datetime import timedelta
 
 
 load_dotenv()    # reads .env and sets those variables into your environment
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+if not FRONTEND_URL:
+    raise RuntimeError("Missing required env var: FRONTEND_URL")
 
 # db and User → for querying the database.
 # check_password_hash → for checking if the password is correct.
@@ -28,7 +32,6 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-
 # ==>> this is the endpoint that will be called from the front end
 # ==>> Search Places by coordinates: Accepts E.G: { latitude: 40.75, longitude: -73.99, cocktail: "Mojito" }
 @api.route('/places', methods=['POST'])
@@ -36,6 +39,7 @@ def get_places_of_drinks():
 
     # ==>> get the google api key from the environment variables
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+    
     # ==>>Looks at the body of the incoming HTTP request and it parses the JSON text and returns a Python dict (or list) representing that JSON.
     data = request.get_json()
 
@@ -323,37 +327,42 @@ def get_place_details():
     }), 200
 
 
-@api.route('/sigin', methods=['POST'])
+@api.route('/signin', methods=['POST'])
 def sign_in_user():
-    data = request.get_json() ## ==>> get the data from the request
+    data = request.get_json()  # ==>> get the data from the request
     if not data:
-        return jsonify({"error": "Missing data"}), 400 ## ==>> check if the data is present
+        # ==>> check if the data is present
+        return jsonify({"error": "Missing data"}), 400
     email = data.get("email")
     password = data.get("password")
     if not email or not password:
         return jsonify({"error": "Missing email or password"}), 400
-    user =User.query.filter_by(email=email).first() ## ==>> query the database for the user first value is the column name, second is the value from the request.
+    # ==>> query the database for the user first value is the column name, second is the value from the request.
+    user = User.query.filter_by(email=email).first()
     if not user:
         return jsonify({"error": "User not found"}), 404
     if not check_password_hash(user.password, password):
         return jsonify({"error": "Invalid password"}), 401
-    
+
     access_token = create_access_token(identity=user.id)
 
     return jsonify({
-    "token": access_token,
-    "user": user.serialize()
-}), 200
+        "token": access_token,
+        "user": user.serialize()
+    }), 200
 
 # Jackie
+
+
 @api.route("/signup", methods=["POST"])
 def signup():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    phone = request.json.get("phone", None)
 
-    if not name or not email or not password:
-        return jsonify({"msg": "Name, email and password are required"}), 400
+    if not name or not email or not password or not phone:
+        return jsonify({"msg": "Name, email, phone and password are required"}), 400
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -364,14 +373,77 @@ def signup():
     new_user = User(
         name=name,
         email=email,
+        phone=phone,
         password=hashed_password,
-        is_active=True
+        is_active=True,
     )
 
     db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print("Error saving user:", e)
+        return jsonify({"msg": "Database error"}), 500
 
-    return jsonify("User created successfully"), 201
+    return jsonify({"msg": "User created successfully"}), 201
+
+@api.route("/reset-password", methods=["PUT"])
+def reset_password():
+    data = request.get_json() or {} # ==>> get the data from the request or empty dict
+    token = data.get("token")
+    new_password = data.get("new_password")
+    print("➡️  Received token:", token)
+    print("➡️  Raw JWT_SECRET_KEY:", os.getenv("JWT_SECRET_KEY"))
+    if not token or not new_password:
+        return jsonify({"error": "Token and new password are required"}), 400
+    
+    try:
+        decoded = decode_token(token)
+        user_id = decoded["sub"]
+        print("✅  Decoded claims:", decoded)
+    except Exception as e:
+        print("❌  decode_token error:", e)
+        return jsonify({"error": "Invalid or expired token"}),400 
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error":"User not found"}), 404 
+    
+    
+    user.password = generate_password_hash(new_password)
+    db.session.commit()  
+    return jsonify({"msg": "Password reset successfully"}), 200
+
+
+@api.route('/password-request', methods=['POST'])
+def request_password_reset():    
+    data = request.get_json() or {}
+    email = data.get("email")
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+     # Always send a generic response regardless of user existence 
+    user = User.query.filter_by(email=email).first()
+    generic_msg = {
+      "msg": "If you entered a valid email, you will receive a password reset link shortly."
+    }
+    if not user:
+        return jsonify(generic_msg), 200
+     
+    # Generate a token valid for 1 hour 
+    reset_token = create_access_token(
+      identity=str(user.id), expires_delta=timedelta(hours=1)
+    )
+      # Simulate email by printing the token with reset link
+    reset_link = f"{FRONTEND_URL}/reset-password?token={reset_token}"
+    print(f"Password reset link for {email}: {reset_link}")
+    
+    return jsonify(generic_msg), 200
 
 
 
+@api.route("/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
+    return jsonify([user.serialize() for user in users]), 200

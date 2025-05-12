@@ -119,20 +119,33 @@ export const Profile = () => {
 			})
 	}
 
+// adding to pull show seasons from api
 
-	// this is used to render the shows in tandem with the get request 
-	// Shae's creating & the useState above:
-
-	const getShowList=() => {
-		fetch(backendUrl + "/api/showList")
+		const getSeasons=() => {
+		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
 			.then((resp)=> {
 				return resp.json()
 			})
 
 			.then((data)=> {
-				setshowList(data)
+				setSeasons(data)
 			})
 	}
+
+
+	// this is used to render the shows in tandem with the get request 
+	// Shae's creating & the useState above:
+
+	// const getShowList=() => {
+	// 	fetch(backendUrl + "/api/showList")
+	// 		.then((resp)=> {
+	// 			return resp.json()
+	// 		})
+
+	// 		.then((data)=> {
+	// 			setshowList(data)
+	// 		})
+	// }
 
 
 	useEffect(() => {
@@ -173,36 +186,20 @@ export const Profile = () => {
 				</div>
 
 
-				<div className="text-center col-8 mt-4">
-					<div className="">
-						<h2 className="text-center pb-5">What Are You Watching?</h2>
-						{/* search bar for shows */}
-						<div className="mx-auto col-4">
-							<form className="text-center d-flex" role="search">
-								<input
-									className="form-control me-2"
-									type="search"
-									placeholder="Search shows..."
-									aria-label="Search"
-									value={search}
-									onChange={(e) => setSearch(e.target.value)}
-								/>
-							
-								{/* <button className="btn btn-outline-primary" type="submit">
-									Search
-								</button> */}
-							</form>
-							{search && showList.length === 0 ?
-							  "Search Not Found. Please Try again.":
-								showList.map((show) => {
-									return (
-										<div className="text-start">
-											<ul className="list-unstyled display-8">
-												<li className="m-1">
-													{show.showTitle}
-												</li>
-											</ul>
-										</div>
+					<div className="d-inline-flex col-3 mt-4">
+					<div>
+						<h2 className="text-center mt-7 ">Show List</h2>
+						
+						{showList.length > 0 ? 
+						showList.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
 
 									)
 								})}

@@ -48,3 +48,21 @@ class Show(db.Model):
             "showTitle": self.showTitle,
             "favorites_id": self.favorites_id
             }
+    
+
+
+    # season model needed
+
+    # class Season(db.Model):
+    # __tablename__ = "show"
+    # id: Mapped[int] = mapped_column(primary_key=True)
+    # showTitle: Mapped[str] = mapped_column(String(50), unique=False, nullable=True)
+    # favorites_id: Mapped[int] = mapped_column(ForeignKey("favorites.id")) 
+
+
+    # def serialize(self):
+    #     return {
+    #         "id": self.id,
+    #         "showTitle": self.showTitle,
+    #         "favorites_id": self.favorites_id
+    #         }

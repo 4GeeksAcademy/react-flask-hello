@@ -39,6 +39,7 @@ export const Profile = () => {
 			.then((data) => {
 				const arrayofMedia = data.titles
 				const onlyShows = arrayofMedia.filter((show) => show.type == "tv_series")
+				console.log(onlyShows, "HEREEEEEEEE")
 				setshowList(onlyShows)
 			})
 			.catch((error) => {
@@ -59,6 +60,9 @@ export const Profile = () => {
 
 	);
 
+
+	// added this becuase we want to render show season list
+	const [seasons, setSeasons] = useState("");
 
 
 	const post_favorites = () => {
@@ -115,6 +119,19 @@ export const Profile = () => {
 
 			.then((data) => {
 				setFav(data)
+			})
+	}
+
+// adding to pull show seasons from api
+
+		const getSeasons=() => {
+		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
+			.then((resp)=> {
+				return resp.json()
+			})
+
+			.then((data)=> {
+				setSeasons(data)
 			})
 	}
 
@@ -194,8 +211,8 @@ export const Profile = () => {
 									Search
 								</button> */}
 							</form>
-							{search && showList.length === 0 ?
-								"Search Not Found. Please Try again." :
+							{showList.length === 0 ?
+							  "Search Not Found. Please Try again.":
 								showList.map((show) => {
 									console.log(show,"My list of shows!")
 									return (
@@ -209,7 +226,7 @@ export const Profile = () => {
 											/>
 											<ul className="list-unstyled display-8">
 												<li className="m-1">
-													{show.showTitle}
+													{show.title}
 												</li>
 											</ul>
 										</div>

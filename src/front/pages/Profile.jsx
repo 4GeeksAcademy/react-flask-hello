@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
+import profileImageUrl from "../assets/img/roundpicture.jpeg"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Card } from "../components/Card.jsx";
@@ -167,10 +167,9 @@ export const Profile = () => {
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
-			<div>
-				<div className="col-4 ">
-
-				</div>
+			
+			<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 			</div>
 			<div className="d-inline-flex col-12">
 				<div>

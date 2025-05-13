@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import profileImageUrl from "../assets/img/roundpicture.png";
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
 
@@ -13,10 +14,11 @@ export const Profile = () => {
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 	const apiKey = import.meta.env.VITE_API_KEY
+	const watchModeBase = import.meta.env.VITE_WATCHMODE_BASE_URL
+	const watchModeApi = import.meta.env.VITE_WATCHMODE_API_KEY
 
 	// added this becuase we are filling the favorites object 
 	const [fav, setFav] = useState("");
-
 
 	// added this in case it is needed to map a list
 	const favoritedShow = [];
@@ -27,12 +29,14 @@ export const Profile = () => {
 	// added this for the search functionality
 	const [search, setSearch] = useState("");
 
+	const [episode, setEpisode] = useState("")
+
 	const matchesSearch = (showList, search) => {
 		return showList.title.toLowerCase().includes(search.toLowerCase());
 	};
 
 	const showListFetch = () => {
-		fetch(import.meta.env.VITE_API_URL)
+		fetch(watchModeBase+"/list-titles/?apiKey="+ watchModeApi)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -40,6 +44,7 @@ export const Profile = () => {
 			.then((data) => {
 				const arrayofMedia = data.titles
 				const onlyShows = arrayofMedia.filter((show) => show.type == "tv_series")
+				console.log(onlyShows, "HEREEEEEEEE")
 				setshowList(onlyShows)
 			})
 			.catch((error) => {
@@ -60,6 +65,9 @@ export const Profile = () => {
 
 	);
 
+
+	// added this becuase we want to render show season list
+	const [seasons, setSeasons] = useState("");
 
 
 	const post_favorites = () => {
@@ -92,7 +100,6 @@ export const Profile = () => {
 				"showTitle": "Breaking Bad",
 				"favorites_id": 2
 
-
 			})
 		}
 		fetch(backendUrl + "/api/post_show", option)
@@ -119,19 +126,52 @@ export const Profile = () => {
 			})
 	}
 
-// adding to pull show seasons from api
+	// adding to pull show seasons from api
 
-		const getSeasons=() => {
+	const getSeasons = () => {
 		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
-			.then((resp)=> {
+			.then((resp) => {
 				return resp.json()
 			})
 
-			.then((data)=> {
+			.then((data) => {
 				setSeasons(data)
 			})
 	}
 
+
+	// this is used to render the shows in tandem with the get request 
+	// Shae's creating & the useState above:
+
+	// const getShowList=() => {
+	// 	fetch(backendUrl + "/api/showList")
+	// 		.then((resp)=> {
+	// 			return resp.json()
+	// 		})
+
+	// 		.then((data)=> {
+	// 			setshowList(data)
+	// 		})
+	// }
+
+
+	// below wokring on the code to render the episode list of the selected show season
+        const getEpisodes = () => {
+        	fetch(watchModeBase+ "/title/3197275/episodes/?apiKey="+ watchModeApi)
+            .then((resp) => {
+                return resp.json()
+            })
+            .then((data) => {
+                console.log("episode list is here",data)
+            })
+			
+	}
+
+	useEffect(() => {
+		getFavorites()
+		showListFetch()
+		getEpisodes()
+	}, [])
 
 	// this is used to render the shows in tandem with the get request 
 	// Shae's creating & the useState above:

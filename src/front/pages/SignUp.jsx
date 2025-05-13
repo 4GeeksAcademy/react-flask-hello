@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -9,128 +11,164 @@ export const SignUp = () => {
     phone: ""
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // stops page to reload
-    console.log(">>>Form Data to be sent!!!:", formData);
+    e.preventDefault();
     try {
       const fetchSignUp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData) //
-      })
-      console.log(">>>Response Status!!!:", fetchSignUp.status);
+        body: JSON.stringify(formData)
+      });
 
-
-      const data = await fetchSignUp.json()
-      console.log(">>>Response Body!!!!:", data);
+      const data = await fetchSignUp.json();
       if (fetchSignUp.ok) {
-        alert("Sign Up Successful!")
-        setFormData( // reset form data 
-          {
-            name: "",
-            email: "",
-            password: "",
-            phone: ""
-          })
-      }
-      else {
+        alert("Sign Up Successful!");
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          phone: ""
+        });
+        navigate("/signin");
+      } else {
         alert("Sign Up failed: " + data.msg);
         setFormData({
           name: "",
           email: "",
           password: "",
           phone: ""
-        }) // clear password field 
+        });
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log("Error:", err);
     }
   };
 
   return (
-    <div>
+    <div
+      className="d-flex flex-column align-items-center justify-content-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #ffe0f1, #e0f7ff)",
+        fontFamily: "'Orbitron', sans-serif"
+      }}
+    >
       <form
         onSubmit={handleSubmit}
-        className="container d-flex flex-column align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}>
-
-        <div className="mb-4">
-          <div
-            className=" logo rounded-circle bg-secondary d-flex align-items-center 
-          justify-content-center position-absolute top-0 start-0 pt-5"
-            style={{ width: 80, height: 80, color: "white", fontWeight: "bold" }}
-          >
-            Logo
-          </div>
-        </div>
-
-
-        <div
-          className="p-4 mb-3"
+        className="p-4"
+        style={{
+          backgroundColor: "#1a1a1a",
+          borderRadius: "16px",
+          boxShadow: "0 0 25px rgba(255, 20, 147, 0.2)",
+          width: "100%",
+          maxWidth: "400px"
+        }}
+      >
+        <h4
+          className="text-center mb-4"
           style={{
-            backgroundColor: "#e0e0e0",
-            width: "100%",
-            maxWidth: "400px",
-            borderRadius: "8px",
+            color: "#fff",
+            textShadow: "0 0 6px #FF1493, 0 0 12px #FF1493",
+            fontWeight: "bold"
           }}
         >
-          <h4 className="text-center mb-4">Sign Up</h4>
+          Sign Up
+        </h4>
 
-          <div className="mb-3">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Name"
-              className="form-control"
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              className="form-control"
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
-              className="form-control"
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Phone Number"
-              className="form-control"
-            />
-          </div>
+        <div className="mb-3">
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Name"
+            className="form-control"
+            style={{
+              background: "#000",
+              border: "2px solid #CCCCCC",
+              color: "#FF1493",
+              boxShadow: "0 0 6px #CCCCCC",
+              borderRadius: "8px"
+            }}
+          />
         </div>
 
+        <div className="mb-3">
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="form-control"
+            style={{
+              background: "#000",
+              border: "2px solid #CCCCCC",
+              color: "#FF1493",
+              boxShadow: "0 0 6px #CCCCCC",
+              borderRadius: "8px"
+            }}
+          />
+        </div>
 
+        <div className="mb-3">
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            className="form-control"
+            style={{
+              background: "#000",
+              border: "2px solid #CCCCCC",
+              color: "#FF1493",
+              boxShadow: "0 0 6px #CCCCCC",
+              borderRadius: "8px"
+            }}
+          />
+        </div>
 
-        <button type="submit" className="btn btn-secondary">Sign Up</button>
+        <div className="mb-3">
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Phone Number"
+            className="form-control"
+            style={{
+              background: "#000",
+              border: "2px solid #CCCCCC",
+              color: "#FF1493",
+              boxShadow: "0 0 6px #CCCCCC",
+              borderRadius: "8px"
+            }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="btn w-100 mt-3"
+          style={{
+            background: "#00AFFF",
+            borderColor: "#00AFFF",
+            color: "#fff",
+            fontWeight: "bold",
+            boxShadow: "0 0 12px #00AFFF, 0 0 24px #00AFFF",
+            borderRadius: "8px"
+          }}
+        >
+          Sign Up
+        </button>
       </form>
-    </div >
-
+    </div>
   );
 };

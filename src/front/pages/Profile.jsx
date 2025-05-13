@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import profileImageUrl from "../assets/img/roundpicture.png";
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
 
@@ -121,15 +122,15 @@ export const Profile = () => {
 			})
 	}
 
-// adding to pull show seasons from api
+	// adding to pull show seasons from api
 
-		const getSeasons=() => {
+	const getSeasons = () => {
 		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
-			.then((resp)=> {
+			.then((resp) => {
 				return resp.json()
 			})
 
-			.then((data)=> {
+			.then((data) => {
 				setSeasons(data)
 			})
 	}
@@ -154,7 +155,7 @@ export const Profile = () => {
 		showListFetch()
 	}, [])
 
-
+				// clean up the columns and finish editing the card !!!!!
 	return (
 		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
 			{/* <h1 className="display-6 mt-5">Welcome, @Bianca_23</h1> */}
@@ -185,7 +186,12 @@ export const Profile = () => {
 						}) :
 						<p className=" small text-black-50">please select your favorite shows</p>}
 				</div>
-
+				
+				{/* <Card
+					title={"first place here"}						
+					id={"second place here"}
+					end={"third place here"}
+				/> */} 								{/* clean this up, next to favorites list on profilepage  */}
 
 				<div className="text-center col-8 mt-4">
 					<div className="">
@@ -201,23 +207,30 @@ export const Profile = () => {
 									value={search}
 									onChange={(e) => setSearch(e.target.value)}
 								/>
-							
+
 								{/* <button className="btn btn-outline-primary" type="submit">
 									Search
 								</button> */}
 							</form>
 							{showList.length === 0 ?
-							  "Search Not Found. Please Try again.":
+								"Search Not Found. Please Try again." :
 								showList.map((show) => {
+									console.log(show, "My list of shows!")
 									return (
 										<div className="text-start">
+											<Card
+												// "beginning={}" <-- this is whats doing the changes for each show
+												title={show.title}
+												// anything inside the {""} can be changed, its a value
+												id={show.id}
+												end={"Select Show"}
+											/>
 											<ul className="list-unstyled display-8">
 												<li className="m-1">
 													{show.title}
 												</li>
 											</ul>
 										</div>
-
 									)
 								})}
 						</div>

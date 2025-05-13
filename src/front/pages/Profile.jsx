@@ -181,11 +181,11 @@ export const Profile = () => {
 									</ul>
 								</div>
 							)
-						}) :
-						<p className=" small text-black-50">please select your favorite shows</p>}
+						}): (
+						<p className=" small text-black-50">please select your favorite shows</p>
+
+						)}
 				</div>
-
-
 					<div className="d-inline-flex col-3 mt-4">
 					<div>
 						<h2 className="text-center mt-7 ">Show List</h2>
@@ -200,16 +200,17 @@ export const Profile = () => {
 									</li>
 								</ul>
 							</div>
-
 									)
-								})}
+								}): (
+									<p className="small text-black-50">No shows available.</p>
+								)}
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+
+	)
+}
 
 
 

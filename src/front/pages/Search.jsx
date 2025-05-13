@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+
 
 const handleSearch = (searchItem, setDrinks) => {
     if (!searchItem.trim()) {
@@ -27,6 +29,8 @@ export const Search = () => {
     const [drinks, setDrinks] = useState([]);
     const [favorites, setFavorites] = useState([]);
 
+
+
     // Load favorites from local storage on mount
     useEffect(() => {
         const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -48,11 +52,11 @@ export const Search = () => {
     return (
         <div className="search-container">
             <div className="search-bar">
-                <input 
+                <input
                     className="search-input"
-                    placeholder="Search for a cocktail..." 
-                    onChange={(e) => setSearch(e.target.value)} 
-                    value={search} 
+                    placeholder="Search for a cocktail..."
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
                 />
                 <button onClick={() => handleSearch(search, setDrinks)} className="search-button">
                     Search
@@ -83,20 +87,27 @@ export const Search = () => {
                                 })}
                             </ul>
                             <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p>
-                            
+
                             {/* Favorite Button with Image */}
-                            <button 
-                                className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
-                                onClick={() => toggleFavorite(drink)}
-                            >
-                                <img 
-                                    src={favorites.some(fav => fav.idDrink === drink.idDrink) 
-                                        ? "https://img.icons8.com/?size=52&id=86&format=png&color=red" 
-                                        : "https://img.icons8.com/?size=52&id=86&format=png"} 
-                                    alt="Favorite Icon" 
-                                    className="favorite-icon"
-                                />
-                            </button>
+                            <div className="button-row">
+                                <button
+                                    className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
+                                    onClick={() => toggleFavorite(drink)}
+                                >
+                                    <img
+                                        src={favorites.some(fav => fav.idDrink === drink.idDrink)
+                                            ? "https://img.icons8.com/?size=52&id=86&format=png&color=red"
+                                            : "https://img.icons8.com/?size=52&id=86&format=png"}
+                                        alt="Favorite Icon"
+                                        className="favorite-icon"
+                                    />
+                                </button>
+                                <Link
+                                    to={`/google-api/${encodeURIComponent(drink.strDrink)}`}  // turns your drink name into a URL-safe string                                
+                                    className="btn btn-primary">
+                                    Places to drink 
+                                </Link>
+                            </div>
                         </div>
                     ))
                 ) : (

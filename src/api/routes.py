@@ -39,7 +39,7 @@ def get_places_of_drinks():
 
     # ==>> get the google api key from the environment variables
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-    
+
     # ==>>Looks at the body of the incoming HTTP request and it parses the JSON text and returns a Python dict (or list) representing that JSON.
     data = request.get_json()
 
@@ -289,7 +289,7 @@ def get_place_details():
     params = {
         "place_id": place_id,
         # ==>> fields to be returned in the response
-        "fields": "name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address",
+        "fields": "name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address,geometry",
         "key": GOOGLE_API_KEY
     }
     # ==>> make a request to the google api with the parameters
@@ -304,6 +304,41 @@ def get_place_details():
     if not details:  # ==>> check if the details are present in the response
         # ==>> return a 404 error if the details are missing
         return jsonify({"error": "No details found"}), 404
+
+    # ==>> We will build here the query to search menus(third party api)
+    # ==>> get the foursquare api key from the environment variables,this is the key that you will use to access the foursquare api:
+    FOURSQUARE_MENU_KEY = os.getenv('FOURSQUARE_MENU_KEY')
+    fsq_search_url = "https://api.foursquare.com/v3/places/search"
+    headers = {"Authorization": FOURSQUARE_MENU_KEY}
+    params = {
+        "query": details["name"],
+        "ll":    f"{details['geometry']['location']['lat']},{details['geometry']['location']['lng']}",
+        "limit": 1
+    }
+    fsq_res = requests.get(fsq_search_url, headers=headers, params=params) # ==>> make a request to the foursquare api with the parameters
+    fsq_data = fsq_res.json() # ==>> parse the response as json
+    print("▶️ Foursquare returned:", fsq_res.status_code, fsq_data)
+    print("▶️ Foursquare status:", fsq_res.status_code)
+    print("▶️ Foursquare body:", fsq_data)    
+    results = fsq_data.get("results", [])  # ==>> get the results from the response if not present, return an empty list.
+    if fsq_res.status_code != 200: # ==>> check if the request was successful
+        return jsonify({"error": "Faile to fecth menus"}),500 #
+    
+    if not results: # ==>> check if the results are present in the response
+        fsq_id = None
+    else:
+        fsq_id = results[0].get("fsq_id")  #==> if not present, return None if present, get the fsq_id from the first result
+
+    
+    #==>> We will get the menu of the id we selected above.
+    menu_url = f"https://api.foursquare.com/v3/places/{fsq_id}/menu"
+    menu_res = requests.get(menu_url, headers=headers)
+    menu_data = menu_res.json()
+    print("▶️ Menu response:", menu_res.status_code, menu_data)
+    
+
+
+
 
     photo_urls = []  # ==>> initialize an empty list for the photo urls
     for i in details.get("photos", []):  # ==>> iterate over the photos in the details
@@ -324,6 +359,9 @@ def get_place_details():
         "website": details.get("website"),
         "reviews": details.get("reviews", []),
         "photos": photo_urls,  # ==>> return the photo urls as a list
+        "coordinates": details["geometry"]["location"],
+        "fsq_id": fsq_id
+        
     }), 200
 
 
@@ -388,59 +426,58 @@ def signup():
 
     return jsonify({"msg": "User created successfully"}), 201
 
+
 @api.route("/reset-password", methods=["PUT"])
 def reset_password():
-    data = request.get_json() or {} # ==>> get the data from the request or empty dict
+    data = request.get_json() or {}  # ==>> get the data from the request or empty dict
     token = data.get("token")
     new_password = data.get("new_password")
     print("➡️  Received token:", token)
     print("➡️  Raw JWT_SECRET_KEY:", os.getenv("JWT_SECRET_KEY"))
     if not token or not new_password:
         return jsonify({"error": "Token and new password are required"}), 400
-    
+
     try:
         decoded = decode_token(token)
         user_id = decoded["sub"]
         print("✅  Decoded claims:", decoded)
     except Exception as e:
         print("❌  decode_token error:", e)
-        return jsonify({"error": "Invalid or expired token"}),400 
+        return jsonify({"error": "Invalid or expired token"}), 400
 
     user = User.query.get(user_id)
     if not user:
-        return jsonify({"error":"User not found"}), 404 
-    
-    
+        return jsonify({"error": "User not found"}), 404
+
     user.password = generate_password_hash(new_password)
-    db.session.commit()  
+    db.session.commit()
     return jsonify({"msg": "Password reset successfully"}), 200
 
 
 @api.route('/password-request', methods=['POST'])
-def request_password_reset():    
+def request_password_reset():
     data = request.get_json() or {}
     email = data.get("email")
     if not email:
         return jsonify({"error": "Email is required"}), 400
 
-     # Always send a generic response regardless of user existence 
+     # Always send a generic response regardless of user existence
     user = User.query.filter_by(email=email).first()
     generic_msg = {
-      "msg": "If you entered a valid email, you will receive a password reset link shortly."
+        "msg": "If you entered a valid email, you will receive a password reset link shortly."
     }
     if not user:
         return jsonify(generic_msg), 200
-     
-    # Generate a token valid for 1 hour 
+
+    # Generate a token valid for 1 hour
     reset_token = create_access_token(
-      identity=str(user.id), expires_delta=timedelta(hours=1)
+        identity=str(user.id), expires_delta=timedelta(hours=1)
     )
-      # Simulate email by printing the token with reset link
+    # Simulate email by printing the token with reset link
     reset_link = f"{FRONTEND_URL}/reset-password?token={reset_token}"
     print(f"Password reset link for {email}: {reset_link}")
-    
-    return jsonify(generic_msg), 200
 
+    return jsonify(generic_msg), 200
 
 
 @api.route("/users", methods=["GET"])

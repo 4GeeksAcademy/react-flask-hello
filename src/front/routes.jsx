@@ -35,7 +35,7 @@ export const router = createBrowserRouter(
       <Route path="custom" element={<Custom />} />
       <Route path="signin" element={<SignIn />} />
       <Route path="password" element={<Password />} />
-      <Route path="google-api" element={<GoogleApi />} />
+      <Route path="google-api/:cocktail" element={<GoogleApi />} />
       <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       <Route path="reset-password" element={<ResetPassword />} />
       <Route path="request-reset" element={<PasswordRequestReset/>} />

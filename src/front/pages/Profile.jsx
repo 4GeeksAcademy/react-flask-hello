@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import profileImageUrl from "../assets/img/roundpicture.png";
+import profilehero from "../assets/img/Potato.png";
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 // import '../style.css';
@@ -122,8 +123,8 @@ export const Profile = () => {
 
 // adding to pull show seasons from api
 
-		const getSeasons=() => {
-		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
+		const getSeasons=(id) => {
+		fetch(VITE_API_URL + "title/"+`${id}`+"/seasons/")
 			.then((resp)=> {
 				return resp.json()
 			})
@@ -133,20 +134,6 @@ export const Profile = () => {
 			})
 	}
 
-
-	// this is used to render the shows in tandem with the get request 
-	// Shae's creating & the useState above:
-
-	// const getShowList=() => {
-	// 	fetch(backendUrl + "/api/showList")
-	// 		.then((resp)=> {
-	// 			return resp.json()
-	// 		})
-
-	// 		.then((data)=> {
-	// 			setshowList(data)
-	// 		})
-	// }
 
 	useEffect(() => {
 		getFavorites()
@@ -162,7 +149,6 @@ export const Profile = () => {
 			</p>
 			<div>
 				<div className="col-4 ">
-					<img src={profileImageUrl} className="img-fluid rounded-circle w-50 mb-5" alt="User-Image" />
 
 				</div>
 			</div>
@@ -187,6 +173,9 @@ export const Profile = () => {
 
 
 				<div className="text-center col-8 mt-4">
+					<div>
+						{/* <img src={profilehero} className="img-fluid p-4" width="100"/> */}
+					</div>
 					<div className="">
 						<h2 className="text-center pb-5">What Are You Watching?</h2>
 						{/* search bar for shows */}
@@ -205,21 +194,35 @@ export const Profile = () => {
 									Search
 								</button> */}
 							</form>
-							{search && showList.length === 0 ?
+							{showList.length === 0 ?
 							  "Search Not Found. Please Try again.":
 								showList.map((show) => {
 									return (
-										<div className="text-start">
-											<ul className="list-unstyled display-8">
-												<li className="m-1">
-													{show.showTitle}
+										<div className=" text-start">
+											<ul className="list-unstyled">
+												<li onClick={() => getSeasons(show.id)} className="m-1">
+													{show.title}
 												</li>
 											</ul>
 										</div>
 
 									)
 								})}
+							</div>
 						</div>
+							{seasons.length === 0 ?
+							  "Seasons not found. Please Try again.":
+							  seasons.map((season) => {
+								  return (
+									  <div className="text-start text-center">
+											<ul class="list-group d-flex align-items-center ">
+												<li class="list-group-item col-4">Season{season.name}</li>
+											</ul>
+										</div>
+									)
+								})}
+
+							<div>
 					</div>
 				</div>
 			</div>

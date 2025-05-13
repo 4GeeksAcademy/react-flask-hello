@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import profileImageUrl from "../assets/img/roundpicture.png";
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
 
@@ -168,7 +169,11 @@ export const Profile = () => {
 						}) :
 						<p className=" small text-black-50">please select your favorite shows</p>}
 				</div>
-
+				<Card
+					beginning={"first place here"}
+					middle={"second place here"}
+					end={"third place here"}
+				/>
 
 				<div className="text-center col-8 mt-4">
 					<div className="">
@@ -184,16 +189,24 @@ export const Profile = () => {
 									value={search}
 									onChange={(e) => setSearch(e.target.value)}
 								/>
-							
+
 								{/* <button className="btn btn-outline-primary" type="submit">
 									Search
 								</button> */}
 							</form>
 							{search && showList.length === 0 ?
-							  "Search Not Found. Please Try again.":
+								"Search Not Found. Please Try again." :
 								showList.map((show) => {
+									console.log(show,"My list of shows!")
 									return (
 										<div className="text-start">
+											<Card
+											// "beginning={}" <-- this is whats doing the changes for each show
+												beginning={show.showTitle}
+												// anything inside the {""} can be changed, its a value
+												middle={"Cow"}
+												end={"Bird"}
+											/>
 											<ul className="list-unstyled display-8">
 												<li className="m-1">
 													{show.showTitle}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/roundpicture.png";
+import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Card } from "../components/Card.jsx";
@@ -21,7 +21,7 @@ export const Profile = () => {
 	const [fav, setFav] = useState("");
 
 	// added this in case it is needed to map a list
-	const favoritedShow = [];
+	const favoritedShow = []; 
 
 	// added this becuase we want to render show list
 	const [showList, setshowList] = useState([]);
@@ -80,7 +80,7 @@ export const Profile = () => {
 				"user": "Brandon-Ray",
 			})
 		}
-		fetch(backendUrl + "/api/post_favorites", option)
+		fetch(backendUrl  + "/api/post_favorites", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -102,7 +102,7 @@ export const Profile = () => {
 
 			})
 		}
-		fetch(backendUrl + "/api/post_show", option)
+		fetch(backendUrl  + "/api/post_show", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -112,30 +112,30 @@ export const Profile = () => {
 			})
 
 
-
+		
 	}
 
-	const getFavorites = () => {
+	const getFavorites=() => {
 		fetch(backendUrl + "/api/favorites")
-			.then((resp) => {
+			.then((resp)=> {
 				return resp.json()
 			})
 
-			.then((data) => {
+			.then((data)=> {
 				setFav(data)
 			})
 	}
 
 	// adding to pull show seasons from api
 
-	const getSeasons = () => {
-		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
-			.then((resp) => {
+	const getShowList=() => {
+		fetch(backendUrl + "/api/showList")
+			.then((resp)=> {
 				return resp.json()
 			})
 
 			.then((data) => {
-				setSeasons(data)
+				setshowList(data)
 			})
 	}
 
@@ -188,25 +188,24 @@ export const Profile = () => {
 	// }
 
 
-	useEffect(() => {
+	useEffect(() =>{
 		getFavorites()
-		showListFetch()
-	}, [])
+		getShowList()
+	},[])
 
 
 	return (
-		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
-			{/* <h1 className="display-6 mt-5">Welcome, @Bianca_23</h1> */}
+		<div className="text-center mt-5 d-inline bg-purple">
+			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
 			<div>
-				<div className="col-4 ">
-					<img src={profileImageUrl} className="img-fluid rounded-circle w-50 mb-5" alt="User-Image" />
+				<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 
 				</div>
-			</div>
-			<div className="d-inline-flex col-12">
+				<div className="d-inline-flex col-3 mt-4">
 				<div>
 					<h5 className="text-center">Favorite List</h5>
 					{fav.length > 0 ?
@@ -251,7 +250,3 @@ export const Profile = () => {
 
 	)
 }
-
-
-
-// you'll need to find a way to set a condition to where if array is empty we see a string that say's "search not found. please try again" otherwise, it shows content.

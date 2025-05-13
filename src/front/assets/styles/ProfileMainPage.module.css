@@ -300,4 +300,26 @@
       gap: 1rem;
     }
   }
+
+  :local(.levelInfo) {
+  text-align: left;
+  margin-left: 10px;
+}
+
+:local(.xpBar) {
+  width: 100px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin: 4px 0;
+  overflow: hidden;
+}
+
+:local(.xpFill) {
+  height: 100%;
+  background-color: #5CFB7E;
+  border-radius: 5px 0 0 5px;
+  transition: width 0.3s ease-in-out;
+}
+
   

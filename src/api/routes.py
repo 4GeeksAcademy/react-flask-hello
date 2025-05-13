@@ -106,30 +106,82 @@ def get_user_missions(user_id):
 
 @api.route('/usermission', methods=['POST'])
 def accept_mission():
-    data = request.json
-    user_mission = UserMission(
-        user_id=data['user_id'],
-        mission_id=data['mission_id'],
-        status="in_progress",
-        accepted_at=datetime.utcnow()
-    )
-    db.session.add(user_mission)
-    db.session.commit()
-    return jsonify({"msg": "Misión aceptada"}), 201
+    try:
+        data = request.json
+        print("📩 Payload recibido en /usermission:", data)
+
+        # Verificar si vienen los campos necesarios
+        user_id = data.get("user_id")
+        mission_id = data.get("mission_id")
+
+        if not user_id or not mission_id:
+            print("⚠️ Faltan user_id o mission_id en el payload")
+            return jsonify({"msg": "Faltan datos necesarios"}), 400
+
+        # Verificar si el usuario y misión existen
+        from api.models import AppUser, Mission
+
+        user = AppUser.query.get(user_id)
+        mission = Mission.query.get(mission_id)
+
+        if not user:
+            print(f"❌ Usuario con ID {user_id} no encontrado")
+            return jsonify({"msg": "Usuario no encontrado"}), 404
+
+        if not mission:
+            print(f"❌ Misión con ID {mission_id} no encontrada")
+            return jsonify({"msg": "Misión no encontrada"}), 404
+
+        # Crear la UserMission
+        user_mission = UserMission(
+            user_id=user_id,
+            mission_id=mission_id,
+            status="in_progress",
+            accepted_at=datetime.utcnow()
+        )
+        db.session.add(user_mission)
+        db.session.commit()
+
+        print(f"✅ Misión {mission_id} aceptada por usuario {user_id} (UserMission ID: {user_mission.id})")
+
+        return jsonify({
+            "msg": "Misión aceptada",
+            "usermission_id": user_mission.id
+        }), 201
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print("❌ Error interno en /usermission:", str(e))
+        return jsonify({"msg": "Error interno del servidor"}), 500
+
 
 @api.route('/usermission/<int:usermission_id>', methods=['PUT'])
 def complete_mission(usermission_id):
     um = UserMission.query.get(usermission_id)
     if not um:
         return jsonify({"msg": "Misión no encontrada"}), 404
+
     um.status = "completed"
     um.completed_at = datetime.utcnow()
     um.completion_percentage = 100
 
-    user_id = um.user_id
+    # Obtener misión y usuario
     mission = Mission.query.get(um.mission_id)
+    user = AppUser.query.get(um.user_id)
 
-    # Desbloqueo: Zen Mode
+    # --- Añadir XP ---
+    xp_gain = 200  # XP fijo por misión
+    user.xp_total += xp_gain
+
+    # Subir de nivel si corresponde
+    while user.xp_total >= 1000:
+        user.level += 1
+        user.xp_total -= 1000
+
+    # --- Logros ---
+    user_id = user.id
+
     if mission.title.lower() == "meditation":
         achievement = Achievement.query.filter_by(title="Zen Mode").first()
         if achievement:
@@ -137,7 +189,6 @@ def complete_mission(usermission_id):
             if not already:
                 db.session.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
 
-    # Desbloqueo: Perfect Combo si tiene 3 completadas
     completed_missions = UserMission.query.filter_by(user_id=user_id, status="completed").count()
     if completed_missions == 3:
         achievement = Achievement.query.filter_by(title="Perfect Combo").first()
@@ -147,7 +198,9 @@ def complete_mission(usermission_id):
                 db.session.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
 
     db.session.commit()
-    return jsonify({"msg": "Misión completada"}), 200
+
+    return jsonify({"msg": f"Misión completada. +{xp_gain} XP ganados."}), 200
+
 
 # --- STATS ---
 

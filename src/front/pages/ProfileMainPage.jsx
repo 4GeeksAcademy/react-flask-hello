@@ -149,12 +149,15 @@ const ProfileMainPage = () => {
         <div className={`${styles.card} ${styles.card4}`}>
           <div className={styles.avatarBlock}>
             <img src={avatarImg} alt="Avatar" className={styles.avatarImage} />
-            <div>
-              <strong>{user.username}</strong>
-              <div className={styles.levelBar}>
-                <div className={styles.levelFill}></div>
+            <div className={styles.levelInfo}>
+              <p><strong>Lvl {user.level}</strong></p>
+              <div className={styles.xpBar}>
+                <div
+                  className={styles.xpFill}
+                  style={{ width: `${(user.xp_total % 1000) / 10}%` }}
+                />
               </div>
-              <p>Lvl {user.level}</p>
+              <p>{user.xp_total % 1000} / 1000</p>
             </div>
           </div>
         </div>

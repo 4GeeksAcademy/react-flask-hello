@@ -29,6 +29,7 @@ const Task = () => {
   const [mission, setMission] = useState(null);
   const [accepted, setAccepted] = useState(false);
   const [achievementMsg, setAchievementMsg] = useState("");
+  const [isCompleting, setIsCompleting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,16 +42,46 @@ const Task = () => {
     if (wasAccepted) setAccepted(true);
   }, []);
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     const userId = localStorage.getItem("user_id");
-    setAccepted(true);
-    localStorage.setItem(`${userId}_missionAccepted`, true);
+    const missionId = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, mission_id: missionId })
+      });
+      const data = await res.json();
+      if (res.ok && data.usermission_id) {
+        localStorage.setItem(`${userId}_usermission_id`, data.usermission_id);
+        setAccepted(true);
+        localStorage.setItem(`${userId}_missionAccepted`, true);
+      } else {
+        console.error("Error del backend:", data);
+      }
+    } catch (err) {
+      console.error("Error al aceptar misión:", err);
+    }
   };
 
   const handleComplete = async () => {
+    if (isCompleting) return;
+    setIsCompleting(true);
+
     const userId = localStorage.getItem("user_id");
+    const usermissionId = localStorage.getItem(`${userId}_usermission_id`);
     const current = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
     const unlocked = [];
+
+    try {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission/${usermissionId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      });
+    } catch (err) {
+      console.error("Error al completar misión:", err);
+    }
 
     if (current === 3) unlocked.push("zen_mode");
     if (current === 1 || current === 5) unlocked.push("strength_level");
@@ -63,15 +94,11 @@ const Task = () => {
 
     if (unlocked.length > 0) {
       setAchievementMsg(`🎉 Logro desbloqueado: ${unlocked.join(", ").replace(/_/g, " ")}`);
-
       try {
         await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/achievements/unlock`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: userId,
-            achievements: unlocked
-          })
+          body: JSON.stringify({ user_id: userId, achievements: unlocked })
         });
       } catch (err) {
         console.error("Error al guardar logros:", err);
@@ -83,7 +110,8 @@ const Task = () => {
       localStorage.setItem(`${userId}_currentClickedNumber`, current + 1);
       localStorage.removeItem(`${userId}_currentMission`);
       localStorage.removeItem(`${userId}_missionAccepted`);
-      navigate("/journey");
+      localStorage.removeItem(`${userId}_usermission_id`);
+      window.location.href = "/journey";
     }, 2000);
   };
 

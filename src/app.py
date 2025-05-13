@@ -39,6 +39,11 @@ def create_app():
     with app.app_context():
         seed_achievements()
 
+    from api.seed_missions import seed_missions
+    with app.app_context():
+        seed_missions()
+    
+
     # Ruta raíz para comprobar si funciona
     @app.route("/")
     def home():

@@ -58,6 +58,17 @@ class UserMission(db.Model):
     completed_at = db.Column(db.DateTime)
     completion_percentage = db.Column(db.Integer)
 
+def serialize(self):
+    return {
+        "id": self.id,
+        "user_id": self.user_id,
+        "mission_id": self.mission_id,
+        "status": self.status,
+        "accepted_at": self.accepted_at.isoformat() if self.accepted_at else None,
+        "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+        "completion_percentage": self.completion_percentage,
+    }   
+
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('app_user.id'))

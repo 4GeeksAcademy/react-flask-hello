@@ -18,8 +18,8 @@
 }
 
 :local(.navbar2 a){
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 :local(.navbar2Open) {
@@ -70,12 +70,12 @@
 }
 
 :local(.navbar2ProfileContent) {
-  gap: 0rem; /* Ajusta el espacio entre los elementos */
-  margin: 0; /* Asegúrate de que no haya márgenes adicionales */
+  gap: 0rem;
+  margin: 0;
 }
 
 :local(.navbar2LevelText) {
-  margin-bottom: 0; /* Elimina cualquier margen debajo de este texto */
+  margin-bottom: 0;
 }
 
 :local(.navbar2Image) {
@@ -83,26 +83,26 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  cursor: pointer; /* Cambié esto para indicar que la imagen ahora es clickeable */
+  cursor: pointer;
 }
 
+/* BAR XP */
 :local(.navbar2LevelBar) {
-  background-color: white;
-  height: 10px;
-  border-radius: 5px;
-  margin: 0.3rem 0;
+  width: 100px;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 4px;
   overflow: hidden;
-  width: 100%;
 }
 
 :local(.navbar2LevelFill) {
   height: 100%;
-  background-color: #a066ff;
-  width: 60%;
+  background-color: #5cfb7e;
+  transition: width 0.3s ease-in-out;
 }
 
 :local(.navbar2XP) {
-  margin-top: 0; /* Elimina el margen superior de "200/1000" */
+  margin-top: 0;
 }
 
 :local(.navbar2Dropdown) {
@@ -195,12 +195,12 @@
   gap: 0.5rem;
   font-size: 16px;
   padding: 0.5rem 1rem;
-  cursor: pointer;  /* Aseguramos que todos los párrafos dentro del dropdown son clickeables */
-  transition: color 0.3s, background-color 0.3s;  /* Para transición suave en el color y fondo */
+  cursor: pointer;
+  transition: color 0.3s, background-color 0.3s;
 }
 
 :local(.navbar2ProfileDropdown p:hover) {
-  color: #b384ff;  /* Cambio de color */
+  color: #b384ff;
 }
 
 :local(.navbar2LogoutButton) {
@@ -228,14 +228,8 @@
 }
 
 @media (max-width: 1024px) {
-  :local(.navbar2Text) {
-    display: none;
-  }
-
-  :local(.navbar2Logo) {
-    display: none;
-  }
-
+  :local(.navbar2Text),
+  :local(.navbar2Logo),
   :local(.navbar2Profile) {
     display: none;
   }

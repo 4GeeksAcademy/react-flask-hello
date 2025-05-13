@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/roundpicture.png";
-import profilehero from "../assets/img/Potato.png";
+import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
 
@@ -13,12 +13,15 @@ export const Profile = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
+	const apiKey = import.meta.env.VITE_API_KEY
+	const watchModeBase = import.meta.env.VITE_WATCHMODE_BASE_URL
+	const watchModeApi = import.meta.env.VITE_WATCHMODE_API_KEY
 
 	// added this becuase we are filling the favorites object 
 	const [fav, setFav] = useState("");
 
 	// added this in case it is needed to map a list
-	const favoritedShow = [];
+	const favoritedShow = []; 
 
 	// added this becuase we want to render show list
 	const [showList, setshowList] = useState([]);
@@ -26,12 +29,14 @@ export const Profile = () => {
 	// added this for the search functionality
 	const [search, setSearch] = useState("");
 
+	const [episode, setEpisode] = useState("")
+
 	const matchesSearch = (showList, search) => {
 		return showList.title.toLowerCase().includes(search.toLowerCase());
 	};
 
 	const showListFetch = () => {
-		fetch(import.meta.env.VITE_API_URL)
+		fetch(watchModeBase+"/list-titles/?apiKey="+ watchModeApi)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -39,6 +44,7 @@ export const Profile = () => {
 			.then((data) => {
 				const arrayofMedia = data.titles
 				const onlyShows = arrayofMedia.filter((show) => show.type == "tv_series")
+				console.log(onlyShows, "HEREEEEEEEE")
 				setshowList(onlyShows)
 			})
 			.catch((error) => {
@@ -74,7 +80,7 @@ export const Profile = () => {
 				"user": "Brandon-Ray",
 			})
 		}
-		fetch(backendUrl + "/api/post_favorites", option)
+		fetch(backendUrl  + "/api/post_favorites", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -94,10 +100,9 @@ export const Profile = () => {
 				"showTitle": "Breaking Bad",
 				"favorites_id": 2
 
-
 			})
 		}
-		fetch(backendUrl + "/api/post_show", option)
+		fetch(backendUrl  + "/api/post_show", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -107,37 +112,52 @@ export const Profile = () => {
 			})
 
 
-
+		
 	}
 
-	const getFavorites = () => {
+	const getFavorites=() => {
 		fetch(backendUrl + "/api/favorites")
-			.then((resp) => {
+			.then((resp)=> {
 				return resp.json()
 			})
 
-			.then((data) => {
+			.then((data)=> {
 				setFav(data)
 			})
 	}
 
-// adding to pull show seasons from api
+	// adding to pull show seasons from api
 
-		const getSeasons=(id) => {
-		fetch(VITE_API_URL + "title/"+`${id}`+"/seasons/")
+	const getSeasons=(id) => {
+		fetch(watchModeBase+ "/title/"+`${id}`+"/seasons/?apiKey=" + watchModeApi)
 			.then((resp)=> {
 				return resp.json()
 			})
 
 			.then((data)=> {
 				setSeasons(data)
+				console.log("SEASONSSSSSSS",data)
 			})
 	}
 
 
+
+	// below wokring on the code to render the episode list of the selected show season
+        const getEpisodes = () => {
+        	fetch(watchModeBase+ "/title/3197275/episodes/?apiKey="+ watchModeApi)
+            .then((resp) => {
+                return resp.json()
+            })
+            .then((data) => {
+                console.log("episode list is here",data)
+            })
+			
+	}
+
 	useEffect(() => {
 		getFavorites()
 		showListFetch()
+		getEpisodes()
 	}, [])
 
 
@@ -174,7 +194,7 @@ export const Profile = () => {
 
 				<div className="text-center col-8 mt-4">
 					<div>
-						{/* <img src={profilehero} className="img-fluid p-4" width="100"/> */}
+						<img src={profilehero} className="img-fluid p-4" width="100"/>
 					</div>
 					<div className="">
 						<h2 className="text-center pb-5">What Are You Watching?</h2>
@@ -200,7 +220,7 @@ export const Profile = () => {
 									return (
 										<div className=" text-start">
 											<ul className="list-unstyled">
-												<li onClick={() => getSeasons(show.id)} className="m-1">
+												<li onClick={() => (getSeasons(show.id))} className="m-1">
 													{show.title}
 												</li>
 											</ul>
@@ -210,26 +230,22 @@ export const Profile = () => {
 								})}
 							</div>
 						</div>
+						<div>
 							{seasons.length === 0 ?
 							  "Seasons not found. Please Try again.":
 							  seasons.map((season) => {
 								  return (
 									  <div className="text-start text-center">
 											<ul class="list-group d-flex align-items-center ">
-												<li class="list-group-item col-4">Season{season.name}</li>
+												<li class="list-group-item col-4">{season.name}</li>
 											</ul>
 										</div>
 									)
 								})}
 
-							<div>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
-
-
-
-// you'll need to find a way to set a condition to where if array is empty we see a string that say's "search not found. please try again" otherwise, it shows content.

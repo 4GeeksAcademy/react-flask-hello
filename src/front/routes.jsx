@@ -12,14 +12,17 @@ import { SignUp } from "./pages/SignUp";
 import { GoogleApi } from "./pages/GoogleApi";
 import { Search } from "./pages/Search";
 import { Custom } from "./pages/Custom";
+import { MainPage } from "./pages/mainpage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { Favorites } from "./pages/Favorites";
+import { Logout } from "./pages/Logout"
 import { SignIn } from "./pages/SignIn";
 import { Password } from "./pages/Password";
 import { Profile} from "./pages/Profile";
-import { PrivateRoute } from "./components/PrivateRoute";
 import { ResetPassword } from "./pages/ResetPassword";
 import {PasswordRequestReset} from "./pages/passwordResetRequest";
 import { FindSpots } from "./pages/FindSpots";
-import { Favorites } from "./pages/Favorites";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,10 +40,13 @@ export const router = createBrowserRouter(
       <Route path="password" element={<Password />} />
       <Route path="google-api" element={<GoogleApi />} />
       <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path="favorites" element={<Favorites />} />
+      <Route path="logout" element={<Logout />} />
       <Route path="reset-password" element={<ResetPassword />} />
       <Route path="request-reset" element={<PasswordRequestReset/>} />
       <Route path="favorites" element={<Favorites />} />
       <Route path="find-spots" element={<FindSpots />} />
+
     </Route>
   )
 );

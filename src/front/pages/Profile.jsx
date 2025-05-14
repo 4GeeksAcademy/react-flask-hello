@@ -1,10 +1,12 @@
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Profile = () => {
-  const { store, dispatch } = useGlobalReducer();
-  const navigate = useNavigate();
+  const { store } = useGlobalReducer();
+
+
+  if (!store.token) return <Navigate to="/signin" />;
 
   const handleLogout = () => {
     localStorage.removeItem("token");  
@@ -12,19 +14,48 @@ export const Profile = () => {
     navigate("/logout");  
   };
 
+
   return (
-    <>
-      {store.token ? (
-        <div className="container mt-5 text-center">
-          <h1>👋 Welcome!</h1>
-          <p>This is your private profile. You are logged in correctly ✅</p>
-       
-          <button onClick={handleLogout} className="btn btn-primary">Logout</button>
-        </div>
-      ) : (
-        <Navigate to="/signin" />  
-      )}
-    </>
+    <div
+      className="d-flex flex-column align-items-center justify-content-center text-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #ffe0f1, #e0f7ff)",
+        fontFamily: "'Orbitron', sans-serif",
+        padding: "2rem"
+      }}
+    >
+      <h1
+        className="mb-3"
+        style={{
+          color: "#FF1493",
+          textShadow: "0 0 6px #FF1493, 0 0 12px #FF1493",
+          fontWeight: "bold"
+        }}
+      >
+        👋 Welcome, {store.user?.name || "User"}!
+      </h1>
+
+      <p className="mb-5" style={{ color: "#333", fontSize: "1.1rem" }}>
+        You are logged in successfully. Let's explore!
+      </p>
+
+      <button
+        className="btn"
+        onClick={() => (window.location.href = "/")}
+        style={{
+          background: "#00AFFF",
+          borderColor: "#00AFFF",
+          color: "#fff",
+          fontWeight: "bold",
+          boxShadow: "0 0 8px #00AFFF",
+          borderRadius: "8px",
+          padding: "0.6rem 1.2rem"
+        }}
+      >
+        Go to Home
+      </button>
+    </div>
   );
 };
 

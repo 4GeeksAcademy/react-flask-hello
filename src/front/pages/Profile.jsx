@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
+import React ,{ useEffect, useState } from "react";
+import profileImageUrl from "../assets/img/roundpicture.png"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import profilehero from "../assets/img/cute.png";
 import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
@@ -36,7 +37,7 @@ export const Profile = () => {
 	};
 
 	const showListFetch = () => {
-		fetch(watchModeBase+"/list-titles/?apiKey="+ watchModeApi)
+		fetch(watchModeBase+"/list-titles/?apiKey="+watchModeApi+"&source_ids=203,57")
 			.then((resp) => {
 				return resp.json()
 			})
@@ -128,31 +129,18 @@ export const Profile = () => {
 
 	// adding to pull show seasons from api
 
-	const getShowList=() => {
-		fetch(backendUrl + "/api/showList")
+	const getSeasons=(id) => {
+		fetch(watchModeBase+"/title/3197275/seasons/?apiKey="+watchModeApi)
 			.then((resp)=> {
 				return resp.json()
 			})
 
-			.then((data) => {
-				setshowList(data)
+			.then((data)=> {
+				setSeasons(data)
+				console.log("SEASONSSSSSSS",data)
 			})
 	}
-
-
-	// this is used to render the shows in tandem with the get request 
-	// Shae's creating & the useState above:
-
-	// const getShowList=() => {
-	// 	fetch(backendUrl + "/api/showList")
-	// 		.then((resp)=> {
-	// 			return resp.json()
-	// 		})
-
-	// 		.then((data)=> {
-	// 			setshowList(data)
-	// 		})
-	// }
+// fetch(watchModeBase+ "/title/"+`${id}`+"/seasons/?apiKey=" + watchModeApi)
 
 
 	// below wokring on the code to render the episode list of the selected show season
@@ -173,39 +161,18 @@ export const Profile = () => {
 		getEpisodes()
 	}, [])
 
-	// this is used to render the shows in tandem with the get request 
-	// Shae's creating & the useState above:
-
-	// const getShowList=() => {
-	// 	fetch(backendUrl + "/api/showList")
-	// 		.then((resp)=> {
-	// 			return resp.json()
-	// 		})
-
-	// 		.then((data)=> {
-	// 			setshowList(data)
-	// 		})
-	// }
-
-
-	useEffect(() =>{
-		getFavorites()
-		getShowList()
-	},[])
-
 
 	return (
-		<div className="text-center mt-5 d-inline bg-purple">
-			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
+		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
+		
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
-			<div>
-				<div className="d-inline-flex col-6"> 
-					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
-
-				</div>
-				<div className="d-inline-flex col-3 mt-4">
+			
+			<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4" width="200px" alt="User-Image" />
+			</div>
+			<div className="d-inline-flex col-12">
 				<div>
 					<h5 className="text-center">Favorite List</h5>
 					{fav.length > 0 ?
@@ -220,33 +187,79 @@ export const Profile = () => {
 									</ul>
 								</div>
 							)
-						}): (
-						<p className=" small text-black-50">please select your favorite shows</p>
-
-						)}
+						}) :
+						<p className=" small text-black-50">please select your favorite shows</p>}
 				</div>
-					<div className="d-inline-flex col-3 mt-4">
-					<div>
-						<h2 className="text-center mt-7 ">Show List</h2>
-						
-						{showList.length > 0 ? 
-						showList.map((show)=> {
-						return (
-							<div className="text-start">
-								<ul className="list-unstyled display-8">
-									<li className="m-1">
-										{show.showTitle}
-									</li>
-								</ul>
-							</div>
+
+
+				<div className="text-center col-8 mb-5">
+					<div className="">
+						<img src={profilehero} className="img-fluid p-4" width="200"/>
+					</div>
+					<div className="">
+						<h2 className="text-center"> What Are You Watching?</h2>
+						{/* search bar for shows */}
+						<div className="mx-auto col-4">
+							<form className="text-center d-flex" role="search">
+								<input
+									className="form-control me-2"
+									type="search"
+									placeholder="Search shows..."
+									aria-label="Search"
+									value={search}
+									onChange={(e) => setSearch(e.target.value)}
+								/>
+							
+								{/* <button className="btn btn-outline-primary" type="submit">
+									Search
+								</button> */}
+							</form>
+							{showList.length === 0 ?
+							  "Search Not Found. Please Try again.":
+								showList.map((show) => {
+									return (
+										<div className=" text-start">
+											<ul className="list-unstyled">
+												<li onClick={() => (getSeasons(show.id))} className="m-1">
+													<Card
+													title={show.title} 
+													id={show.id}
+													
+													/>
+												</li>
+											</ul>
+										</div>
 									)
-								}): (
-									<p className="small text-black-50">No shows available.</p>
-								)}
+								})}
+							</div>
 						</div>
+						<div>
+							{seasons.length === 0 ?
+							  "Seasons not found. Please Try again.":
+							  seasons.map((season) => {
+								  return (
+									  <div className="text-start text-center">
+											<ul class="list-group d-flex align-items-center ">
+												<li class="list-group-item col-4">{season.name}</li>
+											</ul>
+										</div>
+									)
+								})}
+
 					</div>
 				</div>
 			</div>
+		</div>
+	);
+};
 
-	)
-}
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,22 @@
+
+
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+
+
+.logo {
+  margin-top: 4rem;
+  margin-left: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+}
 /* General Styles */
 .custom-app {
   font-family: Arial, sans-serif;

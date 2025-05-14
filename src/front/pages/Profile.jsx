@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/roundpicture.png";
+import profileImageUrl from "../assets/img/Profile-Image-1.jpg"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Card } from "../components/Card.jsx";
@@ -13,12 +13,15 @@ export const Profile = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
+	const apiKey = import.meta.env.VITE_API_KEY
+	const watchModeBase = import.meta.env.VITE_WATCHMODE_BASE_URL
+	const watchModeApi = import.meta.env.VITE_WATCHMODE_API_KEY
 
 	// added this becuase we are filling the favorites object 
 	const [fav, setFav] = useState("");
 
 	// added this in case it is needed to map a list
-	const favoritedShow = [];
+	const favoritedShow = []; 
 
 	// added this becuase we want to render show list
 	const [showList, setshowList] = useState([]);
@@ -26,12 +29,14 @@ export const Profile = () => {
 	// added this for the search functionality
 	const [search, setSearch] = useState("");
 
+	const [episode, setEpisode] = useState("")
+
 	const matchesSearch = (showList, search) => {
 		return showList.title.toLowerCase().includes(search.toLowerCase());
 	};
 
 	const showListFetch = () => {
-		fetch(import.meta.env.VITE_API_URL)
+		fetch(watchModeBase+"/list-titles/?apiKey="+ watchModeApi)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -75,7 +80,7 @@ export const Profile = () => {
 				"user": "Brandon-Ray",
 			})
 		}
-		fetch(backendUrl + "/api/post_favorites", option)
+		fetch(backendUrl  + "/api/post_favorites", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -95,10 +100,9 @@ export const Profile = () => {
 				"showTitle": "Breaking Bad",
 				"favorites_id": 2
 
-
 			})
 		}
-		fetch(backendUrl + "/api/post_show", option)
+		fetch(backendUrl  + "/api/post_show", option)
 			.then((resp) => {
 				return resp.json()
 			})
@@ -108,30 +112,30 @@ export const Profile = () => {
 			})
 
 
-
+		
 	}
 
-	const getFavorites = () => {
+	const getFavorites=() => {
 		fetch(backendUrl + "/api/favorites")
-			.then((resp) => {
+			.then((resp)=> {
 				return resp.json()
 			})
 
-			.then((data) => {
+			.then((data)=> {
 				setFav(data)
 			})
 	}
 
 	// adding to pull show seasons from api
 
-	const getSeasons = () => {
-		fetch(backendUrl + "api/v1/title/{title_id}/seasons/")
-			.then((resp) => {
+	const getShowList=() => {
+		fetch(backendUrl + "/api/showList")
+			.then((resp)=> {
 				return resp.json()
 			})
 
 			.then((data) => {
-				setSeasons(data)
+				setshowList(data)
 			})
 	}
 
@@ -150,21 +154,55 @@ export const Profile = () => {
 	// 		})
 	// }
 
+
+	// below wokring on the code to render the episode list of the selected show season
+        const getEpisodes = () => {
+        	fetch(watchModeBase+ "/title/3197275/episodes/?apiKey="+ watchModeApi)
+            .then((resp) => {
+                return resp.json()
+            })
+            .then((data) => {
+                console.log("episode list is here",data)
+            })
+			
+	}
+
 	useEffect(() => {
 		getFavorites()
 		showListFetch()
+		getEpisodes()
 	}, [])
 
-				// clean up the columns and finish editing the card !!!!!
+	// this is used to render the shows in tandem with the get request 
+	// Shae's creating & the useState above:
+
+	// const getShowList=() => {
+	// 	fetch(backendUrl + "/api/showList")
+	// 		.then((resp)=> {
+	// 			return resp.json()
+	// 		})
+
+	// 		.then((data)=> {
+	// 			setshowList(data)
+	// 		})
+	// }
+
+
+	useEffect(() =>{
+		getFavorites()
+		getShowList()
+	},[])
+
+
 	return (
-		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
-			{/* <h1 className="display-6 mt-5">Welcome, @Bianca_23</h1> */}
+		<div className="text-center mt-5 d-inline bg-purple">
+			<h1 className="display-6 mt-5">Welcome, @Bianca_23</h1>
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
 			<div>
-				<div className="col-4 ">
-					<img src={profileImageUrl} className="img-fluid rounded-circle w-50 mb-5" alt="User-Image" />
+				<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
 
 				</div>
 			</div>
@@ -183,64 +221,33 @@ export const Profile = () => {
 									</ul>
 								</div>
 							)
-						}) :
-						<p className=" small text-black-50">please select your favorite shows</p>}
+						}): (
+						<p className=" small text-black-50">please select your favorite shows</p>
+
+						)}
 				</div>
-				
-				{/* <Card
-					title={"first place here"}						
-					id={"second place here"}
-					end={"third place here"}
-				/> */} 								{/* clean this up, next to favorites list on profilepage  */}
-
-				<div className="text-center col-8 mt-4">
-					<div className="">
-						<h2 className="text-center pb-5">What Are You Watching?</h2>
-						{/* search bar for shows */}
-						<div className="mx-auto col-4">
-							<form className="text-center d-flex" role="search">
-								<input
-									className="form-control me-2"
-									type="search"
-									placeholder="Search shows..."
-									aria-label="Search"
-									value={search}
-									onChange={(e) => setSearch(e.target.value)}
-								/>
-
-								{/* <button className="btn btn-outline-primary" type="submit">
-									Search
-								</button> */}
-							</form>
-							{showList.length === 0 ?
-								"Search Not Found. Please Try again." :
-								showList.map((show) => {
-									console.log(show, "My list of shows!")
-									return (
-										<div className="text-start">
-											<Card
-												// "beginning={}" <-- this is whats doing the changes for each show
-												title={show.title}
-												// anything inside the {""} can be changed, its a value
-												id={show.id}
-												end={"Select Show"}
-											/>
-											<ul className="list-unstyled display-8">
-												<li className="m-1">
-													{show.title}
-												</li>
-											</ul>
-										</div>
+					<div className="d-inline-flex col-3 mt-4">
+					<div>
+						<h2 className="text-center mt-7 ">Show List</h2>
+						
+						{showList.length > 0 ? 
+						showList.map((show)=> {
+						return (
+							<div className="text-start">
+								<ul className="list-unstyled display-8">
+									<li className="m-1">
+										{show.showTitle}
+									</li>
+								</ul>
+							</div>
 									)
-								})}
+								}): (
+									<p className="small text-black-50">No shows available.</p>
+								)}
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
 
-
-
-// you'll need to find a way to set a condition to where if array is empty we see a string that say's "search not found. please try again" otherwise, it shows content.
+	)
+}

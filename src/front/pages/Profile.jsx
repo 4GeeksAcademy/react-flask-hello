@@ -168,7 +168,7 @@ export const Profile = () => {
 
 				</div>
 			</div>
-			<div className="d-inline-flex col-12">
+			<div className="d-inline-flex col-4">
 				<div>
 					<h5 className="text-center">Favorite List</h5>
 					{fav.length > 0 ?

@@ -221,12 +221,11 @@ export const Profile = () => {
 										<div className=" text-start">
 											<ul className="list-unstyled">
 												<li onClick={() => (getSeasons(show.id))} className="m-1">
-													{/* <Card
-													title={title} 
-													key={show.id}
-													end={end}
-													/> */}
-													{show.title}
+													<Card
+													title={show.title} 
+													id={show.id}
+													
+													/>
 												</li>
 											</ul>
 										</div>

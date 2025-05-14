@@ -16,16 +16,23 @@ function getDaysInMonth(year, month) {
 
 function getFirstDayOfWeek(year, month) {
   let day = new Date(year, month, 1).getDay();
-  return day === 0 ? 6 : day - 1; // Lunes = 0
+  return day === 0 ? 6 : day - 1;
 }
 
 const ProfileMainPage = () => {
   const [profile, setProfile] = useState(null);
-  const navigate = useNavigate();
+  const [missionsToday, setMissionsToday] = useState(() =>
+    JSON.parse(localStorage.getItem("profile_missions_today")) || []
+  );
+  const [statsData, setStatsData] = useState(() =>
+    JSON.parse(localStorage.getItem("profile_stats")) || null
+  );
+  const [motivationalQuote, setMotivationalQuote] = useState("");
 
+  const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
 
-    const today = new Date();
+  const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
@@ -33,13 +40,9 @@ const ProfileMainPage = () => {
   const firstDayOfWeek = getFirstDayOfWeek(currentYear, currentMonth);
 
   const calendarDays = [];
-  for (let i = 0; i < firstDayOfWeek; i++) {
-    calendarDays.push(null);
-  }
-  for (let d = 1; d <= daysInMonth; d++) {
-    calendarDays.push(d);
-  }
-
+  for (let i = 0; i < firstDayOfWeek; i++) calendarDays.push(null);
+  for (let d = 1; d <= daysInMonth; d++) calendarDays.push(d);
+  
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
       setCurrentMonth(11);
@@ -70,6 +73,10 @@ const ProfileMainPage = () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/${userId}`);
         const data = await res.json();
         setProfile(data);
+        setMissionsToday(data.missions_today);
+        setStatsData(data.stats);
+        localStorage.setItem("profile_missions_today", JSON.stringify(data.missions_today));
+        localStorage.setItem("profile_stats", JSON.stringify(data.stats));
       } catch (err) {
         console.error("Error fetching profile:", err);
       }
@@ -78,17 +85,34 @@ const ProfileMainPage = () => {
     fetchProfile();
   }, [userId, navigate]);
 
+  useEffect(() => {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const savedQuote = localStorage.getItem("daily_quote");
+    const savedDate = localStorage.getItem("daily_quote_date");
+
+    if (savedQuote && savedDate === todayStr) {
+      setMotivationalQuote(savedQuote);
+    } else {
+      const fetchQuote = async () => {
+        try {
+          const res = await fetch("https://zenquotes.io/api/today");
+          const data = await res.json();
+          const quote = `${data[0].q} — ${data[0].a}`;
+          setMotivationalQuote(quote);
+          localStorage.setItem("daily_quote", quote);
+          localStorage.setItem("daily_quote_date", todayStr);
+        } catch (err) {
+          const fallback = "\u201cEl momento m\u00e1s oportuno para cambiar es ahora.\u201d — Desconocido";
+          setMotivationalQuote(fallback);
+        }
+      };
+      fetchQuote();
+    }
+  }, []);
+
   if (!profile) return <div className={styles.loading}>Loading...</div>;
 
-  const {
-    user,
-    missions_today,
-    stats,
-    weekly_progress,
-    calendar,
-    achievements,
-    reflection
-  } = profile;
+  const { user, weekly_progress, calendar, achievements } = profile;
 
   return (
     <div className={styles.container}>
@@ -98,9 +122,9 @@ const ProfileMainPage = () => {
           <h4 className={styles.cardTitle}>
             <strong>Name:</strong> {user.username}
           </h4>
-          <p><strong>Years:</strong> {/* Edad si la tienes */}</p>
-          <p><strong>Job:</strong> {/* Profesión si la tienes */}</p>
-          <p><strong>City:</strong> {/* Ciudad si la tienes */}</p>
+          <p><strong>Years:</strong></p>
+          <p><strong>Job:</strong></p>
+          <p><strong>City:</strong></p>
           <button className={styles.editButton}>✏️</button>
         </div>
 
@@ -108,7 +132,7 @@ const ProfileMainPage = () => {
         <div className={`${styles.card} ${styles.card2}`}>
           <h4 className={styles.cardTitle}>Today’s Tasks</h4>
           <ul className={styles.taskList}>
-            {missions_today.map((task, i) => (
+            {missionsToday.map((task, i) => (
               <li key={i} className={styles.taskItem}>
                 {task.title}
                 <span className={`${styles.statusDot} ${
@@ -136,8 +160,8 @@ const ProfileMainPage = () => {
             <p>Your inner journey continues today.</p>
             <p>Your path to a stronger, wiser, and more focused version of yourself begins with a single step.</p>
             <button
-            className={styles.button}
-            onClick={() => navigate('/journey')}
+              className={styles.button}
+              onClick={() => navigate('/journey')}
             >
               ALL CONTENT
             </button>
@@ -162,7 +186,7 @@ const ProfileMainPage = () => {
           </div>
         </div>
 
-          {/* CARD 5: Calendar */}
+        {/* CARD 5: Calendar */}
         <div className={`${styles.card} ${styles.card5}`}>
           <div className={styles.calendarHeader}>
             <span onClick={handlePrevMonth} className={styles.calendarArrow}>&lt;</span>
@@ -196,19 +220,19 @@ const ProfileMainPage = () => {
           <div className={styles.statsGrid}>
             <div>
               <p className={styles.statLabel}>Tasks completed</p>
-              <p className={styles.statValue}>{stats.tasks_completed}</p>
+              <p className={styles.statValue}>{statsData?.tasks_completed}</p>
             </div>
             <div>
               <p className={styles.statLabel}>Time in the app</p>
-              <p className={styles.statValue}>{stats.time_in_app_days} days</p>
+              <p className={styles.statValue}>{statsData?.time_in_app_days} days</p>
             </div>
             <div>
               <p className={styles.statLabel}>Daily missions</p>
-              <p className={styles.statValue}>{stats.daily_missions_today}</p>
+              <p className={styles.statValue}>{statsData?.daily_missions_today}</p>
             </div>
             <div>
               <p className={styles.statLabel}>Total XP</p>
-              <p className={styles.statValue}>{user.xp_total}</p>
+              <p className={styles.statValue}>{statsData?.total_xp}</p>
             </div>
           </div>
         </div>
@@ -218,8 +242,8 @@ const ProfileMainPage = () => {
           <div className={styles.cardHeaderWithBtn}>
             <h4 className={styles.cardTitle}>Achievements</h4>
             <button
-            className={styles.button}
-            onClick={() => navigate('/achievements')}
+              className={styles.button}
+              onClick={() => navigate('/achievements')}
             >
               ALL CONTENT
             </button>
@@ -238,18 +262,30 @@ const ProfileMainPage = () => {
 
         {/* CARD 8: Week’s progress */}
         <div className={`${styles.card} ${styles.card8}`}>
-          <h4 className={styles.cardTitle}>Week’s progress</h4>
-          <p>Missions</p>
+          <h4 className={styles.cardTitle}>Week’s Progress</h4>
+          <p>Total XP Gained This Week</p>
+
           <div className={styles.levelBar}>
-            <div className={styles.levelFill}></div>
+            <div
+              className={styles.levelFill}
+              style={{ width: `${Math.min((weekly_progress.xp / 4200) * 100, 100)}%` }}
+            />
           </div>
-          <p>XP Gained: <strong>+{weekly_progress.xp}</strong></p>
+
+          <p><strong>+{weekly_progress.xp} XP</strong></p>
+
+          {weekly_progress.xp >= 4200 && (
+            <p style={{ color: '#5CFB7E', fontWeight: 'bold', marginTop: '0.5rem' }}>
+              🎉 Weekly goal achieved!
+            </p>
+          )}
         </div>
+
 
         {/* CARD 9: Today’s Reflection */}
         <div className={`${styles.card} ${styles.card9}`}>
           <h4 className={styles.cardTitle}>Today’s Reflection</h4>
-          <p>{reflection}</p>
+          <p style={{ fontStyle: "italic" }}>{motivationalQuote}</p>
         </div>
       </div>
     </div>

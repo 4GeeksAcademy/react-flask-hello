@@ -69,6 +69,7 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    localStorage.setItem("profile_info", JSON.stringify(profile));
     alert("Perfil actualizado exitosamente");
     navigate("/profilemainpage");
   };

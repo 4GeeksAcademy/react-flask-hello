@@ -110,27 +110,30 @@ def accept_mission():
         data = request.json
         print("📩 Payload recibido en /usermission:", data)
 
-        # Verificar si vienen los campos necesarios
         user_id = data.get("user_id")
         mission_id = data.get("mission_id")
 
         if not user_id or not mission_id:
-            print("⚠️ Faltan user_id o mission_id en el payload")
             return jsonify({"msg": "Faltan datos necesarios"}), 400
-
-        # Verificar si el usuario y misión existen
-        from api.models import AppUser, Mission
 
         user = AppUser.query.get(user_id)
         mission = Mission.query.get(mission_id)
 
         if not user:
-            print(f"❌ Usuario con ID {user_id} no encontrado")
             return jsonify({"msg": "Usuario no encontrado"}), 404
 
         if not mission:
-            print(f"❌ Misión con ID {mission_id} no encontrada")
             return jsonify({"msg": "Misión no encontrada"}), 404
+
+        # 🔒 Límite de 4 misiones por día
+        today = datetime.utcnow().date()
+        misiones_hoy = UserMission.query.filter(
+            UserMission.user_id == user_id,
+            db.func.date(UserMission.accepted_at) == today
+        ).count()
+
+        if misiones_hoy >= 5:
+            return jsonify({"msg": "Límite de 4 misiones diarias alcanzado"}), 403
 
         # Crear la UserMission
         user_mission = UserMission(
@@ -148,6 +151,12 @@ def accept_mission():
             "msg": "Misión aceptada",
             "usermission_id": user_mission.id
         }), 201
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"msg": "Error interno del servidor"}), 500
+
 
     except Exception as e:
         import traceback
@@ -171,7 +180,7 @@ def complete_mission(usermission_id):
     user = AppUser.query.get(um.user_id)
 
     # --- Añadir XP ---
-    xp_gain = 200  # XP fijo por misión
+    xp_gain = 200
     user.xp_total += xp_gain
 
     # Subir de nivel si corresponde
@@ -196,6 +205,24 @@ def complete_mission(usermission_id):
             already = UserAchievement.query.filter_by(user_id=user_id, achievement_id=achievement.id).first()
             if not already:
                 db.session.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
+
+        # Actualizar o crear Stat para hoy
+    today = datetime.utcnow().date()
+    stat = Stat.query.filter_by(user_id=user.id, date=today).first()
+
+    if stat:
+        stat.xp_earned = (stat.xp_earned or 0) + xp_gain
+        stat.missions_completed = (stat.missions_completed or 0) + 1
+    else:
+        stat = Stat(
+            user_id=user.id,
+            date=today,
+            xp_earned=xp_gain,
+            missions_completed=1,
+            minutes_invested=20
+        )
+        db.session.add(stat)
+            
 
     db.session.commit()
 
@@ -299,7 +326,8 @@ def get_full_profile(user_id):
         'stats': {
             'tasks_completed': total_tasks,
             'time_in_app_days': days_in_app,
-            'daily_missions_today': len(missions_today)
+            'daily_missions_today': len(missions_today),
+            'total_xp': total_xp
         },
         'weekly_progress': {
             'xp': week_xp

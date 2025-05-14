@@ -40,7 +40,12 @@ const Navbar2 = () => {
   const level = user?.level || 1;
   const xpForNextLevel = 1000;
   const xpProgress = Math.min((xp % xpForNextLevel) / xpForNextLevel * 100, 100);
-
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user_id");
+  dispatch({ type: "set_user", payload: null });
+  navigate("/");
+  };
   return (
     <nav className={`${styles.navbar2} ${isMobileMenuOpen ? styles.navbar2Open : ''}`}>
       {!isMobileMenuOpen && (

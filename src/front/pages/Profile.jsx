@@ -9,7 +9,7 @@ export const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");  
     dispatch({ type: "SET_TOKEN", payload: null });  
-    navigate("/signin");  
+    navigate("/logout");  
   };
 
   return (

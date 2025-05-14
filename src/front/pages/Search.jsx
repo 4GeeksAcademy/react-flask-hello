@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const handleSearch = (searchItem, setDrinks) => {
     if (!searchItem.trim()) {
@@ -26,14 +27,13 @@ export const Search = () => {
     const [search, setSearch] = useState("");
     const [drinks, setDrinks] = useState([]);
     const [favorites, setFavorites] = useState([]);
+    const navigate = useNavigate();
 
-    // Load favorites from local storage on mount
     useEffect(() => {
         const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(storedFavorites);
     }, []);
 
-    // Toggle favorite and update local storage
     const toggleFavorite = (drink) => {
         let updatedFavorites;
         if (favorites.some(fav => fav.idDrink === drink.idDrink)) {
@@ -45,62 +45,74 @@ export const Search = () => {
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Clear authentication token
+        navigate("/logout"); // Redirect to logout page
+    };
+
     return (
-        <div className="search-container">
-            <div className="search-bar">
+        <div className="search-page-container">
+            {/* Button Container */}
+            <div className="button-container">
+                <button className="logout-action-button" onClick={handleLogout}>
+                    Logout
+                </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="search-header">
                 <input 
-                    className="search-input"
+                    className="search-input-field"
                     placeholder="Search for a cocktail..." 
                     onChange={(e) => setSearch(e.target.value)} 
                     value={search} 
                 />
-                <button onClick={() => handleSearch(search, setDrinks)} className="search-button">
+                <button onClick={() => handleSearch(search, setDrinks)} className="search-action-button">
                     Search
                 </button>
             </div>
 
-            {/* Display the fetched drinks */}
-            <div className="cocktail-list">
+            {/* Display Results */}
+            <div className="results-container">
                 {drinks.length > 0 ? (
                     drinks.map((drink) => (
-                        <div key={drink.idDrink} className="cocktail-card">
-                            <h2 className="cocktail-title">{drink.strDrink}</h2>
-                            <img className="cocktail-image" src={drink.strDrinkThumb} alt={drink.strDrink} />
-                            <p className="cocktail-glass"><strong>Glass:</strong> {drink.strGlass}</p>
-                            <p className="cocktail-category"><strong>Category:</strong> {drink.strCategory}</p>
+                        <div key={drink.idDrink} className="cocktail-card-container">
+                            <h2 className="cocktail-title-text">{drink.strDrink}</h2>
+                            <img className="cocktail-thumbnail" src={drink.strDrinkThumb} alt={drink.strDrink} />
+                            <p className="cocktail-glass-text"><strong>Glass:</strong> {drink.strGlass}</p>
+                            <p className="cocktail-category-text"><strong>Category:</strong> {drink.strCategory}</p>
                             <p><strong>Ingredients:</strong></p>
-                            <ul className="ingredient-list">
+                            <ul className="cocktail-ingredients-list">
                                 {[...Array(15).keys()].map((i) => {
                                     const ingredient = drink[`strIngredient${i + 1}`];
                                     const measure = drink[`strMeasure${i + 1}`];
                                     return (
                                         ingredient && (
-                                            <li key={i} className="ingredient-item">
+                                            <li key={i} className="cocktail-ingredient-item">
                                                 {`${measure || ""} ${ingredient}`.trim()}
                                             </li>
                                         )
                                     );
                                 })}
                             </ul>
-                            <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p>
+                            <p className="cocktail-instructions-text"><strong>Instructions:</strong> {drink.strInstructions}</p>
                             
-                            {/* Favorite Button with Image */}
                             <button 
-                                className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
+                                className="favorite-toggle-button"
                                 onClick={() => toggleFavorite(drink)}
                             >
                                 <img 
                                     src={favorites.some(fav => fav.idDrink === drink.idDrink) 
-                                        ? "https://img.icons8.com/?size=52&id=86&format=png&color=red" 
-                                        : "https://img.icons8.com/?size=52&id=86&format=png"} 
+                                        ? "https://img.icons8.com/?size=48&id=LaLJUIEg4Miq&format=png" 
+                                        : "https://img.icons8.com/?size=48&id=3294&format=png"} 
                                     alt="Favorite Icon" 
-                                    className="favorite-icon"
+                                    className="favorite-icon-image"
                                 />
                             </button>
                         </div>
                     ))
                 ) : (
-                    <p className="no-results">No drinks found</p>
+                    <p className="no-results-message">No drinks found</p>
                 )}
             </div>
         </div>

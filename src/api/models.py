@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from flask_bcrypt import Bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
 CORS(app)
-bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 # **Database Configuration**
@@ -57,22 +56,32 @@ with app.app_context():
 @app.route("/signup", methods=["POST"])
 def register():
     data = request.json
-    hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
-    user = User(name=data["name"], email=data["email"], password=hashed_password, phone=data["phone"])
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"message": "User registered successfully"}), 201
+    if not all(key in data for key in ["name", "email", "password", "phone"]):
+        return jsonify({"message": "Missing required fields"}), 400
+
+    hashed_password = generate_password_hash(data["password"])
+    
+    try:
+        user = User(name=data["name"], email=data["email"], password=hashed_password, phone=data["phone"])
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"message": "User registered successfully"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Error registering user", "error": str(e)}), 500
 
 # **User Login**
 @app.route("/login", methods=["POST"])
 def login():
     data = request.json
-    user = User.query.filter_by(email=data["email"]).first()
-    if not user or not bcrypt.check_password_hash(user.password, data["password"]):
-        return jsonify({"message": "Invalid credentials"}), 401
+    if not all(key in data for key in ["email", "password"]):
+        return jsonify({"message": "Missing required fields"}), 400
 
-    access_token = create_access_token(identity=user.id)
-    return jsonify({"token": access_token}), 200
+    user = User.query.filter_by(email=data["email"]).first()
+    if user and check_password_hash(user.password, data["password"]):
+        access_token = create_access_token(identity=user.id)
+        return jsonify({"token": access_token}), 200
+    return jsonify({"message": "Invalid credentials"}), 401
 
 # **Get User Info**
 @app.route("/user", methods=["GET"])
@@ -82,7 +91,6 @@ def get_user():
     user = User.query.get(user_id)
     if not user:
         return jsonify({"message": "User not found"}), 404
-
     return jsonify(user.serialize()), 200
 
 # **Add Favorite**
@@ -91,10 +99,17 @@ def get_user():
 def add_favorite():
     user_id = get_jwt_identity()
     data = request.json
-    favorite = Favorite(user_id=user_id, drink_id=data["drinkId"], drink_name=data["drinkName"], drink_image=data["drinkImage"])
-    db.session.add(favorite)
-    db.session.commit()
-    return jsonify({"message": "Favorite added"}), 201
+    if not all(key in data for key in ["drinkId", "drinkName", "drinkImage"]):
+        return jsonify({"message": "Missing required fields"}), 400
+
+    try:
+        favorite = Favorite(user_id=user_id, drink_id=data["drinkId"], drink_name=data["drinkName"], drink_image=data["drinkImage"])
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorite added"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Error adding favorite", "error": str(e)}), 500
 
 # **Get Favorites**
 @app.route("/favorites", methods=["GET"])
@@ -111,9 +126,13 @@ def delete_favorite(drink_id):
     user_id = get_jwt_identity()
     favorite = Favorite.query.filter_by(user_id=user_id, drink_id=drink_id).first()
     if favorite:
-        db.session.delete(favorite)
-        db.session.commit()
-        return jsonify({"message": "Favorite removed"}), 200
+        try:
+            db.session.delete(favorite)
+            db.session.commit()
+            return jsonify({"message": "Favorite removed"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"message": "Error deleting favorite", "error": str(e)}), 500
     return jsonify({"message": "Favorite not found"}), 404
 
 if __name__ == "__main__":

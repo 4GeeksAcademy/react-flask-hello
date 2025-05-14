@@ -5,7 +5,15 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export const Profile = () => {
   const { store } = useGlobalReducer();
 
+
   if (!store.token) return <Navigate to="/signin" />;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");  
+    dispatch({ type: "SET_TOKEN", payload: null });  
+    navigate("/logout");  
+  };
+
 
   return (
     <div

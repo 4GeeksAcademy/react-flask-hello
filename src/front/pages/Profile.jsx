@@ -38,6 +38,7 @@ export const Profile = () => {
 
 	const showListFetch = () => {
 		fetch(watchModeBase+"/list-titles/?apiKey="+watchModeApi+"&source_ids=203,57")
+		fetch(watchModeBase+"/list-titles/?apiKey="+watchModeApi+"&source_ids=203,57")
 			.then((resp) => {
 				return resp.json()
 			})
@@ -131,6 +132,8 @@ export const Profile = () => {
 
 	const getSeasons=(id) => {
 		fetch(watchModeBase+"/title/3197275/seasons/?apiKey="+watchModeApi)
+	const getSeasons=(id) => {
+		fetch(watchModeBase+"/title/3197275/seasons/?apiKey="+watchModeApi)
 			.then((resp)=> {
 				return resp.json()
 			})
@@ -165,9 +168,16 @@ export const Profile = () => {
 	return (
 		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
 		
+		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
+		
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
+			
+			<div className="d-inline-flex col-6"> 
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4" width="200px" alt="User-Image" />
+			</div>
+			<div className="d-inline-flex col-12">
 			
 			<div className="d-inline-flex col-6"> 
 					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4" width="200px" alt="User-Image" />
@@ -221,12 +231,11 @@ export const Profile = () => {
 										<div className=" text-start">
 											<ul className="list-unstyled">
 												<li onClick={() => (getSeasons(show.id))} className="m-1">
-													{/* <Card
-													title={title} 
-													key={show.id}
-													end={end}
-													/> */}
-													{show.title}
+													<Card
+													title={show.title} 
+													id={show.id}
+													
+													/>
 												</li>
 											</ul>
 										</div>
@@ -253,3 +262,14 @@ export const Profile = () => {
 		</div>
 	);
 };
+
+
+
+
+
+
+
+
+
+
+

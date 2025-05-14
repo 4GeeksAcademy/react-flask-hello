@@ -8,6 +8,7 @@ from api.utils import (
     generate_auth_token,
     token_required
 )
+import requests  # <--- Agregado para proxy externo
 #hola
 api = Blueprint('api', __name__)
 
@@ -336,3 +337,19 @@ def get_full_profile(user_id):
         'achievements': achievement_data,
         'reflection': user.mood_actual or ''
     }), 200
+
+@api.route('/quote', methods=['GET'])
+def get_daily_quote():
+    try:
+        response = requests.get('https://zenquotes.io/api/today', timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            return jsonify(data), 200
+        else:
+            raise Exception('ZenQuotes API error')
+    except Exception as e:
+        fallback = [{
+            "q": "El momento más oportuno para cambiar es ahora.",
+            "a": "Desconocido"
+        }]
+        return jsonify(fallback), 200

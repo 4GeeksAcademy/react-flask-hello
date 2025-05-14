@@ -95,7 +95,7 @@ const ProfileMainPage = () => {
     } else {
       const fetchQuote = async () => {
         try {
-          const res = await fetch("https://zenquotes.io/api/today");
+          const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/quote`);
           const data = await res.json();
           const quote = `${data[0].q} — ${data[0].a}`;
           setMotivationalQuote(quote);
@@ -128,9 +128,9 @@ const ProfileMainPage = () => {
           <button className={styles.editButton}>✏️</button>
         </div>
 
-        {/* CARD 2: Today’s Tasks */}
+        {/* CARD 2: Today's Tasks */}
         <div className={`${styles.card} ${styles.card2}`}>
-          <h4 className={styles.cardTitle}>Today’s Tasks</h4>
+          <h4 className={styles.cardTitle}>Today's Tasks</h4>
           <ul className={styles.taskList}>
             {missionsToday.map((task, i) => (
               <li key={i} className={styles.taskItem}>
@@ -260,9 +260,9 @@ const ProfileMainPage = () => {
           </div>
         </div>
 
-        {/* CARD 8: Week’s progress */}
+        {/* CARD 8: Week's progress */}
         <div className={`${styles.card} ${styles.card8}`}>
-          <h4 className={styles.cardTitle}>Week’s Progress</h4>
+          <h4 className={styles.cardTitle}>Week's Progress</h4>
           <p>Total XP Gained This Week</p>
 
           <div className={styles.levelBar}>
@@ -282,9 +282,9 @@ const ProfileMainPage = () => {
         </div>
 
 
-        {/* CARD 9: Today’s Reflection */}
+        {/* CARD 9: Today's Reflection */}
         <div className={`${styles.card} ${styles.card9}`}>
-          <h4 className={styles.cardTitle}>Today’s Reflection</h4>
+          <h4 className={styles.cardTitle}>Today's Reflection</h4>
           <p style={{ fontStyle: "italic" }}>{motivationalQuote}</p>
         </div>
       </div>

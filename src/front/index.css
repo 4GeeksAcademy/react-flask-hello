@@ -34,6 +34,7 @@
     flex-wrap: nowrap;
 }
 
+
 /* Ensure Buttons Stay Together */
 .logout-action-button {
     background-color: #dc3545;
@@ -44,6 +45,13 @@
     cursor: pointer;
     border-radius: 5px;
     white-space: nowrap;
+
+h1,
+h2,
+h3 {
+  font-family: "Helvetica", sans-serif;
+  color: #444; /* Darker text color for headers */
+
 }
 
 .logout-action-button:hover {
@@ -361,6 +369,15 @@ h2 {
 .logout-button:hover {
     background-color: #c82333;
 }
+.logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
 
 .create-cocktail-btn:hover {
     background-color: #218838;
@@ -482,4 +499,19 @@ h2 {
 
 .logout-button:hover {
     background-color: #c82333;
+
+.logout-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.logout-button:hover {
+  background-color: #0056b3;
+
 }

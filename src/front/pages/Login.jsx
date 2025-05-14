@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Aurora from "../components/Aurora";
 import styles from "../assets/styles/Login.module.css";
 
 const Login = () => {
@@ -39,6 +40,13 @@ const Login = () => {
 
   return (
     <div className={styles.loginViewPage}>
+      <Aurora
+        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+        blend={0.2}
+        amplitude={0.8}
+        speed={0.8}
+      />
+      <div className={styles.loginViewPageOverlay}></div>
       <motion.div
         className={styles.loginViewContainer}
         initial={{ opacity: 0, y: 30 }}

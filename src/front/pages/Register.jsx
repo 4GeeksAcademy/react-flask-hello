@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
+import Aurora from "../components/Aurora";
 import styles from "../assets/styles/Register.module.css";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
@@ -42,7 +43,13 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.registerPage}>
+    <div className={styles.registerPage} style={{ position: "relative", minHeight: "100vh", overflow: "hidden" }}>
+      <Aurora
+        colorStops={["#8e24aa", "#651fff", "#ff6f61"]}
+        blend={0.2}
+        amplitude={0.8}
+        speed={0.8}
+      />
       <div className={styles.registerPageOverlay}></div> {/* Filtro oscuro */}
       <motion.div
         className={styles.registerContainer}

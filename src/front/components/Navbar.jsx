@@ -7,8 +7,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Solo mostrar el navbar en la página de inicio (landing)
-  const isLanding = location.pathname === "/";
+  // Mostrar el navbar solo en la landing ('/' o '/landing'), para cualquier usuario
+  const isLanding = location.pathname === "/" || location.pathname === "/landing";
 
   if (!isLanding) return null;
 

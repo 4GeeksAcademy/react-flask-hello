@@ -6,7 +6,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background: url('/workspaces/Proyecto_Final_4Geeks_DavidFarewell/src/front/assets/styles/images/Landing_images/waves_2k_upscaled.jpg') no-repeat center center fixed;
+  background: #000;
   background-size: cover;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;

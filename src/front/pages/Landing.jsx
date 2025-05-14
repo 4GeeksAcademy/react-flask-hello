@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Aurora from "../components/Aurora";
 import styles from "../assets/styles/Landing.module.css";
 
 // Logos
@@ -13,13 +14,12 @@ import twilio from "../assets/styles/images/Landing_images/Twilio.png";
 import verizon from "../assets/styles/images/Landing_images/Verizon.png";
 import motiFeliz from "../assets/styles/images/Moti_Feliz.png";
 import loginBg from "../assets/styles/images/Landing_images/login-bg.jpg";
-import waves from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
 
 // Tabs
-import missionsImg from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
-import progressImg from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
-import resourcesImg from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
-import achievementsImg from "../assets/styles/images/Landing_images/waves_2k_upscaled.jpg";
+import missionsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import progressImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import resourcesImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import achievementsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
 
 // Animación
 const fadeInUp = {
@@ -31,7 +31,7 @@ const reviews = [
   { name: "Lou Logico - Humorist", img: motiFeliz },
   { name: "Jean Pierre - Front-End Dev", img: loginBg },
   { name: "Jagger Meister - Boxer", img: amazon },
-  { name: "Jonas Jimbo - Singer", img: waves },
+  { name: "Jonas Jimbo - Singer", img: amazon },
   { name: "Javy Kardashian - Nurse", img: motiFeliz },
   { name: "Juan Albertillo - Trucker", img: loginBg },
 ];
@@ -104,6 +104,14 @@ const Landing = () => {
     <div className={styles.landingContainer}>
       <Navbar />
       <section className={`${styles.landingSection} ${styles.landingHero}`}>
+        <Aurora
+          colorStops={["#8e24aa", "#651fff", "#ff6f61"]}
+          blend={0.2}
+          amplitude={0.8}
+          speed={0.8
+
+          }
+        />
         <div className={styles.landingHeroOverlay}></div>
         <div className={styles.landingHeroGradient}></div>
         <div className={styles.landingHeroContent}>

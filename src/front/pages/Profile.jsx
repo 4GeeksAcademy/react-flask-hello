@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import profileImageUrl from "../assets/img/roundpicture.jpeg"; 
+import React ,{ useEffect, useState } from "react";
+import profileImageUrl from "../assets/img/roundpicture.png"; 
 import star from "../assets/img/star.png";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import profilehero from "../assets/img/cute.png";
 import { Card } from "../components/Card.jsx";
 // import '../style.css';
 
@@ -36,7 +37,7 @@ export const Profile = () => {
 	};
 
 	const showListFetch = () => {
-		fetch(watchModeBase+"/list-titles/?apiKey="+ watchModeApi)
+		fetch(watchModeBase+"/list-titles/?apiKey="+watchModeApi+"&source_ids=203,57")
 			.then((resp) => {
 				return resp.json()
 			})
@@ -129,7 +130,7 @@ export const Profile = () => {
 	// adding to pull show seasons from api
 
 	const getSeasons=(id) => {
-		fetch(watchModeBase+ "/title/"+`${id}`+"/seasons/?apiKey=" + watchModeApi)
+		fetch(watchModeBase+"/title/3197275/seasons/?apiKey="+watchModeApi)
 			.then((resp)=> {
 				return resp.json()
 			})
@@ -139,7 +140,7 @@ export const Profile = () => {
 				console.log("SEASONSSSSSSS",data)
 			})
 	}
-
+// fetch(watchModeBase+ "/title/"+`${id}`+"/seasons/?apiKey=" + watchModeApi)
 
 
 	// below wokring on the code to render the episode list of the selected show season
@@ -163,13 +164,13 @@ export const Profile = () => {
 
 	return (
 		<div style={{ backgroundColor: '#B08EF3', padding: '1rem' }} className="vh-100">
-			{/* <h1 className="display-6 mt-5">Welcome, @Bianca_23</h1> */}
+		
 			<p className="lead">
 				{/* <h1>Welcome, ${user}</h1>  will need to come back and update so it is personalized */}
 			</p>
 			
 			<div className="d-inline-flex col-6"> 
-					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4 w-50" alt="User-Image" />
+					<img src= {profileImageUrl} className="img-fluid rounded-circle mb-4" width="200px" alt="User-Image" />
 			</div>
 			<div className="d-inline-flex col-12">
 				<div>
@@ -191,12 +192,12 @@ export const Profile = () => {
 				</div>
 
 
-				<div className="text-center col-8 mt-4">
-					<div>
-						<img src={profilehero} className="img-fluid p-4" width="100"/>
+				<div className="text-center col-8 mb-5">
+					<div className="">
+						<img src={profilehero} className="img-fluid p-4" width="200"/>
 					</div>
 					<div className="">
-						<h2 className="text-center pb-5">What Are You Watching?</h2>
+						<h2 className="text-center"> What Are You Watching?</h2>
 						{/* search bar for shows */}
 						<div className="mx-auto col-4">
 							<form className="text-center d-flex" role="search">
@@ -220,11 +221,15 @@ export const Profile = () => {
 										<div className=" text-start">
 											<ul className="list-unstyled">
 												<li onClick={() => (getSeasons(show.id))} className="m-1">
+													{/* <Card
+													title={title} 
+													key={show.id}
+													end={end}
+													/> */}
 													{show.title}
 												</li>
 											</ul>
 										</div>
-
 									)
 								})}
 							</div>

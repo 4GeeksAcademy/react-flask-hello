@@ -14,14 +14,28 @@ import myfitnesspal from "../assets/styles/images/Landing_images/myfitnesspal.pn
 import onlyfans from "../assets/styles/images/Landing_images/onlyfans.png";
 import twilio from "../assets/styles/images/Landing_images/Twilio.png";
 import verizon from "../assets/styles/images/Landing_images/Verizon.png";
-import motiFeliz from "../assets/styles/images/Moti_Feliz.png";
-//import loginBg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import motiFeliz from "../assets/styles/images/Motis/Moti_Feliz.png";
+import ptoAmoMancuernas from "../assets/styles/images/Motis/PtoAmoMancuernas.png";
+import enamorado from "../assets/styles/images/Motis/Enamorado.png";
+import confeti from "../assets/styles/images/Motis/Confeti.png";
+
+// IMPORTS DE AVATARES PARA REVIEWS
+import avatar1 from "../assets/styles/images/Avatars/Avatar de mujer con gafas.png";
+import avatar2 from "../assets/styles/images/Avatars/Chica con cabello azul y camiseta amarilla.png";
+import avatar3 from "../assets/styles/images/Avatars/Joven con camiseta negra y cabello naranja.png";
+import avatar4 from "../assets/styles/images/Avatars/Mujer con gafas y sonrisa amigable.png";
+import avatar5 from "../assets/styles/images/Avatars/Retrato amistoso de mujer sonriente.png";
+import avatar6 from "../assets/styles/images/Avatars/Retrato digital de joven sonriente.png";
+import avatar7 from "../assets/styles/images/Avatars/Retrato digital de un joven.png";
+import avatar8 from "../assets/styles/images/Avatars/Retrato en estilo minimalista.png";
+import avatar9 from "../assets/styles/images/Avatars/Retrato estilizado con gafas negras.png";
+import avatar10 from "../assets/styles/images/Avatars/Retrato minimalista de hombre joven.png";
 
 // Tabs
-import missionsImg from "../assets/styles/images/Moti_Feliz.png";
-import progressImg from "../assets/styles/images/Moti_Feliz.png";
-import resourcesImg from "../assets/styles/images/Moti_Feliz.png";
-import achievementsImg from "../assets/styles/images/Moti_Feliz.png";
+// import missionsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+// import progressImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+// import resourcesImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+// import achievementsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
 
 // Animación
 const fadeInUp = {
@@ -30,12 +44,21 @@ const fadeInUp = {
 };
 
 const reviews = [
-  { name: "Lou Logico - Humorist", img: motiFeliz },
-  { name: "Jean Pierre - Front-End Dev", img: amazon },
-  { name: "Jagger Meister - Boxer", img: amazon },
-  { name: "Jonas Jimbo - Singer", img: amazon },
-  { name: "Javy Kardashian - Nurse", img: motiFeliz },
-  { name: "Juan Albertillo - Trucker", img: amazon },
+  { name: "Lou Logico - Humorist", img: avatar1, text: "A fun and motivating experience!" },
+  { name: "Jean Pierre - Front-End Dev", img: avatar2, text: "The best way to keep growing every week." },
+  { name: "Jagger Meister - Boxer", img: avatar3, text: "I love the missions and the progress tracking!" },
+  { name: "Jonas Jimbo - Singer", img: avatar4, text: "Super easy to use and very inspiring." },
+  { name: "Javy Kardashian - Nurse", img: avatar5, text: "I feel more productive and positive!" },
+  { name: "Juan Albertillo - Trucker", img: avatar6, text: "Great for building new habits!" },
+];
+
+const reviews2 = [
+  { name: "Javy Kardashian - Nurse", img: avatar7, text: "Highly recommend for anyone!" },
+  { name: "Juan Albertillo - Trucker", img: avatar8, text: "Perfect for staying on track." },
+  { name: "Lou Logico - Humorist", img: avatar9, text: "Love the achievements system!" },
+  { name: "Jean Pierre - Front-End Dev", img: avatar10, text: "The stats panel is super clear." },
+  { name: "Jagger Meister - Boxer", img: avatar1, text: "I never get bored, always new challenges!" },
+  { name: "Jonas Jimbo - Singer", img: avatar2, text: "It keeps me motivated every day." },
 ];
 
 const subscriptions = [
@@ -76,8 +99,6 @@ const subscriptions = [
 
 const brands = [amazon, facebook, headspace, myfitnesspal, onlyfans, twilio, verizon];
 const repeatedBrands = Array(10).fill(brands).flat();
-const tripledReviews = [...reviews, ...reviews, ...reviews];
-const quintupledReviews = [...reviews, ...reviews, ...reviews, ...reviews, ...reviews];
 
 const Landing = () => {
   const [activeTab, setActiveTab] = useState("MISSIONS");
@@ -94,13 +115,31 @@ const Landing = () => {
 
   const getImageByTab = () => {
     switch (activeTab) {
-      case "MISSIONS": return missionsImg;
-      case "PROGRESS": return progressImg;
-      case "RESOURCES": return resourcesImg;
-      case "ACHIEVEMENTS": return achievementsImg;
-      default: return missionsImg;
+      case "MISSIONS": return motiFeliz;
+      case "PROGRESS": return ptoAmoMancuernas;
+      case "RESOURCES": return enamorado;
+      case "ACHIEVEMENTS": return confeti;
+      default: return motiFeliz;
     }
   };
+
+  const getTextByTab = () => {
+    switch (activeTab) {
+      case "MISSIONS":
+        return "Each week, you'll get missions tailored to your goals: health, learning, habits, creativity...\n Every completed task gives you XP and boosts your stats.\n It's all about staying motivated and tracking real evolution.";
+      case "PROGRESS":
+        return "Your personal stats panel shows how you're evolving each week.\n Track your level, consistency, energy points, and improvement areas: clean and distraction-free.";
+      case "RESOURCES":
+        return "Your personal stats panel shows how you're evolving each week.\n Track your level, consistency, energy points, and improvement areas: clean and distraction-free.\nChoose your focus: physical, mental, creative... or mix it all!\n Select the content you want to see and adjust the difficulty of your journey.\n Start easy. Raise the challenge when you're ready. It's up to you!";
+      case "ACHIEVEMENTS":
+        return "Trak all your progress visually by unlocking achievements and celebrate every milestone!";
+      default:
+        return "";
+    }
+  };
+
+  const tripledReviews = [...reviews, ...reviews, ...reviews];
+  const quintupledReviews = [...reviews2, ...reviews2, ...reviews2, ...reviews2, ...reviews2];
 
   return (
     <div className={styles.landingContainer}>
@@ -162,12 +201,17 @@ const Landing = () => {
           ))}
         </div>
         <motion.div className={styles.landingTabContent} variants={fadeInUp} initial="hidden" whileInView="visible">
-          <img src={getImageByTab()} alt={activeTab} />
+          <div className={styles.landingTabContentImgWrapper}>
+            <img 
+              src={getImageByTab()} 
+              alt={activeTab} 
+              className={activeTab === "RESOURCES" ? styles.landingTabContentImgEnamorado : undefined}
+            />
+          </div>
           <p className={styles.landingTabDescription}>
-            {activeTab === "MISSIONS" && "Every week, you'll get missions tailored to your interests..."}
-            {activeTab === "PROGRESS" && "Track your daily and weekly progress easily..."}
-            {activeTab === "RESOURCES" && "Access personalized tips, articles..."}
-            {activeTab === "ACHIEVEMENTS" && "Celebrate every milestone..."}
+            {getTextByTab().split("\n").map((line, idx) => (
+              <span key={idx}>{line}<br /></span>
+            ))}
           </p>
         </motion.div>
       </section>
@@ -191,11 +235,11 @@ const Landing = () => {
         <div className={styles.landingCarouselWrapper}>
           <div className={styles.landingCarouselTrack}>
             {tripledReviews.map((r, i) => (
-              <div key={i} className={styles.landingTestimonialCard}>
-                <img src={r.img} alt={r.name} />
-                <p>{r.name}</p>
+              <div key={i} className={styles.landingTestimonialCard} style={{textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                <img src={r.img} alt={r.name} style={{margin: '0 auto', width: 70, height: 70, borderRadius: '50%', objectFit: 'cover'}} />
+                <p style={{fontWeight: 500, margin: '1rem 0 0.5rem 0'}}>{r.name}</p>
                 <div className={styles.landingStars}>★★★★★</div>
-                <p className={styles.landingReviewText}>Amazing experience!</p>
+                <p className={styles.landingReviewText}>{r.text}</p>
               </div>
             ))}
           </div>
@@ -203,11 +247,11 @@ const Landing = () => {
         <div className={`${styles.landingCarouselWrapper} ${styles.reverse}`}>
           <div className={styles.landingCarouselTrack}>
             {quintupledReviews.map((r, i) => (
-              <div key={`rev-${i}`} className={styles.landingTestimonialCard}>
-                <img src={r.img} alt={r.name} />
-                <p>{r.name}</p>
+              <div key={`rev-${i}`} className={styles.landingTestimonialCard} style={{textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                <img src={r.img} alt={r.name} style={{margin: '0 auto', width: 70, height: 70, borderRadius: '50%', objectFit: 'cover'}} />
+                <p style={{fontWeight: 500, margin: '1rem 0 0.5rem 0'}}>{r.name}</p>
                 <div className={styles.landingStars}>★★★★☆</div>
-                <p className={styles.landingReviewText}>Highly recommend!</p>
+                <p className={styles.landingReviewText}>{r.text}</p>
               </div>
             ))}
           </div>

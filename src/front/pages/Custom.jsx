@@ -64,9 +64,9 @@ export const Custom = () => {
         <div className="custom-app">
             {/* Button Container */}
             <div className="button-container">
-                <button className="logout-button" onClick={handleLogout}>
+{/*                 <button className="logout-button" onClick={handleLogout}>
                     Logout
-                </button>
+                </button> */}
                 <button className="create-cocktail-btn" onClick={createCocktail}>
                     Create Cocktail
                 </button>

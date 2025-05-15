@@ -54,7 +54,7 @@
   right: 0;
   bottom: 0;
   height: 500px;
-  background: linear-gradient(to bottom, rgba(24, 10, 10, 0) 0%, #0b0a18 100%);
+  background: #000; /* Fondo negro puro, sin gradiente */
   z-index: 2;
 }
 

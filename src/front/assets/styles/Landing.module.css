@@ -367,11 +367,11 @@
   gap: 4rem;
   margin: 5px;
   width: max-content;
-  animation: landingScrollLeft 90s linear infinite;
+  animation: landingScrollLeft 180s linear infinite;
 }
 
 .landingCarouselWrapper.reverse .landingCarouselTrack {
-  animation: landingScrollLeftReverse 180s linear infinite;
+  animation: landingScrollLeftReverse 360s linear infinite;
 }
 
 @keyframes landingScrollLeftReverse {

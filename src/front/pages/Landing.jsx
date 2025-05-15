@@ -19,7 +19,7 @@ import ptoAmoMancuernas from "../assets/styles/images/Motis/PtoAmoMancuernas.png
 import enamorado from "../assets/styles/images/Motis/Enamorado.png";
 import confeti from "../assets/styles/images/Motis/Confeti.png";
 
-// IMPORTS DE AVATARES PARA REVIEWS
+// IMPORTS DE AVATARES PARA REVIEWS (20 disponibles)
 import avatar1 from "../assets/styles/images/Avatars/Avatar de mujer con gafas.png";
 import avatar2 from "../assets/styles/images/Avatars/Chica con cabello azul y camiseta amarilla.png";
 import avatar3 from "../assets/styles/images/Avatars/Joven con camiseta negra y cabello naranja.png";
@@ -30,6 +30,16 @@ import avatar7 from "../assets/styles/images/Avatars/Retrato digital de un joven
 import avatar8 from "../assets/styles/images/Avatars/Retrato en estilo minimalista.png";
 import avatar9 from "../assets/styles/images/Avatars/Retrato estilizado con gafas negras.png";
 import avatar10 from "../assets/styles/images/Avatars/Retrato minimalista de hombre joven.png";
+import avatar11 from "../assets/styles/images/Avatars/Retrato minimalista de joven sonriente.png";
+import avatar12 from "../assets/styles/images/Avatars/Retrato minimalista de mujer afro joven.png";
+import avatar13 from "../assets/styles/images/Avatars/Retrato minimalista de mujer joven (1).png";
+import avatar14 from "../assets/styles/images/Avatars/Retrato minimalista de mujer joven.png";
+import avatar15 from "../assets/styles/images/Avatars/Retrato minimalista de mujer sonriente (1).png";
+import avatar16 from "../assets/styles/images/Avatars/Retrato minimalista de mujer sonriente.png";
+import avatar17 from "../assets/styles/images/Avatars/Retrato minimalista de personaje masculino.png";
+import avatar18 from "../assets/styles/images/Avatars/Retrato minimalista krula de mujer joven.png";
+import avatar19 from "../assets/styles/images/Avatars/Rostro cálido y acogedor.png";
+import avatar20 from "../assets/styles/images/Avatars/Retrato minimalista de un joven.png";
 
 // Tabs
 // import missionsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
@@ -44,21 +54,45 @@ const fadeInUp = {
 };
 
 const reviews = [
-  { name: "Lou Logico - Humorist", img: avatar1, text: "A fun and motivating experience!" },
-  { name: "Jean Pierre - Front-End Dev", img: avatar2, text: "The best way to keep growing every week." },
-  { name: "Jagger Meister - Boxer", img: avatar3, text: "I love the missions and the progress tracking!" },
-  { name: "Jonas Jimbo - Singer", img: avatar4, text: "Super easy to use and very inspiring." },
-  { name: "Javy Kardashian - Nurse", img: avatar5, text: "I feel more productive and positive!" },
-  { name: "Juan Albertillo - Trucker", img: avatar6, text: "Great for building new habits!" },
+  { name: "Sophie Turner - Designer", img: avatar1, text: "A fun and motivating experience!" },
+  { name: "Lucas Smith - Developer", img: avatar2, text: "The best way to keep growing every week." },
+  { name: "Mia Chen - Architect", img: avatar3, text: "I love the missions and the progress tracking!" },
+  { name: "Noah Brown - Musician", img: avatar4, text: "Super easy to use and very inspiring." },
+  { name: "Emma Wilson - Nurse", img: avatar5, text: "I feel more productive and positive!" },
+  { name: "Liam Garcia - Trucker", img: avatar6, text: "Great for building new habits!" },
+  { name: "Olivia Lee - Chef", img: avatar7, text: "Perfect for staying on track." },
+  { name: "Ethan Kim - Student", img: avatar8, text: "Love the achievements system!" },
+  { name: "Ava Patel - Teacher", img: avatar9, text: "The stats panel is super clear." },
+  { name: "Mason Clark - Boxer", img: avatar10, text: "I never get bored, always new challenges!" },
+  { name: "Isabella Scott - Artist", img: avatar11, text: "It keeps me motivated every day." },
+  { name: "Logan Adams - Coach", img: avatar12, text: "Amazing support and community!" },
+  { name: "Chloe Evans - Writer", img: avatar13, text: "Easy to use and very effective." },
+  { name: "Benjamin Hall - Doctor", img: avatar14, text: "I love tracking my progress!" },
+  { name: "Emily Young - Dancer", img: avatar15, text: "The best app for self-improvement!" },
+  { name: "Jack King - Engineer", img: avatar16, text: "Great for daily motivation!" },
+  { name: "Grace Wright - Lawyer", img: avatar17, text: "I recommend it to all my friends!" },
+  { name: "Henry Green - Entrepreneur", img: avatar18, text: "Keeps me focused and consistent." },
+  { name: "Lily Baker - Psychologist", img: avatar19, text: "Love the design and features!" },
+  { name: "Daniel Carter - Athlete", img: avatar20, text: "Best way to level up your life!" },
 ];
 
 const reviews2 = [
-  { name: "Javy Kardashian - Nurse", img: avatar7, text: "Highly recommend for anyone!" },
-  { name: "Juan Albertillo - Trucker", img: avatar8, text: "Perfect for staying on track." },
-  { name: "Lou Logico - Humorist", img: avatar9, text: "Love the achievements system!" },
-  { name: "Jean Pierre - Front-End Dev", img: avatar10, text: "The stats panel is super clear." },
-  { name: "Jagger Meister - Boxer", img: avatar1, text: "I never get bored, always new challenges!" },
-  { name: "Jonas Jimbo - Singer", img: avatar2, text: "It keeps me motivated every day." },
+  { name: "Emma Wilson - Nurse", img: avatar5, text: "Highly recommend for anyone!" },
+  { name: "Liam Garcia - Trucker", img: avatar6, text: "Perfect for staying on track." },
+  { name: "Olivia Lee - Chef", img: avatar7, text: "Love the achievements system!" },
+  { name: "Ethan Kim - Student", img: avatar8, text: "The stats panel is super clear." },
+  { name: "Ava Patel - Teacher", img: avatar9, text: "I never get bored, always new challenges!" },
+  { name: "Mason Clark - Boxer", img: avatar10, text: "It keeps me motivated every day." },
+  { name: "Isabella Scott - Artist", img: avatar11, text: "Amazing support and community!" },
+  { name: "Logan Adams - Coach", img: avatar12, text: "Easy to use and very effective." },
+  { name: "Chloe Evans - Writer", img: avatar13, text: "I love tracking my progress!" },
+  { name: "Benjamin Hall - Doctor", img: avatar14, text: "The best app for self-improvement!" },
+  { name: "Emily Young - Dancer", img: avatar15, text: "Great for daily motivation!" },
+  { name: "Jack King - Engineer", img: avatar16, text: "I recommend it to all my friends!" },
+  { name: "Grace Wright - Lawyer", img: avatar17, text: "Keeps me focused and consistent." },
+  { name: "Henry Green - Entrepreneur", img: avatar18, text: "Love the design and features!" },
+  { name: "Lily Baker - Psychologist", img: avatar19, text: "Best way to level up your life!" },
+  { name: "Daniel Carter - Athlete", img: avatar20, text: "A fun and motivating experience!" },
 ];
 
 const subscriptions = [
@@ -130,7 +164,7 @@ const Landing = () => {
       case "PROGRESS":
         return "Your personal stats panel shows how you're evolving each week.\n Track your level, consistency, energy points, and improvement areas: clean and distraction-free.";
       case "RESOURCES":
-        return "Your personal stats panel shows how you're evolving each week.\n Track your level, consistency, energy points, and improvement areas: clean and distraction-free.\nChoose your focus: physical, mental, creative... or mix it all!\n Select the content you want to see and adjust the difficulty of your journey.\n Start easy. Raise the challenge when you're ready. It's up to you!";
+        return "Choose your focus: physical, mental, creative... or mix it all!\n Select the content you want to see and adjust the difficulty of your journey.\n Start easy. Raise the challenge when you're ready. It's up to you!";
       case "ACHIEVEMENTS":
         return "Trak all your progress visually by unlocking achievements and celebrate every milestone!";
       default:

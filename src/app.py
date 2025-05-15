@@ -24,7 +24,7 @@ def create_app():
     JWTManager(app)
 
     CORS(app,
-        origins=["https://verbose-halibut-5x469jx77jg3467p-3000.app.github.dev"],
+        origins=["https://ubiquitous-goggles-v6q9pprq5wp72wr4w-3000.app.github.dev"],
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
         expose_headers=["Content-Type"],

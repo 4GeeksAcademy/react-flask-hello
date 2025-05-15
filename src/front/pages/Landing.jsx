@@ -9,17 +9,19 @@ import styles from "../assets/styles/Landing.module.css";
 // Logos
 import amazon from "../assets/styles/images/Landing_images/Amazon.png";
 import facebook from "../assets/styles/images/Landing_images/facebook-logo-white-full-transparent.png";
-import headspace from "../assets/styles/images/Landing_images/Headspace.webp";
+import headspace from "../assets/styles/images/Landing_images/Headspace.png";
+import myfitnesspal from "../assets/styles/images/Landing_images/myfitnesspal.png";
+import onlyfans from "../assets/styles/images/Landing_images/onlyfans.png";
 import twilio from "../assets/styles/images/Landing_images/Twilio.png";
 import verizon from "../assets/styles/images/Landing_images/Verizon.png";
 import motiFeliz from "../assets/styles/images/Moti_Feliz.png";
-import loginBg from "../assets/styles/images/Landing_images/login-bg.jpg";
+//import loginBg from "../assets/styles/images/Landing_images/login-bg.jpg";
 
 // Tabs
-import missionsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
-import progressImg from "../assets/styles/images/Landing_images/login-bg.jpg";
-import resourcesImg from "../assets/styles/images/Landing_images/login-bg.jpg";
-import achievementsImg from "../assets/styles/images/Landing_images/login-bg.jpg";
+import missionsImg from "../assets/styles/images/Moti_Feliz.png";
+import progressImg from "../assets/styles/images/Moti_Feliz.png";
+import resourcesImg from "../assets/styles/images/Moti_Feliz.png";
+import achievementsImg from "../assets/styles/images/Moti_Feliz.png";
 
 // Animación
 const fadeInUp = {
@@ -29,11 +31,11 @@ const fadeInUp = {
 
 const reviews = [
   { name: "Lou Logico - Humorist", img: motiFeliz },
-  { name: "Jean Pierre - Front-End Dev", img: loginBg },
+  { name: "Jean Pierre - Front-End Dev", img: amazon },
   { name: "Jagger Meister - Boxer", img: amazon },
   { name: "Jonas Jimbo - Singer", img: amazon },
   { name: "Javy Kardashian - Nurse", img: motiFeliz },
-  { name: "Juan Albertillo - Trucker", img: loginBg },
+  { name: "Juan Albertillo - Trucker", img: amazon },
 ];
 
 const subscriptions = [
@@ -72,7 +74,7 @@ const subscriptions = [
   },
 ];
 
-const brands = [amazon, facebook, headspace, twilio, verizon];
+const brands = [amazon, facebook, headspace, myfitnesspal, onlyfans, twilio, verizon];
 const repeatedBrands = Array(10).fill(brands).flat();
 const tripledReviews = [...reviews, ...reviews, ...reviews];
 const quintupledReviews = [...reviews, ...reviews, ...reviews, ...reviews, ...reviews];

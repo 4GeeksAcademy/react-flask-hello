@@ -43,7 +43,32 @@ export const FindSpots = () => {
     }
   };
 
-  //2) funtion to load the cocktails from each category
+
+  //2) function to load the full data of the drinks by id. 
+  //We use this to get the full data by id of the drinks when the user clicks on the drink and then we can use this data to display the details of the drink 
+  // in  fetchDrinksFromCategories using the idDrink property of the drink object.
+  const getFullDataFromDrinks = async (idDrink) => {
+
+    try {
+      const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`)
+      if (!res.ok) {
+        console.log("Failed to fetch data from endpoint", res.message);
+        setError(`Lookup failed: ${res.status} - ${err.message}`);
+        return;
+      }
+      const data = await res.json()
+      return data.drinks[0]
+
+    }
+    catch (err) {
+      console.log(`Error in catch: ${err.message}`);
+      setError(`Server error: ${err.message}`);
+      return null
+    }
+  }
+
+
+  //3) funtion to load the cocktails from each category
   const fetchDrinksFromCategories = async (category) => {
     setError(""); // clear any previous error messag  as soon as the user clicks again.
     setDrinks([]);  // clear previous results  
@@ -53,18 +78,26 @@ export const FindSpots = () => {
 
       if (!res.ok) {
         console.log("!!>>>Error feching the data from endpoint", res.message);
-        setError("There was a problem wiht the server, try again.", res.message);
+        setError(`There was a problem wiht the server, try again : ${res.message} ${res.status}`);
         setDrinks([]); // clear previous results        
         return // we  do "return" to stop the execution of the function early.
       }
       const data = await res.json()
-      setDrinks(data.drinks || []); // if there are no drinks, we set the drinks state to an empty array  
-      console.log("!!>>>Drinks from category", data.drinks);
+      const basicList = data.drinks || [] // if drinks is undefined, we set it to an empty array.
+      // for each drink, we get the full data by id using the getFullDataFromDrinks function.
+      const list = await Promise.all( // we use Promise.all to wait for all the promises to resolve before setting the state.
+        // we use map to iterate over the basicList and call the getFullDataFromDrinks function for each drink.
+        // we use async/await to fetch the data        
+        basicList.map(async (b) => {
+          const full = await getFullDataFromDrinks(b.idDrink);
+          return full || b;  //fallback to the basic data if lookup fails.
+        })
+      )
 
+      setDrinks(list) // set the drinks state to the list of drinks.      
     }
     catch (err) {
       console.log("!!!>>Error in catch", err);
-      setDrinks([]); // clear previous results 
       setError(`Server error: ${err.message}`);
     }
     finally {
@@ -72,45 +105,12 @@ export const FindSpots = () => {
     }
   }
 
-  //3) function to load the full data of the drinks
-  // we use async/await to fetch the data
-  // we use encodeURIComponent to encode the category name.
-  // we use Promise.all to fetch all the drinks at once.
-  // we use map to iterate over the drinks and fetch the data for each drink.
-  // we use Promise.all to wait for all the promises to resolve before setting the drinks state.
-  // we use setDrinks to set the drinks state to the full data of the drinks.
-  // we use setLoading to set the loading state to false since we are done loading.  
-  const getFullDataFromDrinks = async (idDrink) => {
 
-    try {
-      const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`)
-      if (!res.ok) {
-        console.log("Failed to fetch data from endpoint", res.message);
-        setError("There was a problem wiht the server, try again.", res.message)
-        return;
-      }
-      const data = await dataFromDrinks.json()
-      console.log("Details for", id, data.drinks[0]);
-      return data.drinks[0]
-
-    }
-    catch (err) {
-      console.log(`Error in catch: ${err.message}`);
-      setError(`Server error: ${err.message}`);
-    }
-
-
-
-
-  }
-  console.log("Id drinkss", getFullDataFromDrinks);
-  
 
   //4) useEffect to call the getCocktails function when the component mounts it means that the function will be called when the component is first rendered.
   // we use an empty dependency array to ensure that the function is only called once
   useEffect(() => {
     fetchCategories()
-    getFullDataFromDrinks(11007)
   }, []);
 
 
@@ -162,6 +162,7 @@ export const FindSpots = () => {
             onClick={() => {
               setSelectedCategory(item);
               fetchDrinksFromCategories(item);
+
             }}
           >
             {item}
@@ -183,6 +184,37 @@ export const FindSpots = () => {
                     <img src={d.strDrinkThumb} className="card-img-top" alt={d.strDrink} />
                     <div className="card-body">
                       <h5 className="card-title">{d.strDrink}</h5>
+                      <p className="card-text">{d.strInstructions}</p>
+                      <ul className="ingredient-list">
+                        {/* 3) we use Array.from to create an array of 15 elements and map over it to get the ingredients and measures.
+                      this is how it works: Array.from(arrayLike, mapFn?, thisArg?): 1)arrayLike: something with a .length property and numeric keys (e.g. a string, a DOM NodeList, or even your own { length: 15 } object).
+                      2) mapFn (optional): a function (element, index) ⇒ newValue that runs on each position to build the result.
+                      3) thisArg (optional): what this should be inside your mapFn.
+                       */}
+                        {Array.from({ length: 15 }, (_, i) => i + 1) // create an array of 15 elements and for each slot, ignore the value (_) and use the index (i) to produce the number i+1.
+                          //i + 1 returns numbers 1 through 15.
+                          //This gives us a result which is an array of numbers from 1 to 15. [1,2,…,15].map
+                          // We map over this array and for each number, we get the ingredient and measure from the drink object (d).
+                          .map(num => ({
+                            //You build a new object { ing, meas } for each slot.
+                            ing: d[`strIngredient${num}`], // e.g. d["strIngredient1"]
+                            measure: d[`strMeasure${num}`] // e.g. d["strMeasure1"]
+                            // After this step you get an array like:
+                            // [{ ing: "Tequila",   meas: "1 1/2 oz " },
+                            // { ing: "Triple sec", meas: "1/2 oz " }]
+                          }))
+                          // filter out the empty ingredients and map over the array to get the ingredient and measure.
+                          .filter(x => x.ing && x.meas)
+                          // this map  iterates the filtered array of { ing, meas }.
+                          .map((x, index) => (
+                            <li key={index}>
+                              {/* >>conditional if x.measure is truthy, we trim() whitespace and append a space.  */}
+                              {/* >> Otherwise output an empty string. */}
+                              {x.measure ? x.measure.trim() + " " : ""} - {x.ing}
+                            </li>
+                          ))
+                        }
+                      </ul>
                       <button className="btn btn-primary" onClick={() => { }}>
                         Find spots by location
                       </button>

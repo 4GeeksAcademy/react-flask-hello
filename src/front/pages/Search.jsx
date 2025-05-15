@@ -53,11 +53,11 @@ export const Search = () => {
     return (
         <div className="search-page-container">
             {/* Button Container */}
-            <div className="button-container">
+{/*             <div className="button-container">
                 <button className="logout-action-button" onClick={handleLogout}>
                     Logout
                 </button>
-            </div>
+            </div> */}
 
             {/* Search Bar */}
             <div className="search-header">

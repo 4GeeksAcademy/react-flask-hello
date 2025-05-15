@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import requests
 import os
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint,current_app
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -13,6 +13,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # ==>> this is used to create a JWT token for the user, pip install flask-jwt-extended
 from flask_jwt_extended import create_access_token, decode_token
 from datetime import timedelta
+
+
 
 
 load_dotenv()    # reads .env and sets those variables into your environment
@@ -145,7 +147,7 @@ def get_places_by_location():
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
     print(">>> [by-location] STEP 1: data =", data, " type:", type(data))
     if not isinstance(data, dict):
-        return jsonify({"error": "Data must be a JSON object"}), 400
+        return jsonify({"error": "Data must be a JSON object"}), 400 ## ==>> check if the data is a dictionary, if not, return a 400 error.
     if not GOOGLE_API_KEY:
         return jsonify({"error": "Google API key not found"}), 500
 
@@ -272,97 +274,54 @@ def get_places_by_location():
 # ==>> Endpoint for the Place Details API within the Google Maps Platform. It allows you to request detailed information about a specific place, such as a business or point of interest.
 @api.route('/places/details', methods=['POST'])
 def get_place_details():
-    # ==>> get the google api key from the environment variables
-    GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-    if not GOOGLE_API_KEY:  # ==>> check if the google api key is present
-        # ==>> return a 500 error if the google api key is missing
+    # 1) Google Details
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    if not GOOGLE_API_KEY:
         return jsonify({"error": "Google API key not found"}), 500
-    data = request.get_json()  # ==>> get the data from the request
-    place_id = data.get("place_id")  # ==>> get the place id from the request
 
-    if not place_id:  # ==>> check if the place id is present in the request
-        # ==>> return a 400 error if the place id is missing
+    data = request.get_json() or {}
+    place_id = data.get("place_id")
+    if not place_id:
         return jsonify({"error": "Missing place_id"}), 400
 
-    # ==>> url for the google api
-    url = "https://maps.googleapis.com/maps/api/place/details/json"
-    params = {
-        "place_id": place_id,
-        # ==>> fields to be returned in the response
-        "fields": "name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address,geometry",
-        "key": GOOGLE_API_KEY
-    }
-    # ==>> make a request to the google api with the parameters
-    res = requests.get(url, params=params)
-    if res.status_code != 200:  # ==>> check if the request was successful
-        # ==>> return a 500 error if the request failed
-        return jsonify({"error": "Failed to fetch data from Google", "details": res.text}), 500
+    g_res = requests.get(
+        "https://maps.googleapis.com/maps/api/place/details/json",
+        params={
+            "place_id": place_id,
+            "fields": "name,formatted_phone_number,opening_hours,website,reviews,photos,formatted_address,geometry",
+            "key": GOOGLE_API_KEY
+        }
+    )
+    if g_res.status_code != 200:
+        return jsonify({"error": "Failed to fetch data from Google", "details": g_res.text}), 500
 
-    body = res.json()  # ==>> parse the response as json
-    # Grab the “result” object from the Google response (or an empty dict if it’s missing)
-    details = body.get("result", {})
-    if not details:  # ==>> check if the details are present in the response
-        # ==>> return a 404 error if the details are missing
+    details = g_res.json().get("result", {})
+    if not details:
         return jsonify({"error": "No details found"}), 404
 
-    # ==>> We will build here the query to search menus(third party api)
-    # ==>> get the foursquare api key from the environment variables,this is the key that you will use to access the foursquare api:
-    FOURSQUARE_MENU_KEY = os.getenv('FOURSQUARE_MENU_KEY')
-    fsq_search_url = "https://api.foursquare.com/v3/places/search"
-    headers = {"Authorization": FOURSQUARE_MENU_KEY}
-    params = {
-        "query": details["name"],
-        "ll":    f"{details['geometry']['location']['lat']},{details['geometry']['location']['lng']}",
-        "limit": 1
-    }
-    fsq_res = requests.get(fsq_search_url, headers=headers, params=params) # ==>> make a request to the foursquare api with the parameters
-    fsq_data = fsq_res.json() # ==>> parse the response as json
-    print("▶️ Foursquare returned:", fsq_res.status_code, fsq_data)
-    print("▶️ Foursquare status:", fsq_res.status_code)
-    print("▶️ Foursquare body:", fsq_data)    
-    results = fsq_data.get("results", [])  # ==>> get the results from the response if not present, return an empty list.
-    if fsq_res.status_code != 200: # ==>> check if the request was successful
-        return jsonify({"error": "Faile to fecth menus"}),500 #
-    
-    if not results: # ==>> check if the results are present in the response
-        fsq_id = None
-    else:
-        fsq_id = results[0].get("fsq_id")  #==> if not present, return None if present, get the fsq_id from the first result
 
-    
-    #==>> We will get the menu of the id we selected above.
-    menu_url = f"https://api.foursquare.com/v3/places/{fsq_id}/menu"
-    menu_res = requests.get(menu_url, headers=headers)
-    menu_data = menu_res.json()
-    print("▶️ Menu response:", menu_res.status_code, menu_data)
-    
+    # 4) Google Photos
+    photo_urls = []
+    for photo in details.get("photos", []):
+        ref = photo.get("photo_reference")
+        if ref:
+            photo_urls.append(
+                f"https://maps.googleapis.com/maps/api/place/photo"
+                f"?maxwidth=400&photoreference={ref}&key={GOOGLE_API_KEY}"
+            )
 
-
-
-
-    photo_urls = []  # ==>> initialize an empty list for the photo urls
-    for i in details.get("photos", []):  # ==>> iterate over the photos in the details
-        # ==>> get the photo reference from the photo
-        ref = i.get("photo_reference")
-        photo_urls.append(
-            f"https://maps.googleapis.com/maps/api/place/photo"
-            f"?maxwidth=400"
-            f"&photoreference={ref}"
-            f"&key={GOOGLE_API_KEY}"
-        )
-
+    # 5) Final payload
     return jsonify({
-        "name": details.get("name"),
-        "formatted_address": details.get("formatted_address"),
+        "name":                    details.get("name"),
+        "formatted_address":      details.get("formatted_address"),
         "formatted_phone_number": details.get("formatted_phone_number", "N/A"),
-        "opening_hours": details.get("opening_hours", {}),
-        "website": details.get("website"),
-        "reviews": details.get("reviews", []),
-        "photos": photo_urls,  # ==>> return the photo urls as a list
-        "coordinates": details["geometry"]["location"],
-        "fsq_id": fsq_id
-        
+        "opening_hours":          details.get("opening_hours", {}),
+        "website":                details.get("website"),
+        "reviews":                details.get("reviews", []),
+        "photos":                 photo_urls,
+        "coordinates":            details["geometry"]["location"]      
     }), 200
+
 
 
 @api.route('/signin', methods=['POST'])

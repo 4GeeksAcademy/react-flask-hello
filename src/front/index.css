@@ -1,190 +1,192 @@
-
-
-
-
-
-
-.logo {
-  margin-top: 4rem;
-  margin-left: 20px;
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-}
-/* General Styles */
-.custom-app {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
-  background-color: #f8f9fa;
-}
-
-/* Button Container */
-.button-container {
+/* Button & Results Container */
+.button-results-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
 }
 
-
-/* Ensure Buttons Stay Together */
-.logout-action-button {
-    background-color: #dc3545;
-    color: white;
+/* Create Cocktail Button with Glow Effect */
+.create-cocktail-btn {
+    background-color: #58074c;
+    color: #fff;
+    font-size: 18px;
+    padding: 12px 20px;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
     border-radius: 5px;
-    white-space: nowrap;
-
-h1,
-h2,
-h3 {
-  font-family: "Helvetica", sans-serif;
-  color: #444; /* Darker text color for headers */
-
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
 }
 
-.logout-action-button:hover {
-    background-color: #c82333;
+/* Glow Effect */
+.create-cocktail-btn::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 8px;
+    background-color: rgba(226, 131, 212, 0.6);
+    box-shadow: 0 0 20px rgba(208, 118, 195, 0.6);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
 }
 
-/* Search Bar */
+/* Hover Effect for Create Cocktail Button */
+.create-cocktail-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 12px rgba(88, 7, 76, 0.4);
+    background-color: #75135f;
+}
+
+.create-cocktail-btn:hover::after {
+    opacity: 1;
+}
+
+/* Box Around Results */
+.results-container {
+    padding: 20px;
+    margin-top: 20px;
+    border: 2px solid #58074c;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Custom Ingredient List */
+.custom-ingredient-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Ingredient Card */
+.ingredient-card {
+    width: 200px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.ingredient-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Ingredient Image */
+.ingredient-card img {
+    width: 80%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Box Around Select Ingredient */
+.ingredient-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #117ce7;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    width: fit-content;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Select Ingredient Checkbox */
+.ingredient-checkbox input {
+    margin-bottom: 5px;
+}
+
+/* Select Ingredient Label */
+.ingredient-checkbox label {
+    font-size: 14px;
+    color: #333;
+}
+/* Search Page */
+.search-page-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Search Header */
 .search-header {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
 .search-input-field {
+    width: 60%;
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    width: 250px;
 }
 
 .search-action-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
+    background-color: #ee56c1;
+    color: #fff;
     font-size: 16px;
+    padding: 10px 15px;
+    border: none;
     cursor: pointer;
     border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .search-action-button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(255, 99, 71, 0.4);
+    background-color: #631463;
 }
 
-/* Center Results */
+/* Results Container */
 .results-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    padding: 20px;
     margin-top: 20px;
-}
-
-/* Cocktail Card Format */
-.cocktail-card-container {
-    background-color: white;
+    border: 2px solid #7e6be8;
     border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Cocktail Cards */
+.cocktail-card-container {
+    width: 250px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
 .cocktail-card-container:hover {
     transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(255, 99, 71, 0.3);
 }
 
-.cocktail-title-text {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
+/* Cocktail Image */
 .cocktail-thumbnail {
-    width: 100px;
+    width: 100%;
     border-radius: 10px;
-    margin-top: 10px;
-}
-
-.ingredient-card h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-/* Checkbox Styling */
-.ingredient-checkbox {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: auto;
-}
-
-/* Search Bar */
-.search-bar {
-  display: flex;
-  width: 100%;
-  gap: 10px;
-}
-
-/* Create Cocktail Button */
-.create-cocktail-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-.create-cocktail-btn:hover {
-  background-color: #218838;
-}
-
-/* Ingredients List */
-.cocktail-ingredients-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.cocktail-ingredient-item {
-    font-size: 14px;
-    margin: 3px 0;
-    background-color: #ff6f61;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-/* Instructions */
-.cocktail-instructions-text {
-    font-size: 14px;
-    margin-top: 10px;
 }
 
 /* Favorite Button */
@@ -196,322 +198,204 @@ h3 {
 }
 
 .favorite-icon-image {
-    width: 24px;
-    height: 24px;
-}
-
-.favorite-toggle-button.favorited .favorite-icon-image {
-    filter: hue-rotate(0deg) saturate(100%) brightness(0.8) sepia(1) hue-rotate(-50deg);
+    width: 32px;
 }
 
 /* No Results Message */
 .no-results-message {
-    font-size: 18px;
-    color: gray;
-}
-/* General Favorites Page Styling */
-.favorites-container {
-    padding: 20px;
     text-align: center;
-    background-color: #f8f9fa;
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-}
-
-/* User Info Section */
-.user-info {
-    position: fixed;
-    top: 100px;
-    left: 20px;
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 220px;
-    text-align: left;
-}
-
-.user-info h3 {
-    margin: 0;
     font-size: 18px;
+    color: #888;
+}
+/* Favorites Page */
+.favorites-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Sidebar - User Info */
+.user-info {
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    margin: 20px auto;
+    width: fit-content;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* User Info Title & Email */
+.user-info h3 {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .user-info p {
-    margin: 5px 0;
     font-size: 14px;
-    color: gray;
+    color: #666;
 }
 
+/* Logout Button */
 .logout-button {
-    background-color: #dc3545;
-    color: white;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .logout-button:hover {
-    background-color: #c82333;
+    background-color: #0056b3;
 }
 
-/* Favorites Content */
-.favorites-content {
-    margin-left: 250px;
-    flex-grow: 1;
-    padding: 20px;
-}
-
-/* Favorites Banner */
-h2 {
+/* Favorites Section */
+.favorites-content h2 {
+    text-align: center;
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-/* Favorites List */
 .cocktail-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
 }
 
-/* Favorite Card */
+/* Cocktail Card */
 .cocktail-card {
-    background-color: white;
-    border-radius: 10px;
+    width: 250px;
     padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover Effect */
 .cocktail-card:hover {
     transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.cocktail-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
+/* Cocktail Image */
 .cocktail-image {
-    width: 120px;
+    width: 100%;
     border-radius: 10px;
-    margin-top: 10px;
-}
-
-.cocktail-glass, .cocktail-category {
-    font-size: 16px;
-    margin: 5px 0;
 }
 
 /* Remove Favorite Button */
 .remove-favorite-button {
     background-color: #dc3545;
-    color: white;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .remove-favorite-button:hover {
-    background-color: #c82333;
+    background-color: #b52c3b;
 }
 
 /* No Favorites Message */
 .no-favorites {
+    text-align: center;
     font-size: 18px;
-    color: gray;
+    color: #888;
 }
-/* General Custom Page Styling */
-.custom-app {
-    padding: 20px;
-    text-align: center;
-    background-color: #f8f9fa;
-}
-
-/* Button Container */
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
-}
-
-/* Ensure Buttons Stay Together */
-.logout-button, .create-cocktail-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    white-space: nowrap;
-}
-
-.create-cocktail-btn {
-    background-color: #28a745;
-}
-
-.logout-button:hover {
-    background-color: #c82333;
-}
-.logout-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  text-align: center;
-}
-
-
-.create-cocktail-btn:hover {
-    background-color: #218838;
-}
-
-/* Created Cocktail Card */
-.cocktail-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-    margin: 20px auto;
-}
-
-.cocktail-card h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.cocktail-card ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.cocktail-card ul li {
-    font-size: 14px;
-    margin: 3px 0;
-    background-color: #ff6f61;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-/* Ingredients List */
-.custom-ingredient-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* Ingredient Card */
-.ingredient-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-}
-
-.ingredient-card:hover {
-    transform: scale(1.05);
-}
-
-.ingredient-card h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.ingredient-card img {
-    width: 100px;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-/* Ingredient Selection Box */
-.ingredient-checkbox {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: auto;
-}
-/* General Logout Page Styling */
-.logout-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+/* Main Page Container */
+.main-page-container {
+    position: relative;
+    width: 100vw;
     height: 100vh;
-    text-align: center;
-    background-color: #f8f9fa;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
 }
 
-/* Logout Message */
-.logout-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* Floating Drink Images */
+.floating-drink {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: floatDrinks 10s infinite alternate ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.logout-container p {
-    font-size: 18px;
-    color: gray;
-    margin-bottom: 20px;
+
+/* Main Page Container */
+.main-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Logout Button */
-.logout-button {
-    background-color: #dc3545;
+/* Centered Button Container */
+.button-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+/* Navigation Buttons */
+.nav-button {
+    padding: 12px 18px;
+    font-size: 16px;
+    background-color: #ff6347;
     color: white;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.logout-button:hover {
-    background-color: #c82333;
-
-.logout-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
+.nav-button:hover {
+    transform: scale(1.1);
+    background-color: #e5533d;
 }
 
-.logout-button:hover {
-  background-color: #0056b3;
-
+/* Floating Drink Images */
+.floating-drink {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: floatDrinks 10s infinite alternate ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* Floating Animation */
+@keyframes floatDrinks {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-50px) rotate(20deg);
+    }
+    100% {
+        transform: translateY(50px) rotate(-20deg);
+    }
+}
+

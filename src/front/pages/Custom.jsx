@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const handleFetch = (setIngredients) => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
         .then((res) => res.json())
@@ -62,28 +61,30 @@ export const Custom = () => {
 
     return (
         <div className="custom-app">
-            {/* Button Container */}
-            <div className="button-container">
-{/*                 <button className="logout-button" onClick={handleLogout}>
-                    Logout
-                </button> */}
-                <button className="create-cocktail-btn" onClick={createCocktail}>
-                    Create Cocktail
-                </button>
-            </div>
-
-            {/* Display created cocktail at the top */}
-            {cocktailCreated && (
-                <div className="cocktail-card">
-                    <h2>{cocktailCreated.name}</h2>
-                    <p><strong>Ingredients:</strong></p>
-                    <ul>
-                        {cocktailCreated.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                        ))}
-                    </ul>
+            {/* Button & Results Container */}
+            <div className="button-results-container">
+                <div className="button-container">
+                    {/* <button className="logout-button" onClick={handleLogout}>
+                        Logout
+                    </button> */}
+                    <button className="create-cocktail-btn" onClick={createCocktail}>
+                        Create Cocktail
+                    </button>
                 </div>
-            )}
+
+                {/* Display created cocktail */}
+                {cocktailCreated && (
+                    <div className="results-container">
+                        <h2>{cocktailCreated.name}</h2>
+                        <p><strong>Ingredients:</strong></p>
+                        <ul>
+                            {cocktailCreated.ingredients.map((ingredient, index) => (
+                                <li key={index}>{ingredient}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
 
             <h1>Ingredients List</h1>
 

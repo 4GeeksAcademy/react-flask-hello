@@ -4,7 +4,8 @@
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(to bottom, #0b0a18, #0b0a18 50%, #0b0a18);
+  /* Fondo negro puro hasta el 60%, luego degradado muy suave a morado oscuro hasta el 100% */
+  background: linear-gradient(to bottom, #000 60%, #2d0a3a 100%);
   color: #ffffff;
 }
 
@@ -109,12 +110,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #0b0a18;
+  background: #000; /* Fondo negro puro para el carousel de brands */
   overflow: hidden;
   z-index: 3;
-  padding: 1.5rem 0;
-  mask-image: linear-gradient(to right, transparent, #0b0a18 10%, #0b0a18 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #0b0a18 10%, #0b0a18 90%, transparent);
+  padding: 0; /* Sin padding para evitar líneas de corte */
+  mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
 }
 
 .landingBrandTrack {
@@ -128,7 +129,7 @@
   height: auto;
   width: 8rem;
   flex-shrink: 0;
-  filter: brightness(0) invert(1);
+  /* Eliminar filtro invert para que los logos se vean con su color original */
   opacity: 0.9;
   transition: transform 0.3s ease;
 }
@@ -404,6 +405,6 @@
   padding: 1rem;
   justify-content: center;
   text-align: center;
-  background: #0b0a18;
+  background: transparent; /* Fondo transparente para fundirse con el degradado */
   color: #cccccc;
 }

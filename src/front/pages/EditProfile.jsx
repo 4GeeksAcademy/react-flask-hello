@@ -4,6 +4,26 @@ import styles from "../assets/styles/EditProfile.module.css";
 import avatarImg from "../assets/styles/images/Moti_Feliz.png";
 import Particles from "../components/Particles";
 import Navbar from "../components/Navbar";
+import avatar1 from "../assets/styles/images/Avatars/Avatar de mujer con gafas.png";
+import avatar2 from "../assets/styles/images/Avatars/Chica con cabello azul y camiseta amarilla.png";
+import avatar3 from "../assets/styles/images/Avatars/Joven con camiseta negra y cabello naranja.png";
+import avatar4 from "../assets/styles/images/Avatars/Mujer con gafas y sonrisa amigable.png";
+import avatar5 from "../assets/styles/images/Avatars/Retrato amistoso de mujer sonriente.png";
+import avatar6 from "../assets/styles/images/Avatars/Retrato digital de joven sonriente.png";
+import avatar7 from "../assets/styles/images/Avatars/Retrato digital de un joven.png";
+import avatar8 from "../assets/styles/images/Avatars/Retrato en estilo minimalista.png";
+import avatar9 from "../assets/styles/images/Avatars/Retrato estilizado con gafas negras.png";
+import avatar10 from "../assets/styles/images/Avatars/Retrato minimalista de hombre joven.png";
+import avatar11 from "../assets/styles/images/Avatars/Retrato minimalista de joven sonriente.png";
+import avatar12 from "../assets/styles/images/Avatars/Retrato minimalista de mujer afro joven.png";
+import avatar13 from "../assets/styles/images/Avatars/Retrato minimalista de mujer joven (1).png";
+import avatar14 from "../assets/styles/images/Avatars/Retrato minimalista de mujer joven.png";
+import avatar15 from "../assets/styles/images/Avatars/Retrato minimalista de mujer sonriente (1).png";
+import avatar16 from "../assets/styles/images/Avatars/Retrato minimalista de mujer sonriente.png";
+import avatar17 from "../assets/styles/images/Avatars/Retrato minimalista de personaje masculino.png";
+import avatar18 from "../assets/styles/images/Avatars/Retrato minimalista krula de mujer joven.png";
+import avatar19 from "../assets/styles/images/Avatars/Rostro cálido y acogedor.png";
+import avatar20 from "../assets/styles/images/Avatars/Retrato minimalista de un joven.png";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -24,16 +44,26 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const avatares = [
-    { id: 1, src: avatarImg },
-    { id: 2, src: avatarImg },
-    { id: 3, src: avatarImg },
-    { id: 4, src: avatarImg },
-    { id: 5, src: avatarImg },
-    { id: 6, src: avatarImg },
-    { id: 7, src: avatarImg },
-    { id: 8, src: avatarImg },
-    { id: 9, src: avatarImg },
-    { id: 10, src: avatarImg }
+    { id: 1, src: avatar1 },
+    { id: 2, src: avatar2 },
+    { id: 3, src: avatar3 },
+    { id: 4, src: avatar4 },
+    { id: 5, src: avatar5 },
+    { id: 6, src: avatar6 },
+    { id: 7, src: avatar7 },
+    { id: 8, src: avatar8 },
+    { id: 9, src: avatar9 },
+    { id: 10, src: avatar10 },
+    { id: 11, src: avatar11 },
+    { id: 12, src: avatar12 },
+    { id: 13, src: avatar13 },
+    { id: 14, src: avatar14 },
+    { id: 15, src: avatar15 },
+    { id: 16, src: avatar16 },
+    { id: 17, src: avatar17 },
+    { id: 18, src: avatar18 },
+    { id: 19, src: avatar19 },
+    { id: 20, src: avatar20 },
   ];
 
   useEffect(() => {
@@ -104,141 +134,45 @@ const EditProfile = () => {
         <div className={styles.editProfileContainer}>
           <div className={styles.editProfileCard}>
             <h2 className={styles.editProfileTitle}>Editar Perfil</h2>
-            <form onSubmit={handleSubmit} className={styles.editProfileForm}>
-              <div className={styles.editProfileAvatarSection}>
-                <h3 className={styles.editProfileAvatarTitle}>Selecciona tu Avatar</h3>
-                <div className={styles.editProfileAvatarGrid}>
-                  {avatares.map(avatar => (
-                    <div
-                      key={avatar.id}
-                      className={`${styles.editProfileAvatarOption} ${
-                        selectedAvatar === avatar.src ? styles.editProfileAvatarOptionSelected : ""
-                      }`}
-                      onClick={() => handleAvatarSelect(avatar.src)}
-                    >
-                      <img 
-                        src={avatar.src} 
-                        alt={`Avatar ${avatar.id}`} 
-                        className={styles.editProfileAvatarImage}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className={styles.editProfileFormSection}>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="username" className={styles.editProfileLabel}>
-                    Nombre de Usuario
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={profile.username}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                    required
-                  />
-                </div>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="firstName" className={styles.editProfileLabel}>
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={profile.firstName}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                  />
-                </div>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="lastName" className={styles.editProfileLabel}>
-                    Apellidos
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={profile.lastName}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                  />
-                </div>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="age" className={styles.editProfileLabel}>
-                    Edad
-                  </label>
-                  <input
-                    type="number"
-                    id="age"
-                    name="age"
-                    value={profile.age}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                    min="1"
-                    max="120"
-                  />
-                </div>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="country" className={styles.editProfileLabel}>
-                    País
-                  </label>
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={profile.country}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                    placeholder="España"
-                  />
-                </div>
-                <div className={styles.editProfileInputGroup}>
-                  <label htmlFor="city" className={styles.editProfileLabel}>
-                    Ciudad
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={profile.city}
-                    onChange={handleInputChange}
-                    className={styles.editProfileInput}
-                    placeholder="Barcelona"
-                  />
-                </div>
-              </div>
-              <div className={styles.editProfileHobbiesFullWidth}>
-                <label htmlFor="hobbies" className={styles.editProfileLabel}>
-                  Hobbies
-                </label>
-                <textarea
-                  id="hobbies"
-                  name="hobbies"
-                  value={profile.hobbies}
-                  onChange={handleInputChange}
-                  className={`${styles.editProfileInput} ${styles.editProfileTextarea}`}
-                  placeholder="Describe tus hobbies e intereses..."
-                />
+            <div className={styles.editProfileAvatarSection}>
+              <h3 className={styles.editProfileAvatarTitle}>Selecciona tu Avatar</h3>
+              <div className={styles.editProfileAvatarGrid}>
+                {avatares.map(avatar => (
+                  <div
+                    key={avatar.id}
+                    className={`${styles.editProfileAvatarOption} ${
+                      selectedAvatar === avatar.src ? styles.editProfileAvatarOptionSelected : ""
+                    }`}
+                    onClick={() => handleAvatarSelect(avatar.src)}
+                  >
+                    <img 
+                      src={avatar.src} 
+                      alt={`Avatar ${avatar.id}`} 
+                      className={styles.editProfileAvatarImage}
+                    />
+                  </div>
+                ))}
               </div>
               <div className={styles.editProfileButtonGroup}>
                 <button 
                   type="button" 
                   className={`${styles.editProfileButton} ${styles.editProfileCancelButton}`}
-                  onClick={handleCancel}
+                  onClick={handleClose}
                 >
                   Cancelar
                 </button>
                 <button 
-                  type="submit" 
+                  type="button" 
                   className={`${styles.editProfileButton} ${styles.editProfileSaveButton}`}
+                  onClick={() => {
+                    localStorage.setItem("selected_avatar", selectedAvatar);
+                    handleClose();
+                  }}
                 >
-                  Confirmar cambios
+                  Aplicar cambios
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

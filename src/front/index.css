@@ -277,4 +277,27 @@ h1 {
 }
 
 
-
+/* ||{Cards of drinks in  the findSpot.jsx view}|| */
+.cocktail-find-spot {
+  width: 100%;          /* fill its grid column */
+  height: 300px;        /* set a fixed height you like */
+  display: flex;
+  flex-direction: column;
+}
+.cocktail-find-spot img {
+  height: 200px;        /* fixed image height */
+  object-fit: cover;    /* crop to fill nicely */
+  width: 100%;
+}
+.cocktail-find-spot .card-body {
+  flex: 1;              /* take up the rest of the height */
+  overflow-y: auto;     /* scroll if content is too tall */
+}
+#container-find-spot{
+  max-width: 100%;   /* try 900px, 1000px, 1200px… */
+  padding-left: 1rem;  /* boost left/right gutter */
+  padding-right: 1rem;
+  margin-top: 40x;
+  margin-bottom: 40px;
+}
+/*|| {Cards of drinks in  the findSpot.jsx view}|| */

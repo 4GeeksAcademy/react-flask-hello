@@ -7,11 +7,13 @@ const CloudinaryPlayer = ({ url, mediaType }) => {
       height: '100%',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      background: '#000'
     },
     media: {
-      maxWidth: '100%',
-      maxHeight: '100%'
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain'
     }
   };
 
@@ -22,6 +24,7 @@ const CloudinaryPlayer = ({ url, mediaType }) => {
           controls
           style={styles.media}
           playsInline
+          autoPlay
         >
           <source src={url} type="video/mp4" />
           Tu navegador no soporta el elemento de video.
@@ -29,7 +32,8 @@ const CloudinaryPlayer = ({ url, mediaType }) => {
       ) : (
         <audio 
           controls
-          style={styles.media}
+          style={{width: '100%', margin: '20px 0'}}
+          autoPlay
         >
           <source src={url} type="audio/mpeg" />
           Tu navegador no soporta el elemento de audio.

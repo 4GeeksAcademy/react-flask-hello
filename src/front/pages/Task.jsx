@@ -49,13 +49,21 @@ const Task = () => {
     const missionId = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
 
     try {
+      // Si es desde Content, solo actualizamos el estado local
+      if (isFromContent) {
+        setAccepted(true);
+        localStorage.setItem(`${userId}_missionAccepted`, true);
+        return;
+      }
+
+      // Si es desde Journey, procedemos con la lógica normal
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           user_id: userId, 
           mission_id: missionId,
-          from_content: isFromContent 
+          from_content: false
         })
       });
       const data = await res.json();
@@ -76,49 +84,47 @@ const Task = () => {
     setIsCompleting(true);
 
     const userId = localStorage.getItem("user_id");
-    const usermissionId = localStorage.getItem(`${userId}_usermission_id`);
     const current = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
 
     try {
-      await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission/${usermissionId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" }
-      });
-    } catch (err) {
-      console.error("Error al completar misión:", err);
-    }
+      // Solo actualizamos la misión en el backend si NO viene de Content
+      if (!isFromContent) {
+        const usermissionId = localStorage.getItem(`${userId}_usermission_id`);
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission/${usermissionId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" }
+        });
 
-    // Solo desbloquear logros si NO viene de Content
-    if (!isFromContent) {
-      const unlocked = [];
-      if (current === 3) unlocked.push("zen_mode");
-      if (current === 1 || current === 5) unlocked.push("strength_level");
+        // Desbloquear logros solo si viene de Journey
+        const unlocked = [];
+        if (current === 3) unlocked.push("zen_mode");
+        if (current === 1 || current === 5) unlocked.push("strength_level");
 
-      const completedCount = JSON.parse(localStorage.getItem(`${userId}_missionsCompleted`)) || 0;
-      if (completedCount === 0) unlocked.push("first_level");
-      const newCount = completedCount + 1;
-      localStorage.setItem(`${userId}_missionsCompleted`, newCount);
-      if (newCount === 3) unlocked.push("perfect_combo");
+        const completedCount = JSON.parse(localStorage.getItem(`${userId}_missionsCompleted`)) || 0;
+        if (completedCount === 0) unlocked.push("first_level");
+        const newCount = completedCount + 1;
+        localStorage.setItem(`${userId}_missionsCompleted`, newCount);
+        if (newCount === 3) unlocked.push("perfect_combo");
 
-      if (unlocked.length > 0) {
-        setAchievementMsg(`🎉 Logro desbloqueado: ${unlocked.join(", ").replace(/_/g, " ")}`);
-        try {
+        if (unlocked.length > 0) {
+          setAchievementMsg(`🎉 Logro desbloqueado: ${unlocked.join(", ").replace(/_/g, " ")}`);
           await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/achievements/unlock`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: userId, achievements: unlocked })
           });
-        } catch (err) {
-          console.error("Error al guardar logros:", err);
         }
-      }
-    }
 
-    setTimeout(() => {
-      setAchievementMsg("");
-      if (!isFromContent) {
+        // Actualizar progreso solo si viene de Journey
         localStorage.setItem(`${userId}_currentClickedNumber`, current + 1);
       }
+    } catch (err) {
+      console.error("Error al completar misión:", err);
+    }
+
+    // Limpiar estado local después de completar
+    setTimeout(() => {
+      setAchievementMsg("");
       localStorage.removeItem(`${userId}_currentMission`);
       localStorage.removeItem(`${userId}_missionAccepted`);
       localStorage.removeItem(`${userId}_usermission_id`);
@@ -155,7 +161,15 @@ const Task = () => {
             <div className={styles.taskContent}>
               <div className={styles.taskPhoto}>{mission.img}</div>
               <div className={styles.taskTextContainer}>
-                <div className={styles.taskText}>{mission.title}{mission.description}</div>
+                <div className={styles.taskText}>
+                  {mission.title}
+                  {mission.description}
+                  {isFromContent && (
+                    <p style={{ color: '#888', fontSize: '0.9em', marginTop: '1rem' }}>
+                      Nota: Esta tarea es solo práctica y no sumará experiencia ni desbloqueará logros.
+                    </p>
+                  )}
+                </div>
                 <div className={styles.taskButtons}>
                   {!accepted ? (
                     <>

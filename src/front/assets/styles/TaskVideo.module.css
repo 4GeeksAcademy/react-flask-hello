@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 60px; /* Espacio para el navbar */
 }
 
 .taskVideoLayoutGrid {
@@ -32,15 +33,20 @@
   z-index: 2;
   width: 100%;
   box-sizing: border-box;
+  background: #000;
 }
 
 .taskVideoPlayerContainer {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
+  height: calc(100vh - 300px); /* Altura dinámica basada en la ventana */
+  min-height: 400px; /* Altura mínima */
+  max-height: 800px; /* Altura máxima */
   position: relative;
-  max-height: 70vh;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
 }
 
 .taskVideoPlayer {
@@ -113,22 +119,28 @@
     max-width: 1200px;
     padding: 0 2rem;
   }
+  
+  .taskVideoPlayerContainer {
+    height: calc(100vh - 250px);
+  }
 }
 
 @media (max-width: 1024px) {
   .taskVideoContainer {
-    padding: 0;
+    padding-top: 40px;
   }
 
   .taskVideoLayoutGrid {
     max-width: 100%;
-    padding: 0 2rem;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    padding: 0 1rem;
   }
 
   .taskVideoMainPanel {
     margin-top: 2rem;
+  }
+  
+  .taskVideoPlayerContainer {
+    height: calc(100vh - 200px);
   }
 
   .relatedVideosPanel {
@@ -143,7 +155,7 @@
 
 @media (max-width: 768px) {
   .taskVideoLayoutGrid {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .taskVideoInfo {
@@ -160,6 +172,11 @@
     padding: 0.6rem 0.8rem;
     font-size: 0.85rem;
   }
+  
+  .taskVideoPlayerContainer {
+    height: calc(100vh - 150px);
+    min-height: 300px;
+  }
 
   .relatedVideoItem {
     flex-direction: column;
@@ -173,8 +190,12 @@
 }
 
 @media (max-width: 480px) {
+  .taskVideoContainer {
+    padding-top: 20px;
+  }
+
   .taskVideoLayoutGrid {
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
   }
 
   .taskVideoInfo {
@@ -189,5 +210,10 @@
 
   .taskVideoButton {
     width: 100%;
+  }
+  
+  .taskVideoPlayerContainer {
+    height: calc(100vh - 120px);
+    min-height: 250px;
   }
 } 

@@ -12,7 +12,6 @@ import { SignUp } from "./pages/SignUp";
 import { GoogleApi } from "./pages/GoogleApi";
 import { Search } from "./pages/Search";
 import { Custom } from "./pages/Custom";
-import { MainPage } from "./pages/MainPage"; 
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Favorites } from "./pages/Favorites";
 import { Logout } from "./pages/Logout"
@@ -22,6 +21,7 @@ import { Profile} from "./pages/Profile";
 import { ResetPassword } from "./pages/ResetPassword";
 import {PasswordRequestReset} from "./pages/passwordResetRequest";
 import { FindSpots } from "./pages/FindSpots";
+import { SpotByLocation } from "./pages/SpotByLocation";
 
 
 export const router = createBrowserRouter(
@@ -38,15 +38,14 @@ export const router = createBrowserRouter(
       <Route path="custom" element={<Custom />} />
       <Route path="signin" element={<SignIn />} />
       <Route path="password" element={<Password />} />
-      <Route path="google-api" element={<GoogleApi />} />
+      <Route path="google-api/:cocktail" element={<GoogleApi />} />
       <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       <Route path="favorites" element={<Favorites />} />
       <Route path="logout" element={<Logout />} />
       <Route path="reset-password" element={<ResetPassword />} />
-      <Route path="request-reset" element={<PasswordRequestReset/>} />
-      <Route path="favorites" element={<Favorites />} />
+      <Route path="request-reset" element={<PasswordRequestReset/>} />      
       <Route path="find-spots" element={<FindSpots />} />
-      <Route path="MainPage" element={<MainPage />} />
+      <Route path="spot-by-location/:cocktail" element={<SpotByLocation />} />     
     </Route>
   )
 );

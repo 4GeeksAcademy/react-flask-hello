@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export const GoogleApi = () => {
@@ -12,7 +12,8 @@ export const GoogleApi = () => {
   const [showPhotos, setShowPhotos] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [modalReviewText, setModalReviewText] = useState("");
-
+  const { cocktail } = useParams();
+  
 
 
   const handleSearch = () => { // Function to handle the search button click 
@@ -26,7 +27,8 @@ export const GoogleApi = () => {
     navigator.geolocation.getCurrentPosition( // Get the current position of the user  JavaScript feature for web development.
       async (position) => { // Callback function to handle the position received from geolocation
         const { latitude, longitude } = position.coords; // Extract latitude and longitude from the position object
-        const payload = { latitude, longitude, cocktail: "mojito" };
+        const payload = { latitude, longitude, cocktail };
+        console.log('PARAM:', cocktail);
         console.log("▶️  Using coords:", latitude, longitude);
         console.log("!!!!This is the object of the geolocation!!! :", position);
 
@@ -101,6 +103,12 @@ export const GoogleApi = () => {
   const showMorePhotos = () => {
     setShowPhotos(!showPhotos); // Toggle the showPhotos state to show or hide photos
   }
+
+  useEffect(() => {
+    if(cocktail){
+      handleSearch(); // Call the handleSearch function to fetch places when the component mounts
+    }
+  }, [cocktail]); // useEffect hook to handle side effects in functional components
 
 
 
@@ -270,11 +278,7 @@ export const GoogleApi = () => {
           </div>
 
         </div>
-      </div>
-      <button onClick={handleSearch} className="btn btn-success mb-3">Search drinks</button>
-      <Link to="/">
-        <button className="btn btn-primary">Back home</button>
-      </Link>
+      </div>         
       {showReviewModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog" onClick={() => setShowReviewModal(false)}>
           <div className="modal-dialog" role="document" onClick={e => e.stopPropagation()}>

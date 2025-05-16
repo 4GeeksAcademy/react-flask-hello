@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 const handleSearch = (searchItem, setDrinks) => {
@@ -29,6 +30,9 @@ export const Search = () => {
     const [favorites, setFavorites] = useState([]);
     const navigate = useNavigate();
 
+
+
+    // Load favorites from local storage on mount
     useEffect(() => {
         const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(storedFavorites);
@@ -51,21 +55,28 @@ export const Search = () => {
     };
 
     return (
-        <div className="search-page-container">
-            {/* Button Container */}
-{/*             <div className="button-container">
+        <div className="search-container">
+            <div className="search-bar">
+                <input
+                    className="search-input"
+                    placeholder="Search for a cocktail..."
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search} />
+                {/* <div className="search-page-container"> */}
+                {/* Button Container */}
+                {/*             <div className="button-container">
                 <button className="logout-action-button" onClick={handleLogout}>
                     Logout
                 </button>
             </div> */}
-
+            </div>
             {/* Search Bar */}
             <div className="search-header">
-                <input 
+                <input
                     className="search-input-field"
-                    placeholder="Search for a cocktail..." 
-                    onChange={(e) => setSearch(e.target.value)} 
-                    value={search} 
+                    placeholder="Search for a cocktail..."
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
                 />
                 <button onClick={() => handleSearch(search, setDrinks)} className="search-action-button">
                     Search
@@ -95,17 +106,47 @@ export const Search = () => {
                                     );
                                 })}
                             </ul>
+                            <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p>
+
+                            {/* Favorite Button with Image */}
+                            <div className="button-row">
+                                <button
+                                    className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
+                                    onClick={() => toggleFavorite(drink)}
+                                >
+                                    <img
+                                        src={favorites.some(fav => fav.idDrink === drink.idDrink)
+                                            ? "https://img.icons8.com/?size=52&id=86&format=png&color=red"
+                                            : "https://img.icons8.com/?size=52&id=86&format=png"}
+                                        alt="Favorite Icon"
+                                        className="favorite-icon"
+                                    />
+                                </button>
+                                <Link
+                                    to={`/google-api/${encodeURIComponent(drink.strDrink)}`}  // turns your drink name into a URL-safe string                                
+                                    className="btn btn-primary">
+                                    Places to drink
+                                </Link>
+                                
+                                {/* new “Spots by Location” button */}
+                                <Link
+                                    to={`/spot-by-location/${encodeURIComponent(drink.strDrink)}`}
+                                    className="btn btn-outline-secondary"
+                                >
+                                    Spots by Location
+                                </Link>
+                            </div>
                             <p className="cocktail-instructions-text"><strong>Instructions:</strong> {drink.strInstructions}</p>
-                            
-                            <button 
+
+                            <button
                                 className="favorite-toggle-button"
                                 onClick={() => toggleFavorite(drink)}
                             >
-                                <img 
-                                    src={favorites.some(fav => fav.idDrink === drink.idDrink) 
-                                        ? "https://img.icons8.com/?size=48&id=LaLJUIEg4Miq&format=png" 
-                                        : "https://img.icons8.com/?size=48&id=3294&format=png"} 
-                                    alt="Favorite Icon" 
+                                <img
+                                    src={favorites.some(fav => fav.idDrink === drink.idDrink)
+                                        ? "https://img.icons8.com/?size=48&id=LaLJUIEg4Miq&format=png"
+                                        : "https://img.icons8.com/?size=48&id=3294&format=png"}
+                                    alt="Favorite Icon"
                                     className="favorite-icon-image"
                                 />
                             </button>

@@ -29,7 +29,14 @@ const Navbar2 = () => {
         console.error("Error fetching user data:", err);
       }
     };
+
     fetchUser();
+
+    // Add an interval to periodically refresh the user data
+    const refreshInterval = setInterval(fetchUser, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(refreshInterval);
   }, [userId]);
 
   const toggleDropdown = () => setOpenDropdown(!openDropdown);
@@ -66,7 +73,7 @@ const Navbar2 = () => {
       {!isMobileMenuOpen && user && (
         <div className={styles.navbar2Profile}>
           <img
-            src={user.avatar_url || "src/front/assets/styles/images/Moti_Feliz.png"}
+            src={user.avatar || "src/front/assets/styles/images/Moti_Feliz.png"}
             alt="Avatar"
             className={styles.navbar2Image}
             onClick={toggleProfileDropdown}
@@ -92,7 +99,7 @@ const Navbar2 = () => {
           <div className={styles.navbar2CloseButton} onClick={toggleMobileMenu}>X</div>
           <div className={styles.navbar2Profile}>
             <img 
-              src={user?.avatar_url || "src/front/assets/styles/images/Moti_Feliz.png"} 
+              src={user?.avatar || "src/front/assets/styles/images/Moti_Feliz.png"} 
               alt="Avatar" 
               className={styles.navbar2Image} 
             />

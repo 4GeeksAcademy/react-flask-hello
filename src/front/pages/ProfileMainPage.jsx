@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../assets/styles/ProfileMainPage.module.css";
 import avatarImg from "../assets/styles/images/Moti_Feliz.png";
 import genieImg from "../assets/styles/images/Moti_Feliz.png";
+import Particles from "../components/Particles";
 
 const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
 const monthNames = [
@@ -83,6 +84,12 @@ const ProfileMainPage = () => {
     };
 
     fetchProfile();
+
+    // Add an interval to periodically refresh the profile data
+    const refreshInterval = setInterval(fetchProfile, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(refreshInterval);
   }, [userId, navigate]);
 
   useEffect(() => {
@@ -116,6 +123,16 @@ const ProfileMainPage = () => {
 
   return (
     <div className={styles.container}>
+      <Particles
+        particleColors={['#6725D8', '#6725D8']}
+        particleCount={300}
+        particleSpread={5}
+        speed={0.2}
+        particleBaseSize={50}
+        moveParticlesOnHover={true}
+        alphaParticles={false}
+        disableRotation={false}
+      />
       <div className={styles.layoutGrid}>
         {/* CARD 1: Profile Info */}
         <div className={`${styles.card} ${styles.card1}`}>
@@ -170,7 +187,20 @@ const ProfileMainPage = () => {
         {/* CARD 4: Avatar */}
         <div className={`${styles.card} ${styles.card4}`}>
           <div className={styles.avatarBlock}>
-            <img src={avatarImg} alt="Avatar" className={styles.avatarImage} />
+            <div className={styles.avatarContainer}>
+              <img 
+                src={user.avatar || genieImg} 
+                alt="Avatar" 
+                className={styles.avatarImage} 
+              />
+              <button 
+                className={styles.editProfileButton}
+                onClick={() => navigate('/edit-profile')}
+                title="Edit Profile"
+              >
+                <i className="fas fa-edit"></i>
+              </button>
+            </div>
             <div className={styles.levelInfo}>
               <p><strong>Lvl {user.level}</strong></p>
               <div className={styles.xpBar}>

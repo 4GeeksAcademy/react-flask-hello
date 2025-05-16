@@ -120,7 +120,7 @@ const ProfileMainPage = () => {
     localStorage.removeItem("daily_quote_date");
     
     // Redirigir al login
-    navigate("/landing");
+    navigate("/login");
   };
 
   useEffect(() => {

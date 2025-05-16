@@ -40,12 +40,13 @@ const Navbar2 = () => {
   const level = user?.level || 1;
   const xpForNextLevel = 1000;
   const xpProgress = Math.min((xp % xpForNextLevel) / xpForNextLevel * 100, 100);
+
   const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user_id");
-  dispatch({ type: "set_user", payload: null });
-  navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
+    navigate("/");
   };
+
   return (
     <nav className={`${styles.navbar2} ${isMobileMenuOpen ? styles.navbar2Open : ''}`}>
       {!isMobileMenuOpen && (
@@ -58,16 +59,7 @@ const Navbar2 = () => {
 
       <div className={styles.navbar2Text}>
         <Link to="/profilemainpage"><p>Home</p></Link>
-        <div className={styles.navbar2Dropdown}>
-          <p onClick={toggleDropdown}>Content</p>
-          {openDropdown && (
-            <div className={styles.navbar2DropdownMenu}>
-              <Link to="/videos"><p>{video} Videos</p></Link>
-              <Link to="/podcasts"><p>{podcast} Podcasts</p></Link>
-              <Link to="/tasks"><p>{task} Tasks</p></Link>
-            </div>
-          )}
-        </div>
+        <Link to="/content"><p>Content</p></Link>
         <Link to="/journey"><p>Journey</p></Link>
       </div>
 
@@ -99,7 +91,11 @@ const Navbar2 = () => {
         <div className={styles.navbar2MobileMenu}>
           <div className={styles.navbar2CloseButton} onClick={toggleMobileMenu}>X</div>
           <div className={styles.navbar2Profile}>
-            <img src="src/front/assets/styles/images/ProfilePhoto.jpg" alt="Avatar" className={styles.navbar2Image} />
+            <img 
+              src={user?.avatar_url || "src/front/assets/styles/images/Moti_Feliz.png"} 
+              alt="Avatar" 
+              className={styles.navbar2Image} 
+            />
             <div className={styles.navbar2ProfileContent}>
               <p className={styles.navbar2LevelText}>Lvl {level}</p>
               <div className={styles.navbar2LevelBar}>
@@ -110,29 +106,17 @@ const Navbar2 = () => {
           </div>
           <div className={styles.navbar2MobileLinks}>
             <Link to="/profilemainpage"><p>Home</p></Link>
+            <Link to="/content"><p>Content</p></Link>
             <Link to="/journey"><p>Journey</p></Link>
-            <div onClick={toggleDropdown}>
-              <p>Content</p>
-              {openDropdown && (
-                <div className={styles.navbar2DropdownMenu}>
-                  <Link to="/videos"><p>Videos</p></Link>
-                  <Link to="/podcasts"><p>Podcasts</p></Link>
-                  <Link to="/tasks"><p>Tasks</p></Link>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       )}
 
       {openProfileDropdown && (
         <div className={styles.navbar2ProfileDropdown}>
-          <Link to="/profilemainpage"><p>{profileIcon} Profile</p></Link>
+          <Link to="/edit-profile"><p>{profileIcon} Edit Profile</p></Link>
           <Link to="/achievements"><p>{trophy} Achievements</p></Link>
-          <button className={styles.navbar2LogoutButton} onClick={() => {
-            localStorage.clear();
-            navigate("/login");
-          }}>
+          <button className={styles.navbar2LogoutButton} onClick={handleLogout}>
             {logout} Logout
           </button>
         </div>

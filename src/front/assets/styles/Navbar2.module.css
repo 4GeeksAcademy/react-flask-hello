@@ -43,7 +43,7 @@
 }
 
 :local(.navbar2Up){
-  color: #a066ff;
+  color: #FB645C;
 }
 
 :local(.navbar2Logo h2) {
@@ -59,7 +59,6 @@
 
 :local(.navbar2Text p:hover) {
   color: #b384ff;
-  cursor: pointer;
 }
 
 :local(.navbar2Profile) {

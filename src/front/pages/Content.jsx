@@ -14,13 +14,13 @@ const Content = () => {
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/thumbnail1.jpg",
       title: "Meditación Guiada",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/video1.mp4",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349307/7_Principios_Estoicos_para_MANTENER_La_Calma__Estoicismo_bzkc44.mp4",
       type: "video"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/thumbnail2.jpg",
       title: "Ejercicios de Respiración",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/video2.mp4",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349283/7_PRINCIPIOS_De_La_Mujer_Estoica__ESTOICISMO_emuefg.mp4",
       type: "video"
     }
   ];
@@ -41,49 +41,49 @@ const Content = () => {
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349283/7_PRINCIPIOS_De_La_Mujer_Estoica__ESTOICISMO_emuefg.mp4",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349283/7_PRINCIPIOS_De_La_Mujer_Estoica__ESTOICISMO_emuefg.mp4",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349283/7_PRINCIPIOS_De_La_Mujer_Estoica__ESTOICISMO_emuefg.mp4",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
       type: "audio"
     },
     {
       thumbnail: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567/podcast2.jpg",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567/audio2.mp3",
+      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349244/Cuando_sientes_que_no_avanzas_mdu0ig.mp3",
       type: "audio"
     }
   ];

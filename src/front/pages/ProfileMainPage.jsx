@@ -256,7 +256,7 @@ const ProfileMainPage = () => {
           </ul>
           <button
             className={styles.button}
-            onClick={() => navigate('/task')}
+            onClick={() => navigate('/content')}
           >
             ALL CONTENT
           </button>

@@ -26,7 +26,7 @@ export const FindSpots = () => {
 
       if (!res.ok) { // check if the response is ok
         // if the response is not ok, we log the error and set the error state to display the error message.       
-        console.log("!!>>>Error feching the data from endpoint", res.message);
+        console.log("!!>>>Error feching the data from endpoint", res.statusText);
         setError(`There was a problem wiht the server, try again. ${res.status}`)
         return // we  do "return" to stop the execution of the function early, so you DON'T accidentally call setCategories(...)
       }
@@ -53,9 +53,7 @@ export const FindSpots = () => {
     try {
       const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`)
       if (!res.ok) {
-        console.log("Failed to fetch data from endpoint", res.message);
-        setError(`Lookup failed: ${res.status} - ${err.message}`);
-        return;
+       throw new Error(`Lookup failed: ${res.status} ${res.statusText}`);
       }
       const data = await res.json()
       return data.drinks[0]
@@ -78,8 +76,8 @@ export const FindSpots = () => {
       const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`) // we use encodeURIComponent to encode the category name.
 
       if (!res.ok) {
-        console.log("!!>>>Error feching the data from endpoint", res.message);
-        setError(`There was a problem wiht the server, try again : ${res.message} ${res.status}`);
+        console.log("!!>>>Error feching the data from endpoint", res.statusText);
+        setError(`There was a problem wiht the server, try again : ${res.statusText} ${res.status}`);
         setDrinks([]); // clear previous results        
         return // we  do "return" to stop the execution of the function early.
       }
@@ -170,7 +168,12 @@ export const FindSpots = () => {
           </button>
         ))}
       </div>
-
+      {/* show any error messages here */}
+      {error && (
+        <div className="alert alert-danger text-center" role="alert">
+          {error}
+        </div>
+      )}
       {/* “No drinks” message */}
       {!loading && drinks.length === 0 && selectedCategory && (
         <p>No drinks found in {selectedCategory}.</p>
@@ -218,11 +221,11 @@ export const FindSpots = () => {
                       </ul>
                       <div className="d-flex gap-2 justify-content-center mt-3">
                         <Link to={`/spot-by-location/${encodeURIComponent(d.strDrink)}`}>
-                          <button  onClick={() => { }}>
+                          <button onClick={() => { }}>
                             Spots by Location
                           </button>
                         </Link>
-                        <Link to={`/google-api/${encodeURIComponent(d.strDrink)}`}>        
+                        <Link to={`/google-api/${encodeURIComponent(d.strDrink)}`}>
                           <button onClick={() => { }}>
                             Spots nearby
                           </button>

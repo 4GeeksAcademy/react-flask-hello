@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 //import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export const SpotByLocation = () => {
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState();
     const [places, setPlaces] = useState([]);
     const [error, setError] = useState("");
     const [selectedPlace, setSelectedPlace] = useState(null);
@@ -115,7 +115,7 @@ export const SpotByLocation = () => {
                     <input
                         type="text"
                         className="form-control me-2"
-                        placeholder="Enter location (e.g. New York, NY)"
+                        placeholder="e.g. Miami, FL or 10001"
                         value={location}
                         onChange={e => setLocation(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && handleSearch()}
@@ -123,6 +123,9 @@ export const SpotByLocation = () => {
                     <button className="btn btn-primary" onClick={handleSearch}>
                         Search
                     </button>
+                    <small className="form-text text-muted">
+                        You can enter a city/state (e.g. “Miami, FL”), a ZIP code (e.g. “10001”), or a full address (e.g. “1600 Amphitheatre Pkwy, Mountain View, CA”).
+                    </small>
                 </div>
             </div>
             <div className="row px-md-5" style={{ height: "70%" }}>
@@ -291,9 +294,6 @@ export const SpotByLocation = () => {
 
                 </div>
             </div>
-            <Link to="/">
-                <button className="btn btn-primary">Back home</button>
-            </Link>
             {showReviewModal && (
                 <div className="modal d-block" tabIndex="-1" role="dialog" onClick={() => setShowReviewModal(false)}>
                     <div className="modal-dialog" role="document" onClick={e => e.stopPropagation()}>

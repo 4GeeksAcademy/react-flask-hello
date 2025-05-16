@@ -278,10 +278,7 @@ export const GoogleApi = () => {
           </div>
 
         </div>
-      </div>      
-      <Link to="/">
-        <button className="btn btn-primary">Back home</button>
-      </Link>
+      </div>         
       {showReviewModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog" onClick={() => setShowReviewModal(false)}>
           <div className="modal-dialog" role="document" onClick={e => e.stopPropagation()}>

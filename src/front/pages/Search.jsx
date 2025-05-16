@@ -57,11 +57,11 @@ export const Search = () => {
     return (
         <div className="search-container">
             <div className="search-bar">
-                <input
+                {/* <input
                     className="search-input"
                     placeholder="Search for a cocktail..."
                     onChange={(e) => setSearch(e.target.value)}
-                    value={search} />
+                    value={search} /> */}
                 {/* <div className="search-page-container"> */}
                 {/* Button Container */}
                 {/*             <div className="button-container">
@@ -106,22 +106,15 @@ export const Search = () => {
                                     );
                                 })}
                             </ul>
-                            <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p>
+                            {/* <p className="cocktail-instructions"><strong>Instructions:</strong> {drink.strInstructions}</p> */}
 
                             {/* Favorite Button with Image */}
                             <div className="button-row">
-                                <button
+                                {/* <button
                                     className={`favorite-button ${favorites.some(fav => fav.idDrink === drink.idDrink) ? "favorited" : ""}`}
                                     onClick={() => toggleFavorite(drink)}
                                 >
-                                    <img
-                                        src={favorites.some(fav => fav.idDrink === drink.idDrink)
-                                            ? "https://img.icons8.com/?size=52&id=86&format=png&color=red"
-                                            : "https://img.icons8.com/?size=52&id=86&format=png"}
-                                        alt="Favorite Icon"
-                                        className="favorite-icon"
-                                    />
-                                </button>
+                                </button> */}
                                 <Link
                                     to={`/google-api/${encodeURIComponent(drink.strDrink)}`}  // turns your drink name into a URL-safe string                                
                                     className="btn btn-primary">

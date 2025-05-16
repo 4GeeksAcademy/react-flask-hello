@@ -15,6 +15,7 @@ import Achievements from "./pages/Achievements";
 import EditProfile from "./pages/EditProfile";
 import Content from "./pages/Content"
 import TaskVideo from "./pages/TaskVideo"
+import AuthCallback from "./pages/AuthCallback"
 
 // Activa este flag para ver todo sin estar logueado (modo desarrollo)
 const DEV_MODE = true;
@@ -42,6 +43,7 @@ export const router = createBrowserRouter(
       <Route path="achievements" element={<Achievements />} />
       <Route path="content" element={<Content />} />
       <Route path="task-video" element={<TaskVideo />} />
+      <Route path="auth/callback" element={<AuthCallback />} />
 
       {/* Páginas accedidas libremente en dev, protegidas en producción */}
       <Route path="home" element={

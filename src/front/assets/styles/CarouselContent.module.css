@@ -1,30 +1,9 @@
 .carousel {
   position: relative;
-  width: 100%;
-  padding: 0 60px; /* Espacio para los botones */
+  width: calc(100% + 20px);
+  margin-left: -10px;
+  padding: 0 50px;
   box-sizing: border-box;
-}
-
-/* Fade-out laterales */
-.carousel::before,
-.carousel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 60px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.carousel::before {
-  left: 0;
-  background: linear-gradient(to right, #1a1625 0%, transparent 100%);
-}
-
-.carousel::after {
-  right: 0;
-  background: linear-gradient(to left, #1a1625 0%, transparent 100%);
 }
 
 .container {
@@ -38,7 +17,7 @@
   margin: 0;
   width: 100%;
   position: relative;
-  z-index: 2; /* Para que esté por encima del fade */
+  z-index: 1;
 }
 
 .container::-webkit-scrollbar {
@@ -111,7 +90,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  z-index: 3; /* Por encima del fade */
+  z-index: 3;
   font-size: 20px;
   backdrop-filter: blur(4px);
 }
@@ -127,4 +106,26 @@
 
 .nextButton {
   right: 10px;
+}
+
+/* Fade out en los extremos del carrusel */
+.carousel::before,
+.carousel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel::before {
+  left: 0;
+  background: linear-gradient(to right, #1a1625 0%, transparent 100%);
+}
+
+.carousel::after {
+  right: 0;
+  background: linear-gradient(to left, #1a1625 0%, transparent 100%);
 }

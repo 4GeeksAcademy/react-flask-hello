@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth0 } from '@auth0/auth0-react';
 import Aurora from "../components/Aurora";
 import styles from "../assets/styles/Login.module.css";
 
@@ -8,6 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loginWithRedirect } = useAuth0();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -36,6 +38,12 @@ const Login = () => {
       console.error("Login error:", error);
       alert("Error al iniciar sesión");
     }
+  };
+
+  const handleGithubLogin = () => {
+    loginWithRedirect({
+      connection: 'github'
+    });
   };
 
   return (
@@ -89,7 +97,7 @@ const Login = () => {
             Log in
           </button>
 
-          <button className={styles.loginViewGithubBtn}>
+          <button className={styles.loginViewGithubBtn} onClick={handleGithubLogin}>
             <i className="fab fa-github"></i> Log in with Github
           </button>
 

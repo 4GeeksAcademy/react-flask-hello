@@ -10,8 +10,15 @@ from api.utils import (
     verify_token
 )
 import requests  # <--- Agregado para proxy externo
+import os
+from jose import jwt
 #hola
 api = Blueprint('api', __name__)
+
+# Configuración de Auth0
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'dev-q4ltdjvbavvzdw40.us.auth0.com')
+AUTH0_CLIENT_ID = os.getenv('AUTH0_CLIENT_ID', 'bXYAbt4b5Nsqotk2ER0QP27wPxWQYflc')
+AUTH0_CLIENT_SECRET = os.getenv('AUTH0_CLIENT_SECRET', '')
 
 # --- AUTHENTICATION ---
 
@@ -395,3 +402,41 @@ def get_daily_quote():
             "a": "Desconocido"
         }]
         return jsonify(fallback), 200
+
+@api.route('/auth/callback', methods=['POST'])
+def auth_callback():
+    try:
+        # Obtener el token de ID de Auth0
+        token = request.json.get('id_token')
+        
+        # Decodificar el token para obtener la información del usuario
+        decoded = jwt.decode(token, AUTH0_CLIENT_SECRET, algorithms=['RS256'],
+                           audience=AUTH0_CLIENT_ID)
+        
+        # Extraer información del usuario
+        email = decoded.get('email')
+        name = decoded.get('name')
+        
+        # Buscar o crear usuario
+        user = AppUser.query.filter_by(email=email).first()
+        if not user:
+            user = AppUser(
+                username=name,
+                email=email,
+                password_hash=hash_password('auth0user')  # Contraseña temporal
+            )
+            db.session.add(user)
+            db.session.commit()
+        
+        # Generar token JWT para nuestra aplicación
+        token = generate_auth_token(user.id)
+        
+        return jsonify({
+            "msg": "Login correcto",
+            "token": token,
+            "user_id": user.id
+        }), 200
+        
+    except Exception as e:
+        print("⚠️ ERROR en /auth/callback:", e)
+        return jsonify({"msg": "Error procesando autenticación"}), 500

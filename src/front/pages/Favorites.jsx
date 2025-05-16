@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
     const [user, setUser] = useState({ name: "", email: "" });
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchUserData();
@@ -22,10 +24,16 @@ const UserInfo = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Clear authentication token
+        navigate("/logout"); // Redirect to logout page
+    };
+
     return (
         <div className="user-info">
             <h3>{user.name}</h3>
             <p>{user.email}</p>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
         </div>
     );
 };

@@ -1,9 +1,9 @@
 import React, { useReducer, createContext } from "react";
 
-
 export const initialStore = () => {
   return {
     token: localStorage.getItem("token") || null,
+    user: null,
     message: null,
     todos: [
       {
@@ -43,11 +43,16 @@ export default function storeReducer(store, action = {}) {
         token: action.payload
       };
 
+    case 'SET_USER': // save user data
+      return {
+        ...store,
+        user: action.payload
+      };
+
     default:
       throw Error('Unknown action.');
   }
 }
-
 
 export const Context = createContext();
 

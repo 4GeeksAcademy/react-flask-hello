@@ -6,10 +6,19 @@ import CarouselContent from "../components/CarouselContent";
 import Aurora from "../components/Aurora";
 import styles from "../assets/styles/Content.module.css";
 
+// Imágenes locales para las tasks
+import coldshowerImg from "../assets/styles/images/coldshower.png";
+import journalingImg from "../assets/styles/images/journaling.jpg";
+import earlywakeupImg from "../assets/styles/images/early_wakeup.jpg";
+import mindfulwalkImg from "../assets/styles/images/mindful_walk.jpg";
+import declutterImg from "../assets/styles/images/declutter.jpg";
+import hydrationImg from "../assets/styles/images/hydration.jpg";
+import gratitudeImg from "../assets/styles/images/gratitude.jpg";
+import healthymealImg from "../assets/styles/images/healthy_meal.jpg";
+
 const Content = () => {
   const navigate = useNavigate();
 
-  // Datos de ejemplo con URLs de Cloudinary (reemplazar con tus URLs reales)
   const videos = [
     {
       thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374955/videosimg_m7ihuo.jpg",
@@ -53,37 +62,7 @@ const Content = () => {
     {
       thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
       title: "Música Relajante",
-      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349283/7_PRINCIPIOS_De_La_Mujer_Estoica__ESTOICISMO_emuefg.mp4",
-      type: "audio"
-    },
-    {
-      thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
-      title: "Música Relajante",
       url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
-      type: "audio"
-    },
-    {
-      thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
-      title: "Música Relajante",
-      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
-      type: "audio"
-    },
-    {
-      thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
-      title: "Música Relajante",
-      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
-      type: "audio"
-    },
-    {
-      thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
-      title: "Música Relajante",
-      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349245/Cuando_los_dem%C3%A1s_no_te_entienden_yzfciz.mp3",
-      type: "audio"
-    },
-    {
-      thumbnail: "https://res.cloudinary.com/dgknhbs4e/image/upload/v1747374947/podcastimg_hq6avc.png",
-      title: "Música Relajante",
-      url: "https://res.cloudinary.com/dgknhbs4e/video/upload/v1747349244/Cuando_sientes_que_no_avanzas_mdu0ig.mp3",
       type: "audio"
     }
   ];
@@ -125,14 +104,14 @@ const Content = () => {
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1582719478181-2c9fae367fd6",
+      thumbnail: hydrationImg,
       title: "Hydration",
       description: "Track your water intake today and stay well hydrated.",
       missionId: 6,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1604908177522-192186e1931c",
+      thumbnail: healthymealImg,
       title: "Healthy Meal",
       description: "Prepare and eat a healthy meal packed with vegetables.",
       missionId: 7,
@@ -153,42 +132,42 @@ const Content = () => {
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde",
+      thumbnail: gratitudeImg,
       title: "Gratitude",
       description: "Write down 3 things you're grateful for today.",
       missionId: 10,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1588776814546-bc89fd67f1c1",
+      thumbnail: journalingImg,
       title: "Journaling",
       description: "Take 10 minutes to write freely about your day or goals.",
       missionId: 11,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1611171711910-c7b1e8d3f408",
+      thumbnail: mindfulwalkImg,
       title: "Mindful Walk",
       description: "Go for a walk and focus on sights, sounds, and sensations.",
       missionId: 12,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1560185127-6ed189bf02ec",
+      thumbnail: declutterImg,
       title: "Declutter",
       description: "Organize one space in your home to reduce visual noise.",
       missionId: 13,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1611974789855-bbc80a61fcde",
+      thumbnail: coldshowerImg,
       title: "Cold Shower",
       description: "Start your day with a cold shower for energy and discipline.",
       missionId: 14,
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1581276879432-15a64a76b314",
+      thumbnail: earlywakeupImg,
       title: "Early Wake-Up",
       description: "Wake up 30 minutes earlier and use that time for yourself.",
       missionId: 15,

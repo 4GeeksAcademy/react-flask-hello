@@ -212,20 +212,21 @@ const ProfileMainPage = () => {
         disableRotation={false}
       />
       <div className={styles.layoutGrid}>
-                {/* CARD 1: Profile Info */}
+        {/* CARD 1: Profile Info */}
         <div className={`${styles.card} ${styles.card1}`}>
-          <h3 className={styles.cardTitle}>Your Rank</h3>
+          <h3 className={styles.cardTitle}>
+            Your Rank
+          </h3>
           <div className={styles.rankDisplay}>
             {(() => {
               const currentRank = getCurrentRank(user.level);
               return (
                 <>
-                  <div className={styles.rankMoty}>
-                    <img 
-                      src={currentRank.image}
-                      alt={`${currentRank.name} Rank`}
-                    />
-                  </div>
+                  <img 
+                    src={currentRank.image}
+                    alt={`${currentRank.name} Rank`}
+                    className={styles.rankMoty}
+                  />
                   <h4 style={{ 
                     margin: '0.5rem 0 0 0',
                     fontWeight: 'bold',

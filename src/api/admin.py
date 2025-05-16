@@ -3,7 +3,7 @@ from flask_admin import Admin
 from api.models import db, AppUser, Mission, UserMission, Favorite, Achievement, UserAchievement, MoodTag, Stat, LevelFrame
 from flask_admin.contrib.sqla import ModelView
 
-# ❌ Comentado porque no estás usando esto todavía:
+# ❌ Comentado porque no estás usando esto todavía:aas
 # from src.api.models import PasswordResetToken
 
 def setup_admin(app):

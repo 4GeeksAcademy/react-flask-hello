@@ -22,8 +22,18 @@ const Navbar2 = () => {
     const fetchUser = async () => {
       if (!userId) return;
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`);
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
         const data = await res.json();
+        
+        if (data.avatar) {
+          localStorage.setItem("user_avatar", data.avatar);
+        }
+        
         setUser(data);
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -73,7 +83,7 @@ const Navbar2 = () => {
       {!isMobileMenuOpen && user && (
         <div className={styles.navbar2Profile}>
           <img
-            src={user.avatar || "src/front/assets/styles/images/Moti_Feliz.png"}
+            src={localStorage.getItem("user_avatar") || user.avatar_url || "src/front/assets/styles/images/Moti_Feliz.png"}
             alt="Avatar"
             className={styles.navbar2Image}
             onClick={toggleProfileDropdown}
@@ -99,7 +109,7 @@ const Navbar2 = () => {
           <div className={styles.navbar2CloseButton} onClick={toggleMobileMenu}>X</div>
           <div className={styles.navbar2Profile}>
             <img 
-              src={user?.avatar || "src/front/assets/styles/images/Moti_Feliz.png"} 
+              src={localStorage.getItem("user_avatar") || user?.avatar_url || "src/front/assets/styles/images/Moti_Feliz.png"} 
               alt="Avatar" 
               className={styles.navbar2Image} 
             />

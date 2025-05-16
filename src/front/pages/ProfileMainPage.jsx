@@ -62,6 +62,20 @@ const ProfileMainPage = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Limpiar localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_avatar");
+    localStorage.removeItem("profile_missions_today");
+    localStorage.removeItem("profile_stats");
+    localStorage.removeItem("daily_quote");
+    localStorage.removeItem("daily_quote_date");
+    
+    // Redirigir al login
+    navigate("/login");
+  };
+
   useEffect(() => {
     if (!userId) {
       console.error("user_id not found in localStorage");
@@ -71,8 +85,18 @@ const ProfileMainPage = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/${userId}`);
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/${userId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
         const data = await res.json();
+        
+        if (data.user?.avatar) {
+          localStorage.setItem("user_avatar", data.user.avatar);
+        }
+        
         setProfile(data);
         setMissionsToday(data.missions_today);
         setStatsData(data.stats);
@@ -123,6 +147,13 @@ const ProfileMainPage = () => {
 
   return (
     <div className={styles.container}>
+      <button 
+        className={styles.logoutButton}
+        onClick={handleLogout}
+        title="Cerrar sesión"
+      >
+        <i className="fas fa-sign-out-alt"></i>
+      </button>
       <Particles
         particleColors={['#6725D8', '#6725D8']}
         particleCount={300}
@@ -189,7 +220,7 @@ const ProfileMainPage = () => {
           <div className={styles.avatarBlock}>
             <div className={styles.avatarContainer}>
               <img 
-                src={user.avatar || genieImg} 
+                src={localStorage.getItem("user_avatar") || user.avatar_url || genieImg} 
                 alt="Avatar" 
                 className={styles.avatarImage} 
               />

@@ -89,17 +89,66 @@ const EditProfile = () => {
     }));
   };
 
-  const handleAvatarSelect = (avatarSrc) => {
-    setSelectedAvatar(avatarSrc);
-    setProfile(prev => ({
-      ...prev,
-      avatar: avatarSrc
-    }));
+  const handleAvatarSelect = async (avatarSrc) => {
+    try {
+      const userId = localStorage.getItem("user_id");
+      const token = localStorage.getItem("token");
+
+      if (!userId || !token) {
+        throw new Error("No hay sesión activa. Por favor, inicia sesión de nuevo.");
+      }
+
+      // Guardar en localStorage primero para UI inmediata
+      localStorage.setItem("user_avatar", avatarSrc);
+      setSelectedAvatar(avatarSrc);
+      setProfile(prev => ({
+        ...prev,
+        avatar: avatarSrc
+      }));
+
+      console.log("Enviando petición con:", {
+        userId,
+        token,
+        avatarSrc
+      });
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/${userId}/avatar`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ 
+          avatar_url: avatarSrc 
+        })
+      });
+
+      console.log("Respuesta del servidor:", response);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error del servidor:", errorData);
+        throw new Error(errorData.msg || "Error al actualizar el avatar");
+      }
+
+      const data = await response.json();
+      console.log("Datos recibidos:", data);
+      
+      if (data.msg === "Avatar actualizado exitosamente") {
+        navigate(prevPath.current);
+      } else {
+        throw new Error(data.msg || "Error al actualizar el avatar");
+      }
+    } catch (error) {
+      console.error("Error completo:", error);
+      alert(error.message || "Error al actualizar el avatar. Por favor, inténtalo de nuevo.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     localStorage.setItem("profile_info", JSON.stringify(profile));
+    localStorage.setItem("user_avatar", profile.avatar);
     alert("Perfil actualizado exitosamente");
     navigate("/profilemainpage");
   };

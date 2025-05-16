@@ -6,7 +6,8 @@ from api.utils import (
     check_password,
     generate_token,
     generate_auth_token,
-    token_required
+    token_required,
+    verify_token
 )
 import requests  # <--- Agregado para proxy externo
 #hola
@@ -337,6 +338,47 @@ def get_full_profile(user_id):
         'achievements': achievement_data,
         'reflection': user.mood_actual or ''
     }), 200
+
+@api.route('/profile/<int:user_id>/avatar', methods=['PUT'])
+def update_avatar(user_id):
+    try:
+        # Verificar el token manualmente ya que el decorador está causando problemas
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({"msg": "Token requerido"}), 401
+            
+        token = auth_header.split(" ")[1]
+        payload = verify_token(token)
+        if not payload:
+            return jsonify({"msg": "Token inválido o expirado"}), 401
+            
+        # Verificar que el usuario del token coincide con el ID de la URL
+        if payload['user_id'] != user_id:
+            return jsonify({"msg": "No autorizado"}), 403
+
+        user = AppUser.query.get(user_id)
+        if not user:
+            return jsonify({'msg': 'Usuario no encontrado'}), 404
+
+        data = request.json
+        if 'avatar_url' not in data:
+            return jsonify({'msg': 'Falta el campo avatar_url'}), 400
+
+        print("Actualizando avatar para usuario:", user_id)
+        print("Nuevo avatar URL:", data['avatar_url'])
+
+        user.avatar_url = data['avatar_url']
+        db.session.commit()
+
+        print("Avatar actualizado exitosamente")
+        return jsonify({
+            'msg': 'Avatar actualizado exitosamente',
+            'user': user.serialize()
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        print("Error updating avatar:", str(e))
+        return jsonify({'msg': 'Error al actualizar el avatar'}), 500
 
 @api.route('/quote', methods=['GET'])
 def get_daily_quote():

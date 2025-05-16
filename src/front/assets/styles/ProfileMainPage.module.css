@@ -628,7 +628,647 @@
   transition: all 0.2s ease;
   z-index: 1000;
   padding: 0;
+}/* ProfileMainPage.module.css */
+
+:local(.container) {
+  background-color: transparent;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
+
+:local(.container) > canvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+:local(.layoutGrid) {
+  position: relative;
+  z-index: 1;
+  width: 1600px;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+  transform: scale(var(--scale, 1));
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+:local(.rankMoty){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+}
+
+:local(.rankMoty img){
+  width: auto;
+  height: 90%;
+  max-width: 17rem;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* Cards */
+:local(.card),
+:local(.heroCard) {
+  background-color: #2b213ecc;
+  border: 0.5px solid #776696;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top:0;
+}
+
+:local(.card1) { 
+  grid-column: span 2;
+  overflow: hidden;
+}
+:local(.card2) { 
+  grid-column: span 2;
+  overflow: hidden;
+}
+:local(.heroCard) {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  overflow: hidden;
+}
+:local(.card4) { 
+  grid-column: span 2;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:local(.card5) { 
+  grid-column: span 4;
+  overflow: hidden;
+}
+:local(.card6) { 
+  grid-column: span 4;
+  overflow: hidden;
+}
+:local(.card7) { 
+  grid-column: span 4;
+  overflow: hidden;
+}
+:local(.card8) { 
+  grid-column: span 6;
+  overflow: hidden;
+}
+:local(.card9) { 
+  grid-column: span 6;
+  overflow: hidden;
+}
+
+:local(.cardTitle) {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+:local(.editButton) {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #ff5c5c;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+:local(.editProfileButton) {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #6725d8;
+  border: 2px solid #fff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+:local(.editProfileButton):hover {
+  transform: scale(1.1);
+  background: #7e3af2;
+}
+
+:local(.editProfileButton) img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid #6725d8;
+  background-color: #2b213e;
+  padding: 5px;
+}
+
+/* Task list */
+:local(.taskList) {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+:local(.taskItem) {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:local(.statusDot) {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+:local(.done) { background-color: #4caf50; }
+:local(.inProgress) { background-color: #ffc107; }
+:local(.pending) { background-color: #f44336; }
+
+:local(.button),
+:local(.seeAllBtn) {
+  margin-top: 1rem;
+  background-color: #ff5c5c;
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  width: 160px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:local(.journeyButton) {
+  margin-top: 1rem;
+  background-color: #ff5c5c;
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  width: 90%;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hero section */
+:local(.heroText) {
+  flex: 1;
+  overflow: hidden;
+  padding-right: 1rem;
+}
+
+:local(.heroText h2) {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:local(.heroText p) {
+  margin: 0.2rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:local(.heroText button) {
+  margin-top: 3rem;
+  margin-left: 0;
+}
+:local(.heroImage) {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+  border-radius: 1rem;
+  flex-shrink: 0;
+}
+
+/* Avatar */
+:local(.avatarBlock) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+:local(.avatarContainer) {
+  position: relative;
+  display: inline-block;
+}
+
+:local(.username) {
+  font-size: 1.6rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  color: #a084fa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:local(.avatarImage) {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #6725d8;
+  box-shadow: 0 0 15px rgba(103, 37, 216, 0.3);
+  margin: 0;
+}
+
+:local(.levelInfo) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+:local(.levelInfo p) {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+:local(.levelInfo p strong) {
+  color: #a084fa;
+}
+
+:local(.xpBar) {
+  width: 100%;
+  height: 12px;
+  background-color: rgba(160, 132, 250, 0.2);
+  border-radius: 6px;
+  margin: 0.3rem 0;
+  overflow: hidden;
+}
+
+:local(.xpFill) {
+  height: 100%;
+  background: linear-gradient(90deg, #6725d8 0%, #a084fa 100%);
+  border-radius: 6px;
+  transition: width 0.3s ease-in-out;
+}
+
+:local(.xpText) {
+  color: #e0e0e0;
+  font-size: 0.9rem !important;
+  margin-top: 0.2rem !important;
+}
+
+/* Level Bar */
+:local(.levelBar) {
+  width: 100%;
+  height: 12px;
+  background-color: rgba(160, 132, 250, 0.2);
+  border-radius: 6px;
+  margin: 0.3rem 0;
+  overflow: hidden;
+}
+
+:local(.levelFill) {
+  height: 100%;
+  background-color: #a066ff;
+  width: 60%; 
+  transition: width 0.4s ease-in-out;
+}
+
+/* Calendar */
+:local(.calendarHeader) {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+:local(.calendarArrow) {
+  cursor: pointer;
+}
+
+:local(.calendarGrid) {
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+:local(.calendarDay) {
+  font-weight: bold;
+  color: #ccc;
+}
+:local(.calendarDate) {
+  background-color: #2e2e2e;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+}
+:local(.highlightedDate) {
+  background-color: #ff5c5c;
+}
+
+/* Stats */
+:local(.statsGrid) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 7rem;
+  margin-top: 1rem;
+}
+:local(.statLabel) {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+:local(.statValue) {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Achievements */
+:local(.cardHeaderWithBtn) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+:local(.achievementsGrid) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 0.5rem;
+  justify-items: center;
+}
+:local(.achievementIcon) {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+/* Script para ajustar el scale automáticamente */
+@media (max-width: 1600px) {
+  :local(.layoutGrid) {
+    --scale: calc(min(1, 100vw / 1600));
+  }
+}
+
+/* Tablet View */
+@media (max-width: 1024px) {
+  :local(.container) {
+      position: relative;
+      min-height: 100%;
+      height: auto;
+      width: 100vw;
+      overflow-x: hidden;
+      overflow-y: visible;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      display: block;
+  }
+
+  :local(.layoutGrid) {
+      grid-template-columns: 1fr;
+      width: 100%;
+      height: auto;
+      min-height: 100%;
+      padding: 1rem;
+      gap: 1.5rem;
+      transform: none;
+      overflow: visible;
+      margin: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+  }
+
+  /* Aseguramos que el contenedor del fondo de partículas cubra todo */
+  :global(#tsparticles) {
+      position: fixed !important;
+      width: 100% !important;
+      height: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+      z-index: 0 !important;
+  }
+
+  :local(.card1),
+  :local(.card2),
+  :local(.heroCard),
+  :local(.card4),
+  :local(.card5),
+  :local(.card6),
+  :local(.card7),
+  :local(.card8),
+  :local(.card9) {
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+  }
+
+  :local(.card),
+  :local(.heroCard) {
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+  }
+
+  :local(.rankMoty) {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      box-sizing: border-box;
+  }
+
+  :local(.rankMoty img) {
+      max-width: 12rem;
+      height: auto;
+  }
+
+  :local(.heroCard) {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+  }
+
+  :local(.heroText) {
+      padding-right: 0;
+      margin-bottom: 1rem;
+  }
+
+  :local(.heroImage) {
+      margin-top: 1rem;
+  }
+
+  :local(.statsGrid) {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 2rem;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  :local(.container) {
+      position: relative;
+      min-height: 100%;
+      height: auto;
+      width: 100vw;
+      overflow-x: hidden;
+      overflow-y: visible;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      display: block;
+  }
+
+  :local(.layoutGrid) {
+      padding: 0.8rem;
+      padding-bottom: 2rem;
+      gap: 1rem;
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
+  }
+
+  :local(.rankMoty img) {
+      max-width: 10rem;
+      height: auto;
+  }
+
+  :local(.card),
+  :local(.heroCard) {
+      padding: 0.8rem;
+  }
+
+  :local(.heroText h2) {
+      font-size: 1.5rem;
+  }
+
+  :local(.heroImage) {
+      width: 140px;
+      height: 140px;
+  }
+
+  :local(.cardTitle) {
+      font-size: 1.1rem;
+  }
+
+  :local(.avatarImage) {
+      width: 100px;
+      height: 100px;
+  }
+
+  :local(.username) {
+      font-size: 1.3rem;
+  }
+
+  :local(.achievementsGrid) {
+      grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+  }
+
+  :local(.achievementIcon) {
+      width: 35px;
+      height: 35px;
+  }
+}
+
+:local(.logoutButton) {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #6725D8;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+:local(.logoutButton):hover {
+  background-color: #5314c7;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+:local(.logoutButton i) {
+  font-size: 1.2rem;
+}
+  
 
 :local(.logoutButton):hover {
   background-color: #ff5c5c;

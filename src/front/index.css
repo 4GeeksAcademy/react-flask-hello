@@ -1,0 +1,568 @@
+/* Button & Results Container */
+.button-results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Create Cocktail Button with Glow Effect */
+.create-cocktail-btn {
+    background-color: #58074c;
+    color: #fff;
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+}
+
+/* Glow Effect */
+.create-cocktail-btn::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 8px;
+    background-color: rgba(226, 131, 212, 0.6);
+    box-shadow: 0 0 20px rgba(208, 118, 195, 0.6);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* Hover Effect for Create Cocktail Button */
+.create-cocktail-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 12px rgba(88, 7, 76, 0.4);
+    background-color: #75135f;
+}
+
+.create-cocktail-btn:hover::after {
+    opacity: 1;
+}
+
+/* Box Around Results */
+.results-container {
+    padding: 20px;
+    margin-top: 20px;
+    border: 2px solid #58074c;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Custom Ingredient List */
+.custom-ingredient-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Ingredient Card */
+.ingredient-card {
+    width: 200px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.ingredient-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Ingredient Image */
+.ingredient-card img {
+    width: 80%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Box Around Select Ingredient */
+.ingredient-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #117ce7;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    width: fit-content;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Select Ingredient Checkbox */
+.ingredient-checkbox input {
+    margin-bottom: 5px;
+}
+
+/* Select Ingredient Label */
+.ingredient-checkbox label {
+    font-size: 14px;
+    color: #333;
+}
+/* Search Page */
+.search-page-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Search Header */
+.search-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input-field {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-action-button {
+    background-color: #ee56c1;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-action-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(255, 99, 71, 0.4);
+    background-color: #631463;
+}
+
+/* Results Container */
+.results-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 20px;
+    border: 2px solid #7e6be8;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cocktail Cards */
+.cocktail-card-container {
+    width: 250px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.cocktail-card-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(255, 99, 71, 0.3);
+}
+
+/* Cocktail Image */
+.cocktail-thumbnail {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Favorite Button */
+.favorite-toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.favorite-icon-image {
+    width: 32px;
+}
+
+/* No Results Message */
+.no-results-message {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+}
+/* Favorites Page */
+.favorites-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Sidebar - User Info */
+.user-info {
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    margin: 20px auto;
+    width: fit-content;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* User Info Title & Email */
+.user-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.user-info p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Logout Button */
+.logout-button {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+    background-color: #0056b3;
+}
+
+/* Favorites Section */
+.favorites-content h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cocktail-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Cocktail Card */
+.cocktail-card {
+    width: 250px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.cocktail-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Cocktail Image */
+.cocktail-thumbnail {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.cocktail-card ul li {
+  background-color: #ff6f61;
+  color: white;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 5px;
+}
+.button-row {
+  display: flex;              
+  align-items: center;        
+  gap: 0.5rem;                
+  flex-wrap: wrap;            
+  margin-top: 1rem;          
+}
+
+.favorite-button{
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #007bff;  /* or your theme color */
+}
+
+
+/* General Styles */
+.favorites-app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+/* Favorite Button */
+.favorite-toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.favorite-icon-image {
+    width: 32px;
+}
+
+/* No Results Message */
+.no-results-message {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+}
+/* Favorites Page */
+.favorites-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Sidebar - User Info */
+.user-info {
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    margin: 20px auto;
+    width: fit-content;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* User Info Title & Email */
+.user-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.user-info p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Logout Button */
+.logout-button {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+    background-color: #0056b3;
+}
+
+/* Favorites Section */
+.favorites-content h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cocktail-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Cocktail Card */
+.cocktail-card {
+    width: 250px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.cocktail-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Cocktail Image */
+.cocktail-image {
+    width: 100%;
+    border-radius: 10px;
+}
+/* Cocktail Image */
+.cocktail-image {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Remove Favorite Button */
+.remove-favorite-button {
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.remove-favorite-button:hover {
+    background-color: #b52c3b;
+}
+
+/* No Favorites Message */
+.no-favorites {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+}
+/* Main Page Container */
+.main-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
+}
+
+/* Floating Drink Images */
+.floating-drink {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: floatDrinks 10s infinite alternate ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ||{Cards of drinks in  the findSpot.jsx view}|| */
+.cocktail-find-spot {
+  width: 100%;          /* fill its grid column */
+  height: 380px;        /* set a fixed height you like */
+  display: flex;
+  flex-direction: column;
+}
+.cocktail-find-spot img {
+  height: 200px;        /* fixed image height */
+  object-fit: cover;    /* crop to fill nicely */
+  width: 100%;
+}
+.cocktail-find-spot .card-body {
+  flex: 1;              /* take up the rest of the height */
+  overflow-y: auto;     /* scroll if content is too tall */
+}
+#container-find-spot{
+  max-width: 100%;   /* try 900px, 1000px, 1200px… */
+  padding-left: 1rem;  /* boost left/right gutter */
+  padding-right: 1rem;
+  margin-top: 40x;
+  margin-bottom: 40px;
+}
+/*|| {Cards of drinks in  the findSpot.jsx view}|| */
+/* Main Page Container */
+.main-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Centered Button Container */
+.button-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+/* Navigation Buttons */
+.nav-button {
+    padding: 12px 18px;
+    font-size: 16px;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    transform: scale(1.1);
+    background-color: #e5533d;
+}
+
+/* Floating Drink Images */
+.floating-drink {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: floatDrinks 10s infinite alternate ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating Animation */
+@keyframes floatDrinks {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-50px) rotate(20deg);
+    }
+    100% {
+        transform: translateY(50px) rotate(-20deg);
+    }
+}
+

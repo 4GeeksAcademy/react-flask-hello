@@ -13,7 +13,7 @@ import motiEsmeralda from "../assets/styles/images/Motis/Moti_Esmeralda.png";
 import motiRubi from "../assets/styles/images/Motis/Moti_Rubi.png";
 import motiDiamante from "../assets/styles/images/Motis/Moti_Diamante.png";
 import motiIridiscente from "../assets/styles/images/Motis/Moti_Iridiscente.png";
-
+// hola
 const ranks = [
   { name: 'Iron', minLevel: 1, image: motiHierro },
   { name: 'Bronze', minLevel: 2, image: motiBronce },

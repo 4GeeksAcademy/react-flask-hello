@@ -15,6 +15,7 @@ import declutterImg from "../assets/styles/images/declutter.jpg";
 import hydrationImg from "../assets/styles/images/hydration.jpg";
 import gratitudeImg from "../assets/styles/images/gratitude.jpg";
 import healthymealImg from "../assets/styles/images/healthy_meal.jpg";
+import stretching from "../assets/styles/images/stretching.jpg"
 
 const Content = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const Content = () => {
       type: "task"
     },
     {
-      thumbnail: "https://images.unsplash.com/photo-1588776814546-bc89fd67f1c1",
+      thumbnail: stretching,
       title: "Stretching",
       description: "10-minute stretch session to improve posture and blood flow.",
       missionId: 8,

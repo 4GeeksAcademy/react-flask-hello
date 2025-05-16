@@ -24,7 +24,7 @@ def create_app():
     JWTManager(app)
 
     CORS(app,
-        origins=["https://jubilant-goldfish-7prqx6pjxj7cr6rp-3000.app.github.dev"],
+        origins=["https://zany-pancake-ppgv64p5vv9h65q5-3000.app.github.dev"],
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
         expose_headers=["Content-Type"],

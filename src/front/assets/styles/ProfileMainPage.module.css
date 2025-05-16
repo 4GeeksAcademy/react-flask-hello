@@ -1290,3 +1290,16 @@
   transform: scale(1.1);
 }
   
+:local(.rankDisplay) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+:local(.rankDisplay img) {
+  max-width: 80%;
+  height: auto;
+}

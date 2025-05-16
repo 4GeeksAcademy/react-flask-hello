@@ -84,8 +84,7 @@ const Task = () => {
     setIsCompleting(true);
 
     const userId = localStorage.getItem("user_id");
-    const missionId = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
-    const currentCoin = parseInt(localStorage.getItem(`${userId}_currentClickedNumber`)) || 1;
+    const current = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
 
     try {
       // Solo actualizamos la misión en el backend si NO viene de Content
@@ -98,8 +97,8 @@ const Task = () => {
 
         // Desbloquear logros solo si viene de Journey
         const unlocked = [];
-        if (missionId === 3) unlocked.push("zen_mode");
-        if (missionId === 1 || missionId === 5) unlocked.push("strength_level");
+        if (current === 3) unlocked.push("zen_mode");
+        if (current === 1 || current === 5) unlocked.push("strength_level");
 
         const completedCount = JSON.parse(localStorage.getItem(`${userId}_missionsCompleted`)) || 0;
         if (completedCount === 0) unlocked.push("first_level");
@@ -117,7 +116,7 @@ const Task = () => {
         }
 
         // Actualizar progreso solo si viene de Journey
-        localStorage.setItem(`${userId}_currentClickedNumber`, currentCoin + 1);
+        localStorage.setItem(`${userId}_currentClickedNumber`, current + 1);
       }
     } catch (err) {
       console.error("Error al completar misión:", err);

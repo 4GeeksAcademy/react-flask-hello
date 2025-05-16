@@ -7,46 +7,59 @@ import Particles from "../components/Particles";
 
 import missionRosita from "../assets/styles/images/MISSION_TAREA_MANUAL_ROSITA.webp";
 
-const shuffleArray = (arr) => {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
+// Función para generar un número aleatorio entre min y max (inclusive)
+const getRandomMissionId = () => {
+  return Math.floor(Math.random() * 16) + 1; // IDs del 1 al 16
 };
 
 const Journey = () => {
   const navigate = useNavigate();
-  const [numbers, setNumbers] = useState([]);
   const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
+  const [missionMap, setMissionMap] = useState(new Map());
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (!userId) return;
 
-    const savedNumbers = localStorage.getItem(`${userId}_shuffledNumbers`);
+    // Recuperar el progreso actual
     const savedCurrent = localStorage.getItem(`${userId}_currentClickedNumber`);
-
-    if (savedNumbers) {
-      setNumbers(JSON.parse(savedNumbers));
-    } else {
-      const shuffled = shuffleArray(Array.from({ length: 16 }, (_, i) => i + 1));
-      setNumbers(shuffled);
-      localStorage.setItem(`${userId}_shuffledNumbers`, JSON.stringify(shuffled));
-    }
-
     if (savedCurrent) {
       setCurrentClickedNumber(parseInt(savedCurrent));
+    }
+
+    // Recuperar el mapeo de monedas a misiones
+    const savedMissionMap = localStorage.getItem(`${userId}_missionMap`);
+    if (savedMissionMap) {
+      setMissionMap(new Map(JSON.parse(savedMissionMap)));
     }
   }, []);
 
   const handleClick = (num) => {
     const userId = localStorage.getItem("user_id");
     if (num === currentClickedNumber) {
-      localStorage.setItem(`${userId}_currentMission`, JSON.stringify(num));
+      let missionId;
+      
+      // Si ya existe un ID de misión para esta moneda, usarlo
+      if (missionMap.has(num)) {
+        missionId = missionMap.get(num);
+      } else {
+        // Si no, generar uno nuevo
+        missionId = getRandomMissionId();
+        const newMap = new Map(missionMap);
+        newMap.set(num, missionId);
+        setMissionMap(newMap);
+        // Guardar el mapeo actualizado
+        localStorage.setItem(`${userId}_missionMap`, JSON.stringify([...newMap]));
+      }
+
+      // Guardar la misión actual y navegar a la tarea
+      localStorage.setItem(`${userId}_currentMission`, missionId);
       navigate("/task");
     }
   };
+
+  // Generar array de números del 1 al 16 para las monedas
+  const numbers = Array.from({ length: 16 }, (_, i) => i + 1);
 
   return (
     <AnimatedPage>

@@ -1,12 +1,38 @@
-
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useEffect, createContext, useContext, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import { AnimatePresence } from "framer-motion";
+import Loader from "./components/Loader";
 
-const App = () => {
+// Creamos el contexto dentro del mismo archivo
+const LoadingContext = createContext();
+
+// Hook personalizado para usar el loading
+const useLoading = () => {
+    const context = useContext(LoadingContext);
+    if (!context) {
+        throw new Error('useLoading must be used within LoadingProvider');
+    }
+    return context;
+};
+
+const AppContent = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { setIsLoading } = useLoading();
     const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+            setIsLoading(true);
+            // Simulamos un tiempo mínimo de carga para mostrar la animación
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 800);
+        };
+
+        handleRouteChange();
+    }, [location.pathname, setIsLoading]);
 
     return (
         <ScrollToTop>
@@ -20,6 +46,17 @@ const App = () => {
                 </AnimatePresence>
             </div>
         </ScrollToTop>
+    );
+};
+
+const App = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    return (
+        <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
+            <AppContent />
+            {isLoading && <Loader />}
+        </LoadingContext.Provider>
     );
 };
 

@@ -5,15 +5,24 @@ import avatarImg from "../assets/styles/images/Moti_Feliz.png";
 import genieImg from "../assets/styles/images/Moti_Feliz.png";
 import Particles from "../components/Particles";
 
+import motiHierro from "../assets/styles/images/Motis/Moti_Hierro.png";
+import motiBronce from "../assets/styles/images/Motis/Moti_Bronce.png";
+import motiPlata from "../assets/styles/images/Motis/Moti_Plata.png";
+import motiOro from "../assets/styles/images/Motis/Moti_Oro.png";
+import motiEsmeralda from "../assets/styles/images/Motis/Moti_Esmeralda.png";
+import motiRubi from "../assets/styles/images/Motis/Moti_Rubi.png";
+import motiDiamante from "../assets/styles/images/Motis/Moti_Diamante.png";
+import motiIridiscente from "../assets/styles/images/Motis/Moti_Iridiscente.png";
+
 const ranks = [
-  { name: 'Iron', minLevel: 1, image: 'src/front/assets/styles/images/Motis/Moti_Hierro.png' },
-  { name: 'Bronze', minLevel: 2, image: 'src/front/assets/styles/images/Motis/Moti_Bronce.png' },
-  { name: 'Silver', minLevel: 5, image: 'src/front/assets/styles/images/Motis/Moti_Plata.png' },
-  { name: 'Gold', minLevel: 10, image: 'src/front/assets/styles/images/Motis/Moti_Oro.png' },
-  { name: 'Emerald', minLevel: 20, image: 'src/front/assets/styles/images/Motis/Moti_Esmeralda.png' },
-  { name: 'Ruby', minLevel: 30, image: 'src/front/assets/styles/images/Motis/Moti_Rubi.png' },
-  { name: 'Diamond', minLevel: 50, image: 'src/front/assets/styles/images/Motis/Moti_Diamante.png' },
-  { name: 'Iridescent', minLevel: 100, image: 'src/front/assets/styles/images/Motis/Moti_Iridiscente.png' }
+  { name: 'Iron', minLevel: 1, image: motiHierro },
+  { name: 'Bronze', minLevel: 2, image: motiBronce },
+  { name: 'Silver', minLevel: 5, image: motiPlata },
+  { name: 'Gold', minLevel: 10, image: motiOro },
+  { name: 'Emerald', minLevel: 20, image: motiEsmeralda },
+  { name: 'Ruby', minLevel: 30, image: motiRubi },
+  { name: 'Diamond', minLevel: 50, image: motiDiamante },
+  { name: 'Iridescent', minLevel: 100, image: motiIridiscente }
 ];
 
 const getCurrentRank = (level) => {

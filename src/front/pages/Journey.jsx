@@ -5,6 +5,8 @@ import AnimatedPage from "../components/AnimatedPage";
 import Navbar2 from "../components/Navbar2";
 import Particles from "../components/Particles";
 
+import missionRosita from "../assets/styles/images/MISSION_TAREA_MANUAL_ROSITA.webp";
+
 const shuffleArray = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -82,7 +84,7 @@ const Journey = () => {
                   >
                     <div className={styles.cardFront}><h1>{num}</h1></div>
                     <div className={styles.cardBack}>
-                      <img src="src/front/assets/styles/images/MISSION_TAREA_MANUAL_ROSITA.webp" alt="MotyActive" />
+                      <img src={missionRosita} alt="MotyActive" />
                     </div>
                   </div>
                 );

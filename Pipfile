@@ -23,8 +23,9 @@ flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-jwt-extended = "*"
-flask-cors = "*"
 requests = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+flask-cors = "*"
 
 [requires]
 python_version = "3.13"

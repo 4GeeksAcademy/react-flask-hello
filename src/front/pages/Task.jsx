@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../assets/styles/Task.module.css";
 import Navbar from "../components/Navbar";
 import AnimatedPage from "../components/AnimatedPage";
 import Navbar2 from "../components/Navbar2";
 import Particles from "../components/Particles";
-import { useNavigate } from "react-router-dom";
 
 const content = [
   { id: 1, title: <h2>Workout</h2>, description: "Full-body strength training to improve endurance and muscle tone.", img: <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2669" alt="Workout" /> },
@@ -31,6 +31,8 @@ const Task = () => {
   const [achievementMsg, setAchievementMsg] = useState("");
   const [isCompleting, setIsCompleting] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isFromContent = location.state?.fromContent;
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
@@ -50,7 +52,11 @@ const Task = () => {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, mission_id: missionId })
+        body: JSON.stringify({ 
+          user_id: userId, 
+          mission_id: missionId,
+          from_content: isFromContent 
+        })
       });
       const data = await res.json();
       if (res.ok && data.usermission_id) {
@@ -72,7 +78,6 @@ const Task = () => {
     const userId = localStorage.getItem("user_id");
     const usermissionId = localStorage.getItem(`${userId}_usermission_id`);
     const current = JSON.parse(localStorage.getItem(`${userId}_currentMission`));
-    const unlocked = [];
 
     try {
       await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/usermission/${usermissionId}`, {
@@ -83,35 +88,41 @@ const Task = () => {
       console.error("Error al completar misión:", err);
     }
 
-    if (current === 3) unlocked.push("zen_mode");
-    if (current === 1 || current === 5) unlocked.push("strength_level");
+    // Solo desbloquear logros si NO viene de Content
+    if (!isFromContent) {
+      const unlocked = [];
+      if (current === 3) unlocked.push("zen_mode");
+      if (current === 1 || current === 5) unlocked.push("strength_level");
 
-    const completedCount = JSON.parse(localStorage.getItem(`${userId}_missionsCompleted`)) || 0;
-    if (completedCount === 0) unlocked.push("first_level");
-    const newCount = completedCount + 1;
-    localStorage.setItem(`${userId}_missionsCompleted`, newCount);
-    if (newCount === 3) unlocked.push("perfect_combo");
+      const completedCount = JSON.parse(localStorage.getItem(`${userId}_missionsCompleted`)) || 0;
+      if (completedCount === 0) unlocked.push("first_level");
+      const newCount = completedCount + 1;
+      localStorage.setItem(`${userId}_missionsCompleted`, newCount);
+      if (newCount === 3) unlocked.push("perfect_combo");
 
-    if (unlocked.length > 0) {
-      setAchievementMsg(`🎉 Logro desbloqueado: ${unlocked.join(", ").replace(/_/g, " ")}`);
-      try {
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/achievements/unlock`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId, achievements: unlocked })
-        });
-      } catch (err) {
-        console.error("Error al guardar logros:", err);
+      if (unlocked.length > 0) {
+        setAchievementMsg(`🎉 Logro desbloqueado: ${unlocked.join(", ").replace(/_/g, " ")}`);
+        try {
+          await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/achievements/unlock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, achievements: unlocked })
+          });
+        } catch (err) {
+          console.error("Error al guardar logros:", err);
+        }
       }
     }
 
     setTimeout(() => {
       setAchievementMsg("");
-      localStorage.setItem(`${userId}_currentClickedNumber`, current + 1);
+      if (!isFromContent) {
+        localStorage.setItem(`${userId}_currentClickedNumber`, current + 1);
+      }
       localStorage.removeItem(`${userId}_currentMission`);
       localStorage.removeItem(`${userId}_missionAccepted`);
       localStorage.removeItem(`${userId}_usermission_id`);
-      window.location.href = "/journey";
+      navigate(isFromContent ? "/content" : "/journey");
     }, 2000);
   };
 
@@ -119,7 +130,7 @@ const Task = () => {
     const userId = localStorage.getItem("user_id");
     localStorage.removeItem(`${userId}_currentMission`);
     localStorage.removeItem(`${userId}_missionAccepted`);
-    navigate("/journey");
+    navigate(isFromContent ? "/content" : "/journey");
   };
 
   if (!mission) return <p>Cargando misión...</p>;

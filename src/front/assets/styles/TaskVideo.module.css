@@ -1,0 +1,193 @@
+.taskVideoContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+  max-width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.taskVideoLayoutGrid {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: "Poppins", sans-serif;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.taskVideoMainPanel {
+  grid-column: 1;
+  grid-row: 1;
+  border: solid 0.5px #776696;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 3rem;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.taskVideoPlayerContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  position: relative;
+  max-height: 70vh;
+  box-sizing: border-box;
+}
+
+.taskVideoPlayer {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+
+.taskVideoInfo {
+  padding: 1.5rem;
+  background-color: #221833;
+  color: white;
+  border-radius: 0 0 12px 12px;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.taskVideoInfo h2 {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  flex: 1;
+  min-width: 200px;
+}
+
+.taskVideoInfo p {
+  color: #e0e0e0;
+  line-height: 1.6;
+  font-family: "Poppins", sans-serif;
+}
+
+.taskVideoButton {
+  background-color: #ff5c5c;
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 160px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.taskVideoButton:hover {
+  background-color: #ff3c3c;
+  transition: background-color 0.2s ease;
+}
+
+.taskVideoLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .taskVideoLayoutGrid {
+    max-width: 1200px;
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .taskVideoContainer {
+    padding: 0;
+  }
+
+  .taskVideoLayoutGrid {
+    max-width: 100%;
+    padding: 0 2rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .taskVideoMainPanel {
+    margin-top: 2rem;
+  }
+
+  .relatedVideosPanel {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .controlsPanel {
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .taskVideoLayoutGrid {
+    padding: 0 1rem;
+  }
+
+  .taskVideoInfo {
+    padding: 1rem;
+  }
+
+  .taskVideoInfo h2 {
+    font-size: 1.2rem;
+    min-width: 150px;
+  }
+
+  .taskVideoButton {
+    width: 120px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .relatedVideoItem {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .thumbnailContainer {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .taskVideoLayoutGrid {
+    padding: 0 0.5rem;
+  }
+
+  .taskVideoInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .taskVideoInfo h2 {
+    font-size: 1.1rem;
+  }
+
+  .taskVideoButton {
+    width: 100%;
+  }
+} 

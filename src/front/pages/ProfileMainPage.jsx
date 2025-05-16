@@ -119,15 +119,13 @@ const ProfileMainPage = () => {
       <div className={styles.layoutGrid}>
         {/* CARD 1: Profile Info */}
         <div className={`${styles.card} ${styles.card1}`}>
-          <h4 className={styles.cardTitle}>
-            <strong>Name:</strong> {user.username}
-          </h4>
-          <p><strong>Years:</strong></p>
-          <p><strong>Job:</strong></p>
-          <p><strong>City:</strong></p>
-          <button className={styles.editButton}>✏️</button>
+          <h3 className={styles.cardTitle}>
+            Your Rank
+          </h3>
+          <div className={styles.rankMoty}>
+            <img src="src/front/assets/styles/images/Motis/Moti_Esmeralda.png" alt="Moty_Rank" />
+          </div>
         </div>
-
         {/* CARD 2: Today's Tasks */}
         <div className={`${styles.card} ${styles.card2}`}>
           <h4 className={styles.cardTitle}>Today's Tasks</h4>

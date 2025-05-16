@@ -212,21 +212,20 @@ const ProfileMainPage = () => {
         disableRotation={false}
       />
       <div className={styles.layoutGrid}>
-        {/* CARD 1: Profile Info */}
+                {/* CARD 1: Profile Info */}
         <div className={`${styles.card} ${styles.card1}`}>
-          <h3 className={styles.cardTitle}>
-            Your Rank
-          </h3>
+          <h3 className={styles.cardTitle}>Your Rank</h3>
           <div className={styles.rankDisplay}>
             {(() => {
               const currentRank = getCurrentRank(user.level);
               return (
                 <>
-                  <img 
-                    src={currentRank.image}
-                    alt={`${currentRank.name} Rank`}
-                    className={styles.rankMoty}
-                  />
+                  <div className={styles.rankMoty}>
+                    <img 
+                      src={currentRank.image}
+                      alt={`${currentRank.name} Rank`}
+                    />
+                  </div>
                   <h4 style={{ 
                     margin: '0.5rem 0 0 0',
                     fontWeight: 'bold',
@@ -281,7 +280,7 @@ const ProfileMainPage = () => {
               className={styles.button}
               onClick={() => navigate('/journey')}
             >
-              ALL CONTENT
+              GO TO YOUR JOURNEY
             </button>
           </div>
           <img src={genieImg} alt="Genie" className={styles.heroImage} />
@@ -376,7 +375,7 @@ const ProfileMainPage = () => {
               className={styles.button}
               onClick={() => navigate('/achievements')}
             >
-              ALL CONTENT
+              SEE ALL
             </button>
           </div>
           <div className={styles.achievementsGrid}>

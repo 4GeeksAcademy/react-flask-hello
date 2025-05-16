@@ -432,8 +432,23 @@
 :local(.achievementIcon) {
   width: 40px;
   height: 40px;
-  object-fit: cover;
-  border-radius: 0.3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b213e;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+:local(.achievementIcon i) {
+  font-size: 1.2rem;
+  color: #b384ff;
+}
+
+:local(.achievementIcon):hover {
+  transform: scale(1.1);
+  background-color: #3d2f5b;
 }
 
 /* Script para ajustar el scale automáticamente */

@@ -40,6 +40,24 @@ function getFirstDayOfWeek(year, month) {
   return day === 0 ? 6 : day - 1;
 }
 
+const iconMap = {
+  first_level: "fas fa-rocket",
+  perfect_combo: "fas fa-fire",
+  zen_mode: "fas fa-spa",
+  breathe_recharge: "fas fa-wind",
+  knowledge_initiate: "fas fa-headphones-alt",
+  strength_level: "fas fa-dumbbell",
+  legendary_day: "fas fa-peace",
+  supreme_explorer: "fas fa-leaf",
+  unstoppable_mission: "fas fa-trophy",
+  labyrinth_king: "fas fa-crown",
+  mindfulness_jedi: "fas fa-balance-scale",
+  serenity_winds: "fas fa-cloud-sun",
+  virtual_gymnast: "fas fa-person-walking",
+  digital_bibliophile: "fas fa-book",
+  burst_mode: "fas fa-bolt"
+};
+
 const ProfileMainPage = () => {
   const [profile, setProfile] = useState(null);
   const [missionsToday, setMissionsToday] = useState(() =>
@@ -353,13 +371,10 @@ const ProfileMainPage = () => {
             </button>
           </div>
           <div className={styles.achievementsGrid}>
-            {achievements.map((ach, i) => (
-              <img
-                key={i}
-                src={avatarImg}
-                alt={ach.title}
-                className={styles.achievementIcon}
-              />
+            {achievements.map((achievement, i) => (
+              <div key={i} className={styles.achievementIcon}>
+                <i className={iconMap[achievement.key] || "fas fa-star"} />
+              </div>
             ))}
           </div>
         </div>

@@ -56,16 +56,16 @@ const fadeInUp = {
 const reviews = [
   { name: "Sophie Turner - Designer", img: avatar1, text: "A fun and motivating experience!" },
   { name: "Lucas Smith - Developer", img: avatar2, text: "The best way to keep growing every week." },
-  { name: "Mia Chen - Architect", img: avatar3, text: "I love the missions and the progress tracking!" },
+  { name: "David Castillo - Architect & Designer", img: avatar3, text: "I love the missions and the progress tracking!" },
   { name: "Noah Brown - Musician", img: avatar4, text: "Super easy to use and very inspiring." },
-  { name: "Emma Wilson - Nurse", img: avatar5, text: "I feel more productive and positive!" },
+  { name: "Daniela Manzanarez - Engineer", img: avatar5, text: "I feel more productive and positive!" },
   { name: "Liam Garcia - Trucker", img: avatar6, text: "Great for building new habits!" },
   { name: "Olivia Lee - Chef", img: avatar7, text: "Perfect for staying on track." },
-  { name: "Ethan Kim - Student", img: avatar8, text: "Love the achievements system!" },
+  { name: "Exalberto - Backend Dev", img: avatar8, text: "Love the achievements system!" },
   { name: "Ava Patel - Teacher", img: avatar9, text: "The stats panel is super clear." },
-  { name: "Mason Clark - Boxer", img: avatar10, text: "I never get bored, always new challenges!" },
+  { name: "Javier - ProGamer", img: avatar10, text: "I never get bored, always new challenges!" },
   { name: "Isabella Scott - Artist", img: avatar11, text: "It keeps me motivated every day." },
-  { name: "Logan Adams - Coach", img: avatar12, text: "Amazing support and community!" },
+  { name: "Ebony Williams - OF Model", img: avatar12, text: "Amazing support and community!" },
   { name: "Chloe Evans - Writer", img: avatar13, text: "Easy to use and very effective." },
   { name: "Benjamin Hall - Doctor", img: avatar14, text: "I love tracking my progress!" },
   { name: "Emily Young - Dancer", img: avatar15, text: "The best app for self-improvement!" },
@@ -77,22 +77,22 @@ const reviews = [
 ];
 
 const reviews2 = [
-  { name: "Emma Wilson - Nurse", img: avatar5, text: "Highly recommend for anyone!" },
-  { name: "Liam Garcia - Trucker", img: avatar6, text: "Perfect for staying on track." },
-  { name: "Olivia Lee - Chef", img: avatar7, text: "Love the achievements system!" },
+  { name: "Daniela Manzanarez - Engineer", img: avatar5, text: "Highly recommend for anyone!" },
+  { name: "Irio Gomez - Overcoock PRO", img: avatar6, text: "Perfect for staying on track." },
+  { name: "Daniel Landa - Python Dev", img: avatar7, text: "Love the achievements system!" },
   { name: "Ethan Kim - Student", img: avatar8, text: "The stats panel is super clear." },
   { name: "Ava Patel - Teacher", img: avatar9, text: "I never get bored, always new challenges!" },
-  { name: "Mason Clark - Boxer", img: avatar10, text: "It keeps me motivated every day." },
-  { name: "Isabella Scott - Artist", img: avatar11, text: "Amazing support and community!" },
+  { name: "Javier - ProGamer", img: avatar10, text: "Lo piense Alberto me da igual...Buena Web!" },
+  { name: "Ana Rosa - Maxi's Wife", img: avatar11, text: "Amazing support and community!" },
   { name: "Logan Adams - Coach", img: avatar12, text: "Easy to use and very effective." },
   { name: "Chloe Evans - Writer", img: avatar13, text: "I love tracking my progress!" },
-  { name: "Benjamin Hall - Doctor", img: avatar14, text: "The best app for self-improvement!" },
+  { name: "Elsa Jean - Nurse", img: avatar14, text: "The best app for self-improvement!" },
   { name: "Emily Young - Dancer", img: avatar15, text: "Great for daily motivation!" },
   { name: "Jack King - Engineer", img: avatar16, text: "I recommend it to all my friends!" },
-  { name: "Grace Wright - Lawyer", img: avatar17, text: "Keeps me focused and consistent." },
-  { name: "Henry Green - Entrepreneur", img: avatar18, text: "Love the design and features!" },
+  { name: "Alpreza - Figma Master", img: avatar17, text: "Keeps me focused and consistent." },
+  { name: "Krula Muñoz - Project Manager", img: avatar18, text: "Love the design and features!" },
   { name: "Lily Baker - Psychologist", img: avatar19, text: "Best way to level up your life!" },
-  { name: "Daniel Carter - Athlete", img: avatar20, text: "A fun and motivating experience!" },
+  { name: "Javier - ProGamer", img: avatar20, text: "Lo piense Alberto me da igual...Buena Web!" },
 ];
 
 const subscriptions = [
@@ -100,7 +100,7 @@ const subscriptions = [
     plan: "Beginner",
     price: "FREE",
     features: [
-      "3 daily quests per day",
+      "5 daily quests per day",
       "Standard Profile Pic",
       "Access to all content",
       "Access to all your stats",
@@ -112,7 +112,7 @@ const subscriptions = [
     price: "4,99€",
     features: [
       "All free features +",
-      "Unlimited daily quests",
+      "Up to 10 daily quests",
       "Customizable Profile Pic",
       "Access to Extra Content",
     ],
@@ -122,10 +122,10 @@ const subscriptions = [
     plan: "Premium",
     price: "12,99€",
     features: [
-      "Two requests at time",
-      "One/day delivery",
-      "Unlimited AI assets",
-      "Private Trello board",
+      "Personalized content, just for you.",
+      "Fully Custom Avatar",
+      "Get Early Acces to Future Updates",
+      "Much more...!",
     ],
     button: "Pay for Pro",
   },
@@ -147,8 +147,11 @@ const Landing = () => {
 
   const handleNavigateRegister = () => navigate("/register");
 
+  const tabList = ["INTRODUCTION", "MISSIONS", "PROGRESS", "RESOURCES", "ACHIEVEMENTS"];
+
   const getImageByTab = () => {
     switch (activeTab) {
+      case "INTRODUCTION": return motiFeliz;
       case "MISSIONS": return motiFeliz;
       case "PROGRESS": return ptoAmoMancuernas;
       case "RESOURCES": return enamorado;
@@ -159,19 +162,20 @@ const Landing = () => {
 
   const getTextByTab = () => {
     switch (activeTab) {
+      case "INTRODUCTION":
+        return "Hello! I'm Moti, and I'll be with you throughout your journey to your best self.";
       case "MISSIONS":
-        return "Each week, you'll get missions tailored to your goals: health, learning, habits, creativity...\n Every completed task gives you XP and boosts your stats.\n It's all about staying motivated and tracking real evolution.";
+        return "Each week, you'll get a fresh set of random missions.\nYou never know what you'll get — that's part of the fun!\nEvery mission is a new adventure designed to help you grow while keeping things exciting.\nBuild better habits without the routine — one surprise at a time.";
       case "PROGRESS":
-        return "Your personal stats panel shows how you're evolving each week.\n Track your level, consistency, energy points, and improvement areas: clean and distraction-free.";
+        return "Your progress is reflected not only in your stats but also in your level and rank.\nThe more you complete, the stronger you get — and so does your Moti, who evolves alongside you as a reflection of your journey.\nKeep track of your evolution week by week and feel the difference.";
       case "RESOURCES":
-        return "Choose your focus: physical, mental, creative... or mix it all!\n Select the content you want to see and adjust the difficulty of your journey.\n Start easy. Raise the challenge when you're ready. It's up to you!";
+        return "Curious to explore beyond your missions?\nDive into the full library of content — whether it was assigned to you or not.\nLearn, grow, and discover at your own pace.\nYour personal development is in your hands.";
       case "ACHIEVEMENTS":
-        return "Trak all your progress visually by unlocking achievements and celebrate every milestone!";
+        return "Visualize your progress by unlocking achievements and celebrating every milestone.\nFrom small wins to major breakthroughs, each badge tells the story of your journey.\nGo ahead — make your evolution visible and enjoy the ride!";
       default:
         return "";
     }
   };
-
   const tripledReviews = [...reviews, ...reviews, ...reviews];
   const quintupledReviews = [...reviews2, ...reviews2, ...reviews2, ...reviews2, ...reviews2];
 
@@ -230,7 +234,7 @@ const Landing = () => {
       <section className={`${styles.landingSection} ${styles.landingHow}`}>
         <motion.h2 variants={fadeInUp} initial="hidden" whileInView="visible">How it works</motion.h2>
         <div className={styles.landingTabs}>
-          {["MISSIONS", "PROGRESS", "RESOURCES", "ACHIEVEMENTS"].map((tab) => (
+          {tabList.map((tab) => (
             <button key={tab} className={`${styles.landingTabButton} ${activeTab === tab ? styles.activeTab : ""}`} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>

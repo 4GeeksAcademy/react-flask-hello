@@ -4,18 +4,32 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 
 const AuthCallback = () => {
-    const { getIdTokenClaims } = useAuth0();
+    const { getIdTokenClaims, isAuthenticated, isLoading } = useAuth0();
     const navigate = useNavigate();
 
     useEffect(() => {
         const handleCallback = async () => {
             try {
+                // Esperar a que Auth0 termine de cargar
+                if (isLoading) {
+                    return;
+                }
+
+                // Verificar si el usuario está autenticado
+                if (!isAuthenticated) {
+                    console.error('Usuario no autenticado');
+                    navigate('/login');
+                    return;
+                }
+
                 // Obtener el token de ID de Auth0
                 const claims = await getIdTokenClaims();
                 if (!claims) {
                     throw new Error('No se pudo obtener el token de ID');
                 }
 
+                console.log('URL del backend:', import.meta.env.VITE_BACKEND_URL);
+                
                 // Enviar el token al backend
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/callback`, {
                     method: 'POST',
@@ -41,13 +55,17 @@ const AuthCallback = () => {
                 }
             } catch (error) {
                 console.error('Error en el callback:', error);
-                alert('Error en la autenticación');
+                alert('Error en la autenticación: ' + error.message);
                 navigate('/login');
             }
         };
 
         handleCallback();
-    }, [getIdTokenClaims, navigate]);
+    }, [getIdTokenClaims, navigate, isAuthenticated, isLoading]);
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return <Loader />;
 };

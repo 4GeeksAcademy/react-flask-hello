@@ -107,25 +107,3 @@
 .nextButton {
   right: 10px;
 }
-
-/* Fade out en los extremos del carrusel */
-.carousel::before,
-.carousel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 40px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.carousel::before {
-  left: 0;
-  background: linear-gradient(to right, #1a1625 0%, transparent 100%);
-}
-
-.carousel::after {
-  right: 0;
-  background: linear-gradient(to left, #1a1625 0%, transparent 100%);
-}

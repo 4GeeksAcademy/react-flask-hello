@@ -114,7 +114,9 @@ const Register = () => {
 
           <button className={styles.registerBtn} onClick={handleRegister}>Register</button>
 
-          <button className={styles.registerGithubBtn} onClick={() => loginWithRedirect()}>
+          <button className={styles.registerGithubBtn} onClick={() => loginWithRedirect({
+            redirectUri: `${window.location.origin}/callback`
+          })}>
             <i className="fab fa-github"></i> Sign up with Github
           </button>
 

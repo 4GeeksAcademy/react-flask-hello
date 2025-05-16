@@ -20,6 +20,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import {PasswordRequestReset} from "./pages/passwordResetRequest";
 import { FindSpots } from "./pages/FindSpots";
 import { Favorites } from "./pages/Favorites";
+import { SpotByLocation } from "./pages/SpotByLocation";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,6 +42,7 @@ export const router = createBrowserRouter(
       <Route path="request-reset" element={<PasswordRequestReset/>} />
       <Route path="favorites" element={<Favorites />} />
       <Route path="find-spots" element={<FindSpots />} />
+      <Route path="spot-by-location/:cocktail" element={<SpotByLocation />} />
     </Route>
   )
 );

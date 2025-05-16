@@ -280,7 +280,7 @@ h1 {
 /* ||{Cards of drinks in  the findSpot.jsx view}|| */
 .cocktail-find-spot {
   width: 100%;          /* fill its grid column */
-  height: 300px;        /* set a fixed height you like */
+  height: 380px;        /* set a fixed height you like */
   display: flex;
   flex-direction: column;
 }

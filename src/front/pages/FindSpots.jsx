@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 // !!use encodeURIComponent() to encode the category name and to make it safe to use in a URL e.g "Seafood & Fish" becomes "Seafood%20%26%20Fish" not spaces and special characters.
 // You don't need to import it, it's a built-in function in JavaScript.
@@ -204,20 +205,29 @@ export const FindSpots = () => {
                             // { ing: "Triple sec", meas: "1/2 oz " }]
                           }))
                           // filter out the empty ingredients and map over the array to get the ingredient and measure.
-                          .filter(x => x.ing && x.meas)
+                          .filter(x => x.ing)
                           // this map  iterates the filtered array of { ing, meas }.
                           .map((x, index) => (
                             <li key={index}>
-                              {/* >>conditional if x.measure is truthy, we trim() whitespace and append a space.  */}
+                              {/* >>conditional if x.measure is truthy, we trim() whitespace(Ensures you don’t end up with accidental double-spaces in your output.) and append a space.  */}
                               {/* >> Otherwise output an empty string. */}
                               {x.measure ? x.measure.trim() + " " : ""} - {x.ing}
                             </li>
                           ))
                         }
                       </ul>
-                      <button className="btn btn-primary" onClick={() => { }}>
-                        Find spots by location
-                      </button>
+                      <div className="d-flex gap-2 justify-content-center mt-3">
+                        <Link to={`/spot-by-location/${encodeURIComponent(d.strDrink)}`}>
+                          <button  onClick={() => { }}>
+                            Spots by Location
+                          </button>
+                        </Link>
+                        <Link to={`/google-api/${encodeURIComponent(d.strDrink)}`}>        
+                          <button onClick={() => { }}>
+                            Spots nearby
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

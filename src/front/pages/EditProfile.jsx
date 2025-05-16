@@ -89,7 +89,15 @@ const EditProfile = () => {
     }));
   };
 
-  const handleAvatarSelect = async (avatarSrc) => {
+  const handleAvatarClick = (avatarSrc) => {
+    setSelectedAvatar(avatarSrc);
+    setProfile(prev => ({
+      ...prev,
+      avatar: avatarSrc
+    }));
+  };
+
+  const handleApplyChanges = async () => {
     try {
       const userId = localStorage.getItem("user_id");
       const token = localStorage.getItem("token");
@@ -98,18 +106,17 @@ const EditProfile = () => {
         throw new Error("No hay sesión activa. Por favor, inicia sesión de nuevo.");
       }
 
+      if (!selectedAvatar) {
+        throw new Error("Por favor, selecciona un avatar.");
+      }
+
       // Guardar en localStorage primero para UI inmediata
-      localStorage.setItem("user_avatar", avatarSrc);
-      setSelectedAvatar(avatarSrc);
-      setProfile(prev => ({
-        ...prev,
-        avatar: avatarSrc
-      }));
+      localStorage.setItem("user_avatar", selectedAvatar);
 
       console.log("Enviando petición con:", {
         userId,
         token,
-        avatarSrc
+        avatarSrc: selectedAvatar
       });
 
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/${userId}/avatar`, {
@@ -119,7 +126,7 @@ const EditProfile = () => {
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ 
-          avatar_url: avatarSrc 
+          avatar_url: selectedAvatar 
         })
       });
 
@@ -192,7 +199,7 @@ const EditProfile = () => {
                     className={`${styles.editProfileAvatarOption} ${
                       selectedAvatar === avatar.src ? styles.editProfileAvatarOptionSelected : ""
                     }`}
-                    onClick={() => handleAvatarSelect(avatar.src)}
+                    onClick={() => handleAvatarClick(avatar.src)}
                   >
                     <img 
                       src={avatar.src} 
@@ -213,10 +220,8 @@ const EditProfile = () => {
                 <button 
                   type="button" 
                   className={`${styles.editProfileButton} ${styles.editProfileSaveButton}`}
-                  onClick={() => {
-                    localStorage.setItem("selected_avatar", selectedAvatar);
-                    handleClose();
-                  }}
+                  onClick={handleApplyChanges}
+                  disabled={!selectedAvatar}
                 >
                   Aplicar cambios
                 </button>

@@ -5,6 +5,26 @@ import avatarImg from "../assets/styles/images/Moti_Feliz.png";
 import genieImg from "../assets/styles/images/Moti_Feliz.png";
 import Particles from "../components/Particles";
 
+const ranks = [
+  { name: 'Iron', minLevel: 1, image: 'src/front/assets/styles/images/Motis/Moti_Hierro.png' },
+  { name: 'Bronze', minLevel: 2, image: 'src/front/assets/styles/images/Motis/Moti_Bronce.png' },
+  { name: 'Silver', minLevel: 5, image: 'src/front/assets/styles/images/Motis/Moti_Plata.png' },
+  { name: 'Gold', minLevel: 10, image: 'src/front/assets/styles/images/Motis/Moti_Oro.png' },
+  { name: 'Emerald', minLevel: 20, image: 'src/front/assets/styles/images/Motis/Moti_Esmeralda.png' },
+  { name: 'Ruby', minLevel: 30, image: 'src/front/assets/styles/images/Motis/Moti_Rubi.png' },
+  { name: 'Diamond', minLevel: 50, image: 'src/front/assets/styles/images/Motis/Moti_Diamante.png' },
+  { name: 'Iridescent', minLevel: 100, image: 'src/front/assets/styles/images/Motis/Moti_Iridiscente.png' }
+];
+
+const getCurrentRank = (level) => {
+  return ranks.reduce((highest, rank) => {
+    if (level >= rank.minLevel && rank.minLevel >= highest.minLevel) {
+      return rank;
+    }
+    return highest;
+  }, ranks[0]);
+};
+
 const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
 const monthNames = [
   "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -170,8 +190,33 @@ const ProfileMainPage = () => {
           <h3 className={styles.cardTitle}>
             Your Rank
           </h3>
-          <div className={styles.rankMoty}>
-            <img src="src/front/assets/styles/images/Motis/Moti_Esmeralda.png" alt="Moty_Rank" />
+          <div className={styles.rankDisplay}>
+            {(() => {
+              const currentRank = getCurrentRank(user.level);
+              return (
+                <>
+                  <img 
+                    src={currentRank.image}
+                    alt={`${currentRank.name} Rank`}
+                    className={styles.rankMoty}
+                  />
+                  <h4 style={{ 
+                    margin: '0.5rem 0 0 0',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase'
+                  }}>
+                    {currentRank.name}
+                  </h4>
+                  <p style={{ 
+                    margin: '0.5rem 0 0 0',
+                    fontSize: '0.9rem',
+                    opacity: '0.8' 
+                  }}>
+                    Level {user.level}
+                  </p>
+                </>
+              );
+            })()}
           </div>
         </div>
         {/* CARD 2: Today's Tasks */}

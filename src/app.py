@@ -30,11 +30,11 @@ def create_app():
         expose_headers=["Content-Type"],
         methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"]
     )
-    # h
+    
     setup_admin(app)
     app.register_blueprint(api, url_prefix="/api")
 
-    # 🔁 Carga automática de logros
+    # Carga automática de logros
     from api.seed_achievements import seed_achievements
     with app.app_context():
         seed_achievements()

@@ -127,5 +127,4 @@ const Register = () => {
     </div>
   );
 };
-// hola
 export default Register;

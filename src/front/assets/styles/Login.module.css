@@ -207,6 +207,6 @@
     justify-content: left;
     text-align:left;
     margin-left: 250px;
-    width: 100%; /* NUEVO: asegurar que no se desplacen */
+    width: 100%; /*asegurar que no se desplacen */
   }
 }

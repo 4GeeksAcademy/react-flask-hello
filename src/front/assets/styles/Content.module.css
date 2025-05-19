@@ -1,0 +1,45 @@
+.contentPage {
+  background-color: #000000;
+  height: 100dvh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.contentMainArea {
+  flex: 1;
+  height: calc(100dvh - var(--navbar-height, 64px));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;
+}
+
+.contentMainArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contentMainArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contentMainArea::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.contentSection {
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+}
+
+.contentSectionTitle {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: white;
+  padding-left: 10px;
+} 

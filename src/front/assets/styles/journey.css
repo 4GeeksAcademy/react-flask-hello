@@ -1,0 +1,185 @@
+/*
+p {
+    font-size: clamp(16px, 2vw, 20px);
+}
+
+h3 {
+    font-size: clamp(28px, 3vw, 36px);
+}
+
+img {
+    width: clamp(120px, 12vw, 175px);
+    height: clamp(120px, 12vw, 175px);
+}
+
+.navbar {
+    position: relative;
+}
+
+.content{
+    display: flex;
+    flex-direction: row;
+    height: 100vw;
+    width: 100vw;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.journey_container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: #130B21;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.menu_month {
+    width: clamp(200px, 20vw, 270px);
+    height: clamp(250px, 30vh, 300px);
+    margin-left: clamp(30px, 8vw, 80px);
+    background-color: #221833;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 200px; /* Aseguramos que no se haga más pequeño que 200px */
+}
+/*
+.menu_text p {
+    margin: 0px 0px clamp(10px, 4vh, 20px) clamp(15px, 6vw, 30px);
+    cursor: pointer;
+}
+
+.menu_text h3 {
+    margin: clamp(10px, 4vh, 20px) 0px clamp(12px, 5vh, 24px) clamp(15px, 6vw, 30px);
+    cursor: pointer;
+}
+
+.cards {
+    height: clamp(200px, 30vh, 300px);
+    display: flex;
+    flex-direction: row;
+    margin-left: clamp(30px, 8vw, 80px);
+    gap: clamp(20px, 5vw, 40px);
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(20px, 5vw, 50px);
+    margin-top: clamp(30px, 6vh, 55px);
+}
+
+.card1, .card2, .card3 {
+    width: clamp(120px, 12vw, 175px);
+    height: clamp(120px, 12vw, 175px);
+    border-radius: 16px;
+    box-shadow: 0px 11px 0px rgba(9, 3, 19, 1);
+    border: solid 1px #090313;
+}
+
+.card1 {
+    background-color: #6725D8;
+}
+
+.card2 {
+    background-color: #FB645C;
+}
+
+.card3 {
+    background-color: #4E465C;
+}
+
+.card1:active,
+.card2:active,
+.card3:active {
+    box-shadow: none;
+    transform: translateY(11px);
+}
+
+
+@media (max-width: 2500px) {
+    .moty {
+        top: clamp(20px, 5vh, 50px);
+        left: clamp(40px, 5vw, 120px);
+    }
+
+    .menu_month {
+        width: clamp(180px, 18vw, 250px);
+        height: clamp(250px, 28vh, 300px);
+    }
+
+    .cards {
+        height: clamp(180px, 25vh, 300px);
+        margin-left: clamp(20px, 5vw, 80px);
+    }
+
+    .button {
+        gap: clamp(15px, 12vw, 30px);
+    }
+
+    .card1, .card2, .card3 {
+        width: clamp(120px, 10vw, 175px);
+        height: clamp(120px, 10vw, 175px);
+    }
+
+    .card1 img {
+        width: clamp(120px, 10vw, 175px);
+        height: clamp(120px, 10vw, 175px);
+    }
+}
+
+@media (max-width: 1500px) {
+    .menu_month {
+        width: clamp(200px, 20vw, 200px);
+        height: clamp(270px, 28vh, 300px);
+    }
+
+    .card1, .card2, .card3 {
+        width: clamp(125px, 7vw, 175px);
+        height: clamp(125px, 7vw, 175px);
+    }
+
+    .card1 img {
+        width: clamp(125px, 7vw, 175px);
+        height: clamp(125px, 7vw, 175px);
+    }
+}
+
+@media (max-width: 1100px) {
+    .menu_month {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        width: 180px; 
+        min-width: 180px;
+    }
+/*
+    .button {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0;
+        overflow-x: unset; /* Eliminar el scroll horizontal */
+    }
+/*
+    .card1, .card2, .card3 {
+        width: 125px; /* Mantener tamaño fijo *
+        height: 125px; 
+    }
+/*
+    .card1 img {
+        width: 125px;
+        height: 125px;
+    }
+}

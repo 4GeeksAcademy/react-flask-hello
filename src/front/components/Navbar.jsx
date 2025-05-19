@@ -1,19 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import "../assets/styles/navbar.css";
 
-export const Navbar = () => {
+const Navbar = () => {
+  const { store, dispatch } = useGlobalReducer();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div>
-			</div>
-		</nav>
-	);
+  // Mostrar el navbar solo en la landing ('/' o '/landing'), para cualquier usuario
+  const isLanding = location.pathname === "/" || location.pathname === "/landing";
+
+  if (!isLanding) return null;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch({ type: "set_user", payload: null });
+    navigate("/");
+  };
+
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link className="navbar-brand" to="/" onClick={handleLogoClick}>
+          <span className="level-text">LEVEL</span><span className="up-text">UP</span>
+        </Link>
+        <div className="navbar-buttons">
+          {store.user ? (
+            <>
+              <span>{store.user.email}</span>
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-outline-primary">Login</Link>
+              <Link to="/register" className="btn btn-outline-success">Register</Link>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
 };
+
+export default Navbar;

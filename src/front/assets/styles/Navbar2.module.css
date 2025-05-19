@@ -1,0 +1,239 @@
+:local(.navbar2) {
+  width: 100vw;
+  height: 7vh;
+  background-color: #040404;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  position: relative;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+:local(.navbar2 p) {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+:local(.navbar2 a){
+  color: white;
+  text-decoration: none;
+}
+
+:local(.navbar2Open) {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0a030f;
+  z-index: 1000;
+}
+
+:local(.navbar2Logo) {
+  margin-left: 5%;
+  cursor: pointer;
+}
+
+:local(.navbar2Logo h2:hover) {
+  color: #a066ff;
+}
+
+:local(.navbar2Up){
+  color: #FB645C;
+}
+
+:local(.navbar2Logo h2) {
+  font-size: 2rem;
+}
+
+:local(.navbar2Text) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4rem;
+}
+
+:local(.navbar2Text p:hover) {
+  color: #b384ff;
+}
+
+:local(.navbar2Profile) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 5%;
+}
+
+:local(.navbar2ProfileContent) {
+  gap: 0rem;
+  margin: 0;
+}
+/**/
+:local(.navbar2LevelText) {
+  margin-bottom: 0;
+}
+
+:local(.navbar2Image) {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* BAR XP */
+:local(.navbar2LevelBar) {
+  width: 100px;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+:local(.navbar2LevelFill) {
+  height: 100%;
+  background-color: #5cfb7e;
+  transition: width 0.3s ease-in-out;
+}
+
+:local(.navbar2XP) {
+  margin-top: 0;
+}
+
+:local(.navbar2Dropdown) {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+:local(.navbar2DropdownMenu) {
+  width: max-content;
+  min-width: 10rem;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  background-color: #040404;
+  padding: 0.5rem 0.5rem;
+  border-radius: 1rem;
+  z-index: 999;
+  display: flex;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: solid 1px #a066ff;
+}
+
+:local(.navbar2DropdownMenu p) {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 16px;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s;
+}
+
+:local(.navbar2HamburgerMenu) {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+}
+
+:local(.navbar2HamburgerIcon) {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+}
+
+:local(.navbar2MobileMenu) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+:local(.navbar2CloseButton) {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+:local(.navbar2ProfileDropdown) {
+  position: absolute;
+  top: 100%;
+  right: 4%;
+  transform: translateX(-50%);
+  background-color: #040404;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  border: solid 1px #a066ff;
+  z-index:2;
+}
+
+:local(.navbar2ProfileDropdown p) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 16px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+:local(.navbar2ProfileDropdown p:hover) {
+  color: #b384ff;
+}
+
+:local(.navbar2LogoutButton) {
+  background-color: #040404;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+:local(.navbar2LogoutButton i) {
+  color: #FB645C;
+}
+
+:local(.navbar2LogoutButton:hover) {
+  color: #FB645C;
+}
+
+@media (max-width: 1024px) {
+  :local(.navbar2Text),
+  :local(.navbar2Logo),
+  :local(.navbar2Profile) {
+    display: none;
+  }
+
+  :local(.navbar2HamburgerMenu) {
+    display: flex;
+  }
+}

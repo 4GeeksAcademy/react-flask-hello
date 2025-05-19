@@ -1,0 +1,26 @@
+.category-container {
+    background: #221833;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 150px;
+  }
+  
+  .category-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .category-item {
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  
+  .category-item:hover {
+    color: #9f7aea;
+  }
+  

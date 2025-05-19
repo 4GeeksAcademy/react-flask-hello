@@ -1,0 +1,212 @@
+.loginViewPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.loginViewPage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.loginViewContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.282);
+  background: transparent;
+  position: relative;
+  z-index: 3;
+}
+
+.loginViewBox {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loginViewLeft {
+  background-color: rgba(0, 0, 0, 0.9);
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.loginViewRight {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  color: white;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginViewTitle {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.loginViewTitleAccent {
+  color: #ff5c5c;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.loginViewHeading2 {
+  color: white;
+  margin: 0 0 10px;
+}
+
+.loginViewParagraph {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.loginViewInput {
+  width: 94,5%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2e2e2e;
+  color: white;
+  font-size: 16px;
+}
+
+.loginViewInput::placeholder {
+  color: #ccc;
+}
+
+.loginViewRemember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.loginViewBtn {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  background-color: #ff5c5c;
+  color: black;
+  font-weight: bold;
+  width: 100%;
+}
+
+.loginViewGithubBtn {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  background-color: black;
+  color: white;
+  border: 1px solid #444;
+  width: 100%;
+}
+
+.loginViewSignup {
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+.loginViewSignup span {
+  color: orange;
+  cursor: pointer;
+}
+
+.loginViewInfoList {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5%;
+  gap: 20px;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.loginViewInfoItem {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
+  color: white;
+}
+
+.loginViewInfoItem i {
+  font-size: 32px;
+  color: #ff5c5c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .loginViewContainer {
+    flex-direction: column;
+    border-radius: 16px; /* Bordes generales para el marco */
+    max-width: 500px;
+    overflow: hidden; /* Respetar los bordes */
+  }
+
+  .loginViewBox {
+    width: 100%;
+    padding: 30px 20px;
+    border-radius: 0; /* Quita bordes individuales */
+  }
+
+  .loginViewLeft,
+  .loginViewRight {
+    border-radius: 0; /* Asegura contenedor */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loginViewInfoList {
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .loginViewInfoItem {
+    justify-content: left;
+    text-align:left;
+    margin-left: 250px;
+    width: 100%; /*asegurar que no se desplacen */
+  }
+}

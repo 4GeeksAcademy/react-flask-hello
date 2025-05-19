@@ -1,34 +1,37 @@
-
 import click
-from api.models import db, User
+from flask.cli import with_appcontext
+from api.models import db, AppUser, Mission
+import datetime
 
-"""
-In this file, you can add as many commands as you want using the @app.cli.command decorator
-Flask commands are usefull to run cronjobs or tasks outside of the API but sill in integration 
-with youy database, for example: Import the price of bitcoin every night as 12am
-"""
-def setup_commands(app):
-    
-    """ 
-    This is an example command "insert-test-users" that you can run from the command line
-    by typing: $ flask insert-test-users 5
-    Note: 5 is the number of users to add
-    """
-    @app.cli.command("insert-test-users") # name of our command
-    @click.argument("count") # argument of out command
-    def insert_test_users(count):
-        print("Creating test users")
-        for x in range(1, int(count) + 1):
-            user = User()
-            user.email = "test_user" + str(x) + "@test.com"
-            user.password = "123456"
-            user.is_active = True
-            db.session.add(user)
-            db.session.commit()
-            print("User: ", user.email, " created.")
+# 🔧 Comando para insertar datos de prueba en la base de datos
+@click.command('create-dummy-data')
+@with_appcontext
+def create_dummy_data():
+    user = AppUser(
+        username="testuser",
+        email="test@example.com",
+        password_hash="hashedpassword",
+        avatar_url="https://example.com/avatar.jpg",
+        level=1,
+        xp_total=0,
+        mood_actual="motivated",
+        objetivo_personal="Ser mi mejor versión"
+    )
+    db.session.add(user)
+    db.session.commit()
 
-        print("All test users created")
+    mission = Mission(
+        title="Camina 30 minutos",
+        description="Sal a caminar durante media hora",
+        type="manual",
+        category="ejercicio",
+        duration_minutes=30,
+        xp_reward=50,
+        content_url="",
+        is_daily=True,
+        is_weekly=False
+    )
+    db.session.add(mission)
+    db.session.commit()
 
-    @app.cli.command("insert-test-data")
-    def insert_test_data():
-        pass
+    click.echo("✔️ Usuario y misión de prueba creados exitosamente")

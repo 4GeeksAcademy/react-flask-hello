@@ -1,29 +1,40 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'  // Global styles for your application
-import { RouterProvider } from "react-router-dom";  // Import RouterProvider to use the router
-import { router } from "./routes";  // Import the router configuration
-import { StoreProvider } from './hooks/useGlobalReducer';  // Import the StoreProvider for global state management
-import { BackendURL } from './components/BackendURL';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./index.css";
 
-const Main = () => {
-    
-    if(! import.meta.env.VITE_BACKEND_URL ||  import.meta.env.VITE_BACKEND_URL == "") return (
-        <React.StrictMode>
-              <BackendURL/ >
-        </React.StrictMode>
-        );
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+import { StoreProvider } from "./hooks/useGlobalReducer";
+import { BackendURL } from "./components/BackendURL";
+import { Auth0Provider } from '@auth0/auth0-react';
+
+// ✅ Define el componente principal con nombre
+function MainApp() {
+  if (!import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL === "") {
     return (
-        <React.StrictMode>  
-            {/* Provide global state to all components */}
-            <StoreProvider> 
-                {/* Set up routing for the application */} 
-                <RouterProvider router={router}>
-                </RouterProvider>
-            </StoreProvider>
-        </React.StrictMode>
+      <React.StrictMode>
+        <BackendURL />
+      </React.StrictMode>
     );
+  }
+
+  return (
+    <React.StrictMode>
+      <Auth0Provider
+        domain="dev-q4ltdjvbavvzdw40.us.auth0.com"
+        clientId="bXYAbt4b5Nsqotk2ER0QP27wPxWQYflc"
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+        }}
+      >
+        <StoreProvider>
+          <RouterProvider router={router} />
+        </StoreProvider>
+      </Auth0Provider>
+    </React.StrictMode>
+  );
 }
 
-// Render the Main component into the root DOM element.
-ReactDOM.createRoot(document.getElementById('root')).render(<Main />)
+// ✅ Llamada final
+ReactDOM.createRoot(document.getElementById("root")).render(<MainApp />);

@@ -1,0 +1,101 @@
+/* Navbar base */
+.navbar {
+  position: relative;
+}
+
+/* Icono persona a la izquierda */
+.nav-link-persona {
+  color: #0e6021 !important;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  text-decoration: none !important;
+}
+
+.nav-link-persona:hover {
+  color: #1e7e34;
+}
+
+#navbarNav {
+  transition: none !important; /* Elimina cualquier transición no deseada en altura */
+}
+
+/* Botón hamburguesa normal, sin desplazamiento especial */
+.navbar-toggler {
+  margin-right: 0.75rem;
+  z-index: 1100;
+}
+
+/* Menú colapsado en móviles: vertical debajo del botón */
+@media (max-width: 991.98px) {
+  #navbarNav.collapse {
+    position: absolute;
+    top: 56px;
+    left: 0; /* despliegue desde la izquierda */
+    width: 200px;
+    border-radius: 0 0 0.5rem 0.5rem;
+    z-index: 1050;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
+    display: block !important; /* Evita que Bootstrap oculte el contenido con display: none */
+    height: auto !important;   /* Anula el "slide down" por height animado */
+    overflow: visible !important;
+  }
+
+  #navbarNav.collapse.show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #navbarNav.collapse.show .nav-link {
+    color: #0e6021 !important;
+    margin-bottom: 0.5rem;
+  }
+
+  #navbarNav.collapse.show .nav-link:hover {
+    color: #1e7e34 !important;
+  }
+
+  .navbar-nav {
+    flex-direction: column !important;
+  }
+}
+
+/* Enlaces generales */
+#navbarNav .nav-link {
+  color: white;
+  font-weight: 600;
+}
+
+#navbarNav .nav-link:hover {
+  color: #0d6efd;
+}
+
+.navbar-light .navbar-brand,
+.navbar-light .nav-link {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.navbar-light .nav-link:hover {
+  color: #1e7e34;
+}
+
+.navbar-light .nav-link {
+  color: #0e6021 !important;
+  font-weight: 600;
+}
+
+.navbar-light .nav-link:hover {
+  color: #0e6021 !important;
+}
+
+.container-fluid {
+  position: relative;
+}

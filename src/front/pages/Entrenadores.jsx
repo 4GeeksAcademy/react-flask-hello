@@ -4,7 +4,8 @@ const Entrenadores = () => {
 
     const selectedTrainer = {
         image: "https://randomuser.me/api/portraits/men/75.jpg",
-        datos: "Mi nombre es PEPE. Estoy especializado en Crossfit.",
+        name: "Pepe",
+        datos: "Estoy especializado en Crossfit.",
         titulos: "Ciencias del deporte",
         selected: true,
     };
@@ -12,13 +13,15 @@ const Entrenadores = () => {
     const otherTrainers = [
         {
             image: "https://randomuser.me/api/portraits/women/65.jpg",
-            datos: "Mi nombre es PEPA. Estoy especializada en Yoga y danza clasica.",
+            name: "Lola",
+            datos: "Estoy especializada en Yoga y danza clasica.",
             titulos: "Ciencias del deporte",
             selected: false,
         },
         {
             image: "https://randomuser.me/api/portraits/men/76.jpg",
-            datos: "Mi nombre es JUAN. Estoy especializado en gym.",
+            name: "Juan",
+            datos: "Estoy especializado en musculacion y cardio.",
             titulos: "Ciencias del deporte",
             selected: false,
         },
@@ -40,12 +43,14 @@ const Entrenadores = () => {
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img src={selectedTrainer.image} alt="Entrenador" className="trainer-img me-3" />
                                 <div className="flex-grow-1">
+                                    <p><strong>NAME</strong><br />{selectedTrainer.name}</p>
                                     <p><strong>DATOS PERSONALES</strong><br />{selectedTrainer.datos}</p>
                                     <p><strong>TÍTULOS</strong><br />{selectedTrainer.titulos}</p>
                                 </div>
                                 <button className="btn btn-light">Seleccionado</button>
                             </div>
                         </div>
+
                         <h2 className="text-center mb-4">Otros Entrenadores</h2>
                         <div className="container">
                             <div className="row gy-4">
@@ -54,10 +59,11 @@ const Entrenadores = () => {
                                         <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                             <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" />
                                             <div className="flex-grow-1">
+                                                <p><strong>NAME</strong><br />{trainer.name}</p>
                                                 <p><strong>DATOS PERSONALES</strong><br />{trainer.datos}</p>
                                                 <p><strong>TÍTULOS</strong><br />{trainer.titulos}</p>
                                             </div>
-                                            <button className="btn btn-outline-light">Solicitar</button>
+                                            <button className="btn btn-outline-light p-2">Solicitar</button>
                                         </div>
                                     </div>
                                 ))}

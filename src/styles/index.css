@@ -1,6 +1,3 @@
-
-
-
 .nutricion-page .hero {
   background: linear-gradient(to right, #f0fff0, #e0f7fa);
   border-radius: 20px;
@@ -19,4 +16,36 @@
 .nutricion-page .list-group-item {
   font-size: 1.1rem;
   background-color: #f9f9f9;
+}
+
+.sport-page .hero {
+  background: linear-gradient(to right, #f0fff0, #e0f7fa);
+  border-radius: 20px;
+}
+
+.sport-page h1,
+.sport-page h2 {
+  color: #ECEFCA;
+  font-weight: bold;
+}
+
+.sport-page .card-title {
+  color: #5a8dee;
+}
+
+.sport-page .list-group-item {
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+}
+
+.sport1{
+  background-color: beige;
+}
+
+.fondo{
+  background-color: #547792;
+}
+
+.sport-page h1{
+  color:#3c3c3c
 }

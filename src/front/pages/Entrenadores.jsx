@@ -29,15 +29,15 @@ const Entrenadores = () => {
             <div className="entrenador-page container mt-5 ">
                 {/* Header */}
                 <section className="hero text-center py-5">
-                    <h1 className="display-4">Entrenadores</h1>
+                    <h1 className="display-4 ">Entrenadores</h1>
                 </section>
 
                 {/* Body */}
                 <section className="planes my-5">
-                    <div className="trainer-section bg-dark text-light py-5">
+                    <div className="trainer-section text-light py-5">
                         <h2 className="text-center mb-4">Entrenador Seleccionado</h2>
                         <div className="container mb-5">
-                            <div className="trainer-card d-flex align-items-center p-3 rounded shadow bg-secondary">
+                            <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img src={selectedTrainer.image} alt="Entrenador" className="trainer-img me-3" />
                                 <div className="flex-grow-1">
                                     <p><strong>DATOS PERSONALES</strong><br />{selectedTrainer.datos}</p>
@@ -46,13 +46,12 @@ const Entrenadores = () => {
                                 <button className="btn btn-light">Seleccionado</button>
                             </div>
                         </div>
-
                         <h2 className="text-center mb-4">Otros Entrenadores</h2>
                         <div className="container">
                             <div className="row gy-4">
                                 {otherTrainers.map((trainer, index) => (
                                     <div className="col-md-6" key={index}>
-                                        <div className="trainer-card d-flex align-items-center p-3 rounded shadow bg-secondary">
+                                        <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                             <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" />
                                             <div className="flex-grow-1">
                                                 <p><strong>DATOS PERSONALES</strong><br />{trainer.datos}</p>

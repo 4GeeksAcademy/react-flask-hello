@@ -25,7 +25,7 @@
 
 .sport-page h1,
 .sport-page h2 {
-  color: #ECEFCA;
+  color: #ecefca;
   font-weight: bold;
 }
 
@@ -38,16 +38,16 @@
   background-color: #f9f9f9;
 }
 
-.sport1{
-  background-color: beige;
+.sport1 {
+  background-color: #ecefca;
 }
 
-.fondo{
+.fondo {
   background-color: #547792;
 }
 
-.sport-page h1{
-  color:#3c3c3c
+.sport-page h1 {
+  color: #3c3c3c;
 }
 
 .entrenador-page .hero {
@@ -61,7 +61,6 @@
 }
 
 .trainer-card {
-  background-color: #2c3e50;
   border: none;
 }
 
@@ -71,4 +70,16 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fff;
+}
+
+.tittle {
+  background-color: #ecefca;
+}
+
+.trainer-card-1 {
+  background-color: #94b4c1;
+}
+
+.trainer-section {
+  background-color: #547792;
 }

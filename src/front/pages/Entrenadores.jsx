@@ -25,7 +25,7 @@ const Entrenadores = () => {
             titulos: "Ciencias del deporte",
             selected: false,
         },
-    ];
+    ]; 
 
     return (
         <div className="fondo">

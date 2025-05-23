@@ -1,29 +1,26 @@
 import React from "react";
-// index.css
-import "../../styles/nutricion.css";
 
-
-const NutricionPage = () => {
+const SportPage = () => {
   return (
-    <div className="nutricion-page container mt-5">
+    <div className="sport-page container mt-5">
       {/* Hero */}
       <section className="hero text-center py-5">
-        <h1 className="display-4 tittle">Nutrición Personalizada</h1>
+        <h1 className="display-4">Deporte Personalizada</h1>
         <p className="lead">
-          Mejora tu salud con planes de alimentación adaptados a tus objetivos.
+          Mejora tu salud con planes de deporte adaptados a tus objetivos.
         </p>
       </section>
 
       {/* Planes de alimentación */}
       <section className="planes my-5">
-        <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
+        <h2 className="text-center mb-4">Nuestros Planes</h2>
         <div className="row">
           <div className="col-md-4">
             <div className="card h-100 shadow">
               <div className="card-body">
-                <h5 className="card-title ">Plan Pérdida de Peso</h5>
+                <h5 className="card-title">Plan Pérdida de Peso</h5>
                 <p className="card-text">
-                  Menús bajos en calorías con todos los nutrientes esenciales.
+                  Planes bajos en calorías con todos los deportes esenciales.
                 </p>
               </div>
             </div>
@@ -64,4 +61,4 @@ const NutricionPage = () => {
   );
 };
 
-export default NutricionPage;
+export default SportPage;

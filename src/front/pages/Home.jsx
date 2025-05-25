@@ -5,7 +5,7 @@ export const Home = () => {
 	return (
 		<div className="banner-container d-flex align-items-center justify-content-center text-center">
 			<div>
-				<h1 className="display-4 fw-bold">Descubre tu estilo deportivo</h1>
+				<h1 className="display-4 bg-secondary-subtle fw-bold ">Descubre tu estilo deportivo</h1>
 				<div className="mt-4">
 
 					<img src={Banner2} class="img-fluid" alt="Banner Principal" />

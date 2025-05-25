@@ -1,4 +1,4 @@
-import banner from '../assets/images/banner.png'
+import Banner2 from '../assets/images/Banner2.png'
 
 export const Home = () => {
 
@@ -8,7 +8,7 @@ export const Home = () => {
 				<h1 className="display-4 fw-bold">Descubre tu estilo deportivo</h1>
 				<div className="mt-4">
 
-					<img src={banner} class="img-fluid" alt="Banner Principal" />
+					<img src={Banner2} class="img-fluid" alt="Banner Principal" />
 				</div>
 				<div className="container mt-5">
 					<div className="row justify-content-center">

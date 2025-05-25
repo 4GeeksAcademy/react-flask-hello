@@ -3,6 +3,10 @@ import { BsPersonFill } from "react-icons/bs";
 import { BsHouseFill } from "react-icons/bs";
 import "../styles/Navbar.css";
 
+
+
+
+
 const Navbar = () => {
   return (
     <nav
@@ -12,7 +16,7 @@ const Navbar = () => {
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
         position: "abolute",
-        
+
       }}
     >
       <div className="container-fluid d-flex align-items-center">

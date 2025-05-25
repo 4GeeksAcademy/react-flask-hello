@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 
 export const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-withe w-100 px-3">
+        <nav
+            className="navbar navbar-expand-lg navbar-light bg-withe w-100 px-3 border-bottom border-1 border-secondary-subtle"
+        >
             <div className="container-fluid">
                 {/* Logo a la izquierda */}
                 <Link className="navbar-brand d-flex align-items-center" to="/">
@@ -25,7 +27,6 @@ export const Navbar = () => {
                     <Link className="btn btn-outline-dark" to="/register">
                         Regístrate
                     </Link>
-
                 </div>
             </div>
         </nav>

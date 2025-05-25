@@ -9,7 +9,7 @@ export const Navbar = () => {
                 {/* Logo a la izquierda */}
                 <Link className="navbar-brand d-flex align-items-center" to="/">
                     <i className="bi bi-box-seam fs-4 me-2"></i> {/* Ícono como logo */}
-                    <span className="fw-bold">Falkon Strike</span>
+                    <span className="fw-bold">MiApp</span>
                 </Link>
 
                 {/* Botones a la derecha */}

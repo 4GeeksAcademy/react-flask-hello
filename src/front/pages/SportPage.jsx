@@ -62,5 +62,4 @@ const SportPage = () => {
         </div>
     );
 };
-
 export default SportPage;

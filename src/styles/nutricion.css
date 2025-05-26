@@ -3,10 +3,20 @@ body{
     color: #ECEFCA
 }
 
-
-.nutricion-page .hero {
-  background: linear-gradient(to right, #f0fff0, #e0f7fa);
+.nutricion-page .npHero {
+  background-color: #547792;
   border-radius: 20px;
+}
+
+.tarjetaNp{
+    background: #ECEFCA;
+}
+.tarjetaNp{
+    background: #ECEFCA;
+}
+
+.subTittle {
+    color: red;
 }
 
 .nutricion-page .tittle,

@@ -7,7 +7,7 @@ const NutricionPage = () => {
   return (
     <div className="nutricion-page container mt-5">
       {/* Hero */}
-      <section className="hero text-center py-5">
+      <section className="npHero text-center py-5">
         <h1 className="display-4 tittle">Nutrición Personalizada</h1>
         <p className="lead">
           Mejora tu salud con planes de alimentación adaptados a tus objetivos.
@@ -20,8 +20,8 @@ const NutricionPage = () => {
         <div className="row">
           <div className="col-md-4">
             <div className="card h-100 shadow">
-              <div className="card-body">
-                <h5 className="card-title ">Plan Pérdida de Peso</h5>
+              <div className="card-body tarjetaNp">
+                <h5 className="card-title  ">Plan Pérdida de Peso</h5>
                 <p className="card-text">
                   Menús bajos en calorías con todos los nutrientes esenciales.
                 </p>
@@ -30,8 +30,8 @@ const NutricionPage = () => {
           </div>
           <div className="col-md-4">
             <div className="card h-100 shadow">
-              <div className="card-body">
-                <h5 className="card-title">Plan Ganancia Muscular</h5>
+              <div className="card-body tarjetaNp">
+                <h5 className="card-title subTittle">Plan Ganancia Muscular</h5>
                 <p className="card-text">
                   Alta ingesta proteica y planificación para el crecimiento muscular.
                 </p>
@@ -40,7 +40,7 @@ const NutricionPage = () => {
           </div>
           <div className="col-md-4">
             <div className="card h-100 shadow">
-              <div className="card-body">
+              <div className="card-body tarjetaNp">
                 <h5 className="card-title">Plan Salud General</h5>
                 <p className="card-text">
                   Nutrición balanceada para sentirte bien cada día.
@@ -53,7 +53,7 @@ const NutricionPage = () => {
 
       {/* Beneficios */}
       <section className="beneficios my-5">
-        <h2 className="text-center mb-4">¿Por qué elegirnos?</h2>
+        <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">🍏 Asesoramiento profesional</li>
           <li className="list-group-item">🧬 Dietas adaptadas a tu metabolismo</li>

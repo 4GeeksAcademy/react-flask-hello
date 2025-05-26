@@ -1,5 +1,8 @@
 import React from "react";
+import { Navbar } from "../components/Navbar";
 
+// index.css
+import "../../styles/entrenador.css";
 const Entrenadores = () => {
 
     const selectedTrainer = {
@@ -39,15 +42,15 @@ const Entrenadores = () => {
                 <section className="planes my-5">
                     <div className="trainer-section text-light py-5">
                         <h2 className="text-center mb-4">Entrenador Seleccionado</h2>
-                        <div className="container mb-5">
+                        <div className="container-1 mb-5">
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img src={selectedTrainer.image} alt="Entrenador" className="trainer-img me-3" />
                                 <div className="flex-grow-1">
-                                    <p><strong>NAME</strong><br />{selectedTrainer.name}</p>
-                                    <p><strong>DATOS PERSONALES</strong><br />{selectedTrainer.datos}</p>
-                                    <p><strong>TÍTULOS</strong><br />{selectedTrainer.titulos}</p>
+                                    <p className="text-black"><strong>NAME</strong><br />{selectedTrainer.name}</p>
+                                    <p className="text-black"><strong>DATOS PERSONALES</strong><br />{selectedTrainer.datos}</p>
+                                    <p className="text-black"><strong>TÍTULOS</strong><br />{selectedTrainer.titulos}</p>
                                 </div>
-                                <button className="btn btn-light">Seleccionado</button>
+                                <button className="btn btn-outline-dark">Seleccionado</button>
                             </div>
                         </div>
 
@@ -59,11 +62,11 @@ const Entrenadores = () => {
                                         <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                             <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" />
                                             <div className="flex-grow-1">
-                                                <p><strong>NAME</strong><br />{trainer.name}</p>
-                                                <p><strong>DATOS PERSONALES</strong><br />{trainer.datos}</p>
-                                                <p><strong>TÍTULOS</strong><br />{trainer.titulos}</p>
+                                                <p className="text-black"><strong>NAME</strong><br />{trainer.name}</p>
+                                                <p className="text-black"><strong>DATOS PERSONALES</strong><br />{trainer.datos}</p>
+                                                <p className="text-black"><strong>TÍTULOS</strong><br />{trainer.titulos}</p>
                                             </div>
-                                            <button className="btn btn-outline-light p-2">Solicitar</button>
+                                            <button className="btn btn-outline-dark p-2 ms-3">Solicitar</button>
                                         </div>
                                     </div>
                                 ))}

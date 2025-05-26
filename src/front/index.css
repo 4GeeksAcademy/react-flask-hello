@@ -1,0 +1,47 @@
+.unsetBtn {
+  all: unset;
+}
+
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100vh;
+  width: 250px;
+  background-color: white;
+  color: black;
+  padding: 1.5rem;
+  transition: left 0.3s ease;
+  z-index: 200;
+}
+
+.sidenav-open {
+  left: 0;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.menu-overlay.active {
+  opacity: 0.5;
+  pointer-events: all;
+}
+
+.imgUserWidth {
+  width: 4rem;
+  height: 4rem;
+}
+
+.hovNav:hover {
+  color: #6c757d !important;
+}

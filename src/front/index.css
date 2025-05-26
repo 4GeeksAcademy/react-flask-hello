@@ -54,3 +54,19 @@
 .AdminLoginWidth {
   width: 30rem;
 }
+
+.imgLogin {
+  width: 30rem;
+  height: 40rem;
+}
+
+.AdminLoginWidth {
+  width: 30rem;
+}
+
+.img-profile {
+  max-width: 254px;
+  width: 100%;
+  height: 254px;
+  aspect-ratio: 1/1;
+}

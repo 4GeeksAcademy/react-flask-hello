@@ -11,7 +11,7 @@ export const Navbar = () => {
 	};
 
 	return (
-		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3">
+		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3 mb-5">
 			<div>
 				<button className="unsetBtn ms-5 fs-4" onClick={toggleMenu}>
 					<i className="ri-menu-line"></i>
@@ -39,7 +39,7 @@ export const Navbar = () => {
 						</a>
 						<ul className="dropdown-menu text-small shadow dropdownNav" data-popper-placement="top-start">
 							<li>
-								<a className="dropdown-item" href="#">Profile</a>
+								<Link to="/profile" className="dropdown-item">Profile</Link>
 							</li>
 							<li>
 								<hr className="dropdown-divider" />

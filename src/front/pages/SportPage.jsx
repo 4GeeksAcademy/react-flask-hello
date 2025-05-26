@@ -1,11 +1,13 @@
 import React from "react";
+import { Navbar } from "../components/Navbar";
+
+// index.css
+import "../../styles/sport.css";
 
 const SportPage = () => {
     return (
-        <div className= "fondo">
         <div className="sport-page container mt-5 ">
-            {/* Hero */}
-            <section className="hero text-center py-5">
+            <section className="sport-header text-center py-5">
                 <h1 className="display-4">Deporte Personalizado</h1>
                 <p className="lead">
                     Mejora tu salud con planes de deporte adaptados a tus objetivos.
@@ -14,12 +16,13 @@ const SportPage = () => {
 
             {/* Planes de deporte */}
             <section className="planes my-5">
-                <h2 className="text-center mb-4">Nuestros Planes</h2>
+                <h2 className="text-center subtittle mb-4 ">Nuestros Planes</h2>
                 <div className="row">
                     <div className="col-md-4">
                         <div className="card h-100 shadow">
                             <div className="card-body sport1">
                                 <h5 className="card-title">Plan Pérdida de Peso</h5>
+                                <img src="/perdidaPeso.webp" className="card-img-top" alt="Plan pérdida de peso" />
                                 <p className="card-text">
                                     Planes bajos en calorías con todos los deportes esenciales.
                                 </p>
@@ -30,6 +33,7 @@ const SportPage = () => {
                         <div className="card h-100 shadow">
                             <div className="card-body sport1">
                                 <h5 className="card-title">Plan Ganancia Muscular</h5>
+                                <img src="/masa_muscular.jpg" className="card-img-top" alt="Ganancia Muscular" />
                                 <p className="card-text">
                                     Planificación para el crecimiento muscular.
                                 </p>
@@ -40,6 +44,7 @@ const SportPage = () => {
                         <div className="card h-100 shadow">
                             <div className="card-body sport1">
                                 <h5 className="card-title">Plan Salud General</h5>
+                                <img src="/ejercicios_balanceados.jpg" className="card-img-top" alt="Salud General" />
                                 <p className="card-text">
                                     Ejercicios balanceados para sentirte bien cada día.
                                 </p>
@@ -51,14 +56,13 @@ const SportPage = () => {
 
             {/* Beneficios */}
             <section className="beneficios my-5">
-                <h2 className="text-center mb-4">¿Por qué elegirnos?</h2>
+                <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
                 <ul className="list-group list-group-flush caja-bot">
                     <li className="list-group-item">🍏 Asesoramiento profesional</li>
                     <li className="list-group-item">🧬 Ejercicios adaptadas a tu metabolismo</li>
                     <li className="list-group-item">📊 Seguimiento de resultados</li>
                 </ul>
             </section>
-        </div>
         </div>
     );
 };

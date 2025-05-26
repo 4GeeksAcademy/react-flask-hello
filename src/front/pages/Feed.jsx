@@ -51,7 +51,7 @@ const Feed = () => {
         <div
             className="bg-light min-vh-100"
             style={{
-                backgroundImage: `url("/FondoFeed.png")`,
+                backgroundImage: `url("/opcionFeed.jpg")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundAttachment: "fixed"

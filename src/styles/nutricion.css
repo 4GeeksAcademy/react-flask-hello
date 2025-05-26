@@ -1,0 +1,89 @@
+body {
+  background: #213448;
+  color: #ECEFCA;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nutricion-page {
+  padding-top: 150px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin-bottom: 0;
+  background: #213448;
+}
+
+
+.logo-navbar {
+  height: 90px;
+  object-fit: contain;
+}
+
+.nutricion-page .npHero {
+  background-color: #547792;
+  border-radius: 20px;
+}
+
+.npHero {
+  background-image: url("/comdia.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  color: white;
+  margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.npHero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.npHero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.tarjetaNp {
+  background: #ECEFCA;
+}
+
+
+.nutricion-page .tittle,
+.nutricion-page .subtittle {
+  color: white;
+  font-weight: bold;
+}
+
+.nutricion-page .card-title {
+  color: #5a8dee;
+}
+
+.nutricion-page .list-group-item {
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+}

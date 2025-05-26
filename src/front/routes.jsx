@@ -12,6 +12,9 @@ import Register from "./pages/Register";
 import Men from "./pages/Men"
 import Women from "./pages/Women"
 import { Service } from "./pages/Service";
+import ProductList from "./pages/ProductList";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 
 
 export const router = createBrowserRouter(
@@ -26,6 +29,9 @@ export const router = createBrowserRouter(
         <Route path="men" element={<Men />} />
         <Route path="women" element={<Women />} />
         <Route path="service" element={<Service />} />
+        <Route path="/productos" element={<ProductList />} />
+        <Route path="/producto/:id" element={<ProductDetail />} />
+        <Route path="/carrito" element={<Cart />} />
       </Route>
     )
 );

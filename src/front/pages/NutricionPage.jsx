@@ -1,4 +1,6 @@
 import React from "react";
+import { Navbar } from "../components/Navbar";
+
 // index.css
 import "../../styles/nutricion.css";
 
@@ -14,7 +16,6 @@ const NutricionPage = () => {
         </p>
       </section>
 
-      {/* Planes de alimentación */}
       <section className="planes my-5">
         <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
         <div className="row">
@@ -22,6 +23,7 @@ const NutricionPage = () => {
             <div className="card h-100 shadow">
               <div className="card-body tarjetaNp">
                 <h5 className="card-title  ">Plan Pérdida de Peso</h5>
+                <img src="/perdidaPeso.webp" className="card-img-top" alt="Plan pérdida de peso" />
                 <p className="card-text">
                   Menús bajos en calorías con todos los nutrientes esenciales.
                 </p>
@@ -32,6 +34,7 @@ const NutricionPage = () => {
             <div className="card h-100 shadow">
               <div className="card-body tarjetaNp">
                 <h5 className="card-title subTittle">Plan Ganancia Muscular</h5>
+                <img src="/gananciaMuscular.jpg" className="card-img-top" alt="Ganancia Muscular" />
                 <p className="card-text">
                   Alta ingesta proteica y planificación para el crecimiento muscular.
                 </p>
@@ -42,6 +45,7 @@ const NutricionPage = () => {
             <div className="card h-100 shadow">
               <div className="card-body tarjetaNp">
                 <h5 className="card-title">Plan Salud General</h5>
+                <img src="/saludGeneral.jpg" className="card-img-top" alt="Salud General" />
                 <p className="card-text">
                   Nutrición balanceada para sentirte bien cada día.
                 </p>

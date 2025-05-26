@@ -1,17 +1,17 @@
 .entrenador-page .hero {
-  background: linear-gradient(to right, #f0fff0, #e0f7fa);
-  border-radius: 20px;
+ background-image: url("/personal-trainer.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  color: white;
+  margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-.trainer-section {
-  background-color: #1e2a38;
-  color: #ffffff;
-}
-
-.trainer-card {
-  border: none;
-  background-color: #2c3e50;
-}
 
 .trainer-img {
   width: 150px;
@@ -21,12 +21,39 @@
   border: 2px solid #fff;
 }
 
-
-.trainer-card-1 {
-  background-color: #94b4c1;
+.p{
+background: black;
 }
 
-.trainer-section {
-  background-color: #547792;
+.trainer-card-1,
+.trainer-card_1 {
+  background-color: #ECEFCA;
 }
 
+
+body {
+  background: #213448;
+  color: #ECEFCA;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.entrenador-page {
+  padding-top: 150px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin-bottom: 0;
+  background: #213448;
+}
+
+.logo-navbar {
+  height: 90px;
+  object-fit: contain;
+}

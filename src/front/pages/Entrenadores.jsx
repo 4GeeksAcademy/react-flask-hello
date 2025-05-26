@@ -74,6 +74,6 @@ const Entrenadores = () => {
             </div>
         </div>
     );
-};
+}; 
 
 export default Entrenadores;

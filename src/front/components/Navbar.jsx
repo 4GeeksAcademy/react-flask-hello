@@ -25,17 +25,14 @@ export const Navbar = () => {
 						{/* Columna para el nombre del sitio */}
 						<div className="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
 							<Link to="/" className="navbar-brand text-black h3 mb-0">
-								<h3>ASAD-APP</h3>
+								<h2>ASAD-APP</h2>
 							</Link>
 						</div>
  
 						{/* Columna para los botones */}
 						<div className="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-2">
 							<Link to="/about">
-								<button className="btn btn-outline-dark px-3">About Us</button>
-							</Link>
-							<Link to="/login">
-								<button className="btn btn-dark px-3">Inicio de sesión</button>
+								<button className="btn btn-outline-black">About Us</button>
 							</Link>
 						</div>
 					</div>
@@ -52,11 +49,8 @@ export const Navbar = () => {
 					ASAD-APP
 				</h1>
 				<p style={{fontSize: "clamp(1rem, 2.5vw, 1.5rem)", color: "black",}}>
-					<strong>Tu mejor compañero para realizar los mejores eventos</strong>
+					<h2><strong>Tu mejor compañero para realizar los mejores eventos</strong></h2>
 				</p>
-				<Link to="/register">
-					<button className="btn btn-dark mt-3">REGISTRARSE</button>
-				</Link>
 			</div>
 		</header>
 	);

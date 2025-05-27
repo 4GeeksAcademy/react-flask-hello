@@ -16,11 +16,10 @@ export const Footer = () => {
 
 				<ul className="list-inline mb-3">
 					<li className="list-inline-item mx-2"><a href="/" className="text-light text-decoration-none">Home</a></li>
-					<li className="list-inline-item mx-2"><a href="/news" className="text-light text-decoration-none">News</a></li>
+					<li className="list-inline-item mx-2"><a href="/eventos" className="text-light text-decoration-none">Eventos</a></li>
 					<li className="list-inline-item mx-2"><a href="/about" className="text-light text-decoration-none">About</a></li>
 					<li className="list-inline-item mx-2"><a href="/contact" className="text-light text-decoration-none">Contact Us</a></li>
 				</ul>
-
 				<p className="mb-0 small">Copyright ©2025; Designed by <strong>DMPC</strong></p>
 			</div>
 		</footer>

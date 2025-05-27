@@ -23,26 +23,11 @@ export const Navbar = () => {
 						<div className="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-2">
 							<Link to="/about">
 								<button className="btn btn-outline-black">About Us</button>
-								<button className="btn btn-outline-dark px-3">About Us</button>
 							</Link>
 						</div>
 					</div>
 				</div>
 			</nav>
-
-			<div className="container text-center mb-5 px-3 mt-5">
-				<h1 style={{
-						fontSize: "clamp(2rem, 6vw, 4rem)",
-						fontWeight: "bold",
-						color: "#FF2E63",
-					}}
-				>
-					ASAD-APP
-				</h1>
-				<p style={{fontSize: "clamp(1rem, 2.5vw, 1.5rem)", color: "black",}}>
-					<h2><strong>Tu mejor compañero para realizar los mejores eventos</strong></h2>
-				</p>
-			</div>
 		</header>
 	);
 };

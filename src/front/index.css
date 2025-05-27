@@ -65,13 +65,16 @@
 }
 
 .homepage-container {
-  background-color: #1A1A1D;
-  background-image:  
-    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px),
+  background-color: #1a1a1d;
+  background-image: radial-gradient(
+      circle,
+      rgba(175, 7, 85, 0.418) 1px,
+      transparent 1px
+    ),
     radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px);
   background-position: 0 0, 25px 25px;
   background-size: 50px 50px;
-  color: #FFFFFF;
+  color: #ffffff;
   height: 100vh;
   padding: 2rem;
 }
@@ -82,20 +85,19 @@
 }
 
 .homepage-text h1 {
-  color: #FF2E63;
+  color: #ff2e63;
 }
 
 .homepage-text p {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
 }
 
-
 .homepage-buttons .btn-primary {
-  background-color: #FF2E63;
+  background-color: #ff2e63;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 50px;
   font-weight: 600;
   margin-top: 3rem;
@@ -107,21 +109,97 @@
 }
 
 .homepage-buttons .btn-outline-primary {
-  border: 2px solid #FF2E63;
-  color: #FF2E63;
+  border: 2px solid #ff2e63;
+  color: #ff2e63;
   background-color: transparent;
   border-radius: 50px;
   font-weight: 600;
   transition: all 0.3s ease;
-   margin-top: 3rem;
+  margin-top: 3rem;
 }
 
 .homepage-buttons .btn-outline-primary:hover {
-  background-color: #FF2E63;
-  color: #FFFFFF;
+  background-color: #ff2e63;
+  color: #ffffff;
 }
 
 .homepage-image {
   object-fit: cover;
   height: 100%;
+}
+
+/*Formulario Registro*/
+#registerForm label {
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+#registerForm {
+  height: 700px;
+  box-shadow: -10px 8px 5px 0px rgba(247, 8, 123, 0.75);
+  -webkit-box-shadow: -10px 8px 20px 0px rgba(247, 8, 123, 0.75);
+  -moz-box-shadow: -10px 8px 5px 0px rgba(247, 8, 123, 0.75);
+}
+
+#registerImg {
+  width: 400px;
+  height: 400px;
+  margin-bottom: 122px;
+  margin-left: 10px;
+  padding: 0%;
+  border-radius: 40px !important;
+}
+
+.registerHeadTittle h1 {
+  
+  color: #ff0095d2;
+  text-shadow: -2px 3px 3px rgba(255, 255, 255, 0.582);
+  margin: auto;
+  padding-top: 15px;
+  text-align: center;
+}
+
+.registerHeadTittle {
+  background-color: black;
+  height: 850px;
+}
+
+#imputRegisterForm {
+  height: 700px;
+  border: 2px solid #ff00408e;
+  border-radius: 1px 20px 1px 1px !important;
+  background: linear-gradient(
+    337deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgb(31, 31, 39) 89%,
+    rgb(65, 63, 63) 100%
+  );
+}
+
+.btn-enviarForm {
+  margin-left: 500px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  background-color: #ff0095d2;
+  color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-enviar:hover {
+  background-color: #ff008c;
+  transform: scale(1.05);
+}
+
+.btn-enviar:active {
+  background-color: #ff008c;
+  transform: scale(0.98);
 }

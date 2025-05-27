@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Integer, Text, Numeric, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
-from sqlalchemy import TIMESTAMP
 
 db = SQLAlchemy()
 
@@ -37,23 +36,24 @@ class Evento(db.Model):
     nombre: Mapped[str] = mapped_column(String(100), nullable=False)
     creador_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable=False)
     ubicacion: Mapped[str] = mapped_column(String(255), nullable=True)
+    fecha: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=True)  # Agregado campo fecha
+    descripcion: Mapped[str] = mapped_column(String(255), nullable=True)
 
+    creador = relationship("User", back_populates="eventos_creados")
     participantes = relationship("Participante", back_populates="evento", lazy="joined")
     tareas = relationship("Tarea", back_populates="evento", lazy="joined")
     gastos = relationship("Gasto", back_populates="evento", lazy="joined")
+    invitaciones = relationship("Invitacion", back_populates="evento", lazy="joined")
 
     def serialize(self):
-        # Separar tareas activas y realizadas
         tareas_activas = [t.serialize() for t in self.tareas if not t.completada]
         tareas_realizadas = [t.serialize() for t in self.tareas if t.completada]
 
-        # Sumar gastos directos del evento
         gastos_evento = sum(g.monto for g in self.gastos if g.monto is not None)
-
-        # Sumar gastos asociados a tareas
-        gastos_tareas = 0
-        for tarea in self.tareas:
-            gastos_tareas += sum(g.monto for g in tarea.gastos if g.monto is not None)
+        gastos_tareas = sum(
+            sum(g.monto for g in tarea.gastos if g.monto is not None)
+            for tarea in self.tareas
+        )
 
         total_gastos = gastos_evento + gastos_tareas
 
@@ -62,6 +62,7 @@ class Evento(db.Model):
             "nombre": self.nombre,
             "creador_id": self.creador_id,
             "ubicacion": self.ubicacion,
+            "fecha": self.fecha.isoformat() if self.fecha else None,  # Formateo fecha
             "participantes": [p.serialize() for p in self.participantes],
             "tareas_activas": tareas_activas,
             "tareas_realizadas": tareas_realizadas,
@@ -91,7 +92,6 @@ class Gasto(db.Model):
             "monto": float(self.monto) if self.monto is not None else None,
             "etiqueta": self.etiqueta,
         }
-
 
 class Invitacion(db.Model):
     __tablename__ = "invitaciones"
@@ -142,8 +142,6 @@ class Tarea(db.Model):
 
     evento = relationship("Evento", back_populates="tareas")
     asignado = relationship("User", back_populates="tareas_asignadas")
-    
-    # Nueva relación con Gasto
     gastos = relationship("Gasto", back_populates="tarea", cascade="all, delete-orphan")
 
     def serialize(self):
@@ -153,5 +151,5 @@ class Tarea(db.Model):
             "descripcion": self.descripcion,
             "asignado_a": self.asignado_a,
             "completada": self.completada,
-            "gastos": [g.serialize() for g in self.gastos]  # Opcional: incluir los gastos en la tarea
+            "gastos": [g.serialize() for g in self.gastos]
         }

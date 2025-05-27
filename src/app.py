@@ -11,7 +11,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-
+from datetime import timedelta
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -32,6 +32,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # ✅ CONFIGURAR CLAVE SECRETA JWT
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)

@@ -109,8 +109,8 @@ def crear_evento(current_user_id, user_id):
     data = request.json
     nombre = data.get('nombre')
     descripcion = data.get('descripcion')
-    fecha_str = data.get('fecha')
-    ubicacion = data.get('ubicacion')  # nuevo campo
+    fecha_str = data.get('fecha')  # fecha en string ISO 8601
+    ubicacion = data.get('ubicacion')
 
     if not nombre or not fecha_str:
         return jsonify({"message": "Nombre y fecha son obligatorios"}), 400
@@ -144,8 +144,6 @@ def crear_evento(current_user_id, user_id):
     }), 201
 
 
-# Ruta para actualizar un evento existente de un usuario. Solo el creador puede actualizarlo.
-# Permite cambiar nombre, descripción, fecha y ubicación (validando formato fecha).
 @api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['PUT'])
 @token_required
 def actualizar_evento(current_user_id, user_id, evento_id):
@@ -171,7 +169,7 @@ def actualizar_evento(current_user_id, user_id, evento_id):
         try:
             evento.fecha = datetime.fromisoformat(fecha_str)
         except ValueError:
-            return jsonify({"message": "Formato de fecha inválido"}), 400
+            return jsonify({"message": "Formato de fecha inválido. Usa YYYY-MM-DDTHH:MM:SS"}), 400
     if ubicacion is not None:
         evento.ubicacion = ubicacion
 

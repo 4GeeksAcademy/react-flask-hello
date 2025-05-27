@@ -77,7 +77,7 @@
   background-color: black;
   color: white;
 }
-
+/*homepage*/
 .homepage-container {
   background-color: #1A1A1D;
   background-image:  
@@ -140,3 +140,4 @@
   object-fit: cover;
   height: 100%;
 }
+/*homepage*/

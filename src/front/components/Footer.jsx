@@ -5,7 +5,7 @@ export const Footer = () => {
 		<>
 			{/* Sección principal del footer */}
 			<footer
-				className="text-white mt-5 pt-4 pb-3"
+				className="text-white pt-4 pb-3"
 				style={{ backgroundColor: "black" }}
 			>
 				<div className="container">

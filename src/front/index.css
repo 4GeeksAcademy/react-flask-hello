@@ -41,7 +41,7 @@
   margin-right: 2rem;
 }
 
-/* Responsivo para pantallas pequeñas */
+
 @media (max-width: 768px) {
   .animate-scroll i {
     font-size: 1rem;
@@ -49,14 +49,12 @@
   }
 }
 
-/* Ajuste solo en pantallas grandes */
 @media (min-width: 768px) {
   .contacto-footer {
     padding-left: 80px;
   }
 }
 
-/* En móviles, quitamos ese padding para mantener todo centrado */
 @media (max-width: 767px) {
   .contacto-footer {
     padding-left: 0 !important;
@@ -64,6 +62,22 @@
   }
 }
 
+/* Botón About Us */
+.btn-outline-black {
+  border: 2px solid black;
+  color: black;
+  background-color: transparent;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1.5rem; /* opcional: mejora el tamaño visual */
+}
+
+.btn-outline-black:hover {
+  background-color: black;
+  color: white;
+}
+/*homepage*/
 .homepage-container {
   background-color: #1a1a1d;
   background-image: radial-gradient(
@@ -80,8 +94,9 @@
 }
 
 .homepage-content {
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
+  
 }
 
 .homepage-text h1 {
@@ -203,3 +218,4 @@
   background-color: #ff008c;
   transform: scale(0.98);
 }
+/*homepage*/

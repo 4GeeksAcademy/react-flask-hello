@@ -1,0 +1,66 @@
+/* Animación que mueve el carrusel horizontalmente de derecha a izquierda */
+@keyframes scrollIcons {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Contenedor externo que oculta el desbordamiento */
+.icon-strip {
+  overflow: hidden;
+  width: 100%;
+  background-color: #ff2e63;
+}
+
+/* Wrapper que contiene la pista animada */
+.scroll-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Pista que se mueve – contiene los íconos duplicados */
+.animate-scroll {
+  display: flex;
+  white-space: nowrap; /* Mantiene todo en una sola línea */
+  animation: scrollIcons 30s linear infinite; /* Deslizamiento constante */
+}
+
+/* Grupo de íconos (duplicado) */
+.icon-group {
+  display: flex;
+}
+
+/* Íconos individuales */
+.animate-scroll i {
+  font-size: 1.5rem;
+  color: black;
+  margin-right: 2rem;
+}
+
+/* Responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .animate-scroll i {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+/* Ajuste solo en pantallas grandes */
+@media (min-width: 768px) {
+  .contacto-footer {
+    padding-left: 80px;
+  }
+}
+
+/* En móviles, quitamos ese padding para mantener todo centrado */
+@media (max-width: 767px) {
+  .contacto-footer {
+    padding-left: 0 !important;
+    text-align: center;
+  }
+}
+

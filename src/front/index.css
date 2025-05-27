@@ -1,0 +1,61 @@
+.homepage-container {
+  background-color: #1A1A1D;
+  background-image:  
+    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px),
+    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
+  color: #FFFFFF;
+  height: 100vh;
+  padding: 2rem;
+}
+
+.homepage-content {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.homepage-text h1 {
+  color: #FF2E63;
+}
+
+.homepage-text p {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+
+.homepage-buttons .btn-primary {
+  background-color: #FF2E63;
+  border: none;
+  color: #FFFFFF;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-top: 3rem;
+  transition: background-color 0.3s ease;
+}
+
+.homepage-buttons .btn-primary:hover {
+  background-color: #e02658;
+}
+
+.homepage-buttons .btn-outline-primary {
+  border: 2px solid #FF2E63;
+  color: #FF2E63;
+  background-color: transparent;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+   margin-top: 3rem;
+}
+
+.homepage-buttons .btn-outline-primary:hover {
+  background-color: #FF2E63;
+  color: #FFFFFF;
+}
+
+.homepage-image {
+  object-fit: cover;
+  height: 100%;
+}

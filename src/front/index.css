@@ -75,11 +75,12 @@
 }
 
 .homepage-content {
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
 .homepage-text h1 {
+  position: relative;
   color: #FF2E63;
 }
 

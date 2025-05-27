@@ -24,9 +24,6 @@ export const Navbar = () => {
 							<Link to="/about">
 								<button className="btn btn-outline-dark px-3">About Us</button>
 							</Link>
-							<Link to="/login">
-								<button className="btn btn-dark px-3">Iniciar Sesion</button>
-							</Link>
 						</div>
 					</div>
 				</div>

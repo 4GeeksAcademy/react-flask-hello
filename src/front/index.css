@@ -56,8 +56,9 @@
 }
 
 .imgLogin {
-  width: 30rem;
+  width: 40rem;
   height: 40rem;
+  object-fit: cover;
 }
 
 .AdminLoginWidth {

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-
+import "../../styles/footer.css";
 
 export const Footer = () => {
 
 	return (
-		<footer className="footer bg-dark text-light text-center py-5 mt-5">
+		<footer className="footer text-light text-center py-5 mt-5">
 			<div className="container">
 				<div className="mb-4">
 					<a href="#" className="text-light mx-2 fs-4"><i className="fab fa-facebook-f"></i></a>

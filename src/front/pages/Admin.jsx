@@ -46,7 +46,7 @@ export const Admin = () => {
 
     return (
         <div >
-            <div className="d-flex position-absolute top-50 start-50 translate-middle gap-5 align-items-center border border-1 border-secondary rounded-3" git >
+            <div className="d-flex position-absolute top-50 start-50 translate-middle gap-5 align-items-center border border-1 border-secondary rounded-3" >
                 <div>
                     <img src="src/front/assets/img/login.jpg" alt="" className="imgLogin rounded-start" />
                 </div>

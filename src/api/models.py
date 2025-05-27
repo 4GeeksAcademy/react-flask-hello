@@ -6,13 +6,15 @@ import datetime
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     __tablename__ = 'user'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     first_name: Mapped[str] = mapped_column(String(100), nullable=False)
     last_name: Mapped[str] = mapped_column(String(100), nullable=False)
-    email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(100), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(100), nullable=False)
     role: Mapped[str] = mapped_column(String(20))
     status: Mapped[str] = mapped_column(String(20))
@@ -52,7 +54,8 @@ class GradeLevel(db.Model):
 class Student(db.Model):
     __tablename__ = 'student'
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('user.id'), primary_key=True)
     student_code: Mapped[str] = mapped_column(String(50), unique=True)
     grade_level_id: Mapped[int] = mapped_column(ForeignKey('grade_level.id'))
     phone: Mapped[str] = mapped_column(String(20))
@@ -75,7 +78,8 @@ class Student(db.Model):
 class Teacher(db.Model):
     __tablename__ = 'teacher'
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('user.id'), primary_key=True)
     department: Mapped[str] = mapped_column(String(100))
     phone: Mapped[str] = mapped_column(String(20))
 

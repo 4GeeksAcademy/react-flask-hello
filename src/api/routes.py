@@ -1,6 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+from api.models import GradeLevel
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
@@ -13,7 +14,8 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-#Validaciones
+# Validaciones
+
 
 def validate_required_fields(data, required_fields):
     missing = [
@@ -25,7 +27,7 @@ def validate_required_fields(data, required_fields):
     return None
 
 
-#Registro admin
+# Registro admin
 
 @api.route('/register/admin', methods=['POST'])
 def register_admin():
@@ -52,14 +54,13 @@ def register_admin():
 
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
-#Darle datos a grade level
+# Darle datos a grade level
 
-from api.models import GradeLevel
 
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
     niveles = [
-       
+
         'Primero de secundaria',
         'Segundo de secundaria',
         'Tercero de secundaria',
@@ -80,7 +81,8 @@ def setup_grade_levels():
 @api.route('/register/student', methods=['POST'])
 def register_student():
     data = request.json
-    required_fields = ['first_name', 'last_name', 'email', 'password', 'student_code', 'phone', 'grade_level_id']
+    required_fields = ['first_name', 'last_name', 'email',
+                       'password', 'student_code', 'phone', 'grade_level_id']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -114,12 +116,14 @@ def register_student():
 
     return jsonify({"message": "Solicitud de registro como estudiante enviada"}), 201
 
-#Registro profesor
+# Registro profesor
+
 
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.json
-    required_fields = ['first_name', 'last_name', 'email', 'password', 'department', 'phone']
+    required_fields = ['first_name', 'last_name',
+                       'email', 'password', 'department', 'phone']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -148,4 +152,3 @@ def register_teacher():
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
-

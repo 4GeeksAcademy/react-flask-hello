@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Integer, ForeignKey, DECIMAL, Time, Date, Float
+from sqlalchemy import String, Integer, ForeignKey, Time, Date, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import datetime
-
 
 db = SQLAlchemy()
 
@@ -32,44 +31,24 @@ class User(db.Model):
             "teacher": self.teacher.serialize() if self.role == 'teacher' and self.teacher else None
         }
 
-
-class AcademicYear(db.Model):
-    __tablename__ = 'academic_year'
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), nullable=False)
-
-    students = relationship("Student", back_populates="academic_year")
-    schedules = relationship("Schedule", back_populates="academic_year")
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
-
-
 class Student(db.Model):
     __tablename__ = 'student'
 
     id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
     student_code: Mapped[str] = mapped_column(String(50), unique=True)
-    academic_year_id: Mapped[int] = mapped_column(ForeignKey('academic_year.id'))
     phone: Mapped[str] = mapped_column(String(20))
+    grade_level: Mapped[str] = mapped_column(String(50))
 
     user = relationship("User", back_populates="student")
-    academic_year = relationship("AcademicYear", back_populates="students")
     enrollments = relationship("Enrollment", back_populates="student")
     payments = relationship("Payment", back_populates="student")
 
     def serialize(self):
         return {
             "student_code": self.student_code,
-            "academic_year_id": self.academic_year_id,
-            "academic_year": self.academic_year.name if self.academic_year else None,
-            "phone": self.phone
+            "phone": self.phone,
+            "grade_level": self.grade_level
         }
-
 
 class Teacher(db.Model):
     __tablename__ = 'teacher'
@@ -88,7 +67,6 @@ class Teacher(db.Model):
             "phone": self.phone
         }
 
-
 class Course(db.Model):
     __tablename__ = 'course'
 
@@ -100,40 +78,17 @@ class Course(db.Model):
     schedules = relationship("Schedule", back_populates="course")
     enrollments = relationship("Enrollment", back_populates="course")
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "teacher_id": self.teacher_id,
-            "teacher": self.teacher.serialize() if self.teacher else None
-        }
-
-
 class Schedule(db.Model):
     __tablename__ = 'schedule'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     course_id: Mapped[int] = mapped_column(ForeignKey('course.id'))
-    academic_year_id: Mapped[int] = mapped_column(ForeignKey('academic_year.id'))
     day: Mapped[str] = mapped_column(String(20))
     start_time: Mapped[datetime.time] = mapped_column(Time)
     end_time: Mapped[datetime.time] = mapped_column(Time)
     classroom: Mapped[str] = mapped_column(String(50))
 
     course = relationship("Course", back_populates="schedules")
-    academic_year = relationship("AcademicYear", back_populates="schedules")
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "course_id": self.course_id,
-            "academic_year_id": self.academic_year_id,
-            "day": self.day,
-            "start_time": self.start_time.isoformat(),
-            "end_time": self.end_time.isoformat(),
-            "classroom": self.classroom
-        }
-
 
 class Enrollment(db.Model):
     __tablename__ = 'enrollment'
@@ -146,15 +101,6 @@ class Enrollment(db.Model):
     student = relationship("Student", back_populates="enrollments")
     course = relationship("Course", back_populates="enrollments")
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "student_id": self.student_id,
-            "course_id": self.course_id,
-            "created_by": self.created_by
-        }
-
-
 class Attendance(db.Model):
     __tablename__ = 'attendance'
 
@@ -162,15 +108,6 @@ class Attendance(db.Model):
     enrollment_id: Mapped[int] = mapped_column(ForeignKey('enrollment.id'))
     date: Mapped[datetime.date] = mapped_column(Date)
     status: Mapped[str] = mapped_column(String(20))
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "enrollment_id": self.enrollment_id,
-            "date": self.date.isoformat(),
-            "status": self.status
-        }
-
 
 class Grade(db.Model):
     __tablename__ = 'grade'
@@ -183,16 +120,6 @@ class Grade(db.Model):
 
     teacher = relationship("Teacher", back_populates="grades")
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "enrollment_id": self.enrollment_id,
-            "teacher_id": self.teacher_id,
-            "score": self.score,
-            "comment": self.comment
-        }
-
-
 class Payment(db.Model):
     __tablename__ = 'payment'
 
@@ -203,21 +130,3 @@ class Payment(db.Model):
     status: Mapped[str] = mapped_column(String(20))
 
     student = relationship("Student", back_populates="payments")
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "student_id": self.student_id,
-            "amount": float(self.amount),
-            "date": self.date.isoformat(),
-            "status": self.status
-        }
-
-
-
-
-
-
-
-
-

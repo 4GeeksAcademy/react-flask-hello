@@ -1,7 +1,6 @@
 import React from "react";
 import homeFoto from "../assets/img/homeFoto.jpg";
 
-
 const Home = () => {
   return (
     <div className="homepage-container d-flex align-items-center justify-content-center">

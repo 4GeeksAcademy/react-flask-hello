@@ -41,7 +41,7 @@
   margin-right: 2rem;
 }
 
-/* Responsivo para pantallas pequeñas */
+
 @media (max-width: 768px) {
   .animate-scroll i {
     font-size: 1rem;
@@ -49,14 +49,12 @@
   }
 }
 
-/* Ajuste solo en pantallas grandes */
 @media (min-width: 768px) {
   .contacto-footer {
     padding-left: 80px;
   }
 }
 
-/* En móviles, quitamos ese padding para mantener todo centrado */
 @media (max-width: 767px) {
   .contacto-footer {
     padding-left: 0 !important;
@@ -93,11 +91,12 @@
 }
 
 .homepage-content {
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
 .homepage-text h1 {
+  position: relative;
   color: #FF2E63;
 }
 

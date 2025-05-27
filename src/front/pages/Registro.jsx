@@ -9,10 +9,7 @@ const Registro = () => {
         watch,
         reset,
         formState: { errors, isValid }
-    } = useForm( {mode: 'onchange'
-        .}
-
-    );
+    } = useForm();
 
     const onSubmit = (data) => {
         // Validar que las contraseñas coincidan

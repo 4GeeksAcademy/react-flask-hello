@@ -9,16 +9,18 @@ const Registro = () => {
         watch,
         reset,
         formState: { errors, isValid }
-    } = useForm();
+    } = useForm({
+        mode: 'onChange',
+    });
 
     const onSubmit = (data) => {
-        // Validar que las contraseñas coincidan
+        
         if (data.password !== data.confirmPassword) {
             alert("Las contraseñas no coinciden");
             return;
         }
 
-        fetch("/signup", {
+        fetch("https://fluffy-winner-r4wg4jg4jg97cxqpv-3001.app.github.dev/api/signup/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -38,7 +40,8 @@ const Registro = () => {
             })
             .then(data => {
                 alert("Usuario registrado exitosamente");
-                reset(); // Limpia el formulario
+                reset(); 
+                console.log(data)
             })
             .catch(error => {
                 alert("Error: " + error.message);
@@ -143,7 +146,7 @@ const Registro = () => {
                             </div>
 
                             <div className="text-center mt-4">
-                                <button type="submit" className="btn-enviarForm">
+                                <button type="submit" className="btn-enviarForm" disabled={!isValid}>
                                     Enviar Formulario
                                 </button>
                             </div>

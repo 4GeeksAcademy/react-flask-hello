@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_jwt_extended import JWTManager  # ✅ AÑADIR ESTO
+from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
@@ -39,6 +40,8 @@ db.init_app(app)
 
 # ✅ INICIALIZAR JWT
 jwt = JWTManager(app)
+
+CORS(app)
 
 # add the admin
 setup_admin(app)

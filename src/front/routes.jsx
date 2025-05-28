@@ -14,6 +14,11 @@ import { Profile } from "./pages/Profile";
 import { Signup } from "./pages/ChangeSingup";
 import { StudenSignup } from "./pages/StudentSignup";
 import { TeacherSignup } from "./pages/TeacherSignup";
+import { AlumnosNotas } from "./pages/AlumnosNotas";
+import { AlumnosAsistencia } from "./pages/AlumnosAsistencia";
+import { AlumnosPagos } from "./pages/AlumnosPagos";
+import { Profesores } from "./pages/Profesores";
+import { Solicitudes } from "./pages/Solicitudes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +40,11 @@ export const router = createBrowserRouter(
       <Route path="/signup" element={<Signup />} />
       <Route path="/signup/alumno" element={<StudenSignup />} />
       <Route path="/signup/profesor" element={<TeacherSignup />} />
+      <Route path="/alumnos-notas" element={<AlumnosNotas />} />
+      <Route path="/alumnos-asistencia" element={<AlumnosAsistencia />} />
+      <Route path="/alumnos-pagos" element={<AlumnosPagos />} />
+      <Route path="/profesores" element={<Profesores />} />
+      <Route path="/Solicitudes" element={<Solicitudes />} />
     </Route>
   )
 );

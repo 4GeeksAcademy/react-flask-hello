@@ -1,11 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from "react-router-dom";
 
 export const StudenSignup = () => {
+    const [load, setLoad] = useState(false)
+    const [courses, setCourses] = useState([])
+    const navigate = useNavigate();
 
 
+    useEffect(() => {
+        course();
+    }, [])
 
+    const course = async () => {
+        try {
+            const response = await fetch(`https://probable-space-enigma-6pqgwjg9vxvf4ww7-3001.app.github.dev/setup/grade_levels`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                setLoad(true)
+                setCourses(data.niveles)
+                console.log('Cursos obtenidos correctamente');
+                console.log(data);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const procesarDatos = async (data) => {
+        console.log('Informacion del Registro', data)
+        try {
+            const response = await fetch(`https://probable-space-enigma-6pqgwjg9vxvf4ww7-3001.app.github.dev/register/student`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            })
+            const data = await response.json()
+            if (response.ok) {
+                navigate(`/`);
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
 
     const {
         register,
@@ -18,26 +67,20 @@ export const StudenSignup = () => {
 
     const password = watch('password', '')
 
-
-    const procesarDatos = (data) => {
-        console.log('Informacion del Registro', data)
-    }
-
-
     return (
         <div className='mx-5'>
-            <div className='d-flex mx-auto'>
-                <div className='col-4 text-center'>
+            <div className='d-flex col-12 align-items-center mx-auto'>
+                <div className='col-6 text-center '>
                     <h2>Welcome!</h2>
                     <h4>To our website.</h4>
                     <p>For register as student...</p>
                 </div>
-                <form className="w-25 mx-auto my-5" onSubmit={handleSubmit(procesarDatos)}>
+                <form className="col-4 mx-auto my-5" onSubmit={handleSubmit(procesarDatos)}>
                     <div className="form-group mb-3">
-                        <label htmlFor="name" className="form-label">Name:</label>
-                        <input type="text" id="name" placeholder='Name' className={"form-control " + (errors.name ? 'is-invalid' : '')}
+                        <label htmlFor="first_name" className="form-label">Name:</label>
+                        <input type="text" id="first_name" placeholder='Name' className={"form-control " + (errors.first_name ? 'is-invalid' : '')}
                             {
-                            ...register('name', {
+                            ...register('first_name', {
                                 required: 'The field name is required!',
                                 pattern: {
                                     value: /^[A-Za-z\s]+$/i,
@@ -47,14 +90,14 @@ export const StudenSignup = () => {
                             }
                         />
                         <div className="invalid-feedback">
-                            {errors?.name?.message}
+                            {errors?.first_name?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="lastname" className="form-label">Last Name:</label>
-                        <input type="text" id="lastname" placeholder='Last Name' className={"form-control " + (errors.lastname ? 'is-invalid' : '')}
+                        <label htmlFor="last_name" className="form-label">Last Name:</label>
+                        <input type="text" id="last_name" placeholder='Last Name' className={"form-control " + (errors.last_name ? 'is-invalid' : '')}
                             {
-                            ...register('lastname', {
+                            ...register('last_name', {
                                 required: 'The field last name is required!',
                                 pattern: {
                                     value: /^[A-Za-z\s]+$/i,
@@ -64,7 +107,7 @@ export const StudenSignup = () => {
                             }
                         />
                         <div className="invalid-feedback">
-                            {errors?.lastname?.message}
+                            {errors?.last_name?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">
@@ -90,23 +133,40 @@ export const StudenSignup = () => {
                             {
                             ...register('phone', {
                                 required: 'The field phone is required!',
+                                pattern: {
+                                    value: /^\+?[1-9][0-9]{7,14}$/i,
+                                    message: 'Then name must containt only numbers'
+                                },
                                 minLength: {
-                                    value: 8,
+                                    value: 9,
                                     message: 'the minimum number of numbers is 8'
                                 },
                                 maxLength: {
                                     value: 14,
                                     message: 'the maximum number of numbers is 14'
-                                },
-                                pattern: {
-                                    value: /^\+?[1-9][0-9]{7,14}$/i,
-                                    message: 'Then name must containt only numbers'
                                 }
+
                             })
                             }
                         />
                         <div className="invalid-feedback">
                             {errors?.phone?.message}
+                        </div>
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="grade_level" className="form-label">Grade Level:</label>
+                        <select
+                            id="grade_level"
+                            className={"form-control " + (errors.grade_level ? 'is-invalid' : '')}
+                            {...register('grade_level', { required: 'Please select a grade level' })}
+                        >
+                            <option value=""> Select grade </option>
+                            {courses.map((course) => (
+                                <option key={course.id} value={course.id}>{course.name}</option>
+                            ))}
+                        </select>
+                        <div className="invalid-feedback">
+                            {errors?.grade_level?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">
@@ -148,7 +208,7 @@ export const StudenSignup = () => {
                             {errors?.confirm_password?.message}
                         </div>
                     </div>
-                    <button className="btn btn-primary btn-sm w-100" disabled={!isValid}>
+                    <button className="btn btn-outline-dark w-100" disabled={!isValid}>
                         Register
                     </button>
                 </form>

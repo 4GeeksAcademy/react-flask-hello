@@ -9,14 +9,22 @@ import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import { Admin } from "./pages/Admin";
-import { Profile } from "./pages/Profile";
+import { Admin } from "./pages/AdminLogin";
+import { AlumnosProfile } from "./pages/AlumnosProfile";
 import { Signup } from "./pages/ChangeSingup";
+import { AdminAlumnosNotas } from "./pages/AdminAlumnosNotas";
+import { AdminAlumnosAsistencia } from "./pages/AdminAlumnosAsistencia";
+import { AdminAlumnosPagos } from "./pages/AdminAlumnosPagos";
+import { AdminProfesores } from "./pages/AdminProfesores";
+import { AdminSolicitudes } from "./pages/AdminSolicitudes";
+import { ProfesoresProfile } from "./pages/ProfesoresProfile";
+import { AdminProfile } from "./pages/AdminProfile";
+import { ProfesoresAlumnosNotas } from "./pages/ProfesoresAlumnosNotas";
+import { ProfesoresAlumnosAsistencia } from "./pages/ProfesoresAlumnosAsistencia";
+import { ProfesoresHorario } from "./pages/ProfesoresHorario";
 import { AlumnosNotas } from "./pages/AlumnosNotas";
-import { AlumnosAsistencia } from "./pages/AlumnosAsistencia";
+import { AlumnosHorario } from "./pages/AlumnosHorario";
 import { AlumnosPagos } from "./pages/AlumnosPagos";
-import { Profesores } from "./pages/Profesores";
-import { Solicitudes } from "./pages/Solicitudes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,13 +42,21 @@ export const router = createBrowserRouter(
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
       <Route path="/admin" element={<Admin />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/alumnos/profile" element={<AlumnosProfile />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/alumnos-notas" element={<AlumnosNotas />} />
-      <Route path="/alumnos-asistencia" element={<AlumnosAsistencia />} />
-      <Route path="/alumnos-pagos" element={<AlumnosPagos />} />
-      <Route path="/profesores" element={<Profesores />} />
-      <Route path="/Solicitudes" element={<Solicitudes />} />
+      <Route path="/admin/profile" element={<AdminProfile />} />
+      <Route path="/admin/alumnos/notas" element={<AdminAlumnosNotas />} />
+      <Route path="/admin/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
+      <Route path="/admin/alumnos/pagos" element={<AdminAlumnosPagos />} />
+      <Route path="/admin/profesores" element={<AdminProfesores />} />
+      <Route path="/admin/solicitudes" element={<AdminSolicitudes />} />
+      <Route path="/profesores/profile" element={<ProfesoresProfile />} />
+      <Route path="/profesores/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
+      <Route path="/profesores/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
+      <Route path="/profesores/horario" element={<ProfesoresHorario />} />
+      <Route path="/alumnos/notas" element={<AlumnosNotas />} />
+      <Route path="/alumnos/horario" element={<AlumnosHorario />} />
+      <Route path="/alumnos/pagos" element={<AlumnosPagos />} />
     </Route>
   )
 );

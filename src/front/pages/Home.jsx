@@ -3,7 +3,7 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+export const Login = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const [email, setEmail] = useState('')

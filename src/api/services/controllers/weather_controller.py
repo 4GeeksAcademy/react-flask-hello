@@ -12,7 +12,7 @@ def get_weather_info():
             return jsonify({"error": "Parámetros 'lat', 'lng' y 'date' son requeridos"}), 400
 
         result = get_weather(lat, lng, date)
-        return jsonify({"weather": result})
+        return jsonify(result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

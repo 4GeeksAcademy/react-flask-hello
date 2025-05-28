@@ -11,6 +11,11 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Admin } from "./pages/Admin";
 import { Profile } from "./pages/Profile";
+import { AlumnosNotas } from "./pages/AlumnosNotas";
+import { AlumnosAsistencia } from "./pages/AlumnosAsistencia";
+import { AlumnosPagos } from "./pages/AlumnosPagos";
+import { Profesores } from "./pages/Profesores";
+import { Solicitudes } from "./pages/Solicitudes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +34,11 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/alumnos-notas" element={<AlumnosNotas />} />
+      <Route path="/alumnos-asistencia" element={<AlumnosAsistencia />} />
+      <Route path="/alumnos-pagos" element={<AlumnosPagos />} />
+      <Route path="/profesores" element={<Profesores />} />
+      <Route path="/Solicitudes" element={<Solicitudes />} />
     </Route>
   )
 );

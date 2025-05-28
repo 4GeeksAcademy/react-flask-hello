@@ -12,10 +12,15 @@
   display: none !important;
 }
 
-.dropdown-menu {
+.dropdownNav {
   left: 50% !important;
   transform: translateX(-50%) !important;
   right: auto !important;
+}
+
+.dropdown-menu-center-vertical {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
 .avatar-btn {

@@ -343,7 +343,7 @@ def agregar_participante_evento(current_user_id, evento_id):
         evento_id=evento_id, usuario_id=usuario_id).first()
     if participante_existente:
         return jsonify({"message": "El usuario ya es participante"}), 400
-no
+
     participante = Participante(evento_id=evento_id, usuario_id=usuario_id)
     db.session.add(participante)
     db.session.commit()

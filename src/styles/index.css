@@ -1,0 +1,20 @@
+
+.nutricion-page .hero {
+  background: linear-gradient(to right, #f0fff0, #e0f7fa);
+  border-radius: 20px;
+}
+
+.nutricion-page h1,
+.nutricion-page h2 {
+  color: #3c3c3c;
+  font-weight: bold;
+}
+
+.nutricion-page .card-title {
+  color: #5a8dee;
+}
+
+.nutricion-page .list-group-item {
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+}

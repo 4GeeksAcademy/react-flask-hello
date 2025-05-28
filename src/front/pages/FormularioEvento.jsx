@@ -39,7 +39,7 @@ const FormularioEvento = () => {
               id="ubicacion"
               name="ubicacion"
               className="form-control"
-              placeholder="Opcional"
+              placeholder=""
             />
           </div>
 

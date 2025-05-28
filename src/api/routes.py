@@ -98,8 +98,7 @@ def obtener_tareas_usuario(current_user_id, user_id):
     tareas = Tarea.query.filter_by(asignado_a=user_id).all()
     return jsonify([tarea.serialize() for tarea in tareas]), 200
 
-
-# Ruta para crear un nuevo evento para un usuario. Valida permisos, campos obligatorios y formato de fecha.
+# Ruta para crear un nuevo evento. Requiere token válido y datos del evento.
 @api.route('/<int:user_id>/eventos', methods=['POST'])
 @token_required
 def crear_evento(current_user_id, user_id):
@@ -111,20 +110,41 @@ def crear_evento(current_user_id, user_id):
     descripcion = data.get('descripcion')
     fecha_str = data.get('fecha')  # fecha en string ISO 8601
     ubicacion = data.get('ubicacion')
+    acepta_colaboradores = data.get('acepta_colaboradores', True)
+    invitados = data.get('invitados')
+    max_invitados = data.get('max_invitados')
+    tipo_actividad = data.get('tipo_actividad')
+    vestimenta = data.get('vestimenta')
+    servicios = data.get('servicios')
+    recursos = data.get('recursos')
 
-    if not nombre or not fecha_str:
-        return jsonify({"message": "Nombre y fecha son obligatorios"}), 400
+    if not nombre or not fecha_str or not ubicacion:
+        return jsonify({"message": "Nombre, fecha y ubicación son obligatorios"}), 400
 
     try:
         fecha = datetime.fromisoformat(fecha_str)
     except ValueError:
         return jsonify({"message": "Formato de fecha inválido. Usa YYYY-MM-DDTHH:MM:SS"}), 400
 
+    # Validar y convertir max_invitados a int si viene como string
+    if max_invitados is not None:
+        try:
+            max_invitados = int(max_invitados)
+        except (ValueError, TypeError):
+            return jsonify({"message": "max_invitados debe ser un número entero"}), 400
+
     nuevo_evento = Evento(
         nombre=nombre,
         descripcion=descripcion,
         fecha=fecha,
         ubicacion=ubicacion,
+        acepta_colaboradores=acepta_colaboradores,
+        invitados=invitados,
+        max_invitados=max_invitados,
+        tipo_actividad=tipo_actividad,
+        vestimenta=vestimenta,
+        servicios=servicios,
+        recursos=recursos,
         creador_id=user_id
     )
 
@@ -133,17 +153,10 @@ def crear_evento(current_user_id, user_id):
 
     return jsonify({
         "message": "Evento creado exitosamente",
-        "evento": {
-            "id": nuevo_evento.id,
-            "nombre": nuevo_evento.nombre,
-            "descripcion": nuevo_evento.descripcion,
-            "fecha": nuevo_evento.fecha.isoformat(),
-            "ubicacion": nuevo_evento.ubicacion,
-            "creador_id": nuevo_evento.creador_id
-        }
+        "evento": nuevo_evento.serialize()
     }), 201
 
-
+# Ruta para modificar un evento existente. Solo el creador del evento puede modificarlo.
 @api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['PUT'])
 @token_required
 def actualizar_evento(current_user_id, user_id, evento_id):
@@ -160,22 +173,45 @@ def actualizar_evento(current_user_id, user_id, evento_id):
     descripcion = data.get('descripcion')
     fecha_str = data.get('fecha')
     ubicacion = data.get('ubicacion')
+    acepta_colaboradores = data.get('acepta_colaboradores')
+    invitados = data.get('invitados')
+    max_invitados = data.get('max_invitados')
+    tipo_actividad = data.get('tipo_actividad')
+    vestimenta = data.get('vestimenta')
+    servicios = data.get('servicios')
+    recursos = data.get('recursos')
 
-    if nombre:
+    if nombre is not None:
         evento.nombre = nombre
     if descripcion is not None:
         evento.descripcion = descripcion
-    if fecha_str:
+    if fecha_str is not None:
         try:
             evento.fecha = datetime.fromisoformat(fecha_str)
         except ValueError:
             return jsonify({"message": "Formato de fecha inválido. Usa YYYY-MM-DDTHH:MM:SS"}), 400
     if ubicacion is not None:
         evento.ubicacion = ubicacion
+    if acepta_colaboradores is not None:
+        evento.acepta_colaboradores = bool(acepta_colaboradores)
+    if invitados is not None:
+        evento.invitados = invitados
+    if max_invitados is not None:
+        try:
+            evento.max_invitados = int(max_invitados)
+        except (ValueError, TypeError):
+            return jsonify({"message": "max_invitados debe ser un número entero"}), 400
+    if tipo_actividad is not None:
+        evento.tipo_actividad = tipo_actividad
+    if vestimenta is not None:
+        evento.vestimenta = vestimenta
+    if servicios is not None:
+        evento.servicios = servicios
+    if recursos is not None:
+        evento.recursos = recursos
 
     db.session.commit()
     return jsonify(evento.serialize()), 200
-
 
 
 # Ruta para eliminar un evento existente. Solo el creador puede eliminarlo.

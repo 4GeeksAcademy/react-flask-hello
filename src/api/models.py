@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Integer, Text, Numeric, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
+from sqlalchemy import Boolean
 
 
 db = SQLAlchemy()
@@ -30,15 +31,25 @@ class User(db.Model):
             # No incluir password por seguridad
         }
 
+
+
 class Evento(db.Model):
     __tablename__ = "eventos"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     nombre: Mapped[str] = mapped_column(String(100), nullable=False)
     creador_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable=False)
-    ubicacion: Mapped[str] = mapped_column(String(255), nullable=True)
-    fecha: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=True)  # Agregado campo fecha
+    ubicacion: Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=False)
     descripcion: Mapped[str] = mapped_column(String(255), nullable=True)
+
+    acepta_colaboradores: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    invitados: Mapped[str] = mapped_column(String(500), nullable=True)
+    max_invitados: Mapped[int] = mapped_column(nullable=True)
+    tipo_actividad: Mapped[str] = mapped_column(String(100), nullable=True)
+    vestimenta: Mapped[str] = mapped_column(String(100), nullable=True)
+    servicios: Mapped[str] = mapped_column(String(255), nullable=True)
+    recursos: Mapped[str] = mapped_column(String(255), nullable=True)
 
     creador = relationship("User", back_populates="eventos_creados")
     participantes = relationship("Participante", back_populates="evento", lazy="joined")
@@ -63,7 +74,15 @@ class Evento(db.Model):
             "nombre": self.nombre,
             "creador_id": self.creador_id,
             "ubicacion": self.ubicacion,
-            "fecha": self.fecha.isoformat() if self.fecha else None,  # Formateo fecha
+            "fecha": self.fecha.isoformat() if self.fecha else None,
+            "descripcion": self.descripcion,
+            "acepta_colaboradores": self.acepta_colaboradores,
+            "invitados": self.invitados,
+            "max_invitados": self.max_invitados,
+            "tipo_actividad": self.tipo_actividad,
+            "vestimenta": self.vestimenta,
+            "servicios": self.servicios,
+            "recursos": self.recursos,
             "participantes": [p.serialize() for p in self.participantes],
             "tareas_activas": tareas_activas,
             "tareas_realizadas": tareas_realizadas,

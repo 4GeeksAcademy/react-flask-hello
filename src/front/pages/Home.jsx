@@ -63,7 +63,7 @@ export const Login = () => {
 						</div>
 
 					</div>
-					<div className="d-flex justify-content-between">
+					<div className="d-flex justify-content-evenly">
 						<div className="form-check">
 							<input className="form-check-input " type="radio" name="radioDefault" id="radioDefault1" onChange={() => setUser('alumno')} checked={user === 'alumno'} />
 							<label className="form-check-label" htmlFor="radioDefault1">

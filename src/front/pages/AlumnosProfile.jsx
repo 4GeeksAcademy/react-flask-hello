@@ -1,6 +1,6 @@
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 
-export const Profile = () => {
+export const AlumnosProfile = () => {
     return (
         <div className="container py-4">
             <div className="row justify-content-center">

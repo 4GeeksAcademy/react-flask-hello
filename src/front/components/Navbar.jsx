@@ -33,7 +33,7 @@ export const Navbar = () => {
 									</button>
 									<ul className="dropdown-menu dropdown-menu-center-vertical ms-3">
 										<li>
-											<Link to="/alumnos-notas" className="dropdown-item" onClick={closeMenu}>
+											<Link to="/admin/alumnos/notas" className="dropdown-item" onClick={closeMenu}>
 												Notas
 											</Link>
 										</li>
@@ -41,7 +41,7 @@ export const Navbar = () => {
 											<hr className="dropdown-divider" />
 										</li>
 										<li>
-											<Link to="/alumnos-asistencia" className="dropdown-item" onClick={closeMenu}>
+											<Link to="/admin/alumnos/asistencia" className="dropdown-item" onClick={closeMenu}>
 												Asistencia
 											</Link>
 										</li>
@@ -49,7 +49,7 @@ export const Navbar = () => {
 											<hr className="dropdown-divider" />
 										</li>
 										<li>
-											<Link to="/alumnos-pagos" className="dropdown-item" onClick={closeMenu}>
+											<Link to="/admin/alumnos/pagos" className="dropdown-item" onClick={closeMenu}>
 												Pagos
 											</Link>
 										</li>
@@ -57,12 +57,12 @@ export const Navbar = () => {
 								</div>
 							</li>
 							<li className="my-3">
-								<Link to="/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+								<Link to="/admin/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Profesores
 								</Link>
 							</li>
 							<li className="my-3">
-								<Link to="/solicitudes" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+								<Link to="/admin/solicitudes" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Solicitudes
 								</Link>
 							</li>
@@ -74,7 +74,7 @@ export const Navbar = () => {
 						</button>
 						<ul className="dropdown-menu text-small shadow dropdownNav" data-popper-placement="top-start">
 							<li>
-								<Link to="/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
+								<Link to="/admin/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
 							</li>
 							<li>
 								<hr className="dropdown-divider" />

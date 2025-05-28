@@ -41,7 +41,6 @@
   margin-right: 2rem;
 }
 
-
 @media (max-width: 768px) {
   .animate-scroll i {
     font-size: 1rem;
@@ -89,14 +88,13 @@
   background-position: 0 0, 25px 25px;
   background-size: 50px 50px;
   color: #ffffff;
-  min-height: 100vh; /* ⬅️ Cambiado aquí */
+  min-height: 100vh;
   padding: 2rem;
 }
 
 .homepage-content {
   max-width: 1800px;
   margin: 0 auto;
-  
 }
 
 .homepage-text h1 {
@@ -116,7 +114,6 @@
   border-radius: 50px;
   font-weight: 600;
   margin-top: 3rem;
-  transition: background-color 0.3s ease;
 }
 
 .homepage-buttons .btn-primary:hover {
@@ -129,7 +126,6 @@
   background-color: transparent;
   border-radius: 50px;
   font-weight: 600;
-  transition: all 0.3s ease;
   margin-top: 3rem;
 }
 
@@ -141,6 +137,91 @@
 .homepage-image {
   object-fit: cover;
   height: 100%;
+}
+/*homepage*/
+
+/*dashboard*/
+.dashboard-container {
+  background-color: #1a1a1d;
+  background-image: radial-gradient(
+      circle,
+      rgba(175, 7, 85, 0.418) 1px,
+      transparent 1px
+    ),
+    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
+  color: #ffffff;
+  min-height: 10vh;
+  padding: 2rem;
+}
+
+.dashboard-container h1{
+  color: #ff2e63;
+}
+.next-events {
+  color: #e02658;
+  margin-top: 5rem;
+}
+.create-event-btn {
+  background-color: #ff2e63;
+  font-size: 1.1rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+}
+
+.create-event-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px #ff2e63;
+}
+
+.events-section {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.event-card {
+  background-color: #1a1a1d;
+  border: #ff2e63;
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.event-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px #ff2e63;
+}
+.ver-detalles-btn {
+  background-color: #1a1a1d;
+  color: white;
+  border-color: #ff2e63;
+  transition: background-color 0.3s ease;
+}
+
+.ver-detalles-btn:hover {
+  background-color: #ff2e63;
+}
+
+.no-events-text {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  margin-top: 5rem;
+}
+
+
+
+/* Responsivo */
+@media (max-width: 576px) {
+  .event-card {
+    width: 90%;
+  }
 }
 
 /**********************************************Formulario Registro********************************************/
@@ -169,7 +250,6 @@
 }
 
 .registerHeadTittle h1 {
-  
   color: #ff0095d2;
   text-shadow: -2px 3px 3px rgba(255, 255, 255, 0.582);
   margin: auto;
@@ -295,7 +375,7 @@
   .register-image {
     display: none;
   }
-  
+
   .registerHeadTittle {
     justify-content: center; /* centrar título si no hay imagen */
   }

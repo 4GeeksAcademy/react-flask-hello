@@ -1,17 +1,18 @@
 .video-wrapper {
-  position: relative;
-  padding-bottom: 56.25%; /* Proporción 16:9 */
-  padding-top: 25px;
-  height: 0;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
-  margin-top: 20px; /* separación opcional */
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
 .video-wrapper iframe {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
   border: none;
 }

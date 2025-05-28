@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
+import React, { useState } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -56,15 +55,15 @@ export const Login = () => {
 					<div className="d-flex flex-column gap-3 mb-4">
 						<div>
 							<label className="form-label">Email</label>
-							<input name="email" type="email" className="form-control" onChange={e => setEmail(e.target.value)} required />
+							<input name="email" type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} required />
 						</div>
 						<div>
 							<label className="form-label">Password</label>
-							<input name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} required />
+							<input name="password" type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} required />
 						</div>
 
 					</div>
-					<div className="d-flex justify-content-between">
+					<div className="d-flex justify-content-evenly">
 						<div className="form-check">
 							<input className="form-check-input " type="radio" name="radioDefault" id="radioDefault1" onChange={() => setUser('alumno')} checked={user === 'alumno'} />
 							<label className="form-check-label" htmlFor="radioDefault1">

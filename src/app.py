@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import Flask
 import os
+from api.services.routes.weather import weather_bp
 
 
 # Cargar variables de entorno
@@ -27,6 +28,7 @@ migrate = Migrate(app, db)
 # Registro de Blueprints
 app.register_blueprint(users_bp, url_prefix='/api/users')
 app.register_blueprint(events_bp, url_prefix='/api/events')
+app.register_blueprint(weather_bp, url_prefix='/api')
 
 # Ruta base
 

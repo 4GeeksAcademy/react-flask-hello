@@ -102,3 +102,11 @@
   height: 254px;
   aspect-ratio: 1/1;
 }
+
+.colorBorderSignup {
+  border-color: rgb(177, 177, 177) !important;
+}
+
+.colorBorderSignup:hover {
+  border-color: rgb(0, 0, 0) !important;
+}

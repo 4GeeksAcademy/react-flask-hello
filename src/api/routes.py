@@ -88,6 +88,21 @@ def obtener_eventos_usuario(current_user_id, user_id):
     eventos = Evento.query.filter_by(creador_id=user_id).all()
     return jsonify([evento.serialize() for evento in eventos]), 200
 
+# Ruta para obtener un evento específico de un usuario. Solo puede acceder el propio usuario.
+@api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['GET'])
+@jwt_required()
+def get_evento(user_id, evento_id):
+    current_user_id = get_jwt_identity()
+
+    if str(current_user_id) != str(user_id):
+        return jsonify({"message": "No autorizado"}), 403
+
+    evento = Evento.query.filter_by(id=evento_id, creador_id=user_id).first()
+    if not evento:
+        return jsonify({"message": "Evento no encontrado"}), 404
+
+    return jsonify(evento.serialize()), 200
+
 
 # Ruta para obtener todas las tareas asignadas a un usuario específico. Solo puede acceder el propio usuario.
 @api.route('/<int:user_id>/tareas', methods=['GET'])
@@ -160,7 +175,7 @@ def crear_evento(current_user_id, user_id):
 @api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['PUT'])
 @token_required
 def actualizar_evento(current_user_id, user_id, evento_id):
-    if current_user_id != user_id:
+    if str(current_user_id) != str(user_id):
         return jsonify({"message": "No autorizado"}), 403
 
     evento = Evento.query.filter_by(id=evento_id, creador_id=user_id).first()

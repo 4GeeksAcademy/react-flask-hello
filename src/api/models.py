@@ -3,7 +3,7 @@ from sqlalchemy import String, Boolean, Integer, Text, Numeric, TIMESTAMP, Forei
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 from sqlalchemy import Boolean
-
+import json
 
 db = SQLAlchemy()
 
@@ -30,7 +30,6 @@ class User(db.Model):
             "telefono": self.telefono,
             # No incluir password por seguridad
         }
-
 
 
 class Evento(db.Model):
@@ -66,8 +65,22 @@ class Evento(db.Model):
             sum(g.monto for g in tarea.gastos if g.monto is not None)
             for tarea in self.tareas
         )
-
         total_gastos = gastos_evento + gastos_tareas
+
+        # Convertir invitados de JSON string a lista segura
+        try:
+            invitados_lista = json.loads(self.invitados) if self.invitados else []
+            if not isinstance(invitados_lista, list):
+                invitados_lista = []
+        except json.JSONDecodeError:
+            invitados_lista = []
+
+        # Serializar participantes con datos del usuario
+        participantes_con_usuario = []
+        for p in self.participantes:
+            participante_data = p.serialize()
+            participante_data['usuario'] = p.usuario.serialize() if p.usuario else None
+            participantes_con_usuario.append(participante_data)
 
         return {
             "id": self.id,
@@ -77,17 +90,18 @@ class Evento(db.Model):
             "fecha": self.fecha.isoformat() if self.fecha else None,
             "descripcion": self.descripcion,
             "acepta_colaboradores": self.acepta_colaboradores,
-            "invitados": self.invitados,
+            "invitados": invitados_lista,
             "max_invitados": self.max_invitados,
             "tipo_actividad": self.tipo_actividad,
             "vestimenta": self.vestimenta,
             "servicios": self.servicios,
             "recursos": self.recursos,
-            "participantes": [p.serialize() for p in self.participantes],
+            "participantes": participantes_con_usuario,
             "tareas_activas": tareas_activas,
             "tareas_realizadas": tareas_realizadas,
             "total_gastos": total_gastos,
         }
+
 
 class Gasto(db.Model):
     __tablename__ = "gastos"

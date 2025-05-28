@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask import Flask
 import os
 
+
 # Cargar variables de entorno
 load_dotenv()
 

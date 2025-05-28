@@ -89,7 +89,7 @@
   background-position: 0 0, 25px 25px;
   background-size: 50px 50px;
   color: #ffffff;
-  height: 100vh;
+  min-height: 100vh; /* ⬅️ Cambiado aquí */
   padding: 2rem;
 }
 
@@ -218,4 +218,91 @@
   background-color: #ff008c;
   transform: scale(0.98);
 }
-/*homepage*/
+/*formulario crear evento*/
+
+.btn-enviarForm-evento {
+  background-color: #ff2e63; /* rosita fuerte que usas en tu página */
+  color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px; /* redondeado estilo botón principal */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  max-width: 300px; /* no muy grande en pantallas grandes */
+  margin: 10px auto; /* centrado horizontalmente y margen vertical */
+  box-shadow: 0 4px 8px rgba(255, 46, 99, 0.4);
+}
+
+.btn-enviarForm-evento:hover {
+  background-color: #e02658; /* oscuro al pasar el mouse */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(224, 38, 88, 0.6);
+}
+
+.btn-enviarForm-evento:active {
+  background-color: #b01f45; /* aún más oscuro cuando clickeado */
+  transform: scale(0.98);
+  box-shadow: 0 3px 6px rgba(176, 31, 69, 0.5);
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .btn-enviarForm-evento {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+}
+
+.registerHeadTittle {
+  position: relative;
+  background-color: black;
+  height: 850px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  flex-wrap: wrap; /* para que se acomode en pantallas chicas */
+}
+
+.registerHeadTittle h1 {
+  flex: 1 1 60%; /* ocupa el 60% del ancho */
+  color: #ff0095d2;
+  text-shadow: -2px 3px 3px rgba(255, 255, 255, 0.582);
+  margin: auto 0;
+  padding-top: 15px;
+  text-align: left;
+}
+
+.register-image {
+  flex: 0 0 35%; /* ocupa el 35% del ancho */
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin-left: 20px;
+  align-self: flex-start; /* la imagen queda arriba */
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(255, 46, 99, 0.5);
+}
+
+/* Ocultar imagen en móviles */
+@media (max-width: 768px) {
+  .register-image {
+    display: none;
+  }
+  
+  .registerHeadTittle {
+    justify-content: center; /* centrar título si no hay imagen */
+  }
+
+  .registerHeadTittle h1 {
+    flex: 1 1 100%;
+    text-align: center;
+    padding-top: 30px;
+  }
+}

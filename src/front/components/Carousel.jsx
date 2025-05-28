@@ -165,7 +165,7 @@ const Carousel = () => {
   );
 };
 
-// Exportamos el componente para poder usarlo en otros archivos
+
 export default Carousel;
 
 

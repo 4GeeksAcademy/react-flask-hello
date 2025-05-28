@@ -1,12 +1,15 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from api.models import GradeLevel
+
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 from api.models import db, User, Student, Teacher, GradeLevel
+from werkzeug.security import generate_password_hash
+from flask_jwt_extended import create_access_token
+from werkzeug.security import check_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -44,7 +47,7 @@ def register_admin():
         first_name=data['first_name'],
         last_name=data['last_name'],
         email=data['email'],
-        password=data['password'],
+        password=generate_password_hash(data['password']),
         role='admin',
         status='approved'
     )
@@ -152,17 +155,35 @@ def register_teacher():
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
+# Login admin
+
 @api.route('/login/admin', methods=['POST'])
-def login():
+def login_admin():
     data = request.get_json()
     email = data.get("email")
     password = data.get("password")
 
-    user = User.query.filter_by(email=email, password=password).first()
-    if user:
-        return jsonify({
-            "message": "Login exitoso",
-            "role": user.role
-        }), 200
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
-    return jsonify({"message": "Credenciales inválidas"}), 401
+    user = User.query.filter_by(email=email, role="admin").first()
+    if not user:
+        return jsonify({"msg": "Administrador no encontrado"}), 404
+
+    if not check_password_hash(user.password, password):
+        return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    # No se requiere verificación de status para el admin
+
+    access_token = create_access_token(identity=user.id)
+
+    return jsonify({
+        "access_token": access_token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "role": user.role,
+            "first_name": user.first_name,
+            "last_name": user.last_name
+        }
+    }), 200

@@ -24,9 +24,9 @@ export const router = createBrowserRouter(
       <Route
         path="/feed"
         element={
-          <PrivateRoute>
-            <Feed />
-          </PrivateRoute>
+          //<PrivateRoute>
+          <Feed />
+          //</PrivateRoute>
         }
       />
     </>

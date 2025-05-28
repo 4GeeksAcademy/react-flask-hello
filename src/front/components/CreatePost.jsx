@@ -15,22 +15,43 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const newPost = {
-            id: Date.now(),
-            ...formData,
-            isFavorite: false,
-            participants: 0
 
-        };
-        setPosts(prev => [newPost, ...prev]);
-        setFormData({
-            title: "", description: "", date: "", time: "",
-            address: "", sport: "", capacity: parseInt(formData.capacity, 10)
+        try {
+            // Fetch al backend con lat/lng y la fecha elegida
+            const lat = 40.4168; // temporal: Madrid
+            const lng = -3.7038;
+            const { date } = formData;
 
-        });
-        onClose(); // cerrar modal
+            const res = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            const data = await res.json();
+
+            const newPost = {
+                id: Date.now(),
+                ...formData,
+                isFavorite: false,
+                participants: 0,
+                weather: data.weather || "Clima no disponible" //de la API
+            };
+
+            setPosts(prev => [newPost, ...prev]);
+
+            setFormData({
+                title: "",
+                description: "",
+                date: "",
+                time: "",
+                address: "",
+                sport: "",
+                capacity: ""
+            });
+
+            onClose(); // cerrar modal
+
+        } catch (error) {
+            console.error("Error al obtener el clima:", error);
+        }
     };
 
     if (!show) return null;
@@ -71,7 +92,6 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                                         <option value="Ciclismo">Ciclismo</option>
                                         <option value="Fitness">Fitness</option>
                                     </select>
-
                                 </div>
                                 <div className="col-md-6">
                                     <input

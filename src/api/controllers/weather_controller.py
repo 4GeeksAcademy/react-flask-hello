@@ -1,0 +1,18 @@
+from flask import request, jsonify
+from api.services.weather_services import get_weather
+
+
+def get_weather_info():
+    try:
+        lat = request.args.get("lat")
+        lng = request.args.get("lng")
+        date = request.args.get("date")  # Formato: "2024-05-27"
+
+        if not lat or not lng or not date:
+            return jsonify({"error": "Parámetros 'lat', 'lng' y 'date' son requeridos"}), 400
+
+        result = get_weather(lat, lng, date)
+        return jsonify({"weather": result})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

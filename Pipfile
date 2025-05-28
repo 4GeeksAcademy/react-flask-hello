@@ -25,6 +25,7 @@ sqlalchemy = "*"
 python_version = "3.13"
 
 [scripts]
+diagram = "eralchemy2 -i 'postgresql://gitpod:postgres@localhost:5432/example' -o diagram.png"
 start="flask run -p 3001 -h 0.0.0.0"
 init="flask db init"
 migrate="flask db migrate"

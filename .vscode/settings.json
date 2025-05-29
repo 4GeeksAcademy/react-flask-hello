@@ -9,5 +9,13 @@
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
-  }
+  },
+  "python.analysis.extraPaths": [
+    "./src",
+    "/home/vscode/.local/share/virtualenvs/react-flask-hello-Proyect-Final-zkGt4vlW/lib/python3.13/site-packages"
+  ],
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace"
+
 }
+

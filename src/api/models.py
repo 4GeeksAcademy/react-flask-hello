@@ -33,7 +33,9 @@ class User(db.Model):
             "student": self.student.serialize() if self.role == 'student' and self.student else None,
             "teacher": self.teacher.serialize() if self.role == 'teacher' and self.teacher else None
         }
-
+ 
+    def check_login(self, password, role):
+        return self.password == password and self.role == role
 
 class GradeLevel(db.Model):
     __tablename__ = 'grade_level'

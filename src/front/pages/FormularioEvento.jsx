@@ -119,30 +119,30 @@ const FormularioEvento = () => {
       acepta_colaboradores: data.aceptaColaboradores,
       invitados: data.invitados
         ? JSON.stringify(
-            data.invitados
-              .split(",")
-              .map((e) => e.trim())
-              .filter((e) => e !== "")
-          )
+          data.invitados
+            .split(",")
+            .map((e) => e.trim())
+            .filter((e) => e !== "")
+        )
         : JSON.stringify([]),
       max_invitados: data.maxInvitados ? Number(data.maxInvitados) : null,
       tipo_actividad: data.tipoActividad,
       vestimenta: data.vestimenta,
       servicios: data.servicios
         ? JSON.stringify(
-            data.servicios
-              .split(",")
-              .map((s) => s.trim())
-              .filter((s) => s !== "")
-          )
+          data.servicios
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s !== "")
+        )
         : JSON.stringify([]),
       recursos: data.recursos
         ? JSON.stringify(
-            data.recursos
-              .split(",")
-              .map((r) => r.trim())
-              .filter((r) => r !== "")
-          )
+          data.recursos
+            .split(",")
+            .map((r) => r.trim())
+            .filter((r) => r !== "")
+        )
         : JSON.stringify([]),
     };
 
@@ -175,8 +175,8 @@ const FormularioEvento = () => {
         const errorData = await res.json();
         alert(
           (eventId ? "Error al modificar" : "Error al crear") +
-            " evento: " +
-            (errorData.message || res.statusText)
+          " evento: " +
+          (errorData.message || res.statusText)
         );
         return;
       }

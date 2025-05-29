@@ -24,7 +24,8 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-CORS(app, supports_credentials=True)
+CORS(app, origins="https://reimagined-trout-694x6j6j7647f44p9-3000.app.github.dev",
+     supports_credentials=True)
 
 
 # database condiguration

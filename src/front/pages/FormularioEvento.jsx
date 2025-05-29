@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 
 function parseJwt(token) {
   try {
@@ -21,7 +22,9 @@ const safeParseJSON = (str) => {
   }
 };
 
+
 const FormularioEvento = () => {
+  const navigate = useNavigate()
   const { id: eventId } = useParams();
   const {
     register,
@@ -108,87 +111,114 @@ const FormularioEvento = () => {
   }, [eventId, reset, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("Datos del formulario para enviar:", data);
+  console.log("Datos del formulario para enviar:", data);
 
-    // Procesar campos para backend (snake_case)
-    const processedData = {
-      nombre: data.nombre,
-      descripcion: data.descripcion,
-      fecha: data.fechaHora,
-      ubicacion: data.ubicacion,
-      acepta_colaboradores: data.aceptaColaboradores,
-      invitados: data.invitados
-        ? JSON.stringify(
-          data.invitados
-            .split(",")
-            .map((e) => e.trim())
-            .filter((e) => e !== "")
-        )
-        : JSON.stringify([]),
-      max_invitados: data.maxInvitados ? Number(data.maxInvitados) : null,
-      tipo_actividad: data.tipoActividad,
-      vestimenta: data.vestimenta,
-      servicios: data.servicios
-        ? JSON.stringify(
-          data.servicios
-            .split(",")
-            .map((s) => s.trim())
-            .filter((s) => s !== "")
-        )
-        : JSON.stringify([]),
-      recursos: data.recursos
-        ? JSON.stringify(
-          data.recursos
-            .split(",")
-            .map((r) => r.trim())
-            .filter((r) => r !== "")
-        )
-        : JSON.stringify([]),
-    };
+  // Procesar campos para backend (snake_case)
+  const processedData = {
+  nombre: data.nombre,
+  descripcion: data.descripcion,
+  fecha: data.fechaHora,
+  ubicacion: data.ubicacion,
+  acepta_colaboradores: data.aceptaColaboradores,
+  invitados: null, // seguimos igual, invitados se envían aparte
+  max_invitados: data.maxInvitados ? Number(data.maxInvitados) : null,
+  tipo_actividad: data.tipoActividad,
+  vestimenta: data.vestimenta,
+  servicios: data.servicios
+    ? data.servicios
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s !== "")
+    : [],
+  recursos: data.recursos
+    ? data.recursos
+        .split(",")
+        .map((r) => r.trim())
+        .filter((r) => r !== "")
+    : [],
+};
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("No estás autenticado");
-      return;
-    }
-    const payload = parseJwt(token);
-    const userId = payload?.sub;
-    if (!userId) {
-      alert("Usuario no autenticado o token inválido");
-      return;
-    }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("No estás autenticado");
+    return;
+  }
+  const payload = parseJwt(token);
+  const userId = payload?.sub;
+  if (!userId) {
+    alert("Usuario no autenticado o token inválido");
+    return;
+  }
 
-    const baseUrl = `${import.meta.env.VITE_BACKEND_URL}/api/${userId}/eventos`;
-    const url = eventId ? `${baseUrl}/${eventId}` : baseUrl;
+  const baseUrl = `${import.meta.env.VITE_BACKEND_URL}/api/${userId}/eventos`;
+  const url = eventId ? `${baseUrl}/${eventId}` : baseUrl;
 
-    try {
-      const res = await fetch(url, {
-        method: eventId ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(processedData),
-      });
+  try {
+    const res = await fetch(url, {
+      method: eventId ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(processedData),
+    });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert(
-          (eventId ? "Error al modificar" : "Error al crear") +
+    if (!res.ok) {
+      const errorData = await res.json();
+      alert(
+        (eventId ? "Error al modificar" : "Error al crear") +
           " evento: " +
           (errorData.message || res.statusText)
-        );
-        return;
-      }
-
-      alert(eventId ? "Evento modificado con éxito!" : "Evento creado con éxito!");
-
-      reset();
-      setValue("aceptaColaboradores", true);
-    } catch (error) {
-      alert("Error de red o inesperado: " + error.message);
+      );
+      return;
     }
-  };
+
+    const eventResponse = await res.json();
+    alert(eventId ? "Evento modificado con éxito!" : "Evento creado con éxito!");
+
+    // Si es creación de evento (no edición), hacemos POST para crear invitaciones
+    if (!eventId) {
+      const nuevoEventoId = eventResponse.evento.id; // asumir que el backend devuelve el ID en evento.id
+
+      // Preparar lista de invitados
+      const invitadosArray = data.invitados
+        ? data.invitados
+            .split(",")
+            .map((email) => email.trim())
+            .filter((email) => email !== "")
+        : [];
+
+      if (invitadosArray.length > 0) {
+        const urlInvitaciones = `${baseUrl}/${nuevoEventoId}/invitaciones`;
+
+        const resInv = await fetch(urlInvitaciones, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ emails: invitadosArray }),
+        });
+
+        if (!resInv.ok) {
+          const errorInv = await resInv.json();
+          alert(
+            "Evento creado pero error al agregar invitaciones: " +
+              (errorInv.message || resInv.statusText)
+          );
+        } else {
+          alert("Invitaciones enviadas correctamente");
+        }
+      }
+    }
+
+    reset();
+    setValue("aceptaColaboradores", true);
+    navigate("/dashboard");
+  } catch (error) {
+    alert("Error de red o inesperado: " + error.message);
+  }
+};
 
   if (loading) {
     return <p>Cargando datos del evento...</p>;
@@ -197,7 +227,27 @@ const FormularioEvento = () => {
   return (
     <div className="homepage-container pt-5 pb-5 d-flex justify-content-center">
       <div className="container" style={{ maxWidth: "900px" }}>
-        <h1 className="text-center mb-4">{eventId ? "Editar evento" : "Crear evento"}</h1>
+        <div className="d-flex justify-content-between align-items-center flex-wrap mb-4">
+          <h1 style={{ color: '#ff2e63' }} className="mb-0 ">{eventId ? "Editar evento" : "Crear evento"}</h1>
+          <div className="btn-group" role="group" aria-label="Navegación rápida">
+            <button
+              type="button"
+              className="btn btn-dark btn-sm mx-2"
+              onClick={() => navigate("/dashboard")}
+              style={{ minWidth: "130px" }}
+            >
+              Volver al Dashboard
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-danger btn-sm"
+              onClick={() => navigate("/")}
+              style={{ minWidth: "130px" }}
+            >
+              Ir al Home
+            </button>
+          </div>
+        </div>
 
         <form
           id="eventForm"
@@ -284,10 +334,10 @@ const FormularioEvento = () => {
             <label htmlFor="invitados" className="form-label">
               Correos electrónicos para invitaciones (separados por coma)
             </label>
-            <input
-              type="text"
+            <textarea
               id="invitados"
               className="form-control"
+              rows={3}
               placeholder="ejemplo@correo.com, otro@correo.com"
               {...register("invitados")}
             />
@@ -375,7 +425,7 @@ const FormularioEvento = () => {
 
           {/* Botón submit */}
           <div className="col-12 text-center mt-4">
-            <button type="submit" className="btn btn-primary px-5">
+            <button type="submit" className="create-event-btn mb-5 fade-in-delay">
               {eventId ? "Guardar cambios" : "Crear evento"}
             </button>
           </div>

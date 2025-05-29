@@ -113,7 +113,6 @@ def obtener_tareas_usuario(current_user_id, user_id):
     tareas = Tarea.query.filter_by(asignado_a=user_id).all()
     return jsonify([tarea.serialize() for tarea in tareas]), 200
 
-# Ruta para crear un nuevo evento. Requiere token válido y datos del evento.
 @api.route('/<int:user_id>/eventos', methods=['POST'])
 @token_required
 def crear_evento(current_user_id, user_id):
@@ -123,7 +122,7 @@ def crear_evento(current_user_id, user_id):
     data = request.json
     nombre = data.get('nombre')
     descripcion = data.get('descripcion')
-    fecha_str = data.get('fecha')  # fecha en string ISO 8601
+    fecha_str = data.get('fecha')
     ubicacion = data.get('ubicacion')
     acepta_colaboradores = data.get('acepta_colaboradores', True)
     invitados = data.get('invitados')
@@ -141,7 +140,6 @@ def crear_evento(current_user_id, user_id):
     except ValueError:
         return jsonify({"message": "Formato de fecha inválido. Usa YYYY-MM-DDTHH:MM:SS"}), 400
 
-    # Validar y convertir max_invitados a int si viene como string
     if max_invitados is not None:
         try:
             max_invitados = int(max_invitados)
@@ -164,6 +162,15 @@ def crear_evento(current_user_id, user_id):
     )
 
     db.session.add(nuevo_evento)
+    db.session.commit()
+
+    # Agregar creador como participante aceptado
+    nuevo_participante = Participante(
+        evento_id=nuevo_evento.id,
+        usuario_id=user_id,
+        aceptado=True
+    )
+    db.session.add(nuevo_participante)
     db.session.commit()
 
     return jsonify({
@@ -309,8 +316,6 @@ def eliminar_gasto(current_user_id, user_id, evento_id, gasto_id):
 # ------------------ INVITACIONES ------------------
 
 # Ruta para obtener todas las invitaciones que un usuario ha recibido.
-
-
 @api.route('/<int:user_id>/invitaciones', methods=['GET'])
 @token_required
 def obtener_invitaciones_usuario(current_user_id, user_id):
@@ -320,6 +325,55 @@ def obtener_invitaciones_usuario(current_user_id, user_id):
     invitaciones = Invitacion.query.filter_by(invitado_id=user_id).all()
     return jsonify([inv.serialize() for inv in invitaciones]), 200
 
+# Ruta para obtener todas las invitaciones de un evento específico. Solo el creador del evento puede acceder.
+@api.route('/<int:user_id>/eventos/<int:evento_id>/invitaciones', methods=['GET'])
+@token_required
+def obtener_invitaciones_evento(current_user_id, user_id, evento_id):
+    if current_user_id != user_id:
+        return jsonify({"message": "No autorizado"}), 403
+
+    evento = Evento.query.get(evento_id)
+    if not evento:
+        return jsonify({"message": "Evento no encontrado"}), 404
+
+    if evento.creador_id != user_id:
+        return jsonify({"message": "No autorizado"}), 403
+
+    invitaciones = Invitacion.query.filter_by(evento_id=evento_id).all()
+    return jsonify([inv.serialize() for inv in invitaciones]), 200
+
+# Ruta para agregar múltiples invitaciones a un evento. Requiere lista de emails y valida permisos.
+@api.route('/<int:user_id>/eventos/<int:evento_id>/invitaciones', methods=['POST'])
+@token_required
+def agregar_invitaciones(current_user_id, user_id, evento_id):
+    if current_user_id != user_id:
+        return jsonify({"message": "No autorizado"}), 403
+
+    data = request.json
+    emails = data.get('emails', [])
+    if not emails or not isinstance(emails, list):
+        return jsonify({"message": "Lista de emails inválida"}), 400
+
+    evento = Evento.query.get(evento_id)
+    if not evento:
+        return jsonify({"message": "Evento no encontrado"}), 404
+
+    if evento.creador_id != user_id:
+        return jsonify({"message": "No autorizado"}), 403
+
+    nuevas_invitaciones = []
+    for email in emails:
+        invitacion = Invitacion(
+            evento_id=evento_id,
+            email=email,
+            estado="pendiente"  # estado inicial
+        )
+        db.session.add(invitacion)
+        nuevas_invitaciones.append(invitacion)
+
+    db.session.commit()
+
+    return jsonify([inv.serialize() for inv in nuevas_invitaciones]), 201
 
 # Ruta para crear una invitación a un usuario a un evento. Valida permisos, existencia de evento e invitado.
 @api.route('/<int:user_id>/invitaciones', methods=['POST'])
@@ -538,6 +592,37 @@ def eliminar_invitacion_evento(current_user_id, evento_id, invitacion_id):
 
     return jsonify({"message": "Invitación eliminada correctamente"}), 200
 
+# Ruta para aceptar una invitación a un evento, solo permitido al usuario invitado
+@api.route('/eventos/<int:evento_id>/invitacion/aceptar', methods=['POST'])
+def aceptar_invitacion(evento_id):
+    data = request.json
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"message": "Email requerido"}), 400
+
+    invitacion = Invitacion.query.filter_by(evento_id=evento_id, email=email).first()
+
+    if not invitacion:
+        return jsonify({"message": "Invitación no encontrada"}), 404
+
+    # Buscar usuario con ese email
+    usuario = User.query.filter_by(email=email).first()
+
+    # Crear participante con usuario_id si existe
+    participante = Participante(
+        evento_id=evento_id,
+        usuario_id=usuario.id if usuario else None,
+        aceptado=True
+    )
+
+    # Eliminar invitación
+    db.session.delete(invitacion)
+    # Agregar participante
+    db.session.add(participante)
+    db.session.commit()
+
+    return jsonify({"message": "Invitación aceptada y participante agregado", "participante": participante.serialize()}), 200
 
 # ------------------ PARTICIPANTES ------------------
 

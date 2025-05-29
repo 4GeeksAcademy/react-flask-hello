@@ -134,6 +134,7 @@ class Invitacion(db.Model):
     evento_id: Mapped[int] = mapped_column(ForeignKey("eventos.id"), nullable=True)
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable=True)
     estado: Mapped[str] = mapped_column(Text, nullable=True)
+    email: Mapped[str] = mapped_column(String(120), nullable=True)
 
     evento = relationship("Evento", back_populates="invitaciones")
     usuario = relationship("User", back_populates="invitaciones")
@@ -144,6 +145,7 @@ class Invitacion(db.Model):
             "evento_id": self.evento_id,
             "usuario_id": self.usuario_id,
             "estado": self.estado,
+            "email": self.email,
         }
 
 class Participante(db.Model):

@@ -1,7 +1,9 @@
 import React from "react";
 import homeFoto from "../assets/img/homeFoto.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div className="homepage-container d-flex align-items-center justify-content-center">
       <div className="container-fluid">
@@ -12,8 +14,12 @@ const Home = () => {
             <p className="lead mb-4">Gestiona asados, fiestas y reuniones familiares.</p>
             <p className="lead mb-4">Invita, asigna tareas y mantén todo bajo control.</p>
             <div className="homepage-buttons d-flex flex-column flex-md-row gap-3 justify-content-center justify-content-md-start">
-              <button className="btn btn-primary px-4 py-2">Registrarse</button>
-              <button className="btn btn-outline-primary px-4 py-2">Iniciar Sesión</button>
+              <button className="btn btn-primary px-4 py-2"
+              onClick={() => navigate("/registro")}
+              >Registrarse</button>
+              <button className="btn btn-outline-primary px-4 py-2"
+              onClick={() => navigate("/login")}
+              >Iniciar Sesión</button>
             </div>
           </div>
 

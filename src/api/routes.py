@@ -8,9 +8,8 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 from api.models import db, User, Student, Teacher, GradeLevel
 from werkzeug.security import generate_password_hash
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required
 from werkzeug.security import check_password_hash
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
 
 api = Blueprint('api', __name__)
 

@@ -1,0 +1,388 @@
+/* Animación que mueve el carrusel horizontalmente de derecha a izquierda */
+@keyframes scrollIcons {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Contenedor externo que oculta el desbordamiento */
+.icon-strip {
+  overflow: hidden;
+  width: 100%;
+  background-color: #ff2e63;
+}
+
+/* Wrapper que contiene la pista animada */
+.scroll-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Pista que se mueve – contiene los íconos duplicados */
+.animate-scroll {
+  display: flex;
+  white-space: nowrap; /* Mantiene todo en una sola línea */
+  animation: scrollIcons 30s linear infinite; /* Deslizamiento constante */
+}
+
+/* Grupo de íconos (duplicado) */
+.icon-group {
+  display: flex;
+}
+
+/* Íconos individuales */
+.animate-scroll i {
+  font-size: 1.5rem;
+  color: black;
+  margin-right: 2rem;
+}
+
+@media (max-width: 768px) {
+  .animate-scroll i {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contacto-footer {
+    padding-left: 80px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contacto-footer {
+    padding-left: 0 !important;
+    text-align: center;
+  }
+}
+
+/* Botón About Us */
+.btn-outline-black {
+  border: 2px solid black;
+  color: black;
+  background-color: transparent;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1.5rem; /* opcional: mejora el tamaño visual */
+}
+
+.btn-outline-black:hover {
+  background-color: black;
+  color: white;
+}
+/*homepage*/
+.homepage-container {
+  background-color: #1a1a1d;
+  background-image: radial-gradient(
+      circle,
+      rgba(175, 7, 85, 0.418) 1px,
+      transparent 1px
+    ),
+    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.homepage-content {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.homepage-text h1 {
+  color: #ff2e63;
+}
+
+.homepage-text p {
+  color: #ffffff;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.homepage-buttons .btn-primary {
+  background-color: #ff2e63;
+  border: none;
+  color: #ffffff;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-top: 3rem;
+}
+
+.homepage-buttons .btn-primary:hover {
+  background-color: #e02658;
+}
+
+.homepage-buttons .btn-outline-primary {
+  border: 2px solid #ff2e63;
+  color: #ff2e63;
+  background-color: transparent;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-top: 3rem;
+}
+
+.homepage-buttons .btn-outline-primary:hover {
+  background-color: #ff2e63;
+  color: #ffffff;
+}
+
+.homepage-image {
+  object-fit: cover;
+  height: 100%;
+}
+/*homepage*/
+
+/*dashboard*/
+.dashboard-container {
+  background-color: #1a1a1d;
+  background-image: radial-gradient(
+      circle,
+      rgba(175, 7, 85, 0.418) 1px,
+      transparent 1px
+    ),
+    radial-gradient(circle, rgba(175, 7, 85, 0.418) 1px, transparent 1px);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
+  color: #ffffff;
+  min-height: 10vh;
+  padding: 2rem;
+}
+
+.dashboard-container h1{
+  color: #ff2e63;
+}
+.next-events {
+  color: #e02658;
+  margin-top: 5rem;
+}
+.create-event-btn {
+  background-color: #ff2e63;
+  font-size: 1.1rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+}
+
+.create-event-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px #ff2e63;
+}
+
+.events-section {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.event-card {
+  background-color: #1a1a1d;
+  border: #ff2e63;
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.event-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px #ff2e63;
+}
+.ver-detalles-btn {
+  background-color: #1a1a1d;
+  color: white;
+  border-color: #ff2e63;
+  transition: background-color 0.3s ease;
+}
+
+.ver-detalles-btn:hover {
+  background-color: #ff2e63;
+}
+
+.no-events-text {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  margin-top: 5rem;
+}
+
+
+
+/* Responsivo */
+@media (max-width: 576px) {
+  .event-card {
+    width: 90%;
+  }
+}
+
+/**********************************************Formulario Registro********************************************/
+#registerForm label {
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+#registerForm {
+  height: 700px;
+  box-shadow: -10px 8px 5px 0px rgba(247, 8, 123, 0.75);
+  -webkit-box-shadow: -10px 8px 20px 0px rgba(247, 8, 123, 0.75);
+  -moz-box-shadow: -10px 8px 5px 0px rgba(247, 8, 123, 0.75);
+}
+
+#registerImg {
+  width: 400px;
+  height: 400px;
+  margin-bottom: 122px;
+  margin-left: 10px;
+  padding: 0%;
+  border-radius: 40px !important;
+}
+
+.registerHeadTittle h1 {
+  color: #ff0095d2;
+  text-shadow: -2px 3px 3px rgba(255, 255, 255, 0.582);
+  margin: auto;
+  padding-top: 15px;
+  text-align: center;
+}
+
+.registerHeadTittle {
+  background-color: black;
+  height: 850px;
+}
+
+#imputRegisterForm {
+  height: 700px;
+  border: 2px solid #ff00408e;
+  border-radius: 1px 20px 1px 1px !important;
+  background: linear-gradient(
+    337deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgb(31, 31, 39) 89%,
+    rgb(65, 63, 63) 100%
+  );
+}
+
+.btn-enviarForm {
+  margin-left: 500px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  background-color: #ff0095d2;
+  color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-enviar:hover {
+  background-color: #ff008c;
+  transform: scale(1.05);
+}
+
+.btn-enviar:active {
+  background-color: #ff008c;
+  transform: scale(0.98);
+}
+/*formulario crear evento*/
+
+.btn-enviarForm-evento {
+  background-color: #ff2e63; /* rosita fuerte que usas en tu página */
+  color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px; /* redondeado estilo botón principal */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  max-width: 300px; /* no muy grande en pantallas grandes */
+  margin: 10px auto; /* centrado horizontalmente y margen vertical */
+  box-shadow: 0 4px 8px rgba(255, 46, 99, 0.4);
+}
+
+.btn-enviarForm-evento:hover {
+  background-color: #e02658; /* oscuro al pasar el mouse */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(224, 38, 88, 0.6);
+}
+
+.btn-enviarForm-evento:active {
+  background-color: #b01f45; /* aún más oscuro cuando clickeado */
+  transform: scale(0.98);
+  box-shadow: 0 3px 6px rgba(176, 31, 69, 0.5);
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .btn-enviarForm-evento {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+}
+
+.registerHeadTittle {
+  position: relative;
+  background-color: black;
+  height: 850px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  flex-wrap: wrap; /* para que se acomode en pantallas chicas */
+}
+
+.registerHeadTittle h1 {
+  flex: 1 1 60%; /* ocupa el 60% del ancho */
+  color: #ff0095d2;
+  text-shadow: -2px 3px 3px rgba(255, 255, 255, 0.582);
+  margin: auto 0;
+  padding-top: 15px;
+  text-align: left;
+}
+
+.register-image {
+  flex: 0 0 35%; /* ocupa el 35% del ancho */
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin-left: 20px;
+  align-self: flex-start; /* la imagen queda arriba */
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(255, 46, 99, 0.5);
+}
+
+/* Ocultar imagen en móviles */
+@media (max-width: 768px) {
+  .register-image {
+    display: none;
+  }
+
+  .registerHeadTittle {
+    justify-content: center; /* centrar título si no hay imagen */
+  }
+
+  .registerHeadTittle h1 {
+    flex: 1 1 100%;
+    text-align: center;
+    padding-top: 30px;
+  }
+}

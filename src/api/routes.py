@@ -9,6 +9,7 @@ from flask import Flask, request, jsonify
 from api.models import db, User, Student, Teacher, GradeLevel
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required
 from werkzeug.security import check_password_hash
 
 api = Blueprint('api', __name__)
@@ -57,7 +58,10 @@ def register_admin():
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
 # Darle datos a grade level
-
+@api.route('/setup/grade_levels', methods=['GET'])
+def get_grade_levels():
+    grade_levels = GradeLevel.query.all()
+    return jsonify([gl.serialize() for gl in grade_levels]), 200
 
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
@@ -187,3 +191,67 @@ def login_admin():
             "last_name": user.last_name
         }
     }), 200
+
+    #Completar login profesor y estudinates 
+    #///////////////////////////////////
+    #///////////////////////////////7//
+    #////////////////////////////////////
+
+
+#Aprobación de registros de estudiantes y profesores
+
+@api.route('/pending/registrations', methods=['GET']) #// obtener usuarios pendientes
+@jwt_required()
+def get_pending_users():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    pending_users = User.query.filter(
+        User.status == "pending",
+        User.role.in_(["student", "teacher"])
+    ).all()
+
+    return jsonify([user.serialize() for user in pending_users]), 200
+
+    
+@api.route('/approve/student/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def approve_student(user_id):
+    user = User.query.filter_by(id=user_id, role="student").first()
+
+    if not user:
+        return jsonify({"msg": "Estudiante no encontrado"}), 404
+
+    data = request.get_json()
+    status = data.get("status")
+
+    if status not in ["approved", "rejected"]:
+        return jsonify({"msg": "Estado inválido. Usa 'approved' o 'rejected'."}), 400
+
+    user.status = status
+    db.session.commit()
+
+    return jsonify({"msg": f"Estado del estudiante actualizado a '{status}'"}), 200
+
+
+@api.route('/approve/teacher/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def approve_teacher(user_id):
+    user = User.query.filter_by(id=user_id, role="teacher").first()
+
+    if not user:
+        return jsonify({"msg": "Profesor no encontrado"}), 404
+
+    data = request.get_json()
+    status = data.get("status")
+
+    if status not in ["approved", "rejected"]:
+        return jsonify({"msg": "Estado inválido. Usa 'approved' o 'rejected'."}), 400
+
+    user.status = status
+    db.session.commit()
+
+    return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200

@@ -181,18 +181,23 @@ def login_admin():
 
 
 
-# Login para estudiantes
+   # Login para estudiantes
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()
     email = data.get("email")
     password = data.get("password")
 
-    user = User.query.filter_by(email=email).first()
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
-    if user and user.check_login(password, 'student'):
+    user = User.query.filter_by(email=email, role='student').first()
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.id)
         return jsonify({
             "message": "Login de estudiante exitoso",
+            "access_token": access_token,
             "role": user.role,
             "user": user.serialize()
         }), 200
@@ -207,45 +212,21 @@ def login_teacher():
     email = data.get("email")
     password = data.get("password")
 
-    user = User.query.filter_by(email=email).first()
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
-    if user and user.check_login(password, 'teacher'):
+    user = User.query.filter_by(email=email, role='teacher').first()
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.id)
         return jsonify({
             "message": "Login de profesor exitoso",
+            "access_token": access_token,
             "role": user.role,
             "user": user.serialize()
         }), 200
 
     return jsonify({"message": "Credenciales inválidas para profesor"}), 401
-    if not email or not password:
-        return jsonify({"msg": "Email y contraseña requeridos"}), 400
-
-    user = User.query.filter_by(email=email, role="admin").first()
-    if not user:
-        return jsonify({"msg": "Administrador no encontrado"}), 404
-
-    if not check_password_hash(user.password, password):
-        return jsonify({"msg": "Contraseña incorrecta"}), 401
-
-    # No se requiere verificación de status para el admin
-
-    access_token = create_access_token(identity=user.id)
-
-    return jsonify({
-        "access_token": access_token,
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "role": user.role,
-            "first_name": user.first_name,
-            "last_name": user.last_name
-        }
-    }), 200
-
-    #Completar login profesor y estudinates 
-    #///////////////////////////////////
-    #///////////////////////////////7//
-    #////////////////////////////////////
 
 
 #Aprobación de registros de estudiantes y profesores

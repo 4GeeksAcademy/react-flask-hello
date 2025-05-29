@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState } from 'react'
 
-export const Navbar = () => {
+export const DashboardNavbar = () => {
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);

@@ -5,10 +5,9 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import { Layout } from "./pages/Layout";
+import { DashboardLayout } from "./pages/DashboardLayout";
 import { Login } from "./pages/Home";
 import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
 import { Admin } from "./pages/AdminLogin";
 import { AlumnosProfile } from "./pages/AlumnosProfile";
 import { Signup } from "./pages/ChangeSingup";
@@ -27,6 +26,8 @@ import { ProfesoresHorario } from "./pages/ProfesoresHorario";
 import { AlumnosNotas } from "./pages/AlumnosNotas";
 import { AlumnosHorario } from "./pages/AlumnosHorario";
 import { AlumnosPagos } from "./pages/AlumnosPagos";
+import { LoginLayout } from "./pages/LoginLayout";
+import { SignupLayout } from "./pages/SignupLayout";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,30 +38,38 @@ export const router = createBrowserRouter(
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
 
     // Root Route: All navigation will start from here.
-    <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+    <Route path="/" errorElement={<h1>Not found!</h1>} >
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-      <Route path="/" element={<Login />} />
-      <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
-      <Route path="/demo" element={<Demo />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/alumnos/profile" element={<AlumnosProfile />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/signup/alumno" element={<StudenSignup />} />
-      <Route path="/signup/profesor" element={<TeacherSignup />} />
-      <Route path="/admin/profile" element={<AdminProfile />} />
-      <Route path="/admin/alumnos/notas" element={<AdminAlumnosNotas />} />
-      <Route path="/admin/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
-      <Route path="/admin/alumnos/pagos" element={<AdminAlumnosPagos />} />
-      <Route path="/admin/profesores" element={<AdminProfesores />} />
-      <Route path="/admin/solicitudes" element={<AdminSolicitudes />} />
-      <Route path="/profesores/profile" element={<ProfesoresProfile />} />
-      <Route path="/profesores/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
-      <Route path="/profesores/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
-      <Route path="/profesores/horario" element={<ProfesoresHorario />} />
-      <Route path="/alumnos/notas" element={<AlumnosNotas />} />
-      <Route path="/alumnos/horario" element={<AlumnosHorario />} />
-      <Route path="/alumnos/pagos" element={<AlumnosPagos />} />
+      <Route path="/login/admin" element={<Admin />} />
+      <Route path="/" element={<LoginLayout />} errorElement={<h1>Not found!</h1>}>
+        <Route path="/" element={<Login />} />
+      </Route>
+      <Route path="/signup" element={<SignupLayout />}>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/alumno" element={<StudenSignup />} />
+        <Route path="/signup/profesor" element={<TeacherSignup />} />
+      </Route>
+      <Route path="/admin/dashboard" element={<DashboardLayout />}>
+        <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
+        <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} />
+        <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
+        <Route path="/admin/dashboard/alumnos/pagos" element={<AdminAlumnosPagos />} />
+        <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
+        <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
+      </Route>
+      <Route path="/profesores/dashboard" element={<DashboardLayout />}>
+        <Route path="/profesores/dashboard/profile" element={<ProfesoresProfile />} />
+        <Route path="/profesores/dashboard/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
+        <Route path="/profesores/dashboard/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
+        <Route path="/profesores/dashboard/horario" element={<ProfesoresHorario />} />
+      </Route>
+      <Route path="/alumnos/dashboard" element={<DashboardLayout />}>
+        <Route path="/alumnos/dashboard/profile" element={<AlumnosProfile />} />
+        <Route path="/alumnos/dashboard/notas" element={<AlumnosNotas />} />
+        <Route path="/alumnos/dashboard/horario" element={<AlumnosHorario />} />
+        <Route path="/alumnos/dashboard/pagos" element={<AlumnosPagos />} />
+      </Route>
     </Route>
   )
 );

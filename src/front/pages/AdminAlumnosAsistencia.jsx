@@ -1,13 +1,28 @@
-export const Solicitudes = () => {
+export const AdminAlumnosAsistencia = () => {
     return (
         <div class="container table-responsive">
             <div className="row">
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
-                        <option value="">Selecciona:</option>
-                        <option value="1">Alumnos</option>
-                        <option value="2">Profesores</option>
+                        <option value="">Selecciona Año</option>
+                        <option value="1">Primero</option>
+                        <option value="2">Segundo</option>
+                        <option value="3">Tercero</option>
+                        <option value="4">Cuarto</option>
+                        <option value="5">Quinto</option>
                     </select>
+                </div>
+                <div className="col-2">
+                    <select className="form-select" aria-label="Selecciona una opción">
+                        <option value="">Selecciona Periodo</option>
+                        <option value="1">Primer Bimestre</option>
+                        <option value="2">Segundo Bimestre</option>
+                        <option value="3">Tercero  Bimestre</option>
+                        <option value="4">Cuarto  Bimestre</option>
+                    </select>
+                </div>
+                <div className="col-2">
+                    <button type="button" class="btn btn-success px-4">Buscar</button>
                 </div>
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">

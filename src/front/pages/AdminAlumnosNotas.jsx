@@ -1,7 +1,17 @@
-export const AlumnosNotas = () => {
+export const AdminAlumnosNotas = () => {
     return (
         <div class="container table-responsive">
             <div className="row">
+                <div className="col-2">
+                    <select className="form-select" aria-label="Selecciona una opción">
+                        <option value="">Selecciona Año</option>
+                        <option value="1">Primero</option>
+                        <option value="2">Segundo</option>
+                        <option value="3">Tercero</option>
+                        <option value="4">Cuarto</option>
+                        <option value="5">Quinto</option>
+                    </select>
+                </div>
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
                         <option value="">Selecciona Materia</option>

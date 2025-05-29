@@ -1,12 +1,15 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from api.models import GradeLevel
+
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 from api.models import db, User, Student, Teacher, GradeLevel
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
 
 api = Blueprint('api', __name__)
 
@@ -44,7 +47,7 @@ def register_admin():
         first_name=data['first_name'],
         last_name=data['last_name'],
         email=data['email'],
-        password=data['password'],
+        password=generate_password_hash(data['password']),
         role='admin',
         status='approved'
     )
@@ -54,7 +57,10 @@ def register_admin():
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
 # Darle datos a grade level
-
+@api.route('/setup/grade_levels', methods=['GET'])
+def get_grade_levels():
+    grade_levels = GradeLevel.query.all()
+    return jsonify([gl.serialize() for gl in grade_levels]), 200
 
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
@@ -153,6 +159,7 @@ def register_teacher():
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
 #login admin
+# Login admin
 
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
@@ -210,3 +217,91 @@ def login_teacher():
         }), 200
 
     return jsonify({"message": "Credenciales inválidas para profesor"}), 401
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
+
+    user = User.query.filter_by(email=email, role="admin").first()
+    if not user:
+        return jsonify({"msg": "Administrador no encontrado"}), 404
+
+    if not check_password_hash(user.password, password):
+        return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    # No se requiere verificación de status para el admin
+
+    access_token = create_access_token(identity=user.id)
+
+    return jsonify({
+        "access_token": access_token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "role": user.role,
+            "first_name": user.first_name,
+            "last_name": user.last_name
+        }
+    }), 200
+
+    #Completar login profesor y estudinates 
+    #///////////////////////////////////
+    #///////////////////////////////7//
+    #////////////////////////////////////
+
+
+#Aprobación de registros de estudiantes y profesores
+
+@api.route('/pending/registrations', methods=['GET']) #// obtener usuarios pendientes
+@jwt_required()
+def get_pending_users():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    pending_users = User.query.filter(
+        User.status == "pending",
+        User.role.in_(["student", "teacher"])
+    ).all()
+
+    return jsonify([user.serialize() for user in pending_users]), 200
+
+    
+@api.route('/approve/student/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def approve_student(user_id):
+    user = User.query.filter_by(id=user_id, role="student").first()
+
+    if not user:
+        return jsonify({"msg": "Estudiante no encontrado"}), 404
+
+    data = request.get_json()
+    status = data.get("status")
+
+    if status not in ["approved", "rejected"]:
+        return jsonify({"msg": "Estado inválido. Usa 'approved' o 'rejected'."}), 400
+
+    user.status = status
+    db.session.commit()
+
+    return jsonify({"msg": f"Estado del estudiante actualizado a '{status}'"}), 200
+
+
+@api.route('/approve/teacher/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def approve_teacher(user_id):
+    user = User.query.filter_by(id=user_id, role="teacher").first()
+
+    if not user:
+        return jsonify({"msg": "Profesor no encontrado"}), 404
+
+    data = request.get_json()
+    status = data.get("status")
+
+    if status not in ["approved", "rejected"]:
+        return jsonify({"msg": "Estado inválido. Usa 'approved' o 'rejected'."}), 400
+
+    user.status = status
+    db.session.commit()
+
+    return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200

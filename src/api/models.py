@@ -15,7 +15,7 @@ class User(db.Model):
     last_name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(100), nullable=False)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[str] = mapped_column(String(20))
     status: Mapped[str] = mapped_column(String(20))
 

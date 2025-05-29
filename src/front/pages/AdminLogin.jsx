@@ -20,7 +20,7 @@ export const Admin = () => {
         const body = JSON.stringify({ email, password })
 
         try {
-            const response = await fetch('https://probable-space-enigma-6pqgwjg9vxvf4ww7-3001.app.github.dev', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/login/admin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

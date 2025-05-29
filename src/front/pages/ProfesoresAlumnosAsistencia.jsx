@@ -1,14 +1,15 @@
-export const AlumnosNotas = () => {
+export const ProfesoresAlumnosAsistencia = () => {
     return (
         <div class="container table-responsive">
             <div className="row">
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
-                        <option value="">Selecciona Materia</option>
-                        <option value="1">Matemática</option>
-                        <option value="2">Historia</option>
-                        <option value="3">Religión</option>
-                        <option value="4">Educación Física</option>
+                        <option value="">Selecciona Año</option>
+                        <option value="1">Primero</option>
+                        <option value="2">Segundo</option>
+                        <option value="3">Tercero</option>
+                        <option value="4">Cuarto</option>
+                        <option value="5">Quinto</option>
                     </select>
                 </div>
                 <div className="col-2">
@@ -34,6 +35,7 @@ export const AlumnosNotas = () => {
                             <th scope="col">Exámen Parcial (30%)</th>
                             <th scope="col">Exámen Final (35%)</th>
                             <th scope="col">Promedio Final</th>
+                            <th scope="col">Ingresar Asistencia</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +48,7 @@ export const AlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
@@ -56,6 +59,7 @@ export const AlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
@@ -66,6 +70,7 @@ export const AlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
                         </tr>
                     </tbody>
                 </table>

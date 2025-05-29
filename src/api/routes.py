@@ -89,6 +89,8 @@ def obtener_eventos_usuario(current_user_id, user_id):
     return jsonify([evento.serialize() for evento in eventos]), 200
 
 # Ruta para obtener un evento específico de un usuario. Solo puede acceder el propio usuario.
+
+
 @api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['GET'])
 @jwt_required()
 def get_evento(user_id, evento_id):
@@ -112,6 +114,7 @@ def obtener_tareas_usuario(current_user_id, user_id):
         return jsonify({"message": "No autorizado"}), 403
     tareas = Tarea.query.filter_by(asignado_a=user_id).all()
     return jsonify([tarea.serialize() for tarea in tareas]), 200
+
 
 @api.route('/<int:user_id>/eventos', methods=['POST'])
 @token_required
@@ -179,6 +182,8 @@ def crear_evento(current_user_id, user_id):
     }), 201
 
 # Ruta para modificar un evento existente. Solo el creador del evento puede modificarlo.
+
+
 @api.route('/<int:user_id>/eventos/<int:evento_id>', methods=['PUT'])
 @token_required
 def actualizar_evento(current_user_id, user_id, evento_id):
@@ -316,6 +321,8 @@ def eliminar_gasto(current_user_id, user_id, evento_id, gasto_id):
 # ------------------ INVITACIONES ------------------
 
 # Ruta para obtener todas las invitaciones que un usuario ha recibido.
+
+
 @api.route('/<int:user_id>/invitaciones', methods=['GET'])
 @token_required
 def obtener_invitaciones_usuario(current_user_id, user_id):
@@ -326,6 +333,8 @@ def obtener_invitaciones_usuario(current_user_id, user_id):
     return jsonify([inv.serialize() for inv in invitaciones]), 200
 
 # Ruta para obtener todas las invitaciones de un evento específico. Solo el creador del evento puede acceder.
+
+
 @api.route('/<int:user_id>/eventos/<int:evento_id>/invitaciones', methods=['GET'])
 @token_required
 def obtener_invitaciones_evento(current_user_id, user_id, evento_id):
@@ -343,6 +352,8 @@ def obtener_invitaciones_evento(current_user_id, user_id, evento_id):
     return jsonify([inv.serialize() for inv in invitaciones]), 200
 
 # Ruta para agregar múltiples invitaciones a un evento. Requiere lista de emails y valida permisos.
+
+
 @api.route('/<int:user_id>/eventos/<int:evento_id>/invitaciones', methods=['POST'])
 @token_required
 def agregar_invitaciones(current_user_id, user_id, evento_id):
@@ -376,6 +387,8 @@ def agregar_invitaciones(current_user_id, user_id, evento_id):
     return jsonify([inv.serialize() for inv in nuevas_invitaciones]), 201
 
 # Ruta para crear una invitación a un usuario a un evento. Valida permisos, existencia de evento e invitado.
+
+
 @api.route('/<int:user_id>/invitaciones', methods=['POST'])
 @token_required
 def crear_invitacion(current_user_id, user_id):
@@ -593,6 +606,8 @@ def eliminar_invitacion_evento(current_user_id, evento_id, invitacion_id):
     return jsonify({"message": "Invitación eliminada correctamente"}), 200
 
 # Ruta para aceptar una invitación a un evento, solo permitido al usuario invitado
+
+
 @api.route('/eventos/<int:evento_id>/invitacion/aceptar', methods=['POST'])
 def aceptar_invitacion(evento_id):
     data = request.json
@@ -601,7 +616,8 @@ def aceptar_invitacion(evento_id):
     if not email:
         return jsonify({"message": "Email requerido"}), 400
 
-    invitacion = Invitacion.query.filter_by(evento_id=evento_id, email=email).first()
+    invitacion = Invitacion.query.filter_by(
+        evento_id=evento_id, email=email).first()
 
     if not invitacion:
         return jsonify({"message": "Invitación no encontrada"}), 404

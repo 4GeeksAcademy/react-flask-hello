@@ -3,19 +3,34 @@ import Navbar from "../components/Navbar";
 import PostCard from "../components/PostCard";
 import CreatePost from "../components/CreatePost";
 
-
-
 const Feed = () => {
     const [posts, setPosts] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [activeTab, setActiveTab] = useState("all");
     const [showModal, setShowModal] = useState(false);
     const [selectedSport, setSelectedSport] = useState("all");
+    const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+
+    const fetchEvents = () => {
+        const params = new URLSearchParams();
+        if (selectedSport !== "all") params.append("sport", selectedSport);
+        if (selectedDifficulty !== "all") params.append("difficulty", selectedDifficulty);
+
+        fetch(`${process.env.BACKEND_URL}/api/events?${params.toString()}`)
+            .then(res => res.json())
+            .then(data => {
+                const updated = data.map(post => ({
+                    ...post,
+                    isFavorite: false // para simular favoritos
+                }));
+                setPosts(updated);
+            })
+            .catch(err => console.error("Error al obtener eventos:", err));
+    };
 
     useEffect(() => {
-        // Posts iniciales vacíos (los traerás luego desde la API)
-        setPosts([]);
-    }, []);
+        fetchEvents();
+    }, [selectedSport, selectedDifficulty]);
 
     const handleToggleFavorite = (id) => {
         setPosts(posts.map(post =>
@@ -33,19 +48,11 @@ const Feed = () => {
         ));
     };
 
-
-
-    let filteredPosts = posts;
+    let filteredPosts = [...posts];
 
     if (activeTab === "favorites") {
         filteredPosts = filteredPosts.filter(post => post.isFavorite);
     }
-
-    if (selectedSport !== "all") {
-        filteredPosts = filteredPosts.filter(post => post.sport === selectedSport);
-    }
-
-
 
     return (
         <div
@@ -75,22 +82,17 @@ const Feed = () => {
                             Favoritos ❤️
                         </button>
 
+                        {/* Dropdown deporte */}
                         <div className="dropdown ms-2">
                             <button
                                 className="btn btn-outline-success dropdown-toggle text-black"
                                 type="button"
-                                id="filterDropdown"
                                 data-bs-toggle="dropdown"
-                                aria-expanded="false"
                             >
-                                Filtros
+                                Deporte
                             </button>
-                            <ul className="dropdown-menu" aria-labelledby="filterDropdown">
-                                <li>
-                                    <button className="dropdown-item" onClick={() => setSelectedSport("all")}>
-                                        Todos los deportes
-                                    </button>
-                                </li>
+                            <ul className="dropdown-menu">
+                                <li><button className="dropdown-item" onClick={() => setSelectedSport("all")}>Todos</button></li>
                                 {["Escalada", "Running", "Ciclismo", "Fitness"].map((sport) => (
                                     <li key={sport}>
                                         <button className="dropdown-item" onClick={() => setSelectedSport(sport)}>
@@ -100,8 +102,28 @@ const Feed = () => {
                                 ))}
                             </ul>
                         </div>
-                    </div>
 
+                        {/* Dropdown dificultad */}
+                        <div className="dropdown ms-2">
+                            <button
+                                className="btn btn-outline-success dropdown-toggle text-black"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                            >
+                                Dificultad
+                            </button>
+                            <ul className="dropdown-menu">
+                                <li><button className="dropdown-item" onClick={() => setSelectedDifficulty("all")}>Todas</button></li>
+                                {["Fácil", "Medio", "Difícil"].map((level) => (
+                                    <li key={level}>
+                                        <button className="dropdown-item" onClick={() => setSelectedDifficulty(level)}>
+                                            {level}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
 
                     {isLoggedIn && (
                         <button className="btn btn-light text-success" onClick={() => setShowModal(true)}>
@@ -109,7 +131,6 @@ const Feed = () => {
                         </button>
                     )}
                 </div>
-
 
                 {filteredPosts.length === 0 ? (
                     <p className="text-black">No hay publicaciones.</p>
@@ -123,7 +144,6 @@ const Feed = () => {
                         />
                     ))
                 )}
-
             </div>
 
             {isLoggedIn && (
@@ -138,5 +158,3 @@ const Feed = () => {
 };
 
 export default Feed;
-
-

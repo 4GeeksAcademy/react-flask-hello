@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
-=======
 import React, { useState } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
->>>>>>> 7b4afa520d9551d5fb6973ee3fabbbd09b233480
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
@@ -86,7 +83,6 @@ export const Login = () => {
                 Profesor
               </label>
             </div>
-<<<<<<< HEAD
             <div className="form-check">
               <input
                 className="form-check-input"
@@ -100,18 +96,12 @@ export const Login = () => {
                 Administrador
               </label>
             </div>
-=======
->>>>>>> 7b4afa520d9551d5fb6973ee3fabbbd09b233480
           </div>
           <p className="text-danger mt-2">{msg}</p>
           <button type="submit" className="btn btn-outline-dark w-100">Login</button>
         </form>
       </div>
     </div>
-<<<<<<< HEAD
   );
 };
-=======
-  )
-}
->>>>>>> 7b4afa520d9551d5fb6973ee3fabbbd09b233480
+  

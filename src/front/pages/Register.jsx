@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { registerUser } from "../services/api"
+import { registerUser } from "../services/api";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -9,16 +9,47 @@ const Register = () => {
         name: "",
         email: "",
         password: "",
-
     });
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.name.trim()) {
+            newErrors.name = "El nombre es obligatorio";
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = "El correo es obligatorio";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = "El correo no tiene un formato válido";
+        }
+
+        if (!formData.password.trim()) {
+            newErrors.password = "La contraseña es obligatoria";
+        } else if (formData.password.length < 6) {
+            newErrors.password = "La contraseña debe tener al menos 6 caracteres";
+        }
+
+        return newErrors;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        registerUser(formData)
+        const validationErrors = validateForm();
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return; // No enviar el formulario
+        }
+
+        setErrors({}); // Limpiar errores si todo está bien
+        registerUser(formData);
         navigate("/profile");
     };
 
@@ -52,7 +83,9 @@ const Register = () => {
                     </h2>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Nombre</label>
+                            <label htmlFor="name" className="form-label">
+                                Nombre
+                            </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -63,9 +96,12 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
+                            {errors.name && <div className="text-danger">{errors.name}</div>}
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="email" className="form-label">Correo electrónico</label>
+                            <label htmlFor="email" className="form-label">
+                                Correo electrónico
+                            </label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -76,9 +112,12 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
+                            {errors.email && <div className="text-danger">{errors.email}</div>}
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Contraseña</label>
+                            <label htmlFor="password" className="form-label">
+                                Contraseña
+                            </label>
                             <input
                                 type="password"
                                 className="form-control"
@@ -89,6 +128,7 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
+                            {errors.password && <div className="text-danger">{errors.password}</div>}
                         </div>
                         <button type="submit" className="btn btn-success w-100">
                             Registrarse

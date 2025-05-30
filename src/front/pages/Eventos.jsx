@@ -72,7 +72,7 @@ const Eventos = () => {
 
             {!direccionSeleccionada ? (
                 <div className="detalle-direccion">
-                    <h2>Selecciona un ciudad para ir al evento</h2>
+                    <h2>Selecciona una ciudad para ir al evento</h2>
                     <img
                         src="parque.jpg"
                         alt="Imagen por defecto"

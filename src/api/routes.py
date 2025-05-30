@@ -263,7 +263,7 @@ def login_teacher():
 
 #Aprobación de registros de estudiantes y profesores
 
-@api.route('/pending/registrations', methods=['GET']) #// obtener usuarios pendientes
+@api.route('/pending/registrations', methods=['GET'])  # obtener usuarios pendientes
 @jwt_required()
 def get_pending_users():
     user_id = get_jwt_identity()
@@ -279,7 +279,7 @@ def get_pending_users():
 
     return jsonify([user.serialize() for user in pending_users]), 200
 
-    
+
 @api.route('/approve/student/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def approve_student(user_id):
@@ -317,8 +317,8 @@ def approve_teacher(user_id):
     user.status = status
     db.session.commit()
 
-    return jsonify
-    {{({"msg": f"Estado del profesor actualizado a '{status}'"})}}, 200
+    return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200
+
 
 
 #get admin

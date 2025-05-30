@@ -1,12 +1,40 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 
 export const TeacherSignup = () => {
     const [load, setLoad] = useState(false)
+    const [courses, setCourses] = useState([])
     const [msg, setMsg] = useState('')
     const navigate = useNavigate();
+
+    useEffect(() => {
+        course();
+    }, [])
+    // El fetch debe ser distinto pero faltan las materias o cursos
+    const course = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                setLoad(true)
+                setCourses(data)
+                console.log('Cursos obtenidos correctamente');
+                console.log(data);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const procesarDatos = async (data) => {
         console.log('Informacion del Registro', data)
@@ -127,20 +155,19 @@ export const TeacherSignup = () => {
                         </div>
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="department" className="form-label">Department:</label>
-                        <input type="text" id="department" placeholder='Department' className={"form-control " + (errors.department ? 'is-invalid' : '')}
-                            {
-                            ...register('department', {
-                                required: 'The field department is required!',
-                                pattern: {
-                                    value: /^[A-Za-z0-9 #\/-]+$/i,
-                                    message: 'Then the department can only contain only letters, numbers and “#”, “-”, “/”.'
-                                }
-                            })
-                            }
-                        />
+                        <label htmlFor="grade_level" className="form-label">Grade Level:</label>
+                        <select
+                            id="grade_level"
+                            className={"form-control " + (errors.grade_level_id ? 'is-invalid' : '')}
+                            {...register('grade_level_id', { required: 'Please select a grade level' })}
+                        >
+                            <option value=""> Select grade </option>
+                            {courses.map((course) => (
+                                <option key={course.id} value={course.id}>{course.name}</option>
+                            ))}
+                        </select>
                         <div className="invalid-feedback">
-                            {errors?.department?.message}
+                            {errors?.grade_level?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">

@@ -53,6 +53,11 @@ export const DashboardNavbar = () => {
 												Pagos
 											</Link>
 										</li>
+										<li>
+											<Link to="/admin/dashboard/solicitudes" className="dropdown-item" onClick={closeMenu}>
+												Solicitudes
+											</Link>
+										</li>
 									</ul>
 								</div>
 							</li>

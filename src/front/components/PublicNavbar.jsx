@@ -18,7 +18,7 @@ const PublicNavbar = () => {
         </Link>
 
         <span
-          cclassName="nav-link-disabled me-3"
+          className="nav-link-disabled me-3"
           data-bs-toggle="tooltip"
           data-bs-placement="bottom"
           title="Solo para usuarios registrados"

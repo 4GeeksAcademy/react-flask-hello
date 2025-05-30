@@ -14,6 +14,7 @@ from flask_cors import CORS
 from flask import Flask
 import os
 from src.api.services.routes.weather import weather_bp
+from flask import send_from_directory
 
 
 # Cargar variables de entorno

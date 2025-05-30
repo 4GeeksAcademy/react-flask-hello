@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import PostCard from "../components/PostCard";
 import CreatePost from "../components/CreatePost";
+import { useNavigate } from "react-router-dom";
 
 const Feed = () => {
+    const navigate = useNavigate();
+
     const [posts, setPosts] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [activeTab, setActiveTab] = useState("all");
@@ -11,17 +14,40 @@ const Feed = () => {
     const [selectedSport, setSelectedSport] = useState("all");
     const [selectedDifficulty, setSelectedDifficulty] = useState("all");
 
+    useEffect(() => {
+        const loggedIn = localStorage.getItem("isLoggedIn");
+        if (loggedIn !== "true") {
+            navigate("/login");
+        }
+    }, []);
+
+    const handleToggleFavorite = (id) => {
+        const updatedPosts = posts.map(post =>
+            post.id === id ? { ...post, isFavorite: !post.isFavorite } : post
+        );
+
+        setPosts(updatedPosts);
+
+        const favoriteIds = updatedPosts
+            .filter(post => post.isFavorite)
+            .map(post => post.id);
+
+        localStorage.setItem("favoritePosts", JSON.stringify(favoriteIds));
+    };
+
     const fetchEvents = () => {
         const params = new URLSearchParams();
         if (selectedSport !== "all") params.append("sport", selectedSport);
         if (selectedDifficulty !== "all") params.append("difficulty", selectedDifficulty);
+
+        const storedFavorites = JSON.parse(localStorage.getItem("favoritePosts")) || [];
 
         fetch(`${process.env.BACKEND_URL}/api/events?${params.toString()}`)
             .then(res => res.json())
             .then(data => {
                 const updated = data.map(post => ({
                     ...post,
-                    isFavorite: false // para simular favoritos
+                    isFavorite: storedFavorites.includes(post.id)
                 }));
                 setPosts(updated);
             })
@@ -31,12 +57,6 @@ const Feed = () => {
     useEffect(() => {
         fetchEvents();
     }, [selectedSport, selectedDifficulty]);
-
-    const handleToggleFavorite = (id) => {
-        setPosts(posts.map(post =>
-            post.id === id ? { ...post, isFavorite: !post.isFavorite } : post
-        ));
-    };
 
     const handleJoin = (id) => {
         setPosts(posts.map(post =>
@@ -53,7 +73,7 @@ const Feed = () => {
     if (activeTab === "favorites") {
         filteredPosts = filteredPosts.filter(post => post.isFavorite);
     }
-
+    
     return (
         <div
             className="bg-light min-vh-100"

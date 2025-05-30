@@ -30,7 +30,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`, // si usás autenticación
+                    // "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify(newPost),
             });
@@ -42,6 +42,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
             const createdPost = await response.json();
             setPosts(prev => [createdPost, ...prev]);
 
+            // Resetear formulario
             setFormData({
                 title: "",
                 description: "",
@@ -53,7 +54,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 difficulty: ""
             });
 
-            onClose(); // cerrar modal
+            onClose(); // Cerrar modal
 
         } catch (error) {
             console.error("Error al crear el evento:", error);

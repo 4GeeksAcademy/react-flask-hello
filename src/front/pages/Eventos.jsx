@@ -70,7 +70,16 @@ const Eventos = () => {
                 ))}
             </div>
 
-            {direccionSeleccionada && (
+            {!direccionSeleccionada ? (
+                <div className="detalle-direccion">
+                    <h2>Selecciona un lugar para ir al evento</h2>
+                    <img
+                        src="parque.jpg"
+                        alt="Imagen por defecto"
+                        className="default"
+                    />
+                </div>
+            ) : (
                 <div className="detalle-direccion">
                     <h2>{direccionSeleccionada.nombre}</h2>
                     <img
@@ -101,6 +110,7 @@ const Eventos = () => {
                     )}
                 </div>
             )}
+
         </div>
     );
 };

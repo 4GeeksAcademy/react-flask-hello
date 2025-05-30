@@ -30,7 +30,7 @@
 .plan-price {
   font-size: 26px;
   font-weight: bold;
-  color: #2b6cb0;
+  color: #0f3d6e;
   margin-bottom: 15px;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .plan-button {
-  background-color: #3182ce;
+  background-color: #061f37;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -52,5 +52,5 @@
 }
 
 .plan-button:hover {
-  background-color: #2b6cb0;
+  background-color: #213448;
 }

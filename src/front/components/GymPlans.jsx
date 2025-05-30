@@ -1,22 +1,22 @@
 import React from 'react';
-import './GymPlans.css';
+import "../../styles/GymPlans.css";
 
 const GymPlans = () => {
   const plans = [
     {
       title: 'Tarifa Basic',
       price: '45€',
-      description: 'Acceso al gimnasio y máquinas básicas.',
+      description: 'Acceso entrenamientos.',
     },
     {
       title: 'Tarifa Premium',
       price: '55€',
-      description: 'Incluye clases dirigidas, sauna y zona de cardio.',
+      description: 'Incluye planes de Nutricion.',
     },
     {
       title: 'Tarifa DMPC',
       price: '65€',
-      description: 'Todo lo anterior + asesoramiento personalizado y nutricional.',
+      description: 'Todo lo anterior + asesoramiento personalizado.',
     },
   ];
 

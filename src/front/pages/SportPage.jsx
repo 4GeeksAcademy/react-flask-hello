@@ -12,7 +12,7 @@ const SportPage = () => {
         { tittle: "Plan Ganancia Muscular", img: "/masa_muscular.jpg", parrafo: "Planificación para el crecimiento muscular." },
         { tittle: "Plan Salud General", img: "/ejercicios_balanceados.jpg", parrafo: "Ejercicios balanceados para sentirte bien cada día." }
     ]
- 
+
     return (
         <div className="sport-page container mt-5 ">
             <section className="sport-header text-center py-5">
@@ -34,7 +34,7 @@ const SportPage = () => {
                     })}
                 </div>
             </section>
- 
+
             <section className="beneficios my-5">
                 <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
                 <ul className="list-group list-group-flush caja-bot">

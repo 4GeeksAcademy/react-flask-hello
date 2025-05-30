@@ -1,6 +1,6 @@
 .eventos-container {
     padding: 2rem;
-    background: #1c2d3a;
+    background: #213448;
     color: white;
     min-height: 100vh;
 }
@@ -26,7 +26,7 @@
 .direccion-item {
     cursor: pointer;
     padding: 0.5rem;
-    background-color: #2a3d4d;
+    background-color: #385166;
     border-radius: 5px;
     text-align: center;
     transition: background-color 0.3s ease;
@@ -52,4 +52,13 @@
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
+}
+
+.info-extra {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.info-extra p {
+  margin: 4px 0;
 }

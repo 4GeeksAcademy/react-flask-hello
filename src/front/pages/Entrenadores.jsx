@@ -3,6 +3,7 @@ import { Navbar } from "../components/Navbar";
 
 // index.css
 import "../../styles/entrenador.css";
+
 const Entrenadores = () => {
 
     const selectedTrainer = {

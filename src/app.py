@@ -1,23 +1,34 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
-import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from src.api.auth import auth_bp
+from src.api.models import db
+from src.api.utils import APIException, generate_sitemap
+from src.api.admin import setup_admin
+from src.api.auth import auth_bp
+from src.api.commands import setup_commands
+from src.api.services.routes.users import users_bp
+from src.api.services.routes.events import events_bp
+from src.api.services.routes.weather import weather_bp
+from dotenv import load_dotenv
 from flask_migrate import Migrate
-from flask_swagger import swagger
-from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
-from api.admin import setup_admin
-from api.commands import setup_commands
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from flask import Flask
+import os
+from src.api.services.routes.weather import weather_bp
 
-# from models import Person
 
+# Cargar variables de entorno
+load_dotenv()
+
+# Inicializa la app
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+CORS(app, origins="https://special-bassoon-jjqx654vx96j35vv9-3000.app.github.dev",
+     supports_credentials=True)
+
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -37,8 +48,12 @@ setup_admin(app)
 # add the admin
 setup_commands(app)
 
-# Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+# Registro de Blueprints
+app.register_blueprint(users_bp, url_prefix='/api/users')
+app.register_blueprint(events_bp, url_prefix='/api/events')
+
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(weather_bp, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
 
@@ -57,6 +72,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):

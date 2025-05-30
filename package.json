@@ -36,7 +36,7 @@
 		"eslint-plugin-react": "^7.33.1",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.3",
-		"vite": "^4.4.8"
+		"vite": "^6.3.5"
 	},
 	"babel": {
 		"presets": [
@@ -60,10 +60,7 @@
 		"react": "^18.2.0",
 		"react-bootstrap": "^2.10.10",
 		"react-dom": "^18.2.0",
-<<<<<<< HEAD
-=======
 		"react-icons": "^5.5.0",
->>>>>>> 31cd80a9afc0427a83b9d4d98523fffec4548e1d
 		"react-router-dom": "^6.30.1"
 	}
 }

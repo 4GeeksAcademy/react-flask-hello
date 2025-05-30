@@ -12,6 +12,7 @@ import  SportPage  from "./pages/SportPage";
 import  Entrenadores  from "./pages/Entrenadores";
 import  AboutUs  from "./pages/AboutUs";
 import Eventos from "./pages/Eventos";
+import Tarifas from "./pages/Tarifas";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,8 @@ export const router = createBrowserRouter(
       <Route path="/entrenadores" element={<Entrenadores />} />
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />
+      <Route path="/Tarifas" element={<Tarifas />} />
+      
     </Route>
   )
 );

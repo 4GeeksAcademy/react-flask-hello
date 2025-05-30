@@ -37,7 +37,7 @@ export const Login = () => {
         dispatch({ type: "SET_USER", payload: { email: email } });
         dispatch({ type: "SET_TOKEN", payload: data.access_token });
 
-        navigate(`/${user}/dashboard`);
+        navigate(`/${user}/dashboard/profile`);
       } else {
         setMsg(data.message || "Credenciales inválidas");
       }

@@ -2,16 +2,18 @@ from src.api.auth import auth_bp
 from src.api.models import db
 from src.api.utils import APIException, generate_sitemap
 from src.api.admin import setup_admin
+from src.api.auth import auth_bp
 from src.api.commands import setup_commands
 from src.api.services.routes.users import users_bp
 from src.api.services.routes.events import events_bp
+from src.api.services.routes.weather import weather_bp
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import Flask
 import os
-from api.services.routes.weather import weather_bp
+from src.api.services.routes.weather import weather_bp
 
 
 # Cargar variables de entorno
@@ -24,7 +26,8 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-CORS(app, supports_credentials=True)
+CORS(app, origins="https://reimagined-trout-694x6j6j7647f44p9-3000.app.github.dev",
+     supports_credentials=True)
 
 
 # database condiguration

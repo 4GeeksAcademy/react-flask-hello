@@ -1,13 +1,13 @@
 body {
   background: #213448;
-  color: #ECEFCA;
+  color: #ecefca;
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
 .sport-page {
-  padding-top: 150px;
+  padding-top: 10px;
 }
 
 .navbar {
@@ -20,7 +20,6 @@ body {
   background: #213448;
 }
 
-
 .logo-navbar {
   height: 90px;
   object-fit: contain;
@@ -32,7 +31,7 @@ body {
 }
 
 .sport-header {
-  background-image: url("/sport.jpg");
+  background-image: url("/sport.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -43,6 +42,7 @@ body {
   margin-top: 0;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  height: 260px;
 }
 
 .sport-header::before {
@@ -69,9 +69,8 @@ body {
 }
 
 .sport1 {
-  background: #ECEFCA;
+  background: #ecefca;
 }
-
 
 .sport-page .tittle,
 .sport-page .subtittle {

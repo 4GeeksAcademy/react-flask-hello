@@ -6,17 +6,32 @@ const Eventos = () => {
         {
             nombre: "Dirección 1",
             descripcion: "Bienvenidos a Dirección 1",
-            imagen: "https://via.placeholder.com/600x200?text=Direccion+1"
+            imagen: "https://picsum.photos/200"
         },
         {
-            nombre: "Dirección 7",
-            descripcion: "Bienvenidos a Dirección 7",
-            imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Retiro_-_Palacio_de_Cristal_02.jpg/800px-Retiro_-_Palacio_de_Cristal_02.jpg"
+            nombre: "Dirección 2",
+            descripcion: "Bienvenidos a Dirección 2",
+            imagen: "https://picsum.photos/200"
         },
         {
-            nombre: "Dirección 15",
-            descripcion: "Bienvenidos a Dirección 15",
-            imagen: "https://via.placeholder.com/600x200?text=Direccion+15"
+            nombre: "Dirección 3",
+            descripcion: "Bienvenidos a Dirección 3",
+            imagen: "https://picsum.photos/200"
+        },
+        {
+            nombre: "Dirección 4",
+            descripcion: "Bienvenidos a Dirección 4",
+            imagen: "https://picsum.photos/200"
+        },
+        {
+            nombre: "Dirección 5",
+            descripcion: "Bienvenidos a Dirección 5",
+            imagen: "https://picsum.photos/200"
+        },
+        {
+            nombre: "Dirección 6",
+            descripcion: "Bienvenidos a Dirección 6",
+            imagen: "https://picsum.photos/200"
         },
     ];
 

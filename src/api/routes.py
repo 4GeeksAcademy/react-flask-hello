@@ -265,8 +265,8 @@ def login_teacher():
         }
     }), 200
 
-# Aprobación de registros de estudiantes y profesores
 
+# Aprobación de registros de estudiantes y profesores
 
 # obtener usuarios pendientes
 @api.route('/pending/registrations', methods=['GET'])
@@ -285,7 +285,7 @@ def get_pending_users():
 
     return jsonify([user.serialize() for user in pending_users]), 200
 
-
+# aprobación de registros de estudiantes y profesores
 @api.route('/approve/student/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def approve_student(user_id):
@@ -327,7 +327,6 @@ def approve_teacher(user_id):
 
 
 # get admin
-
 @api.route('/admin/profile', methods=['GET'])
 @jwt_required()
 def get_admin():
@@ -335,3 +334,29 @@ def get_admin():
     if not user or user.role != "admin":
         return jsonify({"msg": "Acceso no autorizado"}), 403
     return jsonify(user.serialize()), 200
+
+# Información del estudiante
+@api.route('/information/students', methods=['GET'])
+@jwt_required()
+def get_pending_students():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    students = User.query.filter_by(role="student", status="pending").all()
+    return jsonify([s.serialize() for s in students]), 200
+
+# Información del profesor
+@api.route('/information/teachers', methods=['GET'])
+@jwt_required()
+def get_pending_teachers():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    teachers = User.query.filter_by(role="teacher", status="pending").all()
+    return jsonify([t.serialize() for t in teachers]), 200

@@ -53,16 +53,16 @@ const Eventos = () => {
         },
     ];
 
-    const [direccionSeleccionada, setDireccionSeleccionada] = useState(null);
+    const [data, setData] = useState(null);
 
     return (
         <div className="eventos-container">
             <h1 className="titulo-eventos">Eventos activos</h1>
             <div className="grid-direcciones">
-                {lugares.map((lugar, idx) => (
+                {lugares.map((lugar, i) => (
                     <div
-                        key={idx}
-                        onClick={() => setDireccionSeleccionada(lugar)}
+                        key={i}
+                        onClick={() => setData(lugar)}
                         className="direccion-item"
                     >
                         {lugar.nombre}
@@ -70,7 +70,7 @@ const Eventos = () => {
                 ))}
             </div>
 
-            {!direccionSeleccionada ? (
+            {!data ? (
                 <div className="detalle-direccion">
                     <h2>Selecciona una ciudad para ir al evento</h2>
                     <img
@@ -81,30 +81,30 @@ const Eventos = () => {
                 </div>
             ) : (
                 <div className="detalle-direccion">
-                    <h2>{direccionSeleccionada.nombre}</h2>
+                    <h2>{data.nombre}</h2>
                     <img
-                        src={direccionSeleccionada.imagen}
-                        alt={`Imagen de ${direccionSeleccionada.nombre}`}
+                        src={data.imagen}
+                        alt={`Imagen de ${data.nombre}`}
                         className="imagen-lugar"
                     />
-                    <h3>{direccionSeleccionada.descripcion}</h3>
+                    <h3>{data.descripcion}</h3>
 
                     <div className="info-extra">
-                        <p><strong>Hora del evento:</strong> {direccionSeleccionada.hora}</p>
-                        <p><strong>Asistentes:</strong> {direccionSeleccionada.asistentes}</p>
+                        <p><strong>Hora del evento:</strong> {data.hora}</p>
+                        <p><strong>Asistentes:</strong> {data.asistentes}</p>
                     </div>
 
-                    {direccionSeleccionada.iframe && (
+                    {data.iframe && (
                         <div className="iframe-container">
                             <iframe
-                                src={direccionSeleccionada.iframe}
+                                src={data.iframe}
                                 width="100%"
                                 height="400"
                                 style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
-                                title={`Mapa de ${direccionSeleccionada.nombre}`}
+                                title={`Mapa de ${data.nombre}`}
                             ></iframe>
                         </div>
                     )}

@@ -10,8 +10,9 @@ from api.models import db, User, Student, Teacher, GradeLevel
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
-
+from models import Admin 
 api = Blueprint('api', __name__)
+from api.models import db, User
 
 # Allow CORS requests to this API
 CORS(api)
@@ -193,7 +194,7 @@ def login_admin():
 
 
 
-   # Login para estudiantes
+  # Login estudiante
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()
@@ -203,21 +204,28 @@ def login_student():
     if not email or not password:
         return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
-    user = User.query.filter_by(email=email, role='student').first()
+    user = User.query.filter_by(email=email, role="student").first()
+    if not user:
+        return jsonify({"msg": "Estudiante no encontrado"}), 404
 
-    if user and check_password_hash(user.password, password):
-        access_token = create_access_token(identity=user.id)
-        return jsonify({
-            "message": "Login de estudiante exitoso",
-            "access_token": access_token,
+    if not check_password_hash(user.password, password):
+        return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    access_token = create_access_token(identity=user.id)
+
+    return jsonify({
+        "access_token": access_token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
             "role": user.role,
-            "user": user.serialize()
-        }), 200
+            "first_name": user.first_name,
+            "last_name": user.last_name
+        }
+    }), 200
 
-    return jsonify({"message": "Credenciales inválidas para estudiante"}), 401
 
-
-# Login para profesores
+# Login profesor
 @api.route('/login/teacher', methods=['POST'])
 def login_teacher():
     data = request.get_json()
@@ -227,19 +235,25 @@ def login_teacher():
     if not email or not password:
         return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
-    user = User.query.filter_by(email=email, role='teacher').first()
+    user = User.query.filter_by(email=email, role="teacher").first()
+    if not user:
+        return jsonify({"msg": "Profesor no encontrado"}), 404
 
-    if user and check_password_hash(user.password, password):
-        access_token = create_access_token(identity=user.id)
-        return jsonify({
-            "message": "Login de profesor exitoso",
-            "access_token": access_token,
+    if not check_password_hash(user.password, password):
+        return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    access_token = create_access_token(identity=user.id)
+
+    return jsonify({
+        "access_token": access_token,
+        "user": {
+            "id": user.id,
+            "email": user.email,
             "role": user.role,
-            "user": user.serialize()
-        }), 200
-
-    return jsonify({"message": "Credenciales inválidas para profesor"}), 401
-
+            "first_name": user.first_name,
+            "last_name": user.last_name
+        }
+    }), 200
 
 #Aprobación de registros de estudiantes y profesores
 
@@ -297,4 +311,21 @@ def approve_teacher(user_id):
     user.status = status
     db.session.commit()
 
-    return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200
+    return jsonify
+    {{({"msg": f"Estado del profesor actualizado a '{status}'"})}}, 200
+
+
+#get admin
+
+@api.route('/admin/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_admin(user_id):
+    user = User.query.get(get_jwt_identity())
+    if user.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    admin = User.query.filter_by(id=user_id, role='admin').first()
+    if admin:
+        return jsonify(admin.serialize()), 200
+    else:
+        return jsonify({'error': 'Admin no encontrado'}), 404

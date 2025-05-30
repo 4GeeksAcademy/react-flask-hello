@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from api.models import db, User, Student, Teacher, GradeLevel
+from api.models import db, User, Student, Teacher, GradeLevel, Course
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -125,9 +125,8 @@ def register_student():
 # Registro profesor
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
-    data = request.json
-    required_fields = ['first_name', 'last_name',
-                       'email', 'password', 'department', 'phone']
+    data = request.get_json()
+    required_fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'course_id']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -140,7 +139,7 @@ def register_teacher():
         first_name=data['first_name'],
         last_name=data['last_name'],
         email=data['email'],
-        password=data['password'],
+        password=generate_password_hash(data['password']),
         role='teacher',
         status='pending'
     )
@@ -149,10 +148,17 @@ def register_teacher():
 
     teacher = Teacher(
         user_id=user.id,
-        department=data['department'],
         phone=data['phone']
     )
     db.session.add(teacher)
+    db.session.flush()
+
+    # Asignar curso al profesor
+    course = Course.query.get(data['course_id'])
+    if not course:
+        return jsonify({"error": "Curso no encontrado"}), 404
+
+    course.teacher_id = teacher.user_id
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201

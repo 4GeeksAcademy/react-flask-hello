@@ -122,8 +122,6 @@ def register_student():
     return jsonify({"message": "Solicitud de registro como estudiante enviada"}), 201
 
 # Registro profesor
-
-
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.json
@@ -158,65 +156,14 @@ def register_teacher():
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
-#login admin
-# Login admin
 
+#login admin
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
     data = request.get_json()
     email = data.get("email")
     password = data.get("password")
 
-    user = User.query.filter_by(email=email).first()
-
-    if user and user.check_login(password, 'admin'):
-        return jsonify({
-            "message": "Login exitoso",
-            "role": user.role,
-            "user": user.serialize()
-        }), 200
-
-    return jsonify({"message": "Credenciales inválidas"}), 401
-
-
-
-
-# Login para estudiantes
-@api.route('/login/student', methods=['POST'])
-def login_student():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-
-    user = User.query.filter_by(email=email).first()
-
-    if user and user.check_login(password, 'student'):
-        return jsonify({
-            "message": "Login de estudiante exitoso",
-            "role": user.role,
-            "user": user.serialize()
-        }), 200
-
-    return jsonify({"message": "Credenciales inválidas para estudiante"}), 401
-
-
-# Login para profesores
-@api.route('/login/teacher', methods=['POST'])
-def login_teacher():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-
-    user = User.query.filter_by(email=email).first()
-
-    if user and user.check_login(password, 'teacher'):
-        return jsonify({
-            "message": "Login de profesor exitoso",
-            "role": user.role,
-            "user": user.serialize()
-        }), 200
-
-    return jsonify({"message": "Credenciales inválidas para profesor"}), 401
     if not email or not password:
         return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
@@ -242,10 +189,56 @@ def login_teacher():
         }
     }), 200
 
-    #Completar login profesor y estudinates 
-    #///////////////////////////////////
-    #///////////////////////////////7//
-    #////////////////////////////////////
+
+
+
+
+   # Login para estudiantes
+@api.route('/login/student', methods=['POST'])
+def login_student():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
+
+    user = User.query.filter_by(email=email, role='student').first()
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.id)
+        return jsonify({
+            "message": "Login de estudiante exitoso",
+            "access_token": access_token,
+            "role": user.role,
+            "user": user.serialize()
+        }), 200
+
+    return jsonify({"message": "Credenciales inválidas para estudiante"}), 401
+
+
+# Login para profesores
+@api.route('/login/teacher', methods=['POST'])
+def login_teacher():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"msg": "Email y contraseña requeridos"}), 400
+
+    user = User.query.filter_by(email=email, role='teacher').first()
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.id)
+        return jsonify({
+            "message": "Login de profesor exitoso",
+            "access_token": access_token,
+            "role": user.role,
+            "user": user.serialize()
+        }), 200
+
+    return jsonify({"message": "Credenciales inválidas para profesor"}), 401
 
 
 #Aprobación de registros de estudiantes y profesores

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,9 @@ export const Login = () => {
     if (!email || !password) {
       setMsg("*Completa los campos correctamente.");
       return;
-    } else setMsg("");
+    } else {
+      setMsg("");
+    }
 
     const body = JSON.stringify({ email, password });
 
@@ -80,11 +82,25 @@ export const Login = () => {
                 Profesor
               </label>
             </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="radioDefault"
+                id="radioAdmin"
+                onChange={() => setUser("admin")}
+                checked={user === "admin"}
+              />
+              <label className="form-check-label" htmlFor="radioAdmin">
+                Administrador
+              </label>
+            </div>
           </div>
           <p className="text-danger mt-2">{msg}</p>
           <button type="submit" className="btn btn-outline-dark w-100">Login</button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
+  

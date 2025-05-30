@@ -15,6 +15,7 @@ const Login = () => {
             const response = await loginUser({ email, password });
             console.log("Usuario logueado:", response);
             // Aquí puedes guardar token, actualizar contexto, etc.
+            localStorage.setItem("token", response.token);
             navigate("/feed"); // redirige al feed o página principal
         } catch (error) {
             console.error("Error al iniciar sesión:", error.message);

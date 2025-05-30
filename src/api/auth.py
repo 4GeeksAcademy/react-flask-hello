@@ -37,4 +37,15 @@ def login():
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({"error": "Credenciales invalidadas"}), 401
 
+    # Crear token JWT
+    token = jwt.encode({
+        'user_id': user.id,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    }, current_app.config['SECRET_KEY'], algorithm='256')
+
+    return jsonify({
+        "message": f"Bienvenido, {user.name}",
+        "token": token
+    }), 200
+
     return jsonify({"message": f"Bienvenido, {user.name}"}), 200

@@ -1,0 +1,55 @@
+.eventos-container {
+    padding: 2rem;
+    background: #1c2d3a;
+    color: white;
+    min-height: 100vh;
+}
+
+.titulo-eventos {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mapa-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.grid-direcciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.direccion-item {
+    cursor: pointer;
+    padding: 0.5rem;
+    background-color: #2a3d4d;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.direccion-item:hover {
+    background-color: #3e5368;
+}
+
+.detalle-direccion {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.imagen-lugar {
+    width: 100%;
+    max-width: 700px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.texto-bienvenida {
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}

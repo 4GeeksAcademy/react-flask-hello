@@ -62,3 +62,8 @@
 .info-extra p {
   margin: 4px 0;
 }
+
+.default{
+    width: 800px;
+    height: 650px;
+}

@@ -13,20 +13,22 @@ const AuthProvider = ({ children }) => {
     const login = () => { }
     const register = () => { }
     const checkUser = () => {
-        if (sessionStorage.getItem('access_token')) {
+        const token = sessionStorage.getItem('access_token')
+        if (token) {
             setStore((preStore) => ({
                 ...preStore,
-                access_token: sessionStorage.getItem('access_token')
+                access_token: token
             }))
         }
     }
 
     const getProfile = () => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login/admin`, {
+        const token = sessionStorage.getItem('access_token')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/profile`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${store?.access_token}`
+                'Authorization': `Bearer ${token}`
             }
         })
             .then((response) => response.json())

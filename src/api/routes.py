@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 
+from api.models import db, User
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -10,9 +11,8 @@ from api.models import db, User, Student, Teacher, GradeLevel, Course
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
-from models import Admin 
+
 api = Blueprint('api', __name__)
-from api.models import db, User
 
 # Allow CORS requests to this API
 CORS(api)
@@ -58,10 +58,13 @@ def register_admin():
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
 # Darle datos a grade level
+
+
 @api.route('/setup/grade_levels', methods=['GET'])
 def get_grade_levels():
     grade_levels = GradeLevel.query.all()
     return jsonify([gl.serialize() for gl in grade_levels]), 200
+
 
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
@@ -123,10 +126,13 @@ def register_student():
     return jsonify({"message": "Solicitud de registro como estudiante enviada"}), 201
 
 # Registro profesor
+
+
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.get_json()
-    required_fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'course_id']
+    required_fields = ['first_name', 'last_name',
+                       'email', 'password', 'phone', 'course_id']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -164,7 +170,7 @@ def register_teacher():
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
 
-#login admin
+# login admin
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
     data = request.get_json()
@@ -183,7 +189,7 @@ def login_admin():
 
     # No se requiere verificación de status para el admin
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
         "access_token": access_token,
@@ -196,11 +202,9 @@ def login_admin():
         }
     }), 200
 
-
-
-
-
   # Login estudiante
+
+
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()
@@ -261,9 +265,11 @@ def login_teacher():
         }
     }), 200
 
-#Aprobación de registros de estudiantes y profesores
+# Aprobación de registros de estudiantes y profesores
 
-@api.route('/pending/registrations', methods=['GET'])  # obtener usuarios pendientes
+
+# obtener usuarios pendientes
+@api.route('/pending/registrations', methods=['GET'])
 @jwt_required()
 def get_pending_users():
     user_id = get_jwt_identity()
@@ -320,18 +326,12 @@ def approve_teacher(user_id):
     return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200
 
 
+# get admin
 
-#get admin
-
-@api.route('/admin/<int:user_id>', methods=['GET'])
+@api.route('/admin/profile', methods=['GET'])
 @jwt_required()
-def get_admin(user_id):
+def get_admin():
     user = User.query.get(get_jwt_identity())
-    if user.role != "admin":
+    if not user or user.role != "admin":
         return jsonify({"msg": "Acceso no autorizado"}), 403
-
-    admin = User.query.filter_by(id=user_id, role='admin').first()
-    if admin:
-        return jsonify(admin.serialize()), 200
-    else:
-        return jsonify({'error': 'Admin no encontrado'}), 404
+    return jsonify(user.serialize()), 200

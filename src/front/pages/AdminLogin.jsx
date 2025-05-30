@@ -31,7 +31,9 @@ export const Admin = () => {
             const data = await response.json()
 
             if (response.ok) {
-                sessionStorage.setItem("token", data.access_token);
+                console.log(data.access_token);
+
+                sessionStorage.setItem("access_token", data.access_token);
                 navigate("/admin/dashboard/profile");
             }
 

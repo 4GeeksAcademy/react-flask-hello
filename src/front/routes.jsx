@@ -6,6 +6,8 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Feed from "./pages/Feed";
 import PrivateRoute from "./components/PrivateRoute"; // 👈
+import ProfileProtected from "./pages/ProfileProtected"; // Ruta protegida de prueba
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -13,6 +15,7 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/profile-protected" element={<ProfileProtected />} /> {/* Ruta protegida con token */}
       <Route
         path="/profile"
         element={

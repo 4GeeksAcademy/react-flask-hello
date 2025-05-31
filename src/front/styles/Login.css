@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #4c41391c;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.btn-light {
+  color: black;
+  border: none;
+}
+
+.btn-light:hover {
+  background-color: #c49b1c;
+}

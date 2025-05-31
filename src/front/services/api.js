@@ -30,11 +30,10 @@ export const loginUser = async (data) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-<<<<<<< HEAD
+
     //credentials: "include",
-=======
+
     // credentials: "include",
->>>>>>> origin/main
   });
 
   if (!res.ok) throw new Error("Error al iniciar sesion");

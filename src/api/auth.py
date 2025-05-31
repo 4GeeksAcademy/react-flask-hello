@@ -1,6 +1,9 @@
-from flask import Blueprint, request, jsonify
-from .models import db, User
+from flask import Blueprint, request, jsonify, current_app
+import datetime
+import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
+from .models import db, User
+
 
 # Creamos un blueprint para agrupar las rutas de autentificacion
 auth_bp = Blueprint('auth', __name__)
@@ -31,21 +34,22 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    # Recibimos email y contraseña
-
     user = User.query.filter_by(email=data['email']).first()
-    if not user or not check_password_hash(user.password, data['password']):
-        return jsonify({"error": "Credenciales invalidadas"}), 401
 
-    # Crear token JWT
+    if not user or not check_password_hash(user.password, data['password']):
+        return jsonify({"error": "Credenciales inválidas"}), 401
+
     token = jwt.encode({
         'user_id': user.id,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-    }, current_app.config['SECRET_KEY'], algorithm='256')
+    }, current_app.config['SECRET_KEY'], algorithm='HS256')
 
     return jsonify({
         "message": f"Bienvenido, {user.name}",
-        "token": token
+        "token": token,
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email
+        }
     }), 200
-
-    return jsonify({"message": f"Bienvenido, {user.name}"}), 200

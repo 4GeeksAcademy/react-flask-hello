@@ -12,12 +12,17 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import Flask
+from flask import send_from_directory
 import os
 from src.api.services.routes.weather import weather_bp
 
 
 # Cargar variables de entorno
 load_dotenv()
+app = Flask(__name__)  # ✅ Crea app primero
+app.config['SECRET_KEY'] = os.getenv(
+    "SECRET_KEY", "default-secret")  # ✅ Luego configura
+
 
 # Inicializa la app
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -26,7 +31,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-CORS(app, origins="https://special-bassoon-jjqx654vx96j35vv9-3000.app.github.dev",
+CORS(app, origins="*",
      supports_credentials=True)
 
 

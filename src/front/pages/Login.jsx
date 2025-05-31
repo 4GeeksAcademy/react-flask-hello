@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
+localStorage.setItem("isLoggedIn", "true");
+localStorage.setItem("token", response.token);
+localStorage.setItem("userData", JSON.stringify(response.user));
+
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -10,18 +14,29 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // evita recarga de página
+        e.preventDefault();
         try {
             const response = await loginUser({ email, password });
             console.log("Usuario logueado:", response);
+<<<<<<< HEAD
             // Aquí puedes guardar token, actualizar contexto, etc.
             localStorage.setItem("token", response.token);
             navigate("/feed"); // redirige al feed o página principal
+=======
+
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("token", response.token); // ✅ token
+            localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario
+
+            navigate("/feed");
+>>>>>>> origin/main
         } catch (error) {
             console.error("Error al iniciar sesión:", error.message);
             alert("Credenciales inválidas o error en el servidor.");
         }
     };
+
+
 
     return (
         <div style={{ position: "relative", minHeight: "100vh" }}>

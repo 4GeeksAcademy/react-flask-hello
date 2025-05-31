@@ -8,29 +8,58 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         time: "",
         address: "",
         sport: "",
-        capacity: ""
+        capacity: "",
+        difficulty: ""
     });
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         const newPost = {
-            id: Date.now(),
             ...formData,
-            isFavorite: false,
+            capacity: parseInt(formData.capacity, 10),
             participants: 0
-
         };
-        setPosts(prev => [newPost, ...prev]);
-        setFormData({
-            title: "", description: "", date: "", time: "",
-            address: "", sport: "", capacity: parseInt(formData.capacity, 10)
 
-        });
-        onClose(); // cerrar modal
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(newPost),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al crear el evento");
+            }
+
+            const createdPost = await response.json();
+            setPosts(prev => [createdPost, ...prev]);
+
+            // Resetear formulario
+            setFormData({
+                title: "",
+                description: "",
+                date: "",
+                time: "",
+                address: "",
+                sport: "",
+                capacity: "",
+                difficulty: ""
+            });
+
+            onClose(); // Cerrar modal
+
+        } catch (error) {
+            console.error("Error al crear el evento:", error);
+            alert("Ocurrió un error al crear el evento.");
+        }
     };
 
     if (!show) return null;
@@ -71,7 +100,6 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                                         <option value="Ciclismo">Ciclismo</option>
                                         <option value="Fitness">Fitness</option>
                                     </select>
-
                                 </div>
                                 <div className="col-md-6">
                                     <input
@@ -114,6 +142,20 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                                         onChange={handleChange}
                                         required
                                     />
+                                </div>
+                                <div className="col-md-6">
+                                    <select
+                                        name="difficulty"
+                                        className="form-select text-black"
+                                        value={formData.difficulty}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="">Selecciona dificultad</option>
+                                        <option value="Fácil">Fácil</option>
+                                        <option value="Medio">Medio</option>
+                                        <option value="Difícil">Difícil</option>
+                                    </select>
                                 </div>
                                 <div className="col-12">
                                     <textarea

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 import datetime
-import jwt
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import db, User
 
@@ -39,10 +39,7 @@ def login():
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({"error": "Credenciales inválidas"}), 401
 
-    token = jwt.encode({
-        'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-    }, current_app.config['SECRET_KEY'], algorithm='HS256')
+    token = create_access_token(identity=user.email)
 
     return jsonify({
         "message": f"Bienvenido, {user.name}",
@@ -53,3 +50,22 @@ def login():
             "email": user.email
         }
     }), 200
+
+
+@auth_bp.route('/auth/me', methods=['POST'])
+@jwt_required()
+def secret():
+    try:
+        current_user = get_jwt_identity()
+        if not current_user:
+            return jsonify({"msg": "Missing user", "Error": str(e)}), 400
+        user = User.query.filter_by(email=current_user).first()
+        if not user:
+            return jsonify({"msg": "User not found"}), 404
+        return jsonify({
+            "msg": "Access Allowed",
+            "user": user.serialize(),
+
+        }), 200
+    except Exception as e:
+        return jsonify({"msg": "Missing data", "Error": str(e)}), 400

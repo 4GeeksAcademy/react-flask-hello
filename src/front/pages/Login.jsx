@@ -15,11 +15,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await loginUser({ email, password });
-            console.log("Usuario logueado:", response);
-            // Aquí puedes guardar token, actualizar contexto, etc.
-            localStorage.setItem("token", response.token);
-            navigate("/feed"); // redirige al feed o página principal
-
+        
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("token", response.token); // ✅ token
             localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario

@@ -29,7 +29,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app.url_map.strict_slashes = False
 
 # Configuración CORS
-CORS(app, origins="https://reimagined-trout-694x6j6j7647f44p9-3000.app.github.dev", supports_credentials=True)
+CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

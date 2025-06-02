@@ -19,7 +19,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         registerUser(formData)
-        navigate("/profile");
+        navigate("/feed");
     };
 
     return (

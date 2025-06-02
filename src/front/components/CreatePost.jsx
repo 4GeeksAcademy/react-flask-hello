@@ -26,14 +26,17 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         };
 
         try {
+            const token = localStorage.getItem("token");
+
             const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify(newPost),
             });
+
 
             if (!response.ok) {
                 throw new Error("Error al crear el evento");

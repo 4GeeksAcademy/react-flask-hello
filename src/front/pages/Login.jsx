@@ -3,7 +3,7 @@ import { Await, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
-
+console.log(import.meta.env.VITE_BACKEND_URL); // ✅ Verifica la URL de la API
 
 
 const Login = () => {

@@ -68,7 +68,7 @@ export const AdminSolicitudes = () => {
 
     const reject = async (role, id) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/reject/${role}/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/delete/user/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

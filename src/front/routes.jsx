@@ -28,7 +28,7 @@ import { AlumnosHorario } from "./pages/AlumnosHorario";
 import { AlumnosPagos } from "./pages/AlumnosPagos";
 import { LoginLayout } from "./pages/LoginLayout";
 import { SignupLayout } from "./pages/SignupLayout";
-
+import PrivateRoute from "./components/PrivateRoute";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.
@@ -50,7 +50,11 @@ export const router = createBrowserRouter(
         <Route path="/signup/alumno" element={<StudenSignup />} />
         <Route path="/signup/profesor" element={<TeacherSignup />} />
       </Route>
-      <Route path="/admin/dashboard" element={<DashboardLayout />}>
+      <Route path="/admin/dashboard" element={
+        <PrivateRoute>
+          <DashboardLayout />
+        </PrivateRoute>
+      }>
         <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
         <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} />
         <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
@@ -58,13 +62,21 @@ export const router = createBrowserRouter(
         <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
         <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
       </Route>
-      <Route path="/teacher/dashboard" element={<DashboardLayout />}>
+      <Route path="/teacher/dashboard" element={
+        <PrivateRoute>
+          <DashboardLayout />
+        </PrivateRoute>
+      }>
         <Route path="/teacher/dashboard/profile" element={<ProfesoresProfile />} />
         <Route path="/teacher/dashboard/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
         <Route path="/teacher/dashboard/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
         <Route path="/teacher/dashboard/horario" element={<ProfesoresHorario />} />
       </Route>
-      <Route path="/student/dashboard" element={<DashboardLayout />}>
+      <Route path="/student/dashboard" element={
+        <PrivateRoute>
+          <DashboardLayout />
+        </PrivateRoute>
+      }>
         <Route path="/student/dashboard/profile" element={<AlumnosProfile />} />
         <Route path="/student/dashboard/notas" element={<AlumnosNotas />} />
         <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />

@@ -1,6 +1,6 @@
 export const AdminProfesores = () => {
     return (
-        <div class="container table-responsive">
+        <div className="container table-responsive">
             <div className="row">
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">

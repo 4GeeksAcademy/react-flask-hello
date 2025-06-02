@@ -1,6 +1,6 @@
 export const ProfesoresAlumnosNotas = () => {
     return (
-        <div class="container table-responsive">
+        <div className="container table-responsive">
             <div className="row">
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
@@ -31,7 +31,7 @@ export const ProfesoresAlumnosNotas = () => {
                     </select>
                 </div>
                 <div className="col-2">
-                    <button type="button" class="btn btn-success px-4">Buscar</button>
+                    <button type="button" className="btn btn-success px-4">Buscar</button>
                 </div>
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">
@@ -57,7 +57,7 @@ export const ProfesoresAlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
+                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
@@ -68,7 +68,7 @@ export const ProfesoresAlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
+                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
@@ -79,7 +79,7 @@ export const ProfesoresAlumnosNotas = () => {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><button type="button" class="btn btn-success"><i class="ri-edit-line"></i></button></td>
+                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
                         </tr>
                     </tbody>
                 </table>

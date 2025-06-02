@@ -27,8 +27,6 @@ export const TeacherSignup = () => {
             if (response.ok) {
                 setLoad(true)
                 setCourses(data)
-                console.log('Cursos obtenidos correctamente');
-                console.log(data);
             }
 
         } catch (error) {
@@ -155,13 +153,13 @@ export const TeacherSignup = () => {
                         </div>
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="grade_level" className="form-label">Grade Level:</label>
+                        <label htmlFor="grade_level" className="form-label">Asignature:</label>
                         <select
                             id="grade_level"
                             className={"form-control " + (errors.grade_level_id ? 'is-invalid' : '')}
                             {...register('grade_level_id', { required: 'Please select a grade level' })}
                         >
-                            <option value=""> Select grade </option>
+                            <option value=""> Select Asignature </option>
                             {courses.map((course) => (
                                 <option key={course.id} value={course.id}>{course.name}</option>
                             ))}

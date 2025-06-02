@@ -1,6 +1,25 @@
+import { useEffect } from "react";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 
 export const AlumnosProfile = () => {
+    const token = sessionStorage.getItem('access_token')
+    useEffect(() => {
+        const user = () => {
+            try {
+                const response = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/information/students`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        user()
+    }, [])
     return (
         <div className="container py-4">
             <div className="row justify-content-center">

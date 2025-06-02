@@ -9,7 +9,7 @@ h2 {
   margin-bottom: 15px;
   font-weight: 700;
   font-size: 24px;
-  color: #333;
+  color: #ecefca;
 }
 
 span {
@@ -27,7 +27,7 @@ input {
   font-size: 14px;
 }
 
-button {
+.button_login {
   margin-top: 20px;
   padding: 12px 30px;
   border: none;
@@ -38,7 +38,7 @@ button {
   transition: background 0.3s ease;
 }
 
-button:hover {
+.button_login:hover {
   background-color: #289376;
 }
 

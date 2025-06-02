@@ -215,11 +215,15 @@ def login_student():
         return jsonify({"msg": "Email y contraseña requeridos"}), 400
 
     user = User.query.filter_by(email=email, role="student").first()
+
     if not user:
         return jsonify({"msg": "Estudiante no encontrado"}), 404
 
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    if user.status != "approved":
+        return jsonify({"msg": "Cuenta no aprobada"}), 403
 
     access_token = create_access_token(identity=str(user.id))
 

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const StudenSignup = () => {
     const [load, setLoad] = useState(false)
     const [courses, setCourses] = useState([])
+    const [msg, setMsg] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,8 +26,6 @@ export const StudenSignup = () => {
             if (response.ok) {
                 setLoad(true)
                 setCourses(data)
-                console.log('Cursos obtenidos correctamente');
-                console.log(data);
             }
 
         } catch (error) {
@@ -47,10 +46,13 @@ export const StudenSignup = () => {
             const responseData = await response.json()
             if (response.ok) {
                 navigate(`/`);
+            } else {
+                setMsg('*El correo ya existe.')
             }
 
         } catch (error) {
             console.log(error);
+
         }
     }
 
@@ -226,6 +228,7 @@ export const StudenSignup = () => {
                                 {errors?.confirm_password?.message}
                             </div>
                         </div>
+                        <p className='text-danger mt-2'>{msg}</p>
                         <button className="btn btn-outline-dark w-100" disabled={!isValid}>
                             Register
                         </button>
@@ -233,8 +236,8 @@ export const StudenSignup = () => {
 
                 </div>
                 :
-                <div class="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>}
 
         </div>

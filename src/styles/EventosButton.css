@@ -1,0 +1,59 @@
+.eventos-button {
+  background-color: #9b928c;
+  color: white;
+  font-weight: bold;
+  padding: 16px 32px;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(251, 146, 60, 0.2);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.eventos-button:hover {
+  background-color: #ea580c;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.eventos-button-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 18px;
+}
+
+.eventos-icon {
+  font-size: 32px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.eventos-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.eventos-subtitle {
+  font-size: 12px;
+  opacity: 0.8;
+  font-weight: normal;
+}
+
+
+
+
+
+

@@ -13,6 +13,8 @@ services:
       envVars:
           - key: VITE_BASENAME # Imported from Heroku app
             value: /
+          - key: VITE_BACKEND_URL # Imported from Heroku app
+            value: https://sportconnect-uk2i.onrender.com
           - key: FLASK_APP # Imported from Heroku app
             value: src/app.py
           - key: FLASK_DEBUG # Imported from Heroku app

@@ -29,7 +29,7 @@ app.url_map.strict_slashes = False
 def handle_before_request():
     if request.method == 'OPTIONS':
         response= make_response()
-        response.headers.add('Access-Control-Allow-Origin', request.headers.get() )
+        response.headers.add('Access-Control-Allow-Origin', request.headers.get("Origin", "*") )
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         response.headers.add('Access-Control-Allow-Credentials', 'true')
@@ -42,7 +42,7 @@ jwt = JWTManager(app)
 
 
 # Configuración CORS
-CORS(app, origins=["https://sportconnect-uk2i.onrender.com"], supports_credentials=True)
+CORS(app, origins="*", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

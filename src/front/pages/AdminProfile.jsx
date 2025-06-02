@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthProvider.jsx";
 
 export const AdminProfile = () => {
     const [data, setData] = useState([])
+    const [load, setLoad] = useState(false)
     const { store, dispatch } = useGlobalReducer()
     const auth = useAuth()
     const token = sessionStorage.getItem('access_token')
@@ -30,6 +31,7 @@ export const AdminProfile = () => {
 
                 if (response.ok) {
                     setData(dataResponse)
+                    setLoad(true)
                 }
 
             } catch (error) {
@@ -43,12 +45,16 @@ export const AdminProfile = () => {
 
     return (
         <div className="container py-4">
-            <div className="row justify-content-center">
+            {load ? <div className="row justify-content-center">
                 <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
                     <h2 className="mb-4 text-center fs-2">Welcome Administrador {data.first_name} {data.last_name}!</h2>
                     <p className="fs-5">Correo: {data.email} </p>
                 </div>
             </div>
+                :
+                <div class="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>}
         </div>
     );
 };

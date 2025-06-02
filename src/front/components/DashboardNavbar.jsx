@@ -28,11 +28,10 @@ export const DashboardNavbar = () => {
 						<ul className="list-unstyled text-start text-decoration-none d-flex flex-column gap-3 ps-3">
 							<li className="my-3">
 								<div className="btn-group dropend">
-									<li className="my-3">
-										<Link to="/admin/dashboard/alumnos/notas" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
-											Alumnos
-										</Link>
-									</li>
+
+									<Link className="btn dropdown-toggle text-black text-decoration-none fw-semibold hovNav p-0 border-0 shadow-none" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" >
+										Alumnos
+									</Link>
 									<ul className="dropdown-menu dropdown-menu-center-vertical ms-3">
 										<li>
 											<Link to="/admin/dashboard/alumnos/notas" className="dropdown-item" onClick={closeMenu}>
@@ -43,7 +42,7 @@ export const DashboardNavbar = () => {
 											<hr className="dropdown-divider" />
 										</li>
 										<li>
-											<Link to="/admin/alumnos/asistencia" className="dropdown-item" onClick={closeMenu}>
+											<Link to="/admin/dashboard/alumnos/asistencia" className="dropdown-item" onClick={closeMenu}>
 												Asistencia
 											</Link>
 										</li>
@@ -51,7 +50,7 @@ export const DashboardNavbar = () => {
 											<hr className="dropdown-divider" />
 										</li>
 										<li>
-											<Link to="/admin/alumnos/pagos" className="dropdown-item" onClick={closeMenu}>
+											<Link to="/admin/dashboard/alumnos/pagos" className="dropdown-item" onClick={closeMenu}>
 												Pagos
 											</Link>
 										</li>
@@ -59,7 +58,7 @@ export const DashboardNavbar = () => {
 								</div>
 							</li>
 							<li className="my-3">
-								<Link to="/admin/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+								<Link to="/admin/dashboard/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Profesores
 								</Link>
 							</li>

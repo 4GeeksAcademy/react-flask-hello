@@ -110,7 +110,7 @@ def register_student():
         first_name=data['first_name'],
         last_name=data['last_name'],
         email=data['email'],
-        password=data['password'],
+        password=generate_password_hash(data['password']),
         role='student',
         status='pending'
     )
@@ -224,7 +224,7 @@ def login_student():
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Contraseña incorrecta"}), 401
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
         "access_token": access_token,
@@ -255,7 +255,7 @@ def login_teacher():
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Contraseña incorrecta"}), 401
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
         "access_token": access_token,
@@ -289,6 +289,8 @@ def get_pending_users():
     return jsonify([user.serialize() for user in pending_users]), 200
 
 # aprobación de registros de estudiantes y profesores
+
+
 @api.route('/approve/student/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def approve_student(user_id):
@@ -373,6 +375,8 @@ def get_admin():
     return jsonify(user.serialize()), 200
 
 # Información del estudiante
+
+
 @api.route('/information/students', methods=['GET'])
 @jwt_required()
 def get_pending_students():
@@ -386,6 +390,8 @@ def get_pending_students():
     return jsonify([s.serialize() for s in students]), 200
 
 # Información del profesor
+
+
 @api.route('/information/teachers', methods=['GET'])
 @jwt_required()
 def get_pending_teachers():

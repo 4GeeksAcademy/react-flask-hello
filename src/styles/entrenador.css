@@ -1,5 +1,5 @@
 .entrenador-page .hero {
- background-image: url("/personal-trainer.jpg");
+  background-image: url("/personal-trainer.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -12,7 +12,6 @@
   padding-bottom: 1rem;
 }
 
-
 .trainer-img {
   width: 150px;
   height: 150px;
@@ -21,19 +20,18 @@
   border: 2px solid #fff;
 }
 
-.p{
-background: black;
+.p {
+  background: black;
 }
 
 .trainer-card-1,
 .trainer-card_1 {
-  background-color: #ECEFCA;
+  background-color: #ecefca;
 }
-
 
 body {
   background: #213448;
-  color: #ECEFCA;
+  color: #ecefca;
   text-align: center;
   margin: 0;
   padding: 0;

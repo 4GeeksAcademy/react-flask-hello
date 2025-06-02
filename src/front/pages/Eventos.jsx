@@ -37,7 +37,7 @@ const Eventos = () => {
         },
         {
             nombre: "Sevilla",
-            descripcion: "Parque de María Luisa 5",
+            descripcion: "Parque de María Luisa",
             imagen: "sevilla.jpg",
             iframe: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6341.280987802762!2d-5.9922984878047885!3d37.37468261158388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126c241d1a35ef%3A0x68b6f2f07d1ee842!2sParque%20de%20Mar%C3%ADa%20Luisa!5e0!3m2!1ses!2ses!4v1748607343664!5m2!1ses!2ses",
             hora: "18:00",
@@ -65,14 +65,14 @@ const Eventos = () => {
                         onClick={() => setData(lugar)}
                         className="direccion-item"
                     >
-                        {lugar.nombre}
+                        {lugar.descripcion}
                     </div>
                 ))}
             </div>
 
             {!data ? (
                 <div className="detalle-direccion">
-                    <h2>Selecciona una ciudad para ir al evento</h2>
+                    <h2 className="titulo-eventos mb-4">Selecciona una ciudad para ir al evento</h2>
                     <img
                         src="parque.jpg"
                         alt="Imagen por defecto"
@@ -89,17 +89,19 @@ const Eventos = () => {
                     />
                     <h3>{data.descripcion}</h3>
 
+                    <div className="row">
                     <div className="info-extra">
-                        <p><strong>Hora del evento:</strong> {data.hora}</p>
-                        <p><strong>Asistentes:</strong> {data.asistentes}</p>
+                            <p><strong>Hora del evento:</strong> {data.hora}</p>
+                            <p className="ms-5"><strong>Asistentes:</strong> {data.asistentes}</p>
+                        </div>
                     </div>
 
                     {data.iframe && (
-                        <div className="iframe-container">
+                        <div className="iframe-container mt-3">
                             <iframe
                                 src={data.iframe}
                                 width="100%"
-                                height="400"
+                                height="500"
                                 style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"

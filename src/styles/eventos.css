@@ -2,12 +2,13 @@
     padding: 2rem;
     background: #213448;
     color: white;
-    min-height: 100vh;
+    min-height: 50vh;
 }
 
 .titulo-eventos {
     text-align: center;
     margin-bottom: 2rem;
+    color: #ecefca;
 }
 
 .mapa-img {
@@ -42,10 +43,10 @@
 }
 
 .imagen-lugar {
-    width: 100%;
-    max-width: 500px;
+    width: 500px;
     border-radius: 10px;
     margin-bottom: 1rem;
+    height: 200px;
 }
 
 .texto-bienvenida {
@@ -57,6 +58,8 @@
 .info-extra {
   margin: 10px 0;
   font-size: 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .info-extra p {
@@ -64,6 +67,6 @@
 }
 
 .default{
-    width: 800px;
-    height: 650px;
+    width: 1500px;
+    height: 500px;
 }

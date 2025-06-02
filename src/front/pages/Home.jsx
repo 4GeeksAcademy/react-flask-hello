@@ -35,13 +35,10 @@ export const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.access_token);
-        dispatch({ type: "SET_USER", payload: { email: email } });
-        dispatch({ type: "SET_TOKEN", payload: data.access_token });
-
+        sessionStorage.setItem("access_token", data.access_token);
         navigate(`/${user}/dashboard/profile`);
       } else {
-        setMsg(data.message || "Credenciales inválidas");
+        setMsg(data.msg || "Credenciales inválidas");
       }
     } catch (error) {
       console.log(error);

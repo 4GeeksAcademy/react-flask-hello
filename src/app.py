@@ -28,21 +28,34 @@ app.url_map.strict_slashes = False
 @app.before_request
 def handle_before_request():
     if request.method == 'OPTIONS':
-        response= make_response()
-        response.headers.add('Access-Control-Allow-Origin', request.headers.get("Origin", "*") )
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response, 200
+        response = make_response()
+        origin = request.headers.get("Origin", "")
+        # Check if the origin is allowed
+        if origin in ["https://sportconnect-web.onrender.com", "http://localhost:3000"]:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            response.headers.add('Access-Control-Allow-Credentials', 'true')
+            return response, 200
 
 
 app.config['JWT_SECRET_KEY'] = os.getenv(
     "JWT_SECRET_KEY", "super-secret-jwt-key")
 jwt = JWTManager(app)
 
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin", "")
+    if origin in ["https://sportconnect-web.onrender.com", "http://localhost:3000"]:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
 
 # Configuración CORS
-CORS(app, origins="*", supports_credentials=True)
+CORS(app, origins=["https://sportconnect-web.onrender.com", "http://localhost:3000"], supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

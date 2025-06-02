@@ -1,34 +1,23 @@
 
 import { Link } from "react-router-dom";
 
+import studentImg from "../assets/img/students.png";
+import teacherImg from "../assets/img/teacher.png";
+
 export const Signup = () => {
     return (
-        <div>
-            <div className="position-absolute top-50 start-50 translate-middle col-5">
-                <div className="text-center mb-5">
-                    <h1>Welcome!</h1>
-                    <h3>Choise a option to register</h3>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>
-                        <Link to='/signup/alumno' className="border border-2 colorBorderSignup rounded-4 py-2 px-2 d-flex justify-content-between gap-3 d-flex align-items-center text-black text-decoration-none">
-                            <img src="https://www.w3schools.com/w3css/img_avatar3.png" alt="" className="rounded-circle imgUserWidth" />
-                            <div className="d-flex flex-column">
-                                <h4 className="m-0">Alumno</h4>
-                                <p className="m-0">Soy alumno de la institucion</p>
-                            </div>
-                        </Link>
-                    </div>
-                    <div>
-                        <Link to='/signup/profesor' className="border border-2 colorBorderSignup rounded-4 py-2 px-2 d-flex justify-content-between gap-3 d-flex align-items-center text-black text-decoration-none">
-                            <img src="https://www.w3schools.com/w3css/img_avatar3.png" alt="" className="rounded-circle imgUserWidth" />
-                            <div className="d-flex flex-column">
-                                <h4 className="m-0">Profesor</h4>
-                                <p className="m-0">Soy parte del profesorado</p>
-                            </div>
-                        </Link>
-                    </div>
-                </div>
+        <div className="d-flex justify-content-center align-items-center flex-column">
+            <p className="h1 mb-4">¿Quién eres?</p>
+            <p className="h3 mb-5">Para comenzar tu registro, elige una opción:</p>
+            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 w-100">
+                <Link to='/signup/alumno' className="border border-2 colorBorderSignup rounded-4 py-4 px-4 gap-2 d-flex flex-column align-items-center text-black text-decoration-none shadow-sm bg-white">
+                    <img src={studentImg} alt="" className="imgUserWidth" />
+                    <p className="h4">Soy alumno</p>
+                </Link>
+                <Link to='/signup/profesor' className="border border-2 colorBorderSignup rounded-4 py-4 px-4 gap-2 d-flex flex-column align-items-center text-black text-decoration-none shadow-sm bg-white">
+                    <img src={teacherImg} alt="" className="imgUserWidth" />
+                    <p className="h4">Soy profesor</p>
+                </Link>
             </div>
         </div>
     )

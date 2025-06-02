@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import React, { useState } from 'react'
 
-export const DashboardNavbar = () => {
+import studentImg from "../assets/img/students.png";
+
+export const AlumnosDashboardNavbar = () => {
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
@@ -27,55 +29,29 @@ export const DashboardNavbar = () => {
 					<div className="flex-grow-1">
 						<ul className="list-unstyled text-start text-decoration-none d-flex flex-column gap-3 ps-3">
 							<li className="my-3">
-								<div className="btn-group dropend">
-
-									<Link className="btn dropdown-toggle text-black text-decoration-none fw-semibold hovNav p-0 border-0 shadow-none" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" >
-										Alumnos
-									</Link>
-									<ul className="dropdown-menu dropdown-menu-center-vertical ms-3">
-										<li>
-											<Link to="/admin/dashboard/alumnos/notas" className="dropdown-item" onClick={closeMenu}>
-												Notas
-											</Link>
-										</li>
-										<li>
-											<hr className="dropdown-divider" />
-										</li>
-										<li>
-											<Link to="/admin/dashboard/alumnos/asistencia" className="dropdown-item" onClick={closeMenu}>
-												Asistencia
-											</Link>
-										</li>
-										<li>
-											<hr className="dropdown-divider" />
-										</li>
-										<li>
-											<Link to="/admin/dashboard/alumnos/pagos" className="dropdown-item" onClick={closeMenu}>
-												Pagos
-											</Link>
-										</li>
-									</ul>
-								</div>
-							</li>
-							<li className="my-3">
-								<Link to="/admin/dashboard/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
-									Profesores
+								<Link to="/student/dashboard/notas" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+									Notas
 								</Link>
 							</li>
 							<li className="my-3">
-								<Link to="/admin/dashboard/solicitudes" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
-									Solicitudes
+								<Link to="/student/dashboard/horario" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+									Horario
+								</Link>
+							</li>
+							<li className="my-3">
+								<Link to="/student/dashboard/pagos" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
+									Pagos
 								</Link>
 							</li>
 						</ul>
 					</div>
 					<div className="dropup dropup-center text-center mb-3">
 						<button type="button" className="link-body-emphasis text-decoration-none dropdown-toggle show unsetBtn avatar-btn" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://www.w3schools.com/w3css/img_avatar3.png" alt="" className="rounded-circle imgUserWidth" />
+							<img src={studentImg} alt="" className="rounded-circle imgUserWidth" />
 						</button>
 						<ul className="dropdown-menu text-small shadow dropdownNav" data-popper-placement="top-start">
 							<li>
-								<Link to="/admin/dashboard/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
+								<Link to="/student/dashboard/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
 							</li>
 							<li>
 								<hr className="dropdown-divider" />
@@ -88,7 +64,7 @@ export const DashboardNavbar = () => {
 				</div>
 			</div>
 			<div className="d-flex align-items-center">
-				<Link to="/" className=" navbar-brand fs-2 h1">
+				<Link to="/student/dashboard/profile" className=" navbar-brand fs-2 h1">
 					αlpha
 				</Link>
 			</div>

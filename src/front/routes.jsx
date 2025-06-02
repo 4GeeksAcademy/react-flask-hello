@@ -5,9 +5,7 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import { DashboardLayout } from "./pages/DashboardLayout";
 import { Login } from "./pages/Home";
-import { Single } from "./pages/Single";
 import { Admin } from "./pages/AdminLogin";
 import { AlumnosProfile } from "./pages/AlumnosProfile";
 import { Signup } from "./pages/ChangeSingup";
@@ -28,6 +26,9 @@ import { AlumnosHorario } from "./pages/AlumnosHorario";
 import { AlumnosPagos } from "./pages/AlumnosPagos";
 import { LoginLayout } from "./pages/LoginLayout";
 import { SignupLayout } from "./pages/SignupLayout";
+import { AdminDashboardLayout } from "./pages/AdminDashboardLayout";
+import { AlumnosDashboardLayout } from "./pages/AlumnosDashboardLayout";
+import { ProfesoresDashboardLayout } from "./pages/ProfesoresDashboardLayout";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,7 +51,7 @@ export const router = createBrowserRouter(
         <Route path="/signup/alumno" element={<StudenSignup />} />
         <Route path="/signup/profesor" element={<TeacherSignup />} />
       </Route>
-      <Route path="/admin/dashboard" element={<DashboardLayout />}>
+      <Route path="/admin/dashboard" element={<AdminDashboardLayout />}>
         <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
         <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} />
         <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
@@ -58,13 +59,13 @@ export const router = createBrowserRouter(
         <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
         <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
       </Route>
-      <Route path="/teacher/dashboard" element={<DashboardLayout />}>
+      <Route path="/teacher/dashboard" element={<ProfesoresDashboardLayout />}>
         <Route path="/teacher/dashboard/profile" element={<ProfesoresProfile />} />
         <Route path="/teacher/dashboard/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
         <Route path="/teacher/dashboard/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
         <Route path="/teacher/dashboard/horario" element={<ProfesoresHorario />} />
       </Route>
-      <Route path="/student/dashboard" element={<DashboardLayout />}>
+      <Route path="/student/dashboard" element={<AlumnosDashboardLayout />}>
         <Route path="/student/dashboard/profile" element={<AlumnosProfile />} />
         <Route path="/student/dashboard/notas" element={<AlumnosNotas />} />
         <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />

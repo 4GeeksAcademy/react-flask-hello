@@ -54,7 +54,7 @@ export const router = createBrowserRouter(
       </Route>
       <Route path="/admin/dashboard" element={
         <PrivateRoute>
-          <DashboardLayout />
+          <AdminDashboardLayout />
         </PrivateRoute>
       }>
         <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
@@ -66,7 +66,7 @@ export const router = createBrowserRouter(
       </Route>
       <Route path="/teacher/dashboard" element={
         <PrivateRoute>
-          <DashboardLayout />
+          <ProfesoresDashboardLayout />
         </PrivateRoute>
       }>
         <Route path="/teacher/dashboard/profile" element={<ProfesoresProfile />} />
@@ -76,7 +76,7 @@ export const router = createBrowserRouter(
       </Route>
       <Route path="/student/dashboard" element={
         <PrivateRoute>
-          <DashboardLayout />
+          <AlumnosDashboardLayout />
         </PrivateRoute>
       }>
         <Route path="/student/dashboard/profile" element={<AlumnosProfile />} />

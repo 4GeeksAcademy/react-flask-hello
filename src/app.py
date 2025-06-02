@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -17,12 +17,24 @@ from src.api.services.routes.weather import weather_bp
 # Cargar variables de entorno
 load_dotenv()
 
+
+
 # Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+@app.before_request
+def handle_before_request():
+    if request.method == 'OPTIONS':
+        response= make_response()
+        response.headers.add('Access-Control-Allow-Origin', request.headers.get() )
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response, 200
+
 
 app.config['JWT_SECRET_KEY'] = os.getenv(
     "JWT_SECRET_KEY", "super-secret-jwt-key")

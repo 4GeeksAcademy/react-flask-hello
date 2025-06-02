@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory, make_response, request
+from flask import Flask, jsonify, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -43,19 +43,23 @@ app.config['JWT_SECRET_KEY'] = os.getenv(
     "JWT_SECRET_KEY", "super-secret-jwt-key")
 jwt = JWTManager(app)
 
+# Configuración CORS profesional
+CORS(
+    app,
+    origins=["https://sportconnect-web.onrender.com", "http://localhost:3000"],
+    supports_credentials=True
+)
+
 @app.after_request
 def add_cors_headers(response):
     origin = request.headers.get("Origin", "")
     if origin in ["https://sportconnect-web.onrender.com", "http://localhost:3000"]:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
-
-# Configuración CORS
-CORS(app, origins="*", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

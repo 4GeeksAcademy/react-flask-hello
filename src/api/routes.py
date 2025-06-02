@@ -325,6 +325,40 @@ def approve_teacher(user_id):
 
     return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200
 
+@api.route('/delete/user/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    admin_id = get_jwt_identity()
+    admin = User.query.get(admin_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    # Si es estudiante, eliminar el registro relacionado
+    if user.role == "student":
+        student = Student.query.filter_by(user_id=user.id).first()
+        if student:
+            db.session.delete(student)
+
+    # Si es profesor, eliminar el registro relacionado y liberar el curso
+    if user.role == "teacher":
+        teacher = Teacher.query.filter_by(user_id=user.id).first()
+        if teacher:
+            course = Course.query.filter_by(teacher_id=teacher.user_id).first()
+            if course:
+                course.teacher_id = None  # quitarle el curso asignado
+            db.session.delete(teacher)
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"msg": "Usuario eliminado correctamente"}), 200
+
+
 
 # get admin
 @api.route('/admin/profile', methods=['GET'])

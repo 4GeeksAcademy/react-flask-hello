@@ -20,7 +20,7 @@ export const Admin = () => {
         const body = JSON.stringify({ email, password })
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/login/admin`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login/admin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,10 +31,8 @@ export const Admin = () => {
             const data = await response.json()
 
             if (response.ok) {
-                localStorage.setItem("token", data.access_token);
-                dispatch({ type: "SET_USER", payload: { email: email } });
-                dispatch({ type: "SET_TOKEN", payload: data.access_token });
-                navigate("/admin/dashboard");
+                sessionStorage.setItem("access_token", data.access_token);
+                navigate("/admin/dashboard/profile");
             }
 
         } catch (error) {

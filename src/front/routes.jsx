@@ -58,17 +58,17 @@ export const router = createBrowserRouter(
         <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
         <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
       </Route>
-      <Route path="/profesores/dashboard" element={<DashboardLayout />}>
-        <Route path="/profesores/dashboard/profile" element={<ProfesoresProfile />} />
-        <Route path="/profesores/dashboard/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
-        <Route path="/profesores/dashboard/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
-        <Route path="/profesores/dashboard/horario" element={<ProfesoresHorario />} />
+      <Route path="/teacher/dashboard" element={<DashboardLayout />}>
+        <Route path="/teacher/dashboard/profile" element={<ProfesoresProfile />} />
+        <Route path="/teacher/dashboard/alumnos/notas" element={<ProfesoresAlumnosNotas />} />
+        <Route path="/teacher/dashboard/alumnos/asistencia" element={<ProfesoresAlumnosAsistencia />} />
+        <Route path="/teacher/dashboard/horario" element={<ProfesoresHorario />} />
       </Route>
-      <Route path="/alumnos/dashboard" element={<DashboardLayout />}>
-        <Route path="/alumnos/dashboard/profile" element={<AlumnosProfile />} />
-        <Route path="/alumnos/dashboard/notas" element={<AlumnosNotas />} />
-        <Route path="/alumnos/dashboard/horario" element={<AlumnosHorario />} />
-        <Route path="/alumnos/dashboard/pagos" element={<AlumnosPagos />} />
+      <Route path="/student/dashboard" element={<DashboardLayout />}>
+        <Route path="/student/dashboard/profile" element={<AlumnosProfile />} />
+        <Route path="/student/dashboard/notas" element={<AlumnosNotas />} />
+        <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />
+        <Route path="/student/dashboard/pagos" element={<AlumnosPagos />} />
       </Route>
     </Route>
   )

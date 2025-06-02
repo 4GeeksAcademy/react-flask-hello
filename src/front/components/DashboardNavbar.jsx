@@ -75,7 +75,7 @@ export const DashboardNavbar = () => {
 						</button>
 						<ul className="dropdown-menu text-small shadow dropdownNav" data-popper-placement="top-start">
 							<li>
-								<Link to="/admin/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
+								<Link to="/admin/dashboard/profile" className="dropdown-item" onClick={closeMenu}>Mi Perfil</Link>
 							</li>
 							<li>
 								<hr className="dropdown-divider" />

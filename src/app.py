@@ -17,16 +17,18 @@ from src.api.services.routes.weather import weather_bp
 # Cargar variables de entorno
 load_dotenv()
 
-# ✅ Crear app UNA SOLA VEZ
-app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-jwt-key")
-jwt = JWTManager(app)
-
 # Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
+app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-jwt-key")
+jwt = JWTManager(app)
+
+
+
 
 # Configuración CORS
 CORS(app, origins="https://reimagined-trout-694x6j6j7647f44p9-3000.app.github.dev", supports_credentials=True)

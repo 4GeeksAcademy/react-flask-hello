@@ -1,36 +1,37 @@
+from flask import Flask, jsonify, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_cors import CORS
+from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
+import os
 from src.api.auth import auth_bp
 from src.api.models import db
 from src.api.utils import APIException, generate_sitemap
 from src.api.admin import setup_admin
-from src.api.auth import auth_bp
 from src.api.commands import setup_commands
 from src.api.services.routes.users import users_bp
 from src.api.services.routes.events import events_bp
 from src.api.services.routes.weather import weather_bp
-from dotenv import load_dotenv
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from flask import Flask
-import os
-from src.api.services.routes.weather import weather_bp
-
 
 # Cargar variables de entorno
 load_dotenv()
 
-# Inicializa la app
+# ✅ Crear app UNA SOLA VEZ
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-jwt-key")
+jwt = JWTManager(app)
+
+# Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
-app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-CORS(app, origins="https://special-bassoon-jjqx654vx96j35vv9-3000.app.github.dev",
-     supports_credentials=True)
+# Configuración CORS
+CORS(app, origins="https://reimagined-trout-694x6j6j7647f44p9-3000.app.github.dev", supports_credentials=True)
 
-
-# database condiguration
+# Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
@@ -42,27 +43,24 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# add the admin
+# Admin y comandos
 setup_admin(app)
-
-# add the admin
 setup_commands(app)
 
 # Registro de Blueprints
 app.register_blueprint(users_bp, url_prefix='/api/users')
 app.register_blueprint(events_bp, url_prefix='/api/events')
-
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(weather_bp, url_prefix='/api')
 
-# Handle/serialize errors like a JSON object
+# Manejador de errores
 
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# Ruta principal para desarrollo
 
 
 @app.route('/')
@@ -71,7 +69,7 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# any other endpoint will try to serve it like a static file
+# Ruta para archivos estáticos
 
 
 @app.route('/<path:path>', methods=['GET'])
@@ -79,11 +77,11 @@ def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
     response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
+    response.cache_control.max_age = 0
     return response
 
 
-# this only runs if `$ python src/main.py` is executed
+# Iniciar servidor
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)

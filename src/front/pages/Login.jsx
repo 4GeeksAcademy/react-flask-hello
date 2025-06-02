@@ -3,9 +3,7 @@ import { Await, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
-localStorage.setItem("isLoggedIn", "true");
-localStorage.setItem("token", response.token);
-localStorage.setItem("userData", JSON.stringify(response.user));
+
 
 
 const Login = () => {
@@ -17,8 +15,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await loginUser({ email, password });
-            console.log("Usuario logueado:", response);
-
+        
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("token", response.token); // ✅ token
             localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario

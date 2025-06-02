@@ -1,9 +1,11 @@
 from flask import request, jsonify
 from src.api.models import db, Event, User
 from sqlalchemy.exc import SQLAlchemyError
+from src.api.utils import token_required
 
 
-def create_event():
+@token_required  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
+def create_event(current_user):  # Recibimos el usuario autenticado desde el decorador
     try:
         data = request.get_json()
         new_event = Event(
@@ -51,7 +53,8 @@ def get_events():
     return jsonify([event.to_dict() for event in events]), 200
 
 
-def update_event(event_id):
+@token_required  # Protege para que solo usuarios autenticados puedan actualizar
+def update_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
@@ -77,7 +80,8 @@ def update_event(event_id):
         return jsonify({"error": str(e)}), 500
 
 
-def delete_event(event_id):
+@token_required
+def delete_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
@@ -91,14 +95,13 @@ def delete_event(event_id):
         return jsonify({"error": str(e)}), 500
 
 
-def join_event(event_id):
-    data = request.get_json()
-    user_id = data.get("user_id")
+@token_required
+def join_event(current_user, event_id):
     event = Event.query.get(event_id)
-    user = User.query.get(user_id)
+    user = current_user  # Ya no necesitas `user_id` desde el body
 
-    if not event or not user:
-        return jsonify({"error": "Usuario o Evento no encontrado"}), 404
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
 
     if user in event.joined_users:
         return jsonify({"message": "El usuario ya está registrado"}), 400
@@ -112,14 +115,13 @@ def join_event(event_id):
         return jsonify({"error": str(e)}), 500
 
 
-def leave_event(event_id):
-    data = request.get_json()
-    user_id = data.get("user_id")
+@token_required
+def leave_event(current_user, event_id):
     event = Event.query.get(event_id)
-    user = User.query.get(user_id)
+    user = current_user
 
-    if not event or not user:
-        return jsonify({"error": "Usuario o Evento no encontrado"}), 404
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
 
     if user not in event.joined_users:
         return jsonify({"message": "El usuario no está registrado"}), 400

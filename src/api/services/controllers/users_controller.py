@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from src.api.models import db, User, Event
+from src.api.utils import token_required
 
 
 def create_user():
@@ -11,23 +12,33 @@ def create_user():
     if User.query.filter_by(email=data["email"]).first():
         return jsonify({"error": "El email ya está registrado"}), 400
 
-    user = User(name=data["name"], email=data["email"], password=data["password"])
+    user = User(name=data["name"], email=data["email"],
+                password=data["password"])
     db.session.add(user)
     db.session.commit()
     return jsonify(user.to_dict()), 201
 
 
-def get_users():
+@token_required
+def get_users(current_user):
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200
 
 
-def get_user(user_id):
+def get_user(current_user, user_id):
+    # Solo permite que un usuario vea su propio perfil o extenderlo a admins
+    if current_user.id != user_id:
+        return jsonify({"error": "Acceso no autorizado"}), 403
+
     user = User.query.get_or_404(user_id)
     return jsonify(user.to_dict()), 200
 
 
-def update_user(user_id):
+@token_required
+def update_user(current_user, user_id):
+    if current_user.id != user_id:
+        return jsonify({"error": "No puedes modificar otro usuario"}), 403
+
     user = User.query.get_or_404(user_id)
     data = request.get_json()
 
@@ -39,57 +50,57 @@ def update_user(user_id):
     return jsonify(user.to_dict()), 200
 
 
-def delete_user(user_id):
+@token_required
+def delete_user(current_user, user_id):
+    if current_user.id != user_id:
+        return jsonify({"error": "No pudes eliminar otro usuario"}), 403
+
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
     return jsonify({"message": f"Usuario con ID {user_id} eliminado"}), 200
 
 
-def join_event(event_id):
-    data = request.get_json()
-    user_id = data.get("user_id")
-
-    if not user_id:
-        return jsonify({"error": "Falta el user_id"}), 400
-
-    user = User.query.get(user_id)
+@token_required
+def join_event(current_user, event_id):
+    user = current_user
     event = Event.query.get(event_id)
 
-    if not user or not event:
-        return jsonify({"error": "Usuario o evento no encontrado"}), 404
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
 
     if user in event.participants:
-        return jsonify({"message": "El usuario ya está inscrito en el evento"}), 200
+        return jsonify({"message": "Ya estás inscrito en el evento"}), 200
 
     event.participants.append(user)
     db.session.commit()
 
-    return jsonify({"message": f"Usuario {user_id} unido al evento {event_id}"}), 200
+    return jsonify({"message": f"Usuario {user.id} unido al evento {event_id}"}), 200
 
 
-def leave_event(event_id):
-    data = request.get_json()
-    user_id = data.get("user_id")
-
-    if not user_id:
-        return jsonify({"error": "Falta el user_id"}), 400
-
+@token_required
+def leave_event(current_user, event_id):
+    user = current_user
     event = Event.query.get(event_id)
-    user = User.query.get(user_id)
 
-    if not user or not event:
-        return jsonify({"error": "Usuario o evento no encontrado"}), 404
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
 
     if user not in event.participants:
-        return jsonify({"error": "El usuario no está inscrito en este evento"}), 400
+        return jsonify({"error": "No estás inscrito en este evento"}), 400
 
     event.participants.remove(user)
     db.session.commit()
-    return jsonify({"message": f"Usuario {user_id} ha salido del evento {event_id}"}), 200
+    return jsonify({"message": f"Usuario {user.id} ha salido del evento {event_id}"}), 200
 
 
-def get_user_events(user_id):
+token_required
+
+
+def get_user_events(current_user, user_id):
+    if current_user.id != user_id:
+        return jsonify({"error": "No autorizado"}), 403
+
     user = User.query.get_or_404(user_id)
     events = user.joined_events
     return jsonify([event.to_dict() for event in events]), 200

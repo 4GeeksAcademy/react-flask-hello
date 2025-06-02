@@ -66,6 +66,33 @@ export const AdminSolicitudes = () => {
         }
     }
 
+    const reject = async (role, id) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/reject/${role}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: 'rejected' })
+            })
+
+            const result = await response.json();
+            if (response.ok) {
+                console.log(result.msg);
+                if (role === 'teacher') {
+                    setTeachers(prev => prev.filter(user => user.id !== id));
+                } else if (role === 'student') {
+                    setStudents(prev => prev.filter(user => user.id !== id));
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
     return (
         <div className="container table-responsive">
             <div className="row">
@@ -105,7 +132,7 @@ export const AdminSolicitudes = () => {
                                     <td>
                                         <div className="d-flex justify-content-center align-items-center gap-2">
                                             <button type="button" className="btn btn-success btn-sm" onClick={() => approve(teachers.role, teachers.id)}>Aprove</button>
-                                            <button type="button" className="btn btn-danger btn-sm">Denege</button>
+                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(teachers.role, teachers.id)}>Reject</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -144,7 +171,7 @@ export const AdminSolicitudes = () => {
                                     <td>
                                         <div className="d-flex justify-content-center align-items-center gap-2">
                                             <button type="button" className="btn btn-success btn-sm" onClick={() => approve(students.role, students.id)}>Approve</button>
-                                            <button type="button" className="btn btn-danger btn-sm">Denege</button>
+                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(students.role, students.id)}>Reject</button>
                                         </div>
                                     </td>
                                 </tr>

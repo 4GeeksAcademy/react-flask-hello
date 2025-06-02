@@ -30,7 +30,7 @@ jwt = JWTManager(app)
 
 
 # Configuración CORS
-CORS(app, origins="*", supports_credentials=True)
+CORS(app, origins=["https://sportconnect-uk2i.onrender.com"], supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

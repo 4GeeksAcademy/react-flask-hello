@@ -11,10 +11,7 @@ from api.models import db, User, Student, Teacher, GradeLevel, Course
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
-<<<<<<< HEAD
-=======
 
->>>>>>> delete
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -259,6 +256,9 @@ def login_teacher():
     if not check_password_hash(user.password, password):
         return jsonify({"msg": "Contraseña incorrecta"}), 401
 
+    if user.status != "approved":
+        return jsonify({"msg": "Cuenta no aprobada"}), 403
+
     access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
@@ -334,6 +334,7 @@ def approve_teacher(user_id):
 
     return jsonify({"msg": f"Estado del profesor actualizado a '{status}'"}), 200
 
+
 @api.route('/delete/user/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
@@ -366,7 +367,6 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({"msg": "Usuario eliminado correctamente"}), 200
-
 
 
 # get admin

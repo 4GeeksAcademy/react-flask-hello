@@ -51,7 +51,7 @@ def login():
         }
     }), 200
 
-
+#Metodo Post
 @auth_bp.route('/auth/me', methods=['POST'])
 @jwt_required()
 def secret():

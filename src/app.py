@@ -29,7 +29,7 @@ app.url_map.strict_slashes = False
 def handle_before_request():
     if request.method == 'OPTIONS':
         response = make_response()
-        origin = request.headers.get("Origin", "")
+        origin = request.headers.get("Origin", "*")
         # Check if the origin is allowed
         if origin in ["https://sportconnect-web.onrender.com", "http://localhost:3000"]:
             response.headers.add('Access-Control-Allow-Origin', origin)
@@ -55,7 +55,7 @@ def add_cors_headers(response):
 
 
 # Configuración CORS
-CORS(app, origins=["https://sportconnect-web.onrender.com", "http://localhost:3000"], supports_credentials=True)
+CORS(app, origins="*", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Feed = () => {
     const navigate = useNavigate();
 
+    const URL = import.meta.env.VITE_BACKEND_URL
+
     const [posts, setPosts] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [activeTab, setActiveTab] = useState("all");
@@ -42,7 +44,7 @@ const Feed = () => {
 
         const storedFavorites = JSON.parse(localStorage.getItem("favoritePosts")) || [];
 
-        fetch(`${process.env.BACKEND_URL}/api/events?${params.toString()}`)
+        fetch(`${URL}/api/events?${params.toString()}`)
             .then(res => res.json())
             .then(data => {
                 const updated = data.map(post => ({
@@ -73,7 +75,7 @@ const Feed = () => {
     if (activeTab === "favorites") {
         filteredPosts = filteredPosts.filter(post => post.isFavorite);
     }
-    
+
     return (
         <div
             className="bg-light min-vh-100"

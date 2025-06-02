@@ -15,12 +15,12 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await loginUser({ email, password });
-        
+
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("token", response.token); // ✅ token
             localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario
 
-            navigate("/feed");
+            navigate("/profile");
         } catch (error) {
             console.error("Error al iniciar sesión:", error.message);
             alert("Credenciales inválidas o error en el servidor.");

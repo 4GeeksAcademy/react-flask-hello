@@ -8,6 +8,10 @@
   all: unset;
 }
 
+.signup-login-button {
+  width: 100px;
+}
+
 .dropdown-toggle::after {
   display: none !important;
 }

@@ -5,9 +5,7 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import { DashboardLayout } from "./pages/DashboardLayout";
 import { Login } from "./pages/Home";
-import { Single } from "./pages/Single";
 import { Admin } from "./pages/AdminLogin";
 import { AlumnosProfile } from "./pages/AlumnosProfile";
 import { Signup } from "./pages/ChangeSingup";
@@ -29,6 +27,10 @@ import { AlumnosPagos } from "./pages/AlumnosPagos";
 import { LoginLayout } from "./pages/LoginLayout";
 import { SignupLayout } from "./pages/SignupLayout";
 import PrivateRoute from "./components/PrivateRoute";
+import { AdminDashboardLayout } from "./pages/AdminDashboardLayout";
+import { AlumnosDashboardLayout } from "./pages/AlumnosDashboardLayout";
+import { ProfesoresDashboardLayout } from "./pages/ProfesoresDashboardLayout";
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.

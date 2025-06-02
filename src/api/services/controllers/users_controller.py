@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from src.api.models import db, User, Event
 from src.api.utils import token_required
+from flask_jwt_extended import jwt_required
 
 
 def create_user():
@@ -19,7 +20,7 @@ def create_user():
     return jsonify(user.to_dict()), 201
 
 
-@token_required
+@jwt_required
 def get_users(current_user):
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200

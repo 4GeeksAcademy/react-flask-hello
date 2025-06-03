@@ -31,6 +31,9 @@ export const Admin = () => {
             const data = await response.json()
 
             if (response.ok) {
+                console.log('ínicio corrector');
+                console.log(response.status);
+
                 sessionStorage.setItem("access_token", data.access_token);
                 navigate("/admin/dashboard/profile");
             }

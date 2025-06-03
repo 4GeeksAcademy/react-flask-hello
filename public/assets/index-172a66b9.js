@@ -12701,7 +12701,7 @@ function Dg(e, t) {
     [s, u, f, r, l, n, e, i, o, a]
   );
 }
-const tp = "https://sportconnect-web.onrender.com/api",
+const tp = "https://sportconnect-uk2i.onrender.com/api",
   Mg = async (e) => {
     const t = await fetch(`${tp}/auth/register`, {
       method: "POST",
@@ -12950,7 +12950,7 @@ const op = () =>
       ],
     }),
   });
-console.log("https://sportconnect-web.onrender.com/api");
+console.log("https://sportconnect-uk2i.onrender.com/api");
 const Hg = () => {
     const [e, t] = N.useState(""),
       [n, r] = N.useState(""),
@@ -13263,19 +13263,17 @@ const Hg = () => {
                       }),
                       g.jsx("ul", {
                         className: "list-inline",
-                        children: n.sports
-                          .split(",")
-                          .map((o, a) =>
-                            g.jsx(
-                              "li",
-                              {
-                                className:
-                                  "list-inline-item badge bg-success me-2",
-                                children: o.trim(),
-                              },
-                              a
-                            )
-                          ),
+                        children: n.sports.split(",").map((o, a) =>
+                          g.jsx(
+                            "li",
+                            {
+                              className:
+                                "list-inline-item badge bg-success me-2",
+                              children: o.trim(),
+                            },
+                            a
+                          )
+                        ),
                       }),
                       g.jsx("button", {
                         className: "btn btn-outline-success mt-4",
@@ -13753,7 +13751,7 @@ const Yg = (e) => {
   },
   Jg = () => {
     const e = El(),
-      t = "https://sportconnect-web.onrender.com/api",
+      t = "https://sportconnect-uk2i.onrender.com/api",
       [n, r] = N.useState([]),
       [l, i] = N.useState(!0),
       [o, a] = N.useState("all"),

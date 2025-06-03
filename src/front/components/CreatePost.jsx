@@ -22,11 +22,20 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         const newPost = {
             ...formData,
             capacity: parseInt(formData.capacity, 10),
-            participants: 0
+            participants: 0,
+            weather: weatherData.weather || null
         };
 
         try {
             const token = localStorage.getItem("token");
+
+            // llamada a la API-clima
+            const { date } = formData;
+            const lat = 40.4168; // Por ahora, ubicación fija (Madrid)
+            const lng = -3.7038;
+
+            const weatherResponse = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            const weatherData = await weatherResponse.json();
 
             const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
                 method: "POST",

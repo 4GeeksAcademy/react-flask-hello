@@ -12,7 +12,7 @@ export const TeacherSignup = () => {
     useEffect(() => {
         const listAsignature = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/asignatures`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/courses`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -156,11 +156,11 @@ export const TeacherSignup = () => {
                         </div>
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="asignature" className="form-label">Asignature:</label>
+                        <label htmlFor="course_id" className="form-label">Asignature:</label>
                         <select
-                            id="asignature"
-                            className={"form-control " + (errors.asignature ? 'is-invalid' : '')}
-                            {...register('asignature', { required: 'Please select a asignature' })}
+                            id="course_id"
+                            className={"form-control " + (errors.course_id ? 'is-invalid' : '')}
+                            {...register('course_id', { required: 'Please select a asignature' })}
                         >
                             <option value=""> Select Asignature </option>
                             {asignatures.map((asignature) => (
@@ -169,7 +169,7 @@ export const TeacherSignup = () => {
 
                         </select>
                         <div className="invalid-feedback">
-                            {errors?.asignature?.message}
+                            {errors?.course_id?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">

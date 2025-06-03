@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from api.models import db, User, Student, Teacher, GradeLevel, Course
+from api.models import db, User, Student, Teacher, GradeLevel, Course, Schedule, Enrollment, Payment
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -31,7 +31,6 @@ def validate_required_fields(data, required_fields):
 
 
 # Registro admin
-
 @api.route('/register/admin', methods=['POST'])
 def register_admin():
     data = request.json
@@ -57,13 +56,14 @@ def register_admin():
 
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
-# Darle datos a grade level
 
-
+# obtener datos de años escolares
 @api.route('/setup/grade_levels', methods=['GET'])
 def get_grade_levels():
     grade_levels = GradeLevel.query.all()
     return jsonify([gl.serialize() for gl in grade_levels]), 200
+
+# precargar años escolares en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
 
 
 @api.route('/setup/grade_levels', methods=['POST'])
@@ -86,7 +86,6 @@ def setup_grade_levels():
 
 
 # Registro estudiante
-
 @api.route('/register/student', methods=['POST'])
 def register_student():
     data = request.json
@@ -132,12 +131,11 @@ def register_student():
 
 
 # Registro profesor
-
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.get_json()
     required_fields = ['first_name', 'last_name',
-                       'email', 'password', 'phone', 'asignature']
+                       'email', 'password', 'phone', 'course_id']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -145,6 +143,11 @@ def register_teacher():
 
     if User.query.filter_by(email=data['email']).first():
         return jsonify({"error": "El correo ya está registrado"}), 400
+
+    course_id = int(data['course_id'])
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({"error": "Curso no encontrado"}), 404
 
     user = User(
         first_name=data['first_name'],
@@ -164,18 +167,159 @@ def register_teacher():
     db.session.add(teacher)
     db.session.flush()
 
-    # Asignar curso al profesor
-    asignature = Course.query.get(data['asignature'])
-    if not asignature:
-        return jsonify({"error": "Curso no encontrado"}), 404
-
-    asignature.teacher_id = teacher.user_id
+    course.teacher_id = teacher.user_id
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
+# precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
+@api.route('/setup/courses', methods=['POST'])
+def setup_courses():
+    course_names = [
+        "Matemáticas", "Física", "Biología", "Historia", "Computación",
+        "Química", "Educación Física", "Educación Cívica", "Arte",
+        "Religión", "Inglés", "Filosofía", "Tutoría"
+    ]
+
+    created = []
+    for name in course_names:
+        if not Course.query.filter_by(name=name).first():
+            course = Course(name=name)
+            db.session.add(course)
+            created.append(name)
+
+    db.session.commit()
+    return jsonify({"message": f"Cursos creados: {created}"}), 201
+
+# obtencion de materias
+
+
+@api.route('/courses', methods=['GET'])
+def get_courses():
+    courses = Course.query.all()
+    return jsonify([
+        {"id": c.id, "name": c.name}
+        for c in courses
+    ]), 200
+
+
+# Precargar horarios por año escolar en la base de datos             -- esta api no es para consumir, se ejectura al levantarse el servidor
+@api.route('/setup/schedules', methods=['POST'])
+def setup_schedules():
+    horas = [("07:00", "09:00"), ("09:00", "11:00"), ("11:00", "13:00")]
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+
+    horario = [
+        [  # Primero
+            ["Matemáticas", "Educación Física", "Inglés"],
+            ["Historia", "Química", "Filosofía"],
+            ["Biología", "Matemáticas", "Tutoría"],
+            ["Educación Cívica", "Arte", "Física"],
+            ["Computación", "Arte", "Física"]
+        ],
+        [  # Segundo
+            ["Historia", "Física", "Filosofía"],
+            ["Matemáticas", "Química", "Inglés"],
+            ["Religión", "Educación Física", "Tutoría"],
+            ["Educación Cívica", "Religión", "Matemáticas"],
+            ["Inglés", "Filosofía", "Arte"]
+        ],
+        [  # Tercero
+            ["Biología", "Historia", "Educación Cívica"],
+            ["Computación", "Tutoría", "Arte"],
+            ["Matemáticas", "Filosofía", "Educación Física"],
+            ["Religión", "Inglés", "Arte"],
+            ["Educación Física", "Matemáticas", "Física"]
+        ],
+        [  # Cuarto
+            ["Física", "Tutoría", "Computación"],
+            ["Educación Cívica", "Filosofía", "Religión"],
+            ["Química", "Matemáticas", "Historia"],
+            ["Inglés", "Filosofía", "Arte"],
+            ["Religión", "Computación", "Biología"]
+        ],
+        [  # Quinto
+            ["Educación Cívica", "Computación", "Religión"],
+            ["Matemáticas", "Tutoría", "Educación Física"],
+            ["Arte", "Química", "Física"],
+            ["Filosofía", "Religión", "Matemáticas"],
+            ["Inglés", "Educación Física", "Física"]
+        ]
+    ]
+
+    from datetime import datetime
+    created = []
+
+    for year_index, semana in enumerate(horario, start=1):
+        for dia_index, dia in enumerate(dias):
+            for bloque_index, materia in enumerate(semana[dia_index]):
+                course = Course.query.filter_by(name=materia).first()
+                if not course:
+                    continue
+                inicio = datetime.strptime(
+                    horas[bloque_index][0], "%H:%M").time()
+                fin = datetime.strptime(horas[bloque_index][1], "%H:%M").time()
+
+                db.session.add(Schedule(
+                    course_id=course.id,
+                    grade_level_id=year_index,
+                    day=dia,
+                    start_time=inicio,
+                    end_time=fin,
+                    classroom=f"Aula {year_index}"
+                ))
+                created.append(f"{materia} - {dia} - Año {year_index}")
+
+    db.session.commit()
+    return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
+
+# Horario para PROFESORES --- Este endpoint devuelve el horario del profesor en el frontend
+
+
+@api.route('/teacher/schedule', methods=['GET'])
+@jwt_required()
+def get_teacher_schedule():
+    user_id = get_jwt_identity()
+    teacher = Teacher.query.filter_by(user_id=user_id).first()
+
+    if not teacher:
+        return jsonify({"msg": "Profesor no encontrado"}), 404
+
+    course = Course.query.filter_by(teacher_id=teacher.user_id).first()
+    if not course:
+        return jsonify({"msg": "Este profesor no tiene un curso asignado"}), 404
+
+    schedules = Schedule.query.filter_by(course_id=course.id).all()
+    return jsonify([s.serialize() for s in schedules]), 200
+
+
+# Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
+@api.route('/student/schedule', methods=['GET'])
+@jwt_required()
+def get_student_schedule():
+    user_id = get_jwt_identity()
+    student = Student.query.filter_by(user_id=user_id).first()
+
+    if not student:
+        return jsonify({"msg": "Estudiante no encontrado"}), 404
+
+    grade_level_id = student.grade_level_id
+
+    enrollments = Enrollment.query.filter_by(student_id=student.id).all()
+    course_ids = [e.course_id for e in enrollments]
+
+    schedules = Schedule.query.filter(
+        Schedule.course_id.in_(course_ids),
+        Schedule.grade_level_id == grade_level_id
+    ).all()
+
+    return jsonify([s.serialize() for s in schedules]), 200
 
 # login admin
+
+
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
     data = request.get_json()
@@ -278,7 +422,7 @@ def login_teacher():
     }), 200
 
 
-# Aprobación de registros de estudiantes y profesores
+# Aprobación de registros de estudiantes y profesores por parte del admin
 
 # obtener usuarios pendientes
 @api.route('/pending/registrations', methods=['GET'])
@@ -383,9 +527,8 @@ def get_admin():
         return jsonify({"msg": "Acceso no autorizado"}), 403
     return jsonify(user.serialize()), 200
 
+
 # Información del estudiantes
-
-
 @api.route('/students', methods=['GET'])
 @jwt_required()
 def get_approved_students():
@@ -425,10 +568,9 @@ def get_profile():
 
     return jsonify(user.serialize()), 200
 
+
 # Periodos academicos
-
-
 @api.route('/periods', methods=['GET'])
 def get_periods():
-    periods = ['primer', 'segundo', 'tercer']
+    periods = ['primer', 'segundo', 'tercer', 'cuarto']
     return jsonify(periods), 200

@@ -33,9 +33,10 @@ class User(db.Model):
             "student": self.student.serialize() if self.role == 'student' and self.student else None,
             "teacher": self.teacher.serialize() if self.role == 'teacher' and self.teacher else None
         }
- 
+
     def check_login(self, password, role):
         return self.password == password and self.role == role
+
 
 class GradeLevel(db.Model):
     __tablename__ = 'grade_level'
@@ -56,11 +57,12 @@ class GradeLevel(db.Model):
 class Student(db.Model):
     __tablename__ = 'student'
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('user.id'), primary_key=True)
     student_code: Mapped[str] = mapped_column(String(50), unique=True)
     grade_level_id: Mapped[int] = mapped_column(ForeignKey('grade_level.id'))
     phone: Mapped[str] = mapped_column(String(20))
-    period: Mapped[str] = mapped_column(String(20))  
+    period: Mapped[str] = mapped_column(String(20))
 
     user = relationship("User", back_populates="student")
     grade_level = relationship("GradeLevel", back_populates="students")
@@ -72,11 +74,10 @@ class Student(db.Model):
             "user_id": self.user_id,
             "student_code": self.student_code,
             "phone": self.phone,
-            "period": self.period,  
+            "period": self.period,
             "grade_level_id": self.grade_level_id,
             "grade_level": self.grade_level.name if self.grade_level else None
         }
-        
 
 
 class Teacher(db.Model):
@@ -84,7 +85,7 @@ class Teacher(db.Model):
 
     user_id: Mapped[int] = mapped_column(
         ForeignKey('user.id'), primary_key=True)
-    department: Mapped[str] = mapped_column(String(100))
+    department: Mapped[str] = mapped_column(String(100), nullable=True)
     phone: Mapped[str] = mapped_column(String(20))
 
     user = relationship("User", back_populates="teacher")
@@ -104,7 +105,8 @@ class Course(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
-    teacher_id: Mapped[int] = mapped_column(ForeignKey('teacher.user_id'))
+    teacher_id: Mapped[int] = mapped_column(
+        ForeignKey('teacher.user_id'), nullable=True)
 
     teacher = relationship("Teacher", back_populates="courses")
     schedules = relationship("Schedule", back_populates="course")

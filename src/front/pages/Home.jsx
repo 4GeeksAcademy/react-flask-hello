@@ -3,6 +3,9 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import imageHome from '../assets/img/loginUser.jpg';
 import { useNavigate } from "react-router-dom";
 
+import studentImg from "../assets/img/students.png";
+import teacherImg from "../assets/img/teacher.png";
+
 export const Login = () => {
   const { store, dispatch } = useGlobalReducer()
   const [email, setEmail] = useState("");
@@ -54,40 +57,39 @@ export const Login = () => {
 
 
   return (
-    <div >
-      <div className="d-flex position-absolute top-50 start-50 translate-middle gap-5 align-items-center border border-1 border-secondary rounded-3"  >
-        <div>
-          <img src={imageHome} alt="" className="imgLogin rounded-start" />
-        </div>
-        <form className="AdminLoginWidth me-5" onSubmit={handleOnSubmit}>
-          <h1 className="text-center mb-5">Login</h1>
+    <div className="background-container">
+      <div className="login-signup-form position-absolute top-50 start-50 translate-middle border rounded-3 p-3 p-md-4"  >
+        <form className="login-width max-w-md mx-auto" onSubmit={handleOnSubmit}>
+          <h1 className="text-center mb-4">Bienvenido</h1>
           <div className="d-flex flex-column gap-3 mb-4">
             <div>
-              <label className="form-label">Email</label>
-              <input name="email" type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} required />
+              <input name="email" type="email" className="form-control" placeholder="Correo Electrónico" onChange={e => setEmail(e.target.value)} required />
             </div>
             <div>
-              <label className="form-label">Password</label>
-              <input name="password" type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} required />
+              <input name="password" type="password" className="form-control" placeholder="Contraseña" onChange={e => setPassword(e.target.value)} required />
             </div>
-
           </div>
-          <div className="d-flex justify-content-evenly">
-            <div className="form-check">
-              <input className="form-check-input " type="radio" name="radioDefault" id="radioDefault1" onChange={() => setUser('student')} checked={user === 'student'} />
-              <label className="form-check-label" htmlFor="radioDefault1">
-                Alumno
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault2" onChange={() => setUser('teacher')} checked={user === 'teacher'} />
-              <label className="form-check-label" htmlFor="radioDefault2">
-                Profesor
-              </label>
+          <div className="d-flex flex-column align-items-center gap-4 w-100">
+            <p className="h5 mb-0 text-secondary">¿Cómo quieres ingresar?</p>
+            <div className="d-flex justify-content-evenly w-100">
+              <div
+                className={`user-select pointer d-flex flex-column align-items-center ${user === 'student' ? 'selected' : ''}`}
+                onClick={() => setUser('student')}
+              >
+                <img src={studentImg} alt="Estudiante" className="imgUserWidth mb-2" />
+                <p className="m-0 fw-semibold">Alumno</p>
+              </div>
+              <div
+                className={`user-select pointer d-flex flex-column align-items-center ${user === 'teacher' ? 'selected' : ''}`}
+                onClick={() => setUser('teacher')}
+              >
+                <img src={teacherImg} alt="Profesor" className="imgUserWidth mb-2" />
+                <p className="m-0 fw-semibold">Profesor</p>
+              </div>
             </div>
           </div>
           <p className="text-danger mt-2">{msg}</p>
-          <button type="submit" className="btn btn-outline-dark w-100">Login</button>
+          <button type="submit" className="btn btn-dark w-100">Iniciar Sesión</button>
         </form>
       </div>
     </div>

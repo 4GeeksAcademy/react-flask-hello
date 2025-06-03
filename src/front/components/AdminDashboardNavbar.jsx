@@ -87,7 +87,7 @@ export const AdminDashboardNavbar = () => {
 				</div>
 			</div>
 			<div className="d-flex align-items-center">
-				<Link to="/" className=" navbar-brand fs-2 h1">
+				<Link to="/admin/dashboard/profile" className=" navbar-brand fs-2 h1">
 					αlpha
 				</Link>
 			</div>

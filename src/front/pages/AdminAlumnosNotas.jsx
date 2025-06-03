@@ -1,4 +1,31 @@
+import { useEffect, useState } from "react";
+
 export const AdminAlumnosNotas = () => {
+    const token = sessionStorage.getItem('access_token')
+    const [students, setStudents] = useState([])
+
+    useEffect(() => {
+        const students = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setStudents(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        students()
+    }, [])
+
     return (
         <div className="container table-responsive">
             <div className="row">

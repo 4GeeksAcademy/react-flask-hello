@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-
+import student from '../assets/img/students.png';
 export const AlumnosProfile = () => {
     const token = sessionStorage.getItem('access_token')
     useEffect(() => {
@@ -25,7 +24,7 @@ export const AlumnosProfile = () => {
             <div className="row justify-content-center">
                 <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
                     <h2 className="mb-4 text-center"> Bienvenido José Alejandro</h2>
-                    <img src={rigoImageUrl} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
+                    <img src={student} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
                 </div>
                 <div className="col-12 col-md-6 col-lg-5">
                     <h5 className="fw-bold mb-3">Información básica</h5>

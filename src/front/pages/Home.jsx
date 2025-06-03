@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import imageHome from '../assets/img/loginUser.jpg';
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
@@ -34,11 +35,15 @@ export const Login = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!response.ok) {
+        if (data.msg === 'Estudiante no encontrado' || data.msg === 'Contraseña incorrecta') {
+          setMsg("Credenciales inválidas")
+        } else {
+          setMsg(data.msg);
+        }
+      } else {
         sessionStorage.setItem("access_token", data.access_token);
         navigate(`/${user}/dashboard/profile`);
-      } else {
-        setMsg(data.msg || "Credenciales inválidas");
       }
     } catch (error) {
       console.log(error);
@@ -51,7 +56,7 @@ export const Login = () => {
     <div >
       <div className="d-flex position-absolute top-50 start-50 translate-middle gap-5 align-items-center border border-1 border-secondary rounded-3"  >
         <div>
-          <img src="src/front/assets/img/loginUser.jpg" alt="" className="imgLogin rounded-start" />
+          <img src={imageHome} alt="" className="imgLogin rounded-start" />
         </div>
         <form className="AdminLoginWidth me-5" onSubmit={handleOnSubmit}>
           <h1 className="text-center mb-5">Login</h1>

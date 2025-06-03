@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 export const AdminAlumnosAsistencia = () => {
 
     const token = sessionStorage.getItem('access_token')
     const auth = useAuth()
-
+    const [students, setStudents] = useState([])
     useEffect(() => {
         auth.getProfile()
     }, [auth?.store?.access_token])
@@ -13,7 +13,7 @@ export const AdminAlumnosAsistencia = () => {
     useEffect(() => {
         const students = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/information/students`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -22,7 +22,7 @@ export const AdminAlumnosAsistencia = () => {
                 const responseData = await response.json()
                 if (response.ok) {
                     console.log(responseData);
-
+                    setStudents(responseData)
                 }
             } catch (error) {
                 console.log(error);

@@ -3,14 +3,14 @@ import { useAuth } from "../context/AuthProvider";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
-    const { store, dispatch } = useAuth();
+    const { store, setStore } = useAuth();
 
     useEffect(() => {
         const token = sessionStorage.getItem("access_token");
         if (token && !store.access_token) {
-            dispatch({ type: "SET_TOKEN", payload: token });
+            setStore(prev => ({ ...prev, access_token: token }));
         }
-    }, [store.access_token, dispatch]);
+    }, [store.access_token, setStore]);
 
     const token = store.access_token || sessionStorage.getItem("access_token");
 

@@ -93,6 +93,9 @@ export const AdminSolicitudes = () => {
         }
     }
 
+    console.log(teachers);
+
+
     return (
         <div className="container table-responsive">
             <div className="row">

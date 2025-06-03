@@ -119,3 +119,43 @@
 .colorBorderSignup:hover {
   border-color: rgb(0, 0, 0) !important;
 }
+
+.admin-num {
+  width: 100px;
+}
+
+.admin-lastname {
+  width: 150px;
+}
+
+.admin-firstname {
+  width: 150px;
+}
+
+.admin-participacion {
+  width: 150px;
+}
+
+.admin-tareas {
+  width: 150px;
+}
+
+.admin-parcial {
+  width: 150px;
+}
+
+.admin-final {
+  width: 150px;
+}
+
+.admin-promedio {
+  width: 150px;
+}
+
+.admin-faltas {
+  width: 80px;
+}
+
+.admin-materia {
+  width: 150px;
+}

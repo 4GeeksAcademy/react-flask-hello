@@ -1,53 +1,128 @@
+import { useState } from "react";
+
 export const AdminProfesores = () => {
+    const [showTable, setShowTable] = useState(false);
+
+    const handleAsistencia = () => {
+        setShowTable(true);
+    };
+
     return (
-        <div className="container table-responsive">
+
+        <div className="container-fliud table-responsive px-4">
             <div className="row">
-                <table className="col-12 table table-striped table-bordered text-center mt-5">
-                    <thead className="table-light">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Participación en Clase (15%)</th>
-                            <th scope="col">Tareas (20%)</th>
-                            <th scope="col">Exámen Parcial (30%)</th>
-                            <th scope="col">Exámen Final (35%)</th>
-                            <th scope="col">Promedio Final</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="col-7">
+                    <table className="table table-striped table-bordered text-center mt-5">
+                        <thead className="table-light">
+                            <tr>
+                                <th scope="col admin-num">Código</th>
+                                <th scope="col admin-lastname">Apellidos</th>
+                                <th scope="col admin-firstname">Nombres</th>
+                                <th scope="col admin-materia">Materia</th>
+                                <th scope="col admin-assis-but"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1234</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>Matemática</td>
+                                <td>
+                                    <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5678</td>
+                                <td>Alejandro</td>
+                                <td>Guzmán</td>
+                                <td>Historia</td>
+                                <td>
+                                    <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {showTable && (
+                    <div className="col-5">
+                        <div className="col-3 mt-5">
+                            <select className="form-select" aria-label="Selecciona una opción">
+                                <option value="">Selecciona Periodo</option>
+                                <option value="1">Primer periodo</option>
+                                <option value="2">Segundo periodo</option>
+                                <option value="3">Tercero periodo</option>
+                                <option value="4">Cuarto periodo</option>
+                            </select>
+                        </div>
+                        <div className="w-100">
+                            <table className="table table-striped table-bordered text-center mt-3">
+                                <thead className="table-ligth">
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Asistencia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{new Date().toLocaleDateString()}</td>
+                                        <td>
+                                            <div className="d-flex justify-content-around">
+                                                <div className="form-check form-check-inline">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        name="asistencia"
+                                                        id="asistio"
+                                                        disabled
+                                                    />
+                                                    <label className="form-check-label" htmlFor="asistio">
+                                                        Asistió
+                                                    </label>
+                                                </div>
+                                                <div className="form-check form-check-inline">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        name="asistencia"
+                                                        id="falto"
+                                                        disabled
+                                                    />
+                                                    <label className="form-check-label" htmlFor="falto">
+                                                        Faltó
+                                                    </label>
+                                                </div>
+                                                <div className="form-check form-check-inline">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        name="asistencia"
+                                                        id="noregistrado"
+                                                        defaultChecked
+                                                        disabled
+                                                    />
+                                                    <label className="form-check-label" htmlFor="noregistrado">
+                                                        No registrado
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div className="text-center mt-2">
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => setShowTable(false)}
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

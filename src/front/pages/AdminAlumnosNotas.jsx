@@ -36,14 +36,14 @@ export const AdminAlumnosNotas = () => {
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Participación en Clase (15%)</th>
-                            <th scope="col">Tareas (20%)</th>
-                            <th scope="col">Exámen Parcial (30%)</th>
-                            <th scope="col">Exámen Final (35%)</th>
-                            <th scope="col">Promedio Final</th>
+                            <th scope="col" className="admin-num">ID</th>
+                            <th scope="col" className="admin-lastname">Apellidos</th>
+                            <th scope="col" className="admin-firstname">Nombres</th>
+                            <th scope="col" className="admin-participacion">Part. Clase (15%)</th>
+                            <th scope="col" className="admin-tareas">Tareas (20%)</th>
+                            <th scope="col" className="admin-parcial">Ex. Parcial (30%)</th>
+                            <th scope="col" className="admin-final">Ex. Final (35%)</th>
+                            <th scope="col" className="admin-promedio">Prom. Final</th>
                         </tr>
                     </thead>
                     <tbody>

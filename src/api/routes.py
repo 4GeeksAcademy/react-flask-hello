@@ -35,8 +35,6 @@ def create_user():
     if not all(f in data for f in required):
         raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
     user = User(
-        nombre=data['nombre'],
-        apellido=data['apellido'],
         email=data['email'],
         password=data['password'],
         is_active=data.get('is_active', True),
@@ -206,6 +204,7 @@ def get_plan_template(tid):
     return jsonify(t.serialize()), 200
 
 @api.route('/plan_templates', methods=['POST'])
+@jwt_required()
 def create_plan_template():
     data=request.get_json() or {}
     required=('user_id', 'plan_type', 'nombre')
@@ -215,7 +214,7 @@ def create_plan_template():
         user_id=data['user_id'],
         plan_type=data['plan_type'],
         nombre=data['nombre'],
-        descripcion=data.get('descripcion')
+        description=data.get('descripcion')
     )
     db.session.add(t)
     db.session.commit()

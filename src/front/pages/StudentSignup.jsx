@@ -190,6 +190,23 @@ export const StudenSignup = () => {
                             </div>
                         </div>
                         <div className="form-group mb-3">
+                            <label htmlFor="period" className="form-label">Period:</label>
+                            <select
+                                id="period"
+                                className={"form-control " + (errors.period ? 'is-invalid' : '')}
+                                {...register('period', { required: 'Please select a period.' })}
+                            >
+                                <option value=""> Select period </option>
+                                <option value="primer"> Primer periodo </option>
+                                <option value="segundo"> Segundo periodo </option>
+                                <option value="tercer"> Tercer periodo </option>
+                                <option value="cuarto"> Cuarto periodo </option>
+                            </select>
+                            <div className="invalid-feedback">
+                                {errors?.grade_level?.message}
+                            </div>
+                        </div>
+                        <div className="form-group mb-3">
                             <label htmlFor="password" className="form-label">Password:</label>
                             <input type="password" placeholder='Password' id="password" className={"form-control " + (errors.password ? 'is-invalid' : '')}
                                 {

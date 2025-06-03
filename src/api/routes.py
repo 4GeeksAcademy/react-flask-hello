@@ -103,9 +103,9 @@ def register_student():
     if Student.query.filter_by(student_code=data['student_code']).first():
         return jsonify({"error": "El código de estudiante ya existe"}), 400
 
-    valid_periods = ['primer', 'segundo', 'tercer']
+    valid_periods = ['primer', 'segundo', 'tercer', 'cuarto']
     if data['period'] not in valid_periods:
-        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer'."}), 400
+        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer' o 'cuarto'."}), 400
 
     user = User(
         first_name=data['first_name'],
@@ -116,7 +116,7 @@ def register_student():
         status='pending'
     )
     db.session.add(user)
-    db.session.flush()  
+    db.session.flush()
 
     student = Student(
         user_id=user.id,
@@ -384,6 +384,8 @@ def get_admin():
     return jsonify(user.serialize()), 200
 
 # Información del estudiantes
+
+
 @api.route('/students', methods=['GET'])
 @jwt_required()
 def get_approved_students():
@@ -423,9 +425,10 @@ def get_profile():
 
     return jsonify(user.serialize()), 200
 
-#Periodos academicos
+# Periodos academicos
+
+
 @api.route('/periods', methods=['GET'])
 def get_periods():
     periods = ['primer', 'segundo', 'tercer']
     return jsonify(periods), 200
-

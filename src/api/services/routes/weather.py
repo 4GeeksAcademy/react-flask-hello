@@ -1,5 +1,5 @@
 from flask import Blueprint
-from src.api.services.controllers.weather_controller import get_weather
+from src.api.services.weather_services import get_weather
 
 
 weather_bp = Blueprint('weather_bp', __name__)

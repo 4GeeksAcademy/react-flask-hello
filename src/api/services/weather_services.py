@@ -1,5 +1,5 @@
 import os
-from flask import requests
+import requests
 
 
 def get_weather(lat, lng, date):

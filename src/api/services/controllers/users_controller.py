@@ -1,5 +1,7 @@
+
 from flask import request, jsonify
 from src.api.models import db, User, Event
+from src.api.utils import token_required
 from flask_jwt_extended import jwt_required
 
 
@@ -34,7 +36,7 @@ def get_user(current_user, user_id):
     return jsonify(user.to_dict()), 200
 
 
-@jwt_required
+@token_required
 def update_user(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No puedes modificar otro usuario"}), 403
@@ -50,7 +52,7 @@ def update_user(current_user, user_id):
     return jsonify(user.to_dict()), 200
 
 
-@jwt_required
+@token_required
 def delete_user(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No pudes eliminar otro usuario"}), 403
@@ -61,7 +63,7 @@ def delete_user(current_user, user_id):
     return jsonify({"message": f"Usuario con ID {user_id} eliminado"}), 200
 
 
-@jwt_required
+@token_required
 def join_event(current_user, event_id):
     user = current_user
     event = Event.query.get(event_id)
@@ -78,7 +80,7 @@ def join_event(current_user, event_id):
     return jsonify({"message": f"Usuario {user.id} unido al evento {event_id}"}), 200
 
 
-@jwt_required
+@token_required
 def leave_event(current_user, event_id):
     user = current_user
     event = Event.query.get(event_id)
@@ -94,7 +96,9 @@ def leave_event(current_user, event_id):
     return jsonify({"message": f"Usuario {user.id} ha salido del evento {event_id}"}), 200
 
 
-@jwt_required
+token_required
+
+
 def get_user_events(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No autorizado"}), 403

@@ -36,6 +36,7 @@ def create_user():
         raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
     user = User(
         nombre=data['nombre'],
+        apellido=data['apellido'],
         email=data['email'],
         password=data['password'],
         is_active=data.get('is_active', True),

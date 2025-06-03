@@ -56,11 +56,11 @@ class GradeLevel(db.Model):
 class Student(db.Model):
     __tablename__ = 'student'
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
     student_code: Mapped[str] = mapped_column(String(50), unique=True)
     grade_level_id: Mapped[int] = mapped_column(ForeignKey('grade_level.id'))
     phone: Mapped[str] = mapped_column(String(20))
+    period: Mapped[str] = mapped_column(String(20))  
 
     user = relationship("User", back_populates="student")
     grade_level = relationship("GradeLevel", back_populates="students")
@@ -72,9 +72,11 @@ class Student(db.Model):
             "user_id": self.user_id,
             "student_code": self.student_code,
             "phone": self.phone,
+            "period": self.period,  
             "grade_level_id": self.grade_level_id,
             "grade_level": self.grade_level.name if self.grade_level else None
         }
+        
 
 
 class Teacher(db.Model):

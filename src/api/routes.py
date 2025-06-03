@@ -91,7 +91,7 @@ def setup_grade_levels():
 def register_student():
     data = request.json
     required_fields = ['first_name', 'last_name', 'email',
-                       'password', 'student_code', 'phone', 'grade_level_id']
+                       'password', 'student_code', 'phone', 'grade_level_id', 'period']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -103,6 +103,10 @@ def register_student():
     if Student.query.filter_by(student_code=data['student_code']).first():
         return jsonify({"error": "El código de estudiante ya existe"}), 400
 
+    valid_periods = ['primer', 'segundo', 'tercer']
+    if data['period'] not in valid_periods:
+        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer'."}), 400
+
     user = User(
         first_name=data['first_name'],
         last_name=data['last_name'],
@@ -112,18 +116,20 @@ def register_student():
         status='pending'
     )
     db.session.add(user)
-    db.session.flush()  # necesario para obtener user.id antes de commit
+    db.session.flush()  
 
     student = Student(
         user_id=user.id,
         student_code=data['student_code'],
         phone=data['phone'],
-        grade_level_id=data['grade_level_id']
+        grade_level_id=data['grade_level_id'],
+        period=data['period']
     )
     db.session.add(student)
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como estudiante enviada"}), 201
+
 
 # Registro profesor
 
@@ -407,3 +413,21 @@ def get_pending_teachers():
 
     teachers = User.query.filter_by(role="teacher", status="pending").all()
     return jsonify([t.serialize() for t in teachers]), 200
+
+@api.route('/students', methods=['GET'])
+@jwt_required()
+def get_all_students():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    students = Student.query.all()
+    return jsonify([s.serialize() for s in students]), 200
+
+@api.route('/periods', methods=['GET'])
+def get_periods():
+    periods = ['primer', 'segundo', 'tercer']
+    return jsonify(periods), 200
+

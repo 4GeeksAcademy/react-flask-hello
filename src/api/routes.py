@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from api.models import db, User, Student, Teacher, GradeLevel, Course, Schedule, Enrollment, Payment
+from api.models import db, User, Student, Teacher, GradeLevel, Course, Schedule, Enrollment, Payment, datetime, Attendance, Grade
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -194,7 +194,7 @@ def get_courses():
     ]), 200
 
 
-# Precargar horarios por año escolar en la base de datos             -- esta api no es para consumir, se ejectura al levantarse el servidor
+# Precargar horarios por año escolar en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
 @api.route('/setup/schedules', methods=['POST'])
 def setup_schedules():
     horas = [("07:00", "09:00"), ("09:00", "11:00"), ("11:00", "13:00")]
@@ -279,6 +279,193 @@ def get_teacher_schedule():
 
     schedules = Schedule.query.filter_by(course_id=course.id).all()
     return jsonify([s.serialize() for s in schedules]), 200
+
+
+
+# Obtener lista de estudiantes por grado y curso para PROFESORES
+@api.route('/teacher/students', methods=['GET'])
+@jwt_required()
+def get_students_by_course_and_grade():
+    teacher_id = get_jwt_identity()
+
+    # Validar que quien consulta sea un profesor aprobado
+    user = User.query.get(teacher_id)
+    if not user or user.role != "teacher" or user.status != "approved":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    # Obtener los parámetros grade_level_id y course_id desde la URL
+    grade_level_id = request.args.get("grade_level_id", type=int)
+    course_id = request.args.get("course_id", type=int)
+
+    # Verificar que ambos parámetros estén presentes
+    if not grade_level_id or not course_id:
+        return jsonify({"msg": "Faltan parámetros: grade_level_id y course_id son requeridos"}), 400
+
+    # Buscar las inscripciones de estudiantes en ese curso
+    enrollments = Enrollment.query.filter_by(course_id=course_id).all()
+
+    # Filtrar las inscripciones por el grado académico (grade_level_id)
+    filtered = [
+        {
+            "enrollment_id": e.id,
+            "student": e.student.serialize()  # Devuelve los datos completos del estudiante
+        }
+        for e in enrollments if e.student.grade_level_id == grade_level_id
+    ]
+
+    # Responder con la lista de estudiantes inscritos en ese curso y grado
+    return jsonify(filtered), 200
+
+
+# Registrar asistencia -- para PROFESORES
+@api.route('/attendance', methods=['POST'])
+@jwt_required()
+def register_attendance():
+    data = request.get_json()
+    required_fields = ['enrollment_id', 'date', 'status']
+
+    error = validate_required_fields(data, required_fields)
+    if error:
+        return jsonify({"error": error}), 400
+
+    # Validar estado permitido
+    valid_status = ["asistio", "falto", "tardanza", "no registrado"]
+    if data['status'] not in valid_status:
+        return jsonify({"error": "Estado de asistencia no válido."}), 400
+
+    try:
+        attendance_date = datetime.datetime.strptime(data['date'], "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD."}), 400
+
+    # Verificar que la inscripción exista
+    enrollment = Enrollment.query.get(data['enrollment_id'])
+    if not enrollment:
+        return jsonify({"error": "Matrícula no encontrada."}), 404
+
+    # Crear asistencia
+    attendance = Attendance(
+        enrollment_id=data['enrollment_id'],
+        date=attendance_date,
+        status=data['status']
+    )
+    db.session.add(attendance)
+    db.session.commit()
+
+    return jsonify({"message": "Asistencia registrada exitosamente."}), 201
+
+
+# Historial de asistencia por estudiante (vía enrollment) -- para PROFESORES
+@api.route('/attendance', methods=['GET'])
+@jwt_required()
+def get_attendance_by_enrollment():
+    enrollment_id = request.args.get('enrollment_id')
+
+    if not enrollment_id:
+        return jsonify({"error": "Parámetro 'enrollment_id' requerido."}), 400
+
+    attendances = Attendance.query.filter_by(enrollment_id=enrollment_id).all()
+    return jsonify([a.serialize() for a in attendances]), 200
+
+#Registrar una calificacion -- para PROFESORES
+@api.route('/grade', methods=['POST'])
+@jwt_required()
+def register_grade():
+    teacher_id = get_jwt_identity()
+
+    # Validar que quien hace la solicitud sea un profesor aprobado
+    user = User.query.get(teacher_id)
+    if not user or user.role != "teacher" or user.status != "approved":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    data = request.get_json()
+    required_fields = ['enrollment_id', 'period', 'score']
+
+    error = validate_required_fields(data, required_fields)
+    if error:
+        return jsonify({"error": error}), 400
+
+    valid_periods = ['1', '2', '3', '4']
+    if str(data['period']) not in valid_periods:
+        return jsonify({"error": "Periodo inválido. Debe ser 1, 2, 3 o 4."}), 400
+
+    # Validar que la inscripción exista
+    enrollment = Enrollment.query.get(data['enrollment_id'])
+    if not enrollment:
+        return jsonify({"error": "Matrícula no encontrada."}), 404
+
+    # Verificar si ya existe una nota para ese periodo
+    existing = Grade.query.filter_by(
+        enrollment_id=data['enrollment_id'],
+        period=data['period']
+    ).first()
+    if existing:
+        return jsonify({"error": "Ya existe una nota para ese periodo."}), 409
+
+    # Crear calificación
+    grade = Grade(
+        enrollment_id=data['enrollment_id'],
+        teacher_id=teacher_id,
+        period=data['period'],
+        score=data['score']
+    )
+    db.session.add(grade)
+    db.session.commit()
+
+    return jsonify({"message": "Nota registrada exitosamente."}), 201
+
+#Ver calificaciones de un estudiante -- para PROFESORES
+@api.route('/grades', methods=['GET'])
+@jwt_required()
+def get_grades_by_enrollment():
+    enrollment_id = request.args.get("enrollment_id")
+
+    if not enrollment_id:
+        return jsonify({"error": "Parámetro 'enrollment_id' requerido."}), 400
+
+    grades = Grade.query.filter_by(enrollment_id=enrollment_id).all()
+    return jsonify([
+        {
+            "id": g.id,
+            "enrollment_id": g.enrollment_id,
+            "period": g.period,
+            "score": g.score
+        }
+        for g in grades
+    ]), 200
+
+# Modificar una calificación existente -- para PROFESORES
+@api.route('/grade/<int:grade_id>', methods=['PUT'])
+@jwt_required()
+def update_grade(grade_id):
+    teacher_id = get_jwt_identity()
+
+    # Validar que quien modifica sea un profesor aprobado
+    user = User.query.get(teacher_id)
+    if not user or user.role != "teacher" or user.status != "approved":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    data = request.get_json()
+    new_score = data.get("score")
+
+    if new_score is None:
+        return jsonify({"error": "El campo 'score' es requerido."}), 400
+
+    # Buscar la nota
+    grade = Grade.query.get(grade_id)
+    if not grade:
+        return jsonify({"error": "Nota no encontrada."}), 404
+
+    # Validar que la nota pertenezca al profesor que la intenta modificar
+    if grade.teacher_id != teacher_id:
+        return jsonify({"error": "No puedes modificar notas de otros profesores."}), 403
+
+    # Actualizar y guardar
+    grade.score = new_score
+    db.session.commit()
+
+    return jsonify({"message": "Nota actualizada exitosamente."}), 200
+
 
 
 # Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend

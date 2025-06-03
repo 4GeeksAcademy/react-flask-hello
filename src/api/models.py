@@ -70,6 +70,8 @@ class Student(db.Model):
     def serialize(self):
         return {
             "user_id": self.user_id,
+             "first_name": self.user.first_name,
+            "last_name": self.user.last_name,
             "student_code": self.student_code,
             "phone": self.phone,
             "period": self.period,  
@@ -188,8 +190,9 @@ class Grade(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     enrollment_id: Mapped[int] = mapped_column(ForeignKey('enrollment.id'))
     teacher_id: Mapped[int] = mapped_column(ForeignKey('teacher.user_id'))
+    period: Mapped[int] = mapped_column()  # 1, 2, 3, 4
     score: Mapped[float] = mapped_column()
-    comment: Mapped[str] = mapped_column(String(255))
+
 
     teacher = relationship("Teacher", back_populates="grades")
 
@@ -198,8 +201,8 @@ class Grade(db.Model):
             "id": self.id,
             "enrollment_id": self.enrollment_id,
             "teacher_id": self.teacher_id,
+            "period": self.period,
             "score": self.score,
-            "comment": self.comment
         }
 
 

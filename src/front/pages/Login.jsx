@@ -19,7 +19,7 @@ const Login = () => {
         try {
             const response = await loginUser({ email, password });
 
-            login(response.user); // ✅ setea el usuario en el contexto
+            login(response.user); // setea el usuario en el contexto
 
             localStorage.setItem("token", response.token); // Podés seguir guardando el token si lo necesitás
 

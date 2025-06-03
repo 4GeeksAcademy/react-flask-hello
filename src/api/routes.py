@@ -18,6 +18,8 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 # Validaciones
+
+
 def validate_required_fields(data, required_fields):
     missing = [
         field for field in required_fields
@@ -61,7 +63,9 @@ def get_grade_levels():
     grade_levels = GradeLevel.query.all()
     return jsonify([gl.serialize() for gl in grade_levels]), 200
 
-#precargar años escolares en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+# precargar años escolares en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
     niveles = [
@@ -130,7 +134,8 @@ def register_student():
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.get_json()
-    required_fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'course_id']
+    required_fields = ['first_name', 'last_name',
+                       'email', 'password', 'phone', 'course_id']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -139,7 +144,8 @@ def register_teacher():
     if User.query.filter_by(email=data['email']).first():
         return jsonify({"error": "El correo ya está registrado"}), 400
 
-    course = Course.query.get(data['course_id'])
+    course_id = int(data['course_id'])
+    course = Course.query.get(course_id)
     if not course:
         return jsonify({"error": "Curso no encontrado"}), 404
 
@@ -159,13 +165,16 @@ def register_teacher():
         phone=data['phone']
     )
     db.session.add(teacher)
+    db.session.flush()
 
     course.teacher_id = teacher.user_id
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
-#precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+# precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
 @api.route('/setup/courses', methods=['POST'])
 def setup_courses():
     course_names = [
@@ -184,7 +193,9 @@ def setup_courses():
     db.session.commit()
     return jsonify({"message": f"Cursos creados: {created}"}), 201
 
-#obtencion de materias
+# obtencion de materias
+
+
 @api.route('/courses', methods=['GET'])
 def get_courses():
     courses = Course.query.all()
@@ -247,7 +258,8 @@ def setup_schedules():
                 course = Course.query.filter_by(name=materia).first()
                 if not course:
                     continue
-                inicio = datetime.strptime(horas[bloque_index][0], "%H:%M").time()
+                inicio = datetime.strptime(
+                    horas[bloque_index][0], "%H:%M").time()
                 fin = datetime.strptime(horas[bloque_index][1], "%H:%M").time()
 
                 db.session.add(Schedule(
@@ -264,12 +276,14 @@ def setup_schedules():
     return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
 
 # Horario para PROFESORES --- Este endpoint devuelve el horario del profesor en el frontend
+
+
 @api.route('/teacher/schedule', methods=['GET'])
 @jwt_required()
 def get_teacher_schedule():
     user_id = get_jwt_identity()
     teacher = Teacher.query.filter_by(user_id=user_id).first()
-    
+
     if not teacher:
         return jsonify({"msg": "Profesor no encontrado"}), 404
 
@@ -491,6 +505,8 @@ def get_student_schedule():
     return jsonify([s.serialize() for s in schedules]), 200
 
 # login admin
+
+
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
     data = request.get_json()
@@ -522,8 +538,9 @@ def login_admin():
         }
     }), 200
 
-
   # Login estudiante
+
+
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()
@@ -612,6 +629,8 @@ def get_pending_users():
     return jsonify([user.serialize() for user in pending_users]), 200
 
 # aprobación de registros de estudiantes y profesores
+
+
 @api.route('/approve/student/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def approve_student(user_id):

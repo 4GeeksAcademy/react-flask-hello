@@ -5,34 +5,35 @@ import { useForm } from 'react-hook-form'
 
 export const TeacherSignup = () => {
     const [load, setLoad] = useState(false)
-    const [courses, setCourses] = useState([])
+    const [asignatures, setAsignature] = useState([])
     const [msg, setMsg] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
-        course();
-    }, [])
-    // El fetch debe ser distinto pero faltan las materias o cursos
-    const course = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
+        const listAsignature = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/courses`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                const data = await response.json()
+
+                if (response.ok) {
+                    setLoad(true)
+                    setAsignature(data)
                 }
-            })
 
-            const data = await response.json()
-
-            if (response.ok) {
-                setLoad(true)
-                setCourses(data)
+            } catch (error) {
+                console.log(error);
             }
-
-        } catch (error) {
-            console.log(error);
         }
-    }
+        listAsignature();
+    }, [])
+
+
 
     const procesarDatos = async (data) => {
         console.log('Informacion del Registro', data)
@@ -47,11 +48,13 @@ export const TeacherSignup = () => {
             const responseData = await response.json()
             if (response.ok) {
                 navigate(`/`);
+            } else {
+                setMsg(response.msg)
             }
 
         } catch (error) {
             console.log(error);
-            setMsg('*No se ha podido realizar el registro.')
+
         }
     }
 
@@ -68,7 +71,7 @@ export const TeacherSignup = () => {
 
     return (
         <div className='mx-5'>
-            <div className='d-flex col-12 align-items-center mx-auto'>
+            {load ? <div className='d-flex col-12 align-items-center mx-auto'>
                 <div className='col-6 text-center '>
                     <h2>Welcome!</h2>
                     <h4>To our website.</h4>
@@ -153,19 +156,20 @@ export const TeacherSignup = () => {
                         </div>
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="grade_level" className="form-label">Asignature:</label>
+                        <label htmlFor="course_id" className="form-label">Asignature:</label>
                         <select
-                            id="grade_level"
-                            className={"form-control " + (errors.grade_level_id ? 'is-invalid' : '')}
-                            {...register('grade_level_id', { required: 'Please select a grade level' })}
+                            id="course_id"
+                            className={"form-control " + (errors.course_id ? 'is-invalid' : '')}
+                            {...register('course_id', { required: 'Please select a asignature' })}
                         >
                             <option value=""> Select Asignature </option>
-                            {courses.map((course) => (
-                                <option key={course.id} value={course.id}>{course.name}</option>
+                            {asignatures.map((asignature) => (
+                                <option key={asignature.id} value={asignature.id}>{asignature.name}</option>
                             ))}
+
                         </select>
                         <div className="invalid-feedback">
-                            {errors?.grade_level?.message}
+                            {errors?.course_id?.message}
                         </div>
                     </div>
                     <div className="form-group mb-3">
@@ -213,7 +217,10 @@ export const TeacherSignup = () => {
                     </button>
                 </form>
 
-            </div>
+            </div> :
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>}
         </div>
     )
 }

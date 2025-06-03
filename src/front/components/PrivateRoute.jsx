@@ -3,16 +3,18 @@ import { useAuth } from "../context/AuthProvider";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
-    const { store } = useAuth();
+    const { store, setStore } = useAuth();
 
     useEffect(() => {
         const token = sessionStorage.getItem("access_token");
         if (token && !store.access_token) {
-            store.access_token = token;
+            setStore(prev => ({ ...prev, access_token: token }));
         }
-    }, []);
+    }, [store.access_token, setStore]);
 
-    if (!store.access_token) {
+    const token = store.access_token || sessionStorage.getItem("access_token");
+
+    if (!token) {
         return <Navigate to="/" replace />;
     }
 

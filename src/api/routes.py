@@ -2,11 +2,12 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, abort
-from api.models import User, AuthAccount, PlanTemplate, TemplateItem, SubscriptionPlan,Subscription, Payment, Event, EventSignup, SupportTicket
+from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan,Subscription, Payment, Event, EventSignup, SupportTicket
 from api.utils import  APIException
 from flask_cors import CORS
-from extensions import db
-
+from sqlalchemy import select
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -49,9 +50,11 @@ def create_user():
     db.session.commit()
     return jsonify(user.serialize()), 201
 
-@api.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    user = User.query.get(user_id)
+@api.route('/users', methods=['PUT'])
+@jwt_required()
+def update_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
     if not user:
         abort (404, description="usuario no encontrado")
     data = request.get_json() or {}
@@ -79,17 +82,18 @@ def delete_user(user_id):
 
 #PROFESSIONALS
 
-#@api.route('/professionals', methods=['GET'])
-#def list_professionals():
-    #pros= Professional.query.all()
-    #return jsonify([p.serialize() for p in pros]), 200
+@api.route('/professionals', methods=['GET'])
+def list_professionals():
+    stm = select(User).where(User.is_professional == True)
+    query = db.session.execute(stm).scalars()
+    return jsonify([p.serialize() for p in query]), 200
 
-#@api.route('/professionals/<int:pid>', methods=['GET'])
-#def get_professional(pid):
-    #pro = Professional.query.get(pid)
-    #if not pro:
-        #abort(404, description= "Professional no encotrado")
-    #return jsonify(pro.serialize()),200
+# @api.route('/professionals/<int:pid>', methods=['GET'])
+# def get_professional(pid):
+#     pro = Professional.query.get(pid)
+#     if not pro:
+#         abort(404, description= "Professional no encotrado")
+#     return jsonify(pro.serialize()),200
 
 
 #@api.route('/professionals', methods=['POST'])

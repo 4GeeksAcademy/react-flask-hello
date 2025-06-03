@@ -53,6 +53,18 @@ const PostCard = ({ post, onToggleFavorite, onJoin }) => {
             <p className="mb-2 text-black"><strong>Dirección:</strong> {post.address}</p>
             <p className="mb-2 text-black"><strong>Capacidad:</strong> {post.capacity} personas</p>
 
+            {/* Parte de la API-Clima */}
+            {post.weather && (
+                <div className="mt-2 text-black">
+                    <h6 className="fw-bold mb-2">🌤 Clima estimado</h6>
+                    <ul className="list-unstyled mb-0">
+                        <li>🌡️ <strong>Temperatura:</strong> {post.weather.temperatura}</li>
+                        <li>🌧️ <strong>Precipitaciones:</strong> {post.weather.precipitaciones}</li>
+                        <li>☁️ <strong>Cobertura nubosa:</strong> {post.weather.cobertura_nubosa}</li>
+                    </ul>
+                </div>
+            )}
+
             <div className="d-flex justify-content-between align-items-center mt-3">
                 <span className="text-muted">{post.participants} participantes</span>
                 <button

@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from 'react'
 
 import teacherImg from "../assets/img/teacher.png";
 
 export const ProfesoresDashboardNavbar = () => {
+	const navigate = useNavigate();
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
@@ -11,6 +12,11 @@ export const ProfesoresDashboardNavbar = () => {
 	const closeMenu = () => {
 		setShowMenu(false);
 	};
+
+	const handleLogout = () => {
+		sessionStorage.removeItem("access_token");
+		navigate("/");
+	}
 
 	return (
 		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3 mb-5">
@@ -72,7 +78,7 @@ export const ProfesoresDashboardNavbar = () => {
 								<hr className="dropdown-divider" />
 							</li>
 							<li>
-								<a className="dropdown-item text-danger" href="#">Cerrar Sesión</a>
+								<button className="dropdown-item text-danger" onClick={handleLogout}>Cerrar Sesión</button>
 							</li>
 						</ul>
 					</div>

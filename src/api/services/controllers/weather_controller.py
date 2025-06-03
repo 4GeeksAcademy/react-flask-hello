@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from src.api.services.controllers.weather_controller import get_weather
+from src.api.services.weather_services import get_weather
 
 
 def get_weather_info():

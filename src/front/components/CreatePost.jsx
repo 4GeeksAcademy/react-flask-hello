@@ -8,7 +8,8 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         time: "",
         address: "",
         sport: "",
-        capacity: ""
+        capacity: "",
+        difficulty: ""
     });
 
     const handleChange = (e) => {
@@ -18,25 +19,33 @@ const CreatePost = ({ show, onClose, setPosts }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const newPost = {
+            ...formData,
+            capacity: parseInt(formData.capacity, 10),
+            participants: 0
+        };
+
         try {
-            // Fetch al backend con lat/lng y la fecha elegida
-            const lat = 40.4168; // temporal: Madrid
-            const lng = -3.7038;
-            const { date } = formData;
+            const token = localStorage.getItem("token");
 
-            const res = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
-            const data = await res.json();
+            const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(newPost),
+            });
 
-            const newPost = {
-                id: Date.now(),
-                ...formData,
-                isFavorite: false,
-                participants: 0,
-                weather: data.weather || "Clima no disponible" //de la API
-            };
 
-            setPosts(prev => [newPost, ...prev]);
+            if (!response.ok) {
+                throw new Error("Error al crear el evento");
+            }
 
+            const createdPost = await response.json();
+            setPosts(prev => [createdPost, ...prev]);
+
+            // Resetear formulario
             setFormData({
                 title: "",
                 description: "",
@@ -44,13 +53,15 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 time: "",
                 address: "",
                 sport: "",
-                capacity: ""
+                capacity: "",
+                difficulty: ""
             });
 
-            onClose(); // cerrar modal
+            onClose(); // Cerrar modal
 
         } catch (error) {
-            console.error("Error al obtener el clima:", error);
+            console.error("Error al crear el evento:", error);
+            alert("Ocurrió un error al crear el evento.");
         }
     };
 
@@ -134,6 +145,20 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                                         onChange={handleChange}
                                         required
                                     />
+                                </div>
+                                <div className="col-md-6">
+                                    <select
+                                        name="difficulty"
+                                        className="form-select text-black"
+                                        value={formData.difficulty}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="">Selecciona dificultad</option>
+                                        <option value="Fácil">Fácil</option>
+                                        <option value="Medio">Medio</option>
+                                        <option value="Difícil">Difícil</option>
+                                    </select>
                                 </div>
                                 <div className="col-12">
                                     <textarea

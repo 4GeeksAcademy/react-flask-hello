@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { registerUser } from "../services/api"
 
 const Register = () => {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Register = () => {
         name: "",
         email: "",
         password: "",
-        
+
     });
 
     const handleChange = (e) => {
@@ -17,8 +18,8 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        navigate("/profile");
+        registerUser(formData)
+        navigate("/feed");
     };
 
     return (

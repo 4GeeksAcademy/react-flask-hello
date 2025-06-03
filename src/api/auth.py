@@ -9,7 +9,7 @@ from .models import db, User
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.route('/register', methods=['POST'])
+@auth_bp.route('/register', methods=['POST','OPTIONS'])
 def register():
     # Recibimos los datos JSON del cliente(nombre,email y contraseña)
     data = request.get_json()
@@ -64,7 +64,7 @@ def secret():
             return jsonify({"msg": "User not found"}), 404
         return jsonify({
             "msg": "Access Allowed",
-            "user": user.serialize(),
+            "user": user.to_dict(),
 
         }), 200
     except Exception as e:

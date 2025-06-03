@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Await, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
-console.log(import.meta.env.VITE_BACKEND_URL); // ✅ Verifica la URL de la API
 
 
 const Login = () => {
@@ -58,6 +57,7 @@ const Login = () => {
                                     placeholder="ejemplo@gmail.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div className="mb-4">
@@ -69,6 +69,7 @@ const Login = () => {
                                     placeholder="******"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    required
                                 />
                             </div>
                             <button type="submit" className="btn btn-light w-100 text-white bg-success">

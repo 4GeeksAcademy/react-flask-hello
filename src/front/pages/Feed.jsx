@@ -36,7 +36,7 @@ const Feed = () => {
 
         localStorage.setItem("favoritePosts", JSON.stringify(favoriteIds));
     };
-
+    //! Cuidado errores
     const fetchEvents = () => {
         const params = new URLSearchParams();
         if (selectedSport !== "all") params.append("sport", selectedSport);

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory, make_response, request
+from flask import Flask, jsonify, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -18,31 +18,35 @@ from src.api.services.routes.weather import weather_bp
 load_dotenv()
 
 
-
 # Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-@app.before_request
-def handle_before_request():
-    if request.method == 'OPTIONS':
-        response= make_response()
-        response.headers.add('Access-Control-Allow-Origin', request.headers.get("Origin", "*") )
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response, 200
 
+
+CORS(
+    app,
+    origins=["https://sportconnect-web.onrender.com", "http://localhost:3000"],
+    supports_credentials=True
+)
+
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin", "")
+    if origin in ["https://sportconnect-web.onrender.com", "http://localhost:3000"]:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 app.config['JWT_SECRET_KEY'] = os.getenv(
     "JWT_SECRET_KEY", "super-secret-jwt-key")
 jwt = JWTManager(app)
 
-
-# Configuración CORS
-CORS(app, origins="*", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")
@@ -94,7 +98,8 @@ def serve_any_other_file(path):
     return response
 
 
+port = int(os.environ.get('PORT', 4000))
+
 # Iniciar servidor
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT' ))
     app.run(host='0.0.0.0', port=port, debug=True)

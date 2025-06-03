@@ -103,9 +103,9 @@ def register_student():
     if Student.query.filter_by(student_code=data['student_code']).first():
         return jsonify({"error": "El código de estudiante ya existe"}), 400
 
-    valid_periods = ['primer', 'segundo', 'tercer']
+    valid_periods = ['primer', 'segundo', 'tercer', 'cuarto']
     if data['period'] not in valid_periods:
-        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer'."}), 400
+        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer' o 'cuarto'."}), 400
 
     user = User(
         first_name=data['first_name'],
@@ -116,7 +116,7 @@ def register_student():
         status='pending'
     )
     db.session.add(user)
-    db.session.flush()  
+    db.session.flush()
 
     student = Student(
         user_id=user.id,
@@ -132,7 +132,6 @@ def register_student():
 
 
 # Registro profesor
-
 
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
@@ -384,50 +383,52 @@ def get_admin():
         return jsonify({"msg": "Acceso no autorizado"}), 403
     return jsonify(user.serialize()), 200
 
-# Información del estudiante
+# Información del estudiantes
 
-
-@api.route('/information/students', methods=['GET'])
-@jwt_required()
-def get_pending_students():
-    user_id = get_jwt_identity()
-    admin = User.query.get(user_id)
-
-    if not admin or admin.role != "admin":
-        return jsonify({"msg": "Acceso no autorizado"}), 403
-
-    students = User.query.filter_by(role="student", status="pending").all()
-    return jsonify([s.serialize() for s in students]), 200
-
-# Información del profesor
-
-
-@api.route('/information/teachers', methods=['GET'])
-@jwt_required()
-def get_pending_teachers():
-    user_id = get_jwt_identity()
-    admin = User.query.get(user_id)
-
-    if not admin or admin.role != "admin":
-        return jsonify({"msg": "Acceso no autorizado"}), 403
-
-    teachers = User.query.filter_by(role="teacher", status="pending").all()
-    return jsonify([t.serialize() for t in teachers]), 200
 
 @api.route('/students', methods=['GET'])
 @jwt_required()
-def get_all_students():
+def get_approved_students():
     user_id = get_jwt_identity()
     admin = User.query.get(user_id)
 
     if not admin or admin.role != "admin":
         return jsonify({"msg": "Acceso no autorizado"}), 403
 
-    students = Student.query.all()
+    students = User.query.filter_by(role="student", status="approved").all()
     return jsonify([s.serialize() for s in students]), 200
+
+
+# Información del profesores
+@api.route('/teachers', methods=['GET'])
+@jwt_required()
+def get_approved_teachers():
+    user_id = get_jwt_identity()
+    admin = User.query.get(user_id)
+
+    if not admin or admin.role != "admin":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    teachers = User.query.filter_by(role="teacher", status="approved").all()
+    return jsonify([t.serialize() for t in teachers]), 200
+
+
+# Información de cada perfil
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    return jsonify(user.serialize()), 200
+
+# Periodos academicos
+
 
 @api.route('/periods', methods=['GET'])
 def get_periods():
     periods = ['primer', 'segundo', 'tercer']
     return jsonify(periods), 200
-

@@ -22,3 +22,4 @@ urllib3==1.26.3;
 werkzeug==2.2.2; 
 wtforms==2.3.3
 flask-jwt-extended==4.6.0
+requests==2.32.3

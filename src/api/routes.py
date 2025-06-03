@@ -137,7 +137,7 @@ def register_student():
 def register_teacher():
     data = request.get_json()
     required_fields = ['first_name', 'last_name',
-                       'email', 'password', 'phone', 'course_id']
+                       'email', 'password', 'phone', 'asignature']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -165,11 +165,11 @@ def register_teacher():
     db.session.flush()
 
     # Asignar curso al profesor
-    course = Course.query.get(data['course_id'])
-    if not course:
+    asignature = Course.query.get(data['asignature'])
+    if not asignature:
         return jsonify({"error": "Curso no encontrado"}), 404
 
-    course.teacher_id = teacher.user_id
+    asignature.teacher_id = teacher.user_id
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201

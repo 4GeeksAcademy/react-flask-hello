@@ -46,8 +46,9 @@ export const StudenSignup = () => {
             const responseData = await response.json()
             if (response.ok) {
                 navigate(`/`);
-            } else {
-                setMsg('*El correo ya existe.')
+            }
+            else {
+                setMsg(response.msg)
             }
 
         } catch (error) {

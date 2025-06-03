@@ -43,6 +43,7 @@ export const Login = () => {
         }
       } else {
         sessionStorage.setItem("access_token", data.access_token);
+        dispatch({ type: "SET_TOKEN", payload: data.access_token });
         navigate(`/${user}/dashboard/profile`);
       }
     } catch (error) {

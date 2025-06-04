@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import student from '../assets/img/students.png';
 export const AlumnosProfile = () => {
     const [user, setUser] = useState([])
+    const [load, setLoad] = useState(false)
     const token = sessionStorage.getItem('access_token')
     useEffect(() => {
         const user = async () => {
@@ -15,7 +16,9 @@ export const AlumnosProfile = () => {
                 })
                 const data = await response.json()
                 if (response.ok) {
+                    console.log(data);
                     setUser(data)
+                    setLoad(true)
                 }
             } catch (error) {
                 console.log(error);
@@ -26,7 +29,7 @@ export const AlumnosProfile = () => {
     }, [])
     return (
         <div className="container py-4">
-            <div className="row justify-content-center">
+            {load ? <div className="row justify-content-center">
                 <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
                     <h2 className="mb-4 text-center"> Bienvenido {user.first_name} {user.last_name}</h2>
                     <img src={student} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
@@ -42,7 +45,11 @@ export const AlumnosProfile = () => {
                         <li className="list-group-item"><div className="fw-bold">Año:</div>{user.student.grade_level}</li>
                     </ul>
                 </div>
-            </div>
+            </div> :
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            }
         </div>
     );
 };

@@ -90,7 +90,7 @@ def setup_grade_levels():
 def register_student():
     data = request.json
     required_fields = ['first_name', 'last_name', 'email',
-                       'password', 'student_code', 'phone', 'grade_level_id', 'period']
+                       'password', 'phone', 'grade_level_id', 'period']
 
     error = validate_required_fields(data, required_fields)
     if error:
@@ -99,12 +99,9 @@ def register_student():
     if User.query.filter_by(email=data['email']).first():
         return jsonify({"error": "El correo ya está registrado"}), 400
 
-    if Student.query.filter_by(student_code=data['student_code']).first():
-        return jsonify({"error": "El código de estudiante ya existe"}), 400
-
-    valid_periods = ['primer', 'segundo', 'tercer', 'cuarto']
+    valid_periods = ['Primer', 'Segundo', 'Tercer', 'Cuarto']
     if data['period'] not in valid_periods:
-        return jsonify({"error": "Periodo inválido. Usa 'primer', 'segundo' o 'tercer' o 'cuarto'."}), 400
+        return jsonify({"error": "Periodo inválido. Usa 'Primer', 'Segundo' o 'Tercer' o 'Cuarto'."}), 400
 
     user = User(
         first_name=data['first_name'],
@@ -119,7 +116,6 @@ def register_student():
 
     student = Student(
         user_id=user.id,
-        student_code=data['student_code'],
         phone=data['phone'],
         grade_level_id=data['grade_level_id'],
         period=data['period']
@@ -295,7 +291,6 @@ def get_teacher_schedule():
     return jsonify([s.serialize() for s in schedules]), 200
 
 
-
 # Obtener lista de estudiantes por grado y curso para PROFESORES
 @api.route('/teacher/students', methods=['GET'])
 @jwt_required()
@@ -348,7 +343,8 @@ def register_attendance():
         return jsonify({"error": "Estado de asistencia no válido."}), 400
 
     try:
-        attendance_date = datetime.datetime.strptime(data['date'], "%Y-%m-%d").date()
+        attendance_date = datetime.datetime.strptime(
+            data['date'], "%Y-%m-%d").date()
     except ValueError:
         return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD."}), 400
 
@@ -381,7 +377,9 @@ def get_attendance_by_enrollment():
     attendances = Attendance.query.filter_by(enrollment_id=enrollment_id).all()
     return jsonify([a.serialize() for a in attendances]), 200
 
-#Registrar una calificacion -- para PROFESORES
+# Registrar una calificacion -- para PROFESORES
+
+
 @api.route('/grade', methods=['POST'])
 @jwt_required()
 def register_grade():
@@ -428,7 +426,9 @@ def register_grade():
 
     return jsonify({"message": "Nota registrada exitosamente."}), 201
 
-#Ver calificaciones de un estudiante -- para PROFESORES
+# Ver calificaciones de un estudiante -- para PROFESORES
+
+
 @api.route('/grades', methods=['GET'])
 @jwt_required()
 def get_grades_by_enrollment():
@@ -449,6 +449,8 @@ def get_grades_by_enrollment():
     ]), 200
 
 # Modificar una calificación existente -- para PROFESORES
+
+
 @api.route('/grade/<int:grade_id>', methods=['PUT'])
 @jwt_required()
 def update_grade(grade_id):
@@ -479,7 +481,6 @@ def update_grade(grade_id):
     db.session.commit()
 
     return jsonify({"message": "Nota actualizada exitosamente."}), 200
-
 
 
 # Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
@@ -759,5 +760,5 @@ def get_profile():
 # Periodos academicos
 @api.route('/periods', methods=['GET'])
 def get_periods():
-    periods = ['primer', 'segundo', 'tercer', 'cuarto']
+    periods = ['Primer', 'Segundo', 'Tercer', 'Cuarto']
     return jsonify(periods), 200

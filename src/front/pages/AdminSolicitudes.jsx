@@ -153,7 +153,6 @@ export const AdminSolicitudes = () => {
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
                                 <th scope="col">Grade Level</th>
-                                <th scope="col">Student Code</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
@@ -168,7 +167,6 @@ export const AdminSolicitudes = () => {
                                     <td>{students.email}</td>
                                     <td>{students.student.phone}</td>
                                     <td>{students.student.grade_level}</td>
-                                    <td>{students.student.student_code}</td>
                                     <td>{students.role}</td>
                                     <td>{students.status}</td>
                                     <td>

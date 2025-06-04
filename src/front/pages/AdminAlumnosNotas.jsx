@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 export const AdminAlumnosNotas = () => {
     const token = sessionStorage.getItem('access_token')
     const [students, setStudents] = useState([])
+    const [asignature, setAsignature] = useState([])
+    const [period, setPeriods] = useState([])
+    const [grade, setGrades] = useState([])
 
     useEffect(() => {
         const students = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -23,6 +27,69 @@ export const AdminAlumnosNotas = () => {
 
             }
         }
+
+        const asignatures = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/courses`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    setAsignature(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        const periods = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setPeriods(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        const grades = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setGrades(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        grades()
+        periods()
+        asignatures()
         students()
     }, [])
 
@@ -42,19 +109,17 @@ export const AdminAlumnosNotas = () => {
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
                         <option value="">Selecciona Materia</option>
-                        <option value="1">Matemática</option>
-                        <option value="2">Historia</option>
-                        <option value="3">Religión</option>
-                        <option value="4">Educación Física</option>
+                        {asignature.map((asignature) => (
+                            <option key={asignature.id} value={asignature.id}>{asignature.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
                         <option value="">Selecciona Periodo</option>
-                        <option value="1">Primer Bimestre</option>
-                        <option value="2">Segundo Bimestre</option>
-                        <option value="3">Tercero  Bimestre</option>
-                        <option value="4">Cuarto  Bimestre</option>
+                        {period.map((periodos, i) => (
+                            <option key={i} value={periodos}>{periodos} Bimestre</option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">

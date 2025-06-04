@@ -158,23 +158,6 @@ export const StudenSignup = () => {
                             </div>
                         </div>
                         <div className="form-group mb-3">
-                            <label htmlFor="student_code" className="form-label">Student Code:</label>
-                            <input type="text" id="student_code" placeholder='Code Student' className={"form-control " + (errors.student_code ? 'is-invalid' : '')}
-                                {
-                                ...register('student_code', {
-                                    required: 'The field Student code is required!',
-                                    pattern: {
-                                        value: /^[A-Za-z0-9]+$/i,
-                                        message: 'The student code must contain only letters and numbers.'
-                                    }
-                                })
-                                }
-                            />
-                            <div className="invalid-feedback">
-                                {errors?.student_code?.message}
-                            </div>
-                        </div>
-                        <div className="form-group mb-3">
                             <label htmlFor="grade_level" className="form-label">Grade Level:</label>
                             <select
                                 id="grade_level"
@@ -198,13 +181,13 @@ export const StudenSignup = () => {
                                 {...register('period', { required: 'Please select a period.' })}
                             >
                                 <option value=""> Select period </option>
-                                <option value="primer"> Primer periodo </option>
-                                <option value="segundo"> Segundo periodo </option>
-                                <option value="tercer"> Tercer periodo </option>
-                                <option value="cuarto"> Cuarto periodo </option>
+                                <option value="Primer"> Primer periodo </option>
+                                <option value="Segundo"> Segundo periodo </option>
+                                <option value="Tercer"> Tercer periodo </option>
+                                <option value="Cuarto"> Cuarto periodo </option>
                             </select>
                             <div className="invalid-feedback">
-                                {errors?.grade_level?.message}
+                                {errors?.period?.message}
                             </div>
                         </div>
                         <div className="form-group mb-3">

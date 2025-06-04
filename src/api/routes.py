@@ -311,6 +311,8 @@ def get_teacher_schedule_grid():
     return jsonify(grid), 200
 
 # Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
+
+
 @api.route('/student/schedule', methods=['GET'])
 @jwt_required()
 def get_student_schedule():
@@ -326,7 +328,8 @@ def get_student_schedule():
     if not student:
         return jsonify({"msg": "Estudiante no encontrado"}), 404
 
-    schedules = Schedule.query.filter_by(grade_level_id=student.grade_level_id).all()
+    schedules = Schedule.query.filter_by(
+        grade_level_id=student.grade_level_id).all()
 
     # Inicializar estructura de horario
     bloques = ["07:00 - 09:00", "09:00 - 11:00", "11:00 - 13:00"]
@@ -348,7 +351,6 @@ def get_student_schedule():
                 break
 
     return jsonify(horario), 200
-
 
 
 # Obtener lista de estudiantes por grado y curso para PROFESORES
@@ -518,13 +520,8 @@ def update_grade(grade_id):
     return jsonify({"message": "Nota actualizada exitosamente"}), 200
 
 
-<<<<<<< HEAD
-# Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
-@api.route('/teacher/students', methods=['GET'])
-=======
 # Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
 @api.route('/student/schedule', methods=['GET'])
->>>>>>> signup
 @jwt_required()
 def get_students_with_grades():
     teacher_id = get_jwt_identity()
@@ -540,12 +537,14 @@ def get_students_with_grades():
     if not grade_level_id or not course_id or not period:
         return jsonify({"msg": "Faltan parámetros: grade_level_id, course_id y period son requeridos"}), 400
 
-    enrollments = Enrollment.query.filter_by(course_id=course_id, grade_level_id=grade_level_id).all()
+    enrollments = Enrollment.query.filter_by(
+        course_id=course_id, grade_level_id=grade_level_id).all()
 
     result = []
     for enrollment in enrollments:
         student = enrollment.student.serialize()
-        grade = Grade.query.filter_by(enrollment_id=enrollment.id, period=period).first()
+        grade = Grade.query.filter_by(
+            enrollment_id=enrollment.id, period=period).first()
 
         result.append({
             "enrollment_id": enrollment.id,
@@ -554,7 +553,6 @@ def get_students_with_grades():
         })
 
     return jsonify(result), 200
-
 
 
 # El estudiante puede ver sus calificaciones por materia y periodo -- para ESTUDIANTES
@@ -596,7 +594,6 @@ def get_student_grades():
             results.append(grade.serialize())
 
     return jsonify(results), 200
-
 
 
 # login admin

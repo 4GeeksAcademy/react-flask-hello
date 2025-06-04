@@ -6,14 +6,14 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 import os
-from src.api.auth import auth_bp
-from src.api.models import db
-from src.api.utils import APIException, generate_sitemap
-from src.api.admin import setup_admin
-from src.api.commands import setup_commands
-from src.api.services.routes.users import users_bp
-from src.api.services.routes.events import events_bp
-from src.api.services.routes.weather import weather_bp
+from api.auth import auth_bp
+from api.models import db
+from api.utils import APIException, generate_sitemap
+from api.admin import setup_admin
+from api.commands import setup_commands
+from api.services.routes.users import users_bp
+from api.services.routes.events import events_bp
+from api.services.routes.weather import weather_bp
 
 # Cargar variables de entorno
 load_dotenv()
@@ -61,6 +61,9 @@ def add_cors_headers(response):
         response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
+
+# Configuración CORS
+CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev", supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

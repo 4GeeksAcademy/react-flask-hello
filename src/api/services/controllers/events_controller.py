@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from src.api.models import db, Event, User
+from ...models import db, Event, User
 from sqlalchemy.exc import SQLAlchemyError
-from src.api.utils import token_required
+from ...utils import token_required
 
 
 @token_required  # Este decorador asegura que solo un usuario autenticado pueda crear eventos

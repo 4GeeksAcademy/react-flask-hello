@@ -47,8 +47,6 @@ class User(db.Model):
             })
         return data
     
-
-
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -58,20 +56,63 @@ class PlanTemplate(db.Model):
     description: Mapped[str] = mapped_column(String(120), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
-    # relaciones:
     creator = relationship('User', back_populates='plans_created')
-    items = relationship('TemplateItem', back_populates='template', lazy=True)
+    plan_template_items = relationship('PlanTemplateItem', back_populates='plan_template', cascade='all, delete-orphan')
+    items = relationship('TemplateItem', secondary='plan_template_items', back_populates='templates', viewonly=True)
 
-    def serialize(self): 
+    def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
             "plan_type": self.plan_type,
             "nombre": self.nombre,
             "description": self.description,
-            "created_at": self.created_at.isoformat()  
+            "created_at": self.created_at.isoformat()
         }
 
+# Modifica TemplateItem:
+class TemplateItem(db.Model):
+    __tablename__ = 'template_items'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    item_type: Mapped[str] = mapped_column(String(30), nullable=False)
+    nombre: Mapped[str] = mapped_column(String(30), nullable=False)
+    calorias: Mapped[int] = mapped_column(Integer)
+    proteinas: Mapped[int] = mapped_column(Integer)
+    grasas: Mapped[int] = mapped_column(Integer)
+    carbohidratos: Mapped[int] = mapped_column(Integer)
+    meal_momento: Mapped[str] = mapped_column(String(60))
+    cantidad: Mapped[float] = mapped_column(Float)
+    muscle_group: Mapped[str] = mapped_column(String(50))
+    series: Mapped[int] = mapped_column(Integer)
+    repeticiones: Mapped[int] = mapped_column(Integer)
+    orden: Mapped[int] = mapped_column(Integer)
+
+    plan_template_items = relationship('PlanTemplateItem', back_populates='template_item', cascade='all, delete-orphan')
+    templates = relationship('PlanTemplate', secondary='plan_template_items', back_populates='items', viewonly=True)
+
+    def serialize(self):
+        base = {
+            "id": self.id,
+            "item_type": self.item_type,
+            "nombre": self.nombre,
+            "orden": self.orden
+        }
+        if self.item_type == 'food':
+            base.update({
+                "calorias": self.calorias,
+                "proteinas": self.proteinas,
+                "grasas": self.grasas,
+                "carbohidratos": self.carbohidratos,
+                "meal_momento": self.meal_momento,
+                "cantidad": self.cantidad
+            })
+        else:
+            base.update({
+                "muscle_group": self.muscle_group,
+                "series": self.series,
+                "repeticiones": self.repeticiones
+            })
+        return base
 class TemplateItem(db.Model):
     __tablename__ = 'template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

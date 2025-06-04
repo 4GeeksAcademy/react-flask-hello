@@ -136,60 +136,6 @@ def list_professionals():
     d#b.session.commit()
     #return '', 204
 
-#AUTH_ACCOUNT
-
-@api.route('/auth_accounts', methods=['GET'])
-def list_auth_accounts():
-    accs = AuthAccount.query.all()
-    return jsonify([a.serialize() for a in accs]),200
-
-@api.route('/auth_accounts/<int:aid>', methods=['GET'])
-def get_auth_account(aid):
-    acc = AuthAccount.query.get(aid)
-    if not acc:
-        abort(404, description="cuenta de atutenticiacion no encontrada")
-    return jsonify(acc.serialize()), 200
-
-@api.route('/auth_accounts', methods=['POST'])
-def create_auth_account():
-    data=request.get_json() or {}
-    required=('account_type', 'account_id', 'email', 'password_hash')
-    if not all(f in data for f in required):
-        raise APIException(f"Faltan campos obligatorios: {', '.join(required)}", status_code=400)
-    acc=AuthAccount(
-        account_type=data['account_type'],
-        account_id=data['account_id'],
-        email=data['email'],
-        password_hash=data['password_hash']
-    )
-    db.session.add(acc)
-    db.session.commit()
-    return jsonify(acc.serialize()),200
-
-@api.route('/auth_accounts/<int:aid>', methods=['PUT'])
-def update_auth_aacount(aid):
-    acc = AuthAccount.query.get(aid)
-    if not acc:
-        abort(404, description="Cuenta de autenticicacion no encontrada")
-    data=request.get_json() or {}
-    updatable = ('account_type', 'account_id', 'email', 'password_hash', 'last_login')
-    if not any(f in data for f in updatable):
-        raise APIException(f"No hay campos validos para actualizar", status_code=400)
-    for field in updatable:
-        if field in data:
-            setattr(acc, field, data[field])
-    db.session.commit()
-    return jsonify(acc.serialize()),200
-
-@api.route('/auth_accounts/<int:aid>', methods=['DELETE'])
-def delete_auth_account(aid):
-    acc = AuthAccount.query.get(aid)
-    if not acc:
-        abort(404, description="No se ha encontrado ninguna cuenta")
-    db.session.delete(acc)
-    db.session.commit()
-    return '',200
-
 #PLAN TEMPLATES
 
 @api.route('/plan_templates', methods=['GET'])

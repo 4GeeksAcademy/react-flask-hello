@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import imageHome from '../assets/img/loginUser.jpg';
 import { useNavigate } from "react-router-dom";
-
 import studentImg from "../assets/img/students.png";
 import teacherImg from "../assets/img/teacher.png";
+import { useAuth } from "../context/AuthProvider.jsx";
 
 export const Login = () => {
-  const { store, dispatch } = useGlobalReducer()
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("student");
@@ -21,9 +19,9 @@ export const Login = () => {
     if (!email || !password) {
       setMsg("*Completa los campos correctamente.");
       return;
-    } else {
-      setMsg("");
     }
+
+    setMsg("");
 
     const body = JSON.stringify({ email, password });
 
@@ -45,8 +43,7 @@ export const Login = () => {
           setMsg(data.msg);
         }
       } else {
-        sessionStorage.setItem("access_token", data.access_token);
-        dispatch({ type: "SET_TOKEN", payload: data.access_token });
+        login(data.access_token, data.user);
         navigate(`/${user}/dashboard/profile`);
       }
     } catch (error) {

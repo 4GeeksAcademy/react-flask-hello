@@ -1,12 +1,10 @@
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";
 import imageHomeAdmin from '../assets/img/login.jpg';
 import { useState } from "react";
+import { useAuth } from "../context/AuthProvider";
 
 export const Admin = () => {
-    // Access the global state and dispatch function using the useGlobalReducer hook.
-    const { store, dispatch } = useGlobalReducer()
+    const { login } = useAuth();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [msg, setMsg] = useState('')
@@ -32,14 +30,15 @@ export const Admin = () => {
             const data = await response.json()
 
             if (response.ok) {
-                sessionStorage.setItem("access_token", data.access_token);
+                login(data.access_token, data.user);
                 navigate("/admin/dashboard/profile");
             } else {
                 setMsg('Datos invalidos')
             }
 
         } catch (error) {
-            console.log(error);
+            console.error("Error al iniciar sesión:", error);
+            setMsg("*Error en la conexión.");
         }
     }
 

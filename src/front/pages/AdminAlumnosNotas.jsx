@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthProvider";
 
 export const AdminAlumnosNotas = () => {
-    const token = sessionStorage.getItem('access_token')
+    const { store } = useAuth();
+    const token = store.access_token;
     const [students, setStudents] = useState([])
     const [asignature, setAsignature] = useState([])
     const [period, setPeriods] = useState([])
@@ -88,6 +90,7 @@ export const AdminAlumnosNotas = () => {
         asignatures()
         students()
     }, [])
+
 
     return (
         <div className="container table-responsive">

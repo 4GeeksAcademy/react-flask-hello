@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from 'react'
-
 import teacherImg from "../assets/img/teacher.png";
+import { useAuth } from "../context/AuthProvider";
 
 export const ProfesoresDashboardNavbar = () => {
 	const navigate = useNavigate();
+	const { logout } = useAuth();
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
@@ -14,7 +15,7 @@ export const ProfesoresDashboardNavbar = () => {
 	};
 
 	const handleLogout = () => {
-		sessionStorage.removeItem("access_token");
+		logout()
 		navigate("/");
 	}
 

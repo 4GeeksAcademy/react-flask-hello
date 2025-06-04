@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import student from '../assets/img/students.png';
+import { useAuth } from "../context/AuthProvider";
 export const AlumnosProfile = () => {
     const [user, setUser] = useState([])
     const [load, setLoad] = useState(false)
-    const token = sessionStorage.getItem('access_token')
+    const { store } = useAuth();
+    const token = store.access_token;
     useEffect(() => {
         const user = async () => {
             try {

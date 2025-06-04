@@ -5,12 +5,9 @@ export const AdminSolicitudes = () => {
     const [register, setRegister] = useState('')
     const [teachers, setTeachers] = useState([])
     const [students, setStudents] = useState([])
-    const token = sessionStorage.getItem('access_token')
-    const auth = useAuth()
+    const { store } = useAuth();
+    const token = store.access_token;
 
-    useEffect(() => {
-        auth.getProfile()
-    }, [auth?.store?.access_token])
 
     useEffect(() => {
         const pending = async () => {
@@ -115,7 +112,7 @@ export const AdminSolicitudes = () => {
                                 <th scope="col">First Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
-                                <th scope="col">Course_id</th>
+                                <th scope="col">Asignature</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
@@ -129,7 +126,7 @@ export const AdminSolicitudes = () => {
                                     <td>{teachers.first_name}</td>
                                     <td>{teachers.email}</td>
                                     <td>{teachers.teacher.phone}</td>
-                                    <td>{teachers.teacher.department}</td>
+                                    <td>{teachers.teacher.courses[0].name}</td>
                                     <td>{teachers.role}</td>
                                     <td>{teachers.status}</td>
                                     <td>

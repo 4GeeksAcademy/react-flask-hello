@@ -17,20 +17,9 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-# Validaciones
-
-
-def validate_required_fields(data, required_fields):
-    missing = [
-        field for field in required_fields
-        if field not in data or (isinstance(data[field], str) and not data[field].strip())
-    ]
-    if missing:
-        return f"Campos faltantes o vacíos: {', '.join(missing)}"
-    return None
-
-
 # Registro admin
+
+
 @api.route('/register/admin', methods=['POST'])
 def register_admin():
     data = request.json
@@ -56,15 +45,9 @@ def register_admin():
 
     return jsonify({"message": "Administrador registrado exitosamente"}), 201
 
-
-# obtener datos de años escolares
-@api.route('/setup/grade_levels', methods=['GET'])
-def get_grade_levels():
-    grade_levels = GradeLevel.query.all()
-    return jsonify([gl.serialize() for gl in grade_levels]), 200
-
-
 # precargar años escolares en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
     niveles = [
@@ -82,6 +65,46 @@ def setup_grade_levels():
 
     db.session.commit()
     return jsonify({"message": "Niveles académicos creados exitosamente"}), 201
+
+# precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
+@api.route('/setup/courses', methods=['POST'])
+def setup_courses():
+    course_names = [
+        "Matemáticas", "Física", "Biología", "Historia", "Computación",
+        "Química", "Educación Física", "Educación Cívica", "Arte",
+        "Religión", "Inglés", "Filosofía", "Tutoría"
+    ]
+
+    created = []
+    for name in course_names:
+        if not Course.query.filter_by(name=name).first():
+            course = Course(name=name)
+            db.session.add(course)
+            created.append(name)
+
+    db.session.commit()
+    return jsonify({"message": f"Cursos creados: {created}"}), 201
+
+
+# Validaciones
+
+def validate_required_fields(data, required_fields):
+    missing = [
+        field for field in required_fields
+        if field not in data or (isinstance(data[field], str) and not data[field].strip())
+    ]
+    if missing:
+        return f"Campos faltantes o vacíos: {', '.join(missing)}"
+    return None
+
+
+# obtener datos de años escolares
+@api.route('/setup/grade_levels', methods=['GET'])
+def get_grade_levels():
+    grade_levels = GradeLevel.query.all()
+    return jsonify([gl.serialize() for gl in grade_levels]), 200
 
 
 # Registro estudiante
@@ -167,25 +190,6 @@ def register_teacher():
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
-
-# precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
-@api.route('/setup/courses', methods=['POST'])
-def setup_courses():
-    course_names = [
-        "Matemáticas", "Física", "Biología", "Historia", "Computación",
-        "Química", "Educación Física", "Educación Cívica", "Arte",
-        "Religión", "Inglés", "Filosofía", "Tutoría"
-    ]
-
-    created = []
-    for name in course_names:
-        if not Course.query.filter_by(name=name).first():
-            course = Course(name=name)
-            db.session.add(course)
-            created.append(name)
-
-    db.session.commit()
-    return jsonify({"message": f"Cursos creados: {created}"}), 201
 
 # obtencion de materias
 
@@ -514,8 +518,13 @@ def update_grade(grade_id):
     return jsonify({"message": "Nota actualizada exitosamente"}), 200
 
 
+<<<<<<< HEAD
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
 @api.route('/teacher/students', methods=['GET'])
+=======
+# Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
+@api.route('/student/schedule', methods=['GET'])
+>>>>>>> signup
 @jwt_required()
 def get_students_with_grades():
     teacher_id = get_jwt_identity()
@@ -622,8 +631,9 @@ def login_admin():
         }
     }), 200
 
-
   # Login estudiante
+
+
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()

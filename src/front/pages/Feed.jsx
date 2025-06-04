@@ -4,10 +4,10 @@ import PostCard from "../components/PostCard";
 import CreatePost from "../components/CreatePost";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 const Feed = () => {
     const navigate = useNavigate();
-
-    const URL = import.meta.env.VITE_BACKEND_URL
 
     const [posts, setPosts] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -15,6 +15,7 @@ const Feed = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedSport, setSelectedSport] = useState("all");
     const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+    
 
     useEffect(() => {
         const loggedIn = localStorage.getItem("isLoggedIn");
@@ -43,8 +44,11 @@ const Feed = () => {
         if (selectedDifficulty !== "all") params.append("difficulty", selectedDifficulty);
 
         const storedFavorites = JSON.parse(localStorage.getItem("favoritePosts")) || [];
+        
 
-        fetch(`${URL}/api/events?${params.toString()}`)
+
+        fetch(`${BASE_URL}/api/events?${params.toString()}`)
+
             .then(res => res.json())
             .then(data => {
                 const updated = data.map(post => ({

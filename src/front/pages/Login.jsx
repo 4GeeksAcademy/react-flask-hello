@@ -3,29 +3,32 @@ import { Await, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
-console.log(import.meta.env.VITE_BACKEND_URL); // ✅ Verifica la URL de la API
-
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await loginUser({ email, password });
 
+
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("token", response.token); // ✅ token
             localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario
 
+            login(response.user); // setea el usuario en el contexto
             navigate("/profile");
         } catch (error) {
             console.error("Error al iniciar sesión:", error.message);
             alert("Credenciales inválidas o error en el servidor.");
         }
     };
+
 
 
 

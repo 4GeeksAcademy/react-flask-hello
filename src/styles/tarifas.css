@@ -1,0 +1,69 @@
+.tarifas-container {
+    padding: 2rem;
+    background: #1c2d3a;
+    color: white;
+    min-height: 100vh;
+}
+
+.titulo-tarifas {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mapa-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.grid-opciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.opciones-item {
+    cursor: pointer;
+    padding: 0.5rem;
+    background-color: #2a3d4d;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.opciones-item:hover {
+    background-color: #ECEFCA;
+    color: #213448;
+}
+
+.detalle-opciones {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+
+.texto-bienvenida {
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+
+.imagenes-grid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem; 
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.imagenes-grid img {
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

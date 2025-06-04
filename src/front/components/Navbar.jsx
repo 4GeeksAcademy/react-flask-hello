@@ -10,6 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    alert("Sesión cerrada correctamente.");
     navigate("/login");
   };
 

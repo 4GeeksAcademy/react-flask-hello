@@ -87,6 +87,78 @@ def setup_courses():
     db.session.commit()
     return jsonify({"message": f"Cursos creados: {created}"}), 201
 
+# Precargar horarios por año escolar en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
+
+
+@api.route('/setup/schedules', methods=['POST'])
+def setup_schedules():
+    horas = [("07:00", "09:00"), ("09:00", "11:00"), ("11:00", "13:00")]
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+
+    horario = [
+        [  # Primero
+            ["Matemáticas", "Educación Física", "Inglés"],
+            ["Historia", "Química", "Filosofía"],
+            ["Biología", "Matemáticas", "Tutoría"],
+            ["Educación Cívica", "Arte", "Física"],
+            ["Computación", "Arte", "Física"]
+        ],
+        [  # Segundo
+            ["Historia", "Física", "Filosofía"],
+            ["Matemáticas", "Química", "Inglés"],
+            ["Religión", "Educación Física", "Tutoría"],
+            ["Educación Cívica", "Religión", "Matemáticas"],
+            ["Inglés", "Filosofía", "Arte"]
+        ],
+        [  # Tercero
+            ["Biología", "Historia", "Educación Cívica"],
+            ["Computación", "Tutoría", "Arte"],
+            ["Matemáticas", "Filosofía", "Educación Física"],
+            ["Religión", "Inglés", "Arte"],
+            ["Educación Física", "Matemáticas", "Física"]
+        ],
+        [  # Cuarto
+            ["Física", "Tutoría", "Computación"],
+            ["Educación Cívica", "Filosofía", "Religión"],
+            ["Química", "Matemáticas", "Historia"],
+            ["Inglés", "Filosofía", "Arte"],
+            ["Religión", "Computación", "Biología"]
+        ],
+        [  # Quinto
+            ["Educación Cívica", "Computación", "Religión"],
+            ["Matemáticas", "Tutoría", "Educación Física"],
+            ["Arte", "Química", "Física"],
+            ["Filosofía", "Religión", "Matemáticas"],
+            ["Inglés", "Educación Física", "Física"]
+        ]
+    ]
+
+    from datetime import datetime
+    created = []
+
+    for year_index, semana in enumerate(horario, start=1):
+        for dia_index, dia in enumerate(dias):
+            for bloque_index, materia in enumerate(semana[dia_index]):
+                course = Course.query.filter_by(name=materia).first()
+                if not course:
+                    continue
+                inicio = datetime.strptime(
+                    horas[bloque_index][0], "%H:%M").time()
+                fin = datetime.strptime(horas[bloque_index][1], "%H:%M").time()
+
+                db.session.add(Schedule(
+                    course_id=course.id,
+                    grade_level_id=year_index,
+                    day=dia,
+                    start_time=inicio,
+                    end_time=fin,
+                    classroom=f"Aula {year_index}"
+                ))
+                created.append(f"{materia} - {dia} - Año {year_index}")
+
+    db.session.commit()
+    return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
+
 
 # Validaciones
 
@@ -201,77 +273,6 @@ def get_courses():
         {"id": c.id, "name": c.name}
         for c in courses
     ]), 200
-
-
-# Precargar horarios por año escolar en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
-@api.route('/setup/schedules', methods=['POST'])
-def setup_schedules():
-    horas = [("07:00", "09:00"), ("09:00", "11:00"), ("11:00", "13:00")]
-    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
-
-    horario = [
-        [  # Primero
-            ["Matemáticas", "Educación Física", "Inglés"],
-            ["Historia", "Química", "Filosofía"],
-            ["Biología", "Matemáticas", "Tutoría"],
-            ["Educación Cívica", "Arte", "Física"],
-            ["Computación", "Arte", "Física"]
-        ],
-        [  # Segundo
-            ["Historia", "Física", "Filosofía"],
-            ["Matemáticas", "Química", "Inglés"],
-            ["Religión", "Educación Física", "Tutoría"],
-            ["Educación Cívica", "Religión", "Matemáticas"],
-            ["Inglés", "Filosofía", "Arte"]
-        ],
-        [  # Tercero
-            ["Biología", "Historia", "Educación Cívica"],
-            ["Computación", "Tutoría", "Arte"],
-            ["Matemáticas", "Filosofía", "Educación Física"],
-            ["Religión", "Inglés", "Arte"],
-            ["Educación Física", "Matemáticas", "Física"]
-        ],
-        [  # Cuarto
-            ["Física", "Tutoría", "Computación"],
-            ["Educación Cívica", "Filosofía", "Religión"],
-            ["Química", "Matemáticas", "Historia"],
-            ["Inglés", "Filosofía", "Arte"],
-            ["Religión", "Computación", "Biología"]
-        ],
-        [  # Quinto
-            ["Educación Cívica", "Computación", "Religión"],
-            ["Matemáticas", "Tutoría", "Educación Física"],
-            ["Arte", "Química", "Física"],
-            ["Filosofía", "Religión", "Matemáticas"],
-            ["Inglés", "Educación Física", "Física"]
-        ]
-    ]
-
-    from datetime import datetime
-    created = []
-
-    for year_index, semana in enumerate(horario, start=1):
-        for dia_index, dia in enumerate(dias):
-            for bloque_index, materia in enumerate(semana[dia_index]):
-                course = Course.query.filter_by(name=materia).first()
-                if not course:
-                    continue
-                inicio = datetime.strptime(
-                    horas[bloque_index][0], "%H:%M").time()
-                fin = datetime.strptime(horas[bloque_index][1], "%H:%M").time()
-
-                db.session.add(Schedule(
-                    course_id=course.id,
-                    grade_level_id=year_index,
-                    day=dia,
-                    start_time=inicio,
-                    end_time=fin,
-                    classroom=f"Aula {year_index}"
-                ))
-                created.append(f"{materia} - {dia} - Año {year_index}")
-
-    db.session.commit()
-    return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
 
 
 # Horario para PROFESORES --- Este endpoint devuelve el horario del profesor en el frontend

@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthProvider';
 
 export const ProfesoresAlumnosNotas = () => {
     const [showTable, setShowTable] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedPeriod, setSelectedPeriod] = useState('');
+    const [grade, setGrade] = useState([])
+    const [period, setPeriod] = useState([])
     const [editingId, setEditingId] = useState(null);
     const [isValid, setIsValid] = useState(true);
     const [grades, setGrades] = useState([
@@ -11,6 +14,51 @@ export const ProfesoresAlumnosNotas = () => {
         { id: 2, lastName: 'Jacob', firstName: 'Thornton', participation: '', homework: '', midterm: '', final: '', average: '' },
         { id: 3, lastName: 'John', firstName: 'Doe', participation: '', homework: '', midterm: '', final: '', average: '' },
     ]);
+    const { store } = useAuth();
+    const token = store.access_token;
+
+    useEffect(() => {
+        const grades = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    console.log(data);
+                    setGrade(data)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        const periods = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    setPeriod(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        grades()
+        periods()
+    }, [])
 
     const handleSearch = () => {
         if (selectedYear && selectedPeriod) {
@@ -63,11 +111,9 @@ export const ProfesoresAlumnosNotas = () => {
                         onChange={(e) => setSelectedYear(e.target.value)}
                     >
                         <option value="">Selecciona Año</option>
-                        <option value="1">Primero</option>
-                        <option value="2">Segundo</option>
-                        <option value="3">Tercero</option>
-                        <option value="4">Cuarto</option>
-                        <option value="5">Quinto</option>
+                        {grade.map((grade) => (
+                            <option key={grade.id} value={grade.id}>{grade.name} </option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">
@@ -77,12 +123,12 @@ export const ProfesoresAlumnosNotas = () => {
                         onChange={(e) => setSelectedPeriod(e.target.value)}
                     >
                         <option value="">Selecciona Periodo</option>
-                        <option value="1">Primer Bimestre</option>
-                        <option value="2">Segundo Bimestre</option>
-                        <option value="3">Tercero Bimestre</option>
-                        <option value="4">Cuarto Bimestre</option>
+                        {period.map((periodos, i) => (
+                            <option key={i} value={periodos}>{periodos} Bimestre</option>
+                        ))}
                     </select>
                 </div>
+
                 <div className="col-2">
                     <button
                         type="button"

@@ -10,8 +10,6 @@ export const AdminProfile = () => {
     const auth = useAuth()
     const token = sessionStorage.getItem('access_token')
 
-    console.log(store);
-
     useEffect(() => {
         auth.getProfile()
     }, [auth?.store?.access_token])
@@ -41,7 +39,6 @@ export const AdminProfile = () => {
 
         admin()
     }, [])
-    console.log(data);
 
     return (
         <div className="container py-4">

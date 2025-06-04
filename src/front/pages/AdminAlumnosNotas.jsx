@@ -19,12 +19,10 @@ export const AdminAlumnosNotas = () => {
                 })
                 const responseData = await response.json()
                 if (response.ok) {
-                    console.log(responseData);
                     setStudents(responseData)
                 }
             } catch (error) {
                 console.log(error);
-
             }
         }
 
@@ -58,7 +56,6 @@ export const AdminAlumnosNotas = () => {
                 })
                 const responseData = await response.json()
                 if (response.ok) {
-                    console.log(responseData);
                     setPeriods(responseData)
                 }
             } catch (error) {
@@ -69,7 +66,7 @@ export const AdminAlumnosNotas = () => {
 
         const grades = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -78,7 +75,6 @@ export const AdminAlumnosNotas = () => {
                 })
                 const responseData = await response.json()
                 if (response.ok) {
-                    console.log(responseData);
                     setGrades(responseData)
                 }
             } catch (error) {
@@ -99,11 +95,9 @@ export const AdminAlumnosNotas = () => {
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción">
                         <option value="">Selecciona Año</option>
-                        <option value="1">Primero</option>
-                        <option value="2">Segundo</option>
-                        <option value="3">Tercero</option>
-                        <option value="4">Cuarto</option>
-                        <option value="5">Quinto</option>
+                        {grade.map((grade) => (
+                            <option key={grade.id} value={grade.id}>{grade.name} </option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">

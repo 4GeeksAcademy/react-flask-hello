@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, make_response    
+from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -17,16 +18,49 @@ from api.services.routes.weather import weather_bp
 # Cargar variables de entorno
 load_dotenv()
 
-# ✅ Crear app UNA SOLA VEZ
-app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-jwt-key")
-jwt = JWTManager(app)
+
 
 # Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
+app = Flask(__name__)
 app.url_map.strict_slashes = False
+@app.before_request
+def handle_before_request():
+    if request.method == 'OPTIONS':
+        response = make_response()
+        origin = request.headers.get("Origin", "*")
+        # Check if the origin is allowed
+        if origin in ["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"]:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            response.headers.add('Access-Control-Allow-Credentials', 'true')
+            return response, 200
+
+
+app.config['JWT_SECRET_KEY'] = os.getenv(
+    "JWT_SECRET_KEY", "super-secret-jwt-key")
+jwt = JWTManager(app)
+
+# Configuración CORS profesional
+CORS(
+    app,
+    origins=["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"],
+    supports_credentials=True
+)
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin", "")
+    if origin in ["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"]:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
 
 # Configuración CORS
 CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev", supports_credentials=True)
@@ -81,7 +115,8 @@ def serve_any_other_file(path):
     return response
 
 
+port = int(os.environ.get('PORT', 4000 ))
+
 # Iniciar servidor
 if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)

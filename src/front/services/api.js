@@ -1,13 +1,13 @@
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const fetchPosts = async () => {
-  const res = await fetch(`${BASE_URL}/events/`);
+  const res = await fetch(`${BASE_URL}/api/events/`);
   if (!res.ok) throw new Error("Error al obtener eventos");
   return res.json();
 };
 
 export const createEvent = async (data) => {
-  const res = await fetch(`${BASE_URL}/events/`, {
+  const res = await fetch(`${BASE_URL}/api/events/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -30,10 +30,7 @@ export const loginUser = async (data) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-
-    //credentials: "include",
-
-    // credentials: "include",
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Error al iniciar sesion");

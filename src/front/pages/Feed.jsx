@@ -46,7 +46,9 @@ const Feed = () => {
         const storedFavorites = JSON.parse(localStorage.getItem("favoritePosts")) || [];
         
 
+
         fetch(`${BASE_URL}/api/events?${params.toString()}`)
+
             .then(res => res.json())
             .then(data => {
                 const updated = data.map(post => ({
@@ -77,7 +79,7 @@ const Feed = () => {
     if (activeTab === "favorites") {
         filteredPosts = filteredPosts.filter(post => post.isFavorite);
     }
-    
+
     return (
         <div
             className="bg-light min-vh-100"

@@ -20,6 +20,8 @@ flask-migrate = "*"
 flask-cors = "*"
 python-dotenv = "*"
 flask-jwt-extended = "*"
+colorama = "*"
+requests = "*"
 
 [requires]
 python_version = "3.13"

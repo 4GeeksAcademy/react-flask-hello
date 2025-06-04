@@ -9,7 +9,7 @@ from ..controllers.events_controller import (
     join_event
 )
 
-events_bp = Blueprint('events', __name__, url_prefix='/api/events')
+events_bp = Blueprint('events', __name__)
 
 # Crear un nuevo evento
 events_bp.add_url_rule('/', view_func=create_event, methods=['POST'])

@@ -3,15 +3,12 @@ import { useAuth } from "../context/AuthProvider.jsx";
 
 export const AdminAlumnosAsistencia = () => {
 
-    const token = sessionStorage.getItem('access_token')
-    const auth = useAuth()
+    const { store } = useAuth();
+    const token = store.access_token;
     const [students, setStudents] = useState([])
     const [period, setPeriods] = useState([])
     const [grade, setGrades] = useState([])
     const [load, setLoad] = useState(false)
-    useEffect(() => {
-        auth.getProfile()
-    }, [auth?.store?.access_token])
 
     useEffect(() => {
         const students = async () => {

@@ -10,36 +10,89 @@ const AuthProvider = ({ children }) => {
         user: null
     })
 
-    const login = () => { }
-    const register = () => { }
+    const login = (token, userData) => {
+        sessionStorage.setItem("access_token", token);
+        sessionStorage.setItem("role", userData.role);
+        console.log(userData);
+
+        setStore({
+            access_token: token,
+            user: {
+                role: userData.role,
+                profile: userData
+            }
+        });
+    }
+    const logout = () => {
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("role");
+
+        setStore({
+            access_token: null,
+            user: null
+        });
+    }
     const checkUser = () => {
-        const token = sessionStorage.getItem('access_token')
+        const token = sessionStorage.getItem("access_token");
         if (token) {
-            setStore((preStore) => ({
-                ...preStore,
+            setStore((prevStore) => ({
+                ...prevStore,
                 access_token: token
-            }))
+            }));
+            getProfile();
         }
     }
 
-    const getProfile = () => {
-        const token = sessionStorage.getItem('access_token')
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/profile`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+    const getProfile = async () => {
+        const token = sessionStorage.getItem("access_token");
+        const role = sessionStorage.getItem("role");
+        if (!token || !role) {
+            logout()
+            return;
+        }
+
+        const endpointMap = {
+            admin: "admin",
+            teacher: "teacher",
+            student: "student"
+        };
+
+        const profileEndpoint = endpointMap[role];
+        if (!profileEndpoint) {
+            console.warn("Rol desconocido, cerrando sesión");
+            logout();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${profileEndpoint}/profile`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    console.warn("Token vencido, cerrando sesión");
+                    logout();
+                }
+                return;
             }
-        })
-            .then((response) => response.json())
-            .then((response_json) => {
-                setStore((preStore) => ({
-                    ...preStore,
-                    user: {
-                        profile: response_json.profile
-                    }
-                }))
-            })
+
+            const userData = await response.json();
+            setStore((prevStore) => ({
+                ...prevStore,
+                user: {
+                    role: role,
+                    profile: userData
+                }
+            }));
+        } catch (err) {
+            console.error("Error en getProfile:", err);
+            logout();
+        }
     }
 
     useEffect(() => {
@@ -47,7 +100,7 @@ const AuthProvider = ({ children }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ store, setStore, login, register, getProfile }}>
+        <AuthContext.Provider value={{ store, setStore, login, logout, getProfile }}>
             {children}
         </AuthContext.Provider>
     )

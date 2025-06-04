@@ -195,7 +195,11 @@ class Grade(db.Model):
     enrollment_id: Mapped[int] = mapped_column(ForeignKey('enrollment.id'))
     teacher_id: Mapped[int] = mapped_column(ForeignKey('teacher.user_id'))
     period: Mapped[int] = mapped_column()  # 1, 2, 3, 4
-    score: Mapped[float] = mapped_column()
+    participation: Mapped[float] = mapped_column()
+    homework: Mapped[float] = mapped_column()
+    midterm: Mapped[float] = mapped_column()
+    final_exam: Mapped[float] = mapped_column()
+    average: Mapped[float] = mapped_column()
 
     teacher = relationship("Teacher", back_populates="grades")
 
@@ -205,8 +209,13 @@ class Grade(db.Model):
             "enrollment_id": self.enrollment_id,
             "teacher_id": self.teacher_id,
             "period": self.period,
-            "score": self.score,
+            "participation": self.participation,
+            "homework": self.homework,
+            "midterm": self.midterm,
+            "final_exam": self.final_exam,
+            "average": self.average
         }
+
 
 
 class Payment(db.Model):

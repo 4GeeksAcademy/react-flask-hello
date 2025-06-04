@@ -70,7 +70,8 @@ with app.app_context():
         meal_momento="desayuno",
         cantidad=1,
         carbohidratos=30,
-        orden=1
+        orden=1,
+        creator_id=user2.id
     )
 
     item2 = TemplateItem(
@@ -85,7 +86,9 @@ with app.app_context():
         cantidad=1,
         repeticiones=10,
         grasas=5,
-        orden=2
+        orden=2,
+        creator_id=user2.id
+
     )
 
     db.session.add_all([item1, item2])

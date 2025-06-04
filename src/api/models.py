@@ -25,11 +25,12 @@ class User(db.Model):
     profession_type: Mapped[str] = mapped_column(String(120), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
     experiencia: Mapped[int] = mapped_column(Integer, default=0)
     # relaciones:
-    events_created = relationship('Event', back_populates='creator', lazy=True)
-    event_signups = relationship('EventSignup', back_populates='user', lazy=True) # tabla de relacion
-    plans_created = relationship('PlanTemplate', back_populates='creator', lazy=True)
-    subscriptions = relationship('Subscription', back_populates='user', lazy=True)  # tabla de relacion
-    support_tickets = relationship('SupportTicket', back_populates='user', lazy=True)
+    events_created = relationship('Event', back_populates='creator')
+    event_signups = relationship('EventSignup', back_populates='user') # tabla de relacion
+    plans_created = relationship('PlanTemplate', back_populates='creator')
+    subscriptions = relationship('Subscription', back_populates='user')  # tabla de relacion
+    support_tickets = relationship('SupportTicket', back_populates='user')
+    template_items_created = relationship('TemplateItem', back_populates='creator')
 
     def serialize(self):
         data = {
@@ -84,10 +85,10 @@ class PlanTemplate(db.Model):
             "description": self.description,
             "created_at": self.created_at.isoformat()
         }
-
 class TemplateItem(db.Model):
     __tablename__ = 'template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    creator_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)  # NUEVO
     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
     calorias: Mapped[int] = mapped_column(Integer)
@@ -101,12 +102,15 @@ class TemplateItem(db.Model):
     repeticiones: Mapped[int] = mapped_column(Integer)
     orden: Mapped[int] = mapped_column(Integer)
 
+    # Relaciones
+    creator = relationship('User', back_populates='template_items_created')  # NUEVO
     plan_template_items = relationship('PlanTemplateItem', back_populates='template_item', cascade='all, delete-orphan')
     templates = relationship('PlanTemplate', secondary='plan_template_items', back_populates='items', viewonly=True)
 
     def serialize(self):
         base = {
             "id": self.id,
+            "creator_id": self.creator_id,
             "item_type": self.item_type,
             "nombre": self.nombre,
             "orden": self.orden
@@ -127,7 +131,7 @@ class TemplateItem(db.Model):
                 "repeticiones": self.repeticiones
             })
         return base
-    
+
 # class TemplateItem(db.Model):
 #     __tablename__ = 'template_items'
 #     id: Mapped[int] = mapped_column(Integer, primary_key=True)

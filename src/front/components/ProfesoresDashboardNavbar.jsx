@@ -53,9 +53,6 @@ export const ProfesoresDashboardNavbar = () => {
 												Asistencia
 											</Link>
 										</li>
-										<li>
-											<hr className="dropdown-divider" />
-										</li>
 									</ul>
 								</div>
 							</li>

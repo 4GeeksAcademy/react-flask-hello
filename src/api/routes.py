@@ -63,9 +63,8 @@ def get_grade_levels():
     grade_levels = GradeLevel.query.all()
     return jsonify([gl.serialize() for gl in grade_levels]), 200
 
+
 # precargar años escolares en la base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
-
-
 @api.route('/setup/grade_levels', methods=['POST'])
 def setup_grade_levels():
     niveles = [
@@ -168,9 +167,8 @@ def register_teacher():
 
     return jsonify({"message": "Solicitud de registro como profesor enviada"}), 201
 
+
 # precargar las materias en base de datos -- esta api no es para consumir, se ejectura al levantarse el servidor
-
-
 @api.route('/setup/courses', methods=['POST'])
 def setup_courses():
     course_names = [
@@ -271,9 +269,8 @@ def setup_schedules():
     db.session.commit()
     return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
 
+
 # Horario para PROFESORES --- Este endpoint devuelve el horario del profesor en el frontend
-
-
 @api.route('/teacher/schedule', methods=['GET'])
 @jwt_required()
 def get_teacher_schedule():
@@ -377,110 +374,110 @@ def get_attendance_by_enrollment():
     attendances = Attendance.query.filter_by(enrollment_id=enrollment_id).all()
     return jsonify([a.serialize() for a in attendances]), 200
 
-# Registrar una calificacion -- para PROFESORES
 
-
+# Registrar una calificacion de un estudiante -- para PROFESORES
 @api.route('/grade', methods=['POST'])
 @jwt_required()
-def register_grade():
+def post_grade():
     teacher_id = get_jwt_identity()
 
-    # Validar que quien hace la solicitud sea un profesor aprobado
-    user = User.query.get(teacher_id)
-    if not user or user.role != "teacher" or user.status != "approved":
-        return jsonify({"msg": "Acceso no autorizado"}), 403
-
     data = request.get_json()
-    required_fields = ['enrollment_id', 'period', 'score']
+    required_fields = [
+        'enrollment_id', 'period', 'participation', 'homework', 'midterm', 'final_exam'
+    ]
 
     error = validate_required_fields(data, required_fields)
     if error:
         return jsonify({"error": error}), 400
 
-    valid_periods = ['1', '2', '3', '4']
-    if str(data['period']) not in valid_periods:
-        return jsonify({"error": "Periodo inválido. Debe ser 1, 2, 3 o 4."}), 400
-
-    # Validar que la inscripción exista
+    # Validar existencia de la matrícula y del profesor
     enrollment = Enrollment.query.get(data['enrollment_id'])
     if not enrollment:
-        return jsonify({"error": "Matrícula no encontrada."}), 404
+        return jsonify({"error": "Inscripción no encontrada."}), 404
 
-    # Verificar si ya existe una nota para ese periodo
+    teacher = Teacher.query.get(teacher_id)
+    if not teacher:
+        return jsonify({"error": "Profesor no encontrado."}), 404
+
+    # Validar que no exista una nota previa para ese enrollment y periodo
     existing = Grade.query.filter_by(
         enrollment_id=data['enrollment_id'],
         period=data['period']
     ).first()
     if existing:
-        return jsonify({"error": "Ya existe una nota para ese periodo."}), 409
+        return jsonify({"error": "La calificación para este periodo ya fue registrada."}), 409
 
-    # Crear calificación
+    # Calcular el promedio ponderado
+    average = round(
+        data['participation'] * 0.15 +
+        data['homework'] * 0.20 +
+        data['midterm'] * 0.30 +
+        data['final_exam'] * 0.35, 2
+    )
+
     grade = Grade(
         enrollment_id=data['enrollment_id'],
         teacher_id=teacher_id,
         period=data['period'],
-        score=data['score']
+        participation=data['participation'],
+        homework=data['homework'],
+        midterm=data['midterm'],
+        final_exam=data['final_exam'],
+        average=average
     )
+
     db.session.add(grade)
     db.session.commit()
 
     return jsonify({"message": "Nota registrada exitosamente."}), 201
 
-# Ver calificaciones de un estudiante -- para PROFESORES
 
-
+# Obtener notas por estudiante (enrollment_id)
 @api.route('/grades', methods=['GET'])
 @jwt_required()
-def get_grades_by_enrollment():
-    enrollment_id = request.args.get("enrollment_id")
-
+def get_grades():
+    enrollment_id = request.args.get('enrollment_id', type=int)
     if not enrollment_id:
         return jsonify({"error": "Parámetro 'enrollment_id' requerido."}), 400
 
     grades = Grade.query.filter_by(enrollment_id=enrollment_id).all()
-    return jsonify([
-        {
-            "id": g.id,
-            "enrollment_id": g.enrollment_id,
-            "period": g.period,
-            "score": g.score
-        }
-        for g in grades
-    ]), 200
-
-# Modificar una calificación existente -- para PROFESORES
+    return jsonify([g.serialize() for g in grades]), 200
 
 
+# Actualizar calificación existente -- para PROFESORES
 @api.route('/grade/<int:grade_id>', methods=['PUT'])
 @jwt_required()
 def update_grade(grade_id):
     teacher_id = get_jwt_identity()
-
-    # Validar que quien modifica sea un profesor aprobado
-    user = User.query.get(teacher_id)
-    if not user or user.role != "teacher" or user.status != "approved":
-        return jsonify({"msg": "Acceso no autorizado"}), 403
-
     data = request.get_json()
-    new_score = data.get("score")
 
-    if new_score is None:
-        return jsonify({"error": "El campo 'score' es requerido."}), 400
-
-    # Buscar la nota
     grade = Grade.query.get(grade_id)
     if not grade:
-        return jsonify({"error": "Nota no encontrada."}), 404
+        return jsonify({"error": "Calificación no encontrada"}), 404
 
-    # Validar que la nota pertenezca al profesor que la intenta modificar
     if grade.teacher_id != teacher_id:
-        return jsonify({"error": "No puedes modificar notas de otros profesores."}), 403
+        return jsonify({"error": "No autorizado para modificar esta calificación"}), 403
 
-    # Actualizar y guardar
-    grade.score = new_score
+    # Actualizar campos si están en el payload
+    if 'participation' in data:
+        grade.participation = data['participation']
+    if 'homework' in data:
+        grade.homework = data['homework']
+    if 'midterm' in data:
+        grade.midterm = data['midterm']
+    if 'final' in data:
+        grade.final = data['final']
+
+    # Recalcular promedio
+    p = grade.participation or 0
+    h = grade.homework or 0
+    m = grade.midterm or 0
+    f = grade.final or 0
+    grade.average = round(p * 0.15 + h * 0.20 + m * 0.30 + f * 0.35, 2)
+
     db.session.commit()
+    return jsonify({"message": "Calificación actualizada correctamente"}), 200
 
-    return jsonify({"message": "Nota actualizada exitosamente."}), 200
 
 
 # Horario para ESTUDIANTES --- Este endpoint devuelve el horario del estudiante en el frontend
@@ -505,9 +502,8 @@ def get_student_schedule():
 
     return jsonify([s.serialize() for s in schedules]), 200
 
+
 # login admin
-
-
 @api.route('/login/admin', methods=['POST'])
 def login_admin():
     data = request.get_json()
@@ -539,9 +535,8 @@ def login_admin():
         }
     }), 200
 
+
   # Login estudiante
-
-
 @api.route('/login/student', methods=['POST'])
 def login_student():
     data = request.get_json()
@@ -629,9 +624,8 @@ def get_pending_users():
 
     return jsonify([user.serialize() for user in pending_users]), 200
 
+
 # aprobación de registros de estudiantes y profesores
-
-
 @api.route('/approve/student/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def approve_student(user_id):

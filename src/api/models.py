@@ -202,19 +202,28 @@ class Grade(db.Model):
     average: Mapped[float] = mapped_column()
 
     teacher = relationship("Teacher", back_populates="grades")
+    course = relationship("Course", secondary="enrollment", viewonly=True)
 
     def serialize(self):
+        enrollment = Enrollment.query.get(self.enrollment_id)
+        course_name = enrollment.course.name if enrollment and enrollment.course else None
+        teacher_name = f"{self.teacher.user.first_name} {self.teacher.user.last_name}" if self.teacher and self.teacher.user else None
+
         return {
             "id": self.id,
             "enrollment_id": self.enrollment_id,
             "teacher_id": self.teacher_id,
+            "teacher_name": teacher_name,
             "period": self.period,
             "participation": self.participation,
             "homework": self.homework,
             "midterm": self.midterm,
             "final_exam": self.final_exam,
-            "average": self.average
+            "average": self.average,
+            "course": course_name
         }
+
+
 
 
 

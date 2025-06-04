@@ -1,11 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { Loader } from './Loader'
 
 export const Navbar = () => {
-  const { store } = useGlobalReducer();
-
-  // Calcular número total de artículos
+  const navigate = useNavigate()
+  const { store, isAuthenticated, logout, loading } = useGlobalReducer();
   const totalItems = store.carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
+  if (loading) return <Loader />
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-withe w-100 px-3 border-bottom border-1 border-secondary-subtle">
@@ -16,11 +23,17 @@ export const Navbar = () => {
         </Link>
 
         <div className="d-flex ms-auto align-items-center gap-3">
-          <Link className="btn btn-outline-dark" to="/men">Hombre</Link>
-          <Link className="btn btn-outline-dark" to="/women">Mujer</Link>
-          <Link className="btn btn-outline-dark" to="/service">Servicio</Link>
-          <Link className="btn btn-outline-dark" to="/producto">Producto</Link>
-          <Link className="btn btn-outline-success" to="/productos">Productos</Link>
+
+          {isAuthenticated ? (
+            <>
+              <Link className="btn btn-outline-dark" to="/men">Hombre</Link>
+              <Link className="btn btn-outline-dark" to="/women">Mujer</Link>
+              <Link className="btn btn-outline-dark" to="/service">Servicio</Link>
+              <Link className="btn btn-outline-success" to="/productos">Productos</Link>
+            </>
+          ) : (
+            <Link className="btn btn-outline-success" to="/productos">Productos</Link>
+          )}
 
           <Link className="btn btn-outline-secondary position-relative" to="/carrito">
             <i className="bi bi-cart-fill fs-5"></i>
@@ -34,8 +47,16 @@ export const Navbar = () => {
             )}
           </Link>
 
-          <Link className="btn btn-dark" to="/login">Inicia sesión</Link>
-          <Link className="btn btn-outline-dark" to="/register">Regístrate</Link>
+          {isAuthenticated ? (
+            <>
+              <button className="btn btn-danger" onClick={handleLogout}>Cerrar Sesion</button>
+            </>
+          ) : (
+            <>
+              <Link className="btn btn-dark" to="/login">Inicia sesión</Link>
+              <Link className="btn btn-outline-dark" to="/register">Regístrate</Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

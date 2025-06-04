@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Register = () => {
 
+    const URLBACK = import.meta.env.VITE_BACKEND_URL
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [first_name, setFirst_name] = useState("");
@@ -22,7 +23,7 @@ const Register = () => {
 
     const sendRegister = async () => {
         try {
-            const resp = await axios.post("https://friendly-lamp-x5v79p56j7xxf4gw-3001.app.github.dev/api/signup", {
+            const resp = await axios.post(`${URLBACK}api/signup`, {
                 email, password, first_name, last_name, address
             })
             console.log('user created successfully')

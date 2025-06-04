@@ -9,26 +9,26 @@ export const ProfesoresHorario = () => {
     const token = store.access_token;
 
     useEffect(() => {
-        const schedule = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/teacher/schedule-grid`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const data = await response.json()
-                if (response.ok) {
-                    console.log(data);
-                    setSchedule(data)
-                    setLoad(true)
-                }
-            } catch (error) {
-                console.log(error);
+        // const schedule = async () => {
+        //     try {
+        //         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/teacher/schedule-grid`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${token}`
+        //             }
+        //         })
+        //         const data = await response.json()
+        //         if (response.ok) {
+        //             console.log(data);
+        //             setSchedule(data)
+        //             setLoad(true)
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
 
-            }
-        }
+        //     }
+        // }
         const user = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
@@ -49,11 +49,11 @@ export const ProfesoresHorario = () => {
             }
         }
         user()
-        schedule()
+        // schedule()
     }, [])
     return (
         <div className="container table-responsive">
-            <div className="row">
+            {load ? <div className="row">
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">
                         <tr>
@@ -93,6 +93,10 @@ export const ProfesoresHorario = () => {
                     </tbody>
                 </table>
             </div>
+                :
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>}
         </div>
     );
 };

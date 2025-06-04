@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import "../../styles/navbar.css";
-
+import {Link} from "react-router-dom"
 export const Navbar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -44,24 +44,24 @@ export const Navbar = () => {
         DMPC<span className="logo-highlight">ProFit</span>
       </>
     ),
-    url: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/",
+    url: "/",
   };
 
   const menuItems = [
-    { name: "Sobre Nosotros", link: "#" },
+    { name: "Sobre Nosotros", link: "/AboutUs" },
     {
       name: "Nutricion",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/nutricion",
+      link: "/nutricion",
     },
     {
       name: "Deporte",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/sport",
+      link: "/sport",
     },
     {
       name: "Profesional",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/entrenadores",
+      link: "/entrenadores",
     },
-    { name: "Loging", link: "#" },
+    { name: "Loging", link: "/Login" },
   ];
 
   return (
@@ -77,13 +77,13 @@ export const Navbar = () => {
         }}
       >
         <div className="logo">
-          <a
-            href={logoLink.url}
+          <Link
+            to={logoLink.url}
             className="logo-text"
-            rel="noopener noreferrer"
+  
           >
             {logoLink.name}
-          </a>
+          </Link>
         </div>
 
         <ul

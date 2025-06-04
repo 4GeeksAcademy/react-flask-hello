@@ -56,7 +56,7 @@ def create_user():
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize()), 201
-
+ 
 @api.route('/users', methods=['PUT'])
 @jwt_required()
 def update_user():

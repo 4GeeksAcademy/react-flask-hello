@@ -32,7 +32,7 @@ def handle_before_request():
         response = make_response()
         origin = request.headers.get("Origin", "*")
         # Check if the origin is allowed
-        if origin in ["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"]:
+        if origin in os.getenv("FLASK_FRONTEND_URL"): 
             response.headers.add('Access-Control-Allow-Origin', origin)
             response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -47,14 +47,14 @@ jwt = JWTManager(app)
 # Configuración CORS profesional
 CORS(
     app,
-    origins=["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"],
+    origins=os.getenv("FLASK_FRONTEND_URL"),
     supports_credentials=True
 )
 
 @app.after_request
 def add_cors_headers(response):
     origin = request.headers.get("Origin", "")
-    if origin in ["https://sportconnect-uk2i.onrender.com", "http://localhost:3000"]:
+    if origin in os.getenv("FLASK_FRONTEND_URL") :
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"

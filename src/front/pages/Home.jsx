@@ -41,7 +41,7 @@ export const Home = () => {
 		<div className="text-center mt-5">
 			<VideoPlayer/> 
 			<Carousel/>
-			<h1>Planes de Gimnasio</h1>
+			<h1 className="section-title">Planes de Gimnasio</h1>
             <GymPlans/>
 			<h1>Partners</h1>
 			<Partners/>

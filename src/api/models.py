@@ -85,9 +85,7 @@ class Student(db.Model):
 class Teacher(db.Model):
     __tablename__ = 'teacher'
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), primary_key=True)
-    department: Mapped[str] = mapped_column(String(100), nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), primary_key=True)
     phone: Mapped[str] = mapped_column(String(20))
 
     user = relationship("User", back_populates="teacher")
@@ -97,9 +95,15 @@ class Teacher(db.Model):
     def serialize(self):
         return {
             "user_id": self.user_id,
-            "department": self.department,
-            "phone": self.phone
+            "phone": self.phone,
+            "courses": [
+                {
+                    "id": course.id,
+                    "name": course.name
+                } for course in self.courses
+            ]
         }
+
 
 
 class Course(db.Model):

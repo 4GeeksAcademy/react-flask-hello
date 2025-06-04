@@ -51,6 +51,17 @@ class User(db.Model):
             })
         return data
     
+class PlanTemplateItem(db.Model):
+    __tablename__ = 'plan_template_items'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    plan_template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
+    template_item_id: Mapped[int] = mapped_column(Integer, ForeignKey('template_items.id'), nullable=False)
+    orden: Mapped[int] = mapped_column(Integer, nullable=True)  # Puedes añadir más campos si quieres
+
+    # Relaciones
+    plan_template = relationship('PlanTemplate', back_populates='plan_template_items')
+    template_item = relationship('TemplateItem', back_populates='plan_template_items')
+
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -74,7 +85,6 @@ class PlanTemplate(db.Model):
             "created_at": self.created_at.isoformat()
         }
 
-# Modifica TemplateItem:
 class TemplateItem(db.Model):
     __tablename__ = 'template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -117,50 +127,51 @@ class TemplateItem(db.Model):
                 "repeticiones": self.repeticiones
             })
         return base
-class TemplateItem(db.Model):
-    __tablename__ = 'template_items'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
-    item_type: Mapped[str] = mapped_column(String(30), nullable=False)
-    nombre: Mapped[str] = mapped_column(String(30), nullable=False)
-    calorias: Mapped[int] = mapped_column(Integer)
-    proteinas: Mapped[int] = mapped_column(Integer)
-    grasas: Mapped[int] = mapped_column(Integer)
-    carbohidratos: Mapped[int] = mapped_column(Integer)
-    meal_momento: Mapped[str] = mapped_column(String(60))
-    cantidad: Mapped[float] = mapped_column(Float)
-    muscle_group: Mapped[str] = mapped_column(String(50))
-    series: Mapped[int] = mapped_column(Integer)
-    repeticiones: Mapped[int] = mapped_column(Integer)
-    orden: Mapped[int] = mapped_column(Integer)
+    
+# class TemplateItem(db.Model):
+#     __tablename__ = 'template_items'
+#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+#     template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
+#     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
+#     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
+#     calorias: Mapped[int] = mapped_column(Integer)
+#     proteinas: Mapped[int] = mapped_column(Integer)
+#     grasas: Mapped[int] = mapped_column(Integer)
+#     carbohidratos: Mapped[int] = mapped_column(Integer)
+#     meal_momento: Mapped[str] = mapped_column(String(60))
+#     cantidad: Mapped[float] = mapped_column(Float)
+#     muscle_group: Mapped[str] = mapped_column(String(50))
+#     series: Mapped[int] = mapped_column(Integer)
+#     repeticiones: Mapped[int] = mapped_column(Integer)
+#     orden: Mapped[int] = mapped_column(Integer)
 
-    # relaciones:
-    template = relationship('PlanTemplate', back_populates='items')
+#     # relaciones:
+#     template = relationship('PlanTemplate', back_populates='items')
 
-    def serialize(self):
-        base = {
-            "id": self.id,
-            "template_id": self.template_id, 
-            "item_type": self.item_type,
-            "nombre": self.nombre,
-            "orden": self.orden
-        }
-        if self.item_type == 'food':
-            base.update({
-                "calorias": self.calorias,
-                "proteinas": self.proteinas,
-                "grasas": self.grasas,
-                "carbohidratos": self.carbohidratos,
-                "meal_momento": self.meal_momento,
-                "cantidad": self.cantidad
-            })
-        else:
-            base.update({
-                "muscle_group": self.muscle_group,
-                "series": self.series,
-                "repeticiones": self.repeticiones
-            })
-        return base
+#     def serialize(self):
+#         base = {
+#             "id": self.id,
+#             "template_id": self.template_id, 
+#             "item_type": self.item_type,
+#             "nombre": self.nombre,
+#             "orden": self.orden
+#         }
+#         if self.item_type == 'food':
+#             base.update({
+#                 "calorias": self.calorias,
+#                 "proteinas": self.proteinas,
+#                 "grasas": self.grasas,
+#                 "carbohidratos": self.carbohidratos,
+#                 "meal_momento": self.meal_momento,
+#                 "cantidad": self.cantidad
+#             })
+#         else:
+#             base.update({
+#                 "muscle_group": self.muscle_group,
+#                 "series": self.series,
+#                 "repeticiones": self.repeticiones
+#             })
+#         return base
 
 class SubscriptionPlan(db.Model):
     __tablename__ = 'subscription_plans'

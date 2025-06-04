@@ -52,7 +52,7 @@ const Login = () => {
                         className="form-control"
                         id="loginEmail"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value.toLowerCase())}
                         required
                     />
                 </div>

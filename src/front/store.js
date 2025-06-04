@@ -1,5 +1,6 @@
 export const initialStore = () => {
   return {
+    products: [],
     carrito: [],
   };
 };

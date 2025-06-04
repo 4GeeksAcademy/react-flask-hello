@@ -1,33 +1,42 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+
 
 const Login = () => {
+
+    const URLBACK = import.meta.env.VITE_BACKEND_URL
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const navigate = useNavigate();
+    const { login } = useGlobalReducer()
 
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        alert("Inicio de sesion exitoso");
-        navigate("/carrito");
-    };
-
-    const loginUser = async () => {
 
         try {
-            const resp = await axios.post("https://friendly-lamp-x5v79p56j7xxf4gw-3001.app.github.dev/api/login", {
+            const resp = await axios.post(`${URLBACK}api/login`, {
                 email, password
             })
-            localStorage.setItem("token", resp.data.token)
-            console.log("token", resp.data.token)
+
+            const data = resp.data
+
+            if (data?.token) {
+                login(data.token)
+                navigate('/')
+            } else {
+                alert("Usuario o contraseña equivocada")
+            }
+
         } catch (error) {
             console.error("Error logging in", error);
             alert("Ocurrió un error al conectar con el servidor");
         }
-    }
+    };
+
+
 
 
     return (
@@ -62,7 +71,7 @@ const Login = () => {
                     />
                 </div>
 
-                <button type="submit" className="btn btn-primary w-100" onClick={loginUser}>
+                <button type="submit" className="btn btn-primary w-100" >
                     Iniciar sesión
                 </button>
             </form>

@@ -26,7 +26,7 @@ const Register = () => {
                     <div className="options-row1">
                         <label className="remember-label">
                             <input type="checkbox" className="checkbox1 me-4" />
-                            Soy mayor de 16 años y acepto los <a href="#">Términos y condiciones</a>
+                            Soy mayor de 16 años y acepto los &nbsp;<a href="#">Términos y condiciones</a>
                         </label>
                     </div>
                 </div>

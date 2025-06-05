@@ -184,12 +184,13 @@ def get_grade_levels():
 def register_student():
     data = request.json
     required_fields = ['first_name', 'last_name', 'email',
-                       'password', 'phone', 'grade_level_id', 'period']
+                       'password', 'phone', 'grade_level_id', 'period', 'location']
 
     error = validate_required_fields(data, required_fields)
     if error:
         return jsonify({"error": error}), 400
-
+    if not data.get('location'):
+        return jsonify({"error": "La ubicación es requerida"}), 400
     if User.query.filter_by(email=data['email']).first():
         return jsonify({"error": "El correo ya está registrado"}), 400
 
@@ -203,7 +204,11 @@ def register_student():
         email=data['email'],
         password=generate_password_hash(data['password']),
         role='student',
-        status='pending'
+        status='pending',
+        location= data ['location']
+        
+        
+        
     )
     db.session.add(user)
     db.session.flush()
@@ -225,11 +230,14 @@ def register_student():
 def register_teacher():
     data = request.get_json()
     required_fields = ['first_name', 'last_name',
-                       'email', 'password', 'phone', 'course_id']
+                       'email', 'password', 'phone', 'course_id', 'location']
 
     error = validate_required_fields(data, required_fields)
     if error:
         return jsonify({"error": error}), 400
+    
+    if not data.get('location'):
+        return jsonify({"error": "La ubicación es requerida"}), 400
 
     if User.query.filter_by(email=data['email']).first():
         return jsonify({"error": "El correo ya está registrado"}), 400
@@ -245,7 +253,8 @@ def register_teacher():
         email=data['email'],
         password=generate_password_hash(data['password']),
         role='teacher',
-        status='pending'
+        status='pending',
+        location= data ['location']
     )
     db.session.add(user)
     db.session.flush()

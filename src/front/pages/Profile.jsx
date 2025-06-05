@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 const Profile = () => {
@@ -9,9 +9,36 @@ const Profile = () => {
         sports: ""
     });
 
+    useEffect(() => {
+        // Obtener los datos del usuario desde localStorage
+        const userData = JSON.parse(localStorage.getItem("userData"));
+
+        if (userData) {
+            setProfile({
+                username: userData.name || "",
+                email: userData.email || "",
+                sports: userData.sports || ""
+            });
+        }
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile({ ...profile, [name]: value });
+    };
+
+    const handleSave = () => {
+        // Guardar solo nombre y deportes, no modificar correo
+        const userData = JSON.parse(localStorage.getItem("userData"));
+
+        const updatedUserData = {
+            ...userData,
+            name: profile.username,
+            sports: profile.sports
+        };
+
+        localStorage.setItem("userData", JSON.stringify(updatedUserData));
+        setIsEditing(false);
     };
 
     const toggleEdit = () => setIsEditing(!isEditing);

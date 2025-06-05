@@ -75,11 +75,11 @@ const Login = () => {
                                 />
                             </div>
                             <button type="submit" className="btn btn-light w-100 text-white bg-success">
-                                Log in
+                                Iniciar sesión
                             </button>
                         </form>
                         <div className="text-center mt-3">
-                            <a href="/register" className="text-success">Create account</a>
+                            <a href="/register" className="text-success">Crear cuenta</a>
                         </div>
                     </div>
                 </div>

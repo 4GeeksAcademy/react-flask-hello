@@ -17,11 +17,24 @@ const Register = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        registerUser(formData)
-        navigate("/feed");
+        try {
+            const response = await registerUser(formData);
+            if (response?.token) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("token", response.token);
+                localStorage.setItem("userData", JSON.stringify(response.user));
+                navigate("/feed");
+            } else {
+                alert("Registro fallido.");
+            }
+        } catch (error) {
+            console.error("Error al registrar:", error);
+            alert("Error al registrar. Intenta de nuevo.");
+        }
     };
+
 
     return (
         <div
@@ -59,7 +72,7 @@ const Register = () => {
                                 className="form-control"
                                 id="name"
                                 name="name"
-                                placeholder="Name"
+                                placeholder="Nombre"
                                 value={formData.name}
                                 onChange={handleChange}
                                 required

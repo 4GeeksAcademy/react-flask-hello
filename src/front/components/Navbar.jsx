@@ -9,10 +9,15 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    
+    localStorage.removeItem("userData");
+
     logout();
+
     alert("Sesión cerrada correctamente.");
     navigate("/login");
   };
+
 
   return (
     <nav

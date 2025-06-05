@@ -15,14 +15,14 @@ const Feed = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedSport, setSelectedSport] = useState("all");
     const [selectedDifficulty, setSelectedDifficulty] = useState("all");
-    
+
 
     useEffect(() => {
         const loggedIn = localStorage.getItem("isLoggedIn");
         if (loggedIn !== "true") {
             navigate("/login");
         }
-    }, []);
+    }, [navigate]);
 
     const handleToggleFavorite = (id) => {
         const updatedPosts = posts.map(post =>
@@ -44,7 +44,7 @@ const Feed = () => {
         if (selectedDifficulty !== "all") params.append("difficulty", selectedDifficulty);
 
         const storedFavorites = JSON.parse(localStorage.getItem("favoritePosts")) || [];
-        
+
 
 
         fetch(`${BASE_URL}/api/events?${params.toString()}`)
@@ -65,14 +65,18 @@ const Feed = () => {
     }, [selectedSport, selectedDifficulty]);
 
     const handleJoin = (id) => {
-        setPosts(posts.map(post =>
-            post.id === id
-                ? (post.participants < post.capacity
-                    ? { ...post, participants: post.participants + 1 }
-                    : post)
-                : post
-        ));
+        setPosts(posts.map(post => {
+            if (post.id === id) {
+                if (post.participants < post.capacity) {
+                    return { ...post, participants: post.participants + 1 };
+                } else {
+                    alert("Este evento ya alcanzó su capacidad máxima.");
+                }
+            }
+            return post;
+        }));
     };
+
 
     let filteredPosts = [...posts];
 
@@ -158,8 +162,16 @@ const Feed = () => {
                     )}
                 </div>
 
+                <p className="text-white">
+                    Mostrando {filteredPosts.length} evento(s)
+                    {activeTab === "favorites" ? " favoritos ❤️" : ""}
+                </p>
+
                 {filteredPosts.length === 0 ? (
-                    <p className="text-black">No hay publicaciones.</p>
+                    <p className="text-black">
+                        No se encontraron eventos con los filtros seleccionados.
+                    </p>
+
                 ) : (
                     filteredPosts.map(post => (
                         <PostCard

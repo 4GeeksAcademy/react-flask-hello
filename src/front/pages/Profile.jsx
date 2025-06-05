@@ -10,7 +10,7 @@ const Profile = () => {
     });
 
     useEffect(() => {
-        // Obtener los datos del usuario desde localStorage
+        // Obtener datos del usuario desde localStorage
         const userData = JSON.parse(localStorage.getItem("userData"));
 
         if (userData) {
@@ -28,12 +28,11 @@ const Profile = () => {
     };
 
     const handleSave = () => {
-        // Guardar solo nombre y deportes, no modificar correo
         const userData = JSON.parse(localStorage.getItem("userData"));
 
         const updatedUserData = {
             ...userData,
-            name: profile.username,
+            name: profile.username, // conservamos la edición del nombre
             sports: profile.sports
         };
 
@@ -96,7 +95,7 @@ const Profile = () => {
                                 className="form-control mb-3"
                                 name="email"
                                 value={profile.email}
-                                disabled // lo hace solo lectura
+                                disabled
                             />
                             <input
                                 type="text"
@@ -129,7 +128,7 @@ const Profile = () => {
                                     ))}
                             </ul>
 
-                            <button className="btn btn-outline-success mt-4" onClick={toggleEdit}>
+                            <button className="btn btn-outline-success mt-4" onClick={handleSave}>
                                 Editar Perfil
                             </button>
                         </>

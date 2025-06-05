@@ -28,7 +28,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch(`${mport.meta.env.VITE_BACKEND_URL}/api/events`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

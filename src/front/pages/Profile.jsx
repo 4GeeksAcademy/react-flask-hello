@@ -96,8 +96,7 @@ const Profile = () => {
                                 className="form-control mb-3"
                                 name="email"
                                 value={profile.email}
-                                onChange={handleChange}
-                                placeholder="ejemplo@gmail.com"
+                                disabled // lo hace solo lectura
                             />
                             <input
                                 type="text"

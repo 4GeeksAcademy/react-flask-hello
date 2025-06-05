@@ -2,13 +2,19 @@ import { useState } from "react";
 
 export const AdminProfesores = () => {
     const [showTable, setShowTable] = useState(false);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
 
-    const handleAsistencia = () => {
-        setShowTable(true);
+    const handleAsistencia = (teacherId) => {
+        if (selectedTeacher === teacherId) {
+            setSelectedTeacher(null);
+            setShowTable(false);
+        } else {
+            setSelectedTeacher(teacherId);
+            setShowTable(true);
+        }
     };
 
     return (
-
         <div className="container-fliud table-responsive px-4">
             <div className="row">
                 <div className="col-7">
@@ -29,7 +35,13 @@ export const AdminProfesores = () => {
                                 <td>Otto</td>
                                 <td>Matemática</td>
                                 <td>
-                                    <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                    <button
+                                        type="button"
+                                        className={`btn btn-sm ${selectedTeacher === 1234 ? 'btn-primary' : 'btn-success'}`}
+                                        onClick={() => handleAsistencia(1234)}
+                                    >
+                                        <i className={`ri-eye${selectedTeacher === 1234 ? '-off' : ''}-line`}></i>
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -38,7 +50,13 @@ export const AdminProfesores = () => {
                                 <td>Guzmán</td>
                                 <td>Historia</td>
                                 <td>
-                                    <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                    <button
+                                        type="button"
+                                        className={`btn btn-sm ${selectedTeacher === 5678 ? 'btn-primary' : 'btn-success'}`}
+                                        onClick={() => handleAsistencia(5678)}
+                                    >
+                                        <i className={`ri-eye${selectedTeacher === 5678 ? '-off' : ''}-line`}></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -111,15 +129,6 @@ export const AdminProfesores = () => {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="text-center mt-2">
-                                <button
-                                    type="button"
-                                    className="btn btn-danger btn-sm"
-                                    onClick={() => setShowTable(false)}
-                                >
-                                    Cerrar
-                                </button>
-                            </div>
                         </div>
                     </div>
                 )}

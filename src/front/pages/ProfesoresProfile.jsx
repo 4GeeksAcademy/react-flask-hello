@@ -59,24 +59,21 @@ export const ProfesoresProfile = () => {
     return (
         <div className="container py-4">
             {load ?
-                <div>
-                    <div className="row justify-content-center">
-                        <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
-                            <h2 className="mb-4 text-center"> Bienvenido José {user.last_name}</h2>
-                            <img src={teacher} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
-                        </div>
-                        <div className="col-12 col-md-6 col-lg-5">
-                            <h5 className="fw-bold mb-3">Información básica</h5>
-                            <ul className="list-group">
-                                <li className="list-group-item"><div className="fw-bold">Nombres:</div>{user.first_name}</li>
-                                <li className="list-group-item"><div className="fw-bold">Apellidos:</div>{user.last_name}</li>
-                                <li className="list-group-item"><div className="fw-bold">Correo:</div>{user.email}</li>
-                                <li className="list-group-item"><div className="fw-bold">Teléfono:</div>{user.teacher.phone}</li>
-                                <li className="list-group-item"><div className="fw-bold">Dirrecion:</div>{user.location}</li>
-                                <li className="list-group-item"><div className="fw-bold">Materia:</div>{user.teacher.courses[0].name}</li>
-                                <li className="list-group-item"><div className="fw-bold">ID:</div>{user.id}</li>
-                            </ul>
-                        </div>
+                <div className="row justify-content-center">
+                    <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
+                        <h2 className="mb-4 text-center"> Bienvenido {user.first_name} {user.last_name}</h2>
+                        <img src={teacher} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
+                    </div>
+                    <div className="col-12 col-md-6 col-lg-5">
+                        <h5 className="fw-bold mb-3">Información básica</h5>
+                        <ul className="list-group">
+                            <li className="list-group-item"><div className="fw-bold">Apellidos:</div>{user.last_name}</li>
+                            <li className="list-group-item"><div className="fw-bold">Nombres:</div>{user.first_name}</li>
+                            <li className="list-group-item"><div className="fw-bold">ID:</div>{user.id}</li>
+                            <li className="list-group-item"><div className="fw-bold">Correo:</div>{user.email}</li>
+                            <li className="list-group-item"><div className="fw-bold">Teléfono:</div>{user.teacher.phone}</li>
+                            <li className="list-group-item"><div className="fw-bold">Materia:</div>{user.teacher.courses[0].name}</li>
+                        </ul>
                     </div>
                     {coords && (
                         <div className="mt-4">

@@ -445,60 +445,6 @@ def create_payment():
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
-# @api.route('/payments', methods=['GET'])
-# def list_payments():
-#     pays=Payment.query.all()
-#     return jsonify([p.serialize() for p in pays ]), 200
-
-# @api.route('/paymets/<int:pid>', methods=['GET'])
-# def get_payment(pid):
-#     p = Payment.query.get(pid)
-#     if not p:
-#         abort(404, description="No se ha encontrado el pago")
-#     return jsonify(p.serialize()), 200
-
-# @api.route('/payments', methods=['POST'])
-# def create_payment():
-#     data = request.get_json() or {}
-#     required = ('subscription_id', 'amount', 'method', 'status')
-#     if not all(f in data for f in required):
-#         raise APIException(f"Faltan datos obligatorios: {', '.join(required)}", status_code=400)
-#     p = Payment(
-#         subscription_id=data['subscription_id'],
-#         amount=data['amount'],
-#         method=data['method'],
-#         paid_at=data.get('paid_at'),
-#         status=data['status']
-#     )
-#     db.session.add(p)
-#     db.session.commit()
-#     return jsonify(p.serialize()), 200
-
-# @api.route('/payments/<int:pid>', methods=['PUT'])
-# def update_payment(pid):
-#     p = Payment.query.get(pid)
-#     if not p:
-#         abort(404, description="pago no encontrado")
-#     data = request.get_json() or {}
-#     updatable = ('subscription_id', 'amount', 'method', 'paid_at', 'status')
-#     if not any(f in data for f in updatable):
-#         raise APIException(f"Faltan campos obligatorios de pago", status_code=400)
-#     for field in updatable:
-#         if field in data:
-#             setattr(p, field, data[field])
-#     db.session.commit()
-#     return jsonify(p.serialize()), 200
-
-# @api.route('/payment/<int:pid>', methods=['DELETE'])
-# def delete_payment(pid):
-#     p = Payment.query.get(pid)
-#     if not p:
-#         abort(404, description="No se ha encontado el pago")
-#     db.session.delete(p)
-#     db.session.commit()
-#     return '', 204
-
 
 #EVENTS
 

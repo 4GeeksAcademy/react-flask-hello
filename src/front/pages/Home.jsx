@@ -63,7 +63,7 @@ export const Login = () => {
           <h1 className="text-center mb-4">Bienvenido</h1>
           <div className="d-flex flex-column gap-3 mb-4">
             <div>
-              <input name="email" type="email" className="form-control" placeholder="Correo Electrónico" onChange={e => setEmail(e.target.value)} required />
+              <input name="email" type="email" className="form-control" placeholder="Correo electrónico" onChange={e => setEmail(e.target.value)} required />
             </div>
             <div>
               <input name="password" type="password" className="form-control" placeholder="Contraseña" onChange={e => setPassword(e.target.value)} required />

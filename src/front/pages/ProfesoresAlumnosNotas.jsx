@@ -50,7 +50,6 @@ export const ProfesoresAlumnosNotas = () => {
     const handleSave = (studentId) => {
         setEditingId(null);
         // Aquí irá la lógica para guardar en la base de datos
-        alert('Cambios guardados exitosamente');
     };
 
     return (
@@ -94,7 +93,7 @@ export const ProfesoresAlumnosNotas = () => {
                 </div>
 
                 {showTable && (
-                    <>
+                    <div>
                         <table className="col-12 table table-striped table-bordered text-center mt-5">
                             <thead className="table-light">
                                 <tr>
@@ -188,7 +187,7 @@ export const ProfesoresAlumnosNotas = () => {
                                 ))}
                             </tbody>
                         </table>
-                    </>
+                    </div>
                 )}
             </div>
         </div>

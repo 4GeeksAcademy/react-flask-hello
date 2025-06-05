@@ -21,7 +21,7 @@ const Home = () => {
                     <h2 className="text-dark mb-4">Únete a la comunidad</h2>
                     <p className="text-muted">Regístrate y conecta con personas apasionadas por el deporte.</p>
                     <Link to="/login" className="btn btn-success w-100">
-                        Ir al Login / Registro
+                        Iniciar sesión
                     </Link>
                 </div>
             </div>

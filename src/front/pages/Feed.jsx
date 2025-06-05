@@ -22,7 +22,7 @@ const Feed = () => {
         if (loggedIn !== "true") {
             navigate("/login");
         }
-    }, []);
+    }, [navigate]);
 
     const handleToggleFavorite = (id) => {
         const updatedPosts = posts.map(post =>

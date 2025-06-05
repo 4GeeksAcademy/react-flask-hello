@@ -15,6 +15,7 @@ import Eventos from "./pages/Eventos";
 import Tarifas from "./pages/Tarifas";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { Checkout } from "./pages/checkout";
 
 
 export const router = createBrowserRouter(
@@ -32,6 +33,7 @@ export const router = createBrowserRouter(
       <Route path="/Tarifas" element={<Tarifas />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
+      <Route path="/checkout" element={<Checkout />} />
     </Route>
   )
 );

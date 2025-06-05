@@ -13,9 +13,10 @@ import  Entrenadores  from "./pages/Entrenadores";
 import  AboutUs  from "./pages/AboutUs";
 import Eventos from "./pages/Eventos";
 import Tarifas from "./pages/Tarifas";
-import Login from "./pages/Login";
+import User from "./pages/User";
+import ProfesoresPage from "./pages/ProfesoresPage";
 import Register from "./pages/Register";
-
+import Login from "./pages/Login";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,8 @@ export const router = createBrowserRouter(
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />
       <Route path="/Tarifas" element={<Tarifas />} />
+      <Route path="/User" element={<User />} />
+      <Route path="/Profesores" element={<ProfesoresPage />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
     </Route>

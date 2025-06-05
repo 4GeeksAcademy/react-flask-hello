@@ -113,6 +113,27 @@ export const ProfesoresAlumnosAsistencia = () => {
         });
     };
 
+    const handleAsistance = async () => {
+        const students = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendance?enrollment_id=8`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setStudents(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+    }
+
     return (
 
         <div className="container-fliud table-responsive px-4">

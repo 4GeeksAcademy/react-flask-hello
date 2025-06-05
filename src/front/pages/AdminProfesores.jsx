@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const AdminProfesores = () => {
     const [showTable, setShowTable] = useState(false);

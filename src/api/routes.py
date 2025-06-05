@@ -205,10 +205,10 @@ def register_student():
         password=generate_password_hash(data['password']),
         role='student',
         status='pending',
-        location= data ['location']
-        
-        
-        
+        location=data['location']
+
+
+
     )
     db.session.add(user)
     db.session.flush()
@@ -235,7 +235,7 @@ def register_teacher():
     error = validate_required_fields(data, required_fields)
     if error:
         return jsonify({"error": error}), 400
-    
+
     if not data.get('location'):
         return jsonify({"error": "La ubicación es requerida"}), 400
 
@@ -254,7 +254,7 @@ def register_teacher():
         password=generate_password_hash(data['password']),
         role='teacher',
         status='pending',
-        location= data ['location']
+        location=data['location']
     )
     db.session.add(user)
     db.session.flush()

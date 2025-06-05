@@ -80,7 +80,7 @@ export const AlumnosProfile = () => {
                         </div>
                     </div>
                     {coords && (
-                        <div className="mt-4">
+                        <div className="mt-4 setIndex" >
                             <h5 className="fw-bold mb-3">Ubicación estimada</h5>
                             <MapContainer
                                 center={coords}

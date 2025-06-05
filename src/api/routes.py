@@ -8,11 +8,13 @@ from flask_cors import CORS
 from sqlalchemy import select
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+bcrypt = Bcrypt()
 
 #USERS
 @api.route('/users', methods=['GET'])
@@ -34,21 +36,25 @@ def create_user():
     required = ('nombre', 'email', 'password', 'account_type')
     if not all(f in data for f in required):
         raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+    hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
+
+
+    
     user = User(
         email=data['email'],
-        password=data['password'],
+        password=hashed_password,
         is_active=data.get('is_active', True),
         peso=data.get('peso'),
         altura=data.get('altura'),
         objetivo=data.get('objetivo'),
         telefono=data.get('telefono'),
         profession_type=data.get('profession_type'),
-        experiencia_anios=data.get('experiencia_anios', 0)
+        experiencia=data.get('experiencia', 0)
     )
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize()), 201
-
+ 
 @api.route('/users', methods=['PUT'])
 @jwt_required()
 def update_user():
@@ -260,7 +266,7 @@ def get_template_item(iid):
 
 @api.route('/template_items', methods=['POST'])
 def create_template_item():
-    data = request.json() or {}
+    data = request.json or {}
     required = ('template_id', 'item_type', 'nombre')
     if not all(f in data for f in required):
         raise APIException(f"Faltan campos obligatorios: {', '.join(required)}", status_code=400)

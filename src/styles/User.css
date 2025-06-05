@@ -1,0 +1,173 @@
+.perfil-container {
+  padding: 2rem;
+  background: #1c2d3a;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.perfil-titulo {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #ecefca;
+}
+
+.perfil-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #2a3d4d;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 1000px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.columna {
+  flex: 1;
+  min-width: 250px;
+}
+
+.columna-centro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.columna-centro img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.columna-centro img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+}
+
+.btn-editar {
+  background-color: #2a3d4d;
+  color: #ecefca;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-editar:hover {
+  background-color: #ecefca;
+  color: #2a3d4d;
+  transform: scale(1.03);
+}
+
+.columna p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.secciones-inferiores {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 4rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1400px;
+  transition: all 0.3s ease-in-out;
+}
+
+.seccion {
+  flex: 1;
+  min-width: 280px;
+  background-color: #2a3d4d;
+  padding: 1.8rem;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.seccion:hover {
+  transform: scale(1.02);
+}
+
+.seccion h2 {
+  color: #ecefca;
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+}
+
+.seccion p,
+.seccion li {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: white;
+}
+
+.seccion ul {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  text-align: left;
+}
+
+.entrenador-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.entrenador-nombre {
+  font-weight: bold;
+  font-size: 1.15rem;
+}
+
+/* ✅ Media queries bien cerradas */
+@media (max-width: 768px) {
+  .perfil-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .columna {
+    min-width: 100%;
+  }
+
+  .columna-centro img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .columna p {
+    font-size: 1rem;
+  }
+
+  .secciones-inferiores {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .perfil-boton-editar {
+    justify-content: center;
+  }
+}

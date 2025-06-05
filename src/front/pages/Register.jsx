@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { registerUser } from "../services/api"
+import PublicNavbar from "../components/PublicNavbar";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Register = () => {
                 position: "relative",
             }}
         >
-            <Navbar />
+            <PublicNavbar />
 
             <div
                 className="d-flex justify-content-center align-items-center"

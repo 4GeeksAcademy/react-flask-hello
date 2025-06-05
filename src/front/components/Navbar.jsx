@@ -21,7 +21,8 @@ const Navbar = () => {
         backgroundColor: "rgba(255, 255, 255, 0.5)",
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
-        position: "absolute",
+        position: "0",
+        width: "100%",
       }}
     >
       <div className="container-fluid d-flex align-items-center">

@@ -9,6 +9,7 @@ export const AdminAlumnosAsistencia = () => {
     const [period, setPeriods] = useState([])
     const [grade, setGrades] = useState([])
     const [load, setLoad] = useState(false)
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
     useEffect(() => {
         const students = async () => {
@@ -76,8 +77,14 @@ export const AdminAlumnosAsistencia = () => {
 
     const [showTable, setShowTable] = useState(false);
 
-    const handleAsistencia = () => {
-        setShowTable(true);
+    const handleAsistencia = (studentId) => {
+        if (selectedStudent === studentId) {
+            setSelectedStudent(null);
+            setShowTable(false);
+        } else {
+            setSelectedStudent(studentId);
+            setShowTable(true);
+        }
     };
 
 
@@ -127,7 +134,13 @@ export const AdminAlumnosAsistencia = () => {
                                         <td>Otto</td>
                                         <td>10</td>
                                         <td>
-                                            <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${selectedStudent === 1234 ? 'btn-danger' : 'btn-success'}`}
+                                                onClick={() => handleAsistencia(1234)}
+                                            >
+                                                <i className={`ri-eye${selectedStudent === 1234 ? '-off' : ''}-line`}></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -136,7 +149,13 @@ export const AdminAlumnosAsistencia = () => {
                                         <td>Guzmán</td>
                                         <td>500</td>
                                         <td>
-                                            <button type="button" className="btn btn-primary btn-sm" onClick={handleAsistencia}>Asistencia</button>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${selectedStudent === 5678 ? 'btn-danger' : 'btn-success'}`}
+                                                onClick={() => handleAsistencia(5678)}
+                                            >
+                                                <i className={`ri-eye${selectedStudent === 5678 ? '-off' : ''}-line`}></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -211,15 +230,6 @@ export const AdminAlumnosAsistencia = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div className="text-center mt-2">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => setShowTable(false)}
-                                    >
-                                        Cerrar
-                                    </button>
-                                </div>
                             </div>
                         )}
                     </div>

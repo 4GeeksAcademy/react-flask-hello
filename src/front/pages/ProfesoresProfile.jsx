@@ -36,7 +36,7 @@ export const ProfesoresProfile = () => {
             {load ?
                 <div className="row justify-content-center">
                     <div className="col-12 col-md-6 col-lg-5 mb-4 mb-md-0 d-flex flex-column justify-content-center align-items-center">
-                        <h2 className="mb-4 text-center"> Bienvenido José {user.last_name}</h2>
+                        <h2 className="mb-4 text-center"> Bienvenido {user.first_name} {user.last_name}</h2>
                         <img src={teacher} className="img-profile rounded-circle shadow img-thumbnail object-fit-cover" alt="" />
                     </div>
                     <div className="col-12 col-md-6 col-lg-5">

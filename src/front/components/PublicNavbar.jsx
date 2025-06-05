@@ -17,15 +17,9 @@ const PublicNavbar = () => {
           <BsHouseFill size={28} />
         </Link>
 
-        <span
-          className="nav-link-disabled me-3"
-          data-bs-toggle="tooltip"
-          data-bs-placement="bottom"
-          title="Solo para usuarios registrados"
-          style={{ cursor: "not-allowed" }}
-        >
-          <BsPersonFill size={28} />
-        </span>
+        <Link to="/register" className="btn btn-outline-success me-3">
+          Crear cuenta
+        </Link>
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav d-flex flex-row gap-4"></div>

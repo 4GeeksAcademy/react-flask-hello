@@ -1,7 +1,6 @@
-from flask import Blueprint, request, jsonify
-from ..weather_services import get_weather  # Importa la función real
+from flask import Blueprint
+from src.api.services.weather_services import get_weather
 
-# Crea un blueprint para las rutas del clima
 weather_bp = Blueprint('weather_bp', __name__)
 
 # Ruta para obtener el clima: /api/weather?lat=...&lng=...&date=...
@@ -21,3 +20,4 @@ def weather():
 
     # Respuesta en formato JSON
     return jsonify({"weather": weather_data})
+    return get_weather()

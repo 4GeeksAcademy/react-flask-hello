@@ -5,9 +5,6 @@ import PublicNavbar from "../components/PublicNavbar";
 import "../styles/Login.css";
 import { useAuth } from "../context/AuthContext";
 
-
-
-
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,11 +16,13 @@ const Login = () => {
         try {
             const response = await loginUser({ email, password });
 
-            login(response.user); // ✅ setea el usuario en el contexto
 
-            localStorage.setItem("token", response.token); // Podés seguir guardando el token si lo necesitás
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("token", response.token); // ✅ token
+            localStorage.setItem("userData", JSON.stringify(response.user)); // ✅ info usuario
 
-            navigate("/feed");
+            login(response.user); // setea el usuario en el contexto
+            navigate("/profile");
         } catch (error) {
             console.error("Error al iniciar sesión:", error.message);
             alert("Credenciales inválidas o error en el servidor.");
@@ -76,11 +75,11 @@ const Login = () => {
                                 />
                             </div>
                             <button type="submit" className="btn btn-light w-100 text-white bg-success">
-                                Log in
+                                Iniciar sesión
                             </button>
                         </form>
                         <div className="text-center mt-3">
-                            <a href="/register" className="text-success">Create account</a>
+                            <a href="/register" className="text-success">Crear cuenta</a>
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ from ..controllers.users_controller import (
     update_user, delete_user, join_event, leave_event, get_user_events
 )
 
-users_bp = Blueprint('users', __name__, url_prefix='/api/users')
+users_bp = Blueprint('users', __name__)
 
 # Registro de rutas con decoradores explícitos
 users_bp.add_url_rule('/', view_func=create_user, methods=['POST'])

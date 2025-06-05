@@ -9,10 +9,38 @@ const Profile = () => {
         sports: ""
     });
 
+    useEffect(() => {
+        // Obtener datos del usuario desde localStorage
+        const userData = JSON.parse(localStorage.getItem("userData"));
+
+        if (userData) {
+            setProfile({
+                username: userData.name || "",
+                email: userData.email || "",
+                sports: userData.sports || ""
+            });
+        }
+    }, []);
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile({ ...profile, [name]: value });
     };
+
+    const handleSave = () => {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+
+
+        const updatedUserData = {
+            ...userData,
+            sports: profile.sports
+        };
+
+        localStorage.setItem("userData", JSON.stringify(updatedUserData));
+        setIsEditing(false);
+    };
+
 
     const toggleEdit = () => setIsEditing(!isEditing);
 
@@ -56,22 +84,11 @@ const Profile = () => {
 
                     {isEditing ? (
                         <>
-                            <input
-                                type="text"
-                                className="form-control mb-3"
-                                name="username"
-                                value={profile.username}
-                                onChange={handleChange}
-                                placeholder="Name"
-                            />
-                            <input
-                                type="email"
-                                className="form-control mb-3"
-                                name="email"
-                                value={profile.email}
-                                onChange={handleChange}
-                                placeholder="ejemplo@gmail.com"
-                            />
+
+                            <h2>{profile.username}</h2>
+                            <p className="text-muted">{profile.email}</p>
+
+
                             <input
                                 type="text"
                                 className="form-control mb-3"
@@ -103,7 +120,7 @@ const Profile = () => {
                                     ))}
                             </ul>
 
-                            <button className="btn btn-outline-success mt-4" onClick={toggleEdit}>
+                            <button className="btn btn-outline-success mt-4" onClick={handleSave}>
                                 Editar Perfil
                             </button>
                         </>

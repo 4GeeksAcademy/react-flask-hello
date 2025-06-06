@@ -2,11 +2,14 @@ from flask import request, jsonify
 from ...models import db, Event, User
 from sqlalchemy.exc import SQLAlchemyError
 from ...utils import token_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
-@token_required  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
-def create_event(current_user):  # Recibimos el usuario autenticado desde el decorador
+@jwt_required()  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
+def create_event():  # Recibimos el usuario autenticado desde el decorador
     try:
+        current_user_email = get_jwt_identity()
+        user = User.query.filter_by(email=current_user_email).first()
         data = request.get_json()
         new_event = Event(
             title=data.get('title'),
@@ -15,13 +18,13 @@ def create_event(current_user):  # Recibimos el usuario autenticado desde el dec
             time=data.get('time'),
             difficulty=data.get('difficulty'),
             capacity=data.get('capacity'),
-            direction=data.get('direction'),
-            latitude=data.get('latitude'),
-            longitude=data.get('longitude'),
+            # direction=data.get('direction'),
+            latitude=654, #data.get('latitude'),
+            longitude=247, #data.get('longitude'),
             weather=data.get('weather'),
             distance=data.get('distance'),
             duration=data.get('duration'),
-            creator_id=data.get('creator_id')
+            creator_id=user.id
         )
         db.session.add(new_event)
         db.session.commit()

@@ -18,14 +18,14 @@ const Login = () => {
             console.log("Login exitoso:", response.token);
             
             localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("token", response.token);
+            localStorage.setItem("token", JSON.stringify (response.token));
             localStorage.setItem("userData", JSON.stringify(response.user));
-
-            login(response.user);
+            console.log (response)
+            login(response.token);
             navigate("/profile");
         } catch (error) {
-            console.error("Error al iniciar sesión:", error.message);
-            alert("Credenciales inválidas o error en el servidor.");
+            console.error("Error al iniciar sesión:", error);
+            
         }
     };
 

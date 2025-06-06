@@ -28,7 +28,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         };
 
         try {
-            const token = localStorage.getItem("token");
+            const token = JSON.parse(localStorage.getItem("token"));
 
             const response = await fetch(`${BASE_URL}/api/events`, {
                 method: "POST",

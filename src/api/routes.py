@@ -13,6 +13,7 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
+# WHYYYYYY??????
 
 @api.route('/products', methods=['GET'])
 def get_products():

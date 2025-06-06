@@ -36,7 +36,8 @@ class User(db.Model):
             "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "address": self.address
+            "address": self.address,
+            "role": self.role
         }
         
     def generate_reset_token(self):

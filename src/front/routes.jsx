@@ -11,7 +11,6 @@ import { StudenSignup } from "./pages/StudentSignup";
 import { TeacherSignup } from "./pages/TeacherSignup";
 import { AdminAlumnosNotas } from "./pages/AdminAlumnosNotas";
 import { AdminAlumnosAsistencia } from "./pages/AdminAlumnosAsistencia";
-import { AdminAlumnosPagos } from "./pages/AdminAlumnosPagos";
 import { AdminProfesores } from "./pages/AdminProfesores";
 import { AdminSolicitudes } from "./pages/AdminSolicitudes";
 import { ProfesoresProfile } from "./pages/ProfesoresProfile";
@@ -21,7 +20,6 @@ import { ProfesoresAlumnosAsistencia } from "./pages/ProfesoresAlumnosAsistencia
 import { ProfesoresHorario } from "./pages/ProfesoresHorario";
 import { AlumnosNotas } from "./pages/AlumnosNotas";
 import { AlumnosHorario } from "./pages/AlumnosHorario";
-import { AlumnosPagos } from "./pages/AlumnosPagos";
 import { LoginLayout } from "./pages/LoginLayout";
 import { SignupLayout } from "./pages/SignupLayout";
 import PrivateRoute from "./components/PrivateRoute";
@@ -51,7 +49,6 @@ export const router = createBrowserRouter(
         <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
         <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} />
         <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
-        <Route path="/admin/dashboard/alumnos/pagos" element={<AdminAlumnosPagos />} />
         <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
         <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
       </Route>
@@ -73,7 +70,6 @@ export const router = createBrowserRouter(
         <Route path="/student/dashboard/profile" element={<AlumnosProfile />} />
         <Route path="/student/dashboard/notas" element={<AlumnosNotas />} />
         <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />
-        <Route path="/student/dashboard/pagos" element={<AlumnosPagos />} />
       </Route>
       <Route path="/forgot-password" element={<SolicitarToken />} />
       <Route path="/reset-password/:token" element={<NuevaContrasena />} />   

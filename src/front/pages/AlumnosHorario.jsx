@@ -30,7 +30,7 @@ export const AlumnosHorario = () => {
         schedule()
     }, [])
     return (
-        <div className="container table-responsive">
+        <div className="container table-responsive my-5">
             {load ?
                 <div className="row">
                     <h1 className="fs-2 p-0">Horario del estudiante </h1>

@@ -58,7 +58,7 @@ export const AlumnosProfile = () => {
     }, [user])
 
     return (
-        <div className="container py-4">
+        <div className="container my-5">
             {load ?
                 <div>
                     <div className="row justify-content-center">

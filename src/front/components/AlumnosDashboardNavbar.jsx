@@ -21,7 +21,7 @@ export const AlumnosDashboardNavbar = () => {
 	}
 
 	return (
-		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3 mb-5">
+		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3">
 			<div>
 				<button className="unsetBtn ms-5 fs-4" onClick={toggleMenu}>
 					<i className="ri-menu-line"></i>
@@ -44,11 +44,6 @@ export const AlumnosDashboardNavbar = () => {
 							<li className="my-3">
 								<Link to="/student/dashboard/horario" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Horario
-								</Link>
-							</li>
-							<li className="my-3">
-								<Link to="/student/dashboard/pagos" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
-									Pagos
 								</Link>
 							</li>
 						</ul>

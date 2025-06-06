@@ -20,7 +20,7 @@ export const ProfesoresDashboardNavbar = () => {
 	}
 
 	return (
-		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3 mb-5">
+		<nav className="navbar navbar-light bg-light d-flex justify-content-start align-items-center gap-3">
 			<div>
 				<button className="unsetBtn ms-5 fs-4" onClick={toggleMenu}>
 					<i className="ri-menu-line"></i>

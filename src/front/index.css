@@ -109,11 +109,46 @@
   }
 }
 
-.login-width {
-  width: 20rem;
+.admin-login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #f8f9fa;
+  background-image: url('/Login.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.ri-checkbox-circle-line {
+  font-size: 4rem;
+}
+
+.login-width.signup-form {
+  width: 100%;
+  max-width: 900px;
 }
 
 .login-signup-form {
+  width: 95%;
+  max-width: 500px;
   background-color: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(8px);
   padding: 2rem;
@@ -180,8 +215,22 @@
 
 @media (max-width: 768px) {
   .login-signup-form {
-    width: 90%;
+    width: 95%;
     max-width: 400px;
+  }
+}
+
+@media (min-height: 800px) {
+  .signup-form .row.g-3>.col-lg-6 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-height: 800px) {
+  .login-signup-form {
+    width: 90%;
+    max-width: 1000px;
+    padding: 1.5rem;
   }
 }
 

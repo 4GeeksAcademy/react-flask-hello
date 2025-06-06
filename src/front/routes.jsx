@@ -16,7 +16,10 @@ import Tarifas from "./pages/Tarifas";
 import User from "./pages/User";
 import ProfesoresPage from "./pages/ProfesoresPage";
 import Register from "./pages/Register";
+import { Checkout } from "./pages/checkout";
 import Login from "./pages/Login";
+import { ReturnPage } from "./pages/returnPAge";
+import PaymentReturn from "./components/paymentReturn";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +38,8 @@ export const router = createBrowserRouter(
       <Route path="/Profesores" element={<ProfesoresPage />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/return" element={<PaymentReturn />} />
     </Route>
   )
 );

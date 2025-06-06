@@ -6,12 +6,17 @@ from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan,Su
 from api.utils import  APIException
 from flask_cors import CORS
 from sqlalchemy import select
+import stripe 
+import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from api.models import db, User
+from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
 
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 # Allow CORS requests to this API
 CORS(api)
 bcrypt = Bcrypt()
@@ -429,60 +434,30 @@ def delete_subscription(sid):
 
 #PAYMENTS
 
-@api.route('/payments', methods=['GET'])
-def list_payments():
-    pays=Payment.query.all()
-    return jsonify([p.serialize() for p in pays ]), 200
+@api.route('/session-status', methods=['GET'])
+def session_status():
+  session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
 
-@api.route('/paymets/<int:pid>', methods=['GET'])
-def get_payment(pid):
-    p = Payment.query.get(pid)
-    if not p:
-        abort(404, description="No se ha encontrado el pago")
-    return jsonify(p.serialize()), 200
+  return jsonify(status=session.status, customer_email=session.customer_details.email)
 
-@api.route('/payments', methods=['POST'])
-def create_payment():
-    data = request.get_json() or {}
-    required = ('subscription_id', 'amount', 'method', 'status')
-    if not all(f in data for f in required):
-        raise APIException(f"Faltan datos obligatorios: {', '.join(required)}", status_code=400)
-    p = Payment(
-        subscription_id=data['subscription_id'],
-        amount=data['amount'],
-        method=data['method'],
-        paid_at=data.get('paid_at'),
-        status=data['status']
-    )
-    db.session.add(p)
-    db.session.commit()
-    return jsonify(p.serialize()), 200
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        body = request.json
+        if not body or 'items' not in body:
+            return jsonify({"error": "Invalid request, 'items' is required"}), 400
+        session = stripe.checkout.Session.create(
+            ui_mode = 'embedded',
+            line_items=body['items'],
+            mode='payment',
+            #implementar un webhook para que se ejecute una funcion cuando se complete el pago
+            return_url=FRONT + 'return?session_id={CHECKOUT_SESSION_ID}',
+        )
+    except Exception as e:
+        return str(e)
 
-@api.route('/payments/<int:pid>', methods=['PUT'])
-def update_payment(pid):
-    p = Payment.query.get(pid)
-    if not p:
-        abort(404, description="pago no encontrado")
-    data = request.get_json() or {}
-    updatable = ('subscription_id', 'amount', 'method', 'paid_at', 'status')
-    if not any(f in data for f in updatable):
-        raise APIException(f"Faltan campos obligatorios de pago", status_code=400)
-    for field in updatable:
-        if field in data:
-            setattr(p, field, data[field])
-    db.session.commit()
-    return jsonify(p.serialize()), 200
-
-@api.route('/payment/<int:pid>', methods=['DELETE'])
-def delete_payment(pid):
-    p = Payment.query.get(pid)
-    if not p:
-        abort(404, description="No se ha encontado el pago")
-    db.session.delete(p)
-    db.session.commit()
-    return '', 204
-
-
+    return jsonify({"clientSecret":session.client_secret})
+ 
 #EVENTS
 
 @api.route('/events', methods=['GET'])

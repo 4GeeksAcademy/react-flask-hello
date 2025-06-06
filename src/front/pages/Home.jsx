@@ -6,6 +6,7 @@ import Carousel from "../components/Carousel.jsx";
 import GymPlans from "../components/GymPlans.jsx";
 import EventosButton from "../components/EventosButton.jsx";
 import Partners from "../components/Partners.jsx";
+import ParallaxScroll from "../components/ParallaxScroll.jsx";
 
 export const Home = () => {
 
@@ -33,13 +34,14 @@ export const Home = () => {
 
 	}
 
+	//<VideoPlayer/> 
 	useEffect(() => {
 		loadMessage()
 	}, [])
 
 	return (
 		<div className="text-center mt-5">
-			<VideoPlayer/> 
+			<ParallaxScroll />
 			<Carousel/>
 			<h1 className="section-title">Planes de Gimnasio</h1>
             <GymPlans/>

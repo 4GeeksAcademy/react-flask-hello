@@ -12,7 +12,7 @@ export const AdminAlumnosNotas = () => {
     useEffect(() => {
         const students = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/teacher/grades`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

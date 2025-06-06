@@ -1,13 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 
 export const AlumnosNotas = () => {
+    const [asignature, setAsignature] = useState([])
+    const [period, setPeriod] = useState([])
+    const [selectedAsignature, setSelectedAsignature] = useState('')
+    const [selectedPeriod, setSelectedPeriod] = useState('')
+    const [showTable, setShowTable] = useState(false)
+    const [grades, setGrades] = useState([]);
     const { store } = useAuth();
     const token = store.access_token;
     useEffect(() => {
-        const user = async () => {
+        const asignatures = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/student/grades`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/courses`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -16,7 +22,25 @@ export const AlumnosNotas = () => {
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    console.log(data);
+                    setAsignature(data)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        const periods = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    setPeriod(responseData)
                 }
             } catch (error) {
                 console.log(error);
@@ -24,38 +48,68 @@ export const AlumnosNotas = () => {
             }
         }
 
-        user()
+        asignatures()
+        periods()
     }, [])
+
+
+    const handleSearch = () => {
+        if (selectedAsignature && selectedPeriod) {
+            setShowTable(true);
+            students()
+        }
+    };
+
+    const students = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/student/grades`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const responseData = await response.json()
+            if (response.ok) {
+                console.log(responseData);
+                const filtered = responseData.filter(item => {
+                    return item.course === selectedAsignature && item.period === parseInt(selectedPeriod);
+                });
+                setGrades(filtered);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="container table-responsive my-5">
             <div className="row">
                 <div className="col-2">
-                    <select className="form-select" aria-label="Selecciona una opción">
+                    <select className="form-select" aria-label="Selecciona una opción" value={selectedAsignature}
+                        onChange={(e) => setSelectedAsignature(e.target.value)}>
                         <option value="">Selecciona Materia</option>
-                        <option value="1">Matemática</option>
-                        <option value="2">Historia</option>
-                        <option value="3">Religión</option>
-                        <option value="4">Educación Física</option>
+                        {asignature.map((asignature) => (
+                            <option key={asignature.id} value={asignature.name}>{asignature.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">
-                    <select className="form-select" aria-label="Selecciona una opción">
+                    <select className="form-select" aria-label="Selecciona una opción" value={selectedPeriod}
+                        onChange={(e) => setSelectedPeriod(e.target.value)}>
                         <option value="">Selecciona Periodo</option>
-                        <option value="1">Primer Bimestre</option>
-                        <option value="2">Segundo Bimestre</option>
-                        <option value="3">Tercero  Bimestre</option>
-                        <option value="4">Cuarto  Bimestre</option>
+                        {period.map((periodos, i) => (
+                            <option key={i} value={i + 1}>{periodos} Bimestre</option>
+                        ))}
                     </select>
                 </div>
                 <div className="col-2">
-                    <button type="button" className="btn btn-success px-4">Buscar</button>
+                    <button type="button" className="btn btn-success px-4" onClick={handleSearch}>Buscar</button>
                 </div>
-                <table className="col-12 table table-striped table-bordered text-center mt-5">
+                {showTable && (<table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">First Name</th>
                             <th scope="col">Participación en Clase (15%)</th>
                             <th scope="col">Tareas (20%)</th>
                             <th scope="col">Exámen Parcial (30%)</th>
@@ -64,38 +118,19 @@ export const AlumnosNotas = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {grades.map((item, index) => (
+                            <tr key={item.id}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{item.participation}</td>
+                                <td>{item.homework}</td>
+                                <td>{item.midterm}</td>
+                                <td>{item.final_exam}</td>
+                                <td>{item.average}</td>
+                            </tr>
+                        ))}
                     </tbody>
-                </table>
+                </table>)}
+
             </div>
         </div>
     );

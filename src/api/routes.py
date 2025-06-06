@@ -564,8 +564,31 @@ def get_students_with_grades():
 
     return jsonify(result), 200
 
+# Ver calificaciones de un estudiante -- para PROFESORESAdd commentMore actions
+
+
+@api.route('/grades', methods=['GET'])
+@jwt_required()
+def get_grades_by_enrollment():
+    enrollment_id = request.args.get("enrollment_id")
+
+    if not enrollment_id:
+        return jsonify({"error": "Parámetro 'enrollment_id' requerido."}), 400
+
+    grades = Grade.query.filter_by(enrollment_id=enrollment_id).all()
+    return jsonify([
+        {
+            "id": g.id,
+            "enrollment_id": g.enrollment_id,
+            "period": g.period,
+            "score": g.score
+        }
+        for g in grades
+    ]), 200
 
 # El estudiante puede ver sus calificaciones por materia y periodo -- para ESTUDIANTES
+
+
 @api.route('/student/grades', methods=['GET'])
 @jwt_required()
 def get_student_grades():

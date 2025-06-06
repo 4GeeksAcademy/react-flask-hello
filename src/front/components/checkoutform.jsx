@@ -24,7 +24,7 @@ export const CheckoutForm = () => {
           .then((data) => setClientSecret(data.clientSecret)); 
       }, []);
 console.log(clientSecret);
-
+ 
 
     const handleSubmit = async (event) => {
       event.preventDefault();

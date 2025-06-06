@@ -238,7 +238,7 @@ export const ProfesoresAlumnosNotas = () => {
                     >
                         <option value="">Selecciona Periodo</option>
                         {period.map((periodos, i) => (
-                            <option key={i} value={periodos}>{periodos} Bimestre</option>
+                            <option key={i} value={i + 1}>{periodos} Bimestre</option>
                         ))}
                     </select>
                 </div>

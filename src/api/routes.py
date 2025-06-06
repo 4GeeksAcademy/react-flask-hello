@@ -555,6 +555,39 @@ def get_students_with_grades():
 
     return jsonify(result), 200
 
+# Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
+@api.route('/teacher/students', methods=['GET'])
+@jwt_required()
+def get_students_with_grades():
+    teacher_id = get_jwt_identity()
+
+    user = User.query.get(teacher_id)
+    if not user or user.role != "teacher" or user.status != "approved":
+        return jsonify({"msg": "Acceso no autorizado"}), 403
+
+    grade_level_id = request.args.get("grade_level_id", type=int)
+    course_id = request.args.get("course_id", type=int)
+    period = request.args.get("period", type=int)
+
+    if not grade_level_id or not course_id or not period:
+        return jsonify({"msg": "Faltan parámetros: grade_level_id, course_id y period son requeridos"}), 400
+
+    enrollments = Enrollment.query.filter_by(course_id=course_id, grade_level_id=grade_level_id).all()
+
+    result = []
+    for enrollment in enrollments:
+        student = enrollment.student.serialize()
+        grade = Grade.query.filter_by(enrollment_id=enrollment.id, period=period).first()
+
+        result.append({
+            "enrollment_id": enrollment.id,
+            "student": student,
+            "grade": grade.serialize() if grade else None
+        })
+
+    return jsonify(result), 200
+
+
 
 # El estudiante puede ver sus calificaciones por materia y periodo -- para ESTUDIANTES
 @api.route('/student/grades', methods=['GET'])

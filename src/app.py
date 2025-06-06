@@ -11,6 +11,11 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
+from itsdangerous import URLSafeTimedSerializer
+from flask_cors import CORS
+# Exportar mail y serializer
+from api.mail_config import mail, serializer
 
 # from models import Person
 
@@ -18,9 +23,21 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+CORS(app, origins=os.getenv("FRONTEND_URL"), supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["Content-Type", "Authorization"])
 app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = "contrasena"
 jwt = JWTManager(app)
+
+# Configura el servidor de correo
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
+
+# Inicializa la extensión correctamente
+mail.init_app(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -75,3 +92,4 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+

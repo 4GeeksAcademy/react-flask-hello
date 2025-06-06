@@ -10,12 +10,14 @@ import stripe
 import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 # Allow CORS requests to this API
 CORS(api)
+bcrypt = Bcrypt()
 
 #USERS
 @api.route('/users', methods=['GET'])
@@ -37,18 +39,20 @@ def create_user():
     required = ('nombre', 'email', 'password', 'account_type')
     if not all(f in data for f in required):
         raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+    hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
+
+
+    
     user = User(
-        nombre=data['nombre'],
-        apellido=data['apellido'],
         email=data['email'],
-        password=data['password'],
+        password=hashed_password,
         is_active=data.get('is_active', True),
         peso=data.get('peso'),
         altura=data.get('altura'),
         objetivo=data.get('objetivo'),
         telefono=data.get('telefono'),
         profession_type=data.get('profession_type'),
-        experiencia_anios=data.get('experiencia_anios', 0)
+        experiencia=data.get('experiencia', 0)
     )
     db.session.add(user)
     db.session.commit()
@@ -209,6 +213,7 @@ def get_plan_template(tid):
     return jsonify(t.serialize()), 200
 
 @api.route('/plan_templates', methods=['POST'])
+@jwt_required()
 def create_plan_template():
     data=request.get_json() or {}
     required=('user_id', 'plan_type', 'nombre')
@@ -218,7 +223,7 @@ def create_plan_template():
         user_id=data['user_id'],
         plan_type=data['plan_type'],
         nombre=data['nombre'],
-        descripcion=data.get('descripcion')
+        description=data.get('descripcion')
     )
     db.session.add(t)
     db.session.commit()
@@ -264,7 +269,7 @@ def get_template_item(iid):
 
 @api.route('/template_items', methods=['POST'])
 def create_template_item():
-    data = request.json() or {}
+    data = request.json or {}
     required = ('template_id', 'item_type', 'nombre')
     if not all(f in data for f in required):
         raise APIException(f"Faltan campos obligatorios: {', '.join(required)}", status_code=400)

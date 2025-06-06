@@ -12,6 +12,8 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         difficulty: ""
     });
 
+    const [weatherInfo, setWeatherInfo] = useState(null); // nuevo estado para mostrar datos del clima
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -19,23 +21,26 @@ const CreatePost = ({ show, onClose, setPosts }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newPost = {
-            ...formData,
-            capacity: parseInt(formData.capacity, 10),
-            participants: 0,
-            weather: weatherData.weather || null
-        };
-
         try {
             const token = localStorage.getItem("token");
 
-            // llamada a la API-clima
             const { date } = formData;
-            const lat = 40.4168; // Por ahora, ubicación fija (Madrid)
+            const lat = 40.4168;
             const lng = -3.7038;
 
+            // Obtener clima
             const weatherResponse = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
             const weatherData = await weatherResponse.json();
+
+            setWeatherInfo(weatherData.weather); // guardamos datos para mostrar después
+
+            // Crear nuevo evento con info del clima incluida
+            const newPost = {
+                ...formData,
+                capacity: parseInt(formData.capacity, 10),
+                participants: 0,
+                weather: weatherData.weather || null
+            };
 
             const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
                 method: "POST",
@@ -46,27 +51,16 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 body: JSON.stringify(newPost),
             });
 
-
-            if (!response.ok) {
-                throw new Error("Error al crear el evento");
-            }
+            if (!response.ok) throw new Error("Error al crear el evento");
 
             const createdPost = await response.json();
             setPosts(prev => [createdPost, ...prev]);
 
-            // Resetear formulario
+            // Limpiar formulario pero dejar clima visible
             setFormData({
-                title: "",
-                description: "",
-                date: "",
-                time: "",
-                address: "",
-                sport: "",
-                capacity: "",
-                difficulty: ""
+                title: "", description: "", date: "", time: "", address: "",
+                sport: "", capacity: "", difficulty: ""
             });
-
-            onClose(); // Cerrar modal
 
         } catch (error) {
             console.error("Error al crear el evento:", error);
@@ -182,6 +176,15 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                             </div>
                             <button type="submit" className="btn btn-success mt-3 w-100">Publicar</button>
                         </form>
+                        {/* CLIMA DESPUÉS DEL FORMULARIO */}
+                        {weatherInfo && (
+                            <div className="alert alert-info mt-3">
+                                <h6>Clima estimado para el evento:</h6>
+                                <p>🌡️ Temperatura: {weatherInfo.temperatura}</p>
+                                <p>☁️ Cobertura nubosa: {weatherInfo.cobertura_nubosa}</p>
+                                <p>🌧️ Precipitaciones: {weatherInfo.precipitaciones}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

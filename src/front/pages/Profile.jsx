@@ -33,7 +33,9 @@ const Profile = () => {
 
         const updatedUserData = {
             ...userData,
-            name: profile.username,
+
+            name: profile.username, // conservamos la edición del nombre
+
             sports: profile.sports
         };
 
@@ -96,7 +98,9 @@ const Profile = () => {
                                 className="form-control mb-3"
                                 name="email"
                                 value={profile.email}
+
                                 disabled // lo hace solo lectura
+
                             />
                             <input
                                 type="text"

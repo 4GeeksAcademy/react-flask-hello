@@ -17,12 +17,8 @@ stripeServices.fetchClientSecret = async (items) => {
     se pueden pasar tantos items como se quiera, pero hay que tener en cuenta que el ID del PRECIO del producto
     stripe se ocupa de mostrar el total de la compra y todo lo necesario para que el usuario pueda pagar
     */
-
-    items = [ 
-    {price: "price_1RWbCXQaC6m9II8xOW2FuOPr", quantity: 1},
-    {price: "price_1RWxCmQaC6m9II8x8TyHNReY", quantity: 1},
-    {price: "price_1RWxDjQaC6m9II8xi9X9vMaI", quantity: 1}
-    ]
+    // items = [{price: "price_id", quantity: 1}]
+    
     const res = await fetch(backendUrl+"/api/create-checkout-session", {
         method: "POST",
         headers: {

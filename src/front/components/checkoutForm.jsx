@@ -1,10 +1,11 @@
-import stripeServices from "../services/stripeServices";
+
 import { loadStripe } from '@stripe/stripe-js';
 import {
     EmbeddedCheckoutProvider,
     EmbeddedCheckout
 } from '@stripe/react-stripe-js';
 import { useEffect, useState } from "react";
+import stripeServices from '../../services/stripeServices';
 
 //OJO con la variable de entorno, debe estar definida en el archivo .env
 // VITE_STRIPE_PUBLIC debe ser la clave pública de Stripe

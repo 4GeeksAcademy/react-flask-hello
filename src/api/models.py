@@ -2,6 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Table, Column, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
+from datetime import datetime, timedelta
+import secrets
+
 
 db = SQLAlchemy()
 
@@ -22,8 +25,16 @@ class User(db.Model):
     first_name: Mapped[str] = mapped_column(String(60), nullable=False)
     last_name: Mapped[str] = mapped_column(String(60), nullable=False)
     address: Mapped[str] = mapped_column(String(120), nullable=False)
+    role: Mapped[str] = mapped_column(String(120), nullable=True)
 
     products: Mapped[List["Products"]] = relationship(secondary=shopping_cart, back_populates="users")
+
+    reset_token = db.Column(db.String(120), nullable=True)
+    reset_token_expires = db.Column(db.DateTime, nullable=True)
+
+    def generate_reset_token(self):
+        self.reset_token = secrets.token_urlsafe(32)
+        self.reset_token_expires = datetime.utcnow() + timedelta(hours=1)
 
     def serialize(self):
         return {
@@ -31,7 +42,8 @@ class User(db.Model):
             "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "address": self.address
+            "address": self.address,
+            "role": self.role
         }
         
 class Products(db.Model):

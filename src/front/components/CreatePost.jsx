@@ -29,17 +29,29 @@ const CreatePost = ({ show, onClose, setPosts }) => {
             const lng = -3.7038;
 
             // Obtener clima
-            const weatherResponse = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
-            const weatherData = await weatherResponse.json();
+            // *** PRUEBA, DESCOMENTAR LUEGO líneas 33 y 34
+            // const weatherResponse = await fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            //const weatherData = await weatherResponse.json();
 
-            setWeatherInfo(weatherData.weather); // guardamos datos para mostrar después
+            // ***** PRUEBA****
+            const fakeWeather = {
+                temperatura: "21.3 °C",
+                cobertura_nubosa: "35 %",
+                precipitaciones: "0.2 mm"
+            };
+            setWeatherInfo(fakeWeather);
+
+            const weather = fakeWeather; // borrar *** PRUEBA
+
+            // *** PRUEBA - descomentar desupués
+            //setWeatherInfo(weatherData.weather); // guardamos datos para mostrar después
 
             // Crear nuevo evento con info del clima incluida
             const newPost = {
                 ...formData,
                 capacity: parseInt(formData.capacity, 10),
                 participants: 0,
-                weather: weatherData.weather || null
+                weather // PUREBA ** Descomentar y dejar esto: weather: weatherData.weather || null
             };
 
             const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {

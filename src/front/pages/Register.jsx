@@ -25,9 +25,9 @@ const Register = () => {
                 localStorage.setItem("isLoggedIn", "true");
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userData", JSON.stringify(response.user));
-                navigate("/feed");
+                navigate("/login");
             } else {
-                alert("Registro fallido.");
+                alert("Registro exitoso.");
             }
         } catch (error) {
             console.error("Error al registrar:", error);

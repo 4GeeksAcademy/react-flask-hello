@@ -2,9 +2,9 @@ from flask import request, jsonify
 from ...models import db, Event, User
 from sqlalchemy.exc import SQLAlchemyError
 from ...utils import token_required
+from flask_jwt_extended import jwt_required
 
-
-@token_required  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
+@jwt_required()  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
 def create_event(current_user):  # Recibimos el usuario autenticado desde el decorador
     try:
         data = request.get_json()
@@ -21,7 +21,7 @@ def create_event(current_user):  # Recibimos el usuario autenticado desde el dec
             weather=data.get('weather'),
             distance=data.get('distance'),
             duration=data.get('duration'),
-            creator_id=data.get('creator_id')
+            creator_id=current_user.id #data.get('creator_id')
         )
         db.session.add(new_event)
         db.session.commit()
@@ -29,12 +29,6 @@ def create_event(current_user):  # Recibimos el usuario autenticado desde el dec
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
-
-def get_events():
-    events = Event.query.all()
-    return jsonify([event.to_dict() for event in events]), 200
-
 
 def get_event(event_id):
     event = Event.query.get(event_id)
@@ -54,7 +48,7 @@ def get_events():
     return jsonify([event.to_dict() for event in events]), 200
 
 
-@token_required  # Protege para que solo usuarios autenticados puedan actualizar
+@jwt_required()  # Protege para que solo usuarios autenticados puedan actualizar
 def update_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
@@ -81,7 +75,7 @@ def update_event(current_user, event_id):
         return jsonify({"error": str(e)}), 500
 
 
-@token_required
+@jwt_required()
 def delete_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
@@ -96,7 +90,7 @@ def delete_event(current_user, event_id):
         return jsonify({"error": str(e)}), 500
 
 
-@token_required
+@jwt_required()
 def join_event(current_user, event_id):
     event = Event.query.get(event_id)
     user = current_user  # Ya no necesitas `user_id` desde el body
@@ -116,7 +110,7 @@ def join_event(current_user, event_id):
         return jsonify({"error": str(e)}), 500
 
 
-@token_required
+@jwt_required()
 def leave_event(current_user, event_id):
     event = Event.query.get(event_id)
     user = current_user

@@ -22,7 +22,7 @@ def create_user():
     return jsonify(user.to_dict()), 201
 
 
-@jwt_required
+@jwt_required()
 def get_users(current_user):
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200
@@ -37,7 +37,7 @@ def get_user(current_user, user_id):
     return jsonify(user.to_dict()), 200
 
 
-@token_required
+@jwt_required()
 def update_user(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No puedes modificar otro usuario"}), 403
@@ -53,7 +53,7 @@ def update_user(current_user, user_id):
     return jsonify(user.to_dict()), 200
 
 
-@token_required
+@jwt_required()
 def delete_user(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No pudes eliminar otro usuario"}), 403
@@ -64,7 +64,7 @@ def delete_user(current_user, user_id):
     return jsonify({"message": f"Usuario con ID {user_id} eliminado"}), 200
 
 
-@token_required
+@jwt_required()
 def join_event(current_user, event_id):
     user = current_user
     event = Event.query.get(event_id)
@@ -97,9 +97,7 @@ def leave_event(current_user, event_id):
     return jsonify({"message": f"Usuario {user.id} ha salido del evento {event_id}"}), 200
 
 
-token_required
-
-
+@jwt_required()
 def get_user_events(current_user, user_id):
     if current_user.id != user_id:
         return jsonify({"error": "No autorizado"}), 403

@@ -531,7 +531,7 @@ def update_grade(grade_id):
 
 
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
-@api.route('/teacher/students', methods=['GET'])
+@api.route('/teacher/grades', methods=['GET'])
 @jwt_required()
 def get_students_with_grades():
     teacher_id = get_jwt_identity()

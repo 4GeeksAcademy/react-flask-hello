@@ -21,7 +21,7 @@ def get_products():
     if not products:
         return jsonify({"msg":"add a product"})
 
-    return jsonify({"success":"This is our products list"},[product.serialize() for product in products]), 200
+    return jsonify({"success":"This is our products list","products": [product.serialize() for product in products]}), 200
 
 @api.route('/products/<int:id>', methods=['GET'])
 def get_product(id):
@@ -30,7 +30,7 @@ def get_product(id):
     if not product:
         return jsonify({"msg":"the product was not found"}), 404
     
-    return jsonify({"success":"the product was found"}, product.serialize()), 200
+    return jsonify({"success":"the product was found","product": product.serialize()}), 200
 
 @api.route('/products', methods=['POST'])
 def created_product():

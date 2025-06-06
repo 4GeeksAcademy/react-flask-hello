@@ -52,7 +52,7 @@ export const ProfesoresHorario = () => {
         // schedule()
     }, [])
     return (
-        <div className="container table-responsive">
+        <div className="container table-responsive my-5">
             {load ? <div className="row">
                 <table className="col-12 table table-striped table-bordered text-center mt-5">
                     <thead className="table-light">

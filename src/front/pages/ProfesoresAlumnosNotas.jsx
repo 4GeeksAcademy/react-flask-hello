@@ -101,7 +101,7 @@ export const ProfesoresAlumnosNotas = () => {
     };
 
     return (
-        <div className="container table-responsive">
+        <div className="container table-responsive my-5">
             <div className="row">
                 <div className="col-2">
                     <select

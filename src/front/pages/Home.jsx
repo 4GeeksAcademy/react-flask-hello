@@ -20,7 +20,7 @@ export const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      setMsg("*Completa los campos correctamente.");
+      setMsg("Completa los campos correctamente.");
       return;
     }
 
@@ -51,7 +51,7 @@ export const Login = () => {
       }
     } catch (error) {
       console.log(error);
-      setMsg("*Error en la conexión con el servidor.");
+      setMsg("Error en la conexión con el servidor.");
     }
   };
 
@@ -59,7 +59,7 @@ export const Login = () => {
   return (
     <div className="background-container">
       <div className="login-signup-form position-absolute top-50 start-50 translate-middle border rounded-3 p-3 p-md-4"  >
-        <form className="login-width max-w-md mx-auto" onSubmit={handleOnSubmit}>
+        <form className="login-width mx-auto" onSubmit={handleOnSubmit}>
           <h1 className="text-center mb-4">Bienvenido</h1>
           <div className="d-flex flex-column gap-3 mb-4">
             <div>
@@ -69,7 +69,7 @@ export const Login = () => {
               <input name="password" type="password" className="form-control" placeholder="Contraseña" onChange={e => setPassword(e.target.value)} required />
             </div>
           </div>
-          <div className="d-flex flex-column align-items-center gap-4 w-100">
+          <div className="d-flex flex-column align-items-center gap-4 w-100 mb-3">
             <p className="h5 mb-0 text-secondary">¿Cómo quieres ingresar?</p>
             <div className="d-flex justify-content-evenly w-100">
               <div
@@ -88,7 +88,12 @@ export const Login = () => {
               </div>
             </div>
           </div>
-          <p className="text-danger mt-2">{msg}</p>
+          {msg && (
+            <div className="alert alert-danger d-flex justify-content-center align-items-center py-1 mb-3 gap-2" role="alert">
+              <i class="ri-error-warning-line"></i>
+              <div>{msg}</div>
+            </div>
+          )}
           <button type="submit" className="btn btn-dark w-100">Iniciar Sesión</button>
         </form>
       </div>

@@ -91,7 +91,7 @@ export const AdminAlumnosAsistencia = () => {
 
     return (
 
-        <div className="container-fliud table-responsive px-4">
+        <div className="container-fliud table-responsive px-4 mt-5">
             {load ?
                 <div>
                     <div className="row justify-content-center">

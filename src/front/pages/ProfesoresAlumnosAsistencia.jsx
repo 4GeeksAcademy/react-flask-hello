@@ -136,7 +136,7 @@ export const ProfesoresAlumnosAsistencia = () => {
 
     return (
 
-        <div className="container-fliud table-responsive px-4">
+        <div className="container-fluid table-responsive my-5">
             {load ?
                 <div>
                     <div className="row justify-content-center">

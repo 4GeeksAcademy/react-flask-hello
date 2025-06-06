@@ -13,7 +13,7 @@ export const Admin = () => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
-            setMsg("*Completa los campos correctamente.");
+            setMsg("Completa los campos correctamente.");
             return;
         } else setMsg('')
         const body = JSON.stringify({ email, password })
@@ -33,38 +33,51 @@ export const Admin = () => {
                 login(data.access_token, data.user);
                 navigate("/admin/dashboard/profile");
             } else {
-                setMsg('Datos invalidos')
+                setMsg('Credenciales inválidas')
             }
 
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
-            setMsg("*Error en la conexión.");
+            setMsg("Error en la conexión con el servidor.");
         }
     }
 
     return (
-        <div >
-            <div className="d-flex position-absolute top-50 start-50 translate-middle gap-5 align-items-center border border-1 border-secondary rounded-3" >
-                <div>
-                    <img src={imageHomeAdmin} alt="" className="imgLogin rounded-start" />
-                </div>
-                <form className="AdminLoginWidth me-5" onSubmit={handleOnSubmit}>
-                    <h1 className="text-center mb-5">Login Admin</h1>
+        <div className="admin-login-container">
+            <div className="login-signup-form position-absolute top-50 start-50 translate-middle border rounded-3 p-3 p-md-4">
+                <form className="login-width mx-auto" onSubmit={handleOnSubmit}>
+                    <h1 className="text-center mb-4">Administrador</h1>
                     <div className="d-flex flex-column gap-3 mb-4">
                         <div>
-                            <label className="form-label">Email </label>
-                            <input name="email" type="email" className="form-control" onChange={e => setEmail(e.target.value)} required />
+                            <input
+                                name="email"
+                                type="email"
+                                className="form-control"
+                                placeholder="Correo electrónico"
+                                onChange={e => setEmail(e.target.value)}
+                                required
+                            />
                         </div>
                         <div>
-                            <label className="form-label">Password</label>
-                            <input name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} required />
+                            <input
+                                name="password"
+                                type="password"
+                                className="form-control"
+                                placeholder="Contraseña"
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                            />
                         </div>
-
                     </div>
-                    <p className="text-danger">{msg}</p>
-                    <button type="submit" className="btn btn-outline-dark w-100">Login</button>
+                    {msg && (
+                        <div className="alert alert-danger d-flex justify-content-center align-items-center py-1 mb-3 gap-2" role="alert">
+                            <i className="ri-error-warning-line"></i>
+                            <div>{msg}</div>
+                        </div>
+                    )}
+                    <button type="submit" className="btn btn-dark w-100">Iniciar Sesión</button>
                 </form>
             </div>
         </div>
-    )
+    );
 }

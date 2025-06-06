@@ -91,7 +91,7 @@ export const AdminSolicitudes = () => {
     }
 
     return (
-        <div className="container table-responsive">
+        <div className="container table-responsive my-5">
             <div className="row">
                 <div className="col-2">
                     <select className="form-select" aria-label="Selecciona una opción" onChange={e => setRegister(e.target.value)}>
@@ -105,15 +105,13 @@ export const AdminSolicitudes = () => {
                         <thead className="table-light">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Asignature</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Celular</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Materia</th>
+                                <th scope="col">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,12 +124,10 @@ export const AdminSolicitudes = () => {
                                     <td>{teachers.teacher.phone}</td>
                                     <td>{teachers.location}</td>
                                     <td>{teachers.teacher.courses[0].name}</td>
-                                    <td>{teachers.role}</td>
-                                    <td>{teachers.status}</td>
                                     <td>
                                         <div className="d-flex justify-content-center align-items-center gap-2">
-                                            <button type="button" className="btn btn-success btn-sm" onClick={() => approve(teachers.role, teachers.id)}>Aprove</button>
-                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(teachers.role, teachers.id)}>Reject</button>
+                                            <button type="button" className="btn btn-success btn-sm" onClick={() => approve(teachers.role, teachers.id)}><i class="ri-check-double-line"></i></button>
+                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(teachers.role, teachers.id)}><i class="ri-prohibited-line"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -144,15 +140,13 @@ export const AdminSolicitudes = () => {
                         <thead className="table-light">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Grade Level</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Celular</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Grado</th>
+                                <th scope="col">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,12 +159,10 @@ export const AdminSolicitudes = () => {
                                     <td>{students.student.phone}</td>
                                     <td>{students.location}</td>
                                     <td>{students.student.grade_level}</td>
-                                    <td>{students.role}</td>
-                                    <td>{students.status}</td>
                                     <td>
                                         <div className="d-flex justify-content-center align-items-center gap-2">
-                                            <button type="button" className="btn btn-success btn-sm" onClick={() => approve(students.role, students.id)}>Approve</button>
-                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(students.role, students.id)}>Reject</button>
+                                            <button type="button" className="btn btn-success btn-sm" onClick={() => approve(students.role, students.id)}><i class="ri-check-double-line"></i></button>
+                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => reject(students.role, students.id)}><i class="ri-prohibited-line"></i></button>
                                         </div>
                                     </td>
                                 </tr>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 
 export const TeacherSignup = () => {
-    const [load, setLoad] = useState(false)
+    const [showConfirmation, setShowConfirmation] = useState(false)
     const [asignatures, setAsignature] = useState([])
     const [msg, setMsg] = useState('')
     const navigate = useNavigate();
@@ -22,7 +22,6 @@ export const TeacherSignup = () => {
                 const data = await response.json()
 
                 if (response.ok) {
-                    setLoad(true)
                     setAsignature(data)
                 }
 
@@ -47,7 +46,7 @@ export const TeacherSignup = () => {
             })
             const responseData = await response.json()
             if (response.ok) {
-                navigate(`/`);
+                setShowConfirmation(true)
             } else {
                 setMsg(response.msg)
             }
@@ -70,174 +69,192 @@ export const TeacherSignup = () => {
     const password = watch('password', '')
 
     return (
-        <div className='mx-5'>
-            {load ? <div className='d-flex col-12 align-items-center mx-auto'>
-                <div className='col-6 text-center '>
-                    <h2>Welcome!</h2>
-                    <h4>To our website.</h4>
-                    <p>For register as teacher...</p>
-                </div>
-                <form className="col-4 mx-auto my-5" onSubmit={handleSubmit(procesarDatos)}>
-                    <div className="form-group mb-3">
-                        <label htmlFor="first_name" className="form-label">Name:</label>
-                        <input type="text" id="first_name" placeholder='Name' className={"form-control " + (errors.first_name ? 'is-invalid' : '')}
-                            {
-                            ...register('first_name', {
-                                required: 'The field name is required!',
-                                pattern: {
-                                    value: /^[A-Za-z\s]+$/i,
-                                    message: 'Then name must containt only letters'
-                                }
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.first_name?.message}
+        <div className='background-container'>
+            {showConfirmation ? (
+                <div className='login-signup-form position-absolute top-50 start-50 translate-middle border rounded-3 p-4'>
+                    <div className='text-center'>
+                        <i className="ri-checkbox-circle-line text-success fs-1 mb-3"></i>
+                        <h2 className='mb-3'>¡Registro Exitoso!</h2>
+                        <div className='d-flex flex-column gap-2'>
+                            <p className='mb-0'>¡Tu registro como profesor ha sido exitoso!</p>
+                            <p className='text-muted small'>Tu información está siendo revisada. Una vez aprobada, podrás acceder a la plataforma. Este proceso suele tardar menos de 24 horas.</p>
                         </div>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="last_name" className="form-label">Last Name:</label>
-                        <input type="text" id="last_name" placeholder='Last Name' className={"form-control " + (errors.last_name ? 'is-invalid' : '')}
-                            {
-                            ...register('last_name', {
-                                required: 'The field last name is required!',
-                                pattern: {
-                                    value: /^[A-Za-z\s]+$/i,
-                                    message: 'Then name must containt only letters'
-                                }
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.last_name?.message}
-                        </div>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="email" className="form-label">Email:</label>
-                        <input type="email" id="email" placeholder='Email' className={"form-control " + (errors.email ? 'is-invalid' : '')}
-                            {
-                            ...register('email', {
-                                required: 'The field email is required',
-                                pattern: {
-                                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-                                    message: 'Email invalid'
-                                }
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.email?.message}
-                        </div>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="phone" className="form-label">Phone:</label>
-                        <input type="tel" id="phone" placeholder='Phone' className={"form-control " + (errors.phone ? 'is-invalid' : '')}
-                            {
-                            ...register('phone', {
-                                required: 'The field phone is required!',
-                                pattern: {
-                                    value: /^\+?[1-9][0-9]{7,14}$/i,
-                                    message: 'Then name must containt only numbers'
-                                },
-                                minLength: {
-                                    value: 9,
-                                    message: 'the minimum number of numbers is 8'
-                                },
-                                maxLength: {
-                                    value: 14,
-                                    message: 'the maximum number of numbers is 14'
-                                }
-
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.phone?.message}
-                        </div>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="location" className="form-label">Address:</label>
-                        <input type="text" id="location" placeholder='Example: Coronel Pereira 12, Las Condes, Chile' className={"form-control " + (errors.location ? 'is-invalid' : '')}
-                            {
-                            ...register('location', {
-                                required: 'The field address is required!',
-                                pattern: {
-                                    value: /^[A-Za-z0-9\s,]+$/i,
-                                    message: 'Then address must containt only letters, numbers or ",".'
-                                }
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.location?.message}
-                        </div>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="course_id" className="form-label">Asignature:</label>
-                        <select
-                            id="course_id"
-                            className={"form-control " + (errors.course_id ? 'is-invalid' : '')}
-                            {...register('course_id', { required: 'Please select a asignature' })}
+                        <button
+                            className='btn btn-dark mt-4'
+                            onClick={() => navigate('/')}
                         >
-                            <option value=""> Select Asignature </option>
-                            {asignatures.map((asignature) => (
-                                <option key={asignature.id} value={asignature.id}>{asignature.name}</option>
-                            ))}
-
-                        </select>
-                        <div className="invalid-feedback">
-                            {errors?.course_id?.message}
-                        </div>
+                            Volver al inicio
+                        </button>
                     </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="password" className="form-label">Password:</label>
-                        <input type="password" placeholder='Password' id="password" className={"form-control " + (errors.password ? 'is-invalid' : '')}
-                            {
-                            ...register('password', {
-                                required: 'The field password is required!',
-                                minLength: {
-                                    value: 8,
-                                    message: 'The min length is 8 characters'
-                                },
-                                maxLength: {
-                                    value: 32,
-                                    message: 'The max length is 32 characters'
-                                },
-                                pattern: {
-                                    value: /^[a-zA-z0-9\-\.\@\!]+$/i,
-                                    message: 'The value must contains letters and numbers and the symbols .,-,@,!'
+                </div>
+            ) : (<div className='login-signup-form position-absolute top-50 start-50 translate-middle border rounded-3 p-3 p-md-4'>
+                <div className='text-center mb-4'>
+                    <h2>Regístrate como profesor</h2>
+                    <p className="text-muted mt-2 mb-0">
+                        ¿Eres alumno?
+                        <button
+                            className="unsetBtn ms-1 text-primary"
+                            onClick={() => navigate('/signup/alumno')}
+                        >
+                            Regístrate aquí
+                        </button>
+                    </p>
+                </div>
+                <form className="login-width signup-form mx-auto" onSubmit={handleSubmit(procesarDatos)}>
+                    <div className="row g-3 mb-3">
+                        <div className="col-12 col-lg-6">
+                            <input type="text" id="first_name" placeholder='Nombres' className={"form-control " + (errors.first_name ? 'is-invalid' : '')}
+                                {
+                                ...register('first_name', {
+                                    required: 'El campo nombres es requerido',
+                                    pattern: {
+                                        value: /^[A-Za-z\s]+$/i,
+                                        message: 'Los nombres deben contener solo letras'
+                                    }
+                                })
                                 }
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.password?.message}
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.first_name?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="text" id="last_name" placeholder='Apellidos' className={"form-control " + (errors.last_name ? 'is-invalid' : '')}
+                                {
+                                ...register('last_name', {
+                                    required: 'El campo apellidos es requerido',
+                                    pattern: {
+                                        value: /^[A-Za-z\s]+$/i,
+                                        message: 'Los apellidos deben contener solo letras'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.last_name?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="email" id="email" placeholder='Correo electrónico' className={"form-control " + (errors.email ? 'is-invalid' : '')}
+                                {
+                                ...register('email', {
+                                    required: 'El campo correo es requerido',
+                                    pattern: {
+                                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                                        message: 'Dirección de correo inválida'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.email?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="tel" id="phone" placeholder='Celular' className={"form-control " + (errors.phone ? 'is-invalid' : '')}
+                                {
+                                ...register('phone', {
+                                    required: 'El campo celular es requerido',
+                                    pattern: {
+                                        value: /^\+?[1-9][0-9]{7,14}$/i,
+                                        message: 'El celular debe contener solo números'
+                                    },
+                                    minLength: {
+                                        value: 9,
+                                        message: 'Cantidad mínima de números es 8'
+                                    },
+                                    maxLength: {
+                                        value: 14,
+                                        message: 'Cantidad máxima de números es 14'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.phone?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="text" id="location" placeholder='Ejemplo: Coronel Pereira 12, Las Condes, Chile' className={"form-control " + (errors.location ? 'is-invalid' : '')}
+                                {
+                                ...register('location', {
+                                    required: 'El campo dirección es requerido',
+                                    pattern: {
+                                        value: /^[A-Za-z0-9\s,]+$/i,
+                                        message: 'La dirección debe contener solo letras, números o ",".'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.location?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <select
+                                id="course_id"
+                                className={"form-control " + (errors.course_id ? 'is-invalid' : '')}
+                                {...register('course_id', { required: 'Porfavor seleccione una asignatura' })}
+                            >
+                                <option value="">Seleccione Materia</option>
+                                {asignatures.map((asignature) => (
+                                    <option key={asignature.id} value={asignature.id}>{asignature.name}</option>
+                                ))}
+                            </select>
+                            <div className="invalid-feedback">
+                                {errors?.course_id?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="password" placeholder='Contraseña' id="password" className={"form-control " + (errors.password ? 'is-invalid' : '')}
+                                {
+                                ...register('password', {
+                                    required: 'El campo contraseña es requerido',
+                                    minLength: {
+                                        value: 8,
+                                        message: 'La longitud mínima es de 8 caracteres'
+                                    },
+                                    maxLength: {
+                                        value: 32,
+                                        message: 'La longitud máxima es de 32 caracteres'
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-z0-9\-\.\@\!]+$/i,
+                                        message: 'El valor debe contener letras y números y los símbolos .,-,@,!'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.password?.message}
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <input type="password" placeholder='Confirmar Contraseña' id="confirm_password" className={"form-control " + (errors.confirm_password ? 'is-invalid' : '')}
+                                {
+                                ...register('confirm_password', {
+                                    required: 'El campo confirmar contraseña es requerido',
+                                    validate: (value) => value === password || 'Las contraseñas no coinciden'
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.confirm_password?.message}
+                            </div>
                         </div>
                     </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="confirm_password" className="form-label">Confirm Password:</label>
-                        <input type="password" placeholder='Confirm Password' id="confirm_password" className={"form-control " + (errors.confirm_password ? 'is-invalid' : '')}
-                            {
-                            ...register('confirm_password', {
-                                required: 'The field confirm password is required!',
-                                validate: (value) => value === password || 'The passwords no match'
-                            })
-                            }
-                        />
-                        <div className="invalid-feedback">
-                            {errors?.confirm_password?.message}
+                    {msg && (
+                        <div className="alert alert-danger d-flex justify-content-center align-items-center py-1 mb-3 gap-2" role="alert">
+                            <i className="ri-error-warning-line"></i>
+                            <div>{msg}</div>
                         </div>
-                    </div>
-                    <p className="text-danger">{msg}</p>
-                    <button className="btn btn-outline-dark w-100" disabled={!isValid}>
-                        Register
+                    )}
+                    <button className="btn btn-dark w-100 mt-2" disabled={!isValid}>
+                        Registrarse
                     </button>
                 </form>
-
-            </div> :
-                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>}
+            </div>
+            )}
         </div>
     )
 }

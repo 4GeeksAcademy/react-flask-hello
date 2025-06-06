@@ -15,10 +15,10 @@ export const AdminProfesores = () => {
     };
 
     return (
-        <div className="container-fliud table-responsive px-4">
+        <div className="container-fliud table-responsive px-4 my-5">
             <div className="row">
                 <div className="col-7">
-                    <table className="table table-striped table-bordered text-center mt-5">
+                    <table className="table table-striped table-bordered text-center">
                         <thead className="table-light">
                             <tr>
                                 <th scope="col admin-num">Código</th>

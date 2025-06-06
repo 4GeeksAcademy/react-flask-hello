@@ -15,6 +15,7 @@ def create_event(current_user):  # Recibimos el usuario autenticado desde el dec
             time=data.get('time'),
             difficulty=data.get('difficulty'),
             capacity=data.get('capacity'),
+            direction=data.get('direction'),
             latitude=data.get('latitude'),
             longitude=data.get('longitude'),
             weather=data.get('weather'),

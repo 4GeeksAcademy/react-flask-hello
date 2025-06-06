@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 const CreatePost = ({ show, onClose, setPosts }) => {
     const [formData, setFormData] = useState({
         title: "",
@@ -28,11 +30,11 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch(`${process.env.BACKEND_URL}/api/events`, {
+            const response = await fetch(`${BASE_URL}/api/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(newPost),
             });

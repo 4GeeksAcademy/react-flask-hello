@@ -1,0 +1,35 @@
+.GestEntrenamientos-container {
+  font-family: Arial, sans-serif;
+  margin-top: 92px;
+  background-color: #cb5353;
+}
+.body{
+  padding-top: 70px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  background-color: #9f83e4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.column {
+  background-color: #a6d982;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.column h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+

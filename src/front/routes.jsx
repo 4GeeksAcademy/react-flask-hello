@@ -14,6 +14,7 @@ import  AboutUs  from "./pages/AboutUs";
 import Eventos from "./pages/Eventos";
 import Tarifas from "./pages/Tarifas";
 import Login from "./pages/Login";
+import GestEntrenamientos from "./pages/GestEntrenamientos";
 
 
 export const router = createBrowserRouter(
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
       <Route path="/Eventos" element={<Eventos />} />
       <Route path="/Tarifas" element={<Tarifas />} />
       <Route path="/Login" element={<Login />} />
+      <Route path="/GestEntrenamientos" element={<GestEntrenamientos />} />
     </Route>
   )
 );

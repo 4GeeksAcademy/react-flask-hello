@@ -1,67 +1,39 @@
+import stripeServices from "../services/stripeServices";
+import { loadStripe } from '@stripe/stripe-js';
+import {
+    EmbeddedCheckoutProvider,
+    EmbeddedCheckout
+} from '@stripe/react-stripe-js';
+import { useEffect, useState } from "react";
 
-import React, {useState, useEffect} from "react";
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+//OJO con la variable de entorno, debe estar definida en el archivo .env
+// VITE_STRIPE_PUBLIC debe ser la clave pública de Stripe
+// stripePromise no se debe de crear dentro del componente, ya que se crearía en cada renderizado y daria error
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC);
 
-
-
-export const CheckoutForm = () => {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [clientSecret, setClientSecret] = useState('');
-    const [loading, setLoading] = useState(false);
-
-
+const CheckoutForm = () => {
+    const [clientSecret, setClientSecret] = useState();
+    //usamos el useEffect para obtener el clientSecret una vez que el componente se monta
     useEffect(() => {
+        //utilizamos el servicio stripeServices para obtener el clientSecret
+        stripeServices.fetchClientSecret().then(secret => setClientSecret(secret));
+    }, []);
 
-        // Create PaymentIntent as soon as the page loads 
-        fetch(import.meta.env.VITE_BACKEND_URL + '/api/create-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          //la cantidad ha pagar esta puesta fija, pero puede recibir un objeto desde el contexto
-          body: JSON.stringify({ amount: 1000, currency: 'usd' }) // Amount in cents
-        })
-          .then((res) => res.json())
-          .then((data) => setClientSecret(data.clientSecret)); 
-      }, []);
-console.log(clientSecret);
- 
-
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      if (!stripe || !elements) {
-        return;
-      }
-  
-      setLoading(true);
-  
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
-       clientSecret,
-        {
-          payment_method: {
-            card: elements.getElement(CardElement),
-          },
-        },
-      );
-  
-      setLoading(false);
-  
-      if (error) {
-        console.log('[error]', error);
-      } else if (paymentIntent.status === 'succeeded') {
-        console.log('Payment succeeded!');
-      }
-      else{
-        console.log('some error')
-      }
-    };
-  
+    const options = { clientSecret };
+    // Si no tenemos el clientSecret, mostramos un spinner
     return (
-      <form onSubmit={handleSubmit}>
-        <CardElement />
-        <button type="submit" disabled={!stripe || loading}>
-          Pay
-        </button>
-      </form>
-    );
-  };
+        <div id="checkout">
+            {/* EmbeddedCheckoutProvider necesita la promesa de stripe y las opciones que es el clientSecret */}
+            {clientSecret ?
+                <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
+                    <EmbeddedCheckout />
+                </EmbeddedCheckoutProvider>
+                : <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+        </div>
+    )
+}
+
+export default CheckoutForm

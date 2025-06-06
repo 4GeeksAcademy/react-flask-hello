@@ -11,6 +11,8 @@ import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from api.models import db, User
+from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
 
@@ -432,24 +434,29 @@ def delete_subscription(sid):
 
 #PAYMENTS
 
-@api.route('/create-payment', methods=['POST'])
-def create_payment():
+@api.route('/session-status', methods=['GET'])
+def session_status():
+  session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+
+  return jsonify(status=session.status, customer_email=session.customer_details.email)
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
     try:
-        data = request.json
-        #PODEMOS PASAR TODOS LOS ELEMENTOS QUE PERMITA EL OBJETO DE PAYMENTINTENT.CREATE 
-        intent = stripe.PaymentIntent.create(
-            #amount=getPrice(data['products']), # se deberia de calcular el precio en el back, no recibirse del front
-            amount=data['amount'], 
-            currency=data['currency'],
-            automatic_payment_methods={
-                'enabled': True
-            }
+        body = request.json
+        if not body or 'items' not in body:
+            return jsonify({"error": "Invalid request, 'items' is required"}), 400
+        session = stripe.checkout.Session.create(
+            ui_mode = 'embedded',
+            line_items=body['items'],
+            mode='payment',
+            #implementar un webhook para que se ejecute una funcion cuando se complete el pago
+            return_url=FRONT + 'return?session_id={CHECKOUT_SESSION_ID}',
         )
-        return jsonify({
-            'clientSecret': intent['client_secret']
-        })
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)})
+        return str(e)
+
+    return jsonify({"clientSecret":session.client_secret})
  
 #EVENTS
 

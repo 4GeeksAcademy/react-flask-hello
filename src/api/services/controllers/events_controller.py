@@ -15,12 +15,13 @@ def create_event(current_user):  # Recibimos el usuario autenticado desde el dec
             time=data.get('time'),
             difficulty=data.get('difficulty'),
             capacity=data.get('capacity'),
-            direction=data.get('direction'),
-            latitude=data.get('latitude'),
-            longitude=data.get('longitude'),
-            weather=data.get('weather'),
-            distance=data.get('distance'),
-            duration=data.get('duration'),
+            address=data.get('address'),
+            sport=data.get('sport'),
+            #latitude=data.get('latitude'),
+            #longitude=data.get('longitude'),
+            #weather=data.get('weather'),
+            #distance=data.get('distance'),
+            #duration=data.get('duration'),
             creator_id=current_user.id #data.get('creator_id')
         )
         db.session.add(new_event)
@@ -61,9 +62,11 @@ def update_event(current_user, event_id):
     event.time = data.get('time', event.time)
     event.difficulty = data.get('difficulty', event.difficulty)
     event.capacity = data.get('capacity', event.capacity)
-    event.latitude = data.get('latitude', event.latitude)
-    event.longitude = data.get('longitude', event.longitude)
-    event.weather = data.get('weather', event.weather)
+    event.address = data.get('address', event.address)
+    event.sport = data.get('sport', event.sport)
+    #event.latitude = data.get('latitude', event.latitude)
+    #event.longitude = data.get('longitude', event.longitude)
+    #event.weather = data.get('weather', event.weather)
     event.distance = data.get('distance', event.distance)
     event.duration = data.get('duration', event.duration)
 

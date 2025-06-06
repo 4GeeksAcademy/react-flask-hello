@@ -40,11 +40,13 @@ class Event(db.Model):
     time = db.Column(db.String(50), nullable=False)
     difficulty = db.Column(db.String(20))  # Fácil, Medio, Difícil
     capacity = db.Column(db.Integer, nullable=False)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
-    weather = db.Column(db.String(100))  # Opcional
+    address = db.Column(db.String(255), nullable=False)
+    sport = db.Column(db.String(50), nullable=False)
+    #latitude = db.Column(db.Float, nullable=False)
+    #longitude = db.Column(db.Float, nullable=False)
+    #weather = db.Column(db.String(100))  # Opcional
     distance = db.Column(db.Float)       # Opcional
-    duration = db.Column(db.Float)       # Opcional
+    #duration = db.Column(db.Float)       # Opcional
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     joined_users = db.relationship(
@@ -62,11 +64,13 @@ class Event(db.Model):
             "time": self.time,
             "difficulty": self.difficulty,
             "capacity": self.capacity,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "weather": self.weather,
-            "distance": self.distance,
-            "duration": self.duration,
+            "address": self.address,
+            "sport": self.sport,
+            #"latitude": self.latitude,
+            #"longitude": self.longitude,
+            #"weather": self.weather,
+            #"distance": self.distance,
+            #"duration": self.duration,
             "creator_id": self.creator_id,
             "participants": [user.id for user in self.joined_users]
         }

@@ -26,7 +26,8 @@ const CreatePost = ({ show, onClose, setPosts }) => {
             capacity: parseInt(formData.capacity, 10),
             participants: 0
         };
-
+        console.log("📤 Datos enviados al backend:", newPost);
+        
         try {
             const token = localStorage.getItem("token");
 

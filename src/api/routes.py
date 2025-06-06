@@ -480,7 +480,8 @@ def get_students_attendance():
 
     return jsonify(result), 200
 
-#Registrar asistencia para una fecha y estudiante específicos. -- para PROFESORES
+# Registrar asistencia para una fecha y estudiante específicos. -- para PROFESORES
+
 
 @api.route('/attendance', methods=['POST'])
 @jwt_required()
@@ -516,7 +517,8 @@ def register_attendance():
 
     return jsonify({"message": "Asistencia registrada exitosamente."}), 201
 
-#Actualizar el estado de asistencia de un registro existente -- para PROFESORES
+# Actualizar el estado de asistencia de un registro existente -- para PROFESORES
+
 
 @api.route('/attendance/<int:attendance_id>', methods=['PUT'])
 @jwt_required()
@@ -536,7 +538,6 @@ def update_attendance(attendance_id):
     db.session.commit()
 
     return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
-
 
 
 # Registrar una calificacion de un estudiante -- para PROFESORES
@@ -622,14 +623,8 @@ def update_grade(grade_id):
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
 @api.route('/teacher/grades', methods=['GET'])
 @jwt_required()
-<<<<<<< HEAD
-def get_students_grades():
-    teacher_id = get_jwt_identity()
-
-=======
 def get_students_with_grades():
     teacher_id = int(get_jwt_identity())
->>>>>>> signup
     user = User.query.get(teacher_id)
 
     if not user or user.role != "teacher" or user.status != "approved":
@@ -679,7 +674,6 @@ def get_students_with_grades():
         })
 
     return jsonify(result), 200
-
 
 
 # El estudiante puede ver sus calificaciones por materia y periodo -- para ESTUDIANTES
@@ -981,9 +975,12 @@ def get_periods():
     return jsonify(periods), 200
 
 # Recuperar contraseña
+
+
 def verify_reset_token(token, expires_sec=600):
     try:
-        user_id = serializer.loads(token, salt="recuperar-clave", max_age=expires_sec)
+        user_id = serializer.loads(
+            token, salt="recuperar-clave", max_age=expires_sec)
     except (SignatureExpired, BadSignature):
         return None
     return user_id
@@ -1021,6 +1018,7 @@ def forgot_password():
         return jsonify({"msg": "Correo de recuperación enviado con éxito"}), 200
     except Exception as e:
         return jsonify({"error": "Error al enviar correo", "details": str(e)}), 500
+
 
 @api.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):

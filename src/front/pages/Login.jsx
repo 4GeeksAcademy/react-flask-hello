@@ -15,11 +15,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await loginUser({ email, password });
-
-            if (!response.token) {
-                throw new Error("Token no recibido.");
-            }
-
+            console.log("Login exitoso:", response.token);
+            
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("token", response.token);
             localStorage.setItem("userData", JSON.stringify(response.user));

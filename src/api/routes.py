@@ -1,6 +1,3 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Products
 from api.utils import generate_sitemap, APIException
@@ -24,7 +21,7 @@ def get_products():
     if not products:
         return jsonify({"msg":"add a product"})
 
-    return jsonify({"success":"This is our products list"},[product.serialize() for product in products]), 200
+    return jsonify({"success":"This is our products list","products": [product.serialize() for product in products]}), 200
 
 @api.route('/products/<int:id>', methods=['GET'])
 def get_product(id):
@@ -33,7 +30,7 @@ def get_product(id):
     if not product:
         return jsonify({"msg":"the product was not found"}), 404
     
-    return jsonify({"success":"the product was found"}, product.serialize()), 200
+    return jsonify({"success":"the product was found","product": product.serialize()}), 200
 
 @api.route('/products', methods=['POST'])
 def created_product():
@@ -161,3 +158,46 @@ def profile():
         return ({"error":"User not found"}), 404
     
     return jsonify({"user": user.serialize()}), 200
+
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user.generate_reset_token()
+    db.session.commit()
+
+    reset_url = url_for('api.reset_password', token=user.reset_token, _external=True)
+
+    return jsonify({
+        "success": "Reset link generated",
+        "reset_url": reset_url
+    }), 200
+
+
+@api.route('/reset-password/<string:token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    new_password = data.get("new_password")
+
+    if not new_password:
+        return jsonify({"error": "New password is required"}), 400
+
+    user = User.query.filter_by(reset_token=token).first()
+
+    if not user or user.reset_token_expires < datetime.utcnow():
+        return jsonify({"error": "Invalid or expired token"}), 400
+
+    user.password = generate_password_hash(new_password)
+    user.reset_token = None
+    user.reset_token_expires = None
+    db.session.commit()
+
+    return jsonify({"success": "Password updated successfully"}), 200

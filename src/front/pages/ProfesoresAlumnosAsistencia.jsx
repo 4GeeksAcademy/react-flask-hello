@@ -1,80 +1,307 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthProvider.jsx";
+
 export const ProfesoresAlumnosAsistencia = () => {
+
+    const { store } = useAuth();
+    const token = store.access_token;
+    const [students, setStudents] = useState([])
+    const [period, setPeriods] = useState([])
+    const [grade, setGrades] = useState([])
+    const [load, setLoad] = useState(false)
+    const [editingId, setEditingId] = useState(null);
+    const [attendance, setAttendance] = useState({
+        asistio: false,
+        tardanza: false,
+        falto: false,
+        noregistrado: true
+    });
+
+    useEffect(() => {
+        const students = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setStudents(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        const periods = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    setPeriods(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        const grades = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    setGrades(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        if (grade != ([]) && period != ([])) {
+            setLoad(true)
+        }
+        grades()
+        periods()
+        students()
+    }, [])
+
+    const [showTable, setShowTable] = useState(false);
+
+    const handleEdit = (studentId) => {
+        if (editingId === studentId) {
+            // Aquí irá la lógica para guardar los cambios
+            console.log('Guardando asistencia:', {
+                studentId,
+                attendance
+            });
+            setEditingId(null);
+            setShowTable(false);
+        } else {
+            setEditingId(studentId);
+            setShowTable(true);
+            setAttendance({
+                asistio: false,
+                tardanza: false,
+                falto: false,
+                noregistrado: true
+            });
+        }
+    };
+
+    const handleAttendanceChange = (type) => {
+        setAttendance({
+            asistio: type === 'asistio',
+            tardanza: type === 'tardanza',
+            falto: type === 'falto',
+            noregistrado: type === 'noregistrado'
+        });
+    };
+
+    const handleAsistance = async () => {
+        const students = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendance?enrollment_id=8`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const responseData = await response.json()
+                if (response.ok) {
+                    console.log(responseData);
+                    setStudents(responseData)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+    }
+
     return (
-        <div className="container table-responsive">
-            <div className="row">
-                <div className="col-2">
-                    <select className="form-select" aria-label="Selecciona una opción">
-                        <option value="">Selecciona Año</option>
-                        <option value="1">Primero</option>
-                        <option value="2">Segundo</option>
-                        <option value="3">Tercero</option>
-                        <option value="4">Cuarto</option>
-                        <option value="5">Quinto</option>
-                    </select>
+
+        <div className="container-fliud table-responsive px-4">
+            {load ?
+                <div>
+                    <div className="row justify-content-center">
+                        <div className="col-2">
+                            <select className="form-select" aria-label="Selecciona una opción">
+                                <option value="">Selecciona Año</option>
+                                {grade.map((grade) => (
+                                    <option key={grade.id} value={grade.id}>{grade.name} </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-2">
+                            <select className="form-select" aria-label="Selecciona una opción">
+                                <option value="">Selecciona Periodo</option>
+                                {period.map((periodos, i) => (
+                                    <option key={i} value={periodos}>{periodos} Bimestre</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-2">
+                            <button type="button" className="btn btn-success px-4">Buscar</button>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-7">
+                            <table className="table table-striped table-bordered text-center mt-5">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th scope="col admin-num">Código</th>
+                                        <th scope="col admin-lastname">Apellidos</th>
+                                        <th scope="col admin-firstname">Nombres</th>
+                                        <th scope="col admin-faltas">Faltas</th>
+                                        <th scope="col admin-assis-but"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>001</td>
+                                        <td>García</td>
+                                        <td>Ana</td>
+                                        <td>3</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${editingId === 1 ? 'btn-primary' : 'btn-success'}`}
+                                                onClick={() => handleEdit(1)}
+                                            >
+                                                <i className={`ri-${editingId === 1 ? 'save' : 'edit'}-line`}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>002</td>
+                                        <td>López</td>
+                                        <td>Carlos</td>
+                                        <td>1</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${editingId === 2 ? 'btn-primary' : 'btn-success'}`}
+                                                onClick={() => handleEdit(2)}
+                                            >
+                                                <i className={`ri-${editingId === 2 ? 'save' : 'edit'}-line`}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>003</td>
+                                        <td>Martínez</td>
+                                        <td>María</td>
+                                        <td>2</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${editingId === 3 ? 'btn-primary' : 'btn-success'}`}
+                                                onClick={() => handleEdit(3)}
+                                            >
+                                                <i className={`ri-${editingId === 3 ? 'save' : 'edit'}-line`}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {showTable && (
+                            <div className="col-5">
+                                <table className="table table-striped table-bordered text-center mt-5">
+                                    <thead className="table-ligth">
+                                        <tr>
+                                            <th scope="col">Fecha</th>
+                                            <th scope="col">Asistencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{new Date().toLocaleDateString()}</td>
+                                            <td>
+                                                <div className="d-flex justify-content-around">
+                                                    <div className="form-check form-check-inline">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            name="asistencia"
+                                                            id="asistio"
+                                                            checked={attendance.asistio}
+                                                            onChange={() => handleAttendanceChange('asistio')}
+                                                        />
+                                                        <label className="form-check-label" htmlFor="asistio">
+                                                            Asistió
+                                                        </label>
+                                                    </div>
+                                                    <div className="form-check form-check-inline">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            name="asistencia"
+                                                            id="tardanza"
+                                                            checked={attendance.tardanza}
+                                                            onChange={() => handleAttendanceChange('tardanza')}
+                                                        />
+                                                        <label className="form-check-label" htmlFor="tardanza">
+                                                            Tardanza
+                                                        </label>
+                                                    </div>
+                                                    <div className="form-check form-check-inline">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            name="asistencia"
+                                                            id="faltó"
+                                                            checked={attendance.falto}
+                                                            onChange={() => handleAttendanceChange('falto')}
+                                                        />
+                                                        <label className="form-check-label" htmlFor="faltó">
+                                                            Faltó
+                                                        </label>
+                                                    </div>
+                                                    <div className="form-check form-check-inline">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            name="asistencia"
+                                                            id="noregistrado"
+                                                            checked={attendance.noregistrado}
+                                                            onChange={() => handleAttendanceChange('noregistrado')}
+                                                        />
+                                                        <label className="form-check-label" htmlFor="noregistrado">
+                                                            No registrado
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
                 </div>
-                <div className="col-2">
-                    <select className="form-select" aria-label="Selecciona una opción">
-                        <option value="">Selecciona Periodo</option>
-                        <option value="1">Primer Bimestre</option>
-                        <option value="2">Segundo Bimestre</option>
-                        <option value="3">Tercero  Bimestre</option>
-                        <option value="4">Cuarto  Bimestre</option>
-                    </select>
+                :
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>
-                <div className="col-2">
-                    <button type="button" className="btn btn-success px-4">Buscar</button>
-                </div>
-                <table className="col-12 table table-striped table-bordered text-center mt-5">
-                    <thead className="table-light">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Participación en Clase (15%)</th>
-                            <th scope="col">Tareas (20%)</th>
-                            <th scope="col">Exámen Parcial (30%)</th>
-                            <th scope="col">Exámen Final (35%)</th>
-                            <th scope="col">Promedio Final</th>
-                            <th scope="col">Ingresar Asistencia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button type="button" className="btn btn-success"><i className="ri-edit-line"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            }
+        </div >
     );
 };

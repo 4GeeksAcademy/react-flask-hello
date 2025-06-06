@@ -90,9 +90,6 @@ export const AdminSolicitudes = () => {
         }
     }
 
-    console.log(teachers);
-
-
     return (
         <div className="container table-responsive">
             <div className="row">
@@ -112,6 +109,7 @@ export const AdminSolicitudes = () => {
                                 <th scope="col">First Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
+                                <th scope="col">Address</th>
                                 <th scope="col">Asignature</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Status</th>
@@ -126,6 +124,7 @@ export const AdminSolicitudes = () => {
                                     <td>{teachers.first_name}</td>
                                     <td>{teachers.email}</td>
                                     <td>{teachers.teacher.phone}</td>
+                                    <td>{teachers.location}</td>
                                     <td>{teachers.teacher.courses[0].name}</td>
                                     <td>{teachers.role}</td>
                                     <td>{teachers.status}</td>
@@ -149,6 +148,7 @@ export const AdminSolicitudes = () => {
                                 <th scope="col">First Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
+                                <th scope="col">Address</th>
                                 <th scope="col">Grade Level</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Status</th>
@@ -163,6 +163,7 @@ export const AdminSolicitudes = () => {
                                     <td>{students.first_name}</td>
                                     <td>{students.email}</td>
                                     <td>{students.student.phone}</td>
+                                    <td>{students.location}</td>
                                     <td>{students.student.grade_level}</td>
                                     <td>{students.role}</td>
                                     <td>{students.status}</td>

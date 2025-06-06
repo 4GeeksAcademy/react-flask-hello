@@ -71,8 +71,6 @@ export const StudenSignup = () => {
     return (
         <div className='mx-5'>
             {load ?
-
-
                 <div className='d-flex col-12 align-items-center mx-auto'>
                     <div className='col-6 text-center '>
                         <h2>Welcome!</h2>
@@ -155,6 +153,23 @@ export const StudenSignup = () => {
                             />
                             <div className="invalid-feedback">
                                 {errors?.phone?.message}
+                            </div>
+                        </div>
+                        <div className="form-group mb-3">
+                            <label htmlFor="location" className="form-label">Address:</label>
+                            <input type="text" id="location" placeholder='Example: Coronel Pereira 12, Las Condes, Chile' className={"form-control " + (errors.location ? 'is-invalid' : '')}
+                                {
+                                ...register('location', {
+                                    required: 'The field address is required!',
+                                    pattern: {
+                                        value: /^[A-Za-z0-9\s,]+$/i,
+                                        message: 'Then address must containt only letters, numbers or ",".'
+                                    }
+                                })
+                                }
+                            />
+                            <div className="invalid-feedback">
+                                {errors?.location?.message}
                             </div>
                         </div>
                         <div className="form-group mb-3">

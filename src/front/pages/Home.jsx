@@ -4,6 +4,9 @@ import studentImg from "../assets/img/students.png";
 import teacherImg from "../assets/img/teacher.png";
 import { useAuth } from "../context/AuthProvider.jsx";
 
+//INSTALAR LIBRERIA : npm install react-leaflet@4.2.1 leaflet
+//INSTALAR LIBRERIA : npm install leaflet-defaulticon-compatibility
+
 export const Login = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");

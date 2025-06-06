@@ -199,3 +199,8 @@
 .admin-faltas {
   width: 80px;
 }
+
+.setIndex {
+  z-index: 0;
+  position: relative;
+}

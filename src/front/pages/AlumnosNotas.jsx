@@ -1,4 +1,31 @@
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthProvider";
+
 export const AlumnosNotas = () => {
+    const { store } = useAuth();
+    const token = store.access_token;
+    useEffect(() => {
+        const user = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/student/grades`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    console.log(data);
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        user()
+    }, [])
     return (
         <div className="container table-responsive">
             <div className="row">

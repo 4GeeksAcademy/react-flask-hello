@@ -18,7 +18,9 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[str] = mapped_column(String(20))
     status: Mapped[str] = mapped_column(String(20))
+    location: Mapped[str] = mapped_column(String(100), nullable=True)
 
+    
     student = relationship("Student", back_populates="user", uselist=False)
     teacher = relationship("Teacher", back_populates="user", uselist=False)
 
@@ -30,6 +32,7 @@ class User(db.Model):
             "email": self.email,
             "role": self.role,
             "status": self.status,
+             "location": self.location, 
             "student": self.student.serialize() if self.role == 'student' and self.student else None,
             "teacher": self.teacher.serialize() if self.role == 'teacher' and self.teacher else None
         }

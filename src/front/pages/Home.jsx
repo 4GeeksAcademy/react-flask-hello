@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import studentImg from "../assets/img/students.png";
 import teacherImg from "../assets/img/teacher.png";
 import { useAuth } from "../context/AuthProvider.jsx";
+import { Link } from "react-router-dom";
 
 //INSTALAR LIBRERIA : npm install react-leaflet@4.2.1 leaflet
 //INSTALAR LIBRERIA : npm install leaflet-defaulticon-compatibility
@@ -90,6 +91,10 @@ export const Login = () => {
           </div>
           <p className="text-danger mt-2">{msg}</p>
           <button type="submit" className="btn btn-dark w-100">Iniciar Sesión</button>
+          <p className="mt-2">
+            ¿Olvidaste tu contraseña?{" "}
+            <Link to="/forgot-password">Haz clic aquí</Link>
+          </p>
         </form>
       </div>
     </div>

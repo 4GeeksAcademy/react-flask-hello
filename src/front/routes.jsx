@@ -28,7 +28,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import { AdminDashboardLayout } from "./pages/AdminDashboardLayout";
 import { AlumnosDashboardLayout } from "./pages/AlumnosDashboardLayout";
 import { ProfesoresDashboardLayout } from "./pages/ProfesoresDashboardLayout";
-
+import SolicitarToken from "./pages/SolicitarToken.jsx"; 
+import { NuevaContrasena } from "./pages/NuevaContrasena";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" errorElement={<h1>Not found!</h1>} >
@@ -74,6 +75,8 @@ export const router = createBrowserRouter(
         <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />
         <Route path="/student/dashboard/pagos" element={<AlumnosPagos />} />
       </Route>
+      <Route path="/forgot-password" element={<SolicitarToken />} />
+      <Route path="/reset-password/:token" element={<NuevaContrasena />} />   
     </Route>
   )
 );

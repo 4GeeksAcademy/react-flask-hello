@@ -11,6 +11,13 @@ from api.models import db, User, Student, Teacher, GradeLevel, Course, Schedule,
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
+from werkzeug.security import generate_password_hash
+from flask import request, jsonify, url_for
+from flask_mail import Message
+from itsdangerous import SignatureExpired, BadSignature
+from api.models import db, User
+from api.mail_config import mail, serializer
+import os
 
 api = Blueprint('api', __name__)
 
@@ -533,7 +540,7 @@ def update_grade(grade_id):
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
 @api.route('/teacher/grades', methods=['GET'])
 @jwt_required()
-def get_students_with_grades():
+def get_students_grades():
     teacher_id = get_jwt_identity()
 
     user = User.query.get(teacher_id)
@@ -565,7 +572,7 @@ def get_students_with_grades():
     return jsonify(result), 200
 
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
-@api.route('/teacher/students', methods=['GET'])
+@api.route('/teacher/grades/prueba', methods=['GET'])
 @jwt_required()
 def get_students_with_grades():
     teacher_id = get_jwt_identity()
@@ -895,3 +902,66 @@ def get_profile():
 def get_periods():
     periods = ['Primer', 'Segundo', 'Tercer', 'Cuarto']
     return jsonify(periods), 200
+
+# Recuperar contraseña
+def verify_reset_token(token, expires_sec=600):
+    try:
+        user_id = serializer.loads(token, salt="recuperar-clave", max_age=expires_sec)
+    except (SignatureExpired, BadSignature):
+        return None
+    return user_id
+
+
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"error": "Se requiere un correo electrónico"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    # Generar token con ID del usuario
+    token = serializer.dumps(user.id, salt="recuperar-clave")
+
+    # Crear URL con frontend
+    frontend_url = os.getenv("FRONTEND_URL")
+    reset_url = f"{frontend_url}/reset-password/{token}"
+
+    # Crear mensaje
+    msg = Message(
+        subject="Recuperación de contraseña - Alpha School",
+        sender=os.getenv("MAIL_DEFAULT_SENDER"),
+        recipients=[email],
+        body=f"Hola {user.first_name},\n\nPara restablecer tu contraseña haz clic en el siguiente enlace:\n{reset_url}\n\nEste enlace expirará en 10 minutos."
+    )
+
+    try:
+        mail.send(msg)
+        return jsonify({"msg": "Correo de recuperación enviado con éxito"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error al enviar correo", "details": str(e)}), 500
+
+@api.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    password = data.get('password')
+
+    if not password:
+        return jsonify({"error": "Contraseña requerida"}), 400
+
+    user_id = verify_reset_token(token)
+    if not user_id:
+        return jsonify({"error": "Token inválido o expirado"}), 400
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    user.password = generate_password_hash(password)
+    db.session.commit()
+
+    return jsonify({"message": "Contraseña actualizada exitosamente"}), 200

@@ -405,7 +405,38 @@ def get_students_by_course_and_grade():
     return jsonify(filtered), 200
 
 
-# Registrar asistencia -- para PROFESORES
+# Devuelve los estudiantes de un curso y año específico, junto con su historial de asistencia (por fecha) -- para PROFESORES
+@api.route('/teacher/students/attendance', methods=['GET'])
+@jwt_required()
+def get_students_attendance():
+    teacher_id = get_jwt_identity()
+
+    grade_level_id = request.args.get("grade_level_id", type=int)
+    course_id = request.args.get("course_id", type=int)
+    period = request.args.get("period", type=int)
+
+    if not grade_level_id or not course_id or not period:
+        return jsonify({"error": "Faltan parámetros requeridos"}), 400
+
+    enrollments = Enrollment.query.filter_by(
+        course_id=course_id, grade_level_id=grade_level_id).all()
+
+    result = []
+    for enrollment in enrollments:
+        student = enrollment.student.serialize()
+        attendance_records = Attendance.query.filter_by(
+            enrollment_id=enrollment.id).all()
+
+        result.append({
+            "enrollment_id": enrollment.id,
+            "student": student,
+            "attendance": [a.serialize() for a in attendance_records]
+        })
+
+    return jsonify(result), 200
+
+#Registrar asistencia para una fecha y estudiante específicos. -- para PROFESORES
+
 @api.route('/attendance', methods=['POST'])
 @jwt_required()
 def register_attendance():
@@ -416,7 +447,6 @@ def register_attendance():
     if error:
         return jsonify({"error": error}), 400
 
-    # Validar estado permitido
     valid_status = ["asistio", "falto", "tardanza", "no registrado"]
     if data['status'] not in valid_status:
         return jsonify({"error": "Estado de asistencia no válido."}), 400
@@ -427,12 +457,10 @@ def register_attendance():
     except ValueError:
         return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD."}), 400
 
-    # Verificar que la inscripción exista
     enrollment = Enrollment.query.get(data['enrollment_id'])
     if not enrollment:
         return jsonify({"error": "Matrícula no encontrada."}), 404
 
-    # Crear asistencia
     attendance = Attendance(
         enrollment_id=data['enrollment_id'],
         date=attendance_date,
@@ -443,18 +471,27 @@ def register_attendance():
 
     return jsonify({"message": "Asistencia registrada exitosamente."}), 201
 
+#Actualizar el estado de asistencia de un registro existente -- para PROFESORES
 
-# Historial de asistencia por estudiante (vía enrollment) -- para PROFESORES
-@api.route('/attendance', methods=['GET'])
+@api.route('/attendance/<int:attendance_id>', methods=['PUT'])
 @jwt_required()
-def get_attendance_by_enrollment():
-    enrollment_id = request.args.get('enrollment_id')
+def update_attendance(attendance_id):
+    data = request.get_json()
+    new_status = data.get("status")
 
-    if not enrollment_id:
-        return jsonify({"error": "Parámetro 'enrollment_id' requerido."}), 400
+    valid_status = ["asistio", "falto", "tardanza", "no registrado"]
+    if new_status not in valid_status:
+        return jsonify({"error": "Estado de asistencia no válido."}), 400
 
-    attendances = Attendance.query.filter_by(enrollment_id=enrollment_id).all()
-    return jsonify([a.serialize() for a in attendances]), 200
+    attendance = Attendance.query.get(attendance_id)
+    if not attendance:
+        return jsonify({"error": "Asistencia no encontrada."}), 404
+
+    attendance.status = new_status
+    db.session.commit()
+
+    return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
+
 
 
 # Registrar una calificacion de un estudiante -- para PROFESORES
@@ -562,38 +599,6 @@ def get_students_grades():
         student = enrollment.student.serialize()
         grade = Grade.query.filter_by(
             enrollment_id=enrollment.id, period=period).first()
-
-        result.append({
-            "enrollment_id": enrollment.id,
-            "student": student,
-            "grade": grade.serialize() if grade else None
-        })
-
-    return jsonify(result), 200
-
-# Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
-@api.route('/teacher/grades/prueba', methods=['GET'])
-@jwt_required()
-def get_students_with_grades():
-    teacher_id = get_jwt_identity()
-
-    user = User.query.get(teacher_id)
-    if not user or user.role != "teacher" or user.status != "approved":
-        return jsonify({"msg": "Acceso no autorizado"}), 403
-
-    grade_level_id = request.args.get("grade_level_id", type=int)
-    course_id = request.args.get("course_id", type=int)
-    period = request.args.get("period", type=int)
-
-    if not grade_level_id or not course_id or not period:
-        return jsonify({"msg": "Faltan parámetros: grade_level_id, course_id y period son requeridos"}), 400
-
-    enrollments = Enrollment.query.filter_by(course_id=course_id, grade_level_id=grade_level_id).all()
-
-    result = []
-    for enrollment in enrollments:
-        student = enrollment.student.serialize()
-        grade = Grade.query.filter_by(enrollment_id=enrollment.id, period=period).first()
 
         result.append({
             "enrollment_id": enrollment.id,

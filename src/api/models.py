@@ -1,24 +1,52 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, Table, Column, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
+import secrets
+from datetime import datetime, timedelta
 
 db = SQLAlchemy()
 
+shopping_cart = Table(
+    'shopping_cart',
+    db.metadata,Column("id", Integer, primary_key=True),
+    Column('amount', Integer, nullable=False),
+    Column("fk_product", ForeignKey("products.id"), nullable=False),
+    Column("fk_user", ForeignKey("user.id"), nullable=False)
+)
+
 class User(db.Model):
+    __tablename__ = "user"
+
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(60), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(60), nullable=False)
+    address: Mapped[str] = mapped_column(String(120), nullable=False)
 
+    reset_token: Mapped[str] = mapped_column(nullable=True)
+    reset_token_expires: Mapped[datetime] = mapped_column(nullable=True)
+
+    products: Mapped[List["Products"]] = relationship(secondary=shopping_cart, back_populates="users")
 
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
-            # do not serialize the password, its a security breach
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "address": self.address,
+            "role": self.role
         }
         
-class Product(db.Model):
+    def generate_reset_token(self):
+        self.reset_token = secrets.token_urlsafe(32)
+        self.reset_token_expires = datetime.utcnow() + timedelta(hours=1)
+
+class Products(db.Model):
+    __tablename__ = "products"
+
     id: Mapped[int] = mapped_column(primary_key=True)
     product_name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     price: Mapped[int] = mapped_column(nullable=False)
@@ -26,7 +54,9 @@ class Product(db.Model):
     color: Mapped[str] = mapped_column(nullable=False)
     product_type: Mapped[str] = mapped_column(nullable=False)
     gender: Mapped[str] = mapped_column(nullable=False)
-    size: Mapped[int] = mapped_column(nullable=False)
+    size: Mapped[str] = mapped_column(nullable=False)
+
+    users: Mapped[List["User"]] = relationship(secondary=shopping_cart, back_populates="products")
 
     def serialize(self):
         return {

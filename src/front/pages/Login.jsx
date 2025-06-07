@@ -1,54 +1,43 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+
 
 const Login = () => {
-    // Estado local para capturar los valores del formulario
+
+    const URLBACK = import.meta.env.VITE_BACKEND_URL
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    // Hook de React Router para redirigir al usuario tras iniciar sesión
     const navigate = useNavigate();
+    const { login } = useGlobalReducer()
 
-    // Esta función se ejecuta cuando el usuario envía el formulario
+
     const handleLogin = async (e) => {
-        e.preventDefault(); // Previene que el formulario recargue la página por defecto
+        e.preventDefault();
 
-        // ======== SIMULACIÓN TEMPORAL DE LOGIN ========
-        // Esto es solo para poder continuar con el desarrollo del proyecto
-        // Aquí aún NO se comprueba contra la base de datos ni se recibe un token
-        console.log("Email ingresado:", email);
-        console.log("Contraseña ingresada:", password);
-        navigate("/home");
-
-        // ======== LÓGICA REAL PARA CUANDO ESTÉ LISTA LA API ========
-        // Descomenta este bloque cuando tengas acceso a la API de login
-
-        /*
         try {
-            const response = await fetch("https://miapi.com/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
-            });
+            const resp = await axios.post(`${URLBACK}api/login`, {
+                email, password
+            })
 
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem("token", data.token); // Guarda el token o info útil
-                navigate("/home"); // Redirige al home si todo va bien
+            const data = resp.data
+
+            if (data?.token) {
+                login(data.token)
+                navigate('/')
             } else {
-                alert("Credenciales incorrectas. Intenta nuevamente.");
+                alert("Usuario o contraseña equivocada")
             }
+
         } catch (error) {
-            console.error("Error al intentar iniciar sesión:", error);
-            alert("Ocurrió un error al conectar con el servidor.");
+            console.error("Error logging in", error);
+            alert("Ocurrió un error al conectar con el servidor");
         }
-        */
     };
+
+
+
 
     return (
         <div className="container mt-5" style={{ maxWidth: "500px" }}>
@@ -63,7 +52,7 @@ const Login = () => {
                         className="form-control"
                         id="loginEmail"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value.toLowerCase())}
                         required
                     />
                 </div>
@@ -82,10 +71,14 @@ const Login = () => {
                     />
                 </div>
 
-                <button type="submit" className="btn btn-primary w-100">
+                <button type="submit" className="btn btn-primary w-100" >
                     Iniciar sesión
                 </button>
             </form>
+            <div className="mt-3 text-center">
+                <p> ¿Olvidaste tu contraseña?{" "} <a href="/recuperacion-de-contrasena" className="text-decoration-none">Recuperar contraseña</a>
+                </p>
+            </div>
         </div>
     );
 };

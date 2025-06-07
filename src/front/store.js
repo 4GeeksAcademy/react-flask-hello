@@ -10,7 +10,6 @@ export default function storeReducer(store, action = {}) {
     case "agregar_al_carrito": {
       const producto = action.payload;
 
-      // ¿existe el produto en el carrito?
       const productoExistente = store.carrito.find(
         (item) => item.id === producto.id
       );
@@ -22,7 +21,6 @@ export default function storeReducer(store, action = {}) {
           item.id ? { ...item, cantidad: item.cantidad + 1 } : item
         );
       } else {
-        // Si no exite, lo añadimos con cantidad 1
         nuevoCarrito = [...store.carrito, { ...producto, cantidad: 1 }];
       }
 
@@ -35,7 +33,6 @@ export default function storeReducer(store, action = {}) {
     case "eliminar_del_carrito": {
       const id = action.payload;
 
-      // Filtramos fuera el producto que queremos eliminar
       const nuevoCarrito = store.carrito.filter((item) => item.id !== id);
 
       return {

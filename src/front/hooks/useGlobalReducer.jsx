@@ -1,10 +1,7 @@
 import { useContext, useReducer, createContext, useState, useEffect } from "react";
 import storeReducer, { initialStore } from "../store"  
 
-
-
 const StoreContext = createContext()
-
 
 export function StoreProvider({ children }) {
 
@@ -14,12 +11,23 @@ export function StoreProvider({ children }) {
     useEffect (() => {
         const token = localStorage.getItem('token')
 
-        if (token) {
-            setIsAuthenticated(true)
+        setIsAuthenticated(!!token) 
+        setloading(false)
+        
+    },[])
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const token = localStorage.getItem('token')
+            setIsAuthenticated(!!token)
         }
 
-        setloading(false)
-    },[])
+        window.addEventListener('storage', handleStorageChange)
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange)
+        }
+    }, [])
 
     const login = (token) => {
         localStorage.setItem('token', token)

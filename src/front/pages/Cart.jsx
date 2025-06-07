@@ -1,11 +1,10 @@
-// src/pages/Cart.jsx
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Cart() {
   const { store, dispatch } = useGlobalReducer();
 
   const total = store.carrito.reduce(
-    (acc, item) => acc + item.precio * item.cantidad,
+    (acc, item) => acc + item.price * item.cantidad,
     0
   );
 
@@ -20,10 +19,10 @@ export default function Cart() {
           {store.carrito.map(item => (
             <li key={item.id} className="border p-2 rounded flex justify-between items-center">
               <div>
-                <p className="font-bold">{item.nombre}</p>
+                <p className="font-bold">{item.product_name}</p>
                 <p>Cantidad: {item.cantidad}</p>
-                <p>Precio unitario: {item.precio.toFixed(2)} €</p>
-                <p>Total: {(item.precio * item.cantidad).toFixed(2)} €</p>
+                <p>Precio unitario: {item.price.toFixed(2)} €</p>
+                <p>Total: {(item.price * item.cantidad).toFixed(2)} €</p>
               </div>
               <button
                 onClick={() => dispatch({ type: "eliminar_del_carrito", payload: item.id })}

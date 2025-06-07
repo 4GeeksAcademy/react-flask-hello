@@ -53,6 +53,9 @@ def created_product():
         return jsonify({"error":"The gender field is required"})
     if not data.get('size'):
         return jsonify({"error":"The size field is required"})
+    if not data.get('stock'):
+        return jsonify({"error":"The stock field is required"})
+    
 
     new_product = Products(
         product_name=data.get('product_name'),
@@ -61,7 +64,9 @@ def created_product():
         color=data.get('color'),
         product_type=data.get('product_type'),
         gender=data.get('gender'),
-        size=data.get('size')
+        size=data.get('size'),
+        stock=data.get('stock'),
+        product_photo=data.get('product_photo', None)
     )
 
     db.session.add(new_product)
@@ -92,6 +97,10 @@ def update_product(id):
         product.gender  =data['gender']
     if 'size' in data:
         product.size  =data['size']
+    if 'stock' in data:
+        product.stock  =data['stock']
+    if 'product_photo' in data:
+        product.product_photo  =data['product_photo']    
     
     db.session.commit()
 

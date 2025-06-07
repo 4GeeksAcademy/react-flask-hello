@@ -133,7 +133,7 @@ const Profile = () => {
                                     ))}
                             </ul>
 
-                            <button className="btn btn-outline-success mt-4" onClick={handleSave}>
+                            <button className="btn btn-outline-success mt-4" onClick={toggleEdit}>
                                 Editar Perfil
                             </button>
                         </>

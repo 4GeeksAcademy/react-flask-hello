@@ -75,6 +75,10 @@ const Login = () => {
                     Iniciar sesión
                 </button>
             </form>
+            <div className="mt-3 text-center">
+                <p> ¿Olvidaste tu contraseña?{" "} <a href="/recuperacion-de-contrasena" className="text-decoration-none">Recuperar contraseña</a>
+                </p>
+            </div>
         </div>
     );
 };

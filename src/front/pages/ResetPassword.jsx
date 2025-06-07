@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useFormStatus } from "react-dom"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import axios from "axios"
 
 
 export const ResetPassword = () => {
@@ -15,8 +16,9 @@ export const ResetPassword = () => {
         e.preventDefault()
 
         try {
-            const resp = await axios.post(`${URLBACK}api/reset-password/${token}`, { password})
-            setText(resp.data.message)
+            const resp = await axios.post(`${URLBACK}api/reset-password/${token}`, { new_password: password})
+            console.log(resp.data)
+            setText(resp.data.success || resp.data.message)
             setTimeout(() => navigate('/login'), 3000)
         }
         catch (error) {
@@ -29,13 +31,13 @@ export const ResetPassword = () => {
         <div>
             <h2>Ingrese su nueva contraseña</h2>
             <form onSubmit={handleReset}>
-                <input type="email"
+                <input type="password"
                 className="form-control mb-3"
                 placeholder="New password"
                 value={password}
                 onChange={(e)=> setPassword(e.target.value)}
                 required  />
-                <button type="submit" className="btn btn-success">reset password</button>
+                <button type="submit" className="btn btn-success">Reset password</button>
             </form>
             {text && <div className="alert alert-info mt-3">{text}</div>}
         </div>

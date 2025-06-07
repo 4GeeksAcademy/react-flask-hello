@@ -16,6 +16,8 @@ import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import { Profile } from "./pages/Profile"
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
 
 
 export const router = createBrowserRouter(
@@ -33,7 +35,9 @@ export const router = createBrowserRouter(
         <Route path="/productos" element={<ProductList />} />
         <Route path="/producto/:id" element={<ProductDetail />} />
         <Route path="/carrito" element={<Cart />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/perfil" element={<Profile />} />
+        <Route path="/recuperacion-de-contrasena" element={<ForgotPassword />} />
+        <Route path="/restablecer-contrasena/:token" element={<ResetPassword />} />
       </Route>
     )
 );

@@ -118,7 +118,6 @@ export const AlumnosNotas = () => {
                     {load ? showTable && (<table className="col-12 table table-striped table-bordered text-center mt-5">
                         <thead className="table-light">
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Participación en Clase (15%)</th>
                                 <th scope="col">Tareas (20%)</th>
                                 <th scope="col">Exámen Parcial (30%)</th>
@@ -129,7 +128,6 @@ export const AlumnosNotas = () => {
                         <tbody>
                             {grades.map((item, index) => (
                                 <tr key={item.id}>
-                                    <th scope="row">{index + 1}</th>
                                     <td>{item.participation}</td>
                                     <td>{item.homework}</td>
                                     <td>{item.midterm}</td>

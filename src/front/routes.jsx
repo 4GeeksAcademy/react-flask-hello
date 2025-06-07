@@ -26,7 +26,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { AdminDashboardLayout } from "./pages/AdminDashboardLayout";
 import { AlumnosDashboardLayout } from "./pages/AlumnosDashboardLayout";
 import { ProfesoresDashboardLayout } from "./pages/ProfesoresDashboardLayout";
-import SolicitarToken from "./pages/SolicitarToken.jsx"; 
+import SolicitarToken from "./pages/SolicitarToken.jsx";
 import { NuevaContrasena } from "./pages/NuevaContrasena";
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +35,8 @@ export const router = createBrowserRouter(
       <Route path="/login/admin" element={<Admin />} />
       <Route path="/" element={<LoginLayout />} errorElement={<h1>Not found!</h1>}>
         <Route path="/" element={<Login />} />
+        <Route path="/forgot-password" element={<SolicitarToken />} />
+        <Route path="/reset-password/:token" element={<NuevaContrasena />} />
       </Route>
       <Route path="/signup" element={<SignupLayout />}>
         <Route path="/signup" element={<Signup />} />
@@ -71,8 +73,7 @@ export const router = createBrowserRouter(
         <Route path="/student/dashboard/notas" element={<AlumnosNotas />} />
         <Route path="/student/dashboard/horario" element={<AlumnosHorario />} />
       </Route>
-      <Route path="/forgot-password" element={<SolicitarToken />} />
-      <Route path="/reset-password/:token" element={<NuevaContrasena />} />   
+
     </Route>
   )
 );

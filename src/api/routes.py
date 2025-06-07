@@ -7,20 +7,21 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from datetime import datetime, timedelta
+from flask_mail import Message
+from extensions import mail
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
 
-# WHYYYYYY??????
-
 @api.route('/products', methods=['GET'])
 def get_products():
     products = Products.query.all()
 
     if not products:
-        return jsonify({"msg":"add a product"})
+        return jsonify({"msg":"add a product"}), 404
 
     return jsonify({"success":"This is our products list","products": [product.serialize() for product in products]}), 200
 
@@ -66,7 +67,7 @@ def created_product():
     db.session.add(new_product)
     db.session.commit()
 
-    return jsonify({"success":"A new product has been created"}, new_product.serialize()), 201
+    return jsonify({"success":"A new product has been created", "product": new_product.serialize()}), 201
 
 @api.route('/products/<int:id>', methods=['PUT'])
 def update_product(id):
@@ -159,3 +160,51 @@ def profile():
         return ({"error":"User not found"}), 404
     
     return jsonify({"user": user.serialize()}), 200
+
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user.generate_reset_token()
+    db.session.commit()
+
+    reset_url = url_for('api.reset_password', token=user.reset_token, _external=True)
+
+    msg = Message("Restablece tu contraseña",
+              recipients=[email])
+    msg.body = f"Hola,\n\nHas solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n{reset_url}\n\nSi no hiciste esta solicitud, ignora este correo."
+    mail.send(msg)
+
+    return jsonify({
+        "success": "Reset link generated",
+        "reset_url": reset_url
+    }), 200
+
+
+@api.route('/reset-password/<string:token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    new_password = data.get("new_password")
+
+    if not new_password:
+        return jsonify({"error": "New password is required"}), 400
+
+    user = User.query.filter_by(reset_token=token).first()
+
+    if not user or user.reset_token_expires < datetime.utcnow():
+        return jsonify({"error": "Invalid or expired token"}), 400
+
+    user.password = generate_password_hash(new_password)
+    user.reset_token = None
+    user.reset_token_expires = None
+    db.session.commit()
+
+    return jsonify({"success": "Password updated successfully"}), 200

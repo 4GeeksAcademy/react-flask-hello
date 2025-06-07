@@ -54,7 +54,7 @@ class Products(db.Model):
     color: Mapped[str] = mapped_column(nullable=False)
     product_type: Mapped[str] = mapped_column(nullable=False)
     gender: Mapped[str] = mapped_column(nullable=False)
-    size: Mapped[int] = mapped_column(nullable=False)
+    size: Mapped[str] = mapped_column(nullable=False)
 
     users: Mapped[List["User"]] = relationship(secondary=shopping_cart, back_populates="products")
 

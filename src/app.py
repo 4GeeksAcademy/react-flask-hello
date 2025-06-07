@@ -11,6 +11,7 @@ from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from dotenv import load_dotenv
 from extensions import mail
+from flask_cors import CORS
 
 # from models import Person
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -18,6 +19,7 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 load_dotenv()
 app = Flask(__name__)
+CORS(app, origins="*")
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension

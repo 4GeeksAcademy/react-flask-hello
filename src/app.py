@@ -24,6 +24,12 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+# Configuración CORS profesional
+CORS(
+    app,
+    origins=os.getenv("FLASK_FRONTEND_URL"),
+    supports_credentials=True
+)
 app.url_map.strict_slashes = False
 
 
@@ -47,12 +53,6 @@ app.config['JWT_SECRET_KEY'] = os.getenv(
     "JWT_SECRET_KEY", "super-secret-jwt-key")
 jwt = JWTManager(app)
 
-# Configuración CORS profesional
-CORS(
-    app,
-    origins=os.getenv("FLASK_FRONTEND_URL"),
-    supports_credentials=True
-)
 
 # @app.after_request
 # def add_cors_headers(response):
@@ -77,9 +77,9 @@ def add_cors_headers(response):
     return response
 
 
-# Configuración CORS
-CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev",
-     supports_credentials=True)
+# Configuración CORS // DUPLICADO
+# CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev",
+    # supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

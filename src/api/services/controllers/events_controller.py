@@ -9,6 +9,8 @@ from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 
 def create_event():  # Recibimos el usuario autenticado desde el decorador
+    print("🟡 Entrando a create_event()")
+
     verify_jwt_in_request()  # Verifica token JWT sin decorador
     print("🛂 Token recibido:", request.headers.get("Authorization"))
     print("🔍 RAW JSON recibido:", request.data)

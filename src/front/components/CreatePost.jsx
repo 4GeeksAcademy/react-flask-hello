@@ -30,20 +30,45 @@ const CreatePost = ({ show, onClose, setPosts }) => {
             const lat = 40.4168;
             const lng = -3.7038;
 
+            console.log("📅 Valor recibido de fecha:", date); // <<--- esto para ver qué viene exactamente
+
             // Obtener clima real desde el backend
-            const weatherResponse = await fetch(`${BASE_URL}/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            // Anterior API: const weatherResponse = await fetch(`${BASE_URL}/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            // Aseguramos que la fecha esté en formato YYYY-MM-DD
+            const [year, month, day] = date.split("-");
+            const formattedDate = `${year}-${month}-${day}`;
+
+            console.log("✅ Fecha formateada:", formattedDate);
+
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,cloudcover_mean,precipitation_sum&start_date=${formattedDate}&end_date=${formattedDate}&timezone=Europe/Madrid`;
+
+            console.log("🌍 URL final de clima:", weatherUrl); // debug útil
+
+            const weatherResponse = await fetch(weatherUrl);
             if (!weatherResponse.ok) throw new Error("Error al obtener clima");
 
-            const weatherData = await weatherResponse.json();
+            const weatherData = await weatherResponse.json(); // ✅ solo una vez
             console.log("🌦️ Datos completos del clima:", weatherData);
-            console.log("🔍 Contenido de weather:", weatherData.weather);
-            setWeatherInfo(weatherData.weather); // mostrar en formulario
 
-            // VALIDAR QUE NO ESTÉ VACÍO ANTES DE USARLO
-            if (!weatherData.weather || !weatherData.weather.temperatura) {
-                console.warn("❗Datos incompletos del clima:", weatherData);
+            const weatherSummary = {
+                temperatura: weatherData.daily.temperature_2m_max[0] + "°C",
+                cobertura_nubosa: weatherData.daily.cloudcover_mean[0] + "%",
+                precipitaciones: weatherData.daily.precipitation_sum[0] + " mm"
+            };
+
+            console.log("🌦️ Datos del clima (resumen):", weatherSummary);
+            setWeatherInfo(weatherSummary);
+
+            // VALIDAR QUE NO ESTÉ VACÍO ANTES DE USARLO -- Anterior API
+            //if (!weatherData.weather || !weatherData.weather.temperatura) {
+            //console.warn("❗Datos incompletos del clima:", weatherData);
+            //return alert("No se pudo obtener el clima correctamente.");
+            //}
+            if (!weatherSummary.temperatura || !weatherSummary.cobertura_nubosa) {
+                console.warn("❗Datos incompletos del clima:", weatherSummary);
                 return alert("No se pudo obtener el clima correctamente.");
             }
+
 
             const newPost = {
                 title: formData.title,
@@ -52,21 +77,27 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 time: formData.time,
                 difficulty: formData.difficulty,
                 capacity: parseInt(formData.capacity, 10),
-                weather: `🌡️ ${weatherData.weather.temperatura}, ☁️ ${weatherData.weather.cobertura_nubosa}, 🌧️ ${weatherData.weather.precipitaciones}`,
+                // weather: `🌡️ ${weatherData.weather.temperatura}, ☁️ ${weatherData.weather.cobertura_nubosa}, 🌧️ ${weatherData.weather.precipitaciones}`, -- Anterior API
+                weather: `🌡️ ${weatherSummary.temperatura}, ☁️ ${weatherSummary.cobertura_nubosa}, 🌧️ ${weatherSummary.precipitaciones}`,
                 latitude: 654,     // valor temporal
                 longitude: 247,    // valor temporal
-                distance: null,    // opcional
-                duration: null     // opcional
+
             };
 
             // Para ver qué JSON se está enviando
             console.log("newPost a enviar:", newPost);
+            console.log("📤 Enviando POST con headers:");
+            console.log({
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.replace(/"/g, "")}`,
+            });
+            console.log("🧾 Payload (newPost):", newPost);
 
             const response = await fetch(`${BASE_URL}/api/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token.replace(/"/g, "")}`,
                 },
                 body: JSON.stringify(newPost),
             });

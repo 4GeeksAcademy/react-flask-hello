@@ -14,8 +14,15 @@ events_bp = Blueprint('events', __name__)
 
 # Crear un nuevo evento
 # events_bp.add_url_rule('/', view_func=create_event, methods=['POST'])
-events_bp.add_url_rule('/', view_func=jwt_required()
-                       (create_event), methods=['POST'])
+# events_bp.add_url_rule('/', view_func=jwt_required()
+# (create_event), methods=['POST'])
+
+
+@events_bp.route('/', methods=['POST'])
+@jwt_required()
+def protected_create_event():
+    return create_event()  # llamamos directamente a la lógica existente
+
 
 # Obtener todos los eventos (con soporte para filtrar por dificultad)
 events_bp.add_url_rule('/', view_func=get_events, methods=['GET'])

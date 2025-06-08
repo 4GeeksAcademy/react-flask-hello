@@ -65,7 +65,7 @@ export const AdminProfesores = () => {
 
                 {showTable && (
                     <div className="col-5">
-                        <div className="col-3 mt-5">
+                        <div className="col-3">
                             <select className="form-select" aria-label="Selecciona una opción">
                                 <option value="">Selecciona Periodo</option>
                                 <option value="1">Primer periodo</option>

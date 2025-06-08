@@ -33,8 +33,8 @@ export const AlumnosHorario = () => {
         <div className="container table-responsive my-5">
             {load ?
                 <div className="row">
-                    <h1 className="fs-2 p-0">Horario del estudiante </h1>
-                    <table className="col-12 table table-striped table-bordered text-center mt-5">
+                    <h1 className="fs-2 p-0">Mi horario:</h1>
+                    <table className="col-12 table table-striped table-bordered text-center mt-5 schedule-table">
                         <thead className="table-light">
                             <tr>
                                 <th scope="col">HORAS</th>

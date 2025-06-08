@@ -71,6 +71,7 @@ export const ProfesoresProfile = () => {
                             <li className="list-group-item"><div className="fw-bold">Apellidos:</div>{user.last_name}</li>
                             <li className="list-group-item"><div className="fw-bold">Correo:</div>{user.email}</li>
                             <li className="list-group-item"><div className="fw-bold">Teléfono:</div>{user.teacher.phone}</li>
+                            <li className="list-group-item"><div className="fw-bold">Dirreccion:</div>{user.location}</li>
                             <li className="list-group-item"><div className="fw-bold">Materia:</div>{user.teacher.courses[0].name}</li>
                             <li className="list-group-item"><div className="fw-bold">ID:</div>{user.id}</li>
                         </ul>

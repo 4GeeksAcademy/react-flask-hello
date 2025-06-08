@@ -253,3 +253,15 @@
   z-index: 0;
   position: relative;
 }
+
+.schedule-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.schedule-table th,
+.schedule-table td {
+  width: 16.66%;
+  /* 100% dividido entre 6 columnas */
+  word-wrap: break-word;
+}

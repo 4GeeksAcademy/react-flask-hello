@@ -167,7 +167,37 @@ def setup_schedules():
     return jsonify({"message": f"Se crearon {len(created)} horarios", "cursos": created}), 201
 
 
+@api.route('/setup/associate_courses_to_grades', methods=['POST'])
+def associate_courses_to_grades():
+
+    courses = Course.query.all()
+
+    grade_levels = GradeLevel.query.all()
+
+    for grade_level in grade_levels:
+        for course in courses:
+
+            existing_schedule = Schedule.query.filter_by(
+                grade_level_id=grade_level.id,
+                course_id=course.id
+            ).first()
+            if not existing_schedule:
+
+                schedule = Schedule(
+                    grade_level_id=grade_level.id,
+                    course_id=course.id,
+                    day="Lunes",
+                    start_time=datetime.time(8, 0),
+                    end_time=datetime.time(9, 0),
+                    classroom="Aula general"
+                )
+                db.session.add(schedule)
+
+    db.session.commit()
+    return jsonify({"message": "Cursos asociados a todos los niveles exitosamente"}), 201
+
 # Validaciones
+
 
 def validate_required_fields(data, required_fields):
     missing = [
@@ -214,8 +244,6 @@ def register_student():
         status='pending',
         location=data['location']
 
-
-
     )
     db.session.add(user)
     db.session.flush()
@@ -227,12 +255,29 @@ def register_student():
         period=data['period']
     )
     db.session.add(student)
+    schedules = Schedule.query.filter_by(
+        grade_level_id=student.grade_level_id).all()
+    for schedule in schedules:
+        enrollment_exists = Enrollment.query.filter_by(
+            student_id=student.user_id,
+            course_id=schedule.course_id
+        ).first()
+        if not enrollment_exists:
+            enrollment = Enrollment(
+                student_id=student.user_id,
+                course_id=schedule.course_id,
+                created_by=user.id
+            )
+            db.session.add(enrollment)
+
     db.session.commit()
 
     return jsonify({"message": "Solicitud de registro como estudiante enviada"}), 201
 
 
 # Registro profesor
+
+
 @api.route('/register/teacher', methods=['POST'])
 def register_teacher():
     data = request.get_json()
@@ -435,7 +480,8 @@ def get_students_attendance():
 
     return jsonify(result), 200
 
-#Registrar asistencia para una fecha y estudiante específicos. -- para PROFESORES
+# Registrar asistencia para una fecha y estudiante específicos. -- para PROFESORES
+
 
 @api.route('/attendance', methods=['POST'])
 @jwt_required()
@@ -471,7 +517,8 @@ def register_attendance():
 
     return jsonify({"message": "Asistencia registrada exitosamente."}), 201
 
-#Actualizar el estado de asistencia de un registro existente -- para PROFESORES
+# Actualizar el estado de asistencia de un registro existente -- para PROFESORES
+
 
 @api.route('/attendance/<int:attendance_id>', methods=['PUT'])
 @jwt_required()
@@ -491,7 +538,6 @@ def update_attendance(attendance_id):
     db.session.commit()
 
     return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
-
 
 
 # Registrar una calificacion de un estudiante -- para PROFESORES
@@ -572,7 +618,7 @@ def get_student_attendance():
 @api.route('/grade/<int:grade_id>', methods=['PUT'])
 @jwt_required()
 def update_grade(grade_id):
-    teacher_id = get_jwt_identity()
+    teacher_id = int(get_jwt_identity())
     data = request.get_json()
 
     grade = Grade.query.get(grade_id)
@@ -603,10 +649,10 @@ def update_grade(grade_id):
 # Ver calificaciones del estudiante autenticado por materia y periodo -- para PROFESORES
 @api.route('/teacher/grades', methods=['GET'])
 @jwt_required()
-def get_students_grades():
-    teacher_id = get_jwt_identity()
-
+def get_students_with_grades():
+    teacher_id = int(get_jwt_identity())
     user = User.query.get(teacher_id)
+
     if not user or user.role != "teacher" or user.status != "approved":
         return jsonify({"msg": "Acceso no autorizado"}), 403
 
@@ -614,17 +660,38 @@ def get_students_grades():
     course_id = request.args.get("course_id", type=int)
     period = request.args.get("period", type=int)
 
-    if not grade_level_id or not course_id or not period:
+    if grade_level_id is None or course_id is None or period is None:
         return jsonify({"msg": "Faltan parámetros: grade_level_id, course_id y period son requeridos"}), 400
 
-    enrollments = Enrollment.query.filter_by(
-        course_id=course_id, grade_level_id=grade_level_id).all()
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({"msg": f"Curso con id {course_id} no encontrado"}), 404
+    if course.teacher_id != teacher_id:
+        return jsonify({"msg": f"Acceso denegado. Curso pertenece al profesor {course.teacher_id}, no a {teacher_id}"}), 403
+
+    enrollments = Enrollment.query.filter_by(course_id=course_id).all()
+    print(
+        f"Total enrollments con course_id={course_id}: {[e.id for e in enrollments]}")
+    filtered_enrollments = [
+        e for e in enrollments if e.student and e.student.grade_level_id == grade_level_id
+    ]
+    print(
+        f"Enrollments filtrados por grade_level_id={grade_level_id}: {[e.id for e in filtered_enrollments]}")
+
+    for e in enrollments:
+        if e.student:
+            print(
+                f"Enrollment {e.id} → Student ID: {e.student.user_id}, Grade Level: {e.student.grade_level_id}")
+        else:
+            print(f"Enrollment {e.id} → No tiene estudiante asociado")
 
     result = []
-    for enrollment in enrollments:
-        student = enrollment.student.serialize()
+    for enrollment in filtered_enrollments:
+        student = enrollment.student.serialize() if enrollment.student else None
         grade = Grade.query.filter_by(
-            enrollment_id=enrollment.id, period=period).first()
+            enrollment_id=enrollment.id,
+            period=period
+        ).first()
 
         result.append({
             "enrollment_id": enrollment.id,
@@ -633,7 +700,6 @@ def get_students_grades():
         })
 
     return jsonify(result), 200
-
 
 
 # El estudiante puede ver sus calificaciones por materia y periodo -- para ESTUDIANTES
@@ -935,9 +1001,12 @@ def get_periods():
     return jsonify(periods), 200
 
 # Recuperar contraseña
+
+
 def verify_reset_token(token, expires_sec=600):
     try:
-        user_id = serializer.loads(token, salt="recuperar-clave", max_age=expires_sec)
+        user_id = serializer.loads(
+            token, salt="recuperar-clave", max_age=expires_sec)
     except (SignatureExpired, BadSignature):
         return None
     return user_id
@@ -975,6 +1044,7 @@ def forgot_password():
         return jsonify({"msg": "Correo de recuperación enviado con éxito"}), 200
     except Exception as e:
         return jsonify({"error": "Error al enviar correo", "details": str(e)}), 500
+
 
 @api.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):

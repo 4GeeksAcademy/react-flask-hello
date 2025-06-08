@@ -7,17 +7,35 @@ export const ProfesoresAlumnosNotas = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('');
     const [grade, setGrade] = useState([])
     const [period, setPeriod] = useState([])
+    const [selectedCourseId, setSelectedCourseId] = useState('');
+    const [asignature, setAsignature] = useState('');
+    const [student, setStudents] = useState([])
     const [editingId, setEditingId] = useState(null);
     const [isValid, setIsValid] = useState(true);
-    const [grades, setGrades] = useState([
-        { id: 1, lastName: 'Mark', firstName: 'Otto', participation: '', homework: '', midterm: '', final: '', average: '' },
-        { id: 2, lastName: 'Jacob', firstName: 'Thornton', participation: '', homework: '', midterm: '', final: '', average: '' },
-        { id: 3, lastName: 'John', firstName: 'Doe', participation: '', homework: '', midterm: '', final: '', average: '' },
-    ]);
+    const [load, setLoad] = useState(false)
+    const [filterLoad, setFilterLoad] = useState(false)
     const { store } = useAuth();
     const token = store.access_token;
 
     useEffect(() => {
+        const profileTeacher = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setSelectedCourseId(data.teacher.courses[0].id);
+                    setAsignature(data.teacher.courses[0].name)
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
         const grades = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
@@ -29,7 +47,6 @@ export const ProfesoresAlumnosNotas = () => {
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    console.log(data);
                     setGrade(data)
                 }
             } catch (error) {
@@ -56,15 +73,60 @@ export const ProfesoresAlumnosNotas = () => {
             }
         }
 
+        profileTeacher()
         grades()
         periods()
     }, [])
 
+    useEffect(() => {
+        if (grade !== ([]) && period !== ([]) && selectedCourseId !== ('')) {
+            setFilterLoad(true)
+        }
+    }, [grade, period, selectedCourseId])
+
+    const students = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/teacher/grades?grade_level_id=${selectedYear}&course_id=${selectedCourseId}&period=${selectedPeriod}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const responseData = await response.json()
+            if (response.ok) {
+                console.log(responseData);
+                const newData = transformData(responseData)
+                setStudents(newData)
+                setLoad(true)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSearch = () => {
         if (selectedYear && selectedPeriod) {
             setShowTable(true);
-            // Aquí irá la llamada a la API para obtener datos
+            students()
         }
+    };
+
+    const transformData = (data) => {
+        console.log(data);
+        return data.map(item => ({
+            id: item.student.user_id,
+            enrollment_id: item.enrollment_id,
+            firstName: item.student.first_name,
+            lastName: item.student.last_name,
+            participation: item.grade?.participation || '',
+            homework: item.grade?.homework || '',
+            midterm: item.grade?.midterm || '',
+            final: item.grade?.final_exam || '',
+            average: item.grade?.average || '',
+            gradeId: item.grade?.id || null,
+            period: selectedPeriod || '',
+        }));
     };
 
     const handleEdit = (studentId) => {
@@ -77,7 +139,7 @@ export const ProfesoresAlumnosNotas = () => {
             return;
         }
 
-        const updatedGrades = grades.map(grade => {
+        const updatedGrades = student.map(grade => {
             if (grade.id === id) {
                 const updatedGrade = { ...grade, [field]: value };
                 if (['participation', 'homework', 'midterm', 'final'].includes(field)) {
@@ -91,13 +153,66 @@ export const ProfesoresAlumnosNotas = () => {
             }
             return grade;
         });
-        setGrades(updatedGrades);
+        setStudents(updatedGrades);
         setIsValid(true);
     };
 
-    const handleSave = (studentId) => {
-        setEditingId(null);
-        // Aquí irá la lógica para guardar en la base de datos
+    const handleSave = async (studentId) => {
+        const studentToSave = student.find(grade => grade.id === studentId);
+        if (!studentToSave) return;
+        console.log(studentToSave);
+        const payload = {
+            participation: Number(studentToSave.participation),
+            homework: Number(studentToSave.homework),
+            midterm: Number(studentToSave.midterm),
+            final_exam: Number(studentToSave.final),
+            enrollment_id: studentToSave.enrollment_id,
+            period: selectedPeriod,
+        };
+
+        try {
+            let response;
+            let responseData;
+            if (studentToSave.gradeId) {
+                response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/grade/${studentToSave.gradeId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        participation: Number(studentToSave.participation),
+                        homework: Number(studentToSave.homework),
+                        midterm: Number(studentToSave.midterm),
+                        final_exam: Number(studentToSave.final),
+                    })
+                })
+            } else {
+                response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/grade`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        ...payload,
+                        enrollment_id: studentToSave.enrollment_id,
+                        period: selectedPeriod,
+                    }),
+                });
+            }
+
+            responseData = await response.json()
+            if (response.ok) {
+                console.log('Nota actualizada', responseData);
+                setEditingId(null);
+                students()
+            } else {
+                console.error('Error al actualizar', responseData.error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -111,7 +226,7 @@ export const ProfesoresAlumnosNotas = () => {
                     >
                         <option value="">Selecciona Año</option>
                         {grade.map((grade) => (
-                            <option key={grade.id} value={grade.id}>{grade.name} </option>
+                            <option key={grade.id} value={grade.id}>{grade.name}</option>
                         ))}
                     </select>
                 </div>
@@ -123,7 +238,7 @@ export const ProfesoresAlumnosNotas = () => {
                     >
                         <option value="">Selecciona Periodo</option>
                         {period.map((periodos, i) => (
-                            <option key={i} value={periodos}>{periodos} Bimestre</option>
+                            <option key={i} value={i + 1}>{periodos} Bimestre</option>
                         ))}
                     </select>
                 </div>
@@ -137,105 +252,114 @@ export const ProfesoresAlumnosNotas = () => {
                         Buscar
                     </button>
                 </div>
-
-                {showTable && (
-                    <div>
-                        <table className="col-12 table table-striped table-bordered text-center mt-5">
-                            <thead className="table-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Part. Clase (15%)</th>
-                                    <th scope="col">Tareas (20%)</th>
-                                    <th scope="col">Ex. Parcial (30%)</th>
-                                    <th scope="col">Ex. Final (35%)</th>
-                                    <th scope="col">Prom. Final</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {grades.map((student) => (
-                                    <tr key={student.id}>
-                                        <th scope="row">{student.id}</th>
-                                        <td>{student.lastName}</td>
-                                        <td>{student.firstName}</td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm text-center"
-                                                value={student.participation}
-                                                onChange={(e) => handleGradeChange(student.id, 'participation', e.target.value)}
-                                                disabled={editingId !== student.id}
-                                                min="0"
-                                                max="20"
-                                                step="1"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm text-center"
-                                                value={student.homework}
-                                                onChange={(e) => handleGradeChange(student.id, 'homework', e.target.value)}
-                                                disabled={editingId !== student.id}
-                                                min="0"
-                                                max="20"
-                                                step="1"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm text-center"
-                                                value={student.midterm}
-                                                onChange={(e) => handleGradeChange(student.id, 'midterm', e.target.value)}
-                                                disabled={editingId !== student.id}
-                                                min="0"
-                                                max="20"
-                                                step="1"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm text-center"
-                                                value={student.final}
-                                                onChange={(e) => handleGradeChange(student.id, 'final', e.target.value)}
-                                                disabled={editingId !== student.id}
-                                                min="0"
-                                                max="20"
-                                                step="1"
-                                            />
-                                        </td>
-                                        <td>{student.average}</td>
-                                        <td className="text-center">
-                                            {editingId !== student.id ? (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-sm btn-success"
-                                                    onClick={() => handleEdit(student.id)}
-                                                >
-                                                    <i className="ri-edit-line"></i>
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-sm btn-primary"
-                                                    onClick={() => handleSave(student.id)}
-                                                    disabled={!isValid}
-                                                >
-                                                    <i className="ri-save-line"></i>
-                                                </button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
             </div>
+
+            {filterLoad ? (
+                <div className="row">
+                    {load && showTable && (
+                        <div>
+                            <h2 className='mt-5'>{asignature}</h2>
+                            <table className="col-12 table table-striped table-bordered text-center mt-5">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellido</th>
+                                        <th scope="col">Part. Clase (15%)</th>
+                                        <th scope="col">Tareas (20%)</th>
+                                        <th scope="col">Ex. Parcial (30%)</th>
+                                        <th scope="col">Ex. Final (35%)</th>
+                                        <th scope="col">Prom. Final</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {student.map((student) => (
+                                        <tr key={student.id}>
+                                            <th scope="row">{student.id}</th>
+                                            <td>{student.firstName}</td>
+                                            <td>{student.lastName}</td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    className="form-control form-control-sm text-center"
+                                                    value={student.participation}
+                                                    onChange={(e) => handleGradeChange(student.id, 'participation', e.target.value)}
+                                                    disabled={editingId !== student.id}
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    className="form-control form-control-sm text-center"
+                                                    value={student.homework}
+                                                    onChange={(e) => handleGradeChange(student.id, 'homework', e.target.value)}
+                                                    disabled={editingId !== student.id}
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    className="form-control form-control-sm text-center"
+                                                    value={student.midterm}
+                                                    onChange={(e) => handleGradeChange(student.id, 'midterm', e.target.value)}
+                                                    disabled={editingId !== student.id}
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    className="form-control form-control-sm text-center"
+                                                    value={student.final}
+                                                    onChange={(e) => handleGradeChange(student.id, 'final', e.target.value)}
+                                                    disabled={editingId !== student.id}
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                />
+                                            </td>
+                                            <td>{student.average}</td>
+                                            <td className="text-center">
+                                                {editingId !== student.id ? (
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-sm btn-success"
+                                                        onClick={() => handleEdit(student.id)}
+                                                    >
+                                                        <i className="ri-edit-line"></i>
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-sm btn-primary"
+                                                        onClick={() => handleSave(student.id)}
+                                                        disabled={!isValid}
+                                                    >
+                                                        <i className="ri-save-line"></i>
+                                                    </button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            )}
         </div>
     );
-};
+}

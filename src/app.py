@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory, make_response    
+from flask import Flask, jsonify, send_from_directory, make_response
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -19,23 +19,26 @@ from src.api.services.routes.weather import weather_bp
 load_dotenv()
 
 
-
 # Configuración del entorno
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+
 @app.before_request
 def handle_before_request():
     if request.method == 'OPTIONS':
         response = make_response()
         origin = request.headers.get("Origin", "*")
         # Check if the origin is allowed
-        if origin in os.getenv("FLASK_FRONTEND_URL"): 
+        if origin in os.getenv("FLASK_FRONTEND_URL"):
             response.headers.add('Access-Control-Allow-Origin', origin)
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            response.headers.add('Access-Control-Allow-Methods',
+                                 'GET, POST, PUT, DELETE, OPTIONS')
             response.headers.add('Access-Control-Allow-Credentials', 'true')
             return response, 200
 
@@ -51,19 +54,32 @@ CORS(
     supports_credentials=True
 )
 
+# @app.after_request
+# def add_cors_headers(response):
+# origin = request.headers.get("Origin", "")
+# if origin in os.getenv("FLASK_FRONTEND_URL") :
+# response.headers["Access-Control-Allow-Origin"] = origin
+# response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+# response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+# response.headers["Access-Control-Allow-Credentials"] = "true"
+# return response
+
+
 @app.after_request
 def add_cors_headers(response):
-    origin = request.headers.get("Origin", "")
-    if origin in os.getenv("FLASK_FRONTEND_URL") :
+    origin = request.headers.get("Origin")
+    allowed_origin = os.getenv("FLASK_FRONTEND_URL")
+    if allowed_origin and origin == allowed_origin:
         response.headers["Access-Control-Allow-Origin"] = origin
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS,PUT,DELETE"
         response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
 
 # Configuración CORS
-CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev", supports_credentials=True)
+CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev",
+     supports_credentials=True)
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")
@@ -115,7 +131,7 @@ def serve_any_other_file(path):
     return response
 
 
-port = int(os.environ.get('PORT', 4000 ))
+port = int(os.environ.get('PORT', 4000))
 
 # Iniciar servidor
 if __name__ == '__main__':

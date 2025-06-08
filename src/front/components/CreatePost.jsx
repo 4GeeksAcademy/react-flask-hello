@@ -24,49 +24,68 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         e.preventDefault();
 
         try {
-    const token = JSON.parse(localStorage.getItem("token"));
-    const { date } = formData;
-    const lat = 40.4168;
-    const lng = -3.7038;
+            // const token = JSON.parse(localStorage.getItem("token"));
+            const token = localStorage.getItem("token");
+            const { date } = formData;
+            const lat = 40.4168;
+            const lng = -3.7038;
 
-    // Obtener clima real desde el backend
-    const weatherResponse = await fetch(`${BASE_URL}/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
-    if (!weatherResponse.ok) throw new Error("Error al obtener clima");
+            // Obtener clima real desde el backend
+            const weatherResponse = await fetch(`${BASE_URL}/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
+            if (!weatherResponse.ok) throw new Error("Error al obtener clima");
 
-    const weatherData = await weatherResponse.json();
-    setWeatherInfo(weatherData.weather); // mostrar en formulario
+            const weatherData = await weatherResponse.json();
+            console.log("🌦️ Datos completos del clima:", weatherData);
+            console.log("🔍 Contenido de weather:", weatherData.weather);
+            setWeatherInfo(weatherData.weather); // mostrar en formulario
 
-    const newPost = {
-        ...formData,
-        capacity: parseInt(formData.capacity, 10),
-        participants: 0,
-        weather: weatherData.weather || null // guardar en backend
-    };
+            // VALIDAR QUE NO ESTÉ VACÍO ANTES DE USARLO
+            if (!weatherData.weather || !weatherData.weather.temperatura) {
+                console.warn("❗Datos incompletos del clima:", weatherData);
+                return alert("No se pudo obtener el clima correctamente.");
+            }
 
-    const response = await fetch(`${BASE_URL}/api/events`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newPost),
-    });
+            const newPost = {
+                title: formData.title,
+                description: `${formData.address} - ${formData.sport}`, // forma de no perder esos datos
+                date: formData.date,
+                time: formData.time,
+                difficulty: formData.difficulty,
+                capacity: parseInt(formData.capacity, 10),
+                weather: `🌡️ ${weatherData.weather.temperatura}, ☁️ ${weatherData.weather.cobertura_nubosa}, 🌧️ ${weatherData.weather.precipitaciones}`,
+                latitude: 654,     // valor temporal
+                longitude: 247,    // valor temporal
+                distance: null,    // opcional
+                duration: null     // opcional
+            };
 
-    if (!response.ok) throw new Error("Error al crear el evento");
+            // Para ver qué JSON se está enviando
+            console.log("newPost a enviar:", newPost);
 
-    const createdPost = await response.json();
-    setPosts(prev => [createdPost, ...prev]);
+            const response = await fetch(`${BASE_URL}/api/events`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(newPost),
+            });
 
-    // Limpiar formulario pero mantener clima
-    setFormData({
-        title: "", description: "", date: "", time: "", address: "",
-        sport: "", capacity: "", difficulty: ""
-    });
+            if (!response.ok) throw new Error("Error al crear el evento");
 
-} catch (error) {
-    console.error("Error al crear el evento:", error);
-    alert("Ocurrió un error al crear el evento.");
-}
+            const createdPost = await response.json();
+            setPosts(prev => [createdPost, ...prev]);
+
+            // Limpiar formulario pero mantener clima
+            setFormData({
+                title: "", description: "", date: "", time: "", address: "",
+                sport: "", capacity: "", difficulty: ""
+            });
+
+        } catch (error) {
+            console.error("Error al crear el evento:", error);
+            alert("Ocurrió un error al crear el evento.");
+        }
 
     };
 

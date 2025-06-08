@@ -2,15 +2,30 @@ from flask import request, jsonify
 from ...models import db, Event, User
 from sqlalchemy.exc import SQLAlchemyError
 from ...utils import token_required
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+
+# @jwt_required()  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
+# Crear un nuevo evento (requiere token JWT manualmente verificado)
 
 
-@jwt_required()  # Este decorador asegura que solo un usuario autenticado pueda crear eventos
 def create_event():  # Recibimos el usuario autenticado desde el decorador
+    verify_jwt_in_request()  # Verifica token JWT sin decorador
+    print("🛂 Token recibido:", request.headers.get("Authorization"))
+    print("🔍 RAW JSON recibido:", request.data)
+    print("🔍 Encabezado Content-Type:", request.content_type)
+
     try:
         current_user_email = get_jwt_identity()
         user = User.query.filter_by(email=current_user_email).first()
         data = request.get_json()
+
+        # Para ver qué recibe el backend y si falta algo o tipos incorrectos
+        print("📦 Datos recibidos en backend:", data)
+
+        # Validación datos obligatorios
+        if not all([data.get('title'), data.get('date'), data.get('time'), data.get('capacity')]):
+            return jsonify({"error": "Faltan campos obligatorios"}), 400
+
         new_event = Event(
             title=data.get('title'),
             description=data.get('description'),
@@ -19,8 +34,8 @@ def create_event():  # Recibimos el usuario autenticado desde el decorador
             difficulty=data.get('difficulty'),
             capacity=data.get('capacity'),
             # direction=data.get('direction'),
-            latitude=654, #data.get('latitude'),
-            longitude=247, #data.get('longitude'),
+            latitude=654,  # data.get('latitude'),
+            longitude=247,  # data.get('longitude'),
             weather=data.get('weather'),
             distance=data.get('distance'),
             duration=data.get('duration'),
@@ -29,14 +44,23 @@ def create_event():  # Recibimos el usuario autenticado desde el decorador
         db.session.add(new_event)
         db.session.commit()
         return jsonify(new_event.to_dict()), 201
+
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+# Obtener todos los eventos con soporte para filtrar por dificultad
+
 
 def get_events():
-    events = Event.query.all()
+    difficulty = request.args.get('difficulty')
+    if difficulty:
+        events = Event.query.filter_by(difficulty=difficulty).all()
+    else:
+        events = Event.query.all()
     return jsonify([event.to_dict() for event in events]), 200
+
+# Obtener solo un evento por ID
 
 
 def get_event(event_id):
@@ -45,16 +69,7 @@ def get_event(event_id):
         return jsonify({"error": "Evento no encontrado"}), 404
     return jsonify(event.to_dict()), 200
 
-
-def get_events():
-    difficulty = request.args.get('difficulty') 
-
-    if difficulty:
-        events = Event.query.filter_by(difficulty=difficulty).all()
-    else:
-        events = Event.query.all()
-
-    return jsonify([event.to_dict() for event in events]), 200
+# Actualizar un evento (requiere token, usa decorador personalizado)
 
 
 @token_required  # Protege para que solo usuarios autenticados puedan actualizar
@@ -64,6 +79,9 @@ def update_event(current_user, event_id):
         return jsonify({"error": "Evento no encontrado"}), 404
 
     data = request.get_json()
+    print("📦 Datos recibidos:", data)  # para ver qué recibe el backend
+
+    # Actualiza solo los campos que llegan
     event.title = data.get('title', event.title)
     event.description = data.get('description', event.description)
     event.date = data.get('date', event.date)
@@ -83,6 +101,8 @@ def update_event(current_user, event_id):
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+# Eliminar un evento
+
 
 @token_required
 def delete_event(current_user, event_id):
@@ -97,6 +117,8 @@ def delete_event(current_user, event_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+# Unirse a un evento
 
 
 @token_required
@@ -117,6 +139,8 @@ def join_event(current_user, event_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+# Salir de un evento
 
 
 @token_required

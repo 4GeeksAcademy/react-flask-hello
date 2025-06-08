@@ -541,6 +541,32 @@ def post_grade():
     db.session.commit()
     return jsonify({"message": "Nota registrada exitosamente."}), 201
 
+# Obtener asistencia del estudiante autenticado -- para ESTUDIANTES
+@api.route('/student/attendance', methods=['GET'])
+@jwt_required()
+def get_student_attendance():
+    user_id = get_jwt_identity()
+    student = Student.query.filter_by(user_id=user_id).first()
+
+    if not student:
+        return jsonify({"error": "Estudiante no encontrado"}), 404
+
+    # Obtener todas las asistencias vinculadas a sus enrollments
+    all_records = []
+    for enrollment in student.enrollments:
+        course_name = enrollment.course.name if enrollment.course else "Curso no asignado"
+        teacher_name = f"{enrollment.teacher.user.first_name} {enrollment.teacher.user.last_name}" if enrollment.teacher else "Profesor no asignado"
+
+        for att in enrollment.attendance:
+            all_records.append({
+                "date": att.date.strftime('%Y-%m-%d'),
+                "status": att.status,
+                "course": course_name,
+                "teacher": teacher_name
+            })
+
+    return jsonify(all_records), 200
+
 
 # Actualizar calificación existente -- para PROFESORES
 @api.route('/grade/<int:grade_id>', methods=['PUT'])

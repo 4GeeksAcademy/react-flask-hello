@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { registerUser } from "../services/api"
+import PublicNavbar from "../components/PublicNavbar";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -22,9 +23,10 @@ const Register = () => {
             const response = await registerUser(formData);
             if (response?.token) {
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("token", response.token);
+                localStorage.setItem("token", JSON.stringify (response.token));
                 localStorage.setItem("userData", JSON.stringify(response.user));
-                navigate("/feed");
+                alert("Registro exitoso. ¡Bienvenido!");
+                navigate("/login");
             } else {
                 alert("Registro fallido.");
             }
@@ -45,7 +47,7 @@ const Register = () => {
                 position: "relative",
             }}
         >
-            <Navbar />
+            <PublicNavbar />
 
             <div
                 className="d-flex justify-content-center align-items-center"

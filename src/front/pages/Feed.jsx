@@ -65,7 +65,14 @@ const Feed = () => {
     }, [selectedSport, selectedDifficulty]);
 
     const handleJoin = (id) => {
-        setPosts(posts.map(post => {
+        const joinedEvents = JSON.parse(localStorage.getItem("joinedEvents")) || [];
+
+        if (joinedEvents.includes(id)) {
+            alert("Ya estás anotado en este evento.");
+            return;
+        }
+
+        const updatedPosts = posts.map(post => {
             if (post.id === id) {
                 if (post.participants < post.capacity) {
                     return { ...post, participants: post.participants + 1 };
@@ -74,8 +81,13 @@ const Feed = () => {
                 }
             }
             return post;
-        }));
+        });
+
+        setPosts(updatedPosts);
+        localStorage.setItem("joinedEvents", JSON.stringify([...joinedEvents, id]));
     };
+
+
 
 
     let filteredPosts = [...posts];

@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const token = JSON.parse(localStorage.getItem("token"));
 
 export const fetchPosts = async () => {
   const res = await fetch(`${BASE_URL}/api/events/`);
@@ -9,7 +10,9 @@ export const fetchPosts = async () => {
 export const createEvent = async (data) => {
   const res = await fetch(`${BASE_URL}/api/events/`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" ,
+    Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear evento");

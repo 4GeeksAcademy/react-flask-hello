@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 const Profile = () => {
@@ -10,7 +10,7 @@ const Profile = () => {
     });
 
     useEffect(() => {
-        // Obtener datos del usuario desde localStorage
+        // Obtener los datos del usuario desde localStorage
         const userData = JSON.parse(localStorage.getItem("userData"));
 
         if (userData) {
@@ -22,25 +22,26 @@ const Profile = () => {
         }
     }, []);
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile({ ...profile, [name]: value });
     };
 
     const handleSave = () => {
+        // Guardar solo nombre y deportes, no modificar correo
         const userData = JSON.parse(localStorage.getItem("userData"));
-
 
         const updatedUserData = {
             ...userData,
+
+            name: profile.username, // conservamos la edición del nombre
+
             sports: profile.sports
         };
 
         localStorage.setItem("userData", JSON.stringify(updatedUserData));
         setIsEditing(false);
     };
-
 
     const toggleEdit = () => setIsEditing(!isEditing);
 
@@ -84,11 +85,23 @@ const Profile = () => {
 
                     {isEditing ? (
                         <>
+                            <input
+                                type="text"
+                                className="form-control mb-3"
+                                name="username"
+                                value={profile.username}
+                                onChange={handleChange}
+                                placeholder="Name"
+                            />
+                            <input
+                                type="email"
+                                className="form-control mb-3"
+                                name="email"
+                                value={profile.email}
 
-                            <h2>{profile.username}</h2>
-                            <p className="text-muted">{profile.email}</p>
+                                disabled // lo hace solo lectura
 
-
+                            />
                             <input
                                 type="text"
                                 className="form-control mb-3"
@@ -120,7 +133,7 @@ const Profile = () => {
                                     ))}
                             </ul>
 
-                            <button className="btn btn-outline-success mt-4" onClick={handleSave}>
+                            <button className="btn btn-outline-success mt-4" onClick={toggleEdit}>
                                 Editar Perfil
                             </button>
                         </>

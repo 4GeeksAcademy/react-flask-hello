@@ -1,10 +1,12 @@
 .GestEntrenamientos-container {
   font-family: Arial, sans-serif;
-  margin-top: 92px;
-  background-color: #cb5353;
+  
+  padding-bottom: 20px;
+  margin-top: 200px;
+
 }
-.body{
-  padding-top: 70px;
+body{
+  margin-top:570px;
 }
 
 h1 {
@@ -16,14 +18,14 @@ h1 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
-  background-color: #9f83e4;
+  background-color: #423d75;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(205, 218, 170, 0.111);
 }
 
 .column {
-  background-color: #a6d982;
+  background-color: #858194;
   padding: 15px;
   border-radius: 8px;
 }

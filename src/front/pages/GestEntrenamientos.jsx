@@ -5,6 +5,7 @@ import Ejercicios from "../components/Ejercicios";
 
 const GestEntrenamientos = () => {
   return (
+    <>
     <div className="GestEntrenamientos-container">
       <h1>Gestionar Entrenamientos</h1>
       <div className="grid-container">
@@ -37,8 +38,9 @@ const GestEntrenamientos = () => {
         </div>
       </div>
 
-      <Ejercicios/>
     </div>
+      <Ejercicios/>
+      </>
   );
 };
 

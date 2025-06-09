@@ -10,6 +10,7 @@ from werkzeug.security import check_password_hash
 from datetime import datetime, timedelta
 from flask_mail import Message
 from extensions import mail
+import requests
 
 api = Blueprint('api', __name__)
 
@@ -53,19 +54,19 @@ def created_product():
         return jsonify({"error":"The gender field is required"})
     if not data.get('size'):
         return jsonify({"error":"The size field is required"})
-    if not data.get('stock'):
+    if data.get('stock') is None:
         return jsonify({"error":"The stock field is required"})
     
 
     new_product = Products(
         product_name=data.get('product_name'),
-        price=data.get('price'),
+        price=int(data.get('price')),
         description=data.get('description'),
         color=data.get('color'),
         product_type=data.get('product_type'),
         gender=data.get('gender'),
         size=data.get('size'),
-        stock=data.get('stock'),
+        stock=int(data.get('stock')),
         product_photo=data.get('product_photo', None)
     )
 
@@ -98,7 +99,7 @@ def update_product(id):
     if 'size' in data:
         product.size  =data['size']
     if 'stock' in data:
-        product.stock  =data['stock']
+        product.stock = int(data['stock'])
     if 'product_photo' in data:
         product.product_photo  =data['product_photo']    
     
@@ -121,6 +122,20 @@ def delete_product(id):
 @api.route('/signup', methods=['POST'])
 def signup():
     request_body = request.get_json()
+    recaptcha_token = request_body.get('recaptcha_token')
+    secret_key = "6LeKr1orAAAAAGvQosLnXkFTxNOi8qVZjR6cUl9T"
+
+    try:
+        response = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data={"secret": secret_key, "response": recaptcha_token}
+        )
+        result = response.json()
+    except Exception as e:
+        return jsonify({"error": "No se pudo verificar el captcha"}), 400
+
+    if not result.get("success"):
+        return jsonify({"error": "Captcha inválido"}), 400
 
     required_fields = ['email', 'password', 'first_name', 'last_name', 'address']
     for field  in required_fields:

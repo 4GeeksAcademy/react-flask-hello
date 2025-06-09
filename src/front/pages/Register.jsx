@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
 
@@ -11,28 +12,31 @@ const Register = () => {
     const [last_name, setLast_name] = useState("");
     const [address, setAddress] = useState("");
 
-    const navigate = useNavigate();
+    const [recaptchaToken, setRecaptchaToken] = useState("");
+    const recaptchaRef = useRef(null);
 
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        alert("Usuario registrado");
-        navigate("/login");
-
-    };
-
-    const sendRegister = async () => {
+        if (!recaptchaToken) {
+            alert("Por favor, verifica el captcha.");
+            return;
+        }
         try {
-            const resp = await axios.post(`${URLBACK}/api/signup`, {
-                email, password, first_name, last_name, address
+            await axios.post(`${URLBACK}/api/signup`, {
+                email, password, first_name, last_name, address, recaptcha_token: recaptchaToken
             })
+            alert("Usuario registrado");
+            navigate("/login");
             console.log('user created successfully')
         }
         catch (error) {
             console.error("Error en el registro:", error);
             alert("No se pudo conectar con el servidor.");
         }
-    }
+
+    };
 
     return (
         <div className="container mt-5" style={{ maxWidth: "500px" }}>
@@ -109,8 +113,15 @@ const Register = () => {
                     />
                 </div>
 
+                <div className="mb-3">
+                    <ReCAPTCHA
+                        sitekey="6LeKr1orAAAAADW-eFw9f6ULYqhwCiXi4czZfBTo"
+                        onChange={setRecaptchaToken}
+                    />
+                </div>
 
-                <button type="submit" className="btn btn-success w-100 mb-5" onClick={sendRegister}>
+
+                <button type="submit" className="btn btn-success w-100 mb-5">
                     Registrarse
                 </button>
             </form>

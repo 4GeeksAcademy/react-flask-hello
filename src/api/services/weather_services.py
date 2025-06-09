@@ -1,5 +1,6 @@
 import os
 import requests
+from flask import request, jsonify
 
 
 def get_weather(lat, lng, date):

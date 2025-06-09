@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Feed = () => {
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     const [posts, setPosts] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -22,7 +22,7 @@ const Feed = () => {
         if (loggedIn !== "true") {
             navigate("/login");
         }
-    }, [navigate]);
+    }, []);
 
     const handleToggleFavorite = (id) => {
         const updatedPosts = posts.map(post =>

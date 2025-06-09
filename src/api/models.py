@@ -43,8 +43,8 @@ class Event(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     weather = db.Column(db.String(100))  # Opcional
-    distance = db.Column(db.Float)       # Opcional
-    duration = db.Column(db.Float)       # Opcional
+    distance = db.Column(db.Float, nullable=True)       # Opcional
+    duration = db.Column(db.Float, nullable=True)       # Opcional
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     joined_users = db.relationship(

@@ -6,17 +6,17 @@ const GymPlans = () => {
     {
       title: 'Tarifa Basic',
       price: '45€',
-      description: 'Acceso entrenamientos.',
+      description: 'Pack entrenamientos',
     },
     {
       title: 'Tarifa Premium',
       price: '55€',
-      description: 'Incluye planes de Nutricion.',
+      description: 'Pack nutricion',
     },
     {
       title: 'Tarifa DMPC',
       price: '65€',
-      description: 'Todo lo anterior + asesoramiento personalizado.',
+      description: 'Pack Completo',
     },
   ];
 

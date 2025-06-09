@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/Paralax.css";
+import { Link } from 'react-router-dom';
 
 const ParallaxScroll = () => {
   const [zoom, setZoom] = useState(1);
@@ -49,29 +50,38 @@ const ParallaxScroll = () => {
 
       {/* UI al hacer zoom a la izquierda */}
       {zoomTarget === "left" && (
-        <div className="left-ui">
+        <>
           <div className="mensaje-nutricion">
-            🥗 Es tan importante una buena alimentación como el entrenamiento.
+            <p>Es tan importante una buena alimentación como el entrenamiento.</p>
+            <Link to="/nutricion" className="linkparallax">Más Informacion</Link>
           </div>
-          <div className="botones-nutricion">
-            <button onClick={() => handleMove("right", 2.5)}>Más sobre entrenamiento</button>
-            <button onClick={() => handleMove("center", 1)}>Volver al inicio</button>
+          <div className="left-ui">
+            <div className="botones-nutricion">
+              <button onClick={() => handleMove("right", 2.5)}>Más sobre entrenamiento</button>
+              <button onClick={() => handleMove("center", 1)}>Volver al inicio</button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
-      {/* UI al hacer zoom a la derecha */}
       {zoomTarget === "right" && (
-        <div className="right-ui">
-          <div className="mensaje-entrenamiento">
-            💪 El esfuerzo constante marca la diferencia.
+        <>
+          {/* Mensaje centrado */}
+          <div className="mensaje-nutricion">
+            <p>Es tan importante una buena alimentación como el entrenamiento.</p>
+            <Link to="/sport" className="linkparallax">Más Informacion</Link>
           </div>
-          <div className="botones-entrenamiento">
-            <button onClick={() => handleMove("left", 2.5)}>Más sobre nutrición</button>
-            <button onClick={() => handleMove("center", 1)}>Volver al inicio</button>
+
+          {/* Botones laterales */}
+          <div className="right-ui">
+            <div className="botones-entrenamiento">
+              <button onClick={() => handleMove("left", 2.5)}>Más sobre nutrición</button>
+              <button onClick={() => handleMove("center", 1)}>Volver al inicio</button>
+            </div>
           </div>
-        </div>
+        </>
       )}
+
 
       {/* Botones centrales */}
       <div className="camera-controls">

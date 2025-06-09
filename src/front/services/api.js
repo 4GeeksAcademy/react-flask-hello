@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-const token = JSON.parse(localStorage.getItem("token"));
+const token = localStorage.getItem("token");
 
 export const fetchPosts = async () => {
   const res = await fetch(`${BASE_URL}/api/events/`);

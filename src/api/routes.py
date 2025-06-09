@@ -91,7 +91,7 @@ def delete_user(user_id):
     return '', 204
 
 #PROFESSIONALS
-
+ 
 @api.route('/professionals', methods=['GET'])
 def list_professionals():
     stm = select(User).where(User.is_professional == True)

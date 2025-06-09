@@ -1,6 +1,26 @@
 import React from "react";
 import { FaHeart } from "react-icons/fa";
 
+const getCoordinatesFromAddress = async (address) => {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+        );
+        const data = await response.json();
+        if (data.length > 0) {
+            const { lat, lon } = data[0];
+            return { lat: parseFloat(lat), lon: parseFloat(lon) };
+        } else {
+            console.warn("No se encontraron coordenadas para esa dirección.");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error al obtener coordenadas:", error);
+        return null;
+    }
+};
+
+
 const difficultyBadgeClass = (difficulty) => {
     switch (difficulty) {
         case "Fácil":
@@ -49,19 +69,14 @@ const PostCard = ({ post, onToggleFavorite, onJoin }) => {
                     <p className="mb-1"><strong>Hora:</strong> {post.time}</p>
                 </div>
             </div>
-
-            <p className="mb-2 text-black"><strong>Dirección:</strong> {post.address}</p>
             <p className="mb-2 text-black"><strong>Capacidad:</strong> {post.capacity} personas</p>
+            <p className="mb-2 text-black"><strong>Dirección:</strong> {post.address}</p>
 
             {/* Parte de la API-Clima */}
             {post.weather && (
                 <div className="mt-2 text-black">
                     <h6 className="fw-bold mb-2">🌤 Clima estimado</h6>
-                    <ul className="list-unstyled mb-0">
-                        <li>🌡️ <strong>Temperatura:</strong> {post.weather.temperatura}</li>
-                        <li>🌧️ <strong>Precipitaciones:</strong> {post.weather.precipitaciones}</li>
-                        <li>☁️ <strong>Cobertura nubosa:</strong> {post.weather.cobertura_nubosa}</li>
-                    </ul>
+                    <p className="mb-0">{post.weather}</p>
                 </div>
             )}
 

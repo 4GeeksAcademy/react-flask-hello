@@ -20,27 +20,69 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // 🔍 FUNCIONALIDAD NOMINATIM: convierte dirección en coordenadas (lat/lon)
+    const getCoordinatesFromAddress = async (address) => {
+        try {
+            console.log("📍 Buscando coordenadas para:", address);
+            const query = encodeURIComponent(address);
+            const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
+
+            const response = await fetch(url, {
+                headers: {
+                    "User-Agent": "SportConnect-App" // Nominatim lo requiere
+                }
+            });
+
+            if (!response.ok) throw new Error("Error al obtener coordenadas");
+
+            const data = await response.json();
+            console.log("📦 Coordenadas devueltas por Nominatim:", data);
+
+            if (data.length === 0) return null;
+
+            return {
+                lat: data[0].lat,
+                lon: data[0].lon
+            };
+        } catch (error) {
+            console.error("❌ Error al geolocalizar dirección:", error);
+            return null;
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem("token");
 
         try {
             // const token = JSON.parse(localStorage.getItem("token"));
-            const token = localStorage.getItem("token");
-            const { date } = formData;
-            const lat = 40.4168;
-            const lng = -3.7038;
+            // const token = localStorage.getItem("token");
+            // const { date } = formData;
+            // const lat = 40.4168;
+            // const lng = -3.7038;
 
-            console.log("📅 Valor recibido de fecha:", date); // <<--- esto para ver qué viene exactamente
+            console.log("📅 Valor recibido de fecha:", formData.date);
+            // 🔍 Paso 1: Obtener coordenadas desde dirección escrita
+            const coords = await getCoordinatesFromAddress(formData.address);
+            if (!coords) {
+                alert("No se pudo obtener la ubicación a partir de la dirección.");
+                return;
+            }
+
+            const { lat, lon } = coords;
 
             // Obtener clima real desde el backend
             // Anterior API: const weatherResponse = await fetch(`${BASE_URL}/api/weather?lat=${lat}&lng=${lng}&date=${date}`);
             // Aseguramos que la fecha esté en formato YYYY-MM-DD
-            const [year, month, day] = date.split("-");
+            // Paso 2 - formatear la fecha
+            const [year, month, day] = formData.date.split("-");
             const formattedDate = `${year}-${month}-${day}`;
 
             console.log("✅ Fecha formateada:", formattedDate);
 
-            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,cloudcover_mean,precipitation_sum&start_date=${formattedDate}&end_date=${formattedDate}&timezone=Europe/Madrid`;
+
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,cloudcover_mean,precipitation_sum&start_date=${formattedDate}&end_date=${formattedDate}&timezone=Europe/Madrid`;
 
             console.log("🌍 URL final de clima:", weatherUrl); // debug útil
 
@@ -79,9 +121,8 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 capacity: parseInt(formData.capacity, 10),
                 // weather: `🌡️ ${weatherData.weather.temperatura}, ☁️ ${weatherData.weather.cobertura_nubosa}, 🌧️ ${weatherData.weather.precipitaciones}`, -- Anterior API
                 weather: `🌡️ ${weatherSummary.temperatura}, ☁️ ${weatherSummary.cobertura_nubosa}, 🌧️ ${weatherSummary.precipitaciones}`,
-                latitude: 654,     // valor temporal
-                longitude: 247,    // valor temporal
-
+                latitude: parseFloat(lat),
+                longitude: parseFloat(lon),
             };
 
             // Para ver qué JSON se está enviando

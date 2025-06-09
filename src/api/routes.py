@@ -6,12 +6,19 @@ from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan,Su
 from api.utils import  APIException
 from flask_cors import CORS
 from sqlalchemy import select
+import stripe 
+import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 
+from api.models import db, User
+from api.utils import generate_sitemap, APIException
+
+
 api = Blueprint('api', __name__)
 
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 # Allow CORS requests to this API
 CORS(api)
 bcrypt = Bcrypt()
@@ -41,8 +48,6 @@ def create_user():
 
     
     user = User(
-        nombre=data['nombre'],
-        apellido=data['apellido'],
         email=data['email'],
         password=hashed_password,
         is_active=data.get('is_active', True),
@@ -88,7 +93,7 @@ def delete_user(user_id):
     return '', 204
 
 #PROFESSIONALS
-
+ 
 @api.route('/professionals', methods=['GET'])
 def list_professionals():
     stm = select(User).where(User.is_professional == True)
@@ -214,6 +219,7 @@ def get_plan_template(tid):
     return jsonify(t.serialize()), 200
 
 @api.route('/plan_templates', methods=['POST'])
+@jwt_required()
 def create_plan_template():
     data=request.get_json() or {}
     required=('user_id', 'plan_type', 'nombre')
@@ -224,6 +230,8 @@ def create_plan_template():
         plan_type=data['plan_type'],
         nombre=data['nombre'],
         description=data.get('description')
+
+        description=data.get('descripcion')
     )
     db.session.add(t)
     db.session.commit()
@@ -270,7 +278,11 @@ def get_template_item(iid):
 @api.route('/template_items', methods=['POST'])
 def create_template_item():
     data = request.json or {}
+
     required = ('creator_id', 'item_type', 'nombre')
+
+    required = ('template_id', 'item_type', 'nombre')
+
     if not all(f in data for f in required):
         raise APIException(f"Faltan campos obligatorios: {', '.join(required)}", status_code=400)
     i = TemplateItem(
@@ -485,6 +497,31 @@ def delete_payment(pid):
     db.session.commit()
     return '', 204
 
+
+@api.route('/session-status', methods=['GET'])
+def session_status():
+  session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+
+  return jsonify(status=session.status, customer_email=session.customer_details.email)
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        body = request.json
+        if not body or 'items' not in body:
+            return jsonify({"error": "Invalid request, 'items' is required"}), 400
+        session = stripe.checkout.Session.create(
+            ui_mode = 'embedded',
+            line_items=body['items'],
+            mode='payment',
+            #implementar un webhook para que se ejecute una funcion cuando se complete el pago
+            return_url=FRONT + 'return?session_id={CHECKOUT_SESSION_ID}',
+        )
+    except Exception as e:
+        return str(e)
+
+    return jsonify({"clientSecret":session.client_secret})
+ 
 
 #EVENTS
 

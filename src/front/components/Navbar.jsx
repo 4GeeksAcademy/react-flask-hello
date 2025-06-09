@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import "../../styles/navbar.css";
 
 export const Navbar = () => {
@@ -38,30 +39,13 @@ export const Navbar = () => {
     };
   }, []);
 
-  const logoLink = {
-    name: (
-      <>
-        DMPC<span className="logo-highlight">ProFit</span>
-      </>
-    ),
-    url: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/",
-  };
-
   const menuItems = [
-    { name: "Sobre Nosotros", link: "#" },
-    {
-      name: "Nutricion",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/nutricion",
-    },
-    {
-      name: "Deporte",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/sport",
-    },
-    {
-      name: "Profesional",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/entrenadores",
-    },
-    { name: "Loging", link: "#" },
+    { name: "Sobre Nosotros", link: "/AboutUs", internal: true },
+    { name: "Nutrición", link: "/nutricion", internal: true },
+    { name: "Deporte", link: "/sport", internal: true },
+    { name: "Profesional", link: "/entrenadores", internal: true },
+    { name: "Eventos", link: "/Eventos", internal: true },
+    { name: "Login", link: "/login", internal: true },
   ];
 
   return (
@@ -77,13 +61,9 @@ export const Navbar = () => {
         }}
       >
         <div className="logo">
-          <a
-            href={logoLink.url}
-            className="logo-text"
-            rel="noopener noreferrer"
-          >
-            {logoLink.name}
-          </a>
+          <Link to="/" className="logo-text">
+            DMPC<span className="logo-highlight">ProFit</span>
+          </Link>
         </div>
 
         <ul
@@ -96,13 +76,28 @@ export const Navbar = () => {
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
-              <a href={item.link} className="menu-link">
-                {item.name}
-                <span
-                  className="menu-link-after"
-                  style={{ width: hoverIndex === index ? "100%" : "0%" }}
-                ></span>
-              </a>
+              {item.internal ? (
+                <Link to={item.link} className="menu-link">
+                  {item.name}
+                  <span
+                    className="menu-link-after"
+                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
+                  ></span>
+                </Link>
+              ) : (
+                <a
+                  href={item.link}
+                  className="menu-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.name}
+                  <span
+                    className="menu-link-after"
+                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
+                  ></span>
+                </a>
+              )}
             </li>
           ))}
         </ul>

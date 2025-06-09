@@ -52,6 +52,7 @@ class User(db.Model):
             })
         return data
     
+
 class PlanTemplateItem(db.Model):
     __tablename__ = 'plan_template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -70,6 +71,8 @@ class PlanTemplateItem(db.Model):
             "template_item_id": self.template_item_id,
             "orden": self.orden
         }
+
+
 
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
@@ -192,6 +195,7 @@ class SubscriptionPlan(db.Model):
     price: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
     duration_month: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     description: Mapped[str] = mapped_column(Text)
+    price_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
 
     # relacion inversa:
     subscriptions = relationship('Subscription', back_populates='plan', lazy=True)
@@ -202,7 +206,8 @@ class SubscriptionPlan(db.Model):
             "name": self.name,
             "price": float(self.price),
             "duration_month": self.duration_month,
-            "description": self.description
+            "description": self.description,
+            "price_id": self.price_id
         }
 
 class Subscription(db.Model):

@@ -16,7 +16,7 @@ export default function storeReducer(store, action = {}) {
 
       let nuevoCarrito;
       if (productoExistente) {
-        //Si existe, aumentamos la cantidad
+
         nuevoCarrito = store.carrito.map((item) =>
           item.id ? { ...item, cantidad: item.cantidad + 1 } : item
         );
@@ -38,6 +38,13 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         carrito: nuevoCarrito,
+      };
+    }
+
+    case "vaciar_carrito": {
+      return {
+        ...store,
+        carrito: [],
       };
     }
 

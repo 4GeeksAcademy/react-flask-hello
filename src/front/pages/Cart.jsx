@@ -1,12 +1,30 @@
+import { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Cart() {
   const { store, dispatch } = useGlobalReducer();
+  const [openModal, setOpenModal] = useState(false);
 
   const total = store.carrito.reduce(
     (acc, item) => acc + item.price * item.cantidad,
     0
   );
+
+  const handlePayOpen = () => {
+    setOpenModal(true);
+  }
+
+  const handlePayClose = () => {
+    setOpenModal(false);
+  }
+
+  const handlePayNow = (e) => {
+    e.preventDefault();
+    setOpenModal(false);
+    dispatch({ type: "vaciar_carrito" });
+    alert("Pago realizado con éxito");
+    setTimeout(() => navigate('/'), 3000)
+  }
 
   return (
     <div className="p-4">
@@ -38,6 +56,84 @@ export default function Cart() {
       <div className="mt-4 text-right font-bold text-lg">
         Total: <strong>{total.toFixed(2)} €</strong>
       </div>
+
+      {store.carrito.length > 0 && (
+        <div className="mt-6 text-right">
+          <button
+            className="btn btn-primary text-white px-6 py-2 rounded hover:bg-green-700 mt-3"
+            onClick={handlePayOpen}
+          >
+            Pagar
+          </button>
+        </div>
+      )}
+
+      {openModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-light bg-opacity-40 z-50 mt-3">
+          <form >
+
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                Nombre del titular
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id=""
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                Numero de tarjeta
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id=""
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                Numero de expiración
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id=""
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                CVV
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id=""
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-success w-100 mb-5" onClick={handlePayNow}>
+              pagar
+            </button>
+
+          </form>
+
+          <button
+            className="btn btn-primary text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={handlePayClose}
+          >
+            Cerrar
+          </button>
+        </div>
+      )}
     </div>
   );
 }

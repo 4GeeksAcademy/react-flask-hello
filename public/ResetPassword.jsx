@@ -16,7 +16,7 @@ export const ResetPassword = () => {
         e.preventDefault()
 
         try {
-            const resp = await axios.post(`${URLBACK}api/reset-password/${token}`, { new_password: password})
+            const resp = await axios.post(`${URLBACK}/api/reset-password/${token}`, { new_password: password})
             console.log(resp.data)
             setText(resp.data.success || resp.data.message)
             setTimeout(() => navigate('/login'), 3000)

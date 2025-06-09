@@ -11,7 +11,7 @@ export const ForgotPassword = () => {
         e.preventDefault()
 
         try {
-            const resp = await axios.post(`${URLBACK}api/forgot-password`, { email })
+            const resp = await axios.post(`${URLBACK}/api/forgot-password`, { email })
             console.log(resp.data)
             alert('Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico')
             setText(resp.data.message)

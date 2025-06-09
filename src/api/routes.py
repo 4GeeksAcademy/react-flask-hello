@@ -206,7 +206,7 @@ def forgot_password():
 
     reset_url = url_for('api.reset_password', token=user.reset_token, _external=True)
 
-    reset_url_frontend = f"{front_url_local}{user.reset_token}"
+    reset_url_frontend = f"{front_url_render}{user.reset_token}"
     
 
     msg = Message("Restablece tu contraseña",

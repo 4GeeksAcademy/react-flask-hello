@@ -11,7 +11,7 @@ export const createEvent = async (data) => {
   const res = await fetch(`${BASE_URL}/api/events/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" ,
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(data),
   });

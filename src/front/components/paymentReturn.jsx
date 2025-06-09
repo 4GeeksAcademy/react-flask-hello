@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import stripeServices from "../services/stripeServices";
+import stripeServices from "../../services/stripeServices";
 
 const PaymentReturn = () => {
   const [status, setStatus] = useState(null);

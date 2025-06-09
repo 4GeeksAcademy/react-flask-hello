@@ -18,8 +18,9 @@ import ProfesoresPage from "./pages/ProfesoresPage";
 import Register from "./pages/Register";
 import { Checkout } from "./pages/checkout";
 import Login from "./pages/Login";
-import { ReturnPage } from "./pages/returnPAge";
+import  { ReturnPage }  from "./pages/returnPage";
 import PaymentReturn from "./components/paymentReturn";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ export const router = createBrowserRouter(
       <Route path="/Register" element={<Register />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/return" element={<PaymentReturn />} />
+      <Route path="/returnPage" element={<ReturnPage />} />
     </Route>
   )
 );

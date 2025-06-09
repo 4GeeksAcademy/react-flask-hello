@@ -29,7 +29,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
         console.log("📤 Datos enviados al backend:", newPost);
         
         try {
-            const token = JSON.parse(localStorage.getItem("token"));
+            const token = localStorage.getItem("token");
 
             const response = await fetch(`${BASE_URL}/api/events`, {
                 method: "POST",

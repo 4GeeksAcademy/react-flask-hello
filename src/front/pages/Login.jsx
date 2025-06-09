@@ -17,7 +17,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const resp = await axios.post(`${URLBACK}api/login`, {
+            const resp = await axios.post(`${URLBACK}/api/login`, {
                 email, password
             })
 

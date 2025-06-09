@@ -23,7 +23,7 @@ const Register = () => {
 
     const sendRegister = async () => {
         try {
-            const resp = await axios.post(`${URLBACK}api/signup`, {
+            const resp = await axios.post(`${URLBACK}/api/signup`, {
                 email, password, first_name, last_name, address
             })
             console.log('user created successfully')

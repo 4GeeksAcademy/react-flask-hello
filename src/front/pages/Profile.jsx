@@ -17,7 +17,7 @@ export const Profile = () => {
 
         const fetchProfile = async () => {
             try {
-                const resp = await axios.get(`${URLBACK}api/profile`, {
+                const resp = await axios.get(`${URLBACK}/api/profile`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

@@ -2,7 +2,7 @@ const URLBACK = import.meta.env.VITE_BACKEND_URL
 
 export const get_products = async () => {
   try {
-    const response = await fetch(`${URLBACK}api/products`);
+    const response = await fetch(`${URLBACK}/api/products`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -15,7 +15,7 @@ export const get_products = async () => {
 }
 export const get_product = async (id) => {
   try {
-    const response = await fetch(`${URLBACK}api/products/${id}`);
+    const response = await fetch(`${URLBACK}/api/products/${id}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

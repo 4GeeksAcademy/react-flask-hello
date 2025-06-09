@@ -49,9 +49,9 @@ export const router = createBrowserRouter(
         </PrivateRoute>
       }>
         <Route path="/admin/dashboard/profile" element={<AdminProfile />} />
-        <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} />
-        <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} />
-        <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} />
+        {/* <Route path="/admin/dashboard/alumnos/notas" element={<AdminAlumnosNotas />} /> */}
+        {/* <Route path="/admin/dashboard/alumnos/asistencia" element={<AdminAlumnosAsistencia />} /> */}
+        {/* <Route path="/admin/dashboard/profesores" element={<AdminProfesores />} /> */}
         <Route path="/admin/dashboard/solicitudes" element={<AdminSolicitudes />} />
       </Route>
       <Route path="/teacher/dashboard" element={

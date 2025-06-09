@@ -34,7 +34,7 @@ export const AdminDashboardNavbar = () => {
 					</div>
 					<div className="flex-grow-1">
 						<ul className="list-unstyled text-start text-decoration-none d-flex flex-column gap-3 ps-3">
-							<li className="my-3">
+							{/* <li className="my-3">
 								<div className="btn-group dropend">
 									<Link className="btn dropdown-toggle text-black text-decoration-none fw-semibold hovNav p-0 border-0 shadow-none" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" >
 										Alumnos
@@ -60,7 +60,7 @@ export const AdminDashboardNavbar = () => {
 								<Link to="/admin/dashboard/profesores" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Profesores
 								</Link>
-							</li>
+							</li> */}
 							<li className="my-3">
 								<Link to="/admin/dashboard/solicitudes" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>
 									Solicitudes

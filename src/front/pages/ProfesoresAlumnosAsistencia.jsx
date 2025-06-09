@@ -142,10 +142,7 @@ export const ProfesoresAlumnosAsistencia = () => {
 
             const data = await res.json();
             if (res.ok) {
-                alert("Asistencia registrada correctamente");
                 handleSearch();
-            } else {
-                alert(data.error || "Error al registrar asistencia");
             }
         } catch (err) {
             console.error(err);
@@ -176,14 +173,14 @@ export const ProfesoresAlumnosAsistencia = () => {
             {showTable && (
                 <div className="row">
                     <div className="col-7">
-                        <table className="table text-center">
-                            <thead>
+                        <table className="table table-striped table-bordered text-center">
+                            <thead className="table-light">
                                 <tr>
-                                    <th>Código</th>
-                                    <th>Apellidos</th>
-                                    <th>Nombres</th>
-                                    <th>Faltas</th>
-                                    <th>Acciones</th>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Apellidos</th>
+                                    <th scope="col">Nombres</th>
+                                    <th scope="col">Faltas</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -195,7 +192,7 @@ export const ProfesoresAlumnosAsistencia = () => {
                                         <td>{s.faltas}</td>
                                         <td>
                                             <button
-                                                className={`btn ${editingId === s.id ? 'btn-primary' : 'btn-success'}`}
+                                                className={`btn btn-sm ${editingId === s.id ? 'btn-primary' : 'btn-success'}`}
                                                 onClick={() => editingId === s.id ? handleSave(s) : handleEdit(s)}>
                                                 <i className={`ri-${editingId === s.id ? 'save' : 'edit'}-line`}></i>
                                             </button>
@@ -208,40 +205,35 @@ export const ProfesoresAlumnosAsistencia = () => {
 
                     {editingId && (
                         <div className="col-5">
-                            <table className="table">
-                                <thead><tr><th>Fecha</th><th>Asistencia</th></tr></thead>
+                            <table className="table table-striped table-bordered text-center">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Asistencia</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <td>{new Date().toLocaleDateString()}</td>
                                         <td>
-                                            {['asistio', 'tardanza', 'falto', 'noregistrado'].map(tipo => (
-                                                <div className="form-check form-check-inline" key={tipo}>
-                                                    <input
-                                                        className="form-check-input"
-                                                        type="radio"
-                                                        name="attendance"
-                                                        checked={attendance[tipo] || false}
-                                                        onChange={() => handleAttendanceChange(tipo)}
-                                                    />
-                                                    <label className="form-check-label">
-                                                        {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
-                                                    </label>
-                                                </div>
-                                            ))}
+                                            <div className="d-flex justify-content-around">
+                                                {['asistio', 'tardanza', 'falto', 'noregistrado'].map(tipo => (
+                                                    <div className="form-check form-check-inline" key={tipo}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="attendance"
+                                                            checked={attendance[tipo] || false}
+                                                            onChange={() => handleAttendanceChange(tipo)}
+                                                        />
+                                                        <label className="form-check-label">
+                                                            {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
-                            <h5>Historial</h5>
-                            <table className="table table-sm">
-                                <thead><tr><th>Fecha</th><th>Estado</th></tr></thead>
-                                <tbody>
-                                    {attendanceHistory.map((a, i) => (
-                                        <tr key={i}>
-                                            <td>{new Date(a.date).toLocaleDateString()}</td>
-                                            <td>{a.status}</td>
-                                        </tr>
-                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -251,12 +243,3 @@ export const ProfesoresAlumnosAsistencia = () => {
         </div>
     );
 };
-
-
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, abort
-from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan,Subscription, Payment, Event, EventSignup, SupportTicket
+from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan,Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem
 from api.utils import  APIException
 from flask_cors import CORS
 from sqlalchemy import select
@@ -143,6 +143,62 @@ def list_professionals():
     d#b.session.commit()
     #return '', 204
 
+
+#PLAN TEMPLATE ITEM
+
+@api.route('/plan_template_items', methods=['GET'])
+def list_plan_template_items():
+    items = PlanTemplateItem.query.all()
+    if not items:
+        abort(404, description="PlanTemplateItem no encontrado")
+    return jsonify([i.serialize() for i in items]), 200
+
+@api.route('/plan_template_items/<int:pti_id>', methods=['GET'])
+def get_plan_template_item(pti_id):
+    item = PlanTemplateItem.query.get(pti_id)
+    if not item:
+        abort(404, description="PlanTemplateItem no encontrado")
+    return jsonify(item.serialize()), 200
+
+@api.route('/plan_template_items', methods=['POST'])
+def create_plan_template_item():
+    data = request.get_json() or {}
+    required = ('plan_template_id', 'template_item_id')
+    if not all(f in data for f in required):
+        raise APIException(f"Faltan campos: {', '.join(required)}", status_code=400)
+    item = PlanTemplateItem(
+        plan_template_id=data['plan_template_id'],
+        template_item_id=data['template_item_id'],
+        orden=data.get('orden')
+    )
+    db.session.add(item)
+    db.session.commit()
+    return jsonify(item.serialize()), 201
+
+@api.route('/plan_template_items/<int:pti_id>', methods=['PUT'])
+def update_plan_template_item(pti_id):
+    item = PlanTemplateItem.query.get(pti_id)
+    if not item:
+        abort(404, description="PlanTemplateItem no encontrado")
+    data = request.get_json() or {}
+    for field in('plan_template_id', 'template_item_id', 'orden'):
+        if field in data:
+            setattr(item, field, data[field])
+    db.session.commit()
+    return jsonify(item.serialize()), 200
+
+@api.route('/plan_template_items/<int:pti_id>', methods=['DELETE'])
+def delete_plan_template_item(pti_id):
+    item = PlanTemplateItem.query.get(pti_id)
+    if not item:
+        abort(404, description="PlanTemplateItem no encontrado")
+    db.session.delete(item)
+    db.session.commit()
+    return '', 204
+
+
+
+
 #PLAN TEMPLATES
 
 @api.route('/plan_templates', methods=['GET'])
@@ -167,7 +223,7 @@ def create_plan_template():
         user_id=data['user_id'],
         plan_type=data['plan_type'],
         nombre=data['nombre'],
-        descripcion=data.get('descripcion')
+        description=data.get('description')
     )
     db.session.add(t)
     db.session.commit()
@@ -213,12 +269,12 @@ def get_template_item(iid):
 
 @api.route('/template_items', methods=['POST'])
 def create_template_item():
-    data = request.json() or {}
-    required = ('template_id', 'item_type', 'nombre')
+    data = request.json or {}
+    required = ('creator_id', 'item_type', 'nombre')
     if not all(f in data for f in required):
         raise APIException(f"Faltan campos obligatorios: {', '.join(required)}", status_code=400)
     i = TemplateItem(
-        template_id=data['template_id'],
+        creator_id=data['creator_id'],
         item_type=data['item_type'],
         nombre=data['nombre'],
         calorias=data.get('calorias'),
@@ -287,7 +343,7 @@ def create_subscription_plan():
     p = SubscriptionPlan(
         name=data['name'],
         price=data['price'],
-        duration_months=data['duration_months'],
+        duration_month=data['duration_month'],
         description=data.get('description')
     )
     db.session.add(p)
@@ -381,7 +437,7 @@ def list_payments():
     pays=Payment.query.all()
     return jsonify([p.serialize() for p in pays ]), 200
 
-@api.route('/paymets/<int:pid>', methods=['GET'])
+@api.route('/payments/<int:pid>', methods=['GET'])
 def get_payment(pid):
     p = Payment.query.get(pid)
     if not p:
@@ -453,7 +509,7 @@ def create_event():
     evs = Event(
         nombre=data['nombre'],
         creator_id=data['creator_id'],
-        descripcion=data.get('description'),
+        description=data.get('description'),
         fecha_inicio=data['fecha_inicio'],
         fecha_fin=data.get('fecha_fin'),
         ubicacion=data.get('ubicacion'),

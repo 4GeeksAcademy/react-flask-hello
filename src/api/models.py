@@ -63,6 +63,14 @@ class PlanTemplateItem(db.Model):
     plan_template = relationship('PlanTemplate', back_populates='plan_template_items')
     template_item = relationship('TemplateItem', back_populates='plan_template_items')
 
+    def serialize(self):
+        return{
+            "id": self.id,
+            "plan_template_id": self.plan_template_id,
+            "template_item_id": self.template_item_id,
+            "orden": self.orden
+        }
+
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -91,15 +99,15 @@ class TemplateItem(db.Model):
     creator_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)  # NUEVO
     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
-    calorias: Mapped[int] = mapped_column(Integer)
-    proteinas: Mapped[int] = mapped_column(Integer)
-    grasas: Mapped[int] = mapped_column(Integer)
-    carbohidratos: Mapped[int] = mapped_column(Integer)
-    meal_momento: Mapped[str] = mapped_column(String(60))
-    cantidad: Mapped[float] = mapped_column(Float)
-    muscle_group: Mapped[str] = mapped_column(String(50))
-    series: Mapped[int] = mapped_column(Integer)
-    repeticiones: Mapped[int] = mapped_column(Integer)
+    calorias: Mapped[int] = mapped_column(Integer, nullable=True)
+    proteinas: Mapped[int] = mapped_column(Integer, nullable=True)
+    grasas: Mapped[int] = mapped_column(Integer, nullable=True)
+    carbohidratos: Mapped[int] = mapped_column(Integer, nullable=True)
+    meal_momento: Mapped[str] = mapped_column(String(60), nullable=True)
+    cantidad: Mapped[float] = mapped_column(Float, nullable=True)
+    muscle_group: Mapped[str] = mapped_column(String(50), nullable=True)
+    series: Mapped[int] = mapped_column(Integer, nullable=True)
+    repeticiones: Mapped[int] = mapped_column(Integer, nullable=True)
     orden: Mapped[int] = mapped_column(Integer)
 
     # Relaciones
@@ -203,7 +211,7 @@ class Subscription(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
     subscription_plan_id: Mapped[int] = mapped_column(Integer, ForeignKey('subscription_plans.id'), nullable=False)
     start_date: Mapped[Date] = mapped_column(Date, default=datetime.utcnow, nullable=False)
-    end_date: Mapped[Date] = mapped_column(Date)
+    end_date: Mapped[Date] = mapped_column(Date, nullable=True)
     status: Mapped[str] = mapped_column(String(30), nullable=False)
 
     # relaciones:

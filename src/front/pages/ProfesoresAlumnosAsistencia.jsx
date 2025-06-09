@@ -2,106 +2,109 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 export const ProfesoresAlumnosAsistencia = () => {
-
     const { store } = useAuth();
     const token = store.access_token;
-    const [students, setStudents] = useState([])
-    const [period, setPeriods] = useState([])
-    const [grade, setGrades] = useState([])
-    const [load, setLoad] = useState(false)
+
+    const [students, setStudents] = useState([]);
+    const [periods, setPeriods] = useState([]);
+    const [grades, setGrades] = useState([]);
+    const [selectedGrade, setSelectedGrade] = useState("");
+    const [selectedPeriod, setSelectedPeriod] = useState("");
     const [editingId, setEditingId] = useState(null);
-    const [attendance, setAttendance] = useState({
-        asistio: false,
-        tardanza: false,
-        falto: false,
-        noregistrado: true
-    });
-
-    useEffect(() => {
-        const students = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/students`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const responseData = await response.json()
-                if (response.ok) {
-                    console.log(responseData);
-                    setStudents(responseData)
-                }
-            } catch (error) {
-                console.log(error);
-
-            }
-        }
-        const periods = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const responseData = await response.json()
-                if (response.ok) {
-                    setPeriods(responseData)
-                }
-            } catch (error) {
-                console.log(error);
-
-            }
-        }
-
-        const grades = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const responseData = await response.json()
-                if (response.ok) {
-                    setGrades(responseData)
-                }
-            } catch (error) {
-                console.log(error);
-
-            }
-        }
-        if (grade != ([]) && period != ([])) {
-            setLoad(true)
-        }
-        grades()
-        periods()
-        students()
-    }, [])
-
+    const [attendance, setAttendance] = useState({});
+    const [attendanceHistory, setAttendanceHistory] = useState([]);
     const [showTable, setShowTable] = useState(false);
 
-    const handleEdit = (studentId) => {
-        if (editingId === studentId) {
-            // Aquí irá la lógica para guardar los cambios
-            console.log('Guardando asistencia:', {
-                studentId,
-                attendance
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/periods`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(res => res.json())
+            .then(setPeriods)
+            .catch(console.error);
+
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/setup/grade_levels`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(res => res.json())
+            .then(setGrades)
+            .catch(console.error);
+    }, []);
+
+    const getTeacherProfile = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-            setEditingId(null);
-            setShowTable(false);
-        } else {
-            setEditingId(studentId);
-            setShowTable(true);
-            setAttendance({
-                asistio: false,
-                tardanza: false,
-                falto: false,
-                noregistrado: true
-            });
+            const user = await response.json();
+            return user?.teacher?.courses[0]?.id || null;
+        } catch (err) {
+            console.error("Error al obtener perfil de profesor", err);
+            return null;
         }
+    };
+
+    const handleSearch = async () => {
+        const courseId = await getTeacherProfile();
+        if (!selectedGrade || !selectedPeriod || !courseId) return;
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/teacher/students?grade_level_id=${selectedGrade}&course_id=${courseId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const text = await res.text();
+            let studentsData;
+            try {
+                studentsData = JSON.parse(text);
+            } catch (jsonErr) {
+                console.error("JSON inválido:", jsonErr, text);
+                return;
+            }
+
+            const updated = await Promise.all(studentsData.map(async (e) => {
+                const attRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendance?enrollment_id=${e.enrollment_id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const attText = await attRes.text();
+                let attData = [];
+                try {
+                    attData = JSON.parse(attText);
+                } catch (err) {
+                    console.error("Historial no JSON:", err, attText);
+                }
+
+                const faltas = attData.filter(a => a.status === "falto").length;
+                return {
+                    id: e.student.user_id,
+                    enrollment_id: e.enrollment_id,
+                    first_name: e.student.first_name,
+                    last_name: e.student.last_name,
+                    faltas,
+                    history: attData
+                };
+            }));
+
+            setStudents(updated);
+            setShowTable(true);
+        } catch (err) {
+            console.error("Error al buscar estudiantes:", err);
+        }
+    };
+
+    const handleEdit = (student) => {
+        setEditingId(student.id);
+        setAttendanceHistory(student.history);
+
+        const today = new Date().toISOString().slice(0, 10);
+        const todayRecord = student.history.find(a => a.date === today);
+
+        setAttendance({
+            asistio: todayRecord?.status === "asistio",
+            tardanza: todayRecord?.status === "tardanza",
+            falto: todayRecord?.status === "falto",
+            noregistrado: todayRecord?.status === "no registrado" || !todayRecord
+        });
     };
 
     const handleAttendanceChange = (type) => {
@@ -113,195 +116,147 @@ export const ProfesoresAlumnosAsistencia = () => {
         });
     };
 
-    const handleAsistance = async () => {
-        const students = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendance?enrollment_id=8`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const responseData = await response.json()
-                if (response.ok) {
-                    console.log(responseData);
-                    setStudents(responseData)
-                }
-            } catch (error) {
-                console.log(error);
+    const handleSave = async (student) => {
+        const statusKey = Object.entries(attendance).find(([k, v]) => v)?.[0] || "noregistrado";
+        const statusMap = {
+            asistio: "asistio",
+            tardanza: "tardanza",
+            falto: "falto",
+            noregistrado: "no registrado"
+        };
+        const status = statusMap[statusKey];
 
+        try {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendance`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    enrollment_id: student.enrollment_id,
+                    date: new Date().toISOString().slice(0, 10),
+                    status
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert("Asistencia registrada correctamente");
+                handleSearch();
+            } else {
+                alert(data.error || "Error al registrar asistencia");
             }
+        } catch (err) {
+            console.error(err);
         }
-    }
+        setEditingId(null);
+    };
 
     return (
+        <div className="container my-5">
+            <div className="row mb-4">
+                <div className="col">
+                    <select className="form-select" value={selectedGrade} onChange={e => setSelectedGrade(e.target.value)}>
+                        <option value="">Selecciona Año</option>
+                        {grades.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
+                    </select>
+                </div>
+                <div className="col">
+                    <select className="form-select" value={selectedPeriod} onChange={e => setSelectedPeriod(e.target.value)}>
+                        <option value="">Selecciona Periodo</option>
+                        {periods.map((p, i) => <option key={i} value={p}>{p} Bimestre</option>)}
+                    </select>
+                </div>
+                <div className="col">
+                    <button className="btn btn-success" onClick={handleSearch}>Buscar</button>
+                </div>
+            </div>
 
-        <div className="container-fluid table-responsive my-5">
-            {load ?
-                <div>
-                    <div className="row justify-content-center">
-                        <div className="col-2">
-                            <select className="form-select" aria-label="Selecciona una opción">
-                                <option value="">Selecciona Año</option>
-                                {grade.map((grade) => (
-                                    <option key={grade.id} value={grade.id}>{grade.name} </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col-2">
-                            <select className="form-select" aria-label="Selecciona una opción">
-                                <option value="">Selecciona Periodo</option>
-                                {period.map((periodos, i) => (
-                                    <option key={i} value={periodos}>{periodos} Bimestre</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col-2">
-                            <button type="button" className="btn btn-success px-4">Buscar</button>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-7">
-                            <table className="table table-striped table-bordered text-center mt-5">
-                                <thead className="table-light">
-                                    <tr>
-                                        <th scope="col admin-num">Código</th>
-                                        <th scope="col admin-lastname">Apellidos</th>
-                                        <th scope="col admin-firstname">Nombres</th>
-                                        <th scope="col admin-faltas">Faltas</th>
-                                        <th scope="col admin-assis-but"></th>
+            {showTable && (
+                <div className="row">
+                    <div className="col-7">
+                        <table className="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Apellidos</th>
+                                    <th>Nombres</th>
+                                    <th>Faltas</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {students.map((s) => (
+                                    <tr key={s.id}>
+                                        <td>{s.enrollment_id}</td>
+                                        <td>{s.last_name}</td>
+                                        <td>{s.first_name}</td>
+                                        <td>{s.faltas}</td>
+                                        <td>
+                                            <button
+                                                className={`btn ${editingId === s.id ? 'btn-primary' : 'btn-success'}`}
+                                                onClick={() => editingId === s.id ? handleSave(s) : handleEdit(s)}>
+                                                <i className={`ri-${editingId === s.id ? 'save' : 'edit'}-line`}></i>
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {editingId && (
+                        <div className="col-5">
+                            <table className="table">
+                                <thead><tr><th>Fecha</th><th>Asistencia</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                        <td>001</td>
-                                        <td>García</td>
-                                        <td>Ana</td>
-                                        <td>3</td>
+                                        <td>{new Date().toLocaleDateString()}</td>
                                         <td>
-                                            <button
-                                                type="button"
-                                                className={`btn btn-sm ${editingId === 1 ? 'btn-primary' : 'btn-success'}`}
-                                                onClick={() => handleEdit(1)}
-                                            >
-                                                <i className={`ri-${editingId === 1 ? 'save' : 'edit'}-line`}></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>López</td>
-                                        <td>Carlos</td>
-                                        <td>1</td>
-                                        <td>
-                                            <button
-                                                type="button"
-                                                className={`btn btn-sm ${editingId === 2 ? 'btn-primary' : 'btn-success'}`}
-                                                onClick={() => handleEdit(2)}
-                                            >
-                                                <i className={`ri-${editingId === 2 ? 'save' : 'edit'}-line`}></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>003</td>
-                                        <td>Martínez</td>
-                                        <td>María</td>
-                                        <td>2</td>
-                                        <td>
-                                            <button
-                                                type="button"
-                                                className={`btn btn-sm ${editingId === 3 ? 'btn-primary' : 'btn-success'}`}
-                                                onClick={() => handleEdit(3)}
-                                            >
-                                                <i className={`ri-${editingId === 3 ? 'save' : 'edit'}-line`}></i>
-                                            </button>
+                                            {['asistio', 'tardanza', 'falto', 'noregistrado'].map(tipo => (
+                                                <div className="form-check form-check-inline" key={tipo}>
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        name="attendance"
+                                                        checked={attendance[tipo] || false}
+                                                        onChange={() => handleAttendanceChange(tipo)}
+                                                    />
+                                                    <label className="form-check-label">
+                                                        {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                                                    </label>
+                                                </div>
+                                            ))}
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <h5>Historial</h5>
+                            <table className="table table-sm">
+                                <thead><tr><th>Fecha</th><th>Estado</th></tr></thead>
+                                <tbody>
+                                    {attendanceHistory.map((a, i) => (
+                                        <tr key={i}>
+                                            <td>{new Date(a.date).toLocaleDateString()}</td>
+                                            <td>{a.status}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
-
-                        {showTable && (
-                            <div className="col-5">
-                                <table className="table table-striped table-bordered text-center mt-5">
-                                    <thead className="table-ligth">
-                                        <tr>
-                                            <th scope="col">Fecha</th>
-                                            <th scope="col">Asistencia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{new Date().toLocaleDateString()}</td>
-                                            <td>
-                                                <div className="d-flex justify-content-around">
-                                                    <div className="form-check form-check-inline">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            name="asistencia"
-                                                            id="asistio"
-                                                            checked={attendance.asistio}
-                                                            onChange={() => handleAttendanceChange('asistio')}
-                                                        />
-                                                        <label className="form-check-label" htmlFor="asistio">
-                                                            Asistió
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check form-check-inline">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            name="asistencia"
-                                                            id="tardanza"
-                                                            checked={attendance.tardanza}
-                                                            onChange={() => handleAttendanceChange('tardanza')}
-                                                        />
-                                                        <label className="form-check-label" htmlFor="tardanza">
-                                                            Tardanza
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check form-check-inline">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            name="asistencia"
-                                                            id="faltó"
-                                                            checked={attendance.falto}
-                                                            onChange={() => handleAttendanceChange('falto')}
-                                                        />
-                                                        <label className="form-check-label" htmlFor="faltó">
-                                                            Faltó
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check form-check-inline">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            name="asistencia"
-                                                            id="noregistrado"
-                                                            checked={attendance.noregistrado}
-                                                            onChange={() => handleAttendanceChange('noregistrado')}
-                                                        />
-                                                        <label className="form-check-label" htmlFor="noregistrado">
-                                                            No registrado
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
-                :
-                <div className="spinner-border position-absolute top-50 start-50 translate-middle" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            }
-        </div >
+            )}
+        </div>
     );
 };
+
+
+
+
+
+
+
+
+

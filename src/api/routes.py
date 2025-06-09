@@ -485,7 +485,7 @@ def get_students_attendance():
 
 @api.route('/attendance', methods=['POST'])
 @jwt_required()
-def register_attendance():
+def register_or_update_attendance():
     data = request.get_json()
     required_fields = ['enrollment_id', 'date', 'status']
 
@@ -498,8 +498,7 @@ def register_attendance():
         return jsonify({"error": "Estado de asistencia no válido."}), 400
 
     try:
-        attendance_date = datetime.datetime.strptime(
-            data['date'], "%Y-%m-%d").date()
+        attendance_date = datetime.datetime.strptime(data['date'], "%Y-%m-%d").date()
     except ValueError:
         return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD."}), 400
 
@@ -507,6 +506,18 @@ def register_attendance():
     if not enrollment:
         return jsonify({"error": "Matrícula no encontrada."}), 404
 
+    # Revisa si ya existe asistencia en esa fecha
+    existing = Attendance.query.filter_by(
+        enrollment_id=data['enrollment_id'],
+        date=attendance_date
+    ).first()
+
+    if existing:
+        existing.status = data['status']
+        db.session.commit()
+        return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
+
+    # Crear nueva si no existe
     attendance = Attendance(
         enrollment_id=data['enrollment_id'],
         date=attendance_date,
@@ -516,6 +527,19 @@ def register_attendance():
     db.session.commit()
 
     return jsonify({"message": "Asistencia registrada exitosamente."}), 201
+
+#Historial de asistencias -- para PROFESORES
+
+@api.route('/attendance', methods=['GET'])
+@jwt_required()
+def get_attendance_by_enrollment():
+    enrollment_id = request.args.get('enrollment_id', type=int)
+    if not enrollment_id:
+        return jsonify({"error": "Falta enrollment_id"}), 400
+
+    records = Attendance.query.filter_by(enrollment_id=enrollment_id).all()
+    return jsonify([a.serialize() for a in records]), 200
+
 
 # Actualizar el estado de asistencia de un registro existente -- para PROFESORES
 
@@ -538,6 +562,8 @@ def update_attendance(attendance_id):
     db.session.commit()
 
     return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
+
+    
 
 
 # Registrar una calificacion de un estudiante -- para PROFESORES

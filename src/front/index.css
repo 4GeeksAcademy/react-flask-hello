@@ -86,6 +86,10 @@
   color: #6c757d !important;
 }
 
+.hovNavBtn:hover {
+  color: #535353 !important;
+}
+
 .background-container {
   background-color: #f8f9fa;
   background-image: url('/Login.webp');

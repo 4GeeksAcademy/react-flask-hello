@@ -22,7 +22,6 @@ export const ProfesoresProfile = () => {
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    console.log(data);
                     setUser(data)
                     setLoad(true)
                 }

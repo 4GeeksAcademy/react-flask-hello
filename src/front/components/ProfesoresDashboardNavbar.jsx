@@ -7,11 +7,13 @@ export const ProfesoresDashboardNavbar = () => {
 	const navigate = useNavigate();
 	const { logout } = useAuth();
 	const [showMenu, setShowMenu] = useState(false);
+	const [showSubmenu, setShowSubmenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
 	};
 	const closeMenu = () => {
 		setShowMenu(false);
+		setShowSubmenu(false)
 	};
 
 	const handleLogout = () => {
@@ -36,26 +38,26 @@ export const ProfesoresDashboardNavbar = () => {
 					<div className="flex-grow-1">
 						<ul className="list-unstyled text-start text-decoration-none d-flex flex-column gap-3 ps-3">
 							<li className="my-3">
-								<div className="btn-group dropend">
-									<Link className="btn dropdown-toggle text-black text-decoration-none fw-semibold hovNav p-0 border-0 shadow-none" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" >
-										Alumnos
-									</Link>
-									<ul className="dropdown-menu dropdown-menu-center-vertical ms-3">
-										<li>
-											<Link to="/teacher/dashboard/alumnos/notas" className="dropdown-item" onClick={closeMenu}>
+								<button
+									className="btn text-start w-100 text-black fw-semibold hovNavBtn p-0 border-0 bg-transparent"
+									onClick={() => setShowSubmenu(!showSubmenu)}
+								>
+									Alumnos <i className={`ri-arrow-${showSubmenu ? "up" : "down"}-s-line ms-2`}></i>
+								</button>
+								{showSubmenu && (
+									<ul className="list-unstyled mt-4 ">
+										<li className="mb-4">
+											<Link to="/teacher/dashboard/alumnos/notas" className="text-black hovNav text-decoration-none" onClick={closeMenu}>
 												Notas
 											</Link>
 										</li>
-										<li>
-											<hr className="dropdown-divider" />
-										</li>
-										<li>
-											<Link to="/teacher/dashboard/alumnos/asistencia" className="dropdown-item" onClick={closeMenu}>
+										<li className="mb-2">
+											<Link to="/teacher/dashboard/alumnos/asistencia" className="text-black hovNav text-decoration-none" onClick={closeMenu}>
 												Asistencia
 											</Link>
 										</li>
 									</ul>
-								</div>
+								)}
 							</li>
 							<li className="my-3">
 								<Link to="/teacher/dashboard/horario" className="text-black text-decoration-none fw-semibold hovNav" onClick={closeMenu}>

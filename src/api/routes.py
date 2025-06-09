@@ -498,7 +498,8 @@ def register_or_update_attendance():
         return jsonify({"error": "Estado de asistencia no válido."}), 400
 
     try:
-        attendance_date = datetime.datetime.strptime(data['date'], "%Y-%m-%d").date()
+        attendance_date = datetime.datetime.strptime(
+            data['date'], "%Y-%m-%d").date()
     except ValueError:
         return jsonify({"error": "Formato de fecha inválido. Use YYYY-MM-DD."}), 400
 
@@ -528,7 +529,8 @@ def register_or_update_attendance():
 
     return jsonify({"message": "Asistencia registrada exitosamente."}), 201
 
-#Historial de asistencias -- para PROFESORES
+# Historial de asistencias -- para PROFESORES
+
 
 @api.route('/attendance', methods=['GET'])
 @jwt_required()
@@ -562,8 +564,6 @@ def update_attendance(attendance_id):
     db.session.commit()
 
     return jsonify({"message": "Asistencia actualizada exitosamente."}), 200
-
-    
 
 
 # Registrar una calificacion de un estudiante -- para PROFESORES
@@ -614,6 +614,8 @@ def post_grade():
     return jsonify({"message": "Nota registrada exitosamente."}), 201
 
 # Obtener asistencia del estudiante autenticado -- para ESTUDIANTES
+
+
 @api.route('/student/attendance', methods=['GET'])
 @jwt_required()
 def get_student_attendance():

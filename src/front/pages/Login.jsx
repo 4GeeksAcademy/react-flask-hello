@@ -18,7 +18,7 @@ const Login = () => {
             console.log("Login exitoso:", response.token);
             
             localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("token", JSON.stringify (response.token));
+            localStorage.setItem("token", response.token);
             localStorage.setItem("userData", JSON.stringify(response.user));
             console.log (response)
             login(response.token);

@@ -1,9 +1,20 @@
 import React from "react";
+import { Navbar } from "../components/Navbar";
+import CardPlan from "../components/CardPlan";
+
 // index.css
 import "../../styles/nutricion.css";
 
 
+
 const NutricionPage = () => {
+
+  const planes = [
+    { tittle: "Plan de Pérdida de Peso", img: "/perdidaPeso.webp", parrafo: "Menús bajos en calorías con todos los nutrientes esenciales." },
+    { tittle: "Plan Ganancia Muscular", img: "/gananciaMuscular.jpg", parrafo: "Alta ingesta proteica y planificación para el crecimiento muscular." },
+    { tittle: "Plan Salud General", img: "/saludGeneral.jpg", parrafo: "Nutrición balanceada para sentirte bien cada día." }
+  ]
+
   return (
     <div className="nutricion-page container mt-5">
       {/* Hero */}
@@ -14,49 +25,24 @@ const NutricionPage = () => {
         </p>
       </section>
 
-      {/* Planes de alimentación */}
       <section className="planes my-5">
         <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
         <div className="row">
-          <div className="col-md-4">
-            <div className="card h-100 shadow">
-              <div className="card-body tarjetaNp">
-                <h5 className="card-title  ">Plan Pérdida de Peso</h5>
-                <p className="card-text">
-                  Menús bajos en calorías con todos los nutrientes esenciales.
-                </p>
+          {planes.map((p) => {
+            return (
+              <div className="col-md-4">
+                <CardPlan tittle={p.tittle} img={p.img} parrafo={p.parrafo}></CardPlan>
               </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card h-100 shadow">
-              <div className="card-body tarjetaNp">
-                <h5 className="card-title subTittle">Plan Ganancia Muscular</h5>
-                <p className="card-text">
-                  Alta ingesta proteica y planificación para el crecimiento muscular.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card h-100 shadow">
-              <div className="card-body tarjetaNp">
-                <h5 className="card-title">Plan Salud General</h5>
-                <p className="card-text">
-                  Nutrición balanceada para sentirte bien cada día.
-                </p>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
       </section>
 
-      {/* Beneficios */}
       <section className="beneficios my-5">
         <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
-        <ul className="list-group list-group-flush">
+        <ul className="list-group list-group-flush caja-bot">
           <li className="list-group-item">🍏 Asesoramiento profesional</li>
-          <li className="list-group-item">🧬 Dietas adaptadas a tu metabolismo</li>
+          <li className="list-group-item">🧬 Ejercicios adaptadas a tu metabolismo</li>
           <li className="list-group-item">📊 Seguimiento de resultados</li>
         </ul>
       </section>

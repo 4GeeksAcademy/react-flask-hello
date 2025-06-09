@@ -1,0 +1,61 @@
+.fondo {
+    background-color: #0f1d2d;
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.entrenador-page {
+    color: #f1f5f9;
+}
+
+.hero h1 {
+    color: #fefae0;
+    font-weight: bold;
+}
+
+.trainer-profile {
+    background-color: #1c2a3b;
+    border-radius: 16px;
+    color: #ffffff;
+}
+
+.trainer-profile ul {
+    padding-left: 1.2rem;
+}
+
+.trainer-card-1 {
+    background-color: #2a3d4d;
+    border-radius: 16px;
+    color: #ffffff;
+}
+
+.trainer-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.btn-outline-dark {
+    border-color: #ccc;
+    color: #ccc;
+}
+
+.btn-outline-dark:hover {
+    background-color: #334155;
+    color: #fff;
+    border-color: #334155;
+}
+
+.text-black {
+    color: #e2e8f0 !important;
+}
+
+.card h5 {
+    color: #e6eac2;
+    font-weight: bold;
+}
+
+.shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}

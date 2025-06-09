@@ -1,12 +1,20 @@
 import React from "react";
 import "../../styles/register.css";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+
+     const navigate = useNavigate();
+    
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            navigate("/login");
+        };
 
     return (
         <div className="container_register">
             <div className="form-container">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <h2 className="mt-5">Register</h2>
                     <input type="fullName" placeholder="Full Name" required />
                     <input type="userName" placeholder="User Name" required />
@@ -20,7 +28,6 @@ const Register = () => {
                         <input type="checkbox" className="me-4"/>
                         Recuérdame
                     </label>
-                    <a href="#" className="forgot-password me-3">¿Olvidaste tu contraseña?</a>
                 </div>
                 <div className="form-footer">
                     <div className="options-row1">

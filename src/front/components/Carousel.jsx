@@ -30,7 +30,7 @@ const trainers = [
   },
   {
     id: 4,
-    src: "https://estheticinternacional.es/wp-content/uploads/2020/07/elegir-mejor-dietista-nutricionista-deportivo-3.jpg",
+    src: "https://img.freepik.com/foto-gratis/tiro-medio-medico-feliz-naranja-kiwi_23-2148302076.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740",
     name: "Laura García",
     specialty: "Nutrición Deportiva",
     description:
@@ -38,7 +38,7 @@ const trainers = [
   },
   {
     id: 5,
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe-qWF0RyCiCXz6hmsON3sqQKhMS1LwwFR4g&s",
+    src: "https://img.freepik.com/foto-gratis/deportista-mostrando-sus-biceps_171337-15331.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740",
     name: "David López",
     specialty: "Nutrición",
     description:
@@ -84,7 +84,7 @@ const BootstrapCarousel = () => {
               />
               <div className="carousel-caption d-none d-md-block p-3 rounded">
                 <h5>{trainer.name}</h5>
-                <h6 className="text-info">{trainer.specialty}</h6>
+                <h6 className="">{trainer.specialty}</h6>
                 <p className="text-light">{trainer.description}</p>
               </div>
             </div>

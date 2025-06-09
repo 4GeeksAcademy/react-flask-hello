@@ -11,6 +11,9 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+
+
+import stripe
 from flask_bcrypt import Bcrypt
 
 # from models import Person
@@ -27,6 +30,8 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 
+
+ 
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

@@ -23,7 +23,7 @@ const Register = () => {
             const response = await registerUser(formData);
             if (response?.token) {
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("token", JSON.stringify (response.token));
+                localStorage.setItem("token", response.token);
                 localStorage.setItem("userData", JSON.stringify(response.user));
                 alert("Registro exitoso. ¡Bienvenido!");
                 navigate("/login");

@@ -185,18 +185,24 @@ def forgot_password():
     user.generate_reset_token()
     db.session.commit()
 
+
+    front_url_local = "https://friendly-lamp-x5v79p56j7xxf4gw-3000.app.github.dev/restablecer-contrasena/"
+    front_url_render = "https://sample-service-name-nr6p.onrender.com/restablecer-contrasena/"
+
     reset_url = url_for('api.reset_password', token=user.reset_token, _external=True)
+
+    reset_url_frontend = f"{front_url_render}{user.reset_token}"
+    
 
     msg = Message("Restablece tu contraseña",
               recipients=[email])
-    msg.body = f"Hola,\n\nHas solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n{reset_url}\n\nSi no hiciste esta solicitud, ignora este correo."
+    msg.html = f'Hola,\n\nHas solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n<a href={reset_url_frontend}>Restablece tu contraseña</a> \n\n Si no hiciste esta solicitud, ignora este correo.'
     mail.send(msg)
 
     return jsonify({
         "success": "Reset link generated",
         "reset_url": reset_url
     }), 200
-
 
 @api.route('/reset-password/<string:token>', methods=['POST'])
 def reset_password(token):

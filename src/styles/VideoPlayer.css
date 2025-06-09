@@ -1,0 +1,13 @@
+.video-container {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.video-frame {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+}

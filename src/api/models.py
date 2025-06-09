@@ -9,8 +9,10 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    nombre: Mapped[str] = mapped_column(String(120), nullable=False)
+    apellido: Mapped[str] = mapped_column(String(120), nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(50), nullable=False) # se tiene que hacer hash EN LA RUTA!
+    password: Mapped[str] = mapped_column(String(120), nullable=False) # se tiene que hacer hash EN LA RUTA!
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     # datos usuarios:
@@ -19,8 +21,8 @@ class User(db.Model):
     objetivo: Mapped[str] = mapped_column(Text, nullable=True)
     # campos de professional:
     is_professional: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    telefono: Mapped[str] = mapped_column(String(50), nullable=True) 
-    profession_type: Mapped[str] = mapped_column(String(50), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
+    telefono: Mapped[str] = mapped_column(String(120), nullable=True) 
+    profession_type: Mapped[str] = mapped_column(String(120), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
     experiencia: Mapped[int] = mapped_column(Integer, default=0)
     # relaciones:
     events_created = relationship('Event', back_populates='creator', lazy=True)
@@ -32,6 +34,8 @@ class User(db.Model):
     def serialize(self):
         data = {
             "id": self.id,
+            "nombre": self.nombre,
+            "apellido": self.apellido,
             "email": self.email,
             "is_active": self.is_active,
             "created_at": self.created_at.isoformat(),
@@ -47,8 +51,6 @@ class User(db.Model):
             })
         return data
     
-
-
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -124,6 +126,7 @@ class SubscriptionPlan(db.Model):
     price: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
     duration_month: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     description: Mapped[str] = mapped_column(Text)
+    price_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
 
     # relacion inversa:
     subscriptions = relationship('Subscription', back_populates='plan', lazy=True)
@@ -134,7 +137,8 @@ class SubscriptionPlan(db.Model):
             "name": self.name,
             "price": float(self.price),
             "duration_month": self.duration_month,
-            "description": self.description
+            "description": self.description,
+            "price_id": self.price_id
         }
 
 class Subscription(db.Model):

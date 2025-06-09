@@ -17,6 +17,9 @@ with app.app_context():
         altura=1.75,
         objetivo="Perder grasa y tonificar",
         is_professional=False,
+        experiencia=5,
+        nombre="Jose",
+        apellido="Gonzalez"
     )
 
     user2 = User(
@@ -25,7 +28,9 @@ with app.app_context():
         is_professional=True,
         telefono="666777888",
         profession_type="entrenador",
-        experiencia=5
+        experiencia=5,
+        nombre="Jose",
+        apellido="Gonzalez"
     )
 
     user3 = User(
@@ -34,7 +39,9 @@ with app.app_context():
         is_professional=True,
         telefono="611222333",
         profession_type="nutricionista",
-        experiencia=8
+        experiencia=8,
+        nombre="Jose",
+        apellido="Gonzalez"
     )
 
     db.session.add_all([user1, user2, user3])

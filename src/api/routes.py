@@ -10,6 +10,7 @@ from werkzeug.security import check_password_hash
 from datetime import datetime, timedelta
 from flask_mail import Message
 from extensions import mail
+import requests
 
 api = Blueprint('api', __name__)
 
@@ -53,19 +54,19 @@ def created_product():
         return jsonify({"error":"The gender field is required"})
     if not data.get('size'):
         return jsonify({"error":"The size field is required"})
-    if not data.get('stock'):
+    if data.get('stock') is None:
         return jsonify({"error":"The stock field is required"})
     
 
     new_product = Products(
         product_name=data.get('product_name'),
-        price=data.get('price'),
+        price=int(data.get('price')),
         description=data.get('description'),
         color=data.get('color'),
         product_type=data.get('product_type'),
         gender=data.get('gender'),
         size=data.get('size'),
-        stock=data.get('stock'),
+        stock=int(data.get('stock')),
         product_photo=data.get('product_photo', None)
     )
 
@@ -98,7 +99,7 @@ def update_product(id):
     if 'size' in data:
         product.size  =data['size']
     if 'stock' in data:
-        product.stock  =data['stock']
+        product.stock = int(data['stock'])
     if 'product_photo' in data:
         product.product_photo  =data['product_photo']    
     
@@ -121,6 +122,20 @@ def delete_product(id):
 @api.route('/signup', methods=['POST'])
 def signup():
     request_body = request.get_json()
+    recaptcha_token = request_body.get('recaptcha_token')
+    secret_key = "6LeKr1orAAAAAGvQosLnXkFTxNOi8qVZjR6cUl9T"
+
+    try:
+        response = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data={"secret": secret_key, "response": recaptcha_token}
+        )
+        result = response.json()
+    except Exception as e:
+        return jsonify({"error": "No se pudo verificar el captcha"}), 400
+
+    if not result.get("success"):
+        return jsonify({"error": "Captcha inválido"}), 400
 
     required_fields = ['email', 'password', 'first_name', 'last_name', 'address']
     for field  in required_fields:
@@ -185,18 +200,24 @@ def forgot_password():
     user.generate_reset_token()
     db.session.commit()
 
+
+    front_url_local = "https://friendly-lamp-x5v79p56j7xxf4gw-3000.app.github.dev/restablecer-contrasena/"
+    front_url_render = "https://sample-service-name-nr6p.onrender.com/restablecer-contrasena/"
+
     reset_url = url_for('api.reset_password', token=user.reset_token, _external=True)
+
+    reset_url_frontend = f"{front_url_render}{user.reset_token}"
+    
 
     msg = Message("Restablece tu contraseña",
               recipients=[email])
-    msg.body = f"Hola,\n\nHas solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n{reset_url}\n\nSi no hiciste esta solicitud, ignora este correo."
+    msg.html = f'Hola,\n\nHas solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n<a href={reset_url_frontend}>Restablece tu contraseña</a> \n\n Si no hiciste esta solicitud, ignora este correo.'
     mail.send(msg)
 
     return jsonify({
         "success": "Reset link generated",
         "reset_url": reset_url
     }), 200
-
 
 @api.route('/reset-password/<string:token>', methods=['POST'])
 def reset_password(token):

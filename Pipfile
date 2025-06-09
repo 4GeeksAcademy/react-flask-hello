@@ -22,6 +22,7 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 flask-mail = "*"
 tomli = "*"
+requests = "*"
 
 [requires]
 python_version = "3.13"

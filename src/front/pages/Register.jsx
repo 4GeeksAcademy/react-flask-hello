@@ -16,8 +16,6 @@ const Register = () => {
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <h2 className="mt-5">Register</h2>
-                    <input type="fullName" placeholder="Full Name" required />
-                    <input type="userName" placeholder="User Name" required />
                     <input type="email" placeholder="Correo" required />
                     <input type="password" placeholder="Password" required />
                     <input type="password" placeholder="Confirm Password" required />

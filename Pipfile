@@ -21,7 +21,10 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 werkzeug = "*"
 flask-jwt-extended = "*"
+
+
 stripe = "*"
+
 bcrypt = "*"
 flask-bcrypt = "*"
 

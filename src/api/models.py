@@ -24,6 +24,7 @@ class User(db.Model):
     first_name: Mapped[str] = mapped_column(String(60), nullable=False)
     last_name: Mapped[str] = mapped_column(String(60), nullable=False)
     address: Mapped[str] = mapped_column(String(120), nullable=False)
+    role: Mapped[str] = mapped_column(String(20), nullable=False, default="user")  # Default role is 'user'
 
     reset_token: Mapped[str] = mapped_column(nullable=True)
     reset_token_expires: Mapped[datetime] = mapped_column(nullable=True)
@@ -55,7 +56,9 @@ class Products(db.Model):
     product_type: Mapped[str] = mapped_column(nullable=False)
     gender: Mapped[str] = mapped_column(nullable=False)
     size: Mapped[str] = mapped_column(nullable=False)
-
+    stock: Mapped[int] = mapped_column(nullable=False, default=0)
+    product_photo: Mapped[str] = mapped_column(String(120), nullable=True)
+    
     users: Mapped[List["User"]] = relationship(secondary=shopping_cart, back_populates="products")
 
     def serialize(self):
@@ -67,5 +70,8 @@ class Products(db.Model):
             "color": self.color,
             "product_type": self.product_type,
             "gender": self.gender,
-            "size": self.size
+            "size": self.size,
+            "stock": self.stock,
+            "product_photo": self.product_photo
+            
         }

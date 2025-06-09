@@ -28,7 +28,7 @@ stripeServices.fetchClientSecret = async (items) => {
     });
     
     const data = await res.json();
-     
+    
     return data.clientSecret;
   };
 

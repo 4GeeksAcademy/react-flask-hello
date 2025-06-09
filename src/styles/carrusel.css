@@ -1,8 +1,13 @@
 
 .carousel-caption{
-    background: #3851669f;
+    background: rgba(0, 0, 0, 0.500);
 }
 
+.button1{
+  color: black;
+}
+    background: #3851669f;
+}
 
 h6{
   color: #ECEFCA;

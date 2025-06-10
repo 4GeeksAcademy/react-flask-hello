@@ -58,7 +58,7 @@ const PostCard = ({ post, onToggleFavorite, onJoin }) => {
                 </button>
             </div>
 
-            <p className="mb-2 text-muted"><strong>Deporte:</strong> {post.sport}</p>
+            <p className="mb-2 text-muted"><strong></strong> {post.sport}</p>
             <p className="mb-2 text-black"><strong>Descripción:</strong> {post.description}</p>
 
             <div className="row mb-2 text-black">
@@ -70,7 +70,7 @@ const PostCard = ({ post, onToggleFavorite, onJoin }) => {
                 </div>
             </div>
             <p className="mb-2 text-black"><strong>Capacidad:</strong> {post.capacity} personas</p>
-            <p className="mb-2 text-black"><strong>Dirección:</strong> {post.address}</p>
+            <p className="mb-2 text-black"><strong></strong> {post.address}</p>
 
             {/* Parte de la API-Clima */}
             {post.weather && (

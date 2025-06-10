@@ -23,13 +23,17 @@ const Register = () => {
             const response = await registerUser(formData);
             if (response?.token) {
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("token", JSON.stringify (response.token));
+                localStorage.setItem("token", response.token);
                 localStorage.setItem("userData", JSON.stringify(response.user));
                 alert("Registro exitoso. ¡Bienvenido!");
                 navigate("/login");
             } else {
+<<<<<<< HEAD
                 alert("Registro exitoso!.");
                 navigate("/login");
+=======
+                alert("Registro exitoso.");
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
             }
         } catch (error) {
             console.error("Error al registrar:", error);

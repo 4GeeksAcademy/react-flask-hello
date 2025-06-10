@@ -51,6 +51,7 @@ def create_event():  # Recibimos el usuario autenticado desde el decorador
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+<<<<<<< HEAD
 # Obtener todos los eventos con soporte para filtrar por dificultad
 
 
@@ -65,6 +66,8 @@ def get_events():
 # Obtener solo un evento por ID
 
 
+=======
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
 def get_event(event_id):
     event = Event.query.get(event_id)
     if not event:
@@ -74,7 +77,7 @@ def get_event(event_id):
 # Actualizar un evento (requiere token, usa decorador personalizado)
 
 
-@token_required  # Protege para que solo usuarios autenticados puedan actualizar
+@jwt_required()  # Protege para que solo usuarios autenticados puedan actualizar
 def update_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
@@ -90,9 +93,11 @@ def update_event(current_user, event_id):
     event.time = data.get('time', event.time)
     event.difficulty = data.get('difficulty', event.difficulty)
     event.capacity = data.get('capacity', event.capacity)
-    event.latitude = data.get('latitude', event.latitude)
-    event.longitude = data.get('longitude', event.longitude)
-    event.weather = data.get('weather', event.weather)
+    event.address = data.get('address', event.address)
+    event.sport = data.get('sport', event.sport)
+    #event.latitude = data.get('latitude', event.latitude)
+    #event.longitude = data.get('longitude', event.longitude)
+    #event.weather = data.get('weather', event.weather)
     event.distance = data.get('distance', event.distance)
     event.duration = data.get('duration', event.duration)
 
@@ -106,7 +111,7 @@ def update_event(current_user, event_id):
 # Eliminar un evento
 
 
-@token_required
+@jwt_required()
 def delete_event(current_user, event_id):
     event = Event.query.get(event_id)
     if not event:
@@ -123,7 +128,7 @@ def delete_event(current_user, event_id):
 # Unirse a un evento
 
 
-@token_required
+@jwt_required()
 def join_event(current_user, event_id):
     event = Event.query.get(event_id)
     user = current_user  # Ya no necesitas `user_id` desde el body
@@ -145,7 +150,7 @@ def join_event(current_user, event_id):
 # Salir de un evento
 
 
-@token_required
+@jwt_required()
 def leave_event(current_user, event_id):
     event = Event.query.get(event_id)
     user = current_user

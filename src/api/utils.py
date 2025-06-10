@@ -66,7 +66,9 @@ def token_required(f):
         try:
             data = jwt.decode(
                 token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
+            print(data)
             current_user = User.query.get(data["user_id"])
+            print(current_user)
             if not current_user:
                 return jsonify({"error": "Usuario no válido"}), 401
         except jwt.ExpiredSignatureError:

@@ -77,9 +77,14 @@ def add_cors_headers(response):
     return response
 
 
+<<<<<<< HEAD
 # Configuración CORS // DUPLICADO
 # CORS(app, origins="https://scaling-bassoon-97jpv9qrpxw537rxr-3000.app.github.dev",
     # supports_credentials=True)
+=======
+# Configuración CORS
+CORS(app, origins=["http://localhost:3000", "https://reimagined-trout-*.app.github.dev"], supports_credentials=True)   
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
 
 # Configuración de base de datos
 db_url = os.getenv("DATABASE_URL")

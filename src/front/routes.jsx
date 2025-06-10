@@ -16,17 +16,29 @@ export const router = createBrowserRouter(
       <Route
         path="/profile"
         element={
+<<<<<<< HEAD
           // <PrivateRoute>
           <Profile />
           // </PrivateRoute>
+=======
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
         }
       />
       <Route
         path="/feed"
         element={
+<<<<<<< HEAD
           //<PrivateRoute>
           <Feed />
           //</PrivateRoute>
+=======
+          <PrivateRoute>
+            <Feed />
+          </PrivateRoute>
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
         }
       />
     </>

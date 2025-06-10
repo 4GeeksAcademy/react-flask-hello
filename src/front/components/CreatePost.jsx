@@ -53,6 +53,7 @@ const CreatePost = ({ show, onClose, setPosts }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         const token = localStorage.getItem("token");
 
         try {
@@ -133,6 +134,18 @@ const CreatePost = ({ show, onClose, setPosts }) => {
                 Authorization: `Bearer ${token.replace(/"/g, "")}`,
             });
             console.log("🧾 Payload (newPost):", newPost);
+=======
+
+        const newPost = {
+            ...formData,
+            capacity: parseInt(formData.capacity, 10),
+            participants: 0
+        };
+        console.log("📤 Datos enviados al backend:", newPost);
+        
+        try {
+            const token = localStorage.getItem("token");
+>>>>>>> 5912055cd1abaf902bb773db1d7e2560e9d0254f
 
             const response = await fetch(`${BASE_URL}/api/events`, {
                 method: "POST",

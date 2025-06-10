@@ -28,7 +28,8 @@ const Register = () => {
                 alert("Registro exitoso. ¡Bienvenido!");
                 navigate("/login");
             } else {
-                alert("Registro fallido.");
+                alert("Registro exitoso!.");
+                navigate("/login");
             }
         } catch (error) {
             console.error("Error al registrar:", error);

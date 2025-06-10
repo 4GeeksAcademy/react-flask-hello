@@ -16,9 +16,10 @@ export default function storeReducer(store, action = {}) {
 
       let nuevoCarrito;
       if (productoExistente) {
-        //Si existe, aumentamos la cantidad
         nuevoCarrito = store.carrito.map((item) =>
-          item.id ? { ...item, cantidad: item.cantidad + 1 } : item
+          item.id === producto.id
+            ? { ...item, cantidad: item.cantidad + 1 }
+            : item
         );
       } else {
         nuevoCarrito = [...store.carrito, { ...producto, cantidad: 1 }];
@@ -41,7 +42,35 @@ export default function storeReducer(store, action = {}) {
       };
     }
 
+    case "vaciar_carrito": {
+      return {
+        ...store,
+        carrito: [],
+      };
+    }
+
+    case "incrementar_cantidad": {
+      const id = action.payload;
+      return {
+        ...store,
+        carrito: store.carrito.map((item) =>
+          item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
+        ),
+      };
+    }
+    case "decrementar_cantidad": {
+      const id = action.payload;
+      return {
+        ...store,
+        carrito: store.carrito.map((item) =>
+          item.id === id && item.cantidad > 1
+            ? { ...item, cantidad: item.cantidad - 1 }
+            : item
+        ),
+      };
+    }
+
     default:
-      throw Error("No es una accion valida");
+      return store;
   }
 }

@@ -7,14 +7,14 @@ const focuses = [
     description:
       "Con este enfoque lograrás reducir tu porcentaje de grasa corporal mediante un plan de entrenamiento cardiovascular, rutinas de alta intensidad y una nutrición enfocada en el déficit calórico.",
     image:
-      "https://images.unsplash.com/photo-1594737625785-cb69f4c67c5c",
+      "https://as01.epimg.net/deporteyvida/imagenes/2018/02/10/portada/1518260701_362751_1518260789_noticia_normal.jpg",
   },
   {
     title: "Ganancia Muscular",
     description:
       "Aquí nos enfocamos en el aumento de masa muscular mediante entrenamiento de fuerza, progresión de cargas y una dieta rica en proteínas y calorías suficientes.",
     image:
-      "https://images.unsplash.com/photo-1583454110558-21f0f0bfb1a5",
+      "https://www.labolsadelcorredor.com/wp-content/uploads/2021/11/crecimiento-masa-muscular-1.jpg",
   },
   {
     title: "Resistencia y Energía",
@@ -24,11 +24,11 @@ const focuses = [
       "https://images.unsplash.com/photo-1605296867304-46d5465a13f1",
   },
   {
-    title: "Bienestar y Salud Mental",
+    title: "Nutrición y su Importancia",
     description:
-      "Un enfoque integral que mezcla movimiento, meditación y ejercicios de bajo impacto para mejorar el equilibrio emocional, reducir el estrés y mejorar tu salud en general.",
+      "La base de todo progreso físico y bienestar radica en una alimentación equilibrada. Este enfoque te ayudará a comprender cómo una buena nutrición potencia tu rendimiento, acelera tu recuperación y mejora tu salud general.",
     image:
-      "https://images.unsplash.com/photo-1605296867470-66f25b3d9b37",
+      "https://media.istockphoto.com/id/1457433817/es/foto/grupo-de-alimentos-saludables-para-la-dieta-flexitariana.jpg?s=612x612&w=0&k=20&c=2w5l2DEJWFGxSnmJxX_RCE40RriE7WtSoKKpuxw5luE=",
   },
 ];
 

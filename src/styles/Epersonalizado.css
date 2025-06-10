@@ -12,9 +12,9 @@
 
 .epersonalizado-card {
 
-  background-color: #f9f9f9;
+  background-color: #d6cdcd;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 10px 30px rgba(34, 68, 115, 0.1),
   0 1px 8px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

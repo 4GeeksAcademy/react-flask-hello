@@ -38,8 +38,8 @@ stripeServices.fetchClientSecret = async (items) => {
         },
       ],
       mode: "payment",
-      success_url: "https://tu-sitio.com/exito",
-      cancel_url: "https://tu-sitio.com/cancelar",
+      success_url: "/",
+      cancel_url: "",
     });
 
     return session.url;

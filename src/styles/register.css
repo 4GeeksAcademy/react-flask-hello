@@ -1,8 +1,11 @@
 .container_register {
+  height: 65vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
+
 
 .form-container {
   width: 100%;
@@ -49,8 +52,4 @@ input {
 .checkbox1{
     display: flex;
     width: 15px;
-}
-
-.container_login{
-    min-height: 65vh;
 }

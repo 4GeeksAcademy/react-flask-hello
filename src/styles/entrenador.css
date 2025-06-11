@@ -1,22 +1,11 @@
 .fondo {
-    background-color: #0f1d2d;
     min-height: 100vh;
     padding-bottom: 50px;
 }
 
-.entrenador-page {
-    color: #f1f5f9;
-}
-
 .hero h1 {
-    color: #fefae0;
+    color: white;
     font-weight: bold;
-}
-
-.trainer-profile {
-    background-color: #1c2a3b;
-    border-radius: 16px;
-    color: #ffffff;
 }
 
 .trainer-profile ul {
@@ -24,9 +13,9 @@
 }
 
 .trainer-card-1 {
-    background-color: #2a3d4d;
+    background-color: #e6eac2;
     border-radius: 16px;
-    color: #ffffff;
+    color: #213448;
 }
 
 .trainer-img {
@@ -37,22 +26,22 @@
 }
 
 .btn-outline-dark {
-    border-color: #ccc;
-    color: #ccc;
+    border-color: #213448;
+    color: #213448;
 }
 
 .btn-outline-dark:hover {
-    background-color: #334155;
+    background-color: #213448;
     color: #fff;
-    border-color: #334155;
+    border-color: #213448;
 }
 
 .text-black {
-    color: #e2e8f0 !important;
+    color: #213448 !important;
 }
 
 .card h5 {
-    color: #e6eac2;
+    color: #213448;
     font-weight: bold;
 }
 

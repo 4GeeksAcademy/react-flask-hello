@@ -18,6 +18,7 @@ const Register = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+
         userServices.register(formData).then(data => data.success && navigate('/login'))
     };
 
@@ -26,10 +27,9 @@ const Register = () => {
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <h2 className="mt-5">Register</h2>
-                    <input type="email" onChange={handleChange} placeholder="Correo" required />
-                    <input type="password" onChange={handleChange} placeholder="Password" required />
-                    <input type="password" onChange={handleChange} placeholder="Confirm Password" required />
-                    <button className="button_login">Submit</button>
+                    <input type="email" name="email" onChange={handleChange} placeholder="Correo" required />
+                    <input type="password" name="password" onChange={handleChange} placeholder="Password" required />
+                    <input type="submit" className="button_login" />
                 </form>
                 <div className="options-row">
                     <label className="remember-label">

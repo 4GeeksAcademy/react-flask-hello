@@ -1,23 +1,46 @@
 const userServices = {};
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+// userServices.register = async (formData) => {
+//   try {
+//     const resp = await fetch(backendUrl + "/api/register", {
+//         method: 'POST',
+//         headers: {
+//         'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(formData)
+//     });
+//     const data = await resp.json();
+//     if (!resp.ok) throw new Error(data.error || "something went wrong");
+//     localStorage.setItem("token", data.token)
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 userServices.register = async (formData) => {
   try {
     const resp = await fetch(backendUrl + "/api/register", {
-        method: 'POST',
-        headers: {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+      },
+      body: JSON.stringify(formData)
     });
     const data = await resp.json();
+
     if (!resp.ok) throw new Error(data.error || "something went wrong");
-    localStorage.setItem("token", data.token)
-    return data;
+
+    localStorage.setItem("token", data.token);
+
+    // ✅ Esto ayuda a tu frontend a saber que fue exitoso
+    return { success: true, token: data.token };
   } catch (error) {
     console.log(error);
+    return { success: false, error: error.message };
   }
 };
+
 
 userServices.login = async (formData) => {
   try {

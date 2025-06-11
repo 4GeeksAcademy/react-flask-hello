@@ -31,7 +31,7 @@ body {
 }
 
 .sport-header {
-  background-image: url("/sport.webp");
+  background-image: url("https://img.freepik.com/fotos-premium/varios-jovenes-amigos-haciendo-ejercicio-duro-pesas-gimnasio-enfoque-selectivo-centrarse-gyoung-womanl-primer-plano_360066-451.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -85,4 +85,34 @@ body {
 .sport-page .list-group-item {
   font-size: 1.1rem;
   background-color: #f9f9f9;
+}
+
+.beneficios {
+  padding: 2rem 1rem;
+  border-radius: 10px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.beneficios .subtittle {
+  color: #ecefca;
+  font-weight: bold;
+}
+
+.caja-bot {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.caja-bot .list-group-item {
+  background-color: #f4f4f4;
+  border: none;
+  color: #213448;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }

@@ -1,3 +1,11 @@
+body {
+  background: #213448;
+  color: #ECEFCA;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
 .nutricion-page {
   padding-top: 10px;
 }

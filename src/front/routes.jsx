@@ -20,6 +20,9 @@ import { Checkout } from "./pages/checkout";
 import Login from "./pages/Login";
 import  { ReturnPage }  from "./pages/returnPage";
 import PaymentReturn from "./components/paymentReturn";
+import  RegisterPage  from "./pages/RegisterPage";
+import  LoginPage  from "./pages/LoginPage";
+import { PrivatePage } from "./pages/PrivatePage";
 
 
 export const router = createBrowserRouter(
@@ -42,6 +45,9 @@ export const router = createBrowserRouter(
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/return" element={<PaymentReturn />} />
       <Route path="/returnPage" element={<ReturnPage />} />
+      <Route path="/register" element={<RegisterPage/>} />
+      <Route path="/login" element={<LoginPage/>} />
+      <Route path="/private" element={<PrivatePage/>} />
     </Route>
   )
 );

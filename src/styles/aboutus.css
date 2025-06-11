@@ -1,22 +1,19 @@
 .video-wrapper {
   width: 100%;
   height: 600px;
-  overflow: hidden; 
+  overflow: hidden;
   position: relative;
 }
-
-
 .video-wrapper > div {
   position: absolute !important;
   top: 50%;
   left: 50%;
   width: 177.77%;
-  height: 1200px; 
+  height: 1200px;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 1;
 }
-
 .video-overlay {
   position: absolute;
   top: 0;
@@ -26,7 +23,6 @@
   background: rgba(0, 0, 0, 0.6);
   z-index: 2;
 }
-
 .about-overlay-text {
   position: absolute;
   top: 50%;
@@ -36,24 +32,19 @@
   z-index: 3;
   text-align: center;
 }
-
 .about-description {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   background-color: #547792;
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
-  color: #ffffff;
+  color: #FFFFFF;
   margin-top: 50px;
 }
-
-
-
 .about-description h2 {
   font-weight: 700;
   color: white;
 }
-
 .about-description p {
   max-width: 800px;
   margin: 0 auto;
@@ -61,15 +52,12 @@
   line-height: 1.8;
   color: #ECEFCA;
 }
-
 .valores-link {
   position: relative;
   text-decoration: none;
   color: inherit;
   display: inline-block;
-  
 }
-
 .valores-link::after {
   content: "";
   position: absolute;
@@ -80,19 +68,16 @@
   background: linear-gradient(to right, rgba(236, 239, 202, 0.56), rgb(255, 255, 255));
   transition: width 0.3s ease;
 }
-
 .valores-link:hover::after {
   width: 100%;
 }
 .btn-tarifas {
   background-color: #ECEFCA;
-  color: #213448; 
+  color: #213448;
   font-weight: bold;
   transition: background 0.3s ease, color 0.3s ease;
 }
-
 .btn-tarifas:hover {
-  background-color: #dcdcc2;
-  color: #547792; 
+  background-color: #DCDCC2;
+  color: #547792;
 }
-

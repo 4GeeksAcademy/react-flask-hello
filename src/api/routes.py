@@ -230,8 +230,6 @@ def create_plan_template():
         plan_type=data['plan_type'],
         nombre=data['nombre'],
         description=data.get('description')
-
-        description=data.get('descripcion')
     )
     db.session.add(t)
     db.session.commit()

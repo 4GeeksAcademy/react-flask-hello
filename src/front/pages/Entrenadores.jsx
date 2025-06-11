@@ -35,7 +35,7 @@ const Entrenadores = () => {
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img
                                     src={selectedTrainer.image}
-                                    alt="Entrenador"
+                                    alt="Entrenador "
                                     className="trainer-img me-3"
                                 />
                                 <div className="flex-grow-1">

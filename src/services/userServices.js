@@ -33,7 +33,6 @@ userServices.register = async (formData) => {
 
     localStorage.setItem("token", data.token);
 
-    // ✅ Esto ayuda a tu frontend a saber que fue exitoso
     return { success: true, token: data.token };
   } catch (error) {
     console.log(error);

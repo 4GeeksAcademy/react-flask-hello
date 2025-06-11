@@ -8,9 +8,9 @@ import "../../styles/sport.css";
 const SportPage = () => {
 
     const planes = [
-        { tittle: "Plan Pérdida de Peso", img: "/perdidaPeso.webp", parrafo: "Planes bajos en calorías con todos los deportes esenciales." },
-        { tittle: "Plan Ganancia Muscular", img: "/masa_muscular.jpg", parrafo: "Planificación para el crecimiento muscular." },
-        { tittle: "Plan Salud General", img: "/ejercicios_balanceados.jpg", parrafo: "Ejercicios balanceados para sentirte bien cada día." }
+        { tittle: "Pérdida de Peso", img: "/perdidaPeso2.jpg", parrafo: "Programas hipocalóricos estructurados con enfoque en entrenamiento cardiovascular, funcional y de resistencia, orientados a la quema de grasa y mejora del metabolismo basal." },
+        { tittle: "Ganancia Muscular", img: "/masaMuscular.jpg", parrafo: "Rutinas progresivas de sobrecarga con distribución óptima de macronutrientes, enfocadas en la hipertrofia muscular y mejora de la fuerza máxima." },
+        { tittle: "Salud General", img: "/ejercicios_balanceados.jpg", parrafo: "Entrenamientos equilibrados que combinan movilidad, fuerza básica y resistencia aeróbica para mejorar la salud metabólica, la postura y la energía diaria." }
     ]
 
     return (

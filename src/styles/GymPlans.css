@@ -25,7 +25,7 @@
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #5a8dee;
+  color: #27425f;
 }
 
 .plan-price {
@@ -43,7 +43,7 @@
 }
 
 .plan-button {
-  background-color: #061f37;
+  background-color: #547792;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -58,4 +58,9 @@
 }
 .section-title {
   margin-top: 3rem; 
+}
+
+.plan-card-link {
+  text-decoration: none;
+  color: inherit;
 }

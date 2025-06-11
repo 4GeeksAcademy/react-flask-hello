@@ -32,7 +32,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: #ECEFCA;
   z-index: 3;
   text-align: center;
 }
@@ -51,6 +51,7 @@
 
 .about-description h2 {
   font-weight: 700;
+  color: white;
 }
 
 .about-description p {
@@ -83,3 +84,15 @@
 .valores-link:hover::after {
   width: 100%;
 }
+.btn-tarifas {
+  background-color: #ECEFCA;
+  color: #213448; 
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-tarifas:hover {
+  background-color: #dcdcc2;
+  color: #547792; 
+}
+

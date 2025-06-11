@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactPlayer from "react-player";
 import "../../styles/eventos.css";
 
 const Eventos = () => {
@@ -71,14 +72,43 @@ const Eventos = () => {
             </div>
 
             {!data ? (
-                <div className="detalle-direccion">
-                    <h2 className="titulo-eventos mb-4">Selecciona una ciudad para ir al evento</h2>
-                    <img
-                        src="parque.jpg"
-                        alt="Imagen por defecto"
-                        className="default"
-                    />
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="video-wrapper">
+                            <ReactPlayer
+                                url="https://www.youtube.com/watch?v=UycU0OEjMvE"
+                                playing={true}
+                                muted={true}
+                                loop={true}
+                                controls={false}
+                                width="100%"
+                                height="1200px"
+                                style={{ objectFit: 'cover' }}
+                                config={{
+                                    youtube: {
+                                        playerVars: {
+                                            modestbranding: 1,
+                                            showinfo: 0,
+                                            rel: 0,
+                                            start: 10,
+                                            end: 501,
+                                            loop: 1,
+                                            playlist: "UycU0OEjMvE"
+                                        }
+                                    }
+                                }}
+                            />
+                            <div className="video-overlay"></div>
+                        </div>
+                        <div className="about-overlay-text">
+                            <h1>Selecciona una ciudad para ir al evento</h1>
+                            <p>Tu ciudad. Tu energía. Tu evento.</p>
+                            <p>Vive la experiencia completa en cada rincón del país.</p>
+                        </div>
+
+                    </div>
                 </div>
+
             ) : (
                 <div className="detalle-direccion">
                     <h2>{data.nombre}</h2>
@@ -90,7 +120,7 @@ const Eventos = () => {
                     <h3>{data.descripcion}</h3>
 
                     <div className="row">
-                    <div className="info-extra">
+                        <div className="info-extra">
                             <p><strong>Hora del evento:</strong> {data.hora}</p>
                             <p className="ms-5"><strong>Asistentes:</strong> {data.asistentes}</p>
                         </div>
@@ -112,10 +142,8 @@ const Eventos = () => {
                     )}
                 </div>
             )}
-
         </div>
     );
 };
 
 export default Eventos;
-

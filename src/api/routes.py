@@ -801,6 +801,34 @@ def get_user_inf():
         print(e)
         return jsonify({"error": "something went wrong"})
 
+# @api.route('/register', methods=['POST'])
+# def register():
+#     try:
+#         data = request.json
+
+#         if not data['email'] or not data['password']:
+#             return jsonify({"error": 'missing data'})
+
+#         stm = select(User).where(User.email == data['email'])
+
+#         existing_user = db.session.execute(stm).scalar_one_or_none()
+#         if existing_user:
+#             return jsonify({"error": 'email taken, try logging in'})
+
+#         hashed_password = generate_password_hash(data['password'])
+
+#         new_user = User(
+#             email=data['email'],
+#             password=hashed_password,
+#             is_active=True
+#             )
+
+#         db.session.add(new_user)
+#         db.session.commit()
+
+#         token = create_access_token(identity=str(new_user.id))
+
+#         return jsonify({"msg": "register ok", "token": token, "success": True}), 201
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -810,18 +838,19 @@ def register():
             return jsonify({"error": 'missing data'})
 
         stm = select(User).where(User.email == data['email'])
-
         existing_user = db.session.execute(stm).scalar_one_or_none()
         if existing_user:
             return jsonify({"error": 'email taken, try logging in'})
 
         hashed_password = generate_password_hash(data['password'])
+        is_professional = data.get('isProfessional', False)
 
         new_user = User(
             email=data['email'],
             password=hashed_password,
-            is_active=True
-            )
+            is_active=True,
+            is_professional=is_professional  # 🔁 aquí lo guardamos
+        )
 
         db.session.add(new_user)
         db.session.commit()
@@ -829,6 +858,10 @@ def register():
         token = create_access_token(identity=str(new_user.id))
 
         return jsonify({"msg": "register ok", "token": token, "success": True}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
     except Exception as e:
         print(e)

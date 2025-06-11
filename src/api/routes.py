@@ -38,6 +38,13 @@ def create_user():
         raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
     hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
 
+    account_type = data['account_type'].lower()
+    if account_type not in['cliente', 'entrenador', 'nutricionista']:
+        raise APIException("account_type debe ser: 'cliente', 'entrenador' o 'nutricionista'", status_code=400)
+    
+    is_professional = account_type in ['entrenador', 'nutricionista']
+    profession_type = account_type if is_professional else None
+
 
     
     user = User(
@@ -50,7 +57,8 @@ def create_user():
         altura=data.get('altura'),
         objetivo=data.get('objetivo'),
         telefono=data.get('telefono'),
-        profession_type=data.get('profession_type'),
+        is_professional=is_professional,
+        profession_type=profession_type,
         experiencia=data.get('experiencia', 0)
     )
     db.session.add(user)

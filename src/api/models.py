@@ -9,8 +9,8 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    nombre: Mapped[str] = mapped_column(String(120), nullable=False)
-    apellido: Mapped[str] = mapped_column(String(120), nullable=False)
+    nombre: Mapped[str] = mapped_column(String(120), nullable=True)
+    apellido: Mapped[str] = mapped_column(String(120), nullable=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(120), nullable=False) # se tiene que hacer hash EN LA RUTA!
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -42,7 +42,8 @@ class User(db.Model):
             "created_at": self.created_at.isoformat(),
             "peso": self.peso,
             "altura": self.altura,
-            "objetivo": self.objetivo
+            "objetivo": self.objetivo,
+            "is_professional": self.is_professional
         }
         if self.profession_type:
             data.update({

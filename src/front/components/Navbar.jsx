@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { Loader } from './Loader'
+import './Navbar.css';
+import vertikaLogo from "../assets/images/Vértika Logo.png";
 
 export const Navbar = () => {
   const navigate = useNavigate()
@@ -15,28 +17,32 @@ export const Navbar = () => {
   if (loading) return <Loader />
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-withe w-100 px-3 border-bottom border-1 border-secondary-subtle">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100 px-3">
       <div className="container-fluid">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
-          <i className="bi bi-box-seam fs-4 me-2"></i>
-          <span className="fw-bold">MiApp</span>
+        <Link className="navbar-brand d-flex align-items-center text-light" to="/">
+          <img
+            src={vertikaLogo}
+            alt="Vértika"
+            height="32"
+            style={{ objectFit: "contain" }}
+          />
         </Link>
 
         <div className="d-flex ms-auto align-items-center gap-3">
 
           {isAuthenticated ? (
             <>
-              <Link className="btn btn-outline-dark" to="/men">Hombre</Link>
-              <Link className="btn btn-outline-dark" to="/women">Mujer</Link>
-              <Link className="btn btn-outline-dark" to="/service">Servicio</Link>
-              <Link className="btn btn-outline-success" to="/productos">Productos</Link>
+              <Link className="navbar-link" to="/men">Hombre</Link>
+              <Link className="navbar-link" to="/women">Mujer</Link>
+              <Link className="navbar-link" to="/service">Servicio</Link>
+              <Link className="navbar-link" to="/productos">Productos</Link>
             </>
           ) : (
-            <Link className="btn btn-outline-success" to="/productos">Productos</Link>
+            <Link className="navbar-link" to="/productos">Productos</Link>
           )}
 
-          <Link className="btn btn-outline-secondary position-relative" to="/carrito">
-            <i className="bi bi-cart-fill fs-5"></i>
+          <Link className="navbar-link position-relative" to="/carrito">
+            Carrito
             {totalItems > 0 && (
               <span
                 className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -49,12 +55,12 @@ export const Navbar = () => {
 
           {isAuthenticated ? (
             <>
-              <button className="btn btn-danger" onClick={handleLogout}>Cerrar Sesion</button>
+              <span className="navbar-link logout-link" onClick={handleLogout}>Cerrar Sesión</span>
             </>
           ) : (
             <>
-              <Link className="btn btn-dark" to="/login">Inicia sesión</Link>
-              <Link className="btn btn-outline-dark" to="/register">Regístrate</Link>
+              <Link className="navbar-link" to="/login">Inicia sesión</Link>
+              <Link className="navbar-link" to="/register">Regístrate</Link>
             </>
           )}
         </div>

@@ -23,7 +23,7 @@ def upgrade():
         batch_op.add_column(sa.Column('product_photo', sa.String(length=120), nullable=True))
 
     with op.batch_alter_table('user', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('role', sa.String(length=20), nullable=False))
+        batch_op.add_column(sa.Column('role', sa.String(length=20), nullable=False, server_default='user'))
 
     # ### end Alembic commands ###
 

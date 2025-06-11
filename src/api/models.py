@@ -42,7 +42,8 @@ class User(db.Model):
             "created_at": self.created_at.isoformat(),
             "peso": self.peso,
             "altura": self.altura,
-            "objetivo": self.objetivo
+            "objetivo": self.objetivo,
+            "is_professional": self.is_professional
         }
         if self.profession_type:
             data.update({

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactPlayer from 'react-player'
 import { Navbar } from "../components/Navbar";
+import { Link } from "react-router-dom";
 import "../../styles/aboutus.css";
 
 const AboutUs = () => {
@@ -80,34 +81,41 @@ const AboutUs = () => {
                     </div>
                 </section>
                 <section className="valores container py-5">
-                    <a href="https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/entrenadores" rel="noopener noreferrer" className="valores-link">
-                        <h2 className="text-center mb-4">Nuestros Valores</h2></a>
+                    <h2 className="text-center mb-5">Nuestros Valores</h2>
                     <div className="row text-center">
-                        <div className="col-md-4">
+                        <div className="col-md-3">
+                            <i className="fas fa-bullseye fa-2x mb-2"></i>
+                            <h5><strong>D – Disciplina</strong></h5>
+                            <p>La base de todo cambio. Sin disciplina, no hay resultados.</p>
+                        </div>
+                        <div className="col-md-3">
                             <i className="fas fa-dumbbell fa-2x mb-2"></i>
-                            <h5>Disciplina</h5>
-                            <p>El motor del progreso constante.</p>
+                            <h5><strong>M – Músculo</strong></h5>
+                            <p>Un enfoque físico. Cada entrenamiento construye tu cuerpo.</p>
                         </div>
-                        <div className="col-md-4">
-                            <i className="fas fa-heartbeat fa-2x mb-2"></i>
-                            <h5>Salud</h5>
-                            <p>Cuidamos tu cuerpo desde dentro.</p>
+                        <div className="col-md-3">
+                            <i className="fas fa-chart-line fa-2x mb-2"></i>
+                            <h5><strong>P – Progreso</strong></h5>
+                            <p>Mejora constante. Cada día cuenta, cada repetición suma.</p>
                         </div>
-                        <div className="col-md-4">
-                            <i className="fas fa-users fa-2x mb-2"></i>
-                            <h5>Comunidad</h5>
-                            <p>Crecemos juntos, motivándonos cada día.</p>
+                        <div className="col-md-3">
+                            <i className="fas fa-sync-alt fa-2x mb-2"></i>
+                            <h5><strong>C – Constancia</strong></h5>
+                            <p>El verdadero secreto del éxito: constancia día tras día.</p>
                         </div>
                     </div>
                 </section>
+
                 <section className="cta text-white text-center py-5">
                     <h2>¿Estás listo para el cambio?</h2>
                     <p>Únete a nuestro equipo y comienza tu transformación hoy.</p>
-                    <button className="btn btn-primary">Comenzar ahora</button>
+                    <Link to="/tarifas" className="btn btn-tarifas">
+                        Comenzar ahora
+                    </Link>
                 </section>
             </header>
         </>
     );
 };
- 
+
 export default AboutUs;

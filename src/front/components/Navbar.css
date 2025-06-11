@@ -1,0 +1,26 @@
+.navbar-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: 500;
+  transition: color 0.2s, font-weight 0.2s;
+  font-size: 10px;
+}
+
+.navbar-link:hover,
+.navbar-link:focus {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.logout-link {
+  color: #dc3545;
+}
+
+.logout-link:hover {
+  color: #a71d2a;
+}

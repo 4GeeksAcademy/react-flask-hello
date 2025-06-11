@@ -18,32 +18,6 @@ stripeServices.fetchClientSecret = async (items) => {
     stripe se ocupa de mostrar el total de la compra y todo lo necesario para que el usuario pueda pagar
     */
   // items = [{price: "price_id", quantity: 1}]
-  const stripe = require("stripe")("tu_clave_secreta_de_stripe");
-
-  const createCheckoutSession = async () => {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price: "price_1RWvuTA9wzTLXCekBvIVg8Zh",
-          quantity: 1,
-        },
-        {
-          price: "price_1RWxDjQaC6m9II8xi9X9vMaI",
-          quantity: 1,
-        },
-        {
-          price: "price_1RWxCmQaC6m9II8x8TyHNReY",
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: "/",
-      cancel_url: "",
-    });
-
-    return session.url;
-  };
 
   const res = await fetch(backendUrl + "/api/create-checkout-session", {
     method: "POST",

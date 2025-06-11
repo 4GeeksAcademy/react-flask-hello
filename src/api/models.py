@@ -9,10 +9,10 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    # nombre: Mapped[str] = mapped_column(String(120), nullable=False)
-    # apellido: Mapped[str] = mapped_column(String(120), nullable=False)
+    nombre: Mapped[str] = mapped_column(String(120), nullable=True)
+    apellido: Mapped[str] = mapped_column(String(120), nullable=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(120), nullable=False) # se tiene que hacer hash EN LA RUTA!
+    password: Mapped[str] = mapped_column(String(250), nullable=False) # se tiene que hacer hash EN LA RUTA!
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     # datos usuarios:

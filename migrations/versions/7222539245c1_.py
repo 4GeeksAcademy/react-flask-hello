@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: f19ac3688509
+Revision ID: 7222539245c1
 Revises: 
-Create Date: 2025-06-04 09:32:42.901664
+Create Date: 2025-06-11 10:09:51.264332
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f19ac3688509'
+revision = '7222539245c1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,15 +24,17 @@ def upgrade():
     sa.Column('price', sa.Numeric(), nullable=False),
     sa.Column('duration_month', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('price_id', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    sa.UniqueConstraint('name'),
+    sa.UniqueConstraint('price_id')
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('nombre', sa.String(length=120), nullable=False),
-    sa.Column('apellido', sa.String(length=120), nullable=False),
+    sa.Column('nombre', sa.String(length=120), nullable=True),
+    sa.Column('apellido', sa.String(length=120), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('password', sa.String(length=120), nullable=False),
+    sa.Column('password', sa.String(length=250), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('peso', sa.Float(), nullable=True),
@@ -72,7 +74,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('subscription_plan_id', sa.Integer(), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=False),
-    sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('end_date', sa.Date(), nullable=True),
     sa.Column('status', sa.String(length=30), nullable=False),
     sa.ForeignKeyConstraint(['subscription_plan_id'], ['subscription_plans.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -94,15 +96,15 @@ def upgrade():
     sa.Column('creator_id', sa.Integer(), nullable=False),
     sa.Column('item_type', sa.String(length=30), nullable=False),
     sa.Column('nombre', sa.String(length=30), nullable=False),
-    sa.Column('calorias', sa.Integer(), nullable=False),
-    sa.Column('proteinas', sa.Integer(), nullable=False),
-    sa.Column('grasas', sa.Integer(), nullable=False),
-    sa.Column('carbohidratos', sa.Integer(), nullable=False),
-    sa.Column('meal_momento', sa.String(length=60), nullable=False),
-    sa.Column('cantidad', sa.Float(), nullable=False),
-    sa.Column('muscle_group', sa.String(length=50), nullable=False),
-    sa.Column('series', sa.Integer(), nullable=False),
-    sa.Column('repeticiones', sa.Integer(), nullable=False),
+    sa.Column('calorias', sa.Integer(), nullable=True),
+    sa.Column('proteinas', sa.Integer(), nullable=True),
+    sa.Column('grasas', sa.Integer(), nullable=True),
+    sa.Column('carbohidratos', sa.Integer(), nullable=True),
+    sa.Column('meal_momento', sa.String(length=60), nullable=True),
+    sa.Column('cantidad', sa.Float(), nullable=True),
+    sa.Column('muscle_group', sa.String(length=50), nullable=True),
+    sa.Column('series', sa.Integer(), nullable=True),
+    sa.Column('repeticiones', sa.Integer(), nullable=True),
     sa.Column('orden', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

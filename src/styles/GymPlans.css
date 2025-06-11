@@ -7,13 +7,14 @@
 }
 
 .plan-card {
-  background-color: #f0f4f8;
+  background: #ECEFCA;
   border-radius: 16px;
   padding: 30px;
   width: 250px;
   text-align: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  min-height: 300px;
 }
 
 .plan-card:hover {
@@ -24,7 +25,7 @@
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #1a202c;
+  color: #27425f;
 }
 
 .plan-price {
@@ -35,13 +36,14 @@
 }
 
 .plan-description {
-  font-size: 14px;
+  font-size: 15px;
   color: #4a5568;
   margin-bottom: 20px;
+  min-height: 60px;
 }
 
 .plan-button {
-  background-color: #061f37;
+  background-color: #547792;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -53,4 +55,12 @@
 
 .plan-button:hover {
   background-color: #213448;
+}
+.section-title {
+  margin-top: 3rem; 
+}
+
+.plan-card-link {
+  text-decoration: none;
+  color: inherit;
 }

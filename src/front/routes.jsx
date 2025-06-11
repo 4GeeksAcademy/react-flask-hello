@@ -13,7 +13,16 @@ import  Entrenadores  from "./pages/Entrenadores";
 import  AboutUs  from "./pages/AboutUs";
 import Eventos from "./pages/Eventos";
 import Tarifas from "./pages/Tarifas";
+import User from "./pages/User";
+import ProfesoresPage from "./pages/ProfesoresPage";
+import Register from "./pages/Register";
+import { Checkout } from "./pages/checkout";
 import Login from "./pages/Login";
+import  { ReturnPage }  from "./pages/returnPage";
+import PaymentReturn from "./components/paymentReturn";
+import  RegisterPage  from "./pages/RegisterPage";
+import  LoginPage  from "./pages/LoginPage";
+import { PrivatePage } from "./pages/PrivatePage";
 
 
 export const router = createBrowserRouter(
@@ -29,7 +38,16 @@ export const router = createBrowserRouter(
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />
       <Route path="/Tarifas" element={<Tarifas />} />
+      <Route path="/User" element={<User />} />
+      <Route path="/Profesores" element={<ProfesoresPage />} />
       <Route path="/Login" element={<Login />} />
+      <Route path="/Register" element={<Register />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/return" element={<PaymentReturn />} />
+      <Route path="/returnPage" element={<ReturnPage />} />
+      <Route path="/register" element={<RegisterPage/>} />
+      <Route path="/login" element={<LoginPage/>} />
+      <Route path="/private" element={<PrivatePage/>} />
     </Route>
   )
 );

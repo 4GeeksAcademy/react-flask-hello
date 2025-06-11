@@ -20,6 +20,10 @@ with app.app_context():
         is_professional=False,
         nombre="Cristian",
         apellido="Pérez",
+        experiencia=5,
+        nombre="Jose",
+        apellido="Gonzalez"
+
     )
 
     user2 = User(
@@ -30,7 +34,10 @@ with app.app_context():
         profession_type="entrenador",
         experiencia=5,
         nombre="Pere",
-        apellido="Martínez"
+        apellido="Martínez",
+        nombre="Jose",
+        apellido="Gonzalez"
+
     )
 
     user3 = User(
@@ -41,7 +48,10 @@ with app.app_context():
         profession_type="nutricionista",
         experiencia=8,
         nombre="María",
-        apellido="Gómez"
+        apellido="Gómez",
+        nombre="Jose",
+        apellido="Gonzalez"
+
     )
 
     db.session.add_all([user1, user2, user3])

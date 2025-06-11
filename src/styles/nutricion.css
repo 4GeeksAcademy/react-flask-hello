@@ -88,3 +88,63 @@ body {
   font-size: 1.1rem;
   background-color: #f9f9f9;
 }
+
+.tarjetaNp {
+  background-color: #ECEFCA;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.tarjetaNp:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  color: #5a8dee;
+  font-weight: bold;
+}
+
+.card-text {
+  color: #213448;
+}
+
+.beneficios {
+
+  padding: 2rem 1rem;
+  border-radius: 10px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.beneficios .subtittle {
+  color: #ECEFCA;
+  font-weight: bold;
+}
+
+.caja-bot {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.caja-bot .list-group-item {
+  background-color: #ECEFCA;
+  border: none;
+  color: #213448;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}

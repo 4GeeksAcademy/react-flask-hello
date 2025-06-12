@@ -849,7 +849,7 @@ def register():
             email=data['email'],
             password=hashed_password,
             is_active=True,
-            is_professional=is_professional  # 🔁 aquí lo guardamos
+            is_professional=is_professional
         )
 
         db.session.add(new_user)

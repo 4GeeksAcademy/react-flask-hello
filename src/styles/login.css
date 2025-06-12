@@ -79,3 +79,14 @@ form {
   display: flex;
   justify-content: center;
 }
+
+.error-message {
+    color: #ff4d4f;
+    background-color: #fff1f0;
+    border: 1px solid #f07e78;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 500;
+}

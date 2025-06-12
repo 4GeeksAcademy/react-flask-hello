@@ -1,35 +1,43 @@
-import { useState } from "react"
+import { useState } from "react";
 import "../../styles/login.css";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer"
-import userServices from "../../services/userServices"
+import { useNavigate, Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import userServices from "../../services/userServices";
 
 const Login = () => {
-
-    const { store, dispatch } = useGlobalReducer()
+    const { store, dispatch } = useGlobalReducer();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
-    })
+    });
+    const [error, setError] = useState(""); // Nuevo estado para errores
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        userServices.login(formData).then(data => data.success && navigate('/private'))
+        setError("");
+        userServices.login(formData).then(data => {
+            if (data.success) {
+                navigate('/private');
+            } else {
+                setError("Correo o contraseña incorrectos.");
+            }
+        }).catch(() => {
+            setError("Email o Contraseña estan incorrectos.");
+        });
     };
-
 
     return (
         <div className="container_login">
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <h1 className="mt-5">Iniciar sesión</h1>
+                    {error && <p className="error-message">{error}</p>} {/* Mostrar error */}
                     <input type="email" name="email" onChange={handleChange} placeholder="Correo" required />
                     <input type="password" name="password" onChange={handleChange} placeholder="Contraseña" required />
                     <button className="button_login">Login</button>

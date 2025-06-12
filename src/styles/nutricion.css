@@ -81,13 +81,9 @@ body {
 }
 
 .nutricion-page .card-title {
-  color: #5a8dee;
+  color: #547792;
 }
 
-.nutricion-page .list-group-item {
-  font-size: 1.1rem;
-  background-color: #f9f9f9;
-}
 
 .tarjetaNp {
   background-color: #ECEFCA;
@@ -119,7 +115,6 @@ body {
 }
 
 .beneficios {
-
   padding: 2rem 1rem;
   border-radius: 10px;
   width: 100vw;
@@ -137,14 +132,15 @@ body {
   padding: 0;
 }
 
-.caja-bot .list-group-item {
+.nutricion-page .beneficios .list-group-item {
   background-color: #ECEFCA;
-  border: none;
   color: #213448;
-  font-weight: 500;
+  border: none;
   font-size: 1.1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
 }
+
+
+

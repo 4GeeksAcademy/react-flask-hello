@@ -1,16 +1,11 @@
 
 .carousel-caption{
-<<<<<<< HEAD
-    background: rgba(0, 0, 0, 0.500);
+    background: #3851669f;
 }
 
 .button1{
   color: black;
 }
-=======
-    background: #3851669f;
-}
-
 h6{
   color: #ECEFCA;
 }
@@ -23,4 +18,3 @@ h6{
   background-size: 100% 100%;     
   background-repeat: no-repeat;
 }
->>>>>>> 8d63732e394aafc2484c573d3d3bbcc8abc60d36

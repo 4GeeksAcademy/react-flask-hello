@@ -18,10 +18,8 @@ with app.app_context():
         altura=1.75,
         objetivo="Perder grasa y tonificar",
         is_professional=False,
-
         nombre="Cristian",
         apellido="Pérez",
-
         experiencia=5,
         nombre="Jose",
         apellido="Gonzalez"
@@ -35,10 +33,8 @@ with app.app_context():
         telefono="666777888",
         profession_type="entrenador",
         experiencia=5,
-
         nombre="Pere",
-        apellido="Martínez"
-
+        apellido="Martínez",
         nombre="Jose",
         apellido="Gonzalez"
 
@@ -51,10 +47,8 @@ with app.app_context():
         telefono="611222333",
         profession_type="nutricionista",
         experiencia=8,
-
         nombre="María",
-        apellido="Gómez"
-
+        apellido="Gómez",
         nombre="Jose",
         apellido="Gonzalez"
 

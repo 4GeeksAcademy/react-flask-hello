@@ -6,7 +6,7 @@ import "../../styles/carrusel.css";
 const trainers = [
   {
     id: 1,
-    src: "https://hips.hearstapps.com/hmg-prod/images/arnold-schwarzenegger-1547023769.jpg",
+    src: "https://img.freepik.com/foto-gratis/hombre-deportivo-camisa-negra-poniendo-su-mano-musculos-su-brazo_114579-14976.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740",
     name: "Carlos Mendoza",
     specialty: "Entrenador Personal",
     description:
@@ -14,7 +14,7 @@ const trainers = [
   },
   {
     id: 2,
-    src: "https://www.avanzaentucarrera.com/orientacion/comp/uploads/2014/05/pilates-1024x543.jpg",
+    src: "https://img.freepik.com/foto-gratis/fitness-concepto-estilo-vida-saludable-feliz-joven-deportiva-sentada-suelo-estudio-despues-hacer-ejercicio-descansar-mirar-camara-pared-blanca_273443-4536.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740",
     name: "Ana Rodríguez",
     specialty: "Yoga & Pilates",
     description:
@@ -22,7 +22,7 @@ const trainers = [
   },
   {
     id: 3,
-    src: "https://www.sinburpeesenmiwod.com/wp-content/uploads/2018/01/cursos-oficiales-entrenador-crossfit.jpg",
+    src: "https://img.freepik.com/foto-gratis/feliz-joven-deportista-sentado-aislado_171337-11691.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740",
     name: "Miguel Torres",
     specialty: "CrossFit",
     description:

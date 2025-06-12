@@ -1,8 +1,8 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const stripeServices = {}
+const stripeServices = {};
 
 stripeServices.fetchClientSecret = async (items) => {
-    /*
+  /*
      Create a Checkout Session
     le vamos a pasar los items que son los productos que se van a comprar
     los itemns son un array de objetos con la siguiente estructura:
@@ -17,26 +17,25 @@ stripeServices.fetchClientSecret = async (items) => {
     se pueden pasar tantos items como se quiera, pero hay que tener en cuenta que el ID del PRECIO del producto
     stripe se ocupa de mostrar el total de la compra y todo lo necesario para que el usuario pueda pagar
     */
-    // items = [{price: "price_id", quantity: 1}]
-    
-    const res = await fetch(backendUrl+"/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({items: items}),
-    });
-    
-    const data = await res.json();
-    
-    return data.clientSecret;
-  };
+  // items = [{price: "price_id", quantity: 1}]
 
-stripeServices.fetchSessionStatus = async (sessionId) => {
-    return fetch(backendUrl + `/api/session-status?session_id=${sessionId}`)
-      .then((res) => res.json())
-      .then((data) =>  data)
+  const res = await fetch(backendUrl + "/api/create-checkout-session", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ items: items }),
+  });
+
+  const data = await res.json();
+
+  return data.clientSecret;
 };
 
+stripeServices.fetchSessionStatus = async (sessionId) => {
+  return fetch(backendUrl + `/api/session-status?session_id=${sessionId}`)
+    .then((res) => res.json())
+    .then((data) => data);
+};
 
-export default stripeServices
+export default stripeServices;

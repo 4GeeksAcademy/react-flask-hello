@@ -46,10 +46,7 @@ export const Home = () => {
 			<h1 className="section-title text-white">Planes de Gimnasio</h1>
             <GymPlans/>
 			<h1>Partners</h1>
-			<Partners/>
-			
-			
-			
+			<Partners/>	
 		</div>
 	);
 }; 

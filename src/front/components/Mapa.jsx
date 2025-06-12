@@ -1,62 +1,51 @@
-import React, { useState } from "react";
-import { GoogleMap, InfoWindow, Marker ,useJsApiLoader} from "@react-google-maps/api";
+import React, { useRef, useEffect, useState } from "react";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+const containerStyle = {
+  width: "90%",
+  height: "400px",
+};
+function Mapa({ markers = [], isLoaded }) {
+  const mapRef = useRef(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
-const markers = [
-  {
-    id: 1,
-    name: "Amatista",
-    position: { lat: -33.54800186126676, lng:-71.47708491654643 }
-  },
-  {
-    id: 2,
-    name: "Antonia II",
-    position: { lat: -30.96377966236699, lng: -70.96770441768842 }
-  },
- 
-];
-
-function Mapa() {
-
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "xxx",
-  });
-  const [activeMarker, setActiveMarker] = useState(null);
-
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) {
-      return;
+  useEffect(() => {
+    if (!mapRef.current || markers.length === 0) return;
+    if (markers.length === 1) {
+      // Zoom fijo en eventos
+      mapRef.current.setZoom(17);
+      mapRef.current.panTo(markers[0].position);
+    } else {
+      // Mostrar todo el país en partners
+      const bounds = new window.google.maps.LatLngBounds();
+      markers.forEach((marker) => bounds.extend(marker.position));
+      mapRef.current.fitBounds(bounds);
     }
-    setActiveMarker(marker);
-  };
-  const handleOnLoad = (map) => {
-    const bounds = new google.maps.LatLngBounds();
-    markers.forEach(({ position }) => bounds.extend(position));
-    map.fitBounds(bounds);
-  };
-
-  return isLoaded ? (
+  }, [markers]);
+  if (!isLoaded) return <p>Cargando mapa...</p>;
+  
+  return (
     <GoogleMap
-      onLoad={handleOnLoad}
-      onClick={() => setActiveMarker(null)}
-      mapContainerStyle={{ width: "90vw", height: "90vh" }}
+      mapContainerStyle={containerStyle}
+      center={markers[0]?.position || { lat: 40.4168, lng: -3.7038 }}
+      zoom={14}
+      onLoad={(map) => (mapRef.current = map)}
     >
-      {markers.map(({ id, name, position }) => (
+      {markers.map((marker, index) => (
         <Marker
-          key={id}
-          position={position}
-          onClick={() => handleActiveMarker(id)}
-        >
-          {activeMarker === id ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-              <div>{name}</div>
-            </InfoWindow>
-          ) : null}
-        </Marker>
+          key={marker.id || index}
+          position={marker.position}
+          onClick={() => setSelectedMarker(marker)}
+        />
       ))}
+      {selectedMarker && (
+        <InfoWindow
+          position={selectedMarker.position}
+          onCloseClick={() => setSelectedMarker(null)}
+        >
+          <div>{selectedMarker.name || selectedMarker.descripcion}</div>
+        </InfoWindow>
+      )}
     </GoogleMap>
-  ) : (
-    <></>
   );
 }
 export default Mapa;

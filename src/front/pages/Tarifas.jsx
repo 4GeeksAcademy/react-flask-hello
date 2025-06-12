@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../../styles/tarifas.css";
 
 const Tarifas = () => {
+
     const opciones = [
         {
             nombre: "Tarifa Basic",

@@ -67,3 +67,7 @@
     object-fit: cover;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.p{
+    font-size: 500px;
+}

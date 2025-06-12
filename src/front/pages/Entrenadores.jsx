@@ -30,7 +30,7 @@ const Entrenadores = () => {
 
                 {selectedTrainer && (
                     <>
-                        <h2 className="text-center mb-4">Entrenador Seleccionado</h2>
+                        <h1 className="text-center mb-4">Entrenador Seleccionado</h1>
                         <div className="container-1 mb-5">
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img
@@ -55,7 +55,7 @@ const Entrenadores = () => {
                     </>
                 )}
 
-                <h2 className="text-center mb-4">Otros Entrenadores</h2>
+                <h1 className="text-center mb-4">Otros Entrenadores</h1>
                 <div className="container">
                     <div className="row gy-4">
                         {otherTrainers.map((trainer, index) => (

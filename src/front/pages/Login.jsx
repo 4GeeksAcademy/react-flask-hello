@@ -23,7 +23,8 @@ const Login = () => {
         setError("");
         userServices.login(formData).then(data => {
             if (data.success) {
-                navigate('/private');
+                dispatch({type: "login_register", payload: data})
+                navigate('/user');
             } else {
                 setError("Correo o contraseña incorrectos.");
             }

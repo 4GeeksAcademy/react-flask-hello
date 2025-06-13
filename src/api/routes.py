@@ -778,7 +778,7 @@ def login():
 
         token = create_access_token(identity=str(user.id))
 
-        return jsonify({"msg": "login ok", "token": token,  "success": True}), 200
+        return jsonify({"msg": "login ok", "token": token,  "success": True, "user": user.serialize()}), 200
 
     except Exception as e:
         print(e)

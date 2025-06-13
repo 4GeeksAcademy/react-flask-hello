@@ -33,7 +33,7 @@
 .camera-controls button {
   padding: 10px 20px;
   font-size: 16px;
-  background: rgba(0, 0, 0, 0.6);
+  background: #3851669f;
   color: white;
   border: none;
   cursor: pointer;
@@ -59,14 +59,20 @@
 }
 
 .mensaje-nutricion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
   padding: 16px;
   border-radius: 12px;
   font-size: 16px;
-  text-align: right;
+  text-align: center;
   line-height: 1.4;
+  z-index: 30;
 }
+
 
 .botones-nutricion {
   display: flex;
@@ -77,7 +83,7 @@
 .botones-nutricion button {
   padding: 10px 16px;
   font-size: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #3851669c;
   color: white;
   border: 1px solid white;
   border-radius: 8px;
@@ -104,14 +110,20 @@
 }
 
 .mensaje-entrenamiento {
-  background-color: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #3851669c;
   color: #fff;
   padding: 16px;
   border-radius: 12px;
   font-size: 16px;
-  text-align: left;
+  text-align: center;
   line-height: 1.4;
+  z-index: 30;
 }
+
 
 .botones-entrenamiento {
   display: flex;
@@ -122,7 +134,7 @@
 .botones-entrenamiento button {
   padding: 10px 16px;
   font-size: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #3851669f;
   color: white;
   border: 1px solid white;
   border-radius: 8px;
@@ -137,10 +149,10 @@
 
 .titulo-superior {
   position: absolute;
-  top: 30px; /* antes 20px */
+  top: 350px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 58px; /* antes 48px */
+  font-size: 58px;
   font-weight: bold;
   color: white;
   z-index: 30;
@@ -152,3 +164,9 @@
 .titulo-oculto {
   opacity: 0;
 }
+
+.linkparallax {
+  color: #ECEFCA;
+  text-decoration: none;
+}
+

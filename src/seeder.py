@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 from app import app
-from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket
+from api.models import db, User, PlanTemplate, TemplateItem, PlanTemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 with app.app_context():
-    # Create a superuser
-        
     # Borra todo
     db.drop_all()
     db.create_all()
@@ -12,36 +13,45 @@ with app.app_context():
     # === USERS ===
     user1 = User(
         email="cliente@example.com",
-        password="hashed_password_123",
+        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
         peso=70.5,
         altura=1.75,
         objetivo="Perder grasa y tonificar",
         is_professional=False,
+        nombre="Cristian",
+        apellido="Pérez",
         experiencia=5,
         nombre="Jose",
         apellido="Gonzalez"
+
     )
 
     user2 = User(
         email="entrenador@example.com",
-        password="hashed_password_456",
+        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
         is_professional=True,
         telefono="666777888",
         profession_type="entrenador",
         experiencia=5,
+        nombre="Pere",
+        apellido="Martínez",
         nombre="Jose",
         apellido="Gonzalez"
+
     )
 
     user3 = User(
         email="nutricionista@example.com",
-        password="hashed_password_789",
+        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
         is_professional=True,
         telefono="611222333",
         profession_type="nutricionista",
         experiencia=8,
+        nombre="María",
+        apellido="Gómez",
         nombre="Jose",
         apellido="Gonzalez"
+
     )
 
     db.session.add_all([user1, user2, user3])
@@ -54,13 +64,11 @@ with app.app_context():
         nombre="Fuerza Inicial",
         description="Rutina para principiantes enfocada en fuerza"
     )
-
     db.session.add(plan)
     db.session.commit()
 
     # === ITEMS ===
     item1 = TemplateItem(
-        template_id=plan.id,
         item_type="exercise",
         nombre="Sentadilla",
         muscle_group="Piernas",
@@ -72,11 +80,11 @@ with app.app_context():
         meal_momento="desayuno",
         cantidad=1,
         carbohidratos=30,
-        orden=1
+        orden=1,
+        creator_id=user2.id
     )
 
     item2 = TemplateItem(
-        template_id=plan.id,
         item_type="exercise",
         nombre="Press Banca",
         muscle_group="Pecho",
@@ -88,10 +96,20 @@ with app.app_context():
         cantidad=1,
         repeticiones=10,
         grasas=5,
-        orden=2
+        orden=2,
+        creator_id=user2.id
+
     )
 
     db.session.add_all([item1, item2])
+    db.session.commit()
+
+    # === ASOCIACIÓN PLAN <-> ITEMS ===
+    pti1 = PlanTemplateItem(plan_template_id=plan.id,
+                            template_item_id=item1.id, orden=1)
+    pti2 = PlanTemplateItem(plan_template_id=plan.id,
+                            template_item_id=item2.id, orden=2)
+    db.session.add_all([pti1, pti2])
     db.session.commit()
 
     # === SUBSCRIPTION PLANS ===

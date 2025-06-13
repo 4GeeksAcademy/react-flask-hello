@@ -43,15 +43,10 @@ export const Home = () => {
 		<div className="text-center mt-5">
 			<ParallaxScroll />
 			<Carousel/>
-			<h1 className="section-title">Planes de Gimnasio</h1>
+			<h1 className="section-title text-white">Planes de Gimnasio</h1>
             <GymPlans/>
 			<h1>Partners</h1>
-			<Partners/>
-			<h1>Eventos</h1>
-			<EventosButton/>
-			
-			
-			
+			<Partners/>	
 		</div>
 	);
 }; 

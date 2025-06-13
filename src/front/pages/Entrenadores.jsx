@@ -7,7 +7,7 @@ const Entrenadores = () => {
     useEffect(() => {
         const fetchTrainers = async () => {
             try {
-                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users");
+                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/professionals");
                 const data = await response.json();
                 setTrainers(data);
             } catch (error) {

@@ -65,6 +65,7 @@ export const Navbar = () => {
   ];
 
   return (
+    
     <>
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }}></div>
       <div style={{ height: `${navbarHeight}px` }}></div>

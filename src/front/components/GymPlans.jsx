@@ -3,26 +3,26 @@ import { Link } from 'react-router-dom';
 import "../../styles/GymPlans.css";
 
 const GymPlans = () => {
-  const plans = [
-    {
-      title: 'Tarifa Basic',
-      price: '45€',
-      description: 'Pack entrenamientos',
-      path: '/tarifas'
-    },
-    {
-      title: 'Tarifa Premium',
-      price: '55€',
-      description: 'Pack nutricion',
-      path: '/tarifas'
-    },
-    {
-      title: 'Tarifa DMPC',
-      price: '65€',
-      description: 'Pack Completo',
-      path: '/tarifas'
-    },
-  ];
+const plans = [
+  {
+    title: 'Tarifa Basic',
+    price: '45€',
+    description: 'Pack entrenamientos',
+    path: '/tarifas/basic'
+  },
+  {
+    title: 'Tarifa Premium',
+    price: '55€',
+    description: 'Pack nutricion',
+    path: '/tarifas/premium'
+  },
+  {
+    title: 'Tarifa DMPC',
+    price: '65€',
+    description: 'Pack Completo',
+    path: '/tarifas/dmpc/#'
+  },
+];
 
   return (
     <div className="plans-container">

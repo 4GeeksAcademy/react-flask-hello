@@ -1,51 +1,61 @@
-import React, { useRef, useEffect, useState } from "react";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import React, { useCallback, useState, memo } from "react";
+import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
+
 const containerStyle = {
   width: "90%",
   height: "400px",
 };
-function Mapa({ markers = [], isLoaded }) {
-  const mapRef = useRef(null);
-  const [selectedMarker, setSelectedMarker] = useState(null);
 
-  useEffect(() => {
-    if (!mapRef.current || markers.length === 0) return;
-    if (markers.length === 1) {
-      // Zoom fijo en eventos
-      mapRef.current.setZoom(17);
-      mapRef.current.panTo(markers[0].position);
-    } else {
-      // Mostrar todo el país en partners
+function Mapa({ markers = [], center }) {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
+
+  const [selected, setSelected] = useState(null);
+
+  // Si no hay center, usa el primer marcador o un valor por defecto
+  const mapCenter =
+    center ||
+    (markers.length > 0
+      ? markers[0].position
+      : { lat: 40.416775, lng: -3.70379 });
+
+  const onLoad = useCallback((map) => {
+    if (markers.length > 0) {
       const bounds = new window.google.maps.LatLngBounds();
-      markers.forEach((marker) => bounds.extend(marker.position));
-      mapRef.current.fitBounds(bounds);
+      markers.forEach((m) => bounds.extend(m.position));
+      map.fitBounds(bounds);
     }
   }, [markers]);
-  if (!isLoaded) return <p>Cargando mapa...</p>;
-  
-  return (
+
+  return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={{ lat: 40.4168, lng: -3.7038 }}
-      zoom={14}
-      onLoad={(map) => (mapRef.current = map)}
+      center={mapCenter}
+      zoom={10}
+      onLoad={onLoad}
     >
-      {markers.map((marker, index) => (
+      {markers.map((marker) => (
         <Marker
-          key={marker.id || index}
+          key={marker.id || marker.name}
           position={marker.position}
-          onClick={() => setSelectedMarker(marker)}
+          onClick={() => setSelected(marker)}
         />
       ))}
-      {selectedMarker && (
+      {selected && (
         <InfoWindow
-          position={selectedMarker.position}
-          onCloseClick={() => setSelectedMarker(null)}
+          position={selected.position}
+          onCloseClick={() => setSelected(null)}
         >
-          <div>{selectedMarker.name || selectedMarker.descripcion}</div>
+          <div>
+            <h4>{selected.name}</h4>
+            {selected.descripcion && <p>{selected.descripcion}</p>}
+          </div>
         </InfoWindow>
       )}
     </GoogleMap>
-  );
+  ) : null;
 }
-export default Mapa;
+
+export default memo(Mapa);

@@ -62,11 +62,8 @@ function Eventos() {
         }
     ];
     const [data, setData] = useState(null);
-    const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-        id: "google-map-script",
-        libraries: ["maps"]
-    });
+    console.log(data);
+
     return (
         <div className="eventos-container">
             <h1 className="titulo-eventos">Eventos activos</h1>
@@ -133,7 +130,8 @@ function Eventos() {
                             <p className="ms-5"><strong>Asistentes:</strong> {data.asistentes}</p>
                         </div>
                     </div>
-                    {isLoaded && (
+
+                    {data && (
                         <div className="mapa-container mt-3">
                             <Mapa
                                 markers={[
@@ -142,12 +140,13 @@ function Eventos() {
                                         name: data.nombre,
                                         position: { lat: data.lat, lng: data.lng },
                                         descripcion: data.descripcion,
-                                    }
+                                    },
                                 ]}
-                                isLoaded={isLoaded}
+                                center={{ lat: data.lat, lng: data.lng }}
                             />
                         </div>
                     )}
+
                 </div>
             )}
         </div>

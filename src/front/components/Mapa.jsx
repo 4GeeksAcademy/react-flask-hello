@@ -22,7 +22,7 @@ function Mapa({ markers = [], isLoaded }) {
     }
   }, [markers]);
   if (!isLoaded) return <p>Cargando mapa...</p>;
-  
+   
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}

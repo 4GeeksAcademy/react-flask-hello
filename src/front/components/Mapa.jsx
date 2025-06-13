@@ -26,7 +26,7 @@ function Mapa({ markers = [], isLoaded }) {
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={markers[0]?.position || { lat: 40.4168, lng: -3.7038 }}
+      center={{ lat: 40.4168, lng: -3.7038 }}
       zoom={14}
       onLoad={(map) => (mapRef.current = map)}
     >

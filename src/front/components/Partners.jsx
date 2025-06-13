@@ -31,4 +31,4 @@ function Partners() {
     </div>
   );
 }
-export default Partners; 
+export default Partners;

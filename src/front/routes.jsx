@@ -34,12 +34,12 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/nutricion" element={<NutricionPage />} />
       <Route path="/sport" element={<SportPage />} />
-      <Route path="/entrenadores" element={<Entrenadores />} />
+      <Route path="/profesionales" element={<Entrenadores />} />
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />
       <Route path="/Tarifas" element={<Tarifas />} />
       <Route path="/User" element={<User />} />
-      <Route path="/Profesores" element={<ProfesoresPage />} />
+      <Route path="/pUser" element={<ProfesoresPage />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/checkout" element={<Checkout />} />

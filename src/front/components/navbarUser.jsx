@@ -61,10 +61,7 @@ export const NavbarUser = () => {
       name: "checkOut",
       link: "/checkout",
     },
-    {
-      name: "Tarifas",
-      link: "/Tarifas",
-    },
+
     { name: "Loging", link: "/Login" },
   ];
 

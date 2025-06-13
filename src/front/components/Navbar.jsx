@@ -43,7 +43,7 @@ export const Navbar = () => {
     { name: "Sobre Nosotros", link: "/AboutUs", internal: true },
     { name: "Nutrición", link: "/nutricion", internal: true },
     { name: "Deporte", link: "/sport", internal: true },
-    { name: "Profesional", link: "/entrenadores", internal: true },
+    { name: "Profesionales", link: "/entrenadores", internal: true },
     { name: "Eventos", link: "/Eventos", internal: true },
     { name: "Login", link: "/login", internal: true },
   ];

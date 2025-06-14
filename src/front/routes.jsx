@@ -23,7 +23,7 @@ import PaymentReturn from "./components/paymentReturn";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { PrivatePage } from "./pages/PrivatePage";
-
+import NutricionUser from "./pages/NutricionUser";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +33,7 @@ export const router = createBrowserRouter(
       <Route path="/single/:theId" element={<Single />} />
       <Route path="/demo" element={<Demo />} />
       <Route path="/nutricion" element={<NutricionPage />} />
+      <Route path="/nutricionUser" element={<NutricionUser />} />
       <Route path="/sport" element={<SportPage />} />
       <Route path="/profesionales" element={<Entrenadores />} />
       <Route path="/AboutUs" element={<AboutUs />} />

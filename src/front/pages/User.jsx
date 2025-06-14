@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/User.css";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx"
+
 
 const User = () => {
-    const usuario = {
+    const [usuario, setUsuario] = useState({
         nombre: "Susana",
         apellidos: "Susanita",
         email: "susanita98@example.com",
@@ -13,7 +15,7 @@ const User = () => {
         altura: 170,
         peso: 73,
         imagen: "https://i.pravatar.cc/200?u=david"
-    };
+    });
 
     const entrenador = {
         nombre: "Pepe Strong",
@@ -31,19 +33,26 @@ const User = () => {
         duracion: "6 meses",
         inicio: "1 de mayo de 2025"
     };
-
+    const { store, dispatch } = useGlobalReducer()
+    useEffect(() => {
+        if (store.user) {
+            setUsuario(store.user)
+        }
+    }, [])
+   console.log (usuario)
+   console.log (store)
     return (
         <div className="perfil-container">
             <h1 className="perfil-titulo">Perfil del Usuario</h1>
 
             <div className="perfil-card">
                 <div className="columna columna-izquierda">
-                    <p><strong>Nombre:</strong> {usuario.nombre}</p>
-                    <p><strong>Apellidos:</strong> {usuario.apellidos}</p>
-                    <p><strong>Email:</strong> {usuario.email}</p>
-                    <p><strong>Teléfono:</strong> {usuario.telefono}</p>
-                    <p><strong>Dirección:</strong> {usuario.direccion}</p>
-                    <p><strong>Sexo:</strong> {usuario.sexo}</p>
+                    <p><strong>Nombre:</strong> {usuario.nombre||"Falta"}</p>
+                    <p><strong>Apellidos:</strong> {usuario.apellidos||"Falta"}</p>
+                    <p><strong>Email:</strong> {usuario.email||"Falta"}</p>
+                    <p><strong>Teléfono:</strong> {usuario.telefono||"Falta"}</p>
+                    <p><strong>Dirección:</strong> {usuario.direccion||"Falta"}</p>
+                    <p><strong>Sexo:</strong> {usuario.sexo||"Falta"}</p>
                 </div>
 
                 <div className="columna columna-centro">

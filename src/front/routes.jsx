@@ -49,8 +49,7 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/private" element={<PrivatePage />} />
       <Route path="/tarifas" element={<Tarifas />} />
-      <Route path="/tarifas/:tipo" element={<Tarifas />} /> // importante para detectar el tipo
-
+      <Route path="/tarifas/:tipo" element={<Tarifas />} /> 
     </Route>
   )
 );

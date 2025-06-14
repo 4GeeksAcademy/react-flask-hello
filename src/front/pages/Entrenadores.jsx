@@ -7,7 +7,7 @@ const Entrenadores = () => {
     useEffect(() => {
         const fetchTrainers = async () => {
             try {
-                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users");
+                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/professionals");
                 const data = await response.json();
                 setTrainers(data);
             } catch (error) {
@@ -27,15 +27,15 @@ const Entrenadores = () => {
                 <section className="hero text-center py-5">
                     <h1 className="display-4">Entrenadores</h1>
                 </section>
-
+ 
                 {selectedTrainer && (
                     <>
-                        <h2 className="text-center mb-4">Entrenador Seleccionado</h2>
+                        <h1 className="text-center mb-4">Entrenador Seleccionado</h1>
                         <div className="container-1 mb-5">
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img
                                     src={selectedTrainer.image}
-                                    alt="Entrenador"
+                                    alt="Entrenador "
                                     className="trainer-img me-3"
                                 />
                                 <div className="flex-grow-1">
@@ -55,7 +55,7 @@ const Entrenadores = () => {
                     </>
                 )}
 
-                <h2 className="text-center mb-4">Otros Entrenadores</h2>
+                <h1 className="text-center mb-4">Otros Entrenadores</h1>
                 <div className="container">
                     <div className="row gy-4">
                         {otherTrainers.map((trainer, index) => (

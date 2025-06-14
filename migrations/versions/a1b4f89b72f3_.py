@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5115dc6d4d0b
+Revision ID: a1b4f89b72f3
 Revises: 
-Create Date: 2025-06-04 08:30:57.036678
+Create Date: 2025-06-14 08:09:43.533497
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5115dc6d4d0b'
+revision = 'a1b4f89b72f3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,15 +24,17 @@ def upgrade():
     sa.Column('price', sa.Numeric(), nullable=False),
     sa.Column('duration_month', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('price_id', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    sa.UniqueConstraint('name'),
+    sa.UniqueConstraint('price_id')
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('nombre', sa.String(length=120), nullable=False),
-    sa.Column('apellido', sa.String(length=120), nullable=False),
+    sa.Column('nombre', sa.String(length=120), nullable=True),
+    sa.Column('apellido', sa.String(length=120), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('password', sa.String(length=120), nullable=False),
+    sa.Column('password', sa.String(length=250), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('peso', sa.Float(), nullable=True),
@@ -72,7 +74,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('subscription_plan_id', sa.Integer(), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=False),
-    sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('end_date', sa.Date(), nullable=True),
     sa.Column('status', sa.String(length=30), nullable=False),
     sa.ForeignKeyConstraint(['subscription_plan_id'], ['subscription_plans.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -87,6 +89,24 @@ def upgrade():
     sa.Column('creado_en', sa.DateTime(), nullable=False),
     sa.Column('actualizado_en', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('template_items',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('creator_id', sa.Integer(), nullable=False),
+    sa.Column('item_type', sa.String(length=30), nullable=False),
+    sa.Column('nombre', sa.String(length=30), nullable=False),
+    sa.Column('calorias', sa.Integer(), nullable=True),
+    sa.Column('proteinas', sa.Integer(), nullable=True),
+    sa.Column('grasas', sa.Integer(), nullable=True),
+    sa.Column('carbohidratos', sa.Integer(), nullable=True),
+    sa.Column('meal_momento', sa.String(length=60), nullable=True),
+    sa.Column('cantidad', sa.Float(), nullable=True),
+    sa.Column('muscle_group', sa.String(length=50), nullable=True),
+    sa.Column('series', sa.Integer(), nullable=True),
+    sa.Column('repeticiones', sa.Integer(), nullable=True),
+    sa.Column('orden', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('event_signups',
@@ -109,22 +129,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['subscription_id'], ['subscriptions.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('template_items',
+    op.create_table('plan_template_items',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('template_id', sa.Integer(), nullable=False),
-    sa.Column('item_type', sa.String(length=30), nullable=False),
-    sa.Column('nombre', sa.String(length=30), nullable=False),
-    sa.Column('calorias', sa.Integer(), nullable=False),
-    sa.Column('proteinas', sa.Integer(), nullable=False),
-    sa.Column('grasas', sa.Integer(), nullable=False),
-    sa.Column('carbohidratos', sa.Integer(), nullable=False),
-    sa.Column('meal_momento', sa.String(length=60), nullable=False),
-    sa.Column('cantidad', sa.Float(), nullable=False),
-    sa.Column('muscle_group', sa.String(length=50), nullable=False),
-    sa.Column('series', sa.Integer(), nullable=False),
-    sa.Column('repeticiones', sa.Integer(), nullable=False),
-    sa.Column('orden', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['template_id'], ['plan_templates.id'], ),
+    sa.Column('plan_template_id', sa.Integer(), nullable=False),
+    sa.Column('template_item_id', sa.Integer(), nullable=False),
+    sa.Column('orden', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['plan_template_id'], ['plan_templates.id'], ),
+    sa.ForeignKeyConstraint(['template_item_id'], ['template_items.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
@@ -132,9 +143,10 @@ def upgrade():
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('template_items')
+    op.drop_table('plan_template_items')
     op.drop_table('payments')
     op.drop_table('event_signups')
+    op.drop_table('template_items')
     op.drop_table('support_tickets')
     op.drop_table('subscriptions')
     op.drop_table('plan_templates')

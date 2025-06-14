@@ -1,6 +1,7 @@
 export const initialStore=()=>{
   return{
     message: null,
+    user: null,
     todos: [
       {
         id: 1,
@@ -18,6 +19,26 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+     case 'logout':
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      
+      return {
+        ...store,
+                user: null
+      }
+
+    case 'get_user_info':
+      return {
+        ...store,
+                user: action.payload
+      }
+      
+    case 'login_register':
+      return {
+        ...store,
+        user: action.payload.user
+      }
     case 'set_hello':
       return {
         ...store,

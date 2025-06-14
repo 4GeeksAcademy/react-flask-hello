@@ -24,6 +24,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { PrivatePage } from "./pages/PrivatePage";
 import NutricionUser from "./pages/NutricionUser";
+import NutricionProfesional from "./pages/NutricionProfesional";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/nutricion" element={<NutricionPage />} />
       <Route path="/nutricionUser" element={<NutricionUser />} />
+      <Route path="/nutricionProfesional" element={<NutricionProfesional />} />
       <Route path="/sport" element={<SportPage />} />
       <Route path="/profesionales" element={<Entrenadores />} />
       <Route path="/AboutUs" element={<AboutUs />} />

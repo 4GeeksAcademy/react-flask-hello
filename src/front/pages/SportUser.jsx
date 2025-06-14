@@ -1,20 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import CardPlan from "../components/CardPlan";
 
-// index.css
 import "../../styles/sportUser.css";
 
-const SportUser = () => {
+const datosSport = {
+    Lunes: {
+        Desayuno: "Café con leche desnatada + Tostada integral con queso fresco",
+        Almuerzo: "Sandía",
+        ejercicio: "Arroz integral con tomate triturado y un huevo a la plancha",
+        Merienda: "Yogur desnatado + 3 nueces",
+        Cena: "Canónigos, pechuga de pavo a la plancha, tomate y maíz"
+    },
+    Martes: {
+        Desayuno: "Café con leche desnatada + Cereales integrales",
+        Almuerzo: "Macedonia de frutas (fresas, kiwi y piña)",
+        ejercicio: "Salchichas de pollo + Espinacas",
+        Merienda: "1 batido (leche de soja, fresas y plátano)",
+        Cena: "Merluza a la plancha con ensalada"
+    },
+    Miércoles: {
+        Desayuno: "Café con leche desnatada + Tostada integral de pavo",
+        Almuerzo: "1 manzana",
+        ejercicio: "Merluza y espárragos verdes a la plancha",
+        Merienda: "Yogur desnatado + 3 nueces",
+        Cena: "Tortilla francesa con pavo, tomate y pepino"
+    },
+    Jueves: {
+        Desayuno: "Café con leche desnatada + Cereales integrales",
+        Almuerzo: "Sandía",
+        ejercicio: "Lentejas (sin chorizo)",
+        Merienda: "1 batido (leche de soja, fresas y plátano)",
+        Cena: "Ensalada de canónigos, pechuga de pavo, pepino y tomate"
+    },
+    Viernes: {
+        Desayuno: "Café con leche desnatada + Tostada integral con queso fresco",
+        Almuerzo: "1 manzana",
+        ejercicio: "Parrillada de verduras con arroz integral",
+        Merienda: "Yogur desnatado + 3 nueces",
+        Cena: "Puré de calabaza + Infusión"
+    },
+    Sábado: {
+        Desayuno: "Café con leche desnatada + Cereales integrales",
+        Almuerzo: "Sandía",
+        ejercicio: "Pollo con patata y zanahoria (al horno)",
+        Merienda: "Tortita de arroz + 2 onzas de chocolate",
+        Cena: "Libre"
+    },
+    Domingo: {
+        Desayuno: "Café con leche desnatada + Tostada integral de pavo",
+        Almuerzo: "1 zumo de naranja",
+        ejercicio: "Dorada al horno + Tomate y pepino",
+        Merienda: "Yogur desnatado + 3 nueces",
+        Cena: "Ensalada tropical (rúcula, kiwi y piña)"
+    }
+};
 
-    const planes = [
-        { tittle: "Pérdida de Peso", img: "/perdidaPeso2.jpg", parrafo: "Programas hipocalóricos estructurados con enfoque en entrenamiento cardiovascular, funcional y de resistencia, orientados a la quema de grasa y mejora del metabolismo basal." },
-        { tittle: "Ganancia Muscular", img: "/masaMuscular.jpg", parrafo: "Rutinas progresivas de sobrecarga con distribución óptima de macronutrientes, enfocadas en la hipertrofia muscular y mejora de la fuerza máxima." },
-        { tittle: "Salud General", img: "/ejercicios_balanceados.jpg", parrafo: "Entrenamientos equilibrados que combinan movilidad, fuerza básica y resistencia aeróbica para mejorar la salud metabólica, la postura y la energía diaria." }
-    ]
+const SportUser = () => {
+    const [diaActivo, setDiaActivo] = useState("Lunes");
 
     return (
         <div className="sport-user container mt-5 ">
+
             <section className="sport-header text-center py-5">
                 <h1 className="display-4">Deporte Personalizado</h1>
                 <p className="lead">
@@ -22,18 +69,36 @@ const SportUser = () => {
                 </p>
             </section>
 
-            <section className="planes my-5">
-                <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
-                <div className="row">
-                    {planes.map((p) => {
-                        return (
-                            <div className="col-md-4">
-                                <CardPlan tittle={p.tittle} img={p.img} parrafo={p.parrafo}></CardPlan>
-                            </div>
-                        )
-                    })}
-                </div>
-            </section>
+      <section className="tabla-sport my-5">
+        <h1 className="text-center subtittle mb-4">Plan Semanal de Ejercicios</h1>
+
+        <div className="button d-flex justify-content-center flex-wrap mb-4">
+          {Object.keys(datosSport).map((dia) => (
+            <button
+              key={dia}
+              onClick={() => setDiaActivo(dia)}
+              className={`btn mx-1 mb-2 ${
+                dia === diaActivo ? "btn-primary" : "btn-outline-primary"
+              }`}
+            >
+              {dia}
+            </button>
+          ))}
+        </div>
+
+        <div className="card p-2">
+          <h2 className="mb-4 text-center">{diaActivo}</h2>
+          <ul className="list-group">
+            {Object.entries(datosSport[diaActivo]).map(
+              ([ejercicio, texto]) => (
+                <li key={ejercicio} className="list-group-item">
+                  <strong>{ejercicio}:</strong> {texto}
+                </li>
+              )
+            )}
+          </ul>
+        </div>
+      </section>
 
             <section className="beneficios my-5">
                 <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>

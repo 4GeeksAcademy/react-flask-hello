@@ -8,7 +8,11 @@ import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import NutricionPage from "./pages/NutricionPage";
+import NutricionUser from "./pages/NutricionUser";
+import NutricionProfesional from "./pages/NutricionProfesional";
 import SportPage from "./pages/SportPage";
+import SportUser from "./pages/SportUser";
+import SportProfesional from "./pages/SportProfesional";
 import Entrenadores from "./pages/Entrenadores";
 import AboutUs from "./pages/AboutUs";
 import Eventos from "./pages/Eventos";
@@ -23,8 +27,7 @@ import PaymentReturn from "./components/paymentReturn";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { PrivatePage } from "./pages/PrivatePage";
-import NutricionUser from "./pages/NutricionUser";
-import NutricionProfesional from "./pages/NutricionProfesional";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +40,8 @@ export const router = createBrowserRouter(
       <Route path="/nutricionUser" element={<NutricionUser />} />
       <Route path="/nutricionProfesional" element={<NutricionProfesional />} />
       <Route path="/sport" element={<SportPage />} />
+      <Route path="/sportUser" element={<SportUser />} />
+      <Route path="/sportProfesional" element={<SportProfesional />} />
       <Route path="/profesionales" element={<Entrenadores />} />
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />

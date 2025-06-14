@@ -141,3 +141,83 @@ body {
   margin-bottom: 0.5rem;
   border-radius: 8px;
 }
+
+/* .tabla-nutricion .btn {
+  min-width: 150px;
+    padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px solid;
+  border-color: #ECEFCA;
+} */
+.button_login {
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px; /* Corregí esto para que sea un valor válido */
+  border-color: #ECEFCA;
+}
+
+/* Estilo para los botones dentro de la tabla nutrición */
+.tabla-nutricion .btn {
+  min-width: 150px;
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.tabla-nutricion .btn:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 20px;
+  border-color: #ECEFCA;
+}
+
+.tabla-nutricion .card {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tabla-nutricion .card {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.tabla-nutricion .list-group-item {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: 1px solid #ECEFCA;
+}
+
+.tabla-nutricion h4 {
+  color: #ECEFCA;
+}

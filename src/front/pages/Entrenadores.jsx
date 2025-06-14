@@ -27,7 +27,7 @@ const Entrenadores = () => {
                 <section className="hero text-center py-5">
                     <h1 className="display-4">Entrenadores</h1>
                 </section>
-
+ 
                 {selectedTrainer && (
                     <>
                         <h1 className="text-center mb-4">Entrenador Seleccionado</h1>

@@ -112,11 +112,91 @@
 
 
 .sport-user .beneficios .list-group-item {
-  background-color: #ECEFCA;
+  background-color: white;
   color: #213448;
   border: none;
   font-size: 1.1rem;
   padding: 0.75rem 1.25rem;
   margin-bottom: 0.5rem;
   border-radius: 8px;
+}
+
+
+.button_login {
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px;
+  border-color: #ECEFCA;
+}
+
+.button_login {
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px;
+  border-color: #ECEFCA;
+}
+
+.tabla-sport .btn {
+  min-width: 150px;
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.tabla-sport .btn:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 20px;
+  border-color: #ECEFCA;
+}
+
+.tabla-sport .card {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tabla-sport .card {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.tabla-sport .list-group-item {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: 1px solid #ECEFCA;
+}
+
+.tabla-sport h4 {
+  color: #ECEFCA;
 }

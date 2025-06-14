@@ -26,7 +26,7 @@ const datosSport = {
         Merienda: "Yogur desnatado + 3 nueces",
         Cena: "Tortilla francesa con pavo, tomate y pepino"
     },
-    Jueves: {
+    Jueves: { 
         Desayuno: "Café con leche desnatada + Cereales integrales",
         Almuerzo: "Sandía",
         ejercicio: "Lentejas (sin chorizo)",

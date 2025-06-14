@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import "../../styles/ProfesoresPage.css";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx"
 
 const ProfesoresPage = () => {
-    const profesor = {
+    const [profesor, setProfesor] = useState ({
         nombre: "Pepe Strong",
         especialidad: "Fuerza / Hipertrofia",
         email: "pepe.strong@gympro.com",
@@ -16,7 +17,16 @@ const ProfesoresPage = () => {
             "Martes y Jueves: 17:00 - 20:00"
         ],
         miembrosAsignados: ["David Vivar", "Sara González", "Leo Martínez"]
-    };
+    });
+
+        const { store, dispatch } = useGlobalReducer()
+    useEffect(() => {
+        if (store.user) {
+            setProfesor(store.user)
+        }
+    }, [])
+   console.log (profesor)
+   console.log (store)
 
     return (
         <div className="perfil-container">
@@ -24,12 +34,12 @@ const ProfesoresPage = () => {
 
             <div className="perfil-card">
                 <div className="columna columna-izquierda">
-                    <p><strong>Nombre:</strong> {profesor.nombre}</p>
-                    <p><strong>Email:</strong> {profesor.email}</p>
-                    <p><strong>Teléfono:</strong> {profesor.telefono}</p>
-                    <p><strong>Dirección:</strong> {profesor.direccion}</p>
-                    <p><strong>Sexo:</strong> {profesor.sexo}</p>
-                    <p><strong>Experiencia:</strong> {profesor.experiencia}</p>
+                    <p><strong>Nombre:</strong> {profesor.nombre||"Falta"}</p>
+                    <p><strong>Email:</strong> {profesor.email||"Falta"}</p>
+                    <p><strong>Teléfono:</strong> {profesor.telefono||"Falta"}</p>
+                    <p><strong>Dirección:</strong> {profesor.direccion||"Falta"}</p>
+                    <p><strong>Sexo:</strong> {profesor.sexo||"Falta"}</p>
+                    <p><strong>Experiencia:</strong> {profesor.experiencia||"Falta"}</p>
                 </div>
 
                 <div className="columna columna-centro">
@@ -41,7 +51,7 @@ const ProfesoresPage = () => {
                     <p><strong>Especialidad:</strong> {profesor.especialidad}</p>
                     <p><strong>Horario:</strong></p>
                     <ul>
-                        {profesor.horario.map((h, i) => <li key={i}>{h}</li>)}
+                        {profesor.horario?.map((h, i) => <li key={i}>{h}</li>)}
                     </ul>
                 </div>
             </div>
@@ -50,7 +60,7 @@ const ProfesoresPage = () => {
                 <div className="seccion">
                     <h2>Miembros asignados</h2>
                     <ul>
-                        {profesor.miembrosAsignados.map((m, i) => <li key={i}>{m}</li>)}
+                        {profesor.miembrosAsignados?.map((m, i) => <li key={i}>{m}</li>)}
                     </ul>
                 </div>
 

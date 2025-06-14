@@ -1,0 +1,58 @@
+.epersonalizado-focuses {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #6382b3 100%);
+  min-height: 100vh;
+  align-items: center;
+  
+}
+
+.epersonalizado-card {
+
+  background-color: #d6cdcd;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(34, 68, 115, 0.1),
+  0 1px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 40%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  backdrop-filter: blur(10px);
+  border : 3px solid  rgba(255, 255, 255, 0.2)
+
+  
+}
+.epersonalizado-card:hover{
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6),
+  0 5px 20px rgba(0, 0, 0, 1);
+  transform: translateY(-8px) scale(1.1);
+
+}
+
+.epersonalizado-card-image img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 1rem 0 0 1rem;
+}
+
+.epersonalizado-card-text {
+  padding: 1rem;
+  flex: 1;
+}
+
+.epersonalizado-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.epersonalizado-description {
+  font-size: 0.95rem;
+  color: #555;
+}

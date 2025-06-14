@@ -5,7 +5,7 @@ import CardPlan from "../components/CardPlan";
 import "../../styles/sportUser.css";
 
 const datosSport = {
-    Lunes: {
+    Lunes: { 
         Desayuno: "Café con leche desnatada + Tostada integral con queso fresco",
         Almuerzo: "Sandía",
         ejercicio: "Arroz integral con tomate triturado y un huevo a la plancha",

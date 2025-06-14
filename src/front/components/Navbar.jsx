@@ -5,7 +5,7 @@ import "../../styles/navbar.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 let items = [
   { name: "Sobre Nosotros", link: "/AboutUs", internal: true },
-  { name: "Profesional", link: "/profesionales", internal: true },
+  { name: "Profesionales", link: "/profesionales", internal: true },
   { name: "Eventos", link: "/Eventos", internal: true },
   {
     name: "Tarifas",

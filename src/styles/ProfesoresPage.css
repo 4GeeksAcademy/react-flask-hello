@@ -133,6 +133,31 @@
     text-align: left;
 }
 
+.botones-perfil {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-borrar {
+  background-color: #b32929;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-borrar:hover {
+  background-color: #ff0000;
+  transform: scale(1.03);
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .perfil-card {

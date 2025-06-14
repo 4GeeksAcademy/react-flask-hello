@@ -84,22 +84,20 @@ function Eventos() {
                         <div className="video-wrapper">
                             <ReactPlayer
                                 url="https://www.youtube.com/watch?v=UycU0OEjMvE"
-                                playing
-                                muted
-                                loop
+                                playing={true}
+                                muted={true}
+                                loop={true}
                                 controls={false}
                                 width="100%"
-                                height="600px"
+                                height="1200px"
+                                style={{ objectFit: 'cover' }}
                                 config={{
                                     youtube: {
                                         playerVars: {
                                             modestbranding: 1,
                                             showinfo: 0,
-                                            rel: 0,
-                                            start: 10,
-                                            end: 501,
-                                            loop: 1,
-                                            playlist: "UycU0OEjMvE"
+                                            rel: 0, start: 10,
+                                            end: 501
                                         }
                                     }
                                 }}

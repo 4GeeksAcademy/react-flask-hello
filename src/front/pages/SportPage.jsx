@@ -5,6 +5,7 @@ import CardPlan from "../components/CardPlan";
 // index.css
 import "../../styles/sport.css";
 
+
 const SportPage = () => {
 
     const planes = [
@@ -21,6 +22,7 @@ const SportPage = () => {
                     Mejora tu salud con planes de deporte adaptados a tus objetivos.
                 </p>
             </section>
+            
 
             <section className="planes my-5">
                 <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>

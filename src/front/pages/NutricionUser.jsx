@@ -89,7 +89,7 @@ const NutricionUser = () => {
           <ul className="list-group">
             {Object.entries(datosNutricion[diaActivo]).map(
               ([comida, texto]) => (
-                <li key={comida} className="list-group-item">
+                <li key={comida} className="list-group-item text-white">
                   <strong>{comida}:</strong> {texto}
                 </li>
               )

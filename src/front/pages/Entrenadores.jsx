@@ -81,9 +81,8 @@ const Entrenadores = () => {
                                             className="btn btn-outline-dark mt-2"
                                             onClick={() => {
                                                 setTrainers(prev => {
-                                                    const updatedList = prev.filter(t => t !== trainer);
-                                                    if (selectedTrainer) updatedList.push(selectedTrainer);
-                                                    return [trainer, ...updatedList];
+                                                    const remainingTrainers = prev.filter(t => t !== trainer);
+                                                    return [trainer, ...remainingTrainers];
                                                 });
                                             }}
                                         >

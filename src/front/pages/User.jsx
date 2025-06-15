@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
@@ -17,10 +17,7 @@ const User = () => {
     imagen: "https://i.pravatar.cc/200?u=david"
   });
 
-  const entrenador = {
-    nombre: "Pepe Strong",
-    imagen: "https://randomuser.me/api/portraits/men/75.jpg"
-  };
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null); // ✅ Hook bien colocado
 
   const historial = [
     "Se apuntó al evento 'Yoga al aire libre' - 1 junio",
@@ -41,6 +38,19 @@ const User = () => {
     if (store.user) {
       setUsuario(store.user);
     }
+
+    // Fetch del entrenador seleccionado
+    const fetchEntrenador = async () => {
+      try {
+        const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador");
+        const data = await res.json();
+        setEntrenadorSeleccionado(data);
+      } catch (error) {
+        console.error("Error al obtener entrenador:", error);
+      }
+    };
+
+    fetchEntrenador();
   }, [store.user]);
 
   const handleDelete = () => {
@@ -93,9 +103,36 @@ const User = () => {
       {/* Secciones inferiores */}
       <div className="secciones-inferiores">
         <div className="seccion">
-          <h2>Entrenador</h2>
-          <img src={entrenador.imagen} alt="Entrenador" className="entrenador-img" />
-          <p className="entrenador-nombre">{entrenador.nombre}</p>
+          <h2>
+            {entrenadorSeleccionado
+              ? entrenadorSeleccionado.nombre
+              : "Entrenador"}
+          </h2>
+          {entrenadorSeleccionado ? (
+            <>
+              <img
+                src={entrenadorSeleccionado.image}
+                alt="Entrenador"
+                className="entrenador-img"
+              />
+              <div className="btn-entrenador-wrapper">
+                <Link
+                  to={`/entrenadores/${entrenadorSeleccionado.nombre
+                    .toLowerCase()
+                    .replace(/ /g, "-")}`}
+                  className="btn-entrenador-link"
+                >
+                  {entrenadorSeleccionado.nombre}
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="btn-entrenador-wrapper">
+              <Link to="/profesionales" className="btn-entrenador-link">
+                Ver entrenadores
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="seccion">

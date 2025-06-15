@@ -79,12 +79,26 @@ const Entrenadores = () => {
                                     <div className="text-center">
                                         <button
                                             className="btn btn-outline-dark mt-2"
-                                            onClick={() => {
-                                                setTrainers(prev => {
-                                                    const remainingTrainers = prev.filter(t => t !== trainer);
-                                                    return [trainer, ...remainingTrainers];
-                                                });
+                                            onClick={async () => {
+                                                try {
+                                                    // Simula guardar el entrenador seleccionado en el backend
+                                                    await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador", {
+                                                        method: "PUT",
+                                                        headers: {
+                                                            "Content-Type": "application/json"
+                                                        },
+                                                        body: JSON.stringify(trainer)
+                                                    });
+
+                                                    setTrainers(prev => {
+                                                        const remainingTrainers = prev.filter(t => t !== trainer);
+                                                        return [trainer, ...remainingTrainers];
+                                                    });
+                                                } catch (error) {
+                                                    console.error("Error al guardar entrenador:", error);
+                                                }
                                             }}
+
                                         >
                                             Solicitar
                                         </button>

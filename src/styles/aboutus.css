@@ -4,6 +4,11 @@
   overflow: hidden;
   position: relative;
 }
+
+h2 {
+  color:#ECEFCA !important;
+}
+
 .video-wrapper > div {
   position: absolute !important;
   top: 50%;

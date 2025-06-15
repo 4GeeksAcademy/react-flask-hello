@@ -21,6 +21,8 @@
   gap: 2rem;
 }
 
+
+
 .columna {
   flex: 1;
   min-width: 250px;
@@ -157,6 +159,37 @@
   background-color: #ff0000;
   transform: scale(1.03);
 }
+
+h2{
+  color: #2a3d4d !important;
+}
+
+.btn-entrenador-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-entrenador-link {
+  background-color: #2a3d4d;
+  color: #ecefca;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease, border 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-entrenador-link:hover {
+  background-color: #ecefca;
+  color: #2a3d4d;
+  transform: scale(1.03);
+  border: 2px solid #2a3d4d;
+}
+
 
 
 /* ✅ Media queries bien cerradas */

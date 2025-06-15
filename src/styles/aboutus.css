@@ -5,11 +5,6 @@
   position: relative;
 }
 
-h2 {
-  color:#ECEFCA !important;
-  background-color: #213448;
-}
-
 .video-wrapper > div {
   position: absolute !important;
   top: 50%;

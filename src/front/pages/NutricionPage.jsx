@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar } from "../components/Navbar";
+
 import CardPlan from "../components/CardPlan";
 
 // index.css
@@ -10,9 +10,9 @@ import "../../styles/nutricion.css";
 const NutricionPage = () => {
 
   const planes = [
-    { tittle: "Plan de Pérdida de Peso", img: "/perdidaPeso.webp", parrafo: "Menús bajos en calorías con todos los nutrientes esenciales." },
-    { tittle: "Plan Ganancia Muscular", img: "/gananciaMuscular.jpg", parrafo: "Alta ingesta proteica y planificación para el crecimiento muscular." },
-    { tittle: "Plan Salud General", img: "/saludGeneral.jpg", parrafo: "Nutrición balanceada para sentirte bien cada día." }
+    { tittle: "Pérdida de Peso", img: "/perdidaPeso.webp", parrafo: "Planes nutricionales hipocalóricos con control de macronutrientes, priorizando saciedad, densidad nutricional y mantenimiento de masa magra." },
+    { tittle: "Ganancia Muscular", img: "/gananciaMuscular.jpg", parrafo: "Protocolos hipercalóricos con alto contenido proteico, tiempos de comida estratégicos y enfoque en anabolismo muscular sostenido." },
+    { tittle: "Salud General", img: "/saludGeneral.jpg", parrafo: "Dieta normocalórica con adecuada distribución de macro y micronutrientes, enfocada en salud digestiva, inmunológica y energética." }
   ]
 
   return (
@@ -46,6 +46,7 @@ const NutricionPage = () => {
           <li className="list-group-item">📊 Seguimiento de resultados</li>
         </ul>
       </section>
+
     </div>
   );
 };

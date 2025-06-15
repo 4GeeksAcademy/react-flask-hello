@@ -1,57 +1,50 @@
-.entrenador-page .hero {
-  background-image: url("/personal-trainer.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  position: relative;
-  color: white;
-  margin-top: 0;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+.fondo {
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.hero h1 {
+    color: white;
+    font-weight: bold;
+}
+
+.trainer-profile ul {
+    padding-left: 1.2rem;
+}
+
+.trainer-card-1 {
+    background-color: #e6eac2;
+    border-radius: 16px;
+    color: #213448;
 }
 
 .trainer-img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.p {
-  background: black;
+.btn-outline-dark {
+    border-color: #213448;
+    color: #213448;
 }
 
-.trainer-card-1,
-.trainer-card_1 {
-  background-color: #ecefca;
+.btn-outline-dark:hover {
+    background-color: #213448;
+    color: #fff;
+    border-color: #213448;
 }
 
-body {
-  background: #213448;
-  color: #ecefca;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+.text-black {
+    color: #213448 !important;
 }
 
-.entrenador-page {
-  padding-top: 150px;
+.card h5 {
+    color: #213448;
+    font-weight: bold;
 }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-  margin-bottom: 0;
-  background: #213448;
-}
-
-.logo-navbar {
-  height: 90px;
-  object-fit: contain;
+.shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }

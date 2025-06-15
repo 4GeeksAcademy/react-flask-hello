@@ -1,14 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/navbar.css";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+let items = [
+  { name: "Sobre Nosotros", link: "/AboutUs", internal: true },
+  { name: "Profesionales", link: "/profesionales", internal: true },
+  { name: "Eventos", link: "/Eventos", internal: true },
+  {
+    name: "Tarifas",
+    link: "/Tarifas",
+    internal: true,
+  },
+  {
+    name: "Nutricion",
+    link: "/nutricion",
+    internal: true,
+  },
+  {
+    name: "Deporte",
+    link: "/sport",
+    internal: true,
+  },
 
+  { name: "Login", link: "/login", internal: true },
+];
 export const Navbar = () => {
+  const [menuItems, setMenuItems] = useState(items);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(0);
   const navbarRef = useRef(null);
+  const { store, dispatch } = useGlobalReducer()
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log("Store user changed:", store.user);
+
+    if (store.user != null && !menuItems.includes(item => item.name === "Login")) {
+      let aux = [...menuItems]
+      aux.push({ name: "Perfil", link: "/user", internal: true }, { name: "Logout" });
+      const upd = aux.filter(item => item.name !== "Login");
+      store.user.is_professional && upd.splice(upd.length-1, 0, { name: "Profesor", link: "/pUser", internal: true });
+      setMenuItems(upd);
+    }
+
+  }, [store.user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,27 +82,21 @@ export const Navbar = () => {
         DMPC<span className="logo-highlight">ProFit</span>
       </>
     ),
-    url: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/",
+    url: "/",
   };
 
-  const menuItems = [
-    { name: "Sobre Nosotros", link: "#" },
-    {
-      name: "Nutricion",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/nutricion",
-    },
-    {
-      name: "Deporte",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/sport",
-    },
-    {
-      name: "Profesional",
-      link: "https://ubiquitous-disco-r4pjvwprwv4rhwjjj-3000.app.github.dev/entrenadores",
-    },
-    { name: "Loging", link: "#" },
-  ];
+
+  const handleLogout = () => { 
+    console.log("Logging out...");
+    console.log(items);
+    
+    setMenuItems(prev => prev=items);
+    dispatch({ type: "logout" })
+    navigate("/");
+  }
 
   return (
+
     <>
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }}></div>
       <div style={{ height: `${navbarHeight}px` }}></div>
@@ -77,18 +109,21 @@ export const Navbar = () => {
         }}
       >
         <div className="logo">
-          <a
-            href={logoLink.url}
+
+          <Link
+            to={logoLink.url}
             className="logo-text"
-            rel="noopener noreferrer"
+
           >
             {logoLink.name}
-          </a>
+          </Link>
         </div>
 
         <ul
           className={`menu ${isMobile ? "mobile" : ""} ${mobileMenuOpen ? "open" : ""}`}
         >
+     
+
           {menuItems.map((item, index) => (
             <li
               key={index}
@@ -96,13 +131,29 @@ export const Navbar = () => {
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
-              <a href={item.link} className="menu-link">
-                {item.name}
-                <span
-                  className="menu-link-after"
-                  style={{ width: hoverIndex === index ? "100%" : "0%" }}
-                ></span>
-              </a>
+              {item.internal ? (
+                <Link to={item.link} className="menu-link">
+                  {item.name}
+                  <span
+                    className="menu-link-after"
+                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
+                  ></span>
+                </Link>
+              ) : (
+                <a
+                  href={item.link}
+                  className="menu-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => item.name === "Logout" && handleLogout()}
+                >
+                  {item.name}
+                  <span
+                    className="menu-link-after"
+                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
+                  ></span>
+                </a>
+              )}
             </li>
           ))}
         </ul>

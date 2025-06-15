@@ -1,11 +1,20 @@
-.yellow-border {
-  background: linear-gradient(135deg, #ECEFCA);
-  box-shadow: #ECEFCA;
-  padding: 6px;
-  border-radius: 24px;
-  box-shadow: 0 0 15px 10px #ECEFCA; /* inicial */
-}
 
 .carousel-caption{
-    background: rgba(0, 0, 0, 0.500);
+    background: #3851669f;
+}
+
+.button1{
+  color: black;
+}
+h6{
+  color: #ECEFCA;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #385166;       
+  border-radius: 50%;          
+  padding: 20px;                 
+  background-size: 100% 100%;     
+  background-repeat: no-repeat;
 }

@@ -48,7 +48,7 @@ const User = () => {
     if (confirmacion) {
       dispatch({ type: "BORRAR_USUARIO" });
       setUsuario(null);
-      navigate("/"); // Redirigir a la página principal
+      navigate("/");
     }
   };
 

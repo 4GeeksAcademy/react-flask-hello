@@ -18,7 +18,7 @@ const Entrenadores = () => {
 
         fetchTrainers();
     }, []);
-
+ 
     const selectedTrainer = trainers[0];
     const otherTrainers = trainers.slice(1);
 

@@ -19,11 +19,14 @@ class User(db.Model):
     peso: Mapped[float] = mapped_column(Float, nullable=True)
     altura: Mapped[float] = mapped_column(Float,  nullable=True)
     objetivo: Mapped[str] = mapped_column(Text, nullable=True)
+    sexo: Mapped[str] = mapped_column(String(20), nullable=True)
+    imagen: Mapped[str] = mapped_column(String(255), nullable=True)
+    direccion: Mapped[str] = mapped_column(String(200), nullable=True)
     # campos de professional:
     is_professional: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    telefono: Mapped[str] = mapped_column(String(120), nullable=True) 
+    telefono: Mapped[int] = mapped_column(Integer, nullable=True) 
     profession_type: Mapped[str] = mapped_column(String(120), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
-    experiencia: Mapped[int] = mapped_column(Integer, default=0)
+    experiencia: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
     # relaciones:
     events_created = relationship('Event', back_populates='creator')
     event_signups = relationship('EventSignup', back_populates='user') # tabla de relacion
@@ -43,11 +46,14 @@ class User(db.Model):
             "peso": self.peso,
             "altura": self.altura,
             "objetivo": self.objetivo,
-            "is_professional": self.is_professional
+            "sexo": self.sexo,
+            "imagen": self.imagen,
+            "direccion": self.direccion,
+            "is_professional": self.is_professional,
+            "telefono": self.telefono
         }
         if self.profession_type:
             data.update({
-                "telefono": self.telefono,
                 "profession_type": self.profession_type,
                 "experiencia_años": self.experiencia
             })

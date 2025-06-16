@@ -28,6 +28,11 @@
   min-width: 250px;
 }
 
+.perfil-container h2 {
+  color: #2a3d4d !important;
+}
+
+
 .columna-centro {
   display: flex;
   flex-direction: column;

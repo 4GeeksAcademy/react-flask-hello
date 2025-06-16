@@ -9,8 +9,6 @@ const Entrenadores = () => {
             try {
                 const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/professionals");
                 const data = await response.json();
-
-                // Filtrar solo los profesionales
                 const onlyProfessionals = data.filter(user => user.is_professional === true);
                 setTrainers(onlyProfessionals);
             } catch (error) {
@@ -20,7 +18,7 @@ const Entrenadores = () => {
 
         fetchTrainers();
     }, []);
-
+ 
     const selectedTrainer = trainers[0];
     const otherTrainers = trainers.slice(1);
 
@@ -51,9 +49,6 @@ const Entrenadores = () => {
                                     <p className="text-black">
                                         <strong>Especialidad:</strong><br />{selectedTrainer.datos}
                                     </p>
-                                    <p className="text-black">
-                                        <strong>Títulos:</strong><br />{selectedTrainer.titulos}
-                                    </p>
                                 </div>
                                 <button className="btn btn-outline-dark">Seleccionado</button>
                             </div>
@@ -73,7 +68,6 @@ const Entrenadores = () => {
                                             <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre} {trainer.apellido}</p>
                                             <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
                                             <p className="text-black"><strong>Especialidad:</strong><br />{trainer.datos}</p>
-                                            <p className="text-black"><strong>Títulos:</strong><br />{trainer.titulos}</p>
                                         </div>
                                     </div>
                                     <div className="text-center">

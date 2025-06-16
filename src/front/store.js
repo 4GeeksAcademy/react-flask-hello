@@ -53,7 +53,23 @@ export default function storeReducer(store, action = {}) {
         ...store,
         todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
       };
+
+    case 'ACTUALIZAR_USUARIO': 
+      return {
+        ...store,
+        user:action.payload
+      };
+
+    case 'BORRAR_USUARIO':
+      return {
+        ...store,
+        user:null
+      };
+
+      
     default:
       throw Error('Unknown action.');
+
   }    
 }
+

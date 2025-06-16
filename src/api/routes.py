@@ -20,7 +20,6 @@ api = Blueprint('api', __name__)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 # Allow CORS requests to this API
-CORS(api)
 bcrypt = Bcrypt()
 
 # USERS
@@ -30,6 +29,16 @@ bcrypt = Bcrypt()
 def list_users():
     users = User.query.all()
     return jsonify([u.serialize() for u in users]), 200
+
+
+@api.route('/users/me', methods=['GET'])
+@jwt_required()
+def current_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    return jsonify(user.serialize()), 200
 
 
 @api.route('/users/<int:user_id>', methods=['GET'])
@@ -45,18 +54,19 @@ def create_user():
     data = request.get_json() or {}
     required = ('nombre', 'email', 'password', 'account_type')
     if not all(f in data for f in required):
-        raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
-    hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
+        raise APIException(
+            f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+    hashed_password = bcrypt.generate_password_hash(
+        data["password"]).decode("utf-8")
 
     account_type = data['account_type'].lower()
-    if account_type not in['cliente', 'entrenador', 'nutricionista']:
-        raise APIException("account_type debe ser: 'cliente', 'entrenador' o 'nutricionista'", status_code=400)
-    
+    if account_type not in ['cliente', 'entrenador', 'nutricionista']:
+        raise APIException(
+            "account_type debe ser: 'cliente', 'entrenador' o 'nutricionista'", status_code=400)
+
     is_professional = account_type in ['entrenador', 'nutricionista']
     profession_type = account_type if is_professional else None
 
-
-    
     user = User(
         email=data['email'],
         password=hashed_password,
@@ -84,24 +94,31 @@ def update_user():
     data = request.get_json() or {}
     updatable = (
         'nombre', 'email', 'password', 'is_active',
-        'peso', 'altura', 'objetivo',
-        'telefono', 'profession_type', 'experiencia_anios'
+        'peso', 'altura', 'objetivo', 'apellido', 'imagen', 'sexo',
+        'telefono', 'profession_type', 'experiencia', 'direccion'
     )
     if not any(field in data for field in updatable):
         raise APIException(
             f"No hay campos validos para actualizar", status_code=400)
     for field in updatable:
         if field in data:
-            setattr(user, field, data[field])
+            if data[field] is not None or data[field] != 0:
+                setattr(user, field, data[field])
+               
+            else:
+                data[field]= 0
+                setattr(user, field, data[field])
     db.session.commit()
     return jsonify(user.serialize()), 200
 
 
-@api.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
+@api.route('/users', methods=['DELETE'])
+@jwt_required()
+def delete_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
     if not user:
-        abort(404, description="usuario no encontado")
+        abort(404, description="Usuario no encontrado")
     db.session.delete(user)
     db.session.commit()
     return '', 204
@@ -787,6 +804,7 @@ def login():
 
 # ruta protegida
 
+
 @api.route('/private', methods=['GET'])
 @jwt_required()
 def get_user_inf():
@@ -829,6 +847,8 @@ def get_user_inf():
 #         token = create_access_token(identity=str(new_user.id))
 
 #         return jsonify({"msg": "register ok", "token": token, "success": True}), 201
+
+
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -861,7 +881,6 @@ def register():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
     except Exception as e:
         print(e)

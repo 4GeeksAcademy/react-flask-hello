@@ -13,7 +13,7 @@ const SportUser = () => {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const response = await fetch("/api/plan"); // Se tendria que meter la URL de la bd
+        const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3000.app.github.dev/api/plan"); // Se tendria que meter la URL de la bd
         if (!response.ok) throw new Error("Error al obtener los datos");
         const data = await response.json();
         setPlanSemanal(data);

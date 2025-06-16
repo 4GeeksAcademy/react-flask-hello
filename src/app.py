@@ -25,7 +25,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 CORS(app, 
      resources={r"/api/*": {
-         "origins": "https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3000.app.github.dev",
+         "origins": "*",
          "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
          "allow_headers": ["Content-Type", "Authorization"],
          "supports_credentials": True

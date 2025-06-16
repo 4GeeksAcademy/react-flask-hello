@@ -35,14 +35,6 @@ const SportProfesional = () => {
                 </div>
             </section>
 
-            <section className="beneficios my-5">
-                <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
-                <ul className="list-group list-group-flush caja-bot">
-                    <li className="list-group-item">🏋️ Asesoramiento personalizado</li>
-                    <li className="list-group-item">🏃 Rutinas adaptadas a tu nivel</li>
-                    <li className="list-group-item">📈 Progreso monitorizado</li>
-                </ul>
-            </section>
 
         </div>
     );

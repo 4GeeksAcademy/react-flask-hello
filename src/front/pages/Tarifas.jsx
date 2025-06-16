@@ -6,6 +6,8 @@ const Tarifas = () => {
 
   const { tipo } = useParams();
   const [eleccionSeleccionada, setEleccionSeleccionada] = useState(null);
+  const imagenPorDefecto = "https://img.freepik.com/fotos-premium/pareja-deportiva-relajarse-mostrador-bar-gimnasio-despues-entrenamiento-fisico_266732-28571.jpg";
+
 
   const opciones = [
     {
@@ -49,35 +51,41 @@ const Tarifas = () => {
     }
   }, [tipo]);
 
-  return (
-    <div className="tarifas-container">
-      <h1 className="titulo-tarifas">Tarifas</h1>
+return (
+  <div className="tarifas-container">
+    <h1 className="titulo-tarifas">Tarifas</h1>
 
-      <div className="grid-opciones">
-        {opciones.map((plan, i) => (
-          <div
-            key={i}
-            className={`opciones-item ${eleccionSeleccionada?.id === plan.id ? "activo" : ""}`}
-            onClick={() => setEleccionSeleccionada(plan)}
-          >
-            {plan.nombre}
-          </div>
-        ))}
-      </div>
-
-      {eleccionSeleccionada && (
-        <div className="detalle-opciones">
-          <h2>{eleccionSeleccionada.nombre}</h2>
-          <div className="imagenes-grid">
-            {eleccionSeleccionada.imagenes.map((img, i) => (
-              <img key={i} src={img} alt={`Imagen ${i + 1}`} />
-            ))}
-          </div>
-          <p>{eleccionSeleccionada.descripcion}</p>
+    <div className="grid-opciones">
+      {opciones.map((plan, i) => (
+        <div
+          key={i}
+          className={`opciones-item ${eleccionSeleccionada?.id === plan.id ? "activo" : ""}`}
+          onClick={() => setEleccionSeleccionada(plan)}
+        >
+          {plan.nombre}
         </div>
-      )}
+      ))}
     </div>
-  );
+
+    {!eleccionSeleccionada && (
+      <div className="imagen-por-defecto">
+        <img src={imagenPorDefecto} alt="Imagen por defecto" />
+      </div>
+    )}
+
+    {eleccionSeleccionada && (
+      <div className="detalle-opciones">
+        <h2>{eleccionSeleccionada.nombre}</h2>
+        <div className="imagenes-grid">
+          {eleccionSeleccionada.imagenes.map((img, i) => (
+            <img key={i} src={img} alt={`Imagen ${i + 1}`} />
+          ))}
+        </div>
+        <p>{eleccionSeleccionada.descripcion}</p>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Tarifas;

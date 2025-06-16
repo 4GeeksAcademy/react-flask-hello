@@ -26,6 +26,11 @@
   min-width: 250px;
 }
 
+.perfil-container h2 {
+  color: #2a3d4d !important;
+}
+
+
 .columna-centro {
   display: flex;
   flex-direction: column;
@@ -157,6 +162,20 @@
   background-color: #ff0000;
   transform: scale(1.03);
 }
+
+.secciones-fila {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+}
+
+.seccion a {
+  text-decoration: none;
+}
+
+
 
 
 /* ✅ Media queries bien cerradas */

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Link } from "react-router-dom";
 
 
 const User = () => {
@@ -77,7 +76,7 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users/", {
+      const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users", {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",

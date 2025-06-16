@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { Link } from "react-router-dom";
+
+
 const User = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [usuario, setUsuario] = useState({});
   const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
+
   const limpiarDatos = (datos) => {
     return {
       ...datos,
@@ -15,20 +19,21 @@ const User = () => {
       experiencia: datos.experiencia ? parseInt(datos.experiencia) : 0
     };
   };
-  const entrenador = {
-    nombre: "Pepe Strong",
-    imagen: "https://randomuser.me/api/portraits/men/75.jpg"
-  };
+
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null); // ✅ Hook bien colocado
+
   const historial = [
     "se apunto al evennto 'yoga al aire libre'",
     "Entreno fuerza en el gimnasio",
     "Asistió a clase de Boxeo"
   ];
+
   const membresia = {
     tipo: "premium",
     duracion: "6 meses",
     inicio: "1 de mayo del 2025"
   };
+
   useEffect(() => {
     if (store.user) {
       const user = store.user;
@@ -39,10 +44,25 @@ const User = () => {
         experiencia: user.experiencia !== null ? String(user.experiencia) : ""
       });
     }
+
+    // Fetch del entrenador seleccionado
+    const fetchEntrenador = async () => {
+      try {
+        const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador");
+        const data = await res.json();
+        setEntrenadorSeleccionado(data);
+      } catch (error) {
+        console.error("Error al obtener entrenador:", error);
+      }
+    };
+
+    fetchEntrenador();
   }, [store.user]);
+
   const handleChange = (e) => {
     setUsuario({ ...usuario, [e.target.name]: e.target.value });
   };
+
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -76,6 +96,7 @@ const User = () => {
       alert("Hubo un error al guardar los cambios");
     }
   };
+
   const handleDelete = async () => {
     const confirmacion = window.confirm("¿Estás seguro que deseas borrar tu perfil?");
     if (!confirmacion) return;
@@ -97,6 +118,7 @@ const User = () => {
       alert("No se pudo eliminar el perfil");
     }
   };
+
   if (!usuario) {
     return (
       <div className="perfil-container">
@@ -105,6 +127,7 @@ const User = () => {
       </div>
     );
   }
+
   return (
     <div className="perfil-container">
       <h1 className="perfil-titulo">Perfil del Usuario</h1>
@@ -164,7 +187,7 @@ const User = () => {
                   onChange={handleChange}
                 />
               ) : (
-                `${usuario[campo] || "Falta"}${campo === "altura" ? "cm" : campo === "peso" ? "kg" : ""}`
+                `${usuario[campo] || "Falta"}`
               )}
             </p>
           ))}
@@ -185,19 +208,49 @@ const User = () => {
           ))}
         </div>
       </div>
+
       {/* Secciones inferiores */}
       <div className="secciones-inferiores">
         <div className="seccion">
-          <h2>Entrenador</h2>
-          <img src={entrenador.imagen} alt="Entrenador" className="entrenador-img" />
-          <p className="entrenador-nombre">{entrenador.nombre}</p>
+          <h2>
+            {entrenadorSeleccionado
+              ? entrenadorSeleccionado.nombre
+              : "Entrenador"}
+          </h2>
+          {entrenadorSeleccionado ? (
+            <>
+              <img
+                src={entrenadorSeleccionado.image}
+                alt="Entrenador"
+                className="entrenador-img"
+              />
+              <div className="btn-entrenador-wrapper">
+                <Link
+                  to={`/entrenadores/${entrenadorSeleccionado.nombre
+                    .toLowerCase()
+                    .replace(/ /g, "-")}`}
+                  className="btn-entrenador-link"
+                >
+                  {entrenadorSeleccionado.nombre}
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="btn-entrenador-wrapper">
+              <Link to="/profesionales" className="btn-entrenador-link">
+                Ver entrenadores
+              </Link>
+            </div>
+          )}
         </div>
+
         <div className="seccion">
           <h2>Historial de Actividad</h2>
           <ul>
             {historial.map((item, i) => <li key={i}>{item}</li>)}
           </ul>
         </div>
+
         <div className="seccion">
           <h2>Membresía</h2>
           <p><strong>Tipo:</strong> {membresia.tipo}</p>
@@ -208,4 +261,5 @@ const User = () => {
     </div>
   );
 };
+
 export default User;

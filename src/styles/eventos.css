@@ -126,6 +126,16 @@
   color: white;
 }
 
+.mapa-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.mapa-container > * {
+  display: inline-block;
+}
+
+
 
 /* Responsive para móvil */
 @media (max-width: 768px) {

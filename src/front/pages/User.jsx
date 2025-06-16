@@ -2,56 +2,101 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-
 const User = () => {
-  const [usuario, setUsuario] = useState({
-    nombre: "Susana",
-    apellidos: "Susanita",
-    email: "susanita98@example.com",
-    telefono: "+34 600 123 456",
-    direccion: "Calle Ficticia 123, Madrid",
-    sexo: "Femenino",
-    objetivo: "Ganar masa muscular",
-    altura: 170,
-    peso: 73,
-    imagen: "https://i.pravatar.cc/200?u=david"
-  });
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [usuario, setUsuario] = useState({});
+  const { store, dispatch } = useGlobalReducer();
+  const navigate = useNavigate();
+  const limpiarDatos = (datos) => {
+    return {
+      ...datos,
+      peso: datos.peso ? parseFloat(datos.peso.replace(", ", ".").replace("'", ".")) : null,
+      altura: datos.altura ? parseFloat(datos.altura.replace(", ", ".").replace("'", ".")) : null,
+      experiencia: datos.experiencia ? parseInt(datos.experiencia) : 0
+    };
+  };
   const entrenador = {
     nombre: "Pepe Strong",
     imagen: "https://randomuser.me/api/portraits/men/75.jpg"
   };
-
   const historial = [
-    "Se apuntó al evento 'Yoga al aire libre' - 1 junio",
-    "Entrenó fuerza en gimnasio - 30 mayo",
-    "Asistió a clase de boxeo - 28 mayo"
+    "se apunto al evennto 'yoga al aire libre'",
+    "Entreno fuerza en el gimnasio",
+    "Asistió a clase de Boxeo"
   ];
-
   const membresia = {
-    tipo: "Premium",
+    tipo: "premium",
     duracion: "6 meses",
-    inicio: "1 de mayo de 2025"
+    inicio: "1 de mayo del 2025"
   };
-
-  const { store, dispatch } = useGlobalReducer();
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (store.user) {
-      setUsuario(store.user);
+      const user = store.user;
+      setUsuario({
+        ...user,
+        peso: user.peso !== null ? String(user.peso) : "",
+        altura: user.altura !== null ? String(user.altura) : "",
+        experiencia: user.experiencia !== null ? String(user.experiencia) : ""
+      });
     }
   }, [store.user]);
-
-  const handleDelete = () => {
-    const confirmacion = window.confirm("¿Estás seguro de que quieres borrar tu perfil?");
-    if (confirmacion) {
+  const handleChange = (e) => {
+    setUsuario({ ...usuario, [e.target.name]: e.target.value });
+  };
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const camposValidos = [
+        "nombre", "apellido", "email", "telefono", "direccion", "sexo",
+        "imagen", "objetivo", "peso", "altura", "experiencia", "is_active"
+      ];
+      const datosLimpios = limpiarDatos(usuario);
+      const payload = {};
+      for (const campo of camposValidos) {
+        if (datosLimpios[campo] !== undefined) {
+          payload[campo] = datosLimpios[campo];
+        }
+      }
+      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev/api/users", {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Error al guardar");
+      const updateUser = await res.json();
+      setUsuario(updateUser);
+      dispatch({ type: "ACTUALIZAR_USUARIO", payload: updateUser });
+      setIsEditing(false);
+      alert("Perfil actualizado");
+    } catch (err) {
+      console.error(err);
+      alert("Hubo un error al guardar los cambios");
+    }
+  };
+  const handleDelete = async () => {
+    const confirmacion = window.confirm("¿Estás seguro que deseas borrar tu perfil?");
+    if (!confirmacion) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev/api/users", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Error al borrar el perfil");
+      localStorage.removeItem("token");
       dispatch({ type: "BORRAR_USUARIO" });
       setUsuario(null);
       navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar el perfil");
     }
   };
-
   if (!usuario) {
     return (
       <div className="perfil-container">
@@ -60,36 +105,86 @@ const User = () => {
       </div>
     );
   }
-
   return (
     <div className="perfil-container">
       <h1 className="perfil-titulo">Perfil del Usuario</h1>
-
       <div className="perfil-card">
         <div className="columna columna-izquierda">
-          <p><strong>Nombre:</strong> {usuario.nombre || "Falta"}</p>
-          <p><strong>Apellidos:</strong> {usuario.apellidos || "Falta"}</p>
-          <p><strong>Email:</strong> {usuario.email || "Falta"}</p>
-          <p><strong>Teléfono:</strong> {usuario.telefono || "Falta"}</p>
-          <p><strong>Dirección:</strong> {usuario.direccion || "Falta"}</p>
-          <p><strong>Sexo:</strong> {usuario.sexo || "Falta"}</p>
+          {["nombre", "apellido", "email", "telefono", "direccion", "sexo"].map((campo) => (
+            <p key={campo}>
+              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}</strong>{" "}
+              {isEditing ? (
+                <input
+                  type="text"
+                  name={campo}
+                  value={usuario[campo] || ""}
+                  onChange={handleChange}
+                />
+              ) : (
+                usuario[campo] || "Falta"
+              )}
+            </p>
+          ))}
         </div>
-
         <div className="columna columna-centro">
-          <img src={usuario.imagen} alt="Foto del usuario" />
+          {isEditing ? (
+            <input
+              type="text"
+              name="imagen"
+              value={usuario.imagen || ""}
+              onChange={handleChange}
+              placeholder="URL imagen"
+            />
+          ) : (
+            <img src={usuario.imagen || "https://i.pravatar.cc/200"} alt="foto del usuario" />
+          )}
           <div className="botones-perfil">
-            <button className="btn-editar">Editar datos</button>
-            <button className="btn-borrar" onClick={handleDelete}>Borrar perfil</button>
+            {isEditing ? (
+              <>
+                <button className="btn-guardar" onClick={handleSave}>Guardar</button>
+                <button className="btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
+              </>
+            ) : (
+              <>
+                <button className="btn-editar" onClick={() => setIsEditing(true)}>Editar datos</button>
+                <button className="btn-borrar" onClick={handleDelete}>Borrar perfil</button>
+              </>
+            )}
           </div>
         </div>
-
         <div className="columna columna-derecha">
-          <p><strong>Objetivo:</strong> {usuario.objetivo}</p>
-          <p><strong>Altura:</strong> {usuario.altura} cm</p>
-          <p><strong>Peso:</strong> {usuario.peso} kg</p>
+          {["objetivo"].map((campo) => (
+            <p key={campo}>
+              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
+              {isEditing ? (
+                <input
+                  type="text"
+                  name={campo}
+                  value={usuario[campo] || ""}
+                  onChange={handleChange}
+                />
+              ) : (
+                `${usuario[campo] || "Falta"}${campo === "altura" ? "cm" : campo === "peso" ? "kg" : ""}`
+              )}
+            </p>
+          ))}
+          {["altura", "peso"].map((campo) => (
+            <p key={campo}>
+              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
+              {isEditing ? (
+                <input
+                  type="number"
+                  name={campo}
+                  value={usuario[campo] || ""}
+                  onChange={handleChange}
+                />
+              ) : (
+                `${usuario[campo] || "Falta"}${campo === "altura" ? "cm" : campo === "peso" ? "kg" : ""}`
+              )}
+            </p>
+          ))}
         </div>
       </div>
-
       {/* Secciones inferiores */}
       <div className="secciones-inferiores">
         <div className="seccion">
@@ -97,14 +192,12 @@ const User = () => {
           <img src={entrenador.imagen} alt="Entrenador" className="entrenador-img" />
           <p className="entrenador-nombre">{entrenador.nombre}</p>
         </div>
-
         <div className="seccion">
           <h2>Historial de Actividad</h2>
           <ul>
             {historial.map((item, i) => <li key={i}>{item}</li>)}
           </ul>
         </div>
-
         <div className="seccion">
           <h2>Membresía</h2>
           <p><strong>Tipo:</strong> {membresia.tipo}</p>
@@ -115,5 +208,4 @@ const User = () => {
     </div>
   );
 };
-
 export default User;

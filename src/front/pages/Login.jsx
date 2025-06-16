@@ -24,6 +24,10 @@ const Login = () => {
         userServices.login(formData).then(data => {
             if (data.success) {
                 dispatch({type: "login_register", payload: data})
+                if (data.user.is_professional){
+                    navigate("/pUser")
+                    return
+                }
                 navigate('/user');
             } else {
                 setError("Correo o contraseña incorrectos.");

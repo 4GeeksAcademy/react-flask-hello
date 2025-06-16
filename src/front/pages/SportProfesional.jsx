@@ -3,10 +3,9 @@ import { Navbar } from "../components/Navbar";
 import CardPlan from "../components/CardPlan";
 
 // index.css
-import "../../styles/sport.css";
+import "../../styles/sportProfesional.css";
 
-
-const SportPage = () => {
+const SportProfesional = () => {
 
     const planes = [
         { tittle: "Pérdida de Peso", img: "/perdidaPeso2.jpg", parrafo: "Programas hipocalóricos estructurados con enfoque en entrenamiento cardiovascular, funcional y de resistencia, orientados a la quema de grasa y mejora del metabolismo basal." },
@@ -15,14 +14,13 @@ const SportPage = () => {
     ]
 
     return (
-        <div className="sport-page container mt-5 ">
+        <div className="sport-profesional container mt-5 ">
             <section className="sport-header text-center py-5">
                 <h1 className="display-4">Deporte Personalizado</h1>
                 <p className="lead">
                     Mejora tu salud con planes de deporte adaptados a tus objetivos.
                 </p>
             </section>
-            
 
             <section className="planes my-5">
                 <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
@@ -49,4 +47,4 @@ const SportPage = () => {
         </div>
     );
 };
-export default SportPage;
+export default SportProfesional;

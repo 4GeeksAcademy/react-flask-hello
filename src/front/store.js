@@ -1,6 +1,7 @@
 export const initialStore=()=>{
   return{
     message: null,
+    user: null,
     todos: [
       {
         id: 1,
@@ -21,6 +22,7 @@ export default function storeReducer(store, action = {}) {
      case 'logout':
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      
       return {
         ...store,
                 user: null

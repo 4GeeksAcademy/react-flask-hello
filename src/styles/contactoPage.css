@@ -1,0 +1,74 @@
+.contacto-page {
+  padding-top: 10px;
+  color: #ECEFCA;
+}
+
+/* Hero estilo nutricion */
+.cpHero {
+  background-image: url("/contactoHero.jpg"); /* Cambia por una imagen que tengas, si no la puedes quitar */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  color: white;
+  margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 260px;
+  border-radius: 20px;
+}
+
+.cpHero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.cpHero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Formulario */
+.formulario form {
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.form-label {
+  font-weight: bold;
+  color: #213448;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.form-control:focus {
+  border-color: #547792;
+  box-shadow: 0 0 0 0.2rem rgba(84, 119, 146, 0.25);
+}
+
+.btn-dark {
+  background-color: #213448;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-dark:hover {
+  background-color: #547792;
+  color: #ECEFCA;
+}

@@ -21,19 +21,20 @@ function Mapa({ markers = [], center }) {
       ? markers[0].position
       : { lat: 40.416775, lng: -3.70379 });
 
-  const onLoad = useCallback((map) => {
-    if (markers.length > 0) {
-      const bounds = new window.google.maps.LatLngBounds();
-      markers.forEach((m) => bounds.extend(m.position));
-      map.fitBounds(bounds);
-    }
-  }, [markers]);
+const onLoad = useCallback((map) => {
+  if (markers.length > 1) {
+    const bounds = new window.google.maps.LatLngBounds();
+    markers.forEach((m) => bounds.extend(m.position));
+    map.fitBounds(bounds, { padding: 100 });
+  }
+}, [markers]);
+
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={mapCenter}
-      zoom={10}
+      zoom={15}
       onLoad={onLoad}
     >
       {markers.map((marker) => (

@@ -16,8 +16,8 @@ export const Footer = () => {
 				<ul className="footer-links">
 					<li><Link to="/">Home</Link></li>
 					<li><Link to="/eventos">Eventos</Link></li>
-					<li><Link to="/about">About</Link></li>
-					<li><Link to="/contact">Contact Us</Link></li>
+					<li><Link to="/AboutUs">About</Link></li>
+					<li><Link to="/ContactoPage">Contact Us</Link></li>
 				</ul>
 
 				<p className="footer-copy">Copyright ©2025; Designed by <strong>DMPC</strong></p>

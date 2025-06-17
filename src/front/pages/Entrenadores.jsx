@@ -35,7 +35,8 @@ const Entrenadores = () => {
                         <div className="container-1 mb-5">
                             <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
                                 <img
-                                    src={selectedTrainer.image}
+                                    // src={selectedTrainer.image}
+                                    src={"https://i.pravatar.cc/200"}
                                     alt="Entrenador"
                                     className="trainer-img me-3"
                                 />
@@ -63,7 +64,8 @@ const Entrenadores = () => {
                             <div className="col-md-6" key={index}>
                                 <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow">
                                     <div className="d-flex align-items-center mb-3">
-                                        <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" />
+                                        {/* <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" /> */}
+                                        <img src={"https://i.pravatar.cc/200"} alt="Entrenador" className="trainer-img me-3" />
                                         <div className="flex-grow-1">
                                             <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre} {trainer.apellido}</p>
                                             <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
@@ -75,7 +77,6 @@ const Entrenadores = () => {
                                             className="btn btn-outline-dark mt-2"
                                             onClick={async () => {
                                                 try {
-                                                    // Simula guardar el entrenador seleccionado en el backend
                                                     await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador", {
                                                         method: "PUT",
                                                         headers: {

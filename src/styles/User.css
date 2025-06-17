@@ -157,7 +157,6 @@
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-borrar:hover {
@@ -199,7 +198,6 @@
 .columna-izquierda {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 100%;
 }
 

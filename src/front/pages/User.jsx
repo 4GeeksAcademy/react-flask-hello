@@ -133,7 +133,7 @@ const User = () => {
       <div className="perfil-card">
         <div className="columna columna-izquierda">
           {["nombre", "apellido", "email", "telefono", "direccion", "sexo"].map((campo) => (
-            <p key={campo}>
+            <p className="mt-4" key={campo}>
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}</strong>{" "}
               {isEditing ? (
                 <input

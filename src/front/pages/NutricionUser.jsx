@@ -10,7 +10,7 @@ const NutricionUser = () => {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const response = await fetch("https://tudominio.com/api/nutricion"); // 🔁 Reemplaza con la URL real de tu API
+        const response = await fetch("https://tudominio.com/api/nutricion"); // Reemplaza con la URL real de tu API
         if (!response.ok) throw new Error("Error al obtener los datos");
         const data = await response.json();
         setPlanNutricion(data);

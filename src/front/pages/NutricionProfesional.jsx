@@ -39,7 +39,6 @@ const NutricionProfesional = () => {
           setModoEdicion(false);
         })
         .catch(err => {
-          console.warn("Usuario sin plan:", err);
           setPlanNutricion(null);
         });
     }
@@ -51,6 +50,7 @@ const NutricionProfesional = () => {
     fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
+      Authorization: "Bearer " + localStorage.getItem("token"),
       body: JSON.stringify(planNutricion)
     })
       .then(res => res.json())
@@ -70,6 +70,7 @@ const NutricionProfesional = () => {
     fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      Authorization: "Bearer " + localStorage.getItem("token"),
       body: JSON.stringify(nuevoPlan)
     })
       .then(res => res.json())

@@ -1,66 +1,40 @@
-import React, { useState } from "react";
-import CardPlan from "../components/CardPlan";
+import React, { useState, useEffect } from "react";
 import "../../styles/nutricionUser.css";
 
-const datosNutricion = {
-  Lunes: {
-    Desayuno: "Café con leche desnatada + Tostada integral con queso fresco",
-    Almuerzo: "Sandía",
-    Comida: "Arroz integral con tomate triturado y un huevo a la plancha",
-    Merienda: "Yogur desnatado + 3 nueces",
-    Cena: "Canónigos, pechuga de pavo a la plancha, tomate y maíz"
-  },
-  Martes: {
-    Desayuno: "Café con leche desnatada + Cereales integrales",
-    Almuerzo: "Macedonia de frutas (fresas, kiwi y piña)",
-    Comida: "Salchichas de pollo + Espinacas",
-    Merienda: "1 batido (leche de soja, fresas y plátano)",
-    Cena: "Merluza a la plancha con ensalada"
-  },
-  Miércoles: {
-    Desayuno: "Café con leche desnatada + Tostada integral de pavo",
-    Almuerzo: "1 manzana",
-    Comida: "Merluza y espárragos verdes a la plancha",
-    Merienda: "Yogur desnatado + 3 nueces",
-    Cena: "Tortilla francesa con pavo, tomate y pepino"
-  },
-  Jueves: {
-    Desayuno: "Café con leche desnatada + Cereales integrales",
-    Almuerzo: "Sandía",
-    Comida: "Lentejas (sin chorizo)",
-    Merienda: "1 batido (leche de soja, fresas y plátano)",
-    Cena: "Ensalada de canónigos, pechuga de pavo, pepino y tomate"
-  },
-  Viernes: {
-    Desayuno: "Café con leche desnatada + Tostada integral con queso fresco",
-    Almuerzo: "1 manzana",
-    Comida: "Parrillada de verduras con arroz integral",
-    Merienda: "Yogur desnatado + 3 nueces",
-    Cena: "Puré de calabaza + Infusión"
-  },
-  Sábado: {
-    Desayuno: "Café con leche desnatada + Cereales integrales",
-    Almuerzo: "Sandía",
-    Comida: "Pollo con patata y zanahoria (al horno)",
-    Merienda: "Tortita de arroz + 2 onzas de chocolate",
-    Cena: "Libre"
-  },
-  Domingo: {
-    Desayuno: "Café con leche desnatada + Tostada integral de pavo",
-    Almuerzo: "1 zumo de naranja",
-    Comida: "Dorada al horno + Tomate y pepino",
-    Merienda: "Yogur desnatado + 3 nueces",
-    Cena: "Ensalada tropical (rúcula, kiwi y piña)"
-  }
-};
-
 const NutricionUser = () => {
+  const [planNutricion, setPlanNutricion] = useState({});
   const [diaActivo, setDiaActivo] = useState("Lunes");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        const response = await fetch("https://tudominio.com/api/nutricion"); // Reemplaza con la URL real de tu API
+        if (!response.ok) throw new Error("Error al obtener los datos");
+        const data = await response.json();
+        setPlanNutricion(data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("No se pudieron cargar los datos.");
+        setLoading(false);
+      }
+    };
+
+    fetchPlan();
+  }, []);
+
+  if (loading)
+    return (
+      <div className="text-center np-hero mt-5">Cargando plan nutricional...</div>
+    );
+  if (error)
+    return <div className="text-center text-danger mt-5">{error}</div>;
 
   return (
-    <div className="nutriciUser container mt-5">
-
-      <section className="npHero text-center py-5">
+    <div className="nutricion-user container mt-5">
+      <section className="np-hero text-center py-5">
         <h1 className="display-4 tittle">Nutrición Personalizada</h1>
         <p className="lead">
           Mejora tu salud con planes de alimentación adaptados a tus objetivos.
@@ -71,7 +45,7 @@ const NutricionUser = () => {
         <h1 className="text-center subtittle mb-4">Plan Semanal de Comidas</h1>
 
         <div className="button d-flex justify-content-center flex-wrap mb-4">
-          {Object.keys(datosNutricion).map((dia) => (
+          {Object.keys(planNutricion).map((dia) => (
             <button
               key={dia}
               onClick={() => setDiaActivo(dia)}
@@ -87,7 +61,7 @@ const NutricionUser = () => {
         <div className="card p-2">
           <h2 className="mb-4 text-center">{diaActivo}</h2>
           <ul className="list-group">
-            {Object.entries(datosNutricion[diaActivo]).map(
+            {Object.entries(planNutricion[diaActivo] || {}).map(
               ([comida, texto]) => (
                 <li key={comida} className="list-group-item text-white">
                   <strong>{comida}:</strong> {texto}
@@ -98,6 +72,14 @@ const NutricionUser = () => {
         </div>
       </section>
 
+      <section className="beneficios my-5">
+        <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
+        <ul className="list-group list-group-flush caja-bot">
+          <li className="list-group-item">🥗 Planes de comida equilibrados</li>
+          <li className="list-group-item">🍎 Adaptado a tus objetivos nutricionales</li>
+          <li className="list-group-item">🧠 Mejora tu bienestar general</li>
+        </ul>
+      </section>
     </div>
   );
 };

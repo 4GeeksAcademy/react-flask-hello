@@ -4,7 +4,6 @@ import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 
-
 const User = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [usuario, setUsuario] = useState({});
@@ -102,7 +101,7 @@ const User = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev/api/users", {
+      const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3000.app.github.dev/api/users", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -134,7 +133,7 @@ const User = () => {
       <div className="perfil-card">
         <div className="columna columna-izquierda">
           {["nombre", "apellido", "email", "telefono", "direccion", "sexo"].map((campo) => (
-            <p key={campo}>
+            <p className="mt-3" key={campo}>
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}</strong>{" "}
               {isEditing ? (
                 <input
@@ -206,6 +205,14 @@ const User = () => {
               )}
             </p>
           ))}
+
+          <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
+            <img
+              src="/logoCrema1.png"
+              alt="Logo salud"
+              className="logo-gris"
+            />
+          </div>
         </div>
       </div>
 

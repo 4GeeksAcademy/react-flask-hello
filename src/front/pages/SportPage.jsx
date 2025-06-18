@@ -22,7 +22,6 @@ const SportPage = () => {
                     Mejora tu salud con planes de deporte adaptados a tus objetivos.
                 </p>
             </section>
-            
 
             <section className="planes my-5">
                 <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
@@ -39,7 +38,7 @@ const SportPage = () => {
 
             <section className="beneficios my-5">
                 <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
-                <ul className="list-group list-group-flush caja-bot">
+                    <ul className="list-group list-group-flush caja-bot">
                     <li className="list-group-item">🏋️ Asesoramiento personalizado</li>
                     <li className="list-group-item">🏃 Rutinas adaptadas a tu nivel</li>
                     <li className="list-group-item">📈 Progreso monitorizado</li>
@@ -49,4 +48,5 @@ const SportPage = () => {
         </div>
     );
 };
+
 export default SportPage;

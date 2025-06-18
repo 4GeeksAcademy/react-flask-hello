@@ -157,7 +157,6 @@
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-borrar:hover {
@@ -196,6 +195,28 @@
   border: 2px solid #2a3d4d;
 }
 
+.columna-izquierda {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.logo-gris {
+  transition: all 0.3s ease-in-out;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.logo-small {
+  width: 180px;
+  height: 180px;
+}
+
+.logo-large {
+  width: 280px;
+  height: 280px;
+}
+
 
 
 /* ✅ Media queries bien cerradas */
@@ -227,4 +248,9 @@
   .perfil-boton-editar {
     justify-content: center;
   }
+}
+
+.logo-gris{
+    width: 280px;
+    height: 210px;
 }

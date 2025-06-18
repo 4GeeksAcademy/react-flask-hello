@@ -56,7 +56,7 @@ const ProfesoresPage = () => {
       <div className="perfil-card">
         <div className="columna columna-izquierda">
           {["nombre", "email", "telefono", "direccion", "sexo", "experiencia"].map((campo) => (
-            <p key={campo}>
+            <p className="mt-2" key={campo}>
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
                 <input
@@ -117,6 +117,13 @@ const ProfesoresPage = () => {
           <ul>
             {profesor.horario.map((h, i) => <li key={i}>{h}</li>)}
           </ul>
+          <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
+            <img
+              src="/logoCrema1.png"
+              alt="Logo salud"
+              className="logo-gris"
+            />
+          </div>
         </div>
       </div>
 

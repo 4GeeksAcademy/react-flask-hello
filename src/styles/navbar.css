@@ -5,7 +5,7 @@
   width: 100%;
   padding: 5px 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   z-index: 1000;
   transition: all 0.1s ease-in-out;
@@ -32,7 +32,7 @@
 
 .menu {
   display: flex;
-  gap: 30px;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -89,6 +89,26 @@
   font-size: 24px;
   cursor: pointer;
   padding: 5px;
+}
+
+
+.menu-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ecefca;
+  transition: transform 0.2s ease;
+}
+
+.menu-avatar:hover {
+  transform: scale(1.05);
+}
+
+.image-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {

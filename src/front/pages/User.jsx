@@ -74,12 +74,8 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-<<<<<<< HEAD
-
       const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
-=======
-      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev//api/users/", {
->>>>>>> 7f59f739cb685f133cab38c5f32aa9e14d9e89cf
+
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",

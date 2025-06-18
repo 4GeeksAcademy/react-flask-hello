@@ -34,6 +34,8 @@ class User(db.Model):
     subscriptions = relationship('Subscription', back_populates='user')  # tabla de relacion
     support_tickets = relationship('SupportTicket', back_populates='user')
     template_items_created = relationship('TemplateItem', back_populates='creator')
+    training_entries=relationship('TrainingEntry', back_populates='user')
+    nutrition_entries=relationship('NutritionEntry', back_populates='user')
 
     def serialize(self):
         data = {
@@ -333,6 +335,53 @@ class SupportTicket(db.Model):
             "creado_en": self.creado_en.isoformat(),
             "actualizado_en": self.actualizado_en.isoformat()
         }
+
+class TrainingEntry(db.Model):
+    __tablename__= 'training_entries'
+    id: Mapped[int]=mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    grupo: Mapped[str]=mapped_column(String(200), nullable=False) #pecho, espalda, biceps, etc...
+    nota: Mapped[str]=mapped_column(Text, nullable=False) #series: 4x12 con descanso de 'x'
+    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user=relationship('User', back_populates='training_entries')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "grupo": self.grupo,
+            "nota": self.nota,
+            "fecha": self.fecha.isoformat()
+        }
+
+
+class NutritionEntry(db.Model):
+    __tablename__= 'nutrition_entries'
+    id: Mapped[int]=mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    dia_semana: Mapped[str]=mapped_column(String(40), nullable=False)
+    desayuno: Mapped[str]=mapped_column(Text, nullable=True)
+    media_mañana: Mapped[str]=mapped_column(Text, nullable=True)
+    comida: Mapped[str]=mapped_column(Text, nullable=False)
+    cena: Mapped[str]=mapped_column(Text, nullable=False)
+    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user=relationship('User', back_populates='nutrition_entries')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "dia_semana": self.dia_semana,
+            "desayuno": self.desayuno,
+            "media_mañana": self.media_mañana,
+            "comida": self.comida,
+            "cena": self.cena,
+            "fecha": self.fecha.isoformat()
+
+        }
+
 
 
 

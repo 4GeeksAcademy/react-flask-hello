@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 96748c08dc77
+Revision ID: 0ab663fa4911
 Revises: 
-Create Date: 2025-06-16 10:12:08.487225
+Create Date: 2025-06-17 11:59:51.076687
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '96748c08dc77'
+revision = '0ab663fa4911'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,6 +60,18 @@ def upgrade():
     sa.Column('ubicacion', sa.String(length=60), nullable=False),
     sa.Column('capacidad', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('nutrition_entries',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('dia_semana', sa.String(length=40), nullable=False),
+    sa.Column('desayuno', sa.Text(), nullable=True),
+    sa.Column('media_mañana', sa.Text(), nullable=True),
+    sa.Column('comida', sa.Text(), nullable=False),
+    sa.Column('cena', sa.Text(), nullable=False),
+    sa.Column('fecha', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('plan_templates',
@@ -112,6 +124,15 @@ def upgrade():
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('training_entries',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('grupo', sa.String(length=200), nullable=False),
+    sa.Column('nota', sa.Text(), nullable=False),
+    sa.Column('fecha', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('event_signups',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
@@ -149,10 +170,12 @@ def downgrade():
     op.drop_table('plan_template_items')
     op.drop_table('payments')
     op.drop_table('event_signups')
+    op.drop_table('training_entries')
     op.drop_table('template_items')
     op.drop_table('support_tickets')
     op.drop_table('subscriptions')
     op.drop_table('plan_templates')
+    op.drop_table('nutrition_entries')
     op.drop_table('events')
     op.drop_table('users')
     op.drop_table('subscription_plans')

@@ -45,7 +45,7 @@ const User = () => {
 
     const fetchEntrenador = async () => {
       try {
-        const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador");
+        const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/user/entrenador");
         const data = await res.json();
         setEntrenadorSeleccionado(data);
       } catch (error) {
@@ -75,7 +75,7 @@ const User = () => {
         }
       }
 
-      const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users", {
+      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +101,7 @@ const User = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3000.app.github.dev/api/users", {
+      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

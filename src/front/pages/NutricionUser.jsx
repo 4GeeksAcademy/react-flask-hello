@@ -1,45 +1,55 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionUser.css";
-import useGlobalReducer from "../hooks/useGlobalReducer"
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
-const NutricionUser = ({ usuarioSeleccionado }) => {
+const NutricionUser = () => {
   const [planNutricion, setPlanNutricion] = useState({});
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const {store, dispatch} = useGlobalReducer()
+  const { store } = useGlobalReducer();
 
-useEffect(() => {
+  const userId = store.user?.id;
 
+  useEffect(() => {
+    if (!userId) return;
 
-  const fetchPlan = async () => {
-    try {
-      const response = await fetch(
-        `https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${store.user.id}`, {
-          headers: {
-           "Authorization": "Bearer " + localStorage.getItem("token")
+    const fetchPlan = async () => {
+      try {
+        const response = await fetch(
+          `https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
+        );
+
+        if (response.status === 404) {
+          setError("Todavía no tienes un plan nutricional asignado.");
+          setLoading(false);
+          return;
         }
-      );
-      if (!response.ok) throw new Error("Error al obtener los datos");
-      const data = await response.json();
-      setPlanNutricion(data);
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-      setError("No se pudieron cargar los datos.");
-      setLoading(false);
-    }
-  };
 
-  fetchPlan();
-}, [usuarioSeleccionado?.id]);
+        if (!response.ok) throw new Error("Error al obtener los datos");
 
+        const data = await response.json();
+        setPlanNutricion(data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error:", err);
+        setError("No se pudieron cargar los datos.");
+        setLoading(false);
+      }
+    };
+
+    fetchPlan();
+  }, [userId]);
 
   if (loading)
-    return (
-      <div className="text-center np-hero mt-5">Cargando plan nutricional...</div>
-    );
+    return <div className="text-center np-hero mt-5">Cargando plan nutricional...</div>;
+
   if (error)
     return <div className="text-center text-danger mt-5">{error}</div>;
 
@@ -51,17 +61,19 @@ useEffect(() => {
 
       <section className="tabla-nutricion my-4">
         <div className="button d-flex justify-content-center flex-wrap mb-4">
-          {Object.keys(planNutricion).map((dia) => (
-            <button
-              key={dia}
-              onClick={() => setDiaActivo(dia)}
-              className={`btn mx-2 mb-2 ${
-                dia === diaActivo ? "btn-primary" : "btn-outline-light"
-              }`}
-            >
-              {dia}
-            </button>
-          ))}
+          {Object.keys(planNutricion)
+            .filter((dia) => dia !== "id" && dia !== "userId")
+            .map((dia) => (
+              <button
+                key={dia}
+                onClick={() => setDiaActivo(dia)}
+                className={`btn mx-2 mb-2 ${
+                  dia === diaActivo ? "btn-primary" : "btn-outline-light"
+                }`}
+              >
+                {dia}
+              </button>
+            ))}
         </div>
 
         <div className="card p-3">

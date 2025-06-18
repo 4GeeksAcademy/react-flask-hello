@@ -1,30 +1,46 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionProfesional.css";
 
-const usuariosRegistrados = [
-  { id: 1, nombre: "David Vivar" },
-  { id: 2, nombre: "Sara González" },
-  { id: 3, nombre: "Leo Martínez" }
-];
-
 const NutricionProfesional = () => {
+  const [usuariosRegistrados, setUsuariosRegistrados] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  const [planNutricion, setPlanNutricion] = useState({});
+  const [planNutricion, setPlanNutricion] = useState(null);
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  // FETCH PLAN desde API
+  const planBase = {
+    Lunes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Martes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Miércoles: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Jueves: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Viernes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Sábado: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Domingo: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+  };
+
+  // Cargar usuarios
+  useEffect(() => {
+    fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users")
+      .then(res => res.json())
+      .then(data => setUsuariosRegistrados(data))
+      .catch(err => console.error("Error al cargar usuarios:", err));
+  }, []);
+
+  // Cargar plan nutricional
   useEffect(() => {
     if (usuarioSeleccionado) {
       fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error("No existe plan");
+          return res.json();
+        })
         .then(data => {
           setPlanNutricion(data);
           setModoEdicion(false);
         })
         .catch(err => {
-          console.error("Error al cargar plan:", err);
-          setPlanNutricion({});
+          console.warn("Usuario sin plan:", err);
+          setPlanNutricion(null);
         });
     }
   }, [usuarioSeleccionado]);
@@ -41,8 +57,28 @@ const NutricionProfesional = () => {
       .then(() => {
         alert("¡Plan guardado correctamente!");
         setModoEdicion(false);
-      }) 
+      })
       .catch(err => alert("Error al guardar: " + err));
+  };
+
+  const handleCrearNuevoPlan = () => {
+    const nuevoPlan = {
+      userId: usuarioSeleccionado.id,
+      ...planBase
+    };
+
+    fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoPlan)
+    })
+      .then(res => res.json())
+      .then(() => {
+        alert("Plan creado correctamente");
+        setPlanNutricion(nuevoPlan);
+        setModoEdicion(true);
+      })
+      .catch(err => alert("Error al crear el plan: " + err));
   };
 
   const handleCambioComida = (comida, nuevoTexto) => {
@@ -79,7 +115,16 @@ const NutricionProfesional = () => {
           ))}
         </select>
 
-        {usuarioSeleccionado && (
+        {usuarioSeleccionado && planNutricion === null && (
+          <div className="text-center">
+            <p>Este usuario no tiene plan nutricional.</p>
+            <button className="btn btn-primary" onClick={handleCrearNuevoPlan}>
+              Crear nuevo plan
+            </button>
+          </div>
+        )}
+
+        {usuarioSeleccionado && planNutricion && (
           <>
             {!modoEdicion ? (
               <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
@@ -94,7 +139,7 @@ const NutricionProfesional = () => {
         )}
       </section>
 
-      {usuarioSeleccionado && (
+      {usuarioSeleccionado && planNutricion && (
         <section className="tabla-nutricion my-5">
           <h2 className="text-center subtittle mb-4">Plan Semanal de {usuarioSeleccionado.nombre}</h2>
 

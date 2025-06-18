@@ -21,8 +21,6 @@ with app.app_context():
         nombre="Cristian",
         apellido="Pérez",
         experiencia=5,
-        nombre="Jose",
-        apellido="Gonzalez"
 
     )
 
@@ -35,8 +33,6 @@ with app.app_context():
         experiencia=5,
         nombre="Pere",
         apellido="Martínez",
-        nombre="Jose",
-        apellido="Gonzalez"
 
     )
 
@@ -49,8 +45,6 @@ with app.app_context():
         experiencia=8,
         nombre="María",
         apellido="Gómez",
-        nombre="Jose",
-        apellido="Gonzalez"
 
     )
 

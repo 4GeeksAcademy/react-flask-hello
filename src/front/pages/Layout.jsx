@@ -24,7 +24,7 @@ export const Layout = () => {
 
     return (
         <ScrollToTop>
-            {showUserNavbar ? <NavbarUser /> : <Navbar />}
+             <Navbar />
                 <Outlet />
             <Footer />
         </ScrollToTop>

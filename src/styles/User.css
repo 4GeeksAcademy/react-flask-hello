@@ -92,21 +92,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-.seccion {
-  flex: 1;
-  min-width: 280px;
-  background-color: #ecefca !important;
-  padding: 1.8rem;
-  border-radius: 20px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-  text-align: center;
-  transform: scale(1);
-  transition: transform 0.3s ease;
-}
-
-.seccion:hover {
-  transform: scale(1.02);
-}
 
 .seccion h2 {
   color: #ecefca;
@@ -215,6 +200,31 @@
 .logo-large {
   width: 280px;
   height: 280px;
+}
+
+.secciones-fila {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 320px; /* 👈 Ajusta si necesitas más */
+  flex: 1;
+  background-color: #ecefca !important;
+  padding: 1.8rem;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.seccion:hover {
+  transform: scale(1.02);
 }
 
 

@@ -18,7 +18,7 @@ const Entrenadores = () => {
 
         fetchTrainers();
     }, []);
- 
+
     const selectedTrainer = trainers[0];
     const otherTrainers = trainers.slice(1);
 
@@ -31,29 +31,32 @@ const Entrenadores = () => {
 
                 {selectedTrainer && (
                     <>
-                        <h1 className="text-center mb-4">Entrenador Seleccionado</h1>
-                        <div className="container-1 mb-5">
-                            <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
-                                <img
-                                    // src={selectedTrainer.image}
-                                    src={"https://i.pravatar.cc/200"}
-                                    alt="Entrenador"
-                                    className="trainer-img me-3"
-                                />
-                                <div className="flex-grow-1">
-                                    <p className="text-black">
-                                        <strong>Nombre:</strong><br />{selectedTrainer.nombre} {selectedTrainer.apellido}
-                                    </p>
-                                    <p className="text-black">
-                                        <strong>Email:</strong><br />{selectedTrainer.email}
-                                    </p>
-                                    <p className="text-black">
-                                        <strong>Especialidad:</strong><br />{selectedTrainer.datos}
-                                    </p>
+                        <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
+                            <div className="entrenador-grid">
+                                {/* Columna izquierda */}
+                                <div className="col-izquierda">
+                                    <p><strong>Nombre:</strong><br />{selectedTrainer.nombre} {selectedTrainer.apellido}</p>
+                                    <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
                                 </div>
-                                <button className="btn btn-outline-dark">Seleccionado</button>
+
+                                {/* Imagen en el centro */}
+                                <div className="col-centro text-center">
+                                    <img
+                                        src={selectedTrainer.image || "https://i.pravatar.cc/300"}
+                                        alt={`Imagen de ${selectedTrainer.nombre}`}
+                                        className="trainer-img-grande"
+                                    />
+                                    <div className="estado-seleccionado mt-3">Seleccionado</div>
+                                </div>
+
+                                {/* Columna derecha */}
+                                <div className="col-derecha">
+                                    <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
+                                    <p><strong>Especialidad:</strong><br />{selectedTrainer.datos}</p>
+                                </div>
                             </div>
                         </div>
+
                     </>
                 )}
 
@@ -62,26 +65,27 @@ const Entrenadores = () => {
                     <div className="row gy-4">
                         {otherTrainers.map((trainer, index) => (
                             <div className="col-md-6" key={index}>
-                                <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow">
-                                    <div className="d-flex align-items-center mb-3">
-                                        {/* <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" /> */}
-                                        <img src={"https://i.pravatar.cc/200"} alt="Entrenador" className="trainer-img me-3" />
+                                <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={trainer.image || "https://i.pravatar.cc/200"}
+                                            alt={`Imagen de ${trainer.nombre}`}
+                                            className="trainer-img me-3"
+                                        />
                                         <div className="flex-grow-1">
                                             <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre} {trainer.apellido}</p>
                                             <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
                                             <p className="text-black"><strong>Especialidad:</strong><br />{trainer.datos}</p>
                                         </div>
                                     </div>
-                                    <div className="text-center">
+                                    <div className="text-center mt-3">
                                         <button
-                                            className="btn btn-outline-dark mt-2"
+                                            className="btn btn-outline-dark"
                                             onClick={async () => {
                                                 try {
                                                     await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador", {
                                                         method: "PUT",
-                                                        headers: {
-                                                            "Content-Type": "application/json"
-                                                        },
+                                                        headers: { "Content-Type": "application/json" },
                                                         body: JSON.stringify(trainer)
                                                     });
 
@@ -93,7 +97,6 @@ const Entrenadores = () => {
                                                     console.error("Error al guardar entrenador:", error);
                                                 }
                                             }}
-
                                         >
                                             Solicitar
                                         </button>

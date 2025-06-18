@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-
 const User = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [usuario, setUsuario] = useState({});
@@ -19,11 +18,11 @@ const User = () => {
     };
   };
 
-  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null); // ✅ Hook bien colocado
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null);
 
   const historial = [
-    "se apunto al evennto 'yoga al aire libre'",
-    "Entreno fuerza en el gimnasio",
+    "se apuntó al evento 'yoga al aire libre'",
+    "Entrenó fuerza en el gimnasio",
     "Asistió a clase de Boxeo"
   ];
 
@@ -44,10 +43,9 @@ const User = () => {
       });
     }
 
-    // Fetch del entrenador seleccionado
     const fetchEntrenador = async () => {
       try {
-        const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador");
+        const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/user/entrenador");
         const data = await res.json();
         setEntrenadorSeleccionado(data);
       } catch (error) {
@@ -76,7 +74,8 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev//api/users/", {
+
+      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -84,6 +83,7 @@ const User = () => {
         },
         body: JSON.stringify(payload),
       });
+
       if (!res.ok) throw new Error("Error al guardar");
       const updateUser = await res.json();
       setUsuario(updateUser);
@@ -101,7 +101,7 @@ const User = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3000.app.github.dev/api/users", {
+      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -148,6 +148,7 @@ const User = () => {
             </p>
           ))}
         </div>
+
         <div className="columna columna-centro">
           {isEditing ? (
             <input
@@ -174,37 +175,46 @@ const User = () => {
             )}
           </div>
         </div>
+
         <div className="columna columna-derecha">
-          {["objetivo"].map((campo) => (
-            <p key={campo}>
-              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name={campo}
-                  value={usuario[campo] || ""}
-                  onChange={handleChange}
-                />
-              ) : (
-                `${usuario[campo] || "Falta"}`
-              )}
-            </p>
-          ))}
-          {["altura", "peso"].map((campo) => (
-            <p key={campo}>
-              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type="number"
-                  name={campo}
-                  value={usuario[campo] || ""}
-                  onChange={handleChange}
-                />
-              ) : (
-                `${usuario[campo] || "Falta"}${campo === "altura" ? "cm" : campo === "peso" ? "kg" : ""}`
-              )}
-            </p>
-          ))}
+          <p><strong>Objetivo:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name="objetivo"
+                value={usuario.objetivo || ""}
+                onChange={handleChange}
+              />
+            ) : (
+              usuario.objetivo || "Falta"
+            )}
+          </p>
+
+          <p><strong>Altura:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="number"
+                name="altura"
+                value={usuario.altura || ""}
+                onChange={handleChange}
+              />
+            ) : (
+              `${usuario.altura || "Falta"} cm`
+            )}
+          </p>
+
+          <p><strong>Peso:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="number"
+                name="peso"
+                value={usuario.peso || ""}
+                onChange={handleChange}
+              />
+            ) : (
+              `${usuario.peso || "Falta"} kg`
+            )}
+          </p>
 
           <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
             <img
@@ -216,14 +226,9 @@ const User = () => {
         </div>
       </div>
 
-      {/* Secciones inferiores */}
       <div className="secciones-inferiores">
         <div className="seccion">
-          <h2>
-            {entrenadorSeleccionado
-              ? entrenadorSeleccionado.nombre
-              : "Entrenador"}
-          </h2>
+          <h2>{entrenadorSeleccionado ? entrenadorSeleccionado.nombre : "Entrenador"}</h2>
           {entrenadorSeleccionado ? (
             <>
               <img
@@ -233,9 +238,7 @@ const User = () => {
               />
               <div className="btn-entrenador-wrapper">
                 <Link
-                  to={`/entrenadores/${entrenadorSeleccionado.nombre
-                    .toLowerCase()
-                    .replace(/ /g, "-")}`}
+                  to={`/entrenadores/${entrenadorSeleccionado.nombre.toLowerCase().replace(/ /g, "-")}`}
                   className="btn-entrenador-link"
                 >
                   {entrenadorSeleccionado.nombre}
@@ -263,6 +266,24 @@ const User = () => {
           <p><strong>Tipo:</strong> {membresia.tipo}</p>
           <p><strong>Duración:</strong> {membresia.duracion}</p>
           <p><strong>Inicio:</strong> {membresia.inicio}</p>
+        </div>
+      </div>
+
+      <div className="secciones-inferiores">
+        <div className="seccion">
+          <h2>Plan Nutrición</h2>
+          <p>Consulta tu avance nutricional y recomendaciones dietéticas.</p>
+          <Link to="/nutricionUser" className="btn-editar">Ver Plan</Link>
+        </div>
+        <div className="seccion">
+          <h2>Plan Deporte</h2>
+          <p>Visualiza tus rutinas asignadas y objetivos físicos.</p>
+          <Link to="/sportUser" className="btn-editar">Ver Plan</Link>
+        </div>
+        <div className="seccion">
+          <h2>Eventos</h2>
+          <p>Accede a actividades especiales y eventos del centro.</p>
+          <Link to="/Eventos" className="btn-editar">Ver Eventos</Link>
         </div>
       </div>
     </div>

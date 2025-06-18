@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionUser.css";
+import useGlobalReducer from "../hooks/useGlobalReducer"
 
-const NutricionUser = () => {
+const NutricionUser = ({ usuarioSeleccionado }) => {
   const [planNutricion, setPlanNutricion] = useState({});
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {store, dispatch} = useGlobalReducer()
 
-  useEffect(() => {
-    const fetchPlan = async () => {
-      try {
-        const response = await fetch("https://tudominio.com/api/nutricion"); // Reemplaza con la URL real de tu API
-        if (!response.ok) throw new Error("Error al obtener los datos");
-        const data = await response.json();
-        setPlanNutricion(data);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError("No se pudieron cargar los datos.");
-        setLoading(false);
-      }
-    };
+useEffect(() => {
 
-    fetchPlan();
-  }, []);
+
+  const fetchPlan = async () => {
+    try {
+      const response = await fetch(
+        `https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${store.user.id}`, {
+          headers: {
+           "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        }
+      );
+      if (!response.ok) throw new Error("Error al obtener los datos");
+      const data = await response.json();
+      setPlanNutricion(data);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setError("No se pudieron cargar los datos.");
+      setLoading(false);
+    }
+  };
+
+  fetchPlan();
+}, [usuarioSeleccionado?.id]);
+
 
   if (loading)
     return (
@@ -35,22 +46,17 @@ const NutricionUser = () => {
   return (
     <div className="nutricion-user container mt-5">
       <section className="np-hero text-center py-5">
-        <h1 className="display-4 tittle">Nutrición Personalizada</h1>
-        <p className="lead">
-          Mejora tu salud con planes de alimentación adaptados a tus objetivos.
-        </p>
+        <h1 className="display-4 tittle">Plan Semanal de Comidas</h1>
       </section>
 
-      <section className="tabla-nutricion my-5">
-        <h1 className="text-center subtittle mb-4">Plan Semanal de Comidas</h1>
-
+      <section className="tabla-nutricion my-4">
         <div className="button d-flex justify-content-center flex-wrap mb-4">
           {Object.keys(planNutricion).map((dia) => (
             <button
               key={dia}
               onClick={() => setDiaActivo(dia)}
-              className={`btn mx-1 mb-2 ${
-                dia === diaActivo ? "btn-primary" : "btn-outline-primary"
+              className={`btn mx-2 mb-2 ${
+                dia === diaActivo ? "btn-primary" : "btn-outline-light"
               }`}
             >
               {dia}
@@ -58,27 +64,21 @@ const NutricionUser = () => {
           ))}
         </div>
 
-        <div className="card p-2">
-          <h2 className="mb-4 text-center">{diaActivo}</h2>
+        <div className="card p-3">
+          <h2 className="text-center mb-4">{diaActivo}</h2>
           <ul className="list-group">
             {Object.entries(planNutricion[diaActivo] || {}).map(
-              ([comida, texto]) => (
-                <li key={comida} className="list-group-item text-white">
-                  <strong>{comida}:</strong> {texto}
+              ([comida, detalle]) => (
+                <li
+                  key={comida}
+                  className="list-group-item bg-dark text-light border-light"
+                >
+                  <strong>{comida}:</strong> {detalle}
                 </li>
               )
             )}
           </ul>
         </div>
-      </section>
-
-      <section className="beneficios my-5">
-        <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
-        <ul className="list-group list-group-flush caja-bot">
-          <li className="list-group-item">🥗 Planes de comida equilibrados</li>
-          <li className="list-group-item">🍎 Adaptado a tus objetivos nutricionales</li>
-          <li className="list-group-item">🧠 Mejora tu bienestar general</li>
-        </ul>
       </section>
     </div>
   );

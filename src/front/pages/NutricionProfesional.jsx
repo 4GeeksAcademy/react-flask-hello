@@ -16,7 +16,7 @@ const NutricionProfesional = () => {
   // FETCH PLAN desde API
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(`https://tudominio.com/api/nutricion/${usuarioSeleccionado.id}`)
+      fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`)
         .then(res => res.json())
         .then(data => {
           setPlanNutricion(data);
@@ -32,7 +32,7 @@ const NutricionProfesional = () => {
   const handleEditarPlan = () => setModoEdicion(true);
 
   const handleGuardarCambios = () => {
-    fetch(`https://tudominio.com/api/nutricion/${usuarioSeleccionado.id}`, {
+    fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(planNutricion)
@@ -41,7 +41,7 @@ const NutricionProfesional = () => {
       .then(() => {
         alert("¡Plan guardado correctamente!");
         setModoEdicion(false);
-      })
+      }) 
       .catch(err => alert("Error al guardar: " + err));
   };
 

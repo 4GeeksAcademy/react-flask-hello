@@ -1,51 +1,432 @@
-import React from "react";
-import "../../styles/Epersonalizado.css";
+import React, { useState } from 'react';
+import { ChevronRight, Dumbbell, Target, Play } from 'lucide-react';
 
-const focuses = [
-  {
-    title: "Pérdida de Grasa",
-    description:
-      "Con este enfoque lograrás reducir tu porcentaje de grasa corporal mediante un plan de entrenamiento cardiovascular, rutinas de alta intensidad y una nutrición enfocada en el déficit calórico.",
-    image:
-      "https://as01.epimg.net/deporteyvida/imagenes/2018/02/10/portada/1518260701_362751_1518260789_noticia_normal.jpg",
-  },
-  {
-    title: "Ganancia Muscular",
-    description:
-      "Aquí nos enfocamos en el aumento de masa muscular mediante entrenamiento de fuerza, progresión de cargas y una dieta rica en proteínas y calorías suficientes.",
-    image:
-      "https://www.labolsadelcorredor.com/wp-content/uploads/2021/11/crecimiento-masa-muscular-1.jpg",
-  },
-  {
-    title: "Resistencia y Energía",
-    description:
-      "Mejora tu capacidad cardiovascular, respiratoria y tu energía general con entrenamientos funcionales, circuitos de resistencia y actividades aeróbicas intensas.",
-    image:
-      "https://images.unsplash.com/photo-1605296867304-46d5465a13f1",
-  },
-  {
-    title: "Nutrición y su Importancia",
-    description:
-      "La base de todo progreso físico y bienestar radica en una alimentación equilibrada. Este enfoque te ayudará a comprender cómo una buena nutrición potencia tu rendimiento, acelera tu recuperación y mejora tu salud general.",
-    image:
-      "https://media.istockphoto.com/id/1457433817/es/foto/grupo-de-alimentos-saludables-para-la-dieta-flexitariana.jpg?s=612x612&w=0&k=20&c=2w5l2DEJWFGxSnmJxX_RCE40RriE7WtSoKKpuxw5luE=",
-  },
-];
 
-export default function Epersonalizado() {
-  return (
-    <div className="epersonalizado-focuses">
-      {focuses.map((focus, index) => (
-        <div key={index} className="epersonalizado-card">
-          <div className="epersonalizado-card-image">
-            <img src={focus.image} alt={focus.title} />
-          </div>
-          <div className="epersonalizado-card-text">
-            <h2 className="epersonalizado-title">{focus.title}</h2>
-            <p className="epersonalizado-description">{focus.description}</p>
+const Home = () => {
+  const [grupoSeleccionado, setGrupoSeleccionado] = useState(null);
+
+  const gruposMusculares = {
+    hombro: {
+      nombre: 'Hombro',
+      entrenamientos: [
+        {
+          nombre: 'Press militar con mancuernas',
+          descripcion: 'Sentado o de pie, elevar mancuernas desde los hombros hacia arriba',
+          series: '3-4 series',
+          video: "https://www.youtube.com/watch?v=3SO5jDZYxts&t=822s",
+          repeticiones: '8-12 reps'
+        },
+        {
+          nombre: 'Elevaciones laterales',
+          descripcion: 'Con mancuernas, elevar los brazos hacia los lados hasta la altura de los hombros',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=n7Mns0WbmXM",
+          repeticiones: '12-15 reps'
+        },
+        {
+          nombre: 'Elevaciones frontales',
+          descripcion: 'Elevar mancuernas al frente hasta la altura de los hombros alternando brazos',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        },
+        {
+          nombre: 'Pájaros (elevaciones posteriores)',
+          descripcion: 'Inclinado hacia adelante, elevar mancuernas hacia atrás trabajando deltoides posterior',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '12-15 reps'
+        }
+      ]
+    },
+    pecho: {
+      nombre: 'Pecho',
+      entrenamientos: [
+        {
+          nombre: 'Press de banca',
+          descripcion: 'Acostado, empujar la barra desde el pecho hacia arriba',
+          series: '4 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '6-10 reps'
+        },
+        {
+          nombre: 'Flexiones de pecho',
+          descripcion: 'Flexiones tradicionales manteniendo el cuerpo recto',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-20 reps'
+        },
+        {
+          nombre: 'Press inclinado con mancuernas',
+          descripcion: 'En banco inclinado, empujar mancuernas desde el pecho',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-12 reps'
+        },
+        {
+          nombre: 'Aperturas con mancuernas',
+          descripcion: 'Acostado, abrir y cerrar los brazos con mancuernas en arco',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        }
+      ]
+    },
+    biceps: {
+      nombre: 'Bíceps',
+      entrenamientos: [
+        {
+          nombre: 'Curl de bíceps con mancuernas',
+          descripcion: 'De pie, flexionar codos llevando mancuernas hacia los hombros',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        },
+        {
+          nombre: 'Curl martillo',
+          descripcion: 'Curl con agarre neutro (palmas mirándose entre sí)',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        },
+        {
+          nombre: 'Curl concentrado',
+          descripcion: 'Sentado, apoyar codo en muslo y hacer curl con una mancuerna',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-10 reps por brazo'
+        },
+        {
+          nombre: 'Curl con barra',
+          descripcion: 'De pie, curl con barra recta o EZ manteniendo codos fijos',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-10 reps'
+        }
+      ]
+    },
+    triceps: {
+      nombre: 'Tríceps',
+      entrenamientos: [
+        {
+          nombre: 'Fondos en paralelas',
+          descripcion: 'Bajar y subir el cuerpo usando barras paralelas',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-12 reps'
+        },
+        {
+          nombre: 'Press francés',
+          descripcion: 'Acostado, extender brazos desde atrás de la cabeza',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        },
+        {
+          nombre: 'Extensiones de tríceps',
+          descripcion: 'Con mancuerna, extender brazo desde atrás de la cabeza',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps por brazo'
+        },
+        {
+          nombre: 'Fondos en banco',
+          descripcion: 'Apoyar manos en banco y bajar/subir el cuerpo',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-15 reps'
+        }
+      ]
+    },
+    abdomen: {
+      nombre: 'Abdomen',
+      entrenamientos: [
+        {
+          nombre: 'Crunches abdominales',
+          descripcion: 'Acostado, elevar torso contrayendo abdominales',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '15-20 reps'
+        },
+        {
+          nombre: 'Plancha',
+          descripcion: 'Mantener posición de flexión apoyado en antebrazos',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '30-60 segundos'
+        },
+        {
+          nombre: 'Bicicleta',
+          descripcion: 'Acostado, alternar rodilla con codo opuesto',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '20 reps por lado'
+        },
+        {
+          nombre: 'Elevaciones de piernas',
+          descripcion: 'Acostado, elevar piernas rectas hacia el techo',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '12-15 reps'
+        }
+      ]
+    },
+    espalda: {
+      nombre: 'Espalda',
+      entrenamientos: [
+        {
+          nombre: 'Dominadas',
+          descripcion: 'Colgado de barra, elevar cuerpo hasta que barbilla pase la barra',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '5-10 reps'
+        },
+        {
+          nombre: 'Remo con mancuerna',
+          descripcion: 'Inclinado, tirar mancuerna hacia el torso',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps por brazo'
+        },
+        {
+          nombre: 'Peso muerto',
+          descripcion: 'Levantar barra desde el suelo manteniendo espalda recta',
+          series: '4 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '6-8 reps'
+        },
+        {
+          nombre: 'Remo en polea baja',
+          descripcion: 'Sentado, tirar cable hacia el abdomen',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        }
+      ]
+    },
+    cuadriceps: {
+      nombre: 'Cuádriceps',
+      entrenamientos: [
+        {
+          nombre: 'Sentadillas',
+          descripcion: 'Bajar como si fueras a sentarte manteniendo espalda recta',
+          series: '4 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-15 reps'
+        },
+        {
+          nombre: 'Prensa de piernas',
+          descripcion: 'En máquina, empujar peso con las piernas',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '12-15 reps'
+        },
+        {
+          nombre: 'Zancadas',
+          descripcion: 'Dar paso largo hacia adelante y bajar rodilla trasera',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps por pierna'
+        },
+        {
+          nombre: 'Extensiones de cuádriceps',
+          descripcion: 'Sentado en máquina, extender piernas hacia arriba',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '12-15 reps'
+        }
+      ]
+    },
+    isquiotibiales: {
+      nombre: 'Isquiotibiales',
+      entrenamientos: [
+        {
+          nombre: 'Peso muerto rumano',
+          descripcion: 'Con piernas semi-rectas, bajar barra manteniendo espalda recta',
+          series: '4 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-10 reps'
+        },
+        {
+          nombre: 'Curl femoral acostado',
+          descripcion: 'Boca abajo en máquina, flexionar piernas llevando talones a glúteos',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        },
+        {
+          nombre: 'Puente de glúteo',
+          descripcion: 'Acostado, elevar cadera contrayendo glúteos e isquiotibiales',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '12-15 reps'
+        },
+        {
+          nombre: 'Buenos días',
+          descripcion: 'De pie con barra en hombros, inclinar torso hacia adelante',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '10-12 reps'
+        }
+      ]
+    },
+    gemelos: {
+      nombre: 'Gemelos',
+      entrenamientos: [
+        {
+          nombre: 'Elevaciones de gemelos de pie',
+          descripcion: 'De pie, elevar cuerpo sobre las puntas de los pies',
+          series: '4 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '15-20 reps'
+        },
+        {
+          nombre: 'Elevaciones de gemelos sentado',
+          descripcion: 'Sentado con peso sobre muslos, elevar sobre puntas de pies',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '15-20 reps'
+        },
+        {
+          nombre: 'Saltos en cajón',
+          descripcion: 'Saltar sobre un cajón o plataforma usando impulso de gemelos',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '8-10 reps'
+        },
+        {
+          nombre: 'Caminata en puntas',
+          descripcion: 'Caminar sobre las puntas de los pies manteniendo equilibrio',
+          series: '3 series',
+          video: "https://www.youtube.com/watch?v=IYsSBJThjxI",
+          repeticiones: '30-45 segundos'
+        }
+      ]
+    }
+  };
+
+  // Función para extraer el ID del video de YouTube
+  const getYouTubeVideoId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const volver = () => {
+    setGrupoSeleccionado(null);
+  };
+
+  if (grupoSeleccionado) {
+    const grupo = gruposMusculares[grupoSeleccionado];
+    return (
+      <div className="entrenamiento-container">
+        <div className="ejercicios-container">
+          <button 
+            onClick={volver}
+            className="btn-volver"
+          >
+            <ChevronRight className="btn-volver-icon" />
+            Volver a grupos musculares
+          </button>
+          
+          <div className="ejercicios-header">
+            <div className="ejercicios-title-container">
+              <Target className="ejercicios-title-icon" />
+              <h1 className="ejercicios-title">Entrenamientos de {grupo.nombre}</h1>
+            </div>
+            
+            <div className="ejercicios-grid">
+              {grupo.entrenamientos.map((entrenamiento, index) => {
+                const videoId = getYouTubeVideoId(entrenamiento.video);
+                return (
+                  <div key={index} className="ejercicio-card">
+                    <div className="ejercicio-header">
+                      <h3 className="ejercicio-nombre">{entrenamiento.nombre}</h3>
+                      <Dumbbell className="ejercicio-icon" />
+                    </div>
+                    
+                    <p className="ejercicio-descripcion">{entrenamiento.descripcion}</p>
+                    
+                    {/* Video de YouTube */}
+                    {videoId && (
+                      <div className="video-container">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={entrenamiento.nombre}
+                          className="video-iframe"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                        <div className="video-overlay">
+                          <Play className="play-icon" />
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="ejercicio-tags">
+                      <span className="tag-series">
+                        {entrenamiento.series}
+                      </span>
+                      <span className="tag-repeticiones">
+                        {entrenamiento.repeticiones}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="entrenamiento-container">
+      <div className="entrenamiento-wrapper">
+        <div className="entrenamiento-header">
+          <h1 className="entrenamiento-title">
+            Entrenamiento Personalizado
+          </h1>
+          <p className="entrenamiento-subtitle">
+            Selecciona el grupo muscular que quieres entrenar y descubre 4 ejercicios específicos
+          </p>
+        </div>
+        
+        <div className="grupos-grid">
+          {Object.entries(gruposMusculares).map(([key, grupo]) => (
+            <button
+              key={key}
+              onClick={() => setGrupoSeleccionado(key)}
+              className="grupo-card"
+            >
+              <div className="grupo-card-header">
+                <Dumbbell className="grupo-icon" />
+                <ChevronRight className="grupo-arrow" />
+              </div>
+              
+              <h2 className="grupo-nombre">
+                {grupo.nombre}
+              </h2>
+              
+              <p className="grupo-descripcion">
+                4 ejercicios específicos
+              </p>
+              
+              <div className="grupo-progress-bar"></div>
+            </button>
+          ))}
+        </div>
+        
+        <div className="entrenamiento-footer">
+          <p className="footer-text">
+            💪 Haz clic en cualquier grupo muscular para ver los ejercicios recomendados
+          </p>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Home;

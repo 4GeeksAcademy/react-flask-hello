@@ -984,8 +984,10 @@ def list_nutrition_entries():
 @jwt_required()
 def get_nutrition_entry(entry_id):
     user_id=get_jwt_identity()
-    entry=NutritionEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    
+    stm=select(NutritionEntry).where(NutritionEntry.id==entry_id)
+    entry=db.session.execute(stm).scalar_one_or_none()
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
     return jsonify(entry.serialize()),200
 

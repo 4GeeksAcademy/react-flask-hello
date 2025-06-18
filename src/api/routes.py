@@ -991,7 +991,7 @@ def get_nutrition_entry(entry_id):
     entry=db.session.execute(stm).scalar_one_or_none()
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
-    return jsonify(entry.serialize()),200
+    return jsonify(entry.serialize()), 200
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()

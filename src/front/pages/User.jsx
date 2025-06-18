@@ -19,7 +19,7 @@ const User = () => {
     };
   };
 
-  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null); // ✅ Hook bien colocado
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null);
 
   const historial = [
     "se apunto al evennto 'yoga al aire libre'",

@@ -20,7 +20,7 @@ const NutricionProfesional = () => {
 
   // Cargar usuarios
   useEffect(() => {
-    fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users")
+    fetch(import.meta.env.VITE_BACKEND_URL + "/api/users")
       .then(res => res.json())
       .then(data => setUsuariosRegistrados(data))
       .catch(err => console.error("Error al cargar usuarios:", err));
@@ -29,7 +29,7 @@ const NutricionProfesional = () => {
   // Cargar plan nutricional
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`)
+      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`)
         .then(res => {
           if (!res.ok) throw new Error("No existe plan");
           return res.json();
@@ -47,7 +47,7 @@ const NutricionProfesional = () => {
   const handleEditarPlan = () => setModoEdicion(true);
 
   const handleGuardarCambios = () => {
-    fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`, {
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -67,7 +67,7 @@ const NutricionProfesional = () => {
       ...planBase
     };
 
-    fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries`, {
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -149,9 +149,8 @@ const NutricionProfesional = () => {
               <button
                 key={dia}
                 onClick={() => setDiaActivo(dia)}
-                className={`btn mx-1 mb-2 ${
-                  dia === diaActivo ? "btn-primary" : "btn-outline-primary"
-                }`}
+                className={`btn mx-1 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-primary"
+                  }`}
               >
                 {dia}
               </button>

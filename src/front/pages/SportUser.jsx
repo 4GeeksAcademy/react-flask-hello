@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import CardPlan from "../components/CardPlan";
-
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
 import "../../styles/sportUser.css";
 
 const SportUser = ({ usuarioSeleccionado }) => {
@@ -10,14 +11,15 @@ const SportUser = ({ usuarioSeleccionado }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { store, dispatch } = useGlobalReducer()
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-
+  if (!store.user?.subscription?.length>0) navigate("/Tarifas");
     const fetchPlan = async () => {
       try {
         const response = await fetch(
-          `https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/training_entries/${store.user.id}`, {
+          import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${store.user.id}`, {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
           }

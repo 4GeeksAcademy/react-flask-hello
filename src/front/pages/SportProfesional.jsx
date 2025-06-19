@@ -20,16 +20,16 @@ const SportProfesional = () => {
 
   // Cargar usuarios
   useEffect(() => {
-    fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/users")
+    fetch(import.meta.env.VITE_BACKEND_URL + "/api/users")
       .then(res => res.json())
       .then(data => setUsuariosRegistrados(data))
       .catch(err => console.error("Error al cargar usuarios:", err));
   }, []);
 
-    // Cargar plan Entrenamiento
+  // Cargar plan Entrenamiento
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${usuarioSeleccionado.id}`)
+      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`)
         .then(res => {
           if (!res.ok) throw new Error("No existe plan");
           return res.json();
@@ -48,7 +48,7 @@ const SportProfesional = () => {
   const handleEditarPlan = () => setModoEdicion(true);
 
   const handleGuardarCambios = () => {
-    fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/training_entries/${usuarioSeleccionado.id}`, {
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(planEntrenamiento)
@@ -67,7 +67,7 @@ const SportProfesional = () => {
       ...planBase
     };
 
-     fetch(`https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/training_entries`, {
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(nuevoPlan)
@@ -93,12 +93,12 @@ const SportProfesional = () => {
 
   return (
     <div className="sport-profesional container mt-5 ">
-            <section className="sport-header text-center py-5">
-                <h1 className="display-4">Deporte Personalizado</h1>
-                <p className="lead">
-                    Mejora tu salud con planes de deporte adaptados a tus objetivos.
-                </p>
-            </section>
+      <section className="sport-header text-center py-5">
+        <h1 className="display-4">Deporte Personalizado</h1>
+        <p className="lead">
+          Mejora tu salud con planes de deporte adaptados a tus objetivos.
+        </p>
+      </section>
 
       <section className="text-center my-4">
         <h2 className="subtittle mb-3">Selecciona un usuario</h2>

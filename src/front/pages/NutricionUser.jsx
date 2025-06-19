@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionUser.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
+
 
 const NutricionUser = () => {
   const [planNutricion, setPlanNutricion] = useState({});
@@ -8,16 +10,19 @@ const NutricionUser = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { store } = useGlobalReducer();
-
+  const navigate = useNavigate();
   const userId = store.user?.id;
 
   useEffect(() => {
+
+      
+    if (!store.user?.subscription?.length>0) navigate("/Tarifas");
     if (!userId) return;
 
     const fetchPlan = async () => {
       try {
         const response = await fetch(
-          `https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/nutrition_entries/${userId}`,
+          import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${userId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -67,9 +72,8 @@ const NutricionUser = () => {
               <button
                 key={dia}
                 onClick={() => setDiaActivo(dia)}
-                className={`btn mx-2 mb-2 ${
-                  dia === diaActivo ? "btn-primary" : "btn-outline-light"
-                }`}
+                className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"
+                  }`}
               >
                 {dia}
               </button>

@@ -33,7 +33,7 @@ const ProfesoresPage = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev/api/users", {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

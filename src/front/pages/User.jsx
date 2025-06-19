@@ -70,7 +70,7 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users", {
 
         method: 'PUT',
         headers: {

@@ -18,7 +18,7 @@ const User = () => {
     };
   };
 
-  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(store.user?.profesionales_contratados?.[0] || null);
+
 
   const historial = [
     "se apuntó al evento 'yoga al aire libre'",
@@ -227,20 +227,20 @@ return (
 
     <div className="secciones-inferiores">
       <div className="seccion">
-        <h2>{entrenadorSeleccionado ? entrenadorSeleccionado.nombre : "Entrenador"}</h2>
-        {entrenadorSeleccionado ? (
+        <h2>{store.user?.profesionales_contratados?.[0] ? store.user.profesionales_contratados[0].nombre : "Entrenador"}</h2>
+        {store.user?.profesionales_contratados?.[0] ? (
           <>
             <img
-              src={entrenadorSeleccionado.image || "https://i.pravatar.cc/300"}
+              src={store.user.profesionales_contratados[0].image || "https://i.pravatar.cc/300"}
               alt="Entrenador"
               className="entrenador-img"
             />
             <div className="btn-entrenador-wrapper">
               <Link
-                to={`/entrenadores/${entrenadorSeleccionado.nombre?.toLowerCase().replace(/ /g, "-")}`}
+                to={`/entrenadores/${store.user.profesionales_contratados[0].nombre?.toLowerCase().replace(/ /g, "-")}`}
                 className="btn-entrenador-link"
               >
-                {entrenadorSeleccionado?.nombre || "Ver perfil del entrenador"}
+                {store.user.profesionales_contratados[0].nombre || "Ver perfil del entrenador"}
               </Link>
             </div>
           </>
@@ -264,8 +264,9 @@ return (
         <h2>Membresía</h2>
         {store.user?.subscription?.length > 0 ?
           <>
-            <p><strong>Tipo:</strong> {store.user.subscription[0].plan.name}</p>
-            <p><strong>Estado:</strong> {store.user.subscription[0].status}</p>
+            <p className="mb-0"><strong>Nivel</strong></p>
+            <p className="fs-3 fw-bold">{store.user.subscription[0].plan.name}</p>
+            {/* <p><strong>Estado:</strong> {store.user.subscription[0].status}</p> */}
             <p><strong>Finaliza:</strong> {store.user.subscription[0].end_date.split("-").reverse().join("/")}</p>
           </>
           : <Link to="/Tarifas" className="border border-danger text-danger">No tienes una membresía activa.</Link>

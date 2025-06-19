@@ -2,78 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/tarifas.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Tarifas = () => {
   const { tipo } = useParams();
+  const navigate = useNavigate();
   const [eleccionSeleccionada, setEleccionSeleccionada] = useState(null);
-
+  const { store, dispatch } = useGlobalReducer();
   const imagenPorDefecto = "https://img.freepik.com/fotos-premium/pareja-deportiva-relajarse-mostrador-bar-gimnasio-despues-entrenamiento-fisico_266732-28571.jpg";
 
-  const opciones = [
-    {
-      id: "basic",
-      nombre: "Tarifa Basic",
-      descripcion: "Ideal para quienes quieren empezar a moverse. Incluye planes básicos de entrenamiento.",
-      precio: "45€/mes",
-      beneficios: [
-        "Acceso al gimnasio en horario limitado",
-        "Plan de entrenamiento general",
-        "Acceso eventos deportivos"
-      ],
-      exclusiones: [
-        "Seguimiento nutricional",
-        "Clases dirigidas",
-        "Asesoramiento personalizado",
-        "Acceso a todos los eventos",
-        "Invitacion amigos/familiares"
-      ],
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/peso-saludable-cuidado-masculino-atletico_1139-695.jpg"
-      ]
-    },
-    {
-      id: "premium",
-      nombre: "Tarifa Premium",
-      descripcion: "Incluye entrenamiento y nutrición personalizados.",
-      precio: "55€/mes",
-      beneficios: [
-        "Acceso completo al gimnasio sin restricciones horarias",
-        "Planes de nutrición personalizados y tabla deportiva",
-        "Seguimiento mensual con entrenador",
-        "Acceso a clases dirigidas"
-      ],
-      exclusiones: [
-        "Sesiones semanales personalizadas",
-        "Acceso prioritario a eventos",
-        "Descuentos en productos asociados",
-        "Invitacion amigos/familiares"
-      ],
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/mujer-joven-cinta-metrica-cocina_1303-24778.jpg"
-      ]
-    },
-    {
-      id: "dmpc",
-      nombre: "Tarifa DMPC",
-      descripcion: "Acceso completo a todos los servicios y asesoramientos.",
-      precio: "65€/mes",
-      beneficios: [
-        "Todo lo incluido en Premium",
-        "Asesoramiento continuo (entrenamiento, nutrición y bienestar)",
-        "Sesiones semanales personalizadas",
-        "Acceso prioritario a eventos y talleres",
-        "Descuentos en productos asociados"
-      ],
-      exclusiones: [
-        "Sin clases ilimitadas 24h",
-        "Sin entrenador personal permanente",
-        "Sin acceso VIP a instalaciones premium"
-      ],
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/primer-plano-instructor-gimnasia-escribiendo-diario_23-2147827460.jpg?uid=R94462527&ga=GA1.1.2118358263.1748545776&semt=ais_hybrid&w=740"
-      ]
-    }
-  ];
+  const opciones = store.tarifas
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,14 +23,15 @@ const Tarifas = () => {
     }
   }, [tipo]);
 
-  const handleSelectPlan = (plan) => {
-    setEleccionSeleccionada(plan);
-    localStorage.setItem("tarifa", JSON.stringify(plan));
+  const handleSelectPlan = () => {
+    setEleccionSeleccionada(eleccionSeleccionada);
+    localStorage.setItem("tarifa", JSON.stringify(eleccionSeleccionada));
     window.scrollTo(0, 0);
     dispatch({
       type: "set_tarifa",
-      payload: plan
+      payload: eleccionSeleccionada
     });
+    navigate("/checkout");
   };
 
   return (
@@ -184,14 +122,20 @@ const Tarifas = () => {
                     <li key={i}>{item}</li>
                   ))}
                 </ul>
+
               </div>
             )}
+
+
           </div>
         )
       )}
+      <div className="d-flex justify-content-center mt-4">
 
+        <btn  onClick={handleSelectPlan} className="btn btn-success"> Comprar {eleccionSeleccionada?.nombre} </btn>
+      </div>
     </div>
   );
 };
 
-  export default Tarifas;
+export default Tarifas;

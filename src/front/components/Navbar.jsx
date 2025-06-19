@@ -26,20 +26,43 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Store user changed:", store.user);
+  if (store.user) {
+    console.log("Actualizando menu con imagen:", store.user.imagen);
 
-    if (store.user != null && !menuItems.includes(item => item.name === "Login")) {
-      let aux = [...menuItems]
-      aux.push({ name: "Perfil", link: "/user", internal: true }, { name: "Logout" });
-      const upd = aux.filter(item => item.name !== "Login");
-      if (!upd.includes(item => item.name === "Profesor" || item.name === "Perfil")) {
-        store.user.is_professional && upd.splice(upd.length-1, 0, { name: "Profesor", link: "/pUser", internal: true });
-      }
-      const result = new Set(upd)
-      setMenuItems(Array.from(result));
+    let aux = [...items.filter(item =>
+      item.name !== "Login" &&
+      item.name !== "Perfil" &&
+      item.name !== "Profesor" &&
+      item.name !== "Logout"
+    )];
+
+    const avatarUrl = store.user.imagen
+      ? `${store.user.imagen}?t=${Date.now()}`
+      : "/default-avatar.png";
+
+    if (store.user.is_professional) {
+      aux.push({
+        name: "Profesor",
+        link: "/pUser",
+        internal: true,
+        isImage: true,
+        imageUrl: avatarUrl,
+      });
+    } else {
+      aux.push({
+        name: "Perfil",
+        link: "/user",
+        internal: true,
+        isImage: true,
+        imageUrl: avatarUrl,
+      });
     }
 
-  }, [store.user]);
+    aux.push({ name: "Logout" });
+    setMenuItems(aux);
+  }
+}, [store.user?.imagen, store.user?.is_professional]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,7 +140,7 @@ export const Navbar = () => {
                     alt={item.name}
                     className="menu-avatar"
                     onError={(e) => {
-                      e.target.src = "/default-avatar.png";
+                      e.target.src = "/logoCrema1.png";
                     }}
                   />
                 </Link>

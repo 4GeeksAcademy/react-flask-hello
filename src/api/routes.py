@@ -900,7 +900,8 @@ VALID_MUSCLE_GROUPS=[
 @jwt_required()
 def list_training_entries():
     user_id=get_jwt_identity()
-    entries=TrainingEntry.query.filter_by(user_id=user_id).all()
+    stm=select(TrainingEntry).where(TrainingEntry.user_id==user_id)
+    entries=db.session.execute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]),200
 
 @api.route('/training_entries/<int:entry_id>', methods=['GET'])
@@ -908,7 +909,7 @@ def list_training_entries():
 def get_training_entry(entry_id):
     user_id=get_jwt_identity()
     entry=TrainingEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrado")
     return jsonify(entry.serialize()),200
 
@@ -940,7 +941,7 @@ def create_training_entry():
 def update_training_entry(entry_id):
     user_id=get_jwt_identity()
     entry=TrainingEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrada")
 
     data=request.get_json() or {}
@@ -964,7 +965,7 @@ def update_training_entry(entry_id):
 def delete_training_entry(entry_id):
     user_id=get_jwt_identity()
     entry=TrainingEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrada")
     db.session.delete(entry)
     db.session.commit()
@@ -977,7 +978,8 @@ def delete_training_entry(entry_id):
 @jwt_required()
 def list_nutrition_entries():
     user_id=get_jwt_identity()
-    entries=NutritionEntry.query.filter_by(user_id=user_id).all()
+    stm=select(NutritionEntry).where(NutritionEntry.user_id==user_id)
+    entries=db.session.excecute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['GET'])
@@ -989,7 +991,7 @@ def get_nutrition_entry(entry_id):
     entry=db.session.execute(stm).scalar_one_or_none()
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
-    return jsonify(entry.serialize()),200
+    return jsonify(entry.serialize()), 200
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()
@@ -1017,7 +1019,7 @@ def create_nutrition_entry():
 def update_nutrition_entry(entry_id):
     user_id=get_jwt_identity()
     entry=NutritionEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
     data=request.get_json() or {}
     updatable=('dia_semana', 'desayuno', 'media_mañana', 'comida', 'cena')
@@ -1034,11 +1036,11 @@ def update_nutrition_entry(entry_id):
 def delete_nutrition_entry(entry_id):
     user_id=get_jwt_identity()
     entry=NutritionEntry.query.get(entry_id)
-    if not entry or entry.user_id != user_id:
+    if not entry or str(entry.user_id) != user_id:
         abort(404, description="No se encuentra la entrada de nutricion")
     db.session.delete(entry)
     db.session.commit()
-    return '', 204
+    return '', 204 
 
 
 

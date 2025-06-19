@@ -5,10 +5,12 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Entrenadores = () => {
     const [trainers, setTrainers] = useState([]);
-    const {store} = useGlobalReducer();
+    const [selectedTrainer, setSelectedTrainer] = useState(null);
+    const { store } = useGlobalReducer();
     const navigate = useNavigate();
+
     useEffect(() => {
-            
+
 
         const fetchTrainers = async () => {
             try {
@@ -24,8 +26,35 @@ const Entrenadores = () => {
         fetchTrainers();
     }, []);
 
-    const selectedTrainer = null;
     const otherTrainers = trainers;
+
+    const handleSelectTrainer = async (trainer) => {
+        try {
+            const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals/enroll_user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ profesional_id: trainer.id })
+            });
+            if (resp.status === 401) {
+                navigate("/login");
+                return;
+            };
+            if (resp.ok) {
+                setTrainers(prev => {
+                    const remainingTrainers = prev.filter(t => t !== trainer);
+                    return [trainer, ...remainingTrainers];
+                });
+                setSelectedTrainer(trainer);
+            }
+        } catch (error) {
+            console.error("Error al guardar entrenador:", error);
+        }
+    }
+
+
 
     return (
         <div className="fondo">
@@ -86,22 +115,7 @@ const Entrenadores = () => {
                                     <div className="text-center mt-3">
                                         <button
                                             className="btn btn-outline-dark"
-                                            onClick={async () => {
-                                                try {
-                                                    await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/entrenador", {
-                                                        method: "PUT",
-                                                        headers: { "Content-Type": "application/json" },
-                                                        body: JSON.stringify(trainer)
-                                                    });
-
-                                                    setTrainers(prev => {
-                                                        const remainingTrainers = prev.filter(t => t !== trainer);
-                                                        return [trainer, ...remainingTrainers];
-                                                    });
-                                                } catch (error) {
-                                                    console.error("Error al guardar entrenador:", error);
-                                                }
-                                            }}
+                                            onClick={() => handleSelectTrainer(trainer)}
                                         >
                                             Solicitar
                                         </button>

@@ -18,7 +18,7 @@ const User = () => {
     };
   };
 
-  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null);
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(store.user?.profesionales_contratados?.[0] || null);
 
   const historial = [
     "se apuntó al evento 'yoga al aire libre'",
@@ -227,16 +227,16 @@ const User = () => {
           {entrenadorSeleccionado ? (
             <>
               <img
-                src={entrenadorSeleccionado.image}
+                src={entrenadorSeleccionado.image || "https://i.pravatar.cc/300"}
                 alt="Entrenador"
                 className="entrenador-img"
               />
               <div className="btn-entrenador-wrapper">
                 <Link
-                  to={`/entrenadores/${entrenadorSeleccionado.nombre.toLowerCase().replace(/ /g, "-")}`}
+                  to={`/entrenadores/${entrenadorSeleccionado.nombre?.toLowerCase().replace(/ /g, "-")}`}
                   className="btn-entrenador-link"
                 >
-                  {entrenadorSeleccionado.nombre}
+                  {entrenadorSeleccionado?.nombre || "Ver perfil del entrenador"}
                 </Link>
               </div>
             </>

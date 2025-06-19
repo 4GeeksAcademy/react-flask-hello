@@ -659,7 +659,7 @@ def create_checkout_session():
             line_items=body['items'],
             mode='payment',
             # implementar un webhook para que se ejecute una funcion cuando se complete el pago
-            return_url=FRONT + 'return?session_id={CHECKOUT_SESSION_ID}',
+            return_url=os.getenv + 'return?session_id={CHECKOUT_SESSION_ID}',
         )
     except Exception as e:
         return str(e)

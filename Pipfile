@@ -23,7 +23,6 @@ werkzeug = "*"
 flask-jwt-extended = "*"
 bcrypt = "*"
 stripe = "*"
-bcrypt = "*"
 flask-bcrypt = "*"
 
 [requires]

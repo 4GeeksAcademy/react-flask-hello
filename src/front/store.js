@@ -4,13 +4,14 @@ export const initialStore = () => {
     user: null,
     tarifas: [
       {
-        id: "basic",
+        id: "basico",
         nombre: "Tarifa Basic",
         descripcion:
           "Ideal para quienes quieren empezar a moverse. Incluye planes básicos de entrenamiento.",
         imagenes: [
           "https://img.freepik.com/foto-gratis/peso-saludable-cuidado-masculino-atletico_1139-695.jpg",
         ],
+        price:45,
         price_id: import.meta.env.VITE_BASIC_PRICE_ID,
       },
       {
@@ -21,6 +22,7 @@ export const initialStore = () => {
           "https://img.freepik.com/foto-gratis/mujer-joven-cinta-metrica-cocina_1303-24778.jpg",
           "https://img.freepik.com/foto-gratis/pareja-gimnasio_1303-5541.jpg",
         ],
+        price:55,
         price_id: import.meta.env.VITE_PREMIUM_PRICE_ID,
       },
       {
@@ -30,6 +32,7 @@ export const initialStore = () => {
         imagenes: [
           "https://img.freepik.com/foto-gratis/mujeres-comida-saludable-tiro-medio_23-2149894948.jpg",
         ],
+        price:65,
         price_id: import.meta.env.VITE_DMPC_PRICE_ID,
       },
     ],

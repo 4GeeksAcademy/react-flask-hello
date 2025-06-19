@@ -26,6 +26,7 @@ const Tarifas = () => {
 
   const handleSelectPlan = (plan) => {
     setEleccionSeleccionada(plan);
+    localStorage.setItem("tarifa", JSON.stringify(plan));
     window.scrollTo(0, 0);
     dispatch({
       type: "set_tarifa",

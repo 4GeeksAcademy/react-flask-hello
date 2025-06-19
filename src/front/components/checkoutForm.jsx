@@ -11,17 +11,17 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 //OJO con la variable de entorno, debe estar definida en el archivo .env
 // VITE_STRIPE_PUBLIC debe ser la clave pública de Stripe
 // stripePromise no se debe de crear dentro del componente, ya que se crearía en cada renderizado y daria error
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 const CheckoutForm = () => {
     const { store } = useGlobalReducer();
-    console.log(store.tarifa.price_id);
+    
     
     const [clientSecret, setClientSecret] = useState();
     //usamos el useEffect para obtener el clientSecret una vez que el componente se monta
     useEffect(() => {
         //utilizamos el servicio stripeServices para obtener el clientSecret
-        stripeServices.fetchClientSecret(store.tarifa.price_id).then(secret => setClientSecret(secret));
+        stripeServices.fetchClientSecret(store.tarifa).then(secret => setClientSecret(secret));
     }, []);
 
     const options = { clientSecret };

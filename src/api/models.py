@@ -253,7 +253,7 @@ class SubscriptionPlan(db.Model):
             "price": float(self.price),
             "duration_month": self.duration_month,
             "description": self.description,
-            "price_id": self.price_id
+            "price_id": self.price_id,
         }
 
 
@@ -282,14 +282,16 @@ class Subscription(db.Model):
             "subscription_plan_id": self.subscription_plan_id,
             "start_date": self.start_date.isoformat() if self.start_date else None,
             "end_date": self.end_date.isoformat() if self.end_date else None,
-            "status": self.status
+            "status": self.status,
+            "plan": self.plan.serialize() if self.plan else None,
+            "payments": [payment.serialize() for payment in self.payments]
         }
 
 
 class Payment(db.Model):
     __tablename__ = 'payments'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    subscription_id: Mapped[int] = mapped_column(
+    subscription_id: Mapped[str] = mapped_column(
         Integer, ForeignKey('subscriptions.id'), nullable=False)
     amount: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
     method: Mapped[str] = mapped_column(String(50), nullable=False)

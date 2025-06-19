@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, abort
-from api.models import db, User, PlanTemplate, TemplateItem, UserProfesional, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem, TrainingEntry,NutritionEntry
+from api.models import db, User, PlanTemplate, TemplateItem, UserProfesional, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem, TrainingEntry, NutritionEntry
 from api.utils import APIException
 from flask_cors import CORS
 from sqlalchemy import select
@@ -11,6 +11,7 @@ import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from datetime import datetime, timedelta
 
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
@@ -104,9 +105,9 @@ def update_user():
         if field in data:
             if data[field] is not None or data[field] != 0:
                 setattr(user, field, data[field])
-               
+
             else:
-                data[field]= 0
+                data[field] = 0
                 setattr(user, field, data[field])
     db.session.commit()
     return jsonify(user.serialize()), 200
@@ -132,6 +133,7 @@ def list_professionals():
     query = db.session.execute(stm).scalars()
     return jsonify([p.serialize() for p in query]), 200
 
+
 @api.route('/professionals/enroll_user', methods=['POST'])
 @jwt_required()
 def enroll_user():
@@ -140,7 +142,8 @@ def enroll_user():
     if not user:
         abort(404, description="Usuario no encontrado")
     if not user.subscriptions:
-        raise APIException("Usuario no tiene una subscripcion activa", status_code=403)
+        raise APIException(
+            "Usuario no tiene una subscripcion activa", status_code=403)
     data = request.get_json() or {}
     required = ('profesional_id',)
     if not all(f in data for f in required):
@@ -160,6 +163,8 @@ def enroll_user():
     return jsonify(enrollment.serialize()), 201
 
 # Listar profesionales contratados por el usuario
+
+
 @api.route('/user_professionals', methods=['GET'])
 @jwt_required()
 def list_user_professionals():
@@ -170,6 +175,8 @@ def list_user_professionals():
     return jsonify([up.serialize() for up in user.profesionales_contratados]), 200
 
 # Listar usuarios del profesional
+
+
 @api.route('/professionals_user', methods=['GET'])
 @jwt_required()
 def get_user_enrolled():
@@ -180,6 +187,8 @@ def get_user_enrolled():
     return jsonify([up.serialize() for up in user.usuarios_contratantes]), 200
 
 # Eliminar relación profesional-usuario
+
+
 @api.route('/delete_user_professional', methods=['DELETE'])
 @jwt_required()
 def delete_user_professional():
@@ -596,22 +605,55 @@ def get_payment(pid):
 
 
 @api.route('/payments', methods=['POST'])
+@jwt_required()
 def create_payment():
-    data = request.get_json() or {}
-    required = ('subscription_id', 'amount', 'method', 'status')
-    if not all(f in data for f in required):
-        raise APIException(
-            f"Faltan datos obligatorios: {', '.join(required)}", status_code=400)
-    p = Payment(
-        subscription_id=data['subscription_id'],
-        amount=data['amount'],
-        method=data['method'],
-        paid_at=data.get('paid_at'),
-        status=data['status']
-    )
-    db.session.add(p)
-    db.session.commit()
-    return jsonify(p.serialize()), 200
+
+        data = request.get_json() or {}
+        required = ('subscription_id', 'amount',
+                    'method', 'status', 'session_id')
+        user_id = get_jwt_identity()
+        if not all(f in data for f in required):
+            return jsonify(
+                {"error": f"Faltan datos obligatorios: {', '.join(required)}"}), 400
+        stm = select(SubscriptionPlan).where(
+            SubscriptionPlan.name == data['subscription_id'].capitalize()
+        )
+        plan = db.session.execute(stm).scalar_one_or_none()
+        if not plan:
+            return jsonify(
+                {"error": "Plan de subscripción no encontrado"}), 400
+
+        subscription = Subscription(
+            user_id=user_id,
+            subscription_plan_id=plan.id,
+            start_date=datetime.utcnow().date(),
+            end_date=(datetime.utcnow() + timedelta(days=30)).date(),
+            status=data['status']
+        )
+        if not subscription.user_id:
+            db.session.rollback()
+            return jsonify({"error": "Usuario no encontrado"}), 400
+        
+        db.session.add(subscription)
+        db.session.commit()
+
+        payment = Payment(
+            subscription_id=subscription.id,
+            amount=data['amount'],
+            method=data['method'],
+            paid_at=datetime.utcnow(),
+            status=data['status']
+        )
+        if not payment.subscription_id:
+            db.session.rollback()
+            return jsonify({"error": "Subscripción no encontrada"}), 400
+        
+        db.session.add(payment)
+        db.session.commit()
+
+        return jsonify(payment.serialize()), 201
+
+
 
 
 @api.route('/payments/<int:pid>', methods=['PUT'])
@@ -649,6 +691,7 @@ def session_status():
 
 
 @api.route('/create-checkout-session', methods=['POST'])
+@jwt_required()
 def create_checkout_session():
     try:
         body = request.json
@@ -659,9 +702,11 @@ def create_checkout_session():
             line_items=body['items'],
             mode='payment',
             # implementar un webhook para que se ejecute una funcion cuando se complete el pago
-            return_url=os.getenv + 'return?session_id={CHECKOUT_SESSION_ID}',
+            return_url=str(os.getenv("FRONT")) +
+            'return?session_id={CHECKOUT_SESSION_ID}',
         )
     except Exception as e:
+        print(str(e))
         return str(e)
 
     return jsonify({"clientSecret": session.client_secret})
@@ -965,9 +1010,9 @@ def register():
         return jsonify({"error": "something went wrong", "success": False}), 400
 
 
-#Grupos musculares permitidos: 
-VALID_MUSCLE_GROUPS=[
-    "hombros", "pecho", "abdomen", "espalda", "biceps", 
+# Grupos musculares permitidos:
+VALID_MUSCLE_GROUPS = [
+    "hombros", "pecho", "abdomen", "espalda", "biceps",
     "triceps", "quadriceps", "isquiotibiales", "gemelos"
 ]
 
@@ -975,72 +1020,78 @@ VALID_MUSCLE_GROUPS=[
 @api.route('/training_entries', methods=['GET'])
 @jwt_required()
 def list_training_entries():
-    user_id=get_jwt_identity()
-    stm=select(TrainingEntry).where(TrainingEntry.user_id==user_id)
-    entries=db.session.execute(stm).scalars.all()
-    return jsonify([e.serialize() for e in entries]),200
+    user_id = get_jwt_identity()
+    stm = select(TrainingEntry).where(TrainingEntry.user_id == user_id)
+    entries = db.session.execute(stm).scalars.all()
+    return jsonify([e.serialize() for e in entries]), 200
+
 
 @api.route('/training_entries/<int:entry_id>', methods=['GET'])
 @jwt_required()
 def get_training_entry(entry_id):
-    user_id=get_jwt_identity()
-    entry=TrainingEntry.query.get(entry_id)
+    user_id = get_jwt_identity()
+    entry = TrainingEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrado")
-    return jsonify(entry.serialize()),200
+    return jsonify(entry.serialize()), 200
 
 
 @api.route('/training_entries', methods=['POST'])
 @jwt_required()
 def create_training_entry():
-    user_id=get_jwt_identity()
-    data=request.get_json() or {}
-    required=('grupo', 'nota')
+    user_id = get_jwt_identity()
+    data = request.get_json() or {}
+    required = ('grupo', 'nota')
     if not all(f in data for f in required):
-        raise APIException(f"faltan campos: {', '.join(required)}", status_code=400)
-    
-    #validar grupos musculares
+        raise APIException(
+            f"faltan campos: {', '.join(required)}", status_code=400)
+
+    # validar grupos musculares
     if data['grupo'] not in VALID_MUSCLE_GROUPS:
-        raise APIException(f"grupo '{data['grupo']}' no valido. Elige uno de: {', '.join(VALID_MUSCLE_GROUPS)}", status_code=400)
-    
-    entry= TrainingEntry(
+        raise APIException(
+            f"grupo '{data['grupo']}' no valido. Elige uno de: {', '.join(VALID_MUSCLE_GROUPS)}", status_code=400)
+
+    entry = TrainingEntry(
         user_id=user_id,
         grupo=data['grupo'],
         nota=data['nota']
     )
     db.session.add(entry)
     db.session.commit()
-    return jsonify(entry.serialize()),201
+    return jsonify(entry.serialize()), 201
+
 
 @api.route('/training_entries/<int:entry_id>', methods=['PUT'])
 @jwt_required()
 def update_training_entry(entry_id):
-    user_id=get_jwt_identity()
-    entry=TrainingEntry.query.get(entry_id)
+    user_id = get_jwt_identity()
+    entry = TrainingEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrada")
 
-    data=request.get_json() or {}
-    updatable= ('grupo', 'nota')
+    data = request.get_json() or {}
+    updatable = ('grupo', 'nota')
     if not any(field in data for field in updatable):
         raise APIException("No hay campos para actualizar", status_code=400)
-    #modifica el grupo muscular
+    # modifica el grupo muscular
     if 'grupo' in data:
         if data['grupo'] not in VALID_MUSCLE_GROUPS:
-            raise APIException(f"grupo '{data['grupo']}' no valido. Elige uno de:{','.join(VALID_MUSCLE_GROUPS)}", status_code=400)
-        entry.grupo=data['grupo']
+            raise APIException(
+                f"grupo '{data['grupo']}' no valido. Elige uno de:{','.join(VALID_MUSCLE_GROUPS)}", status_code=400)
+        entry.grupo = data['grupo']
 
     if 'nota' in data:
-        entry.nota=data['nota']
-    
+        entry.nota = data['nota']
+
     db.session.commit()
-    return jsonify(entry.serialize()),200
+    return jsonify(entry.serialize()), 200
+
 
 @api.route('/training_entries/<int:entry_id>', methods=['DELETE'])
 @jwt_required()
 def delete_training_entry(entry_id):
-    user_id=get_jwt_identity()
-    entry=TrainingEntry.query.get(entry_id)
+    user_id = get_jwt_identity()
+    entry = TrainingEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de entrenamiento no encontrada")
     db.session.delete(entry)
@@ -1048,37 +1099,38 @@ def delete_training_entry(entry_id):
     return '', 204
 
 
-
-
 @api.route('/nutrition_entries', methods=['GET'])
 @jwt_required()
 def list_nutrition_entries():
-    user_id=get_jwt_identity()
-    stm=select(NutritionEntry).where(NutritionEntry.user_id==user_id)
-    entries=db.session.excecute(stm).scalars.all()
+    user_id = get_jwt_identity()
+    stm = select(NutritionEntry).where(NutritionEntry.user_id == user_id)
+    entries = db.session.excecute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
+
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['GET'])
 @jwt_required()
 def get_nutrition_entry(entry_id):
-    user_id=get_jwt_identity()
-    
-    stm=select(NutritionEntry).where(NutritionEntry.id==entry_id)
-    entry=db.session.execute(stm).scalar_one_or_none()
+    user_id = get_jwt_identity()
+
+    stm = select(NutritionEntry).where(NutritionEntry.id == entry_id)
+    entry = db.session.execute(stm).scalar_one_or_none()
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
     return jsonify(entry.serialize()), 200
 
+
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()
 def create_nutrition_entry():
-    user_id=get_jwt_identity()
-    data=request.get_json() or {}
-    required=('dia_semana', 'comida', 'cena')
+    user_id = get_jwt_identity()
+    data = request.get_json() or {}
+    required = ('dia_semana', 'comida', 'cena')
     if not all(f in data for f in required):
-        raise APIException(f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
-    
-    entry=NutritionEntry(
+        raise APIException(
+            f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
+
+    entry = NutritionEntry(
         user_id=user_id,
         dia_semana=data['dia_semana'],
         desayuno=data.get('desayuno'),
@@ -1088,36 +1140,35 @@ def create_nutrition_entry():
     )
     db.session.add(entry)
     db.session.commit()
-    return jsonify(entry.serialize()),201
+    return jsonify(entry.serialize()), 201
+
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['PUT'])
 @jwt_required()
 def update_nutrition_entry(entry_id):
-    user_id=get_jwt_identity()
-    entry=NutritionEntry.query.get(entry_id)
+    user_id = get_jwt_identity()
+    entry = NutritionEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="Entrada de nutricion no encontrada")
-    data=request.get_json() or {}
-    updatable=('dia_semana', 'desayuno', 'media_mañana', 'comida', 'cena')
+    data = request.get_json() or {}
+    updatable = ('dia_semana', 'desayuno', 'media_mañana', 'comida', 'cena')
     if not any(field in data for field in updatable):
-        raise APIException(f"No hay campos validos para actualizar:", status_code=400)
+        raise APIException(
+            f"No hay campos validos para actualizar:", status_code=400)
     for field in updatable:
         if field in data:
             setattr(entry, field, data[field])
     db.session.commit()
     return jsonify(entry.serialize()), 200
 
+
 @api.route('/nutrition_entries/<int:entry_id>', methods=['DELETE'])
 @jwt_required()
 def delete_nutrition_entry(entry_id):
-    user_id=get_jwt_identity()
-    entry=NutritionEntry.query.get(entry_id)
+    user_id = get_jwt_identity()
+    entry = NutritionEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
         abort(404, description="No se encuentra la entrada de nutricion")
     db.session.delete(entry)
     db.session.commit()
-    return '', 204 
-
-
-
-    
+    return '', 204

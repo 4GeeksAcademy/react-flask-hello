@@ -42,8 +42,11 @@ export const Navbar = () => {
       let aux = [...menuItems]
       aux.push({ name: "Perfil", link: "/user", internal: true }, { name: "Logout" });
       const upd = aux.filter(item => item.name !== "Login");
-      store.user.is_professional && upd.splice(upd.length-1, 0, { name: "Profesor", link: "/pUser", internal: true });
-      setMenuItems(upd);
+      if (!upd.includes(item => item.name === "Profesor" || item.name === "Perfil")) {
+        store.user.is_professional && upd.splice(upd.length-1, 0, { name: "Profesor", link: "/pUser", internal: true });
+      }
+      const result = new Set(upd)
+      setMenuItems(Array.from(result));
     }
 
   }, [store.user]);

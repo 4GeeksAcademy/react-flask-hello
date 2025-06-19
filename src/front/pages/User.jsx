@@ -18,7 +18,7 @@ const User = () => {
     };
   };
 
-  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(null);
+  const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(store.user?.profesionales_contratados?.[0] || null);
 
   const historial = [
     "se apuntó al evento 'yoga al aire libre'",
@@ -26,11 +26,7 @@ const User = () => {
     "Asistió a clase de Boxeo"
   ];
 
-  const membresia = {
-    tipo: "premium",
-    duracion: "6 meses",
-    inicio: "1 de mayo del 2025"
-  };
+  const membresia = store.user?.subcription?.length>0 ? store.user.subcription : null;
 
   useEffect(() => {
     if (store.user) {
@@ -45,7 +41,7 @@ const User = () => {
 
     const fetchEntrenador = async () => {
       try {
-        const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/user/entrenador");
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/entrenador");
         const data = await res.json();
         setEntrenadorSeleccionado(data);
       } catch (error) {
@@ -101,7 +97,7 @@ const User = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -232,16 +228,16 @@ const User = () => {
           {entrenadorSeleccionado ? (
             <>
               <img
-                src={entrenadorSeleccionado.image}
+                src={entrenadorSeleccionado.image || "https://i.pravatar.cc/300"}
                 alt="Entrenador"
                 className="entrenador-img"
               />
               <div className="btn-entrenador-wrapper">
                 <Link
-                  to={`/entrenadores/${entrenadorSeleccionado.nombre.toLowerCase().replace(/ /g, "-")}`}
+                  to={`/entrenadores/${entrenadorSeleccionado.nombre?.toLowerCase().replace(/ /g, "-")}`}
                   className="btn-entrenador-link"
                 >
-                  {entrenadorSeleccionado.nombre}
+                  {entrenadorSeleccionado?.nombre || "Ver perfil del entrenador"}
                 </Link>
               </div>
             </>
@@ -263,9 +259,14 @@ const User = () => {
 
         <div className="seccion">
           <h2>Membresía</h2>
+          {membresia ?
+          <>
           <p><strong>Tipo:</strong> {membresia.tipo}</p>
           <p><strong>Duración:</strong> {membresia.duracion}</p>
           <p><strong>Inicio:</strong> {membresia.inicio}</p>
+          </>
+          : <Link to="/Tarifas" className="border border-danger text-danger">No tienes una membresía activa.</Link> 
+        }
         </div>
       </div>
 

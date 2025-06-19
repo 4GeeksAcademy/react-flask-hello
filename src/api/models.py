@@ -6,15 +6,47 @@ from datetime import datetime
 db = SQLAlchemy()
 
 
+# tabla relacion entre usuarios y profesionales
+class UserProfesional(db.Model):
+    __tablename__ = "user_profesional"
+    id = mapped_column(Integer, primary_key=True, index=True)
+    user_id = mapped_column(Integer, ForeignKey("users.id"))
+    profesional_id = mapped_column(Integer, ForeignKey("users.id"))
+
+    user = relationship(
+        "User",
+        foreign_keys=[user_id],
+        back_populates="profesionales_contratados"
+    )
+    profesional = relationship(
+        "User",
+        foreign_keys=[profesional_id],
+        back_populates="usuarios_contratantes"
+    )
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "profesional_id": self.profesional_id,
+            "user": self.user.basic_serialize() if self.user else None,
+            "profesional": self.profesional.basic_serialize() if self.profesional else None
+        }
+
+
 class User(db.Model):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(120), nullable=True)
     apellido: Mapped[str] = mapped_column(String(120), nullable=True)
-    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(250), nullable=False) # se tiene que hacer hash EN LA RUTA!
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(120), unique=True, nullable=False)
+    # se tiene que hacer hash EN LA RUTA!
+    password: Mapped[str] = mapped_column(String(250), nullable=False)
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
     # datos usuarios:
     peso: Mapped[float] = mapped_column(Float, nullable=True)
     altura: Mapped[float] = mapped_column(Float,  nullable=True)
@@ -23,19 +55,44 @@ class User(db.Model):
     imagen: Mapped[str] = mapped_column(String(255), nullable=True)
     direccion: Mapped[str] = mapped_column(String(200), nullable=True)
     # campos de professional:
-    is_professional: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    telefono: Mapped[int] = mapped_column(Integer, nullable=True) 
-    profession_type: Mapped[str] = mapped_column(String(120), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
+    is_professional: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False)
+    telefono: Mapped[int] = mapped_column(Integer, nullable=True)
+    # aqui un ENUM --> cliente, entrenador, nutricionista
+    profession_type: Mapped[str] = mapped_column(String(120), nullable=True)
     experiencia: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
     # relaciones:
     events_created = relationship('Event', back_populates='creator')
-    event_signups = relationship('EventSignup', back_populates='user') # tabla de relacion
+    event_signups = relationship(
+        'EventSignup', back_populates='user')  # tabla de relacion
     plans_created = relationship('PlanTemplate', back_populates='creator')
-    subscriptions = relationship('Subscription', back_populates='user')  # tabla de relacion
+    subscriptions = relationship(
+        'Subscription', back_populates='user')  # tabla de relacion
     support_tickets = relationship('SupportTicket', back_populates='user')
-    template_items_created = relationship('TemplateItem', back_populates='creator')
-    training_entries=relationship('TrainingEntry', back_populates='user')
-    nutrition_entries=relationship('NutritionEntry', back_populates='user')
+    template_items_created = relationship(
+        'TemplateItem', back_populates='creator')
+    training_entries = relationship('TrainingEntry', back_populates='user')
+    nutrition_entries = relationship('NutritionEntry', back_populates='user')
+    profesionales_contratados = relationship(
+        "UserProfesional",
+        back_populates="user",
+        foreign_keys="[UserProfesional.user_id]"
+    )
+    usuarios_contratantes = relationship(
+        "UserProfesional",
+        back_populates="profesional",
+        foreign_keys="[UserProfesional.profesional_id]"
+    )
+
+    def basic_serialize(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "apellido": self.apellido,
+            "email": self.email,
+            "is_professional": self.is_professional,
+            "imagen": self.imagen,
+        }
 
     def serialize(self):
         data = {
@@ -52,7 +109,14 @@ class User(db.Model):
             "imagen": self.imagen,
             "direccion": self.direccion,
             "is_professional": self.is_professional,
-            "telefono": self.telefono
+            "telefono": self.telefono,
+            "subscription": [sub.serialize() for sub in self.subscriptions],
+            "profesionales_contratados": [
+                up.profesional.basic_serialize() for up in self.profesionales_contratados
+            ],
+            "usuarios_contratantes": [
+                up.user.basic_serialize() for up in self.usuarios_contratantes
+            ]
         }
         if self.profession_type:
             data.update({
@@ -60,21 +124,26 @@ class User(db.Model):
                 "experiencia_años": self.experiencia
             })
         return data
-    
+
 
 class PlanTemplateItem(db.Model):
     __tablename__ = 'plan_template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    plan_template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
-    template_item_id: Mapped[int] = mapped_column(Integer, ForeignKey('template_items.id'), nullable=False)
-    orden: Mapped[int] = mapped_column(Integer, nullable=True)  # Puedes añadir más campos si quieres
+    plan_template_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('plan_templates.id'), nullable=False)
+    template_item_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('template_items.id'), nullable=False)
+    # Puedes añadir más campos si quieres
+    orden: Mapped[int] = mapped_column(Integer, nullable=True)
 
     # Relaciones
-    plan_template = relationship('PlanTemplate', back_populates='plan_template_items')
-    template_item = relationship('TemplateItem', back_populates='plan_template_items')
+    plan_template = relationship(
+        'PlanTemplate', back_populates='plan_template_items')
+    template_item = relationship(
+        'TemplateItem', back_populates='plan_template_items')
 
     def serialize(self):
-        return{
+        return {
             "id": self.id,
             "plan_template_id": self.plan_template_id,
             "template_item_id": self.template_item_id,
@@ -82,19 +151,22 @@ class PlanTemplateItem(db.Model):
         }
 
 
-
 class PlanTemplate(db.Model):
     __tablename__ = 'plan_templates'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
     plan_type: Mapped[str] = mapped_column(String(120), nullable=False)
     nombre: Mapped[str] = mapped_column(String(120), nullable=False)
     description: Mapped[str] = mapped_column(String(120), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
 
     creator = relationship('User', back_populates='plans_created')
-    plan_template_items = relationship('PlanTemplateItem', back_populates='plan_template', cascade='all, delete-orphan')
-    items = relationship('TemplateItem', secondary='plan_template_items', back_populates='templates', viewonly=True)
+    plan_template_items = relationship(
+        'PlanTemplateItem', back_populates='plan_template', cascade='all, delete-orphan')
+    items = relationship('TemplateItem', secondary='plan_template_items',
+                         back_populates='templates', viewonly=True)
 
     def serialize(self):
         return {
@@ -105,10 +177,13 @@ class PlanTemplate(db.Model):
             "description": self.description,
             "created_at": self.created_at.isoformat()
         }
+
+
 class TemplateItem(db.Model):
     __tablename__ = 'template_items'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    creator_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)  # NUEVO
+    creator_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)  # NUEVO
     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
     calorias: Mapped[int] = mapped_column(Integer, nullable=True)
@@ -123,9 +198,12 @@ class TemplateItem(db.Model):
     orden: Mapped[int] = mapped_column(Integer)
 
     # Relaciones
-    creator = relationship('User', back_populates='template_items_created')  # NUEVO
-    plan_template_items = relationship('PlanTemplateItem', back_populates='template_item', cascade='all, delete-orphan')
-    templates = relationship('PlanTemplate', secondary='plan_template_items', back_populates='items', viewonly=True)
+    creator = relationship(
+        'User', back_populates='template_items_created')  # NUEVO
+    plan_template_items = relationship(
+        'PlanTemplateItem', back_populates='template_item', cascade='all, delete-orphan')
+    templates = relationship(
+        'PlanTemplate', secondary='plan_template_items', back_populates='items', viewonly=True)
 
     def serialize(self):
         base = {
@@ -152,62 +230,21 @@ class TemplateItem(db.Model):
             })
         return base
 
-# class TemplateItem(db.Model):
-#     __tablename__ = 'template_items'
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
-#     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
-#     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
-#     calorias: Mapped[int] = mapped_column(Integer)
-#     proteinas: Mapped[int] = mapped_column(Integer)
-#     grasas: Mapped[int] = mapped_column(Integer)
-#     carbohidratos: Mapped[int] = mapped_column(Integer)
-#     meal_momento: Mapped[str] = mapped_column(String(60))
-#     cantidad: Mapped[float] = mapped_column(Float)
-#     muscle_group: Mapped[str] = mapped_column(String(50))
-#     series: Mapped[int] = mapped_column(Integer)
-#     repeticiones: Mapped[int] = mapped_column(Integer)
-#     orden: Mapped[int] = mapped_column(Integer)
-
-#     # relaciones:
-#     template = relationship('PlanTemplate', back_populates='items')
-
-#     def serialize(self):
-#         base = {
-#             "id": self.id,
-#             "template_id": self.template_id, 
-#             "item_type": self.item_type,
-#             "nombre": self.nombre,
-#             "orden": self.orden
-#         }
-#         if self.item_type == 'food':
-#             base.update({
-#                 "calorias": self.calorias,
-#                 "proteinas": self.proteinas,
-#                 "grasas": self.grasas,
-#                 "carbohidratos": self.carbohidratos,
-#                 "meal_momento": self.meal_momento,
-#                 "cantidad": self.cantidad
-#             })
-#         else:
-#             base.update({
-#                 "muscle_group": self.muscle_group,
-#                 "series": self.series,
-#                 "repeticiones": self.repeticiones
-#             })
-#         return base
 
 class SubscriptionPlan(db.Model):
     __tablename__ = 'subscription_plans'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     price: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
-    duration_month: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    duration_month: Mapped[int] = mapped_column(
+        Integer, default=1, nullable=False)
     description: Mapped[str] = mapped_column(Text)
-    price_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
+    price_id: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=True)
 
     # relacion inversa:
-    subscriptions = relationship('Subscription', back_populates='plan', lazy=True)
+    subscriptions = relationship(
+        'Subscription', back_populates='plan', lazy=True)
 
     def serialize(self):
         return {
@@ -219,19 +256,24 @@ class SubscriptionPlan(db.Model):
             "price_id": self.price_id
         }
 
+
 class Subscription(db.Model):
     __tablename__ = 'subscriptions'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
-    subscription_plan_id: Mapped[int] = mapped_column(Integer, ForeignKey('subscription_plans.id'), nullable=False)
-    start_date: Mapped[Date] = mapped_column(Date, default=datetime.utcnow, nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
+    subscription_plan_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('subscription_plans.id'), nullable=False)
+    start_date: Mapped[Date] = mapped_column(
+        Date, default=datetime.utcnow, nullable=False)
     end_date: Mapped[Date] = mapped_column(Date, nullable=True)
     status: Mapped[str] = mapped_column(String(30), nullable=False)
 
     # relaciones:
     user = relationship('User', back_populates='subscriptions')
     plan = relationship('SubscriptionPlan', back_populates='subscriptions')
-    payments = relationship('Payment', back_populates='subscription', lazy=True)
+    payments = relationship(
+        'Payment', back_populates='subscription', lazy=True)
 
     def serialize(self):
         return {
@@ -243,13 +285,16 @@ class Subscription(db.Model):
             "status": self.status
         }
 
+
 class Payment(db.Model):
     __tablename__ = 'payments'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    subscription_id: Mapped[int] = mapped_column(Integer, ForeignKey('subscriptions.id'), nullable=False)
+    subscription_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('subscriptions.id'), nullable=False)
     amount: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
     method: Mapped[str] = mapped_column(String(50), nullable=False)
-    paid_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    paid_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
     status: Mapped[str] = mapped_column(String(50), nullable=False)
 
     # relacion inversa:
@@ -265,11 +310,13 @@ class Payment(db.Model):
             "status": self.status
         }
 
+
 class Event(db.Model):
     __tablename__ = 'events'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(50), nullable=False)
-    creator_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    creator_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
     description: Mapped[str] = mapped_column(Text)
     fecha_inicio: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     fecha_fin: Mapped[datetime] = mapped_column(DateTime)
@@ -291,12 +338,16 @@ class Event(db.Model):
             "capacidad": self.capacidad
         }
 
+
 class EventSignup(db.Model):
     __tablename__ = 'event_signups'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    event_id: Mapped[int] = mapped_column(Integer, ForeignKey('events.id'), nullable=False)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
-    fecha_inscripcion: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    event_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('events.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
+    fecha_inscripcion: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
     estado: Mapped[str] = mapped_column(String(30))
 
     # relaciones:
@@ -312,15 +363,20 @@ class EventSignup(db.Model):
             "estado": self.estado
         }
 
+
 class SupportTicket(db.Model):
     __tablename__ = 'support_tickets'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
     asunto: Mapped[str] = mapped_column(String(50), nullable=False)
     mensaje: Mapped[str] = mapped_column(Text, nullable=False)
-    status: Mapped[str] = mapped_column(String(40), default='abierto', nullable=False)
-    creado_en: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
-    actualizado_en: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(40), default='abierto', nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
+    actualizado_en: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # relaciones:
     user = relationship('User', back_populates='support_tickets')
@@ -336,15 +392,20 @@ class SupportTicket(db.Model):
             "actualizado_en": self.actualizado_en.isoformat()
         }
 
-class TrainingEntry(db.Model):
-    __tablename__= 'training_entries'
-    id: Mapped[int]=mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
-    grupo: Mapped[str]=mapped_column(String(200), nullable=False) #pecho, espalda, biceps, etc...
-    nota: Mapped[str]=mapped_column(Text, nullable=False) #series: 4x12 con descanso de 'x'
-    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
-    user=relationship('User', back_populates='training_entries')
+class TrainingEntry(db.Model):
+    __tablename__ = 'training_entries'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
+    # pecho, espalda, biceps, etc...
+    grupo: Mapped[str] = mapped_column(String(200), nullable=False)
+    # series: 4x12 con descanso de 'x'
+    nota: Mapped[str] = mapped_column(Text, nullable=False)
+    fecha: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship('User', back_populates='training_entries')
 
     def serialize(self):
         return {
@@ -357,17 +418,19 @@ class TrainingEntry(db.Model):
 
 
 class NutritionEntry(db.Model):
-    __tablename__= 'nutrition_entries'
-    id: Mapped[int]=mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
-    dia_semana: Mapped[str]=mapped_column(String(40), nullable=False)
-    desayuno: Mapped[str]=mapped_column(Text, nullable=True)
-    media_mañana: Mapped[str]=mapped_column(Text, nullable=True)
-    comida: Mapped[str]=mapped_column(Text, nullable=False)
-    cena: Mapped[str]=mapped_column(Text, nullable=False)
-    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    __tablename__ = 'nutrition_entries'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
+    dia_semana: Mapped[str] = mapped_column(String(40), nullable=False)
+    desayuno: Mapped[str] = mapped_column(Text, nullable=True)
+    media_mañana: Mapped[str] = mapped_column(Text, nullable=True)
+    comida: Mapped[str] = mapped_column(Text, nullable=False)
+    cena: Mapped[str] = mapped_column(Text, nullable=False)
+    fecha: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False)
 
-    user=relationship('User', back_populates='nutrition_entries')
+    user = relationship('User', back_populates='nutrition_entries')
 
     def serialize(self):
         return {
@@ -381,7 +444,3 @@ class NutritionEntry(db.Model):
             "fecha": self.fecha.isoformat()
 
         }
-
-
-
-

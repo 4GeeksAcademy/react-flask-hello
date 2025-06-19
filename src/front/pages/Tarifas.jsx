@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/tarifas.css";
-
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 const Tarifas = () => {
   const { tipo } = useParams();
   const [eleccionSeleccionada, setEleccionSeleccionada] = useState(null);
@@ -183,4 +184,4 @@ const Tarifas = () => {
   );
 };
 
-export default Tarifas;
+  export default Tarifas;

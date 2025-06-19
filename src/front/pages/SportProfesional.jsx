@@ -1,29 +1,46 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/nutricionProfesional.css";
-
-const usuariosRegistrados = [
-  { id: 1, nombre: "David Vivar" },
-  { id: 2, nombre: "Sara González" },
-  { id: 3, nombre: "Leo Martínez" }
-];
+import "../../styles/sportProfesional.css";
 
 const SportProfesional = () => {
+  const [usuariosRegistrados, setUsuariosRegistrados] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  const [planNutricion, setPlanNutricion] = useState({});
+  const [planEntrenamiento, setPlanEntrenamiento] = useState(null);
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
 
+  const planBase = {
+    // Lunes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+    // Martes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+    // Miércoles: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+    // Jueves: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+    // Viernes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+    // Sábado: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" }, 
+    // Domingo: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
+  };
+
+  // Cargar usuarios
+  useEffect(() => {
+    fetch(import.meta.env.VITE_BACKEND_URL + "/api/users")
+      .then(res => res.json())
+      .then(data => setUsuariosRegistrados(data))
+      .catch(err => console.error("Error al cargar usuarios:", err));
+  }, []);
+
+  // Cargar plan Entrenamiento
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(`https://tudominio.com/api/nutricion/${usuarioSeleccionado.id}`)
-        .then(res => res.json())
+      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("No existe plan");
+          return res.json();
+        })
         .then(data => {
-          setPlanNutricion(data);
+          setPlanEntrenamiento(data);
           setModoEdicion(false);
         })
         .catch(err => {
-          console.error("Error al cargar plan:", err);
-          setPlanNutricion({});
+          console.warn("Usuario sin plan:", err);
+          setPlanNutricion(null);
         });
     }
   }, [usuarioSeleccionado]);
@@ -31,10 +48,10 @@ const SportProfesional = () => {
   const handleEditarPlan = () => setModoEdicion(true);
 
   const handleGuardarCambios = () => {
-    fetch(`https://tudominio.com/api/nutricion/${usuarioSeleccionado.id}`, {
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(planNutricion)
+      body: JSON.stringify(planEntrenamiento)
     })
       .then(res => res.json())
       .then(() => {
@@ -44,24 +61,44 @@ const SportProfesional = () => {
       .catch(err => alert("Error al guardar: " + err));
   };
 
-  const handleCambioComida = (comida, nuevoTexto) => {
+  const handleCrearNuevoPlan = () => {
+    const nuevoPlan = {
+      userId: usuarioSeleccionado.id,
+      ...planBase
+    };
+
+    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoPlan)
+    })
+      .then(res => res.json())
+      .then(() => {
+        alert("Plan creado correctamente");
+        setPlanNutricion(nuevoPlan);
+        setModoEdicion(true);
+      })
+      .catch(err => alert("Error al crear el plan: " + err));
+  };
+
+  const handleCambioComida = (entrenamiento, nuevoTexto) => {
     setPlanNutricion(prev => ({
       ...prev,
       [diaActivo]: {
         ...prev[diaActivo],
-        [comida]: nuevoTexto
+        [entrenamiento]: nuevoTexto
       }
     }));
   };
 
   return (
     <div className="sport-profesional container mt-5 ">
-            <section className="sport-header text-center py-5">
-                <h1 className="display-4">Deporte Personalizado</h1>
-                <p className="lead">
-                    Mejora tu salud con planes de deporte adaptados a tus objetivos.
-                </p>
-            </section>
+      <section className="sport-header text-center py-5">
+        <h1 className="display-4">Deporte Personalizado</h1>
+        <p className="lead">
+          Mejora tu salud con planes de deporte adaptados a tus objetivos.
+        </p>
+      </section>
 
       <section className="text-center my-4">
         <h2 className="subtittle mb-3">Selecciona un usuario</h2>
@@ -91,13 +128,13 @@ const SportProfesional = () => {
       )}
 
       {usuarioSeleccionado && (
-        <section className="tabla-nutricion my-5">
+        <section className="tabla-Entrenamiento my-5">
           <h2 className="text-center subtittle mb-4">
             Plan Semanal de {usuarioSeleccionado.nombre}
           </h2>
 
           <div className="button d-flex justify-content-center flex-wrap mb-4">
-            {Object.keys(planNutricion).map((dia) => (
+            {Object.keys(planEntrenamiento).map((dia) => (
               <button
                 key={dia}
                 onClick={() => setDiaActivo(dia)}
@@ -111,16 +148,16 @@ const SportProfesional = () => {
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo}</h3>
             <ul className="list-group">
-              {planNutricion[diaActivo] &&
-                Object.entries(planNutricion[diaActivo]).map(([comida, texto]) => (
-                  <li key={comida} className="list-group-item text-dark">
-                    <strong>{comida}:</strong>
+              {planEntrenamiento[diaActivo] &&
+                Object.entries(planEntrenamiento[diaActivo]).map(([Entrenamiento, texto]) => (
+                  <li key={Entrenamiento} className="list-group-item text-dark">
+                    <strong>{Entrenamiento}:</strong>
                     {modoEdicion ? (
                       <input
                         type="text"
                         value={texto}
                         className="form-control mt-2"
-                        onChange={(e) => handleCambioComida(comida, e.target.value)}
+                        onChange={(e) => handleCambioEntrenamiento(Entrenamiento, e.target.value)}
                       />
                     ) : (
                       <span className="ms-2">{texto}</span>

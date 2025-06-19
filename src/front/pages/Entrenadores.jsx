@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/entrenador.css";
+import { useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Entrenadores = () => {
     const [trainers, setTrainers] = useState([]);
-
+    const {store} = useGlobalReducer();
+    const navigate = useNavigate();
     useEffect(() => {
+            
+
         const fetchTrainers = async () => {
             try {
-                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/professionals");
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals");
                 const data = await response.json();
                 const onlyProfessionals = data.filter(user => user.is_professional === true);
                 setTrainers(onlyProfessionals);
@@ -19,8 +24,8 @@ const Entrenadores = () => {
         fetchTrainers();
     }, []);
 
-    const selectedTrainer = trainers[0];
-    const otherTrainers = trainers.slice(1);
+    const selectedTrainer = null;
+    const otherTrainers = trainers;
 
     return (
         <div className="fondo">
@@ -83,7 +88,7 @@ const Entrenadores = () => {
                                             className="btn btn-outline-dark"
                                             onClick={async () => {
                                                 try {
-                                                    await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/user/entrenador", {
+                                                    await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/entrenador", {
                                                         method: "PUT",
                                                         headers: { "Content-Type": "application/json" },
                                                         body: JSON.stringify(trainer)
@@ -107,7 +112,7 @@ const Entrenadores = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

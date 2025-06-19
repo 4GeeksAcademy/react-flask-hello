@@ -70,7 +70,8 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-      const res = await fetch("https://automatic-space-orbit-pjwr5pp79rgpfrvj7-3001.app.github.dev/api/users/", {
+      const res = await fetch("https://cautious-meme-4jwx96wg6pw4hqjqx-3001.app.github.dev/api/users", {
+
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -159,8 +160,8 @@ const User = () => {
           <div className="botones-perfil">
             {isEditing ? (
               <>
-                <button className="btn-guardar" onClick={handleSave}>Guardar</button>
-                <button className="btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
+                <button className="btn-editar" onClick={handleSave}>Guardar</button>
+                <button className="btn-editar" onClick={() => setIsEditing(false)}>Cancelar</button>
               </>
             ) : (
               <>

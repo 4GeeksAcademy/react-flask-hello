@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e7eef41ac6a6
+Revision ID: e2d31b01ddf8
 Revises: 
-Create Date: 2025-06-19 10:14:45.340294
+Create Date: 2025-06-19 11:00:20.098796
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e7eef41ac6a6'
+revision = 'e2d31b01ddf8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -133,6 +133,17 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('user_profesional',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('profesional_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['profesional_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('user_profesional', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_user_profesional_id'), ['id'], unique=False)
+
     op.create_table('event_signups',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
@@ -170,6 +181,10 @@ def downgrade():
     op.drop_table('plan_template_items')
     op.drop_table('payments')
     op.drop_table('event_signups')
+    with op.batch_alter_table('user_profesional', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_user_profesional_id'))
+
+    op.drop_table('user_profesional')
     op.drop_table('training_entries')
     op.drop_table('template_items')
     op.drop_table('support_tickets')

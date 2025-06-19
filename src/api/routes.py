@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, abort
-from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem, TrainingEntry,NutritionEntry
+from api.models import db, User, PlanTemplate, TemplateItem, UserProfesional, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem, TrainingEntry,NutritionEntry
 from api.utils import APIException
 from flask_cors import CORS
 from sqlalchemy import select
@@ -131,6 +131,82 @@ def list_professionals():
     stm = select(User).where(User.is_professional == True)
     query = db.session.execute(stm).scalars()
     return jsonify([p.serialize() for p in query]), 200
+
+@api.route('/professionals/enroll_user', methods=['POST'])
+@jwt_required()
+def enroll_user():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    if not user.subscriptions:
+        raise APIException("Usuario no tiene una subscripcion activa", status_code=403)
+    data = request.get_json() or {}
+    required = ('profesional_id',)
+    if not all(f in data for f in required):
+        raise APIException(
+            f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+
+    profesional = User.query.get(data['profesional_id'])
+    if not profesional or not profesional.is_professional:
+        raise APIException("Profesional no encontrado", status_code=404)
+
+    enrollment = UserProfesional(
+        user_id=user.id,
+        profesional_id=profesional.id
+    )
+    db.session.add(enrollment)
+    db.session.commit()
+    return jsonify(enrollment.serialize()), 201
+
+# Listar profesionales contratados por el usuario
+@api.route('/user_professionals', methods=['GET'])
+@jwt_required()
+def list_user_professionals():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    return jsonify([up.serialize() for up in user.profesionales_contratados]), 200
+
+# Listar usuarios del profesional
+@api.route('/professionals_user', methods=['GET'])
+@jwt_required()
+def get_user_enrolled():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    return jsonify([up.serialize() for up in user.usuarios_contratantes]), 200
+
+# Eliminar relación profesional-usuario
+@api.route('/delete_user_professional', methods=['DELETE'])
+@jwt_required()
+def delete_user_professional():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    data = request.get_json() or {}
+    required = ('profesional_id',)
+    if not all(f in data for f in required):
+        raise APIException(
+            f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+
+    profesional = User.query.get(data['profesional_id'])
+    if not profesional or not profesional.is_professional:
+        raise APIException("Profesional no encontrado", status_code=404)
+
+    enrollment = UserProfesional.query.filter_by(
+        user_id=user.id,
+        profesional_id=profesional.id
+    ).first()
+    if not enrollment:
+        raise APIException("No existe la relación", status_code=404)
+
+    db.session.delete(enrollment)
+    db.session.commit()
+    return '', 204
 
 # @api.route('/professionals/<int:pid>', methods=['GET'])
 # def get_professional(pid):
@@ -583,7 +659,7 @@ def create_checkout_session():
             line_items=body['items'],
             mode='payment',
             # implementar un webhook para que se ejecute una funcion cuando se complete el pago
-            return_url=FRONT + 'return?session_id={CHECKOUT_SESSION_ID}',
+            return_url=os.getenv + 'return?session_id={CHECKOUT_SESSION_ID}',
         )
     except Exception as e:
         return str(e)

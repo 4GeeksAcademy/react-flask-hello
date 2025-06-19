@@ -25,7 +25,7 @@ const AboutUs = () => {
                                 playing={true}
                                 muted={true}
                                 loop={true}
-                                controls={false}
+                                controls={false}   
                                 width="100%"
                                 height="1200px"
                                 style={{ objectFit: 'cover' }}

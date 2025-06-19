@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
 from app import app
 from api.models import db, User, PlanTemplate, TemplateItem, PlanTemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+from werkzeug.security import generate_password_hash, check_password_hash
 
 with app.app_context():
     # Borra todo
@@ -13,7 +11,7 @@ with app.app_context():
     # === USERS ===
     user1 = User(
         email="cliente@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+        password=generate_password_hash('pepe123'),
         peso=70.5,
         altura=1.75,
         objetivo="Perder grasa y tonificar",
@@ -26,7 +24,7 @@ with app.app_context():
 
     user2 = User(
         email="entrenador@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+          password=generate_password_hash('pepe123'),
         is_professional=True,
         telefono="666777888",
         profession_type="entrenador",
@@ -38,7 +36,7 @@ with app.app_context():
 
     user3 = User(
         email="nutricionista@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+         password=generate_password_hash('pepe123'),
         is_professional=True,
         telefono="611222333",
         profession_type="nutricionista",

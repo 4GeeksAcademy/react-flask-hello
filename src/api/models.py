@@ -19,11 +19,14 @@ class User(db.Model):
     peso: Mapped[float] = mapped_column(Float, nullable=True)
     altura: Mapped[float] = mapped_column(Float,  nullable=True)
     objetivo: Mapped[str] = mapped_column(Text, nullable=True)
+    sexo: Mapped[str] = mapped_column(String(20), nullable=True)
+    imagen: Mapped[str] = mapped_column(String(255), nullable=True)
+    direccion: Mapped[str] = mapped_column(String(200), nullable=True)
     # campos de professional:
     is_professional: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    telefono: Mapped[str] = mapped_column(String(120), nullable=True) 
+    telefono: Mapped[int] = mapped_column(Integer, nullable=True) 
     profession_type: Mapped[str] = mapped_column(String(120), nullable=True) # aqui un ENUM --> cliente, entrenador, nutricionista
-    experiencia: Mapped[int] = mapped_column(Integer, default=0)
+    experiencia: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
     # relaciones:
     events_created = relationship('Event', back_populates='creator')
     event_signups = relationship('EventSignup', back_populates='user') # tabla de relacion
@@ -31,6 +34,8 @@ class User(db.Model):
     subscriptions = relationship('Subscription', back_populates='user')  # tabla de relacion
     support_tickets = relationship('SupportTicket', back_populates='user')
     template_items_created = relationship('TemplateItem', back_populates='creator')
+    training_entries=relationship('TrainingEntry', back_populates='user')
+    nutrition_entries=relationship('NutritionEntry', back_populates='user')
 
     def serialize(self):
         data = {
@@ -43,11 +48,15 @@ class User(db.Model):
             "peso": self.peso,
             "altura": self.altura,
             "objetivo": self.objetivo,
-            "is_professional": self.is_professional
+            "sexo": self.sexo,
+            "imagen": self.imagen,
+            "direccion": self.direccion,
+            "is_professional": self.is_professional,
+            "telefono": self.telefono,
+            "subscription": [sub.serialize() for sub in self.subscriptions],
         }
         if self.profession_type:
             data.update({
-                "telefono": self.telefono,
                 "profession_type": self.profession_type,
                 "experiencia_años": self.experiencia
             })
@@ -143,51 +152,6 @@ class TemplateItem(db.Model):
                 "repeticiones": self.repeticiones
             })
         return base
-
-# class TemplateItem(db.Model):
-#     __tablename__ = 'template_items'
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     template_id: Mapped[int] = mapped_column(Integer, ForeignKey('plan_templates.id'), nullable=False)
-#     item_type: Mapped[str] = mapped_column(String(30), nullable=False)
-#     nombre: Mapped[str] = mapped_column(String(30), nullable=False)
-#     calorias: Mapped[int] = mapped_column(Integer)
-#     proteinas: Mapped[int] = mapped_column(Integer)
-#     grasas: Mapped[int] = mapped_column(Integer)
-#     carbohidratos: Mapped[int] = mapped_column(Integer)
-#     meal_momento: Mapped[str] = mapped_column(String(60))
-#     cantidad: Mapped[float] = mapped_column(Float)
-#     muscle_group: Mapped[str] = mapped_column(String(50))
-#     series: Mapped[int] = mapped_column(Integer)
-#     repeticiones: Mapped[int] = mapped_column(Integer)
-#     orden: Mapped[int] = mapped_column(Integer)
-
-#     # relaciones:
-#     template = relationship('PlanTemplate', back_populates='items')
-
-#     def serialize(self):
-#         base = {
-#             "id": self.id,
-#             "template_id": self.template_id, 
-#             "item_type": self.item_type,
-#             "nombre": self.nombre,
-#             "orden": self.orden
-#         }
-#         if self.item_type == 'food':
-#             base.update({
-#                 "calorias": self.calorias,
-#                 "proteinas": self.proteinas,
-#                 "grasas": self.grasas,
-#                 "carbohidratos": self.carbohidratos,
-#                 "meal_momento": self.meal_momento,
-#                 "cantidad": self.cantidad
-#             })
-#         else:
-#             base.update({
-#                 "muscle_group": self.muscle_group,
-#                 "series": self.series,
-#                 "repeticiones": self.repeticiones
-#             })
-#         return base
 
 class SubscriptionPlan(db.Model):
     __tablename__ = 'subscription_plans'
@@ -327,6 +291,53 @@ class SupportTicket(db.Model):
             "creado_en": self.creado_en.isoformat(),
             "actualizado_en": self.actualizado_en.isoformat()
         }
+
+class TrainingEntry(db.Model):
+    __tablename__= 'training_entries'
+    id: Mapped[int]=mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    grupo: Mapped[str]=mapped_column(String(200), nullable=False) #pecho, espalda, biceps, etc...
+    nota: Mapped[str]=mapped_column(Text, nullable=False) #series: 4x12 con descanso de 'x'
+    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user=relationship('User', back_populates='training_entries')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "grupo": self.grupo,
+            "nota": self.nota,
+            "fecha": self.fecha.isoformat()
+        }
+
+
+class NutritionEntry(db.Model):
+    __tablename__= 'nutrition_entries'
+    id: Mapped[int]=mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int]=mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    dia_semana: Mapped[str]=mapped_column(String(40), nullable=False)
+    desayuno: Mapped[str]=mapped_column(Text, nullable=True)
+    media_mañana: Mapped[str]=mapped_column(Text, nullable=True)
+    comida: Mapped[str]=mapped_column(Text, nullable=False)
+    cena: Mapped[str]=mapped_column(Text, nullable=False)
+    fecha: Mapped[datetime]=mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user=relationship('User', back_populates='nutrition_entries')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "dia_semana": self.dia_semana,
+            "desayuno": self.desayuno,
+            "media_mañana": self.media_mañana,
+            "comida": self.comida,
+            "cena": self.cena,
+            "fecha": self.fecha.isoformat()
+
+        }
+
 
 
 

@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/entrenador.css";
+import { useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Entrenadores = () => {
     const [trainers, setTrainers] = useState([]);
-
+    const {store} = useGlobalReducer();
+    const navigate = useNavigate();
     useEffect(() => {
+            
+
         const fetchTrainers = async () => {
             try {
-                const response = await fetch("https://shiny-potato-q7pwpgqg69vpfxgq9-3001.app.github.dev/api/professionals");
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals");
                 const data = await response.json();
-                setTrainers(data);
+                const onlyProfessionals = data.filter(user => user.is_professional === true);
+                setTrainers(onlyProfessionals);
             } catch (error) {
                 console.error("Error fetching trainers:", error);
             }
@@ -18,8 +24,8 @@ const Entrenadores = () => {
         fetchTrainers();
     }, []);
 
-    const selectedTrainer = trainers[0];
-    const otherTrainers = trainers.slice(1);
+    const selectedTrainer = null;
+    const otherTrainers = trainers;
 
     return (
         <div className="fondo">
@@ -27,31 +33,35 @@ const Entrenadores = () => {
                 <section className="hero text-center py-5">
                     <h1 className="display-4">Entrenadores</h1>
                 </section>
- 
+
                 {selectedTrainer && (
                     <>
-                        <h1 className="text-center mb-4">Entrenador Seleccionado</h1>
-                        <div className="container-1 mb-5">
-                            <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
-                                <img
-                                    src={selectedTrainer.image}
-                                    alt="Entrenador "
-                                    className="trainer-img me-3"
-                                />
-                                <div className="flex-grow-1">
-                                    <p className="text-black">
-                                        <strong>Nombre:</strong><br />{selectedTrainer.name}
-                                    </p>
-                                    <p className="text-black">
-                                        <strong>Especialidad:</strong><br />{selectedTrainer.datos}
-                                    </p>
-                                    <p className="text-black">
-                                        <strong>Títulos:</strong><br />{selectedTrainer.titulos}
-                                    </p>
+                        <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
+                            <div className="entrenador-grid">
+                                {/* Columna izquierda */}
+                                <div className="col-izquierda">
+                                    <p><strong>Nombre:</strong><br />{selectedTrainer.nombre} {selectedTrainer.apellido}</p>
+                                    <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
                                 </div>
-                                <button className="btn btn-outline-dark">Seleccionado</button>
+
+                                {/* Imagen en el centro */}
+                                <div className="col-centro text-center">
+                                    <img
+                                        src={selectedTrainer.image || "https://i.pravatar.cc/300"}
+                                        alt={`Imagen de ${selectedTrainer.nombre}`}
+                                        className="trainer-img-grande"
+                                    />
+                                    <div className="estado-seleccionado mt-3">Seleccionado</div>
+                                </div>
+
+                                {/* Columna derecha */}
+                                <div className="col-derecha">
+                                    <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
+                                    <p><strong>Especialidad:</strong><br />{selectedTrainer.datos}</p>
+                                </div>
                             </div>
                         </div>
+
                     </>
                 )}
 
@@ -60,21 +70,49 @@ const Entrenadores = () => {
                     <div className="row gy-4">
                         {otherTrainers.map((trainer, index) => (
                             <div className="col-md-6" key={index}>
-                                <div className="trainer-card-1 d-flex align-items-center p-3 rounded shadow">
-                                    <img src={trainer.image} alt="Entrenador" className="trainer-img me-3" />
-                                    <div className="flex-grow-1">
-                                        <p className="text-black"><strong>Nombre:</strong><br />{trainer.name}</p>
-                                        <p className="text-black"><strong>Especialidad:</strong><br />{trainer.datos}</p>
-                                        <p className="text-black"><strong>Títulos:</strong><br />{trainer.titulos}</p>
+                                <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={trainer.image || "https://i.pravatar.cc/200"}
+                                            alt={`Imagen de ${trainer.nombre}`}
+                                            className="trainer-img me-3"
+                                        />
+                                        <div className="flex-grow-1">
+                                            <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre} {trainer.apellido}</p>
+                                            <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
+                                            <p className="text-black"><strong>Especialidad:</strong><br />{trainer.datos}</p>
+                                        </div>
                                     </div>
-                                    <button className="btn btn-outline-dark p-2 ms-3">Solicitar</button>
+                                    <div className="text-center mt-3">
+                                        <button
+                                            className="btn btn-outline-dark"
+                                            onClick={async () => {
+                                                try {
+                                                    await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/entrenador", {
+                                                        method: "PUT",
+                                                        headers: { "Content-Type": "application/json" },
+                                                        body: JSON.stringify(trainer)
+                                                    });
+
+                                                    setTrainers(prev => {
+                                                        const remainingTrainers = prev.filter(t => t !== trainer);
+                                                        return [trainer, ...remainingTrainers];
+                                                    });
+                                                } catch (error) {
+                                                    console.error("Error al guardar entrenador:", error);
+                                                }
+                                            }}
+                                        >
+                                            Solicitar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

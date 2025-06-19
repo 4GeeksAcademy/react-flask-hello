@@ -5,7 +5,7 @@ import "../../styles/navbar.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 let items = [
   { name: "Sobre Nosotros", link: "/AboutUs", internal: true },
-  { name: "Profesional", link: "/profesionales", internal: true },
+  { name: "Profesionales", link: "/profesionales", internal: true },
   { name: "Eventos", link: "/Eventos", internal: true },
   {
     name: "Tarifas",
@@ -99,65 +99,62 @@ export const Navbar = () => {
 
     <>
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }}></div>
-      <div style={{ height: `${navbarHeight}px` }}></div>
+<div style={{ height: `${navbarHeight}px` }}></div>
 
-      <nav
-        ref={navbarRef}
-        className="navbar"
-        style={{
-          background: `linear-gradient(135deg, #94B4C1 ${scrollProgress}%, #ECEFCA 100%)`,
-        }}
+<nav
+  ref={navbarRef}
+  className="navbar"
+  style={{
+    background: `linear-gradient(135deg, #94B4C1 ${scrollProgress}%, #ECEFCA 100%)`
+  }}
+>
+  <div className="logo">
+    <Link to={logoLink.url} className="logo-text">
+      {logoLink.name}
+    </Link>
+  </div>
+
+  <ul
+    className={`menu ${isMobile ? "mobile" : ""} ${mobileMenuOpen ? "open" : ""}`}
+  >
+    {menuItems.map((item, index) => (
+      <li
+        key={index}
+        className={`menu-item ${hoverIndex === index ? "hover" : ""}`}
+        onMouseEnter={() => setHoverIndex(index)}
+        onMouseLeave={() => setHoverIndex(null)}
       >
-        <div className="logo">
-
-          <Link
-            to={logoLink.url}
-            className="logo-text"
-
-          >
-            {logoLink.name}
+        {item.internal ? (
+          <Link to={item.link} className="menu-link">
+            {item.name}
+            <span
+              className="menu-link-after"
+              style={{ width: hoverIndex === index ? "100%" : "0%" }}
+            ></span>
           </Link>
-        </div>
-
-        <ul
-          className={`menu ${isMobile ? "mobile" : ""} ${mobileMenuOpen ? "open" : ""}`}
-        >
-     
-
-          {menuItems.map((item, index) => (
-            <li
-              key={index}
-              className={`menu-item ${hoverIndex === index ? "hover" : ""}`}
-              onMouseEnter={() => setHoverIndex(index)}
-              onMouseLeave={() => setHoverIndex(null)}
-            >
-              {item.internal ? (
-                <Link to={item.link} className="menu-link">
-                  {item.name}
-                  <span
-                    className="menu-link-after"
-                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
-                  ></span>
-                </Link>
-              ) : (
-                <a
-                  href={item.link}
-                  className="menu-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => item.name === "Logout" && handleLogout()}
-                >
-                  {item.name}
-                  <span
-                    className="menu-link-after"
-                    style={{ width: hoverIndex === index ? "100%" : "0%" }}
-                  ></span>
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
-
+        ) : (
+          <a
+            href={item.link}
+            className="menu-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              if (item.name === "Logout") {
+                e.preventDefault();
+                handleLogout();
+              }
+            }}
+          >
+            {item.name}
+            <span
+              className="menu-link-after"
+              style={{ width: hoverIndex === index ? "100%" : "0%" }}
+            ></span>
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="mobile-menu-btn"

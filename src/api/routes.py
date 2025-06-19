@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, abort
-from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem
+from api.models import db, User, PlanTemplate, TemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket, PlanTemplateItem, TrainingEntry,NutritionEntry
 from api.utils import APIException
 from flask_cors import CORS
 from sqlalchemy import select
@@ -20,7 +20,6 @@ api = Blueprint('api', __name__)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 # Allow CORS requests to this API
-CORS(api)
 bcrypt = Bcrypt()
 
 # USERS
@@ -30,6 +29,16 @@ bcrypt = Bcrypt()
 def list_users():
     users = User.query.all()
     return jsonify([u.serialize() for u in users]), 200
+
+
+@api.route('/users/me', methods=['GET'])
+@jwt_required()
+def current_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
+    if not user:
+        abort(404, description="Usuario no encontrado")
+    return jsonify(user.serialize()), 200
 
 
 @api.route('/users/<int:user_id>', methods=['GET'])
@@ -45,18 +54,19 @@ def create_user():
     data = request.get_json() or {}
     required = ('nombre', 'email', 'password', 'account_type')
     if not all(f in data for f in required):
-        raise APIException(f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
-    hashed_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
+        raise APIException(
+            f"faltan datos obligatorios: {', '.join(required)}", status_code=400)
+    hashed_password = bcrypt.generate_password_hash(
+        data["password"]).decode("utf-8")
 
     account_type = data['account_type'].lower()
-    if account_type not in['cliente', 'entrenador', 'nutricionista']:
-        raise APIException("account_type debe ser: 'cliente', 'entrenador' o 'nutricionista'", status_code=400)
-    
+    if account_type not in ['cliente', 'entrenador', 'nutricionista']:
+        raise APIException(
+            "account_type debe ser: 'cliente', 'entrenador' o 'nutricionista'", status_code=400)
+
     is_professional = account_type in ['entrenador', 'nutricionista']
     profession_type = account_type if is_professional else None
 
-
-    
     user = User(
         email=data['email'],
         password=hashed_password,
@@ -84,24 +94,31 @@ def update_user():
     data = request.get_json() or {}
     updatable = (
         'nombre', 'email', 'password', 'is_active',
-        'peso', 'altura', 'objetivo',
-        'telefono', 'profession_type', 'experiencia_anios'
+        'peso', 'altura', 'objetivo', 'apellido', 'imagen', 'sexo',
+        'telefono', 'profession_type', 'experiencia', 'direccion'
     )
     if not any(field in data for field in updatable):
         raise APIException(
             f"No hay campos validos para actualizar", status_code=400)
     for field in updatable:
         if field in data:
-            setattr(user, field, data[field])
+            if data[field] is not None or data[field] != 0:
+                setattr(user, field, data[field])
+               
+            else:
+                data[field]= 0
+                setattr(user, field, data[field])
     db.session.commit()
     return jsonify(user.serialize()), 200
 
 
-@api.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
+@api.route('/users', methods=['DELETE'])
+@jwt_required()
+def delete_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
     if not user:
-        abort(404, description="usuario no encontado")
+        abort(404, description="Usuario no encontrado")
     db.session.delete(user)
     db.session.commit()
     return '', 204
@@ -761,31 +778,33 @@ def delete_support_ticket(stid):
 #### register #####
 @api.route('/login', methods=['POST'])
 def login():
-    try:
-        data = request.json
+    data = request.get_json() or {}
+    email = data.get("email")
+    password = data.get("password")
 
-        if not data['email'] or not data['password']:
-            raise Exception({"error": 'missing data'})
+    if not email or not password:
+        return jsonify({"error": "missing data"}), 400
 
-        stm = select(User).where(User.email == data['email'])
+    user = db.session.execute(
+        select(User).where(User.email == email)
+    ).scalar_one_or_none()
+    if not user:
+        return jsonify({"error": "email not found"}), 404
 
-        user = db.session.execute(stm).scalar_one_or_none()
-        if not user:
-            raise Exception({"error": 'email not found'})
+    if not check_password_hash(user.password, password):
+        return jsonify({"success": False, "msg": "email/password wrong"}), 401
 
-        if not check_password_hash(user.password, data['password']):
-            return jsonify({"success": False, 'msg': 'email/password wrong'})
+    token = create_access_token(identity=str(user.id))
+    return jsonify({
+        "msg": "login ok",
+        "token": token,
+        "success": True,
+        "user": user.serialize()
+    }), 200
 
-        token = create_access_token(identity=str(user.id))
-
-        return jsonify({"msg": "login ok", "token": token,  "success": True, "user": user.serialize()}), 200
-
-    except Exception as e:
-        print(e)
-        db.session.rollback()
-        return jsonify({"error": "something went wrong"}), 400
 
 # ruta protegida
+
 
 @api.route('/private', methods=['GET'])
 @jwt_required()
@@ -829,6 +848,8 @@ def get_user_inf():
 #         token = create_access_token(identity=str(new_user.id))
 
 #         return jsonify({"msg": "register ok", "token": token, "success": True}), 201
+
+
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -862,8 +883,165 @@ def register():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
     except Exception as e:
         print(e)
         db.session.rollback()
         return jsonify({"error": "something went wrong", "success": False}), 400
+
+
+#Grupos musculares permitidos: 
+VALID_MUSCLE_GROUPS=[
+    "hombros", "pecho", "abdomen", "espalda", "biceps", 
+    "triceps", "quadriceps", "isquiotibiales", "gemelos"
+]
+
+
+@api.route('/training_entries', methods=['GET'])
+@jwt_required()
+def list_training_entries():
+    user_id=get_jwt_identity()
+    stm=select(TrainingEntry).where(TrainingEntry.user_id==user_id)
+    entries=db.session.execute(stm).scalars.all()
+    return jsonify([e.serialize() for e in entries]),200
+
+@api.route('/training_entries/<int:entry_id>', methods=['GET'])
+@jwt_required()
+def get_training_entry(entry_id):
+    user_id=get_jwt_identity()
+    entry=TrainingEntry.query.get(entry_id)
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="Entrada de entrenamiento no encontrado")
+    return jsonify(entry.serialize()),200
+
+
+@api.route('/training_entries', methods=['POST'])
+@jwt_required()
+def create_training_entry():
+    user_id=get_jwt_identity()
+    data=request.get_json() or {}
+    required=('grupo', 'nota')
+    if not all(f in data for f in required):
+        raise APIException(f"faltan campos: {', '.join(required)}", status_code=400)
+    
+    #validar grupos musculares
+    if data['grupo'] not in VALID_MUSCLE_GROUPS:
+        raise APIException(f"grupo '{data['grupo']}' no valido. Elige uno de: {', '.join(VALID_MUSCLE_GROUPS)}", status_code=400)
+    
+    entry= TrainingEntry(
+        user_id=user_id,
+        grupo=data['grupo'],
+        nota=data['nota']
+    )
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify(entry.serialize()),201
+
+@api.route('/training_entries/<int:entry_id>', methods=['PUT'])
+@jwt_required()
+def update_training_entry(entry_id):
+    user_id=get_jwt_identity()
+    entry=TrainingEntry.query.get(entry_id)
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="Entrada de entrenamiento no encontrada")
+
+    data=request.get_json() or {}
+    updatable= ('grupo', 'nota')
+    if not any(field in data for field in updatable):
+        raise APIException("No hay campos para actualizar", status_code=400)
+    #modifica el grupo muscular
+    if 'grupo' in data:
+        if data['grupo'] not in VALID_MUSCLE_GROUPS:
+            raise APIException(f"grupo '{data['grupo']}' no valido. Elige uno de:{','.join(VALID_MUSCLE_GROUPS)}", status_code=400)
+        entry.grupo=data['grupo']
+
+    if 'nota' in data:
+        entry.nota=data['nota']
+    
+    db.session.commit()
+    return jsonify(entry.serialize()),200
+
+@api.route('/training_entries/<int:entry_id>', methods=['DELETE'])
+@jwt_required()
+def delete_training_entry(entry_id):
+    user_id=get_jwt_identity()
+    entry=TrainingEntry.query.get(entry_id)
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="Entrada de entrenamiento no encontrada")
+    db.session.delete(entry)
+    db.session.commit()
+    return '', 204
+
+
+
+
+@api.route('/nutrition_entries', methods=['GET'])
+@jwt_required()
+def list_nutrition_entries():
+    user_id=get_jwt_identity()
+    stm=select(NutritionEntry).where(NutritionEntry.user_id==user_id)
+    entries=db.session.excecute(stm).scalars.all()
+    return jsonify([e.serialize() for e in entries]), 200
+
+@api.route('/nutrition_entries/<int:entry_id>', methods=['GET'])
+@jwt_required()
+def get_nutrition_entry(entry_id):
+    user_id=get_jwt_identity()
+    
+    stm=select(NutritionEntry).where(NutritionEntry.id==entry_id)
+    entry=db.session.execute(stm).scalar_one_or_none()
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="Entrada de nutricion no encontrada")
+    return jsonify(entry.serialize()), 200
+
+@api.route('/nutrition_entries', methods=['POST'])
+@jwt_required()
+def create_nutrition_entry():
+    user_id=get_jwt_identity()
+    data=request.get_json() or {}
+    required=('dia_semana', 'comida', 'cena')
+    if not all(f in data for f in required):
+        raise APIException(f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
+    
+    entry=NutritionEntry(
+        user_id=user_id,
+        dia_semana=data['dia_semana'],
+        desayuno=data.get('desayuno'),
+        media_mañana=data.get('media_mañana'),
+        comida=data['comida'],
+        cena=data['cena']
+    )
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify(entry.serialize()),201
+
+@api.route('/nutrition_entries/<int:entry_id>', methods=['PUT'])
+@jwt_required()
+def update_nutrition_entry(entry_id):
+    user_id=get_jwt_identity()
+    entry=NutritionEntry.query.get(entry_id)
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="Entrada de nutricion no encontrada")
+    data=request.get_json() or {}
+    updatable=('dia_semana', 'desayuno', 'media_mañana', 'comida', 'cena')
+    if not any(field in data for field in updatable):
+        raise APIException(f"No hay campos validos para actualizar:", status_code=400)
+    for field in updatable:
+        if field in data:
+            setattr(entry, field, data[field])
+    db.session.commit()
+    return jsonify(entry.serialize()), 200
+
+@api.route('/nutrition_entries/<int:entry_id>', methods=['DELETE'])
+@jwt_required()
+def delete_nutrition_entry(entry_id):
+    user_id=get_jwt_identity()
+    entry=NutritionEntry.query.get(entry_id)
+    if not entry or str(entry.user_id) != user_id:
+        abort(404, description="No se encuentra la entrada de nutricion")
+    db.session.delete(entry)
+    db.session.commit()
+    return '', 204 
+
+
+
+    

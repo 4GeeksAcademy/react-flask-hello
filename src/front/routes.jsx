@@ -28,6 +28,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { PrivatePage } from "./pages/PrivatePage";
 import Epersonalizado from "./pages/Epersonalizado";
+import ContactoPage from "./pages/ContactoPage";
 
 
 export const router = createBrowserRouter(
@@ -47,7 +48,7 @@ export const router = createBrowserRouter(
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/Eventos" element={<Eventos />} />
       <Route path="/Tarifas" element={<Tarifas />} />
-      <Route path="/User" element={<User />} />
+      <Route path="/user" element={<User />} />
       <Route path="/pUser" element={<ProfesoresPage />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
@@ -58,9 +59,9 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/private" element={<PrivatePage />} />
       <Route path="/tarifas" element={<Tarifas />} />
-      <Route path="/tarifas/:tipo" element={<Tarifas />} /> // importante para detectar el tipo
-
+      <Route path="/tarifas/:tipo" element={<Tarifas />} />
       <Route path="/Epersonalizado" element={<Epersonalizado />} />
+      <Route path="/ContactoPage" element={<ContactoPage />} />
     </Route>
   )
 );

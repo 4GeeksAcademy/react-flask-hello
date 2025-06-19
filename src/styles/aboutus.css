@@ -4,6 +4,7 @@
   overflow: hidden;
   position: relative;
 }
+
 .video-wrapper > div {
   position: absolute !important;
   top: 50%;

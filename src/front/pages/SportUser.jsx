@@ -1,50 +1,92 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import CardPlan from "../components/CardPlan";
-
-// index.css
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
 import "../../styles/sportUser.css";
 
-const SportUser = () => {
+const SportUser = ({ usuarioSeleccionado }) => {
+  const [planEntrenamiento, setPlanEntrenamiento] = useState({});
+  const [diaActivo, setDiaActivo] = useState("Lunes");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { store, dispatch } = useGlobalReducer()
+  const navigate = useNavigate();
 
-    const planes = [
-        { tittle: "Pérdida de Peso", img: "/perdidaPeso2.jpg", parrafo: "Programas hipocalóricos estructurados con enfoque en entrenamiento cardiovascular, funcional y de resistencia, orientados a la quema de grasa y mejora del metabolismo basal." },
-        { tittle: "Ganancia Muscular", img: "/masaMuscular.jpg", parrafo: "Rutinas progresivas de sobrecarga con distribución óptima de macronutrientes, enfocadas en la hipertrofia muscular y mejora de la fuerza máxima." },
-        { tittle: "Salud General", img: "/ejercicios_balanceados.jpg", parrafo: "Entrenamientos equilibrados que combinan movilidad, fuerza básica y resistencia aeróbica para mejorar la salud metabólica, la postura y la energía diaria." }
-    ]
 
+  useEffect(() => {
+  if (!store.user?.subscription?.length>0) navigate("/Tarifas");
+    const fetchPlan = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${store.user.id}`, {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        }
+        );
+        if (!response.ok) throw new Error("Error al obtener los datos");
+        const data = await response.json();
+        setPlanNutricion(data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("No se pudieron cargar los datos.");
+        setLoading(false);
+      }
+    };
+
+    fetchPlan();
+  }, [usuarioSeleccionado?.id]);
+
+  if (loading)
     return (
-        <div className="sport-user container mt-5 ">
-            <section className="sport-header text-center py-5">
-                <h1 className="display-4">Deporte Personalizado</h1>
-                <p className="lead">
-                    Mejora tu salud con planes de deporte adaptados a tus objetivos.
-                </p>
-            </section>
-
-            <section className="planes my-5">
-                <h2 className="text-center subtittle mb-4">Nuestros Planes</h2>
-                <div className="row">
-                    {planes.map((p) => {
-                        return (
-                            <div className="col-md-4">
-                                <CardPlan tittle={p.tittle} img={p.img} parrafo={p.parrafo}></CardPlan>
-                            </div>
-                        )
-                    })}
-                </div>
-            </section>
-
-            <section className="beneficios my-5">
-                <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
-                <ul className="list-group list-group-flush caja-bot">
-                    <li className="list-group-item">🏋️ Asesoramiento personalizado</li>
-                    <li className="list-group-item">🏃 Rutinas adaptadas a tu nivel</li>
-                    <li className="list-group-item">📈 Progreso monitorizado</li>
-                </ul>
-            </section>
-
-        </div>
+      <div className="text-center np-hero mt-5">Cargando plan nutricional...</div>
     );
+  if (error)
+    return <div className="text-center text-danger mt-5">{error}</div>;
+
+
+
+  return (
+    <div className="sport-user container mt-5 ">
+      <section className="sport-header text-center py-5">
+        <h1 className="display-4">Deporte Personalizado</h1>
+      </section>
+
+      <section className="tabla-sport my-5">
+        <h1 className="plan text-center subtittle mb-4">Plan Semanal de Ejercicios</h1>
+        <div className="button d-flex justify-content-center flex-wrap mb-4">
+          {Object.keys(planEntrenamiento).map((dia) => (
+            <button
+              key={dia}
+              onClick={() => setDiaActivo(dia)}
+              className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"
+                }`}
+            >
+              {dia}
+            </button>
+          ))}
+        </div>
+
+        <div className="card p-3">
+          <h2 className="text-center mb-4">{diaActivo}</h2>
+          <ul className="list-group">
+            {Object.entries(planEntrenamiento[diaActivo] || {}).map(
+              ([entrenamiento, detalle]) => (
+                <li
+                  key={entrenamiento}
+                  className="list-group-item bg-dark text-light border-light"
+                >
+                  <strong>{entrenamiento}:</strong> {detalle}
+                </li>
+              )
+            )}
+          </ul>
+        </div>
+      </section>
+    </div>
+  );
 };
+
 export default SportUser;

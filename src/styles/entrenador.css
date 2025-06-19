@@ -48,3 +48,51 @@
 .shadow {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
+
+.entrenador-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+
+.col-izquierda,
+.col-centro,
+.col-derecha {
+  flex: 1;
+  min-width: 220px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.col-izquierda,
+.col-derecha {
+  margin-top: 5rem; /* desplaza texto hacia mitad vertical */
+}
+
+.trainer-img-grande {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+}
+
+.estado-seleccionado {
+  background-color: #213448;
+  color: #ECEFCA; 
+  font-weight: bold;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  user-select: none;
+}

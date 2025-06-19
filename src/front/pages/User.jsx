@@ -164,8 +164,8 @@ const User = () => {
           <div className="botones-perfil">
             {isEditing ? (
               <>
-                <button className="btn-guardar" onClick={handleSave}>Guardar</button>
-                <button className="btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
+                <button className="btn-editar" onClick={handleSave}>Guardar</button>
+                <button className="btn-editar" onClick={() => setIsEditing(false)}>Cancelar</button>
               </>
             ) : (
               <>

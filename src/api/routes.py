@@ -1144,19 +1144,10 @@ def create_nutrition_entry():
 @jwt_required()
 def update_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
-    entry = NutritionEntry.query.get(entry_id)
-    if not entry or str(entry.user_id) != user_id:
-        abort(404, description="Entrada de nutricion no encontrada")
-    data = request.get_json() or {}
-    updatable = ('dia_semana', 'desayuno', 'media_mañana', 'comida', 'cena')
-    if not any(field in data for field in updatable):
-        raise APIException(
-            f"No hay campos validos para actualizar:", status_code=400)
-    for field in updatable:
-        if field in data:
-            setattr(entry, field, data[field])
-    db.session.commit()
-    return jsonify(entry.serialize()), 200
+    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id) 
+    entries = db.session.execute(stm).scalars().all()
+    serialized_entries = [entry.serialize() for entry in entries]
+    return jsonify(serialized_entries), 200
 
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['DELETE'])

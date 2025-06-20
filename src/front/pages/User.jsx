@@ -4,12 +4,15 @@ import "../../styles/User.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import userServices from "../../services/userServices.js";
 const User = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [usuario, setUsuario] = useState({});
   const { store, dispatch } = useGlobalReducer();
+  const [isEditing, setIsEditing] = useState(false);
+  const [usuario, setUsuario] = useState(store.user || null);
   const navigate = useNavigate();
 
   const limpiarDatos = (datos) => {
+    datos.peso = typeof datos.peso == "number"  ? datos.peso.toString() : datos.peso;
+    datos.altura = typeof datos.altura == "number"  ? datos.altura.toString() : datos.altura;
+    datos.experiencia = typeof datos.experiencia == "number"  ? datos.experiencia.toString() : datos.experiencia;
     return {
       ...datos,
       peso: datos.peso ? parseFloat(datos.peso.replace(", ", ".").replace("'", ".")) : null,
@@ -34,8 +37,7 @@ const User = () => {
             user.peso = user.peso !== null ? String(user.peso) : ""
             user.altura = user.altura !== null ? String(user.altura) : ""
             user.experiencia = user.experiencia !== null ? String(user.experiencia) : ""
-            setUsuario(aux);
-            dispatch({ type: "get_user_info", payload: user })
+            dispatch({ type: "get_user_info", payload: aux })
       console.log(aux)
         }).catch((error) => {
             console.error("Error fetching user info:", error);
@@ -53,6 +55,11 @@ const User = () => {
 
   fetchEntrenador();
 }, []);
+
+
+  useEffect(() => {
+    store.user && setUsuario(store.user || null);
+  }, [store.user]);
 
 const handleChange = (e) => {
   setUsuario({ ...usuario, [e.target.name]: e.target.value });
@@ -134,7 +141,7 @@ return (
               <input
                 type="text"
                 name={campo}
-                value={store.user[campo]||""}
+                value={usuario[campo]||""}
                 onChange={handleChange}
               />
             ) : (

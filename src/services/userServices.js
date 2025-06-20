@@ -61,6 +61,9 @@ userServices.login = async (formData) => {
 
 userServices.getUserInfo = async () => {
      try {
+      if (!localStorage.getItem('token')) {
+       return;
+      }
     const resp = await fetch(backendUrl + "/api/private", {
         method: "GET",
         headers: {
@@ -68,6 +71,10 @@ userServices.getUserInfo = async () => {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
     });
+    if (resp.status === 401) {
+     localStorage.removeItem('token');
+     return;
+    }
     if (!resp.ok) throw Error("something went wrong");
     const data = await resp.json();
     console.log(data)

@@ -17,7 +17,6 @@ const NutricionPage = () => {
  
   return (
     <div className="nutricion-page container mt-5">
-      {/* Hero */}
       <section className="npHero text-center py-5">
         <h1 className="display-4 tittle">Nutrición Personalizada</h1>
         <p className="lead">

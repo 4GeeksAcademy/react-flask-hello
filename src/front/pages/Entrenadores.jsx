@@ -30,6 +30,7 @@ const Entrenadores = () => {
 
     const handleSelectTrainer = async (trainer) => {
         try {
+    if (store.user.subscription.length==0)  return navigate('/Tarifas')
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals/enroll_user", {
                 method: "POST",
                 headers: {

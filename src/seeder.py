@@ -120,15 +120,15 @@ with app.app_context():
         description="Acceso completo + contacto directo con profesionales",
         price_id=os.getenv("VITE_PREMIUM_PRICE_ID")
     )
-    dmc_plan = SubscriptionPlan(
-        name="DMC",
+    dmpc_plan = SubscriptionPlan(
+        name="Dmpc",
         price=65.00,
         duration_month=1,
         description="Acceso completo + contacto directo con profesionales",
-        price_id=os.getenv("VITE_DMC_PRICE_ID")
+        price_id=os.getenv("VITE_DMPC_PRICE_ID")
     )
 
-    db.session.add_all([basic_plan, premium_plan])
+    db.session.add_all([basic_plan, premium_plan, dmpc_plan])
     db.session.commit()
 
     # === SUBSCRIPTION ===

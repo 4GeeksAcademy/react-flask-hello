@@ -22,7 +22,6 @@ const User = () => {
   };
 
 
-
   const historial = [
     "se apuntó al evento 'yoga al aire libre'",
     "Entrenó fuerza en el gimnasio",

@@ -72,7 +72,7 @@ class User(db.Model):
     template_items_created = relationship(
         'TemplateItem', back_populates='creator')
     training_entries = relationship('TrainingEntry', back_populates='user')
-    nutrition_entries = relationship('NutritionEntry', back_populates='user')
+    nutrition_entries = relationship('NutritionEntry', back_populates='user', foreign_keys="NutritionEntry.user_id")
     profesionales_contratados = relationship(
         "UserProfesional",
         back_populates="user",
@@ -424,6 +424,8 @@ class NutritionEntry(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('users.id'), nullable=False)
+    profesional_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
     dia_semana: Mapped[str] = mapped_column(String(40), nullable=False)
     desayuno: Mapped[str] = mapped_column(Text, nullable=True)
     media_mañana: Mapped[str] = mapped_column(Text, nullable=True)
@@ -432,17 +434,19 @@ class NutritionEntry(db.Model):
     fecha: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False)
 
-    user = relationship('User', back_populates='nutrition_entries')
+    user = relationship("User", foreign_keys=[user_id], back_populates="nutrition_entries")
+    profesional = relationship("User", foreign_keys=[profesional_id])
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "dia_semana": self.dia_semana,
-            "desayuno": self.desayuno,
-            "media_mañana": self.media_mañana,
-            "comida": self.comida,
-            "cena": self.cena,
-            "fecha": self.fecha.isoformat()
 
-        }
+def serialize(self):
+    return {
+        "id": self.id,
+        "user_id": self.user_id,
+        "dia_semana": self.dia_semana,
+        "desayuno": self.desayuno,
+        "media_mañana": self.media_mañana,
+        "comida": self.comida,
+        "cena": self.cena,
+        "fecha": self.fecha.isoformat()
+
+    }

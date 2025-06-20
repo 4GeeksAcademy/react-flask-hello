@@ -63,7 +63,7 @@ userServices.getUserInfo = async () => {
      try {
       if (!localStorage.getItem('token')) {
        return;
-      }
+      } else {
     const resp = await fetch(backendUrl + "/api/private", {
         method: "GET",
         headers: {
@@ -71,7 +71,7 @@ userServices.getUserInfo = async () => {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
     });
-    if (resp.status === 401) {
+    if (resp.status != 200) {
      localStorage.removeItem('token');
      return;
     }
@@ -79,7 +79,7 @@ userServices.getUserInfo = async () => {
     const data = await resp.json();
     console.log(data)
     return data;
-  } catch (error) {
+  }} catch (error) {
     console.log(error);
   }
 }

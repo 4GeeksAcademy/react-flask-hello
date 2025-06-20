@@ -120,7 +120,7 @@ const SportProfesional = () => {
         >
           <option value="" disabled>Elige un usuario</option>
 
-          {usuariosRegistrados.map(user => {
+          {usuariosRegistrados?.map(user => {
 
             return (
               <option key={user.id} value={user.id}>{`${user.user?.nombre} ${user.user?.apellido}`}</option>

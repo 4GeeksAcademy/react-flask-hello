@@ -1,42 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/tarifas.css";
-
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { Link, useNavigate } from "react-router-dom";
 const Tarifas = () => {
-
   const { tipo } = useParams();
+  const navigate = useNavigate();
   const [eleccionSeleccionada, setEleccionSeleccionada] = useState(null);
+  const { store, dispatch } = useGlobalReducer();
+  const imagenPorDefecto = "https://img.freepik.com/fotos-premium/pareja-deportiva-relajarse-mostrador-bar-gimnasio-despues-entrenamiento-fisico_266732-28571.jpg";
 
-  const opciones = [
-    {
-      id: "basic",
-      nombre: "Tarifa Basic",
-      descripcion:
-        "Ideal para quienes quieren empezar a moverse. Incluye planes básicos de entrenamiento.",
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/peso-saludable-cuidado-masculino-atletico_1139-695.jpg"
-      ]
-    },
-    {
-      id: "premium",
-      nombre: "Tarifa Premium",
-      descripcion:
-        "Incluye entrenamiento y nutrición personalizados.",
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/mujer-joven-cinta-metrica-cocina_1303-24778.jpg",
-        "https://img.freepik.com/foto-gratis/pareja-gimnasio_1303-5541.jpg"
-      ]
-    },
-    {
-      id: "dmpc",
-      nombre: "Tarifa DMPC",
-      descripcion:
-        "Acceso completo a todos los servicios y asesoramientos.",
-      imagenes: [
-        "https://img.freepik.com/foto-gratis/mujeres-comida-saludable-tiro-medio_23-2149894948.jpg"
-      ]
-    }
-  ];
+  const opciones = store.tarifas
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,6 +22,17 @@ const Tarifas = () => {
       if (plan) setEleccionSeleccionada(plan);
     }
   }, [tipo]);
+
+  const handleSelectPlan = () => {
+    setEleccionSeleccionada(eleccionSeleccionada);
+    localStorage.setItem("tarifa", JSON.stringify(eleccionSeleccionada));
+    window.scrollTo(0, 0);
+    dispatch({
+      type: "set_tarifa",
+      payload: eleccionSeleccionada
+    });
+    navigate("/checkout");
+  };
 
   return (
     <div className="tarifas-container">
@@ -65,17 +50,90 @@ const Tarifas = () => {
         ))}
       </div>
 
-      {eleccionSeleccionada && (
-        <div className="detalle-opciones">
-          <h2>{eleccionSeleccionada.nombre}</h2>
-          <div className="imagenes-grid">
-            {eleccionSeleccionada.imagenes.map((img, i) => (
-              <img key={i} src={img} alt={`Imagen ${i + 1}`} />
-            ))}
-          </div>
-          <p>{eleccionSeleccionada.descripcion}</p>
+      {!eleccionSeleccionada && (
+        <div className="imagen-por-defecto">
+          <img src={imagenPorDefecto} alt="Imagen por defecto" />
         </div>
       )}
+
+      {eleccionSeleccionada && (
+        eleccionSeleccionada.id === "dmpc" ? (
+          <div className="detalle-opciones detalle-dmpc">
+            <div className="columna-dmpc imagen-lateral">
+              <img
+                src="https://img.freepik.com/foto-gratis/retrato-mujer-sonriente-forma-sosteniendo-manzana-bascula-sobre-fondo-blanco_662251-2931.jpg"
+                alt="Imagen lateral izquierda"
+                className="imagen-basic"
+              />
+            </div>
+
+            <div className="columna-dmpc centro-dmpc">
+              <div className="cabecera-dmpc">
+                <h2>{eleccionSeleccionada.nombre}</h2>
+                <h3 className="precio-tarifa">{eleccionSeleccionada.precio}</h3>
+              </div>
+              <p className="descripcion-tarifa">{eleccionSeleccionada.descripcion}</p>
+
+              <div className="grid-beneficios">
+                {[
+                  ...opciones[0].beneficios,
+                  ...opciones[1].beneficios,
+                  ...eleccionSeleccionada.beneficios
+                ].map((item, i) => (
+                  <div key={i} className="item-beneficio"> {item}</div>
+                ))}
+              </div>
+            </div>
+
+            <div className="columna-dmpc imagen-lateral">
+              <img
+                src={eleccionSeleccionada.imagenes[0]}
+                alt="Imagen lateral derecha"
+                className="imagen-basic"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="detalle-opciones detalle-basic">
+            <div className="columna-basic">
+              <h2>{eleccionSeleccionada.nombre}</h2>
+              <p className="descripcion-tarifa">{eleccionSeleccionada.descripcion}</p>
+              <h3 className="precio-tarifa">{eleccionSeleccionada.precio}</h3>
+              <ul className="lista-beneficios">
+                {eleccionSeleccionada.beneficios.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="columna-basic imagen-central">
+              <img
+                src={eleccionSeleccionada.imagenes[0]}
+                alt={`Imagen ${eleccionSeleccionada.nombre}`}
+                className="imagen-basic"
+              />
+            </div>
+
+            {eleccionSeleccionada.exclusiones && (
+              <div className="columna-basic exclusiones">
+                <h4>Este plan NO incluye:</h4>
+                <ul className="lista-exclusiones">
+                  {eleccionSeleccionada.exclusiones.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+
+              </div>
+            )}
+
+
+          </div>
+        )
+      )}
+      <div className="d-flex justify-content-center mt-4">
+
+        <btn  onClick={handleSelectPlan} className="btn btn-success"> Comprar {eleccionSeleccionada?.nombre} </btn>
+      </div>
     </div>
   );
 };

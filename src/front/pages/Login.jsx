@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/login.css";
 import { useNavigate, Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -23,7 +23,11 @@ const Login = () => {
         setError("");
         userServices.login(formData).then(data => {
             if (data.success) {
-                dispatch({type: "login_register", payload: data})
+                dispatch({ type: "login_register", payload: data })
+                if (data.user.is_professional) {
+                    navigate("/pUser")
+                    return
+                }
                 navigate('/user');
             } else {
                 setError("Correo o contraseña incorrectos.");
@@ -32,6 +36,10 @@ const Login = () => {
             setError("Email o Contraseña estan incorrectos.");
         });
     };
+
+    useEffect(() => {
+        store.user && navigate("/user");
+    }, [store.user, navigate]); // Redirigir si ya hay un usuario logueado
 
     return (
         <div className="container_login">

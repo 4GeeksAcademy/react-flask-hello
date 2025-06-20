@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
 from app import app
 from api.models import db, User, PlanTemplate, TemplateItem, PlanTemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 with app.app_context():
     # Borra todo
@@ -13,7 +12,7 @@ with app.app_context():
     # === USERS ===
     user1 = User(
         email="cliente@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+        password=generate_password_hash('pepe123'),
         peso=70.5,
         altura=1.75,
         objetivo="Perder grasa y tonificar",
@@ -26,21 +25,20 @@ with app.app_context():
 
     user2 = User(
         email="entrenador@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+        password=generate_password_hash('pepe123'),
         is_professional=True,
-        telefono="666777888",
+        telefono=666777888,  # Corregido: ahora es int
         profession_type="entrenador",
         experiencia=5,
         nombre="Pere",
         apellido="Martínez",
-
     )
 
     user3 = User(
         email="nutricionista@example.com",
-        password=bcrypt.generate_password_hash('pepe123').decode("utf-8"),
+        password=generate_password_hash('pepe123'),
         is_professional=True,
-        telefono="611222333",
+        telefono=611222333,  # Corregido: ahora es int
         profession_type="nutricionista",
         experiencia=8,
         nombre="María",
@@ -109,19 +107,28 @@ with app.app_context():
     # === SUBSCRIPTION PLANS ===
     basic_plan = SubscriptionPlan(
         name="Básico",
-        price=19.99,
+        price=45.00,
         duration_month=1,
-        description="Acceso a planes y eventos"
+        description="Acceso a planes y eventos",
+        price_id=os.getenv("VITE_BASIC_PRICE_ID")
     )
 
     premium_plan = SubscriptionPlan(
         name="Premium",
-        price=39.99,
+        price=55.00,
         duration_month=1,
-        description="Acceso completo + contacto directo con profesionales"
+        description="Acceso completo + contacto directo con profesionales",
+        price_id=os.getenv("VITE_PREMIUM_PRICE_ID")
+    )
+    dmpc_plan = SubscriptionPlan(
+        name="Dmpc",
+        price=65.00,
+        duration_month=1,
+        description="Acceso completo + contacto directo con profesionales",
+        price_id=os.getenv("VITE_DMPC_PRICE_ID")
     )
 
-    db.session.add_all([basic_plan, premium_plan])
+    db.session.add_all([basic_plan, premium_plan, dmpc_plan])
     db.session.commit()
 
     # === SUBSCRIPTION ===

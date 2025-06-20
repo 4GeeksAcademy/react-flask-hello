@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import stripeServices from "../../services/stripeServices";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import {useNavigate} from "react-router-dom";
-
 const PaymentReturn = () => {
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
@@ -18,7 +17,6 @@ const PaymentReturn = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     sessionId = urlParams.get('session_id');
-
     //verificamos el estado de la sesión
     stripeServices.fetchSessionStatus(sessionId, JSON.parse(localStorage.getItem('tarifa'))).then(data => {
       setStatus(data.data.status);
@@ -26,7 +24,6 @@ const PaymentReturn = () => {
       setLoading(false);
       console.log(data)
     })
-
   }, []);
 //si esta abierta, lo llevamos al checkout
   if (status === 'open') {
@@ -52,7 +49,6 @@ const PaymentReturn = () => {
       <section id="success">
         <p className="text-center m-5 fs-3 bold">
           We appreciate your business! A confirmation email will be sent to {customerEmail}.
-
           If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
         </p>
       </section>
@@ -67,9 +63,7 @@ const PaymentReturn = () => {
         </div>
       </div>
       }
-
     </>
   )
 }
-
 export default PaymentReturn

@@ -29,7 +29,11 @@ const NutricionProfesional = () => {
   // Cargar plan nutricional
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`)
+      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
         .then(res => {
           if (!res.ok) throw new Error("No existe plan");
           return res.json();
@@ -49,8 +53,10 @@ const NutricionProfesional = () => {
   const handleGuardarCambios = () => {
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
       body: JSON.stringify(planNutricion)
     })
       .then(res => res.json())
@@ -69,8 +75,10 @@ const NutricionProfesional = () => {
 
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
       body: JSON.stringify(nuevoPlan)
     })
       .then(res => res.json())

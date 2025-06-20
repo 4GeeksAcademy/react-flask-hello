@@ -7,7 +7,7 @@ const SportProfesional = () => {
   const [planEntrenamiento, setPlanEntrenamiento] = useState(null);
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
-
+  const [planNutricion, setPlanNutricion] = useState(null);
   const planBase = {
     // Lunes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
     // Martes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
@@ -20,7 +20,11 @@ const SportProfesional = () => {
 
   // Cargar usuarios
   useEffect(() => {
-    fetch(import.meta.env.VITE_BACKEND_URL + "/api/users")
+    fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals_user", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
       .then(res => res.json())
       .then(data => setUsuariosRegistrados(data))
       .catch(err => console.error("Error al cargar usuarios:", err));
@@ -29,7 +33,9 @@ const SportProfesional = () => {
   // Cargar plan Entrenamiento
   useEffect(() => {
     if (usuarioSeleccionado) {
-      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`)
+      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }})
         .then(res => {
           if (!res.ok) throw new Error("No existe plan");
           return res.json();
@@ -50,7 +56,7 @@ const SportProfesional = () => {
   const handleGuardarCambios = () => {
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${usuarioSeleccionado.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: JSON.stringify(planEntrenamiento)
     })
       .then(res => res.json())
@@ -69,7 +75,7 @@ const SportProfesional = () => {
 
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: JSON.stringify(nuevoPlan)
     })
       .then(res => res.json())
@@ -106,15 +112,20 @@ const SportProfesional = () => {
           className="form-select w-50 mx-auto mb-3"
           onChange={(e) => {
             const user = usuariosRegistrados.find(u => u.id === parseInt(e.target.value));
-            setUsuarioSeleccionado(user);
+            
+            setUsuarioSeleccionado(user.user);
             setDiaActivo("Lunes");
           }}
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-          {usuariosRegistrados.map(user => (
-            <option key={user.id} value={user.id}>{user.nombre}</option>
-          ))}
+
+          {usuariosRegistrados.map(user => {
+
+            return (
+              <option key={user.id} value={user.id}>{`${user.user?.nombre} ${user.user?.apellido}`}</option>
+            )
+          })}
         </select>
       </section>
 
@@ -134,7 +145,8 @@ const SportProfesional = () => {
           </h2>
 
           <div className="button d-flex justify-content-center flex-wrap mb-4">
-            {Object.keys(planEntrenamiento).map((dia) => (
+
+            {planEntrenamiento != null && Object.keys(planEntrenamiento)?.map((dia) => (
               <button
                 key={dia}
                 onClick={() => setDiaActivo(dia)}
@@ -148,8 +160,7 @@ const SportProfesional = () => {
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo}</h3>
             <ul className="list-group">
-              {planEntrenamiento[diaActivo] &&
-                Object.entries(planEntrenamiento[diaActivo]).map(([Entrenamiento, texto]) => (
+              {planEntrenamiento != null && Object.entries(planEntrenamiento[diaActivo])?.map(([Entrenamiento, texto]) => (
                   <li key={Entrenamiento} className="list-group-item text-dark">
                     <strong>{Entrenamiento}:</strong>
                     {modoEdicion ? (

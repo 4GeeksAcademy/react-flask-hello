@@ -633,7 +633,7 @@ def create_payment():
         if not subscription.user_id:
             db.session.rollback()
             return jsonify({"error": "Usuario no encontrado"}), 400
-        
+
         db.session.add(subscription)
         db.session.commit()
 
@@ -647,13 +647,11 @@ def create_payment():
         if not payment.subscription_id:
             db.session.rollback()
             return jsonify({"error": "Subscripción no encontrada"}), 400
-        
+
         db.session.add(payment)
         db.session.commit()
 
         return jsonify(payment.serialize()), 201
-
-
 
 
 @api.route('/payments/<int:pid>', methods=['PUT'])
@@ -1103,8 +1101,8 @@ def delete_training_entry(entry_id):
 @jwt_required()
 def list_nutrition_entries():
     user_id = get_jwt_identity()
-    stm = select(NutritionEntry).where(NutritionEntry.user_id == user_id)
-    entries = db.session.excecute(stm).scalars.all()
+    stm = select(NutritionEntry).where(NutritionEntry.profesional_id == user_id)
+    entries = db.session.execute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
 
 
@@ -1112,12 +1110,10 @@ def list_nutrition_entries():
 @jwt_required()
 def get_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
-
-    stm = select(NutritionEntry).where(NutritionEntry.id == entry_id)
-    entry = db.session.execute(stm).scalar_one_or_none()
-    if not entry or str(entry.user_id) != user_id:
-        abort(404, description="Entrada de nutricion no encontrada")
-    return jsonify(entry.serialize()), 200
+    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id)
+    entries = db.session.execute(stm).scalars().all()
+    serialized_entries = [entry.serialize() for entry in entries]
+    return jsonify(serialized_entries), 200
 
 
 @api.route('/nutrition_entries', methods=['POST'])
@@ -1125,22 +1121,23 @@ def get_nutrition_entry(entry_id):
 def create_nutrition_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    required = ('dia_semana', 'comida', 'cena')
-    if not all(f in data for f in required):
-        raise APIException(
-            f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
-
-    entry = NutritionEntry(
-        user_id=user_id,
-        dia_semana=data['dia_semana'],
-        desayuno=data.get('desayuno'),
-        media_mañana=data.get('media_mañana'),
-        comida=data['comida'],
-        cena=data['cena']
-    )
-    db.session.add(entry)
-    db.session.commit()
-    return jsonify(entry.serialize()), 201
+    # required = ('dia_semana', 'comida', 'cena')
+    # if not all(f in data for f in required):
+    #     raise APIException(
+    #         f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
+    for dia in data["plan"]:
+        entry = NutritionEntry(
+            user_id=data["userId"],
+            profesional_id=user_id,
+            dia_semana=dia,
+            desayuno=data["plan"][dia].get('Desayuno'),
+            media_mañana=data["plan"][dia].get('Almuerzo'),
+            comida=data["plan"][dia].get('Comida'),
+            cena=data["plan"][dia].get('Cena')
+            )
+        db.session.add(entry)
+        db.session.commit()
+    return jsonify({"message": "Plan nutricional creado correctamente"}), 201
 
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['PUT'])

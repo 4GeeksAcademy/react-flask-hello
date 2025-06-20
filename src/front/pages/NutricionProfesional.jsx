@@ -9,13 +9,13 @@ const NutricionProfesional = () => {
   const [modoEdicion, setModoEdicion] = useState(false);
 
   const planBase = {
-    Lunes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Martes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Miércoles: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Jueves: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Viernes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Sábado: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Domingo: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
+    Lunes: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Martes: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Miércoles: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Jueves: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Viernes: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Sábado: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
+    Domingo: { Desayuno: "null", Almuerzo: "null", Comida: "null", Cena: "null" },
   };
 
   // Cargar usuarios
@@ -70,7 +70,7 @@ const NutricionProfesional = () => {
   const handleCrearNuevoPlan = () => {
     const nuevoPlan = {
       userId: usuarioSeleccionado.id,
-      ...planBase
+      plan: { ...planBase }
     };
 
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries`, {

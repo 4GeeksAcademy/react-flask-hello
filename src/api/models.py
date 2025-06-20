@@ -438,15 +438,14 @@ class NutritionEntry(db.Model):
     profesional = relationship("User", foreign_keys=[profesional_id])
 
 
-def serialize(self):
-    return {
-        "id": self.id,
-        "user_id": self.user_id,
-        "dia_semana": self.dia_semana,
-        "desayuno": self.desayuno,
-        "media_mañana": self.media_mañana,
-        "comida": self.comida,
-        "cena": self.cena,
-        "fecha": self.fecha.isoformat()
-
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "dia_semana": self.dia_semana,
+            "desayuno": self.desayuno,
+            "media_mañana": self.media_mañana,
+            "comida": self.comida,
+            "cena": self.cena,
+            "fecha": self.fecha.isoformat()
     }

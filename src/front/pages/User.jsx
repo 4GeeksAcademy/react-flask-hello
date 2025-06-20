@@ -29,19 +29,17 @@ const User = () => {
   useEffect(() => {
 
    userServices.getUserInfo().then((user) => {
+          console.log(user)
+            let aux = {...user}
+            user.peso = user.peso !== null ? String(user.peso) : ""
+            user.altura = user.altura !== null ? String(user.altura) : ""
+            user.experiencia = user.experiencia !== null ? String(user.experiencia) : ""
+            setUsuario(aux);
             dispatch({ type: "get_user_info", payload: user })
-            setUsuario({
-        ...usuario,
-        peso: user.peso !== null ? String(user.peso) : "",
-        altura: user.altura !== null ? String(user.altura) : "",
-        experiencia: user.experiencia !== null ? String(user.experiencia) : ""
-      });
+      console.log(aux)
         }).catch((error) => {
             console.error("Error fetching user info:", error);
         })
-
-
-
 
     const fetchEntrenador = async () => {
     try {
@@ -88,10 +86,8 @@ const handleSave = async () => {
     setUsuario(updateUser);
     dispatch({ type: "ACTUALIZAR_USUARIO", payload: updateUser });
     setIsEditing(false);
-    alert("Perfil actualizado");
   } catch (err) {
     console.error(err);
-    alert("Hubo un error al guardar los cambios");
   }
 };
 
@@ -138,7 +134,7 @@ return (
               <input
                 type="text"
                 name={campo}
-                value={usuario[campo] || ""}
+                value={store.user[campo]||""}
                 onChange={handleChange}
               />
             ) : (

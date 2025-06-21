@@ -40,7 +40,7 @@ export const Navbar = () => {
         ? store.user.imagen.startsWith("http")
           ? store.user.imagen
           : `${store.user.imagen}?t=${Date.now()}`
-        : "/default-avatar.png";
+        : "/default-avatar.png"; 
 
 
       if (store.user.is_professional) {

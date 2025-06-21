@@ -437,7 +437,6 @@ class NutritionEntry(db.Model):
     user = relationship("User", foreign_keys=[user_id], back_populates="nutrition_entries")
     profesional = relationship("User", foreign_keys=[profesional_id])
 
-
     def serialize(self):
         return {
             "id": self.id,
@@ -448,4 +447,4 @@ class NutritionEntry(db.Model):
             "comida": self.comida,
             "cena": self.cena,
             "fecha": self.fecha.isoformat()
-    }
+        }

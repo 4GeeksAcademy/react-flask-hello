@@ -43,12 +43,11 @@ const crearPlanVacio = () => {
           return res.json();
         })
         .then(data => {
-          setPlanNutricion(data.plan);
+          setPlanNutricion(data);
           setModoEdicion(false);
         })
-
         .catch(err => {
-          setPlanNutricion(null);
+          setPlanNutricion(err);
         });
     }
   }, [usuarioSeleccionado]);
@@ -89,13 +88,13 @@ const handleCrearNuevoPlan = () => {
       body: JSON.stringify(nuevoPlan)
     })
       .then(res => res.json())
-      .then(() => {
-        alert("Plan creado correctamente");
-        setPlanNutricion(nuevoPlan.plan);
-        setModoEdicion(true);
-      })
-      .catch(err => alert("Error al crear el plan: " + err));
-  };
+      .then((data) => {
+  alert("Plan creado correctamente");
+  setPlanNutricion(data.plan);
+  setModoEdicion(true);
+})
+}
+
 
   const handleCambioComida = (comida, nuevoTexto) => {
     setPlanNutricion(prev => ({

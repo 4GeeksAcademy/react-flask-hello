@@ -85,28 +85,30 @@ def create_user():
     return jsonify(user.serialize()), 201
 
 
-@api.route('/users/<int:user_id>', methods=['PUT'])
+@api.route('/users', methods=['PUT'])
 @jwt_required()
-def update_user_by_id(user_id):
-    user = User.query.get(user_id)
+def update_user():
+    id = get_jwt_identity()
+    user = User.query.get(id)
     if not user:
-        abort(404, description="Usuario no encontrado")
-
+        abort(404, description="usuario no encontrado")
     data = request.get_json() or {}
     updatable = (
         'nombre', 'email', 'password', 'is_active',
         'peso', 'altura', 'objetivo', 'apellido', 'imagen', 'sexo',
         'telefono', 'profession_type', 'experiencia', 'direccion'
     )
-
     if not any(field in data for field in updatable):
         raise APIException(
-            "No hay campos válidos para actualizar", status_code=400)
-
+            f"No hay campos validos para actualizar", status_code=400)
     for field in updatable:
         if field in data:
-            setattr(user, field, data[field])
+            if data[field] is not None or data[field] != 0:
+                setattr(user, field, data[field])
 
+            else:
+                data[field] = 0
+                setattr(user, field, data[field])
     db.session.commit()
     return jsonify(user.serialize()), 200
 
@@ -606,50 +608,50 @@ def get_payment(pid):
 @jwt_required()
 def create_payment():
 
-    data = request.get_json() or {}
-    required = ('subscription_id', 'amount',
-                'method', 'status', 'session_id')
-    user_id = get_jwt_identity()
-    if not all(f in data for f in required):
-        return jsonify(
-            {"error": f"Faltan datos obligatorios: {', '.join(required)}"}), 400
-    stm = select(SubscriptionPlan).where(
-        SubscriptionPlan.name == data['subscription_id'].capitalize()
-    )
-    plan = db.session.execute(stm).scalar_one_or_none()
-    if not plan:
-        return jsonify(
-            {"error": "Plan de subscripción no encontrado"}), 400
+        data = request.get_json() or {}
+        required = ('subscription_id', 'amount',
+                    'method', 'status', 'session_id')
+        user_id = get_jwt_identity()
+        if not all(f in data for f in required):
+            return jsonify(
+                {"error": f"Faltan datos obligatorios: {', '.join(required)}"}), 400
+        stm = select(SubscriptionPlan).where(
+            SubscriptionPlan.name == data['subscription_id'].capitalize()
+        )
+        plan = db.session.execute(stm).scalar_one_or_none()
+        if not plan:
+            return jsonify(
+                {"error": "Plan de subscripción no encontrado"}), 400
 
-    subscription = Subscription(
-        user_id=user_id,
-        subscription_plan_id=plan.id,
-        start_date=datetime.utcnow().date(),
-        end_date=(datetime.utcnow() + timedelta(days=30)).date(),
-        status=data['status']
-    )
-    if not subscription.user_id:
-        db.session.rollback()
-        return jsonify({"error": "Usuario no encontrado"}), 400
+        subscription = Subscription(
+            user_id=user_id,
+            subscription_plan_id=plan.id,
+            start_date=datetime.utcnow().date(),
+            end_date=(datetime.utcnow() + timedelta(days=30)).date(),
+            status=data['status']
+        )
+        if not subscription.user_id:
+            db.session.rollback()
+            return jsonify({"error": "Usuario no encontrado"}), 400
 
-    db.session.add(subscription)
-    db.session.commit()
+        db.session.add(subscription)
+        db.session.commit()
 
-    payment = Payment(
-        subscription_id=subscription.id,
-        amount=data['amount'],
-        method=data['method'],
-        paid_at=datetime.utcnow(),
-        status=data['status']
-    )
-    if not payment.subscription_id:
-        db.session.rollback()
-        return jsonify({"error": "Subscripción no encontrada"}), 400
+        payment = Payment(
+            subscription_id=subscription.id,
+            amount=data['amount'],
+            method=data['method'],
+            paid_at=datetime.utcnow(),
+            status=data['status']
+        )
+        if not payment.subscription_id:
+            db.session.rollback()
+            return jsonify({"error": "Subscripción no encontrada"}), 400
 
-    db.session.add(payment)
-    db.session.commit()
+        db.session.add(payment)
+        db.session.commit()
 
-    return jsonify(payment.serialize()), 201
+        return jsonify(payment.serialize()), 201
 
 
 @api.route('/payments/<int:pid>', methods=['PUT'])
@@ -1099,15 +1101,10 @@ def delete_training_entry(entry_id):
 @jwt_required()
 def list_nutrition_entries():
     user_id = get_jwt_identity()
-<<<<<<< HEAD
-    stm = select(NutritionEntry).where(
-        NutritionEntry.profesional_id == user_id)
-    entries = db.session.execute(stm).scalars.all()
-=======
     stm = select(NutritionEntry).where(NutritionEntry.profesional_id == user_id)
-    entries = db.session.execute(stm).scalars().all()
->>>>>>> ac6e4b6b54b8b661512300626d7d9e132465d66f
+    entries = db.session.execute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
+
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['GET'])
 @jwt_required()
@@ -1115,81 +1112,42 @@ def get_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
     stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id)
     entries = db.session.execute(stm).scalars().all()
-    serialized_entries = {}
-    for entry in entries:
-        serialized_entries.setdefault(entry.dia_semana, {})
-        serialized_entries[entry.dia_semana] = {
-            "Desayuno": entry.desayuno,
-            "Almuerzo": entry.media_mañana,
-            "Comida": entry.comida,
-            "Cena": entry.cena
-        }
+    serialized_entries = [entry.serialize() for entry in entries]
     return jsonify(serialized_entries), 200
+
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()
 def create_nutrition_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    plan = data.get("plan")
-
-    for dia, comidas in plan.items():
+    # required = ('dia_semana', 'comida', 'cena')
+    # if not all(f in data for f in required):
+    #     raise APIException(
+    #         f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
+    for dia in data["plan"]:
         entry = NutritionEntry(
             user_id=data["userId"],
             profesional_id=user_id,
             dia_semana=dia,
-<<<<<<< HEAD
             desayuno=data["plan"][dia].get('Desayuno'),
             media_mañana=data["plan"][dia].get('Almuerzo'),
             comida=data["plan"][dia].get('Comida'),
             cena=data["plan"][dia].get('Cena')
-=======
-            desayuno=comidas.get('Desayuno'),
-            media_mañana=comidas.get('Almuerzo'),
-            comida=comidas.get('Comida'),
-            cena=comidas.get('Cena')
->>>>>>> ac6e4b6b54b8b661512300626d7d9e132465d66f
-        )
+            )
         db.session.add(entry)
-
-    db.session.commit()
+        db.session.commit()
     return jsonify({"message": "Plan nutricional creado correctamente"}), 201
 
-@api.route('/nutrition_entries/<int:user_id>', methods=['PUT'])
+
+@api.route('/nutrition_entries/<int:entry_id>', methods=['PUT'])
 @jwt_required()
-<<<<<<< HEAD
 def update_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
-    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id)
+    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id) 
     entries = db.session.execute(stm).scalars().all()
     serialized_entries = [entry.serialize() for entry in entries]
     return jsonify(serialized_entries), 200
-=======
-def update_nutrition_entry(user_id):
-    profesional_id = get_jwt_identity()
-    data = request.get_json()
-
-    if not data:
-        return jsonify({"error": "No se recibieron datos"}), 400
-
-    plan = data  # Este debería ser el objeto { Lunes: {...}, Martes: {...}, ... }
-
-    for dia, comidas in plan.items():
-        entry = db.session.execute(
-            select(NutritionEntry)
-            .where(NutritionEntry.user_id == user_id)
-            .where(NutritionEntry.dia_semana == dia)
-        ).scalar_one_or_none()
-
-        if entry:
-            entry.desayuno = comidas.get("Desayuno", entry.desayuno)
-            entry.media_mañana = comidas.get("Almuerzo", entry.media_mañana)
-            entry.comida = comidas.get("Comida", entry.comida)
-            entry.cena = comidas.get("Cena", entry.cena)
-
-    db.session.commit()
-    return jsonify({"message": "Plan actualizado correctamente"}), 200
->>>>>>> ac6e4b6b54b8b661512300626d7d9e132465d66f
 
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['DELETE'])

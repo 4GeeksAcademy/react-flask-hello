@@ -1102,9 +1102,8 @@ def delete_training_entry(entry_id):
 def list_nutrition_entries():
     user_id = get_jwt_identity()
     stm = select(NutritionEntry).where(NutritionEntry.profesional_id == user_id)
-    entries = db.session.execute(stm).scalars.all()
+    entries = db.session.execute(stm).scalars().all()
     return jsonify([e.serialize() for e in entries]), 200
-
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['GET'])
 @jwt_required()
@@ -1112,38 +1111,65 @@ def get_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
     stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id)
     entries = db.session.execute(stm).scalars().all()
-    serialized_entries = [entry.serialize() for entry in entries]
+    serialized_entries = {}
+    for entry in entries:
+        serialized_entries.setdefault(entry.dia_semana, {})
+        serialized_entries[entry.dia_semana] = {
+            "Desayuno": entry.desayuno,
+            "Almuerzo": entry.media_mañana,
+            "Comida": entry.comida,
+            "Cena": entry.cena
+        }
     return jsonify(serialized_entries), 200
-
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()
 def create_nutrition_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    for dia in data["plan"]:
+    plan = data.get("plan")
+
+    for dia, comidas in plan.items():
         entry = NutritionEntry(
             user_id=data["userId"],
             profesional_id=user_id,
             dia_semana=dia,
-            desayuno=data["plan"][dia].get('Desayuno'),
-            media_mañana=data["plan"][dia].get('Almuerzo'),
-            comida=data["plan"][dia].get('Comida'),
-            cena=data["plan"][dia].get('Cena')
-            )
+            desayuno=comidas.get('Desayuno'),
+            media_mañana=comidas.get('Almuerzo'),
+            comida=comidas.get('Comida'),
+            cena=comidas.get('Cena')
+        )
         db.session.add(entry)
-        db.session.commit()
+
+    db.session.commit()
     return jsonify({"message": "Plan nutricional creado correctamente"}), 201
 
-
-@api.route('/nutrition_entries/<int:entry_id>', methods=['PUT'])
+@api.route('/nutrition_entries/<int:user_id>', methods=['PUT'])
 @jwt_required()
-def update_nutrition_entry(entry_id):
-    user_id = get_jwt_identity()
-    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id) 
-    entries = db.session.execute(stm).scalars().all()
-    serialized_entries = [entry.serialize() for entry in entries]
-    return jsonify(serialized_entries), 200
+def update_nutrition_entry(user_id):
+    profesional_id = get_jwt_identity()
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No se recibieron datos"}), 400
+
+    plan = data  # Este debería ser el objeto { Lunes: {...}, Martes: {...}, ... }
+
+    for dia, comidas in plan.items():
+        entry = db.session.execute(
+            select(NutritionEntry)
+            .where(NutritionEntry.user_id == user_id)
+            .where(NutritionEntry.dia_semana == dia)
+        ).scalar_one_or_none()
+
+        if entry:
+            entry.desayuno = comidas.get("Desayuno", entry.desayuno)
+            entry.media_mañana = comidas.get("Almuerzo", entry.media_mañana)
+            entry.comida = comidas.get("Comida", entry.comida)
+            entry.cena = comidas.get("Cena", entry.cena)
+
+    db.session.commit()
+    return jsonify({"message": "Plan actualizado correctamente"}), 200
 
 
 @api.route('/nutrition_entries/<int:entry_id>', methods=['DELETE'])

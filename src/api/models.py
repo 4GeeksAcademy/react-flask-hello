@@ -24,8 +24,8 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(256), nullable=False)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     role: Mapped[enum.Enum] = mapped_column(Enum(RoleEnum), default=RoleEnum.client, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     
     # Relaciones
     bookings = relationship('Booking', back_populates='user', lazy='dynamic')
@@ -38,8 +38,8 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "name": self.name,
-            "is_active": self.is_active,
             "role": self.role.value,
+            "is_active": self.is_active,
             "bookings_count": self.bookings.count(),
             "cars_count": self.cars.count()
         }

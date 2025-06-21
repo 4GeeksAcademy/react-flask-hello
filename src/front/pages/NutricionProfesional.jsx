@@ -25,7 +25,7 @@ const NutricionProfesional = () => {
       .then(data => setUsuariosRegistrados(data))
       .catch(err => console.error("Error al cargar usuarios:", err));
   }, []);
-
+ 
   // Cargar plan nutricional
   useEffect(() => {
     if (usuarioSeleccionado) {

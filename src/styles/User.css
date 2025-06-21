@@ -227,8 +227,48 @@
   transform: scale(1.02);
 }
 
+.mensaje-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2a3d4d;
+  color: white;
+  border: 3px solid #ecefca;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 9999;
+  animation: fadein 0.5s ease, fadeout 0.5s ease 3.5s;
+}
 
-/* ✅ Media queries bien cerradas */
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+
+
 @media (max-width: 768px) {
   .perfil-card {
     flex-direction: column;

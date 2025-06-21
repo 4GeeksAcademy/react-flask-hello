@@ -85,32 +85,28 @@ def create_user():
     return jsonify(user.serialize()), 201
 
 
-@api.route('/users', methods=['PUT'])
+@api.route('/users/<int:id>', methods=['PUT'])
 @jwt_required()
-def update_user():
-    id = get_jwt_identity()
+def update_user(id):
+    body = request.get_json()
     user = User.query.get(id)
-    if not user:
-        abort(404, description="usuario no encontrado")
-    data = request.get_json() or {}
-    updatable = (
-        'nombre', 'email', 'password', 'is_active',
-        'peso', 'altura', 'objetivo', 'apellido', 'imagen', 'sexo',
-        'telefono', 'profession_type', 'experiencia', 'direccion'
-    )
-    if not any(field in data for field in updatable):
-        raise APIException(
-            f"No hay campos validos para actualizar", status_code=400)
-    for field in updatable:
-        if field in data:
-            if data[field] is not None or data[field] != 0:
-                setattr(user, field, data[field])
 
-            else:
-                data[field] = 0
-                setattr(user, field, data[field])
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    user.nombre = body.get("nombre", user.nombre)
+    user.email = body.get("email", user.email)
+    user.telefono = body.get("telefono", user.telefono)
+    user.direccion = body.get("direccion", user.direccion)
+    user.sexo = body.get("sexo", user.sexo)
+    user.imagen = body.get("imagen", user.imagen)
+    user.experiencia = body.get("experiencia", user.experiencia)
+    user.profession_type = body.get("profession_type", user.profession_type)
+    user.descripcion = body.get("descripcion", user.descripcion)
+
     db.session.commit()
     return jsonify(user.serialize()), 200
+
 
 
 @api.route('/users', methods=['DELETE'])
@@ -1197,3 +1193,10 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
+
+@api.route('/professionals/<int:pid>', methods=['GET'])
+def get_professional(pid):
+    profesional = User.query.get(pid)
+    if not profesional or not profesional.is_professional:
+        abort(404, description="Profesional no encontrado")
+    return jsonify(profesional.serialize()), 200

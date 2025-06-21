@@ -6,6 +6,9 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 const Entrenadores = () => {
     const [trainers, setTrainers] = useState([]);
     const [selectedTrainer, setSelectedTrainer] = useState(null);
+    const [mensajeCambio, setMensajeCambio] = useState(null);
+    const [entrenadorAnterior, setEntrenadorAnterior] = useState(null);
+
     const { store } = useGlobalReducer();
     const navigate = useNavigate();
 
@@ -14,20 +17,19 @@ const Entrenadores = () => {
             try {
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals");
                 const data = await response.json();
-                console.log("Primer trainer completo:", data[0]);
                 const onlyProfessionals = data.filter(user => user.is_professional === true);
                 setTrainers(onlyProfessionals);
             } catch (error) {
                 console.error("Error fetching trainers:", error);
             }
         };
-
         fetchTrainers();
     }, []);
 
     const handleSelectTrainer = async (trainer) => {
         try {
-            if (store.user.subscription.length === 0) return navigate('/Tarifas');
+            if (!store.user?.subscription || store.user.subscription.length === 0) return navigate('/Tarifas');
+
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals/enroll_user", {
                 method: "POST",
                 headers: {
@@ -36,21 +38,33 @@ const Entrenadores = () => {
                 },
                 body: JSON.stringify({ profesional_id: trainer.id })
             });
-            if (resp.status === 401) {
-                navigate("/login");
-                return;
-            };
+
+            if (resp.status === 401) return navigate("/login");
+
             if (resp.ok) {
-                setTrainers(prev => {
-                    const remainingTrainers = prev.filter(t => t !== trainer);
-                    return [trainer, ...remainingTrainers];
-                });
+                if (selectedTrainer) setEntrenadorAnterior(selectedTrainer);
                 setSelectedTrainer(trainer);
+
+                setMensajeCambio({
+                    anterior: selectedTrainer,
+                    nuevo: trainer
+                });
+
+                setTimeout(() => setMensajeCambio(null), 4000);
+
+                setTrainers(prev => {
+                    const restante = prev.filter(t => t.id !== trainer.id);
+                    return [trainer, ...restante];
+                });
             }
         } catch (error) {
             console.error("Error al guardar entrenador:", error);
         }
-    }
+    };
+
+    const irADetalle = (id) => {
+        navigate(`/entrenador/${id}`);
+    };
 
     return (
         <div className="fondo">
@@ -59,16 +73,40 @@ const Entrenadores = () => {
                     <h1 className="display-4">Entrenadores</h1>
                 </section>
 
+                {mensajeCambio && (
+                    <div className="alerta-entrenador text-center mx-auto my-3">
+                        <p>✅ Has cambiado de entrenador:</p>
+                        <div className="d-flex justify-content-center align-items-center gap-3 mt-2">
+                            <div>
+                                <p className="mb-1">Anterior:</p>
+                                <img
+                                    src={mensajeCambio.anterior?.imagen || "https://i.pravatar.cc/100"}
+                                    alt="Entrenador anterior"
+                                    className="trainer-img"
+                                />
+                                <p className="mt-2">{mensajeCambio.anterior?.nombre || "Ninguno"}</p>
+                            </div>
+                            <div>
+                                <p className="mb-1">Nuevo:</p>
+                                <img
+                                    src={mensajeCambio.nuevo?.imagen || "https://i.pravatar.cc/100"}
+                                    alt="Entrenador nuevo"
+                                    className="trainer-img"
+                                />
+                                <p className="mt-2">{mensajeCambio.nuevo?.nombre}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {selectedTrainer && (
                     <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
                         <div className="entrenador-grid">
-                            {/* Columna izquierda */}
                             <div className="col-izquierda">
                                 <p><strong>Nombre:</strong><br />{selectedTrainer.nombre || "Sin nombre"} {selectedTrainer.apellido || ""}</p>
                                 <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
                             </div>
 
-                            {/* Imagen en el centro */}
                             <div className="col-centro text-center">
                                 <img
                                     src={selectedTrainer.imagen || "https://i.pravatar.cc/300"}
@@ -78,7 +116,6 @@ const Entrenadores = () => {
                                 <div className="estado-seleccionado mt-3">Seleccionado</div>
                             </div>
 
-                            {/* Columna derecha */}
                             <div className="col-derecha">
                                 <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
                                 <p><strong>Especialidad:</strong><br />{selectedTrainer.profession_type || "No especificada"}</p>
@@ -87,7 +124,8 @@ const Entrenadores = () => {
                     </div>
                 )}
 
-                <h1 className="text-center mb-4">Otros Entrenadores</h1>
+                {trainers.length > 1 && <h1 className="text-center mb-4">Otros Entrenadores</h1>}
+
                 <div className="container">
                     <div className="row gy-4">
                         {trainers.map((trainer, index) => (
@@ -105,12 +143,18 @@ const Entrenadores = () => {
                                             <p className="text-black"><strong>Especialidad:</strong><br />{trainer.profession_type || "No especificada"}</p>
                                         </div>
                                     </div>
-                                    <div className="text-center mt-3">
+                                    <div className="text-center mt-3 d-flex gap-2 justify-content-center">
                                         <button
-                                            className="btn btn-outline-dark"
+                                            className="btn-solicitar-entrenador"
                                             onClick={() => handleSelectTrainer(trainer)}
                                         >
                                             Solicitar
+                                        </button>
+                                        <button
+                                            className="btn-mas-info"
+                                            onClick={() => irADetalle(trainer.id)}
+                                        >
+                                            Más info
                                         </button>
                                     </div>
                                 </div>

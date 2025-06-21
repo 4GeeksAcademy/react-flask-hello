@@ -21,6 +21,7 @@ const ProfesoresPage = () => {
         email: user.email || "",
         telefono: user.telefono || "",
         experiencia: user.experiencia !== null ? String(user.experiencia) : "",
+        descripcion: user.descripcion || "",
         direccion: user.direccion || "",
         sexo: user.sexo || "",
         horario: [
@@ -52,6 +53,7 @@ const ProfesoresPage = () => {
         imagen: profesor.imagen,
         experiencia: profesor.experiencia !== "" ? parseInt(profesor.experiencia) : null,
         profession_type: profesor.especialidad,
+        descripcion: profesor.descripcion
       };
 
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${profesor.id}`, {
@@ -70,6 +72,7 @@ const ProfesoresPage = () => {
         ...profesor,
         ...updated,
         experiencia: updated.experiencia !== null ? String(updated.experiencia) : "",
+        descripcion: updated.descripcion || ""
       });
       dispatch({ type: "ACTUALIZAR_USUARIO", payload: updated });
       setIsEditing(false);
@@ -115,7 +118,7 @@ const ProfesoresPage = () => {
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
                 <input
-                  type={campo === "experiencia" ? "number" : "text"}
+                  type="text"
                   name={campo}
                   value={profesor[campo] || ""}
                   onChange={handleProfesorChange}
@@ -168,6 +171,32 @@ const ProfesoresPage = () => {
               profesor.especialidad || "Faltante"
             )}
           </p>
+
+          <p><strong>Experiencia:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="number"
+                name="experiencia"
+                value={profesor.experiencia}
+                onChange={handleProfesorChange}
+              />
+            ) : (
+              profesor.experiencia || "Faltante"
+            )}
+          </p>
+
+          <p><strong>Descripción:</strong>{" "}
+            {isEditing ? (
+              <textarea
+                name="descripcion"
+                value={profesor.descripcion}
+                onChange={handleProfesorChange}
+              />
+            ) : (
+              profesor.descripcion || "Faltante"
+            )}
+          </p>
+
           <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
             <img
               src="/logoCrema1.png"

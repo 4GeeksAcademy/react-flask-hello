@@ -8,15 +8,19 @@ const NutricionProfesional = () => {
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  const planBase = {
-    Lunes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Martes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Miércoles: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Jueves: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Viernes: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Sábado: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-    Domingo: { Desayuno: "", Almuerzo: "", Comida: "", Merienda: "", Cena: "" },
-  };
+const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+const crearPlanVacio = () => {
+  return diasSemana.reduce((acc, dia) => {
+    acc[dia] = {
+      Desayuno: "",
+      Almuerzo: "",
+      Comida: "",
+      Cena: ""
+    };
+    return acc;
+  }, {});
+};
 
   // Cargar usuarios
   useEffect(() => {
@@ -43,35 +47,37 @@ const NutricionProfesional = () => {
           setModoEdicion(false);
         })
         .catch(err => {
-          setPlanNutricion(null);
+          setPlanNutricion(err);
         });
     }
   }, [usuarioSeleccionado]);
 
   const handleEditarPlan = () => setModoEdicion(true);
 
-  const handleGuardarCambios = () => {
-    fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify(planNutricion)
+const handleGuardarCambios = () => {
+  fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    },
+    body: JSON.stringify({
+      plan: planNutricion
     })
-      .then(res => res.json())
-      .then(() => {
-        alert("¡Plan guardado correctamente!");
-        setModoEdicion(false);
-      })
-      .catch(err => alert("Error al guardar: " + err));
-  };
+  })
+    .then(res => res.json())
+    .then(() => {
+      alert("¡Plan guardado correctamente!");
+      setModoEdicion(false);
+    })
+    .catch(err => alert("Error al guardar: " + err));
+};
 
-  const handleCrearNuevoPlan = () => {
-    const nuevoPlan = {
-      userId: usuarioSeleccionado.id,
-      ...planBase
-    };
+const handleCrearNuevoPlan = () => {
+  const nuevoPlan = {
+    userId: usuarioSeleccionado.id,
+    plan: crearPlanVacio()
+  };
 
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries`, {
       method: "POST",
@@ -82,13 +88,13 @@ const NutricionProfesional = () => {
       body: JSON.stringify(nuevoPlan)
     })
       .then(res => res.json())
-      .then(() => {
-        alert("Plan creado correctamente");
-        setPlanNutricion(nuevoPlan);
-        setModoEdicion(true);
-      })
-      .catch(err => alert("Error al crear el plan: " + err));
-  };
+      .then((data) => {
+  alert("Plan creado correctamente");
+  setPlanNutricion(data.plan);
+  setModoEdicion(true);
+})
+}
+
 
   const handleCambioComida = (comida, nuevoTexto) => {
     setPlanNutricion(prev => ({

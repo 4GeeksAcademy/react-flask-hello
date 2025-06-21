@@ -10,12 +10,11 @@ const Entrenadores = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-
-
         const fetchTrainers = async () => {
             try {
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals");
                 const data = await response.json();
+                console.log("Primer trainer completo:", data[0]);
                 const onlyProfessionals = data.filter(user => user.is_professional === true);
                 setTrainers(onlyProfessionals);
             } catch (error) {
@@ -26,11 +25,9 @@ const Entrenadores = () => {
         fetchTrainers();
     }, []);
 
-    const otherTrainers = trainers;
-
     const handleSelectTrainer = async (trainer) => {
         try {
-    if (store.user.subscription.length==0)  return navigate('/Tarifas')
+            if (store.user.subscription.length === 0) return navigate('/Tarifas');
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals/enroll_user", {
                 method: "POST",
                 headers: {
@@ -55,8 +52,6 @@ const Entrenadores = () => {
         }
     }
 
-
-
     return (
         <div className="fondo">
             <div className="entrenador-page container mt-5">
@@ -65,52 +60,49 @@ const Entrenadores = () => {
                 </section>
 
                 {selectedTrainer && (
-                    <>
-                        <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
-                            <div className="entrenador-grid">
-                                {/* Columna izquierda */}
-                                <div className="col-izquierda">
-                                    <p><strong>Nombre:</strong><br />{selectedTrainer.nombre} {selectedTrainer.apellido}</p>
-                                    <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
-                                </div>
+                    <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
+                        <div className="entrenador-grid">
+                            {/* Columna izquierda */}
+                            <div className="col-izquierda">
+                                <p><strong>Nombre:</strong><br />{selectedTrainer.nombre || "Sin nombre"} {selectedTrainer.apellido || ""}</p>
+                                <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
+                            </div>
 
-                                {/* Imagen en el centro */}
-                                <div className="col-centro text-center">
-                                    <img
-                                        src={selectedTrainer.image || "https://i.pravatar.cc/300"}
-                                        alt={`Imagen de ${selectedTrainer.nombre}`}
-                                        className="trainer-img-grande"
-                                    />
-                                    <div className="estado-seleccionado mt-3">Seleccionado</div>
-                                </div>
+                            {/* Imagen en el centro */}
+                            <div className="col-centro text-center">
+                                <img
+                                    src={selectedTrainer.imagen || "https://i.pravatar.cc/300"}
+                                    alt={`Imagen de ${selectedTrainer.nombre}`}
+                                    className="trainer-img-grande"
+                                />
+                                <div className="estado-seleccionado mt-3">Seleccionado</div>
+                            </div>
 
-                                {/* Columna derecha */}
-                                <div className="col-derecha">
-                                    <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
-                                    <p><strong>Especialidad:</strong><br />{selectedTrainer.datos}</p>
-                                </div>
+                            {/* Columna derecha */}
+                            <div className="col-derecha">
+                                <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
+                                <p><strong>Especialidad:</strong><br />{selectedTrainer.profession_type || "No especificada"}</p>
                             </div>
                         </div>
-
-                    </>
+                    </div>
                 )}
 
                 <h1 className="text-center mb-4">Otros Entrenadores</h1>
                 <div className="container">
                     <div className="row gy-4">
-                        {otherTrainers.map((trainer, index) => (
+                        {trainers.map((trainer, index) => (
                             <div className="col-md-6" key={index}>
                                 <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
                                     <div className="d-flex align-items-center">
                                         <img
-                                            src={trainer.image || "https://i.pravatar.cc/200"}
+                                            src={trainer.imagen || "https://i.pravatar.cc/200"}
                                             alt={`Imagen de ${trainer.nombre}`}
                                             className="trainer-img me-3"
                                         />
                                         <div className="flex-grow-1">
-                                            <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre} {trainer.apellido}</p>
+                                            <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre || "Sin nombre"} {trainer.apellido || ""}</p>
                                             <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
-                                            <p className="text-black"><strong>Especialidad:</strong><br />{trainer.datos}</p>
+                                            <p className="text-black"><strong>Especialidad:</strong><br />{trainer.profession_type || "No especificada"}</p>
                                         </div>
                                     </div>
                                     <div className="text-center mt-3">
@@ -127,7 +119,7 @@ const Entrenadores = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

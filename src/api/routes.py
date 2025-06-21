@@ -1156,24 +1156,3 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
-
-@api.route('/users/<int:user_id>', methods=['PUT'])
-@jwt_required()
-def update_user_by_id(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-
-    data = request.get_json() or {}
-    updatable = (
-        'nombre', 'apellido', 'email', 'telefono', 'direccion',
-        'sexo', 'imagen', 'objetivo', 'peso', 'altura',
-        'is_active', 'experiencia', 'profession_type'
-    )
-
-    for field in updatable:
-        if field in data:
-            setattr(user, field, data[field])
-
-    db.session.commit()
-    return jsonify(user.serialize()), 200

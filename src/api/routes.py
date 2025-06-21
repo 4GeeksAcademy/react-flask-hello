@@ -1193,10 +1193,4 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
-
-@api.route('/professionals/<int:pid>', methods=['GET'])
-def get_professional(pid):
-    profesional = User.query.get(pid)
-    if not profesional or not profesional.is_professional:
-        abort(404, description="Profesional no encontrado")
-    return jsonify(profesional.serialize()), 200
+ 

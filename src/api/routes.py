@@ -1160,3 +1160,4 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
+ 

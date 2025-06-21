@@ -163,7 +163,7 @@ const NutricionProfesional = () => {
                 {dia}
               </button>
             ))}
-          </div>
+          </div> 
 
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo}</h3>

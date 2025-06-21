@@ -26,42 +26,45 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  if (store.user) {
-    console.log("Actualizando menu con imagen:", store.user.imagen);
+    if (store.user) {
+      console.log("Actualizando menu con imagen:", store.user.imagen);
 
-    let aux = [...items.filter(item =>
-      item.name !== "Login" &&
-      item.name !== "Perfil" &&
-      item.name !== "Profesor" &&
-      item.name !== "Logout"
-    )];
+      let aux = [...items.filter(item =>
+        item.name !== "Login" &&
+        item.name !== "Perfil" &&
+        item.name !== "Profesor" &&
+        item.name !== "Logout"
+      )];
 
-    const avatarUrl = store.user.imagen
-      ? `${store.user.imagen}?t=${Date.now()}`
-      : "/default-avatar.png";
+      const avatarUrl = store.user.imagen
+        ? store.user.imagen.startsWith("http")
+          ? store.user.imagen
+          : `${store.user.imagen}?t=${Date.now()}`
+        : "/default-avatar.png";
 
-    if (store.user.is_professional) {
-      aux.push({
-        name: "Profesor",
-        link: "/pUser",
-        internal: true,
-        isImage: true,
-        imageUrl: avatarUrl,
-      });
-    } else {
-      aux.push({
-        name: "Perfil",
-        link: "/user",
-        internal: true,
-        isImage: true,
-        imageUrl: avatarUrl,
-      });
+
+      if (store.user.is_professional) {
+        aux.push({
+          name: "Profesor",
+          link: "/pUser",
+          internal: true,
+          isImage: true,
+          imageUrl: avatarUrl,
+        });
+      } else {
+        aux.push({
+          name: "Perfil",
+          link: "/user",
+          internal: true,
+          isImage: true,
+          imageUrl: avatarUrl,
+        });
+      }
+
+      aux.push({ name: "Logout" });
+      setMenuItems(aux);
     }
-
-    aux.push({ name: "Logout" });
-    setMenuItems(aux);
-  }
-}, [store.user?.imagen, store.user?.is_professional]);
+  }, [store.user?.imagen, store.user?.is_professional]);
 
 
   useEffect(() => {

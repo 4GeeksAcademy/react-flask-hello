@@ -2,30 +2,82 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/ProfesoresPage.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import userServices from "../../services/userServices.js";
 
 const ProfesoresPage = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [profesor, setProfesor] = useState({
-    nombre: "Pepe Strong",
-    imagen: "https://randomuser.me/api/portraits/men/75.jpg",
-    especialidad: "Fuerza / Hipertrofia",
-    email: "pepe.strong@gympro.com",
-    telefono: "+34 678 456 123",
-    experiencia: "5 años",
-    direccion: "Calle del Hierro, 21, Valencia",
-    sexo: "Masculino",
-    horario: [
-      "Lunes a Viernes: 9:00 - 13:00",
-      "Martes y Jueves: 17:00 - 20:00"
-    ],
-    miembrosAsignados: ["David Vivar", "Sara González", "Leo Martínez"]
-  });
-
   const { store, dispatch } = useGlobalReducer();
+  const [isEditing, setIsEditing] = useState(false);
+  const [mensaje, setMensaje] = useState(null);
+  const [profesor, setProfesor] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    userServices.getUserInfo().then((user) => {
+      let datos = {
+        id: user.id,
+        nombre: user.nombre || "",
+        imagen: user.imagen || "/logoCrema1.png",
+        especialidad: user.profession_type || "",
+        email: user.email || "",
+        telefono: user.telefono || "",
+        experiencia: user.experiencia !== null ? String(user.experiencia) : "",
+        direccion: user.direccion || "",
+        sexo: user.sexo || "",
+        horario: [
+          "Lunes a Viernes: 9:00 - 13:00",
+          "Martes y Jueves: 17:00 - 20:00"
+        ],
+        miembrosAsignados: user.usuarios_asignados?.map(u => u.nombre) || []
+      };
+      setProfesor(datos);
+      dispatch({ type: "get_user_info", payload: user });
+    }).catch((error) => {
+      console.error("Error al cargar datos del profesor:", error);
+    });
+  }, []);
 
   const handleProfesorChange = (e) => {
     setProfesor({ ...profesor, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        nombre: profesor.nombre,
+        email: profesor.email,
+        telefono: profesor.telefono,
+        direccion: profesor.direccion,
+        sexo: profesor.sexo,
+        imagen: profesor.imagen,
+        experiencia: profesor.experiencia !== "" ? parseInt(profesor.experiencia) : null,
+        profession_type: profesor.especialidad,
+      };
+
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${profesor.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Error al guardar el perfil");
+
+      const updated = await res.json();
+      setProfesor({
+        ...profesor,
+        ...updated,
+        experiencia: updated.experiencia !== null ? String(updated.experiencia) : "",
+      });
+      dispatch({ type: "ACTUALIZAR_USUARIO", payload: updated });
+      setIsEditing(false);
+      setMensaje("✅ Perfil del profesor actualizado correctamente");
+      setTimeout(() => setMensaje(null), 4000);
+    } catch (error) {
+      console.error("Error al guardar el perfil del profesor:", error);
+    }
   };
 
   const handleDelete = async () => {
@@ -41,7 +93,6 @@ const ProfesoresPage = () => {
       });
       if (!res.ok) throw new Error("Error al borrar el perfil");
       localStorage.removeItem("token");
-      dispatch({ type: "BORRAR_USUARIO" });
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -49,24 +100,28 @@ const ProfesoresPage = () => {
     }
   };
 
+  if (!profesor) return <p className="text-center mt-5">Cargando datos del profesor...</p>;
+
   return (
     <div className="perfil-container">
+      {mensaje && <div className="mensaje-toast">{mensaje}</div>}
+
       <h1 className="perfil-titulo">Perfil del Profesor</h1>
 
       <div className="perfil-card">
         <div className="columna columna-izquierda">
-          {["nombre", "email", "telefono", "direccion", "sexo", "experiencia"].map((campo) => (
+          {["nombre", "email", "telefono", "direccion", "sexo"].map((campo) => (
             <p className="mt-2" key={campo}>
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
                 <input
-                  type="text"
+                  type={campo === "experiencia" ? "number" : "text"}
                   name={campo}
-                  value={profesor[campo]}
+                  value={profesor[campo] || ""}
                   onChange={handleProfesorChange}
                 />
               ) : (
-                profesor[campo] || "Falta"
+                profesor[campo] || "Faltante"
               )}
             </p>
           ))}
@@ -88,7 +143,7 @@ const ProfesoresPage = () => {
           <div className="botones-perfil">
             {isEditing ? (
               <>
-                <button className="btn-guardar" onClick={() => setIsEditing(false)}>Guardar</button>
+                <button className="btn-guardar" onClick={handleSave}>Guardar</button>
                 <button className="btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
               </>
             ) : (
@@ -110,13 +165,9 @@ const ProfesoresPage = () => {
                 onChange={handleProfesorChange}
               />
             ) : (
-              profesor.especialidad
+              profesor.especialidad || "Faltante"
             )}
           </p>
-          <p><strong>Horario:</strong></p>
-          <ul>
-            {profesor.horario.map((h, i) => <li key={i}>{h}</li>)}
-          </ul>
           <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
             <img
               src="/logoCrema1.png"

@@ -39,9 +39,10 @@ const NutricionProfesional = () => {
           return res.json();
         })
         .then(data => {
-          setPlanNutricion(data);
+          setPlanNutricion(data.plan);
           setModoEdicion(false);
         })
+
         .catch(err => {
           setPlanNutricion(null);
         });
@@ -57,7 +58,7 @@ const NutricionProfesional = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`
       },
-      body: JSON.stringify(planNutricion)
+      body: JSON.stringify({ plan: planNutricion })
     })
       .then(res => res.json())
       .then(() => {
@@ -163,7 +164,7 @@ const NutricionProfesional = () => {
                 {dia}
               </button>
             ))}
-          </div> 
+          </div>
 
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo}</h3>

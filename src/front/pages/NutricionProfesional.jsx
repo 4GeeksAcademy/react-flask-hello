@@ -43,9 +43,10 @@ const NutricionProfesional = () => {
           return res.json();
         })
         .then(data => {
-          setPlanNutricion(data);
+          setPlanNutricion(data.plan);
           setModoEdicion(false);
         })
+
         .catch(err => {
           setPlanNutricion(null);
         });

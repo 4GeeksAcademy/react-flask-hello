@@ -8,19 +8,19 @@ const NutricionProfesional = () => {
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-  const crearPlanVacio = () => {
-    return diasSemana.reduce((acc, dia) => {
-      acc[dia] = {
-        Desayuno: "",
-        Almuerzo: "",
-        Comida: "",
-        Cena: ""
-      };
-      return acc;
-    }, {});
-  };
+const crearPlanVacio = () => {
+  return diasSemana.reduce((acc, dia) => {
+    acc[dia] = {
+      Desayuno: "",
+      Almuerzo: "",
+      Comida: "",
+      Cena: ""
+    };
+    return acc;
+  }, {});
+};
 
   // Cargar usuarios
   useEffect(() => {
@@ -43,10 +43,9 @@ const NutricionProfesional = () => {
           return res.json();
         })
         .then(data => {
-          setPlanNutricion(data.plan);
+          setPlanNutricion(data);
           setModoEdicion(false);
         })
-
         .catch(err => {
           setPlanNutricion(null);
         });
@@ -55,30 +54,30 @@ const NutricionProfesional = () => {
 
   const handleEditarPlan = () => setModoEdicion(true);
 
-  const handleGuardarCambios = () => {
-    fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({
-        plan: planNutricion
-      })
+const handleGuardarCambios = () => {
+  fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    },
+    body: JSON.stringify({
+      plan: planNutricion
     })
-      .then(res => res.json())
-      .then(() => {
-        alert("¡Plan guardado correctamente!");
-        setModoEdicion(false);
-      })
-      .catch(err => alert("Error al guardar: " + err));
-  };
+  })
+    .then(res => res.json())
+    .then(() => {
+      alert("¡Plan guardado correctamente!");
+      setModoEdicion(false);
+    })
+    .catch(err => alert("Error al guardar: " + err));
+};
 
-  const handleCrearNuevoPlan = () => {
-    const nuevoPlan = {
-      userId: usuarioSeleccionado.id,
-      plan: crearPlanVacio()
-    };
+const handleCrearNuevoPlan = () => {
+  const nuevoPlan = {
+    userId: usuarioSeleccionado.id,
+    plan: crearPlanVacio()
+  };
 
     fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries`, {
       method: "POST",
@@ -126,13 +125,9 @@ const NutricionProfesional = () => {
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-          {usuariosRegistrados
-            .filter(user => user.rol === "usuario")
-            .map(user => (
-              <option key={user.id} value={user.id}>
-                {user.nombre}
-              </option>
-            ))}
+          {usuariosRegistrados.map(user => (
+            <option key={user.id} value={user.id}>{user.nombre}</option>
+          ))}
         </select>
 
         {usuarioSeleccionado && planNutricion === null && (

@@ -38,7 +38,7 @@ export const Navbar = () => {
 
     const avatarUrl = store.user.imagen
       ? `${store.user.imagen}?t=${Date.now()}`
-      : "/default-avatar.png";
+      : "/logoCrema1.png";
 
     if (store.user.is_professional) {
       aux.push({

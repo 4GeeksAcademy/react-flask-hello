@@ -1153,7 +1153,7 @@ def update_nutrition_entry(user_id):
     if not data:
         return jsonify({"error": "No se recibieron datos"}), 400
 
-    plan = data  # Este debería ser el objeto { Lunes: {...}, Martes: {...}, ... }
+    plan = data 
 
     for dia, comidas in plan.items():
         entry = db.session.execute(

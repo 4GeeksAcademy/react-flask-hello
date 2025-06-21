@@ -1121,10 +1121,6 @@ def get_nutrition_entry(entry_id):
 def create_nutrition_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    # required = ('dia_semana', 'comida', 'cena')
-    # if not all(f in data for f in required):
-    #     raise APIException(
-    #         f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
     for dia in data["plan"]:
         entry = NutritionEntry(
             user_id=data["userId"],

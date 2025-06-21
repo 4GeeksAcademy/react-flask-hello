@@ -25,7 +25,7 @@ const NutricionProfesional = () => {
       .then(data => setUsuariosRegistrados(data))
       .catch(err => console.error("Error al cargar usuarios:", err));
   }, []);
- 
+
   // Cargar plan nutricional
   useEffect(() => {
     if (usuarioSeleccionado) {
@@ -163,7 +163,7 @@ const NutricionProfesional = () => {
                 {dia}
               </button>
             ))}
-          </div>
+          </div> 
 
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo}</h3>

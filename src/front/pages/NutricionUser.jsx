@@ -30,7 +30,7 @@ const NutricionUser = () => {
             },
           }
         );
-
+ 
         if (response.status === 404) {
           setError("Todavía no tienes un plan nutricional asignado.");
           setLoading(false);

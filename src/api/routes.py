@@ -1110,10 +1110,13 @@ def list_nutrition_entries():
 @jwt_required()
 def get_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
-    stm = select(NutritionEntry).where(NutritionEntry.user_id == entry_id)
-    entries = db.session.execute(stm).scalars().all()
-    serialized_entries = [entry.serialize() for entry in entries]
-    return jsonify(serialized_entries), 200
+    user = User.query.get(user_id)
+    entry = NutritionEntry.query.get(entry_id)
+    if not entry:
+        abort(404, description="No se encuentra la entrada")
+    if user.role == "usuario" and entry.user_id != user_id:
+        abort(403, description="Acceso denegado")
+    return jsonify(entry.serialize()), 200
 
 
 @api.route('/nutrition_entries', methods=['POST'])
@@ -1121,10 +1124,6 @@ def get_nutrition_entry(entry_id):
 def create_nutrition_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    # required = ('dia_semana', 'comida', 'cena')
-    # if not all(f in data for f in required):
-    #     raise APIException(
-    #         f"Faltan datos por completar obligatorios: {','.join(required)}", status_code=400)
     for dia in data["plan"]:
         entry = NutritionEntry(
             user_id=data["userId"],

@@ -8,15 +8,23 @@ const EntrenadorInfo = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("📦 ID recibido:", id);
     const fetchTrainer = async () => {
       try {
-        const resp = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/professionals/${id}`);
+        const url = `${import.meta.env.VITE_BACKEND_URL}/api/professionals/${id}`;
+        console.log("🔗 URL usada:", url);
+
+        const resp = await fetch(url);
+        const contentType = resp.headers.get("content-type");
+        console.log("📥 Content-Type:", contentType);
+
         const data = await resp.json();
         setTrainer(data);
       } catch (error) {
         console.error("Error cargando entrenador:", error);
       }
     };
+
     fetchTrainer();
   }, [id]);
 
@@ -25,36 +33,27 @@ const EntrenadorInfo = () => {
   return (
     <div className="entrenador-info-container">
       <div className="entrenador-info-card">
-        <div className="info-header">
-          <img
-            src={trainer.imagen || "https://i.pravatar.cc/300"}
-            alt={`${trainer.nombre}`}
-            className="info-foto"
-          />
-          <div>
-            <h2>{trainer.nombre} {trainer.apellido}</h2>
-            <p><strong>Especialidad:</strong> {trainer.profession_type || "No especificada"}</p>
-            <p><strong>Email:</strong> {trainer.email}</p>
+        <h2 className="info-header-nombre">{trainer.nombre} {trainer.apellido}</h2>
+
+        <div className="info-grid">
+          <div className="info-columna">
+            <p><span className="info-titulo">Email:</span> {trainer.email}</p>
+            <p><span className="info-titulo">Teléfono:</span> {trainer.telefono || "No especificado"}</p>
+            <p><span className="info-titulo">Sexo:</span> {trainer.sexo || "No especificado"}</p>
           </div>
-        </div>
 
-        <div className="info-detalle">
-          <h3>Descripción</h3>
-          <p>{trainer.descripcion || "No se ha proporcionado una descripción."}</p>
+          <div className="info-columna" style={{ textAlign: "center" }}>
+            <img
+              src={trainer.imagen || "https://i.pravatar.cc/300"}
+              alt={trainer.nombre}
+              className="info-foto"
+            />
+          </div>
 
-          <h3>Experiencia</h3>
-          <p>{trainer.experiencia || "No especificada."}</p>
-
-          {trainer.especialidades && (
-            <>
-              <h3>Áreas de entrenamiento</h3>
-              <ul className="especialidades-lista">
-                {trainer.especialidades.map((area, i) => (
-                  <li key={i}>{area}</li>
-                ))}
-              </ul>
-            </>
-          )}
+          <div className="info-columna">
+            <p><span className="info-titulo">Descripción:</span><br />{trainer.descripcion || "No especificada"}</p>
+            <p><span className="info-titulo">Experiencia:</span> {trainer.experiencia ? `${trainer.experiencia} años` : "No especificada"}</p>
+          </div>
         </div>
 
         <div className="info-volver">

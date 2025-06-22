@@ -248,12 +248,14 @@ def delete_user_professional():
     db.session.commit()
     return '', 204
 
-# @api.route('/professionals/<int:pid>', methods=['GET'])
-# def get_professional(pid):
-#     pro = Professional.query.get(pid)
-#     if not pro:
-#         abort(404, description= "Professional no encotrado")
-#     return jsonify(pro.serialize()),200
+
+@api.route('/professionals/<int:id>', methods=['GET'])
+def get_professional(id):
+    user = User.query.get(id)
+    if not user or not user.is_professional:
+        return jsonify({"error": "Entrenador no encontrado"}), 404
+    return jsonify(user.serialize()), 200
+
 
 
 # @api.route('/professionals', methods=['POST'])

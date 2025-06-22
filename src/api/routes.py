@@ -1004,7 +1004,7 @@ def get_training_entry(user_id):
         profesional_id=professional_id
     ).all()
     if not TrainingEntries:
-        return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
+        return jsonify({"error": "No se encuentra el plan entrenamiento para este usuario"}), 404
     TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
     return jsonify(TrainingEntries_serialized), 200
 
@@ -1019,7 +1019,7 @@ def create_training_entry():
         profesional_id=user_id
     ).first()
     if exists:
-        return jsonify({"error": "Ya existe un plan nutricional para este usuario"}), 400
+        return jsonify({"error": "Ya existe un plan entrenamiento para este usuario"}), 400
     for dia in data["plan"]:
         entry = TrainingEntry(
             user_id=data["userId"],
@@ -1035,7 +1035,7 @@ def create_training_entry():
             profesional_id=user_id,
         ).all()
         TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
-    return jsonify({"message": "Plan entramiento creado correctamente", "Training_entry_list": TrainingEntries_serialized}), 201
+    return jsonify({"message": "Plan entrenamiento creado correctamente", "Training_entry_list": TrainingEntries_serialized}), 201
 
 
 @api.route('/training_entries/<int:entry_id>', methods=['PUT'])

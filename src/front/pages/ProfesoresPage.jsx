@@ -9,6 +9,7 @@ const ProfesoresPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [mensaje, setMensaje] = useState(null);
   const [profesor, setProfesor] = useState(null);
+  const [filtro, setFiltro] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const ProfesoresPage = () => {
             "Lunes a Viernes: 9:00 - 13:00",
             "Martes y Jueves: 17:00 - 20:00"
           ],
-          miembrosAsignados: user.usuarios_asignados?.map(u => u.nombre) || []
+          miembrosAsignados: (user.usuarios_contratantes || []).reverse()
         };
         setProfesor(datos);
         dispatch({ type: "get_user_info", payload: user });
@@ -57,7 +58,6 @@ const ProfesoresPage = () => {
         imagen: profesor.imagen?.trim() || null
       };
 
-
       if (profesor.imagen?.trim()) {
         payload.imagen = profesor.imagen.trim();
       }
@@ -72,7 +72,7 @@ const ProfesoresPage = () => {
         body: JSON.stringify(payload),
       });
 
-      const text = await res.text(); // Para debug
+      const text = await res.text();
       if (!res.ok) throw new Error(text);
 
       const updated = JSON.parse(text);
@@ -112,6 +112,11 @@ const ProfesoresPage = () => {
 
   if (!profesor) return <p className="text-center mt-5">Cargando datos del profesor...</p>;
 
+  const miembrosFiltrados = profesor.miembrosAsignados.filter((u) => {
+    const valor = `${u.nombre} ${u.apellido}`.toLowerCase();
+    return valor.includes(filtro.toLowerCase());
+  });
+
   return (
     <div className="perfil-container">
       {mensaje && <div className="mensaje-toast">{mensaje}</div>}
@@ -120,7 +125,13 @@ const ProfesoresPage = () => {
 
       <div className="perfil-card">
         <div className="columna columna-izquierda">
-          {["nombre", "email", "telefono", "direccion", "sexo"].map((campo) => (
+          {[
+            "nombre",
+            "email",
+            "telefono",
+            "direccion",
+            "sexo"
+          ].map((campo) => (
             <p className="mt-2" key={campo}>
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
@@ -194,19 +205,35 @@ const ProfesoresPage = () => {
 
       <div className="secciones-inferiores">
         <div className="secciones-fila">
-          <div className="seccion">
+          <div className="seccion seccion-miembros no-hover sin-hover">
             <h2>Miembros asignados</h2>
+            <input
+              type="text"
+              placeholder="Buscar por nombre o apellido"
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="input-filtro"
+            />
             <ul>
-              {profesor.miembrosAsignados.map((m, i) => <li key={i}>{m}</li>)}
+              {miembrosFiltrados.length > 0 ? (
+                miembrosFiltrados.map((u, i) => (
+                  <li key={i} className="miembro-item">
+                    <span className="nombre-usuario-azul nombre-grande">{u.nombre} {u.apellido}</span>
+                    <button onClick={() => navigate(`/usuario/${u.id}`)} className="btn-ver-usuario grow">Ver</button>
+                  </li>
+                ))
+              ) : (
+                <li>No hay usuarios asignados.</li>
+              )}
             </ul>
           </div>
 
-          <div className="seccion">
+          <div className="seccion no-hover sin-hover">
             <h2>Calendario de sesiones</h2>
             <p>Próximamente se integrará el calendario con reservas.</p>
           </div>
 
-          <div className="seccion">
+          <div className="seccion no-hover sin-hover">
             <h2>Notas del profesor</h2>
             <p>“David está progresando genial en el plan de hipertrofia 💪”</p>
           </div>

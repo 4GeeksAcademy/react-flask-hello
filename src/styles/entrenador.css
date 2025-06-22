@@ -189,3 +189,34 @@
     transform: translateY(0);
   }
 }
+
+
+.animacion-transicion {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid #ccc;
+  border-top: 6px solid #333;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-limpiar-filtros {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: 2px solid #e6eac2;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-limpiar-filtros:hover {
+  background-color: transparent;
+  color: #ECEFCA;
+  border: 2px solid #213448;
+}

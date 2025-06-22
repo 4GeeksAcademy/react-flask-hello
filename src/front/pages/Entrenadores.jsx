@@ -7,6 +7,9 @@ import userServices from "../../services/userServices.js";
 const Entrenadores = () => {
     const [allTrainers, setAllTrainers] = useState([]);
     const [mensajeCambio, setMensajeCambio] = useState(null);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [filtroNombre, setFiltroNombre] = useState("");
+    const [filtroEspecialidad, setFiltroEspecialidad] = useState("Todas");
 
     const { store, dispatch } = useGlobalReducer();
     const navigate = useNavigate();
@@ -42,6 +45,9 @@ const Entrenadores = () => {
                 return navigate('/Tarifas');
             }
 
+            setIsTransitioning(true);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals/enroll_user", {
                 method: "POST",
                 headers: {
@@ -64,8 +70,6 @@ const Entrenadores = () => {
                 }
 
                 const updatedUser = await userServices.getUserInfo();
-                console.log("🆕 Usuario actualizado:", updatedUser);
-
                 dispatch({ type: "get_user_info", payload: updatedUser });
 
                 setMensajeCambio({
@@ -73,20 +77,40 @@ const Entrenadores = () => {
                     nuevo: trainer
                 });
 
-                setTimeout(() => setMensajeCambio(null), 4000);
+                setTimeout(() => {
+                    setMensajeCambio(null);
+                    setIsTransitioning(false);
+                }, 3000);
             } else {
                 console.error("❌ Fallo en /enroll_user");
+                setIsTransitioning(false);
             }
 
         } catch (error) {
             console.error("Error al seleccionar entrenador:", error);
+            setIsTransitioning(false);
         }
     };
 
-
-
     const irADetalle = (id) => {
         navigate(`/entrenador/${id}`);
+    };
+
+    const especialidades = [
+        "Todas",
+        ...new Set(allTrainers.map(t => t.profession_type).filter(Boolean))
+    ];
+
+    const trainersFiltrados = allTrainers
+        .filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id)
+        .filter(t =>
+            t.nombre.toLowerCase().includes(filtroNombre.toLowerCase()) &&
+            (filtroEspecialidad === "Todas" || t.profession_type === filtroEspecialidad)
+        );
+
+    const limpiarFiltros = () => {
+        setFiltroNombre("");
+        setFiltroEspecialidad("Todas");
     };
 
     return (
@@ -109,9 +133,7 @@ const Entrenadores = () => {
                                 />
                                 <p className="mt-2">{mensajeCambio.anterior?.nombre || "Ninguno"}</p>
                             </div>
-
                             <div className="animacion-transicion" />
-
                             <div>
                                 <p className="mb-1">Nuevo:</p>
                                 <img
@@ -125,14 +147,13 @@ const Entrenadores = () => {
                     </div>
                 )}
 
-                {store.user?.profesionales_contratados?.[0] && (
+                {!isTransitioning && store.user?.profesionales_contratados?.[0] && (
                     <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
                         <div className="entrenador-grid">
                             <div className="col-izquierda">
                                 <p><strong>Nombre:</strong><br />{store.user.profesionales_contratados[0].nombre || "Sin nombre"} {store.user.profesionales_contratados[0].apellido || ""}</p>
                                 <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
                             </div>
-
                             <div className="col-centro text-center">
                                 <img
                                     src={store.user.profesionales_contratados[0].imagen || "https://i.pravatar.cc/300"}
@@ -141,7 +162,6 @@ const Entrenadores = () => {
                                 />
                                 <div className="estado-seleccionado mt-3">Seleccionado</div>
                             </div>
-
                             <div className="col-derecha">
                                 <p><strong>Email:</strong><br />{store.user.profesionales_contratados[0].email}</p>
                                 <p><strong>Especialidad:</strong><br />{store.user.profesionales_contratados[0].profession_type || "No especificada"}</p>
@@ -150,46 +170,71 @@ const Entrenadores = () => {
                     </div>
                 )}
 
-                {allTrainers.filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id).length > 0 && (
-                    <h1 className="text-center mb-4">Otros Entrenadores</h1>
+                <div className="filtros-entrenadores d-flex gap-2 justify-content-center align-items-center flex-wrap mt-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Buscar por nombre..."
+                        value={filtroNombre}
+                        onChange={e => setFiltroNombre(e.target.value)}
+                        style={{ maxWidth: "250px" }}
+                    />
+                    <select
+                        className="form-select"
+                        value={filtroEspecialidad}
+                        onChange={e => setFiltroEspecialidad(e.target.value)}
+                        style={{ maxWidth: "250px" }}
+                    >
+                        {especialidades.map((esp, idx) => (
+                            <option key={idx} value={esp}>{esp}</option>
+                        ))}
+                    </select>
+                    <button
+                        className="btn-limpiar-filtros"
+                        onClick={limpiarFiltros}
+                    >
+                        Limpiar filtros
+                    </button>
+                </div>
+
+                {trainersFiltrados.length > 0 && (
+                    <h1 className="text-center mb-4 mt-4">Otros Entrenadores</h1>
                 )}
 
                 <div className="container">
                     <div className="row gy-4">
-                        {allTrainers
-                            .filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id)
-                            .map((trainer, index) => (
-                                <div className="col-md-6" key={index}>
-                                    <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
-                                        <div className="d-flex align-items-center">
-                                            <img
-                                                src={trainer.imagen || "https://i.pravatar.cc/200"}
-                                                alt={`Imagen de ${trainer.nombre}`}
-                                                className="trainer-img me-3"
-                                            />
-                                            <div className="flex-grow-1">
-                                                <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre || "Sin nombre"} {trainer.apellido || ""}</p>
-                                                <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
-                                                <p className="text-black"><strong>Especialidad:</strong><br />{trainer.profession_type || "No especificada"}</p>
-                                            </div>
-                                        </div>
-                                        <div className="text-center mt-3 d-flex gap-2 justify-content-center">
-                                            <button
-                                                className="btn-solicitar-entrenador"
-                                                onClick={() => handleSelectTrainer(trainer)}
-                                            >
-                                                Solicitar
-                                            </button>
-                                            <button
-                                                className="btn-mas-info"
-                                                onClick={() => irADetalle(trainer.id)}
-                                            >
-                                                Más info
-                                            </button>
+                        {trainersFiltrados.map((trainer, index) => (
+                            <div className="col-md-6" key={index}>
+                                <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={trainer.imagen || "https://i.pravatar.cc/200"}
+                                            alt={`Imagen de ${trainer.nombre}`}
+                                            className="trainer-img me-3"
+                                        />
+                                        <div className="flex-grow-1">
+                                            <p className="text-black"><strong>Nombre:</strong><br />{trainer.nombre || "Sin nombre"} {trainer.apellido || ""}</p>
+                                            <p className="text-black"><strong>Email:</strong><br />{trainer.email}</p>
+                                            <p className="text-black"><strong>Especialidad:</strong><br />{trainer.profession_type || "No especificada"}</p>
                                         </div>
                                     </div>
+                                    <div className="text-center mt-3 d-flex gap-2 justify-content-center">
+                                        <button
+                                            className="btn-solicitar-entrenador"
+                                            onClick={() => handleSelectTrainer(trainer)}
+                                        >
+                                            Solicitar
+                                        </button>
+                                        <button
+                                            className="btn-mas-info"
+                                            onClick={() => irADetalle(trainer.id)}
+                                        >
+                                            Más info
+                                        </button>
+                                    </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

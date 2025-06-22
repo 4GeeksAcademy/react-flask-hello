@@ -255,6 +255,57 @@
   box-shadow: none !important;
 }
 
+.prof-scroll-miembros {
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 5px;
+  box-sizing: content-box;
+  scrollbar-width: thin;
+  scrollbar-color: #2a3d4d #ECEFCA; /* color del thumb y del fondo (Firefox) */
+  border: 1px solid #2a3d4d;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.prof-miembros-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.prof-miembro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.prof-nombre {
+  flex: 1;
+  font-weight: bold;
+}
+
+.prof-btn-ver {
+  margin-left: 10px;
+}
+
+/* Scrollbar para WebKit (Chrome, Edge, Safari) */
+.prof-scroll-miembros::-webkit-scrollbar {
+  width: 8px;
+}
+
+.prof-scroll-miembros::-webkit-scrollbar-track {
+  background: #ECEFCA;
+  border-radius: 8px;
+}
+
+.prof-scroll-miembros::-webkit-scrollbar-thumb {
+  background-color: #2a3d4d;
+  border-radius: 8px;
+  border: 2px solid #ECEFCA;
+}
+
 @media (max-width: 768px) {
   .prof-card {
     flex-direction: column;

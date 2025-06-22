@@ -104,7 +104,7 @@ const Entrenadores = () => {
     const trainersFiltrados = allTrainers
         .filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id)
         .filter(t =>
-            t.nombre.toLowerCase().includes(filtroNombre.toLowerCase()) &&
+            (t.nombre?.toLowerCase() || "").includes(filtroNombre.toLowerCase()) &&
             (filtroEspecialidad === "Todas" || t.profession_type === filtroEspecialidad)
         );
 
@@ -127,7 +127,7 @@ const Entrenadores = () => {
                             <div>
                                 <p className="mb-1">Anterior:</p>
                                 <img
-                                    src={mensajeCambio.anterior?.imagen || "https://i.pravatar.cc/100"}
+                                    src={mensajeCambio.anterior?.imagen || "/logoCrema1.png"}
                                     alt="Entrenador anterior"
                                     className="trainer-img"
                                 />
@@ -137,7 +137,7 @@ const Entrenadores = () => {
                             <div>
                                 <p className="mb-1">Nuevo:</p>
                                 <img
-                                    src={mensajeCambio.nuevo?.imagen || "https://i.pravatar.cc/100"}
+                                    src={mensajeCambio.nuevo?.imagen || "/logoCrema1.png"}
                                     alt="Entrenador nuevo"
                                     className="trainer-img"
                                 />
@@ -152,11 +152,13 @@ const Entrenadores = () => {
                         <div className="entrenador-grid">
                             <div className="col-izquierda">
                                 <p><strong>Nombre:</strong><br />{store.user.profesionales_contratados[0].nombre || "Sin nombre"} {store.user.profesionales_contratados[0].apellido || ""}</p>
-                                <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
+                                <p><strong>Descripción:</strong><br />{store.user.profesionales_contratados[0].descripcion || "Sin descripción."}</p>
+                                <p><strong>Experiencia:</strong><br />{store.user.profesionales_contratados[0].experiencia ?? "No indicada"} años</p>
                             </div>
+
                             <div className="col-centro text-center">
                                 <img
-                                    src={store.user.profesionales_contratados[0].imagen || "https://i.pravatar.cc/300"}
+                                    src={store.user.profesionales_contratados[0].imagen || "/logoCrema1.png"}
                                     alt={`Imagen de ${store.user.profesionales_contratados[0].nombre}`}
                                     className="trainer-img-grande"
                                 />
@@ -208,7 +210,7 @@ const Entrenadores = () => {
                                 <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">
                                     <div className="d-flex align-items-center">
                                         <img
-                                            src={trainer.imagen || "https://i.pravatar.cc/200"}
+                                            src={trainer.imagen || "/logoCrema1.png"}
                                             alt={`Imagen de ${trainer.nombre}`}
                                             className="trainer-img me-3"
                                         />

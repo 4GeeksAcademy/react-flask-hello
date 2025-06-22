@@ -71,8 +71,9 @@ const User = () => {
         }
 
         if (campo === "telefono") {
-          payload[campo] = String(valor);  // fuerza string
-        } else if (campo === "peso" || campo === "altura") {
+          payload[campo] = parseInt(valor); // ✅ Convertir explícitamente
+        }
+        else if (campo === "peso" || campo === "altura") {
           payload[campo] = parseFloat(valor);
         } else if (campo === "experiencia") {
           payload[campo] = parseInt(valor);
@@ -81,7 +82,7 @@ const User = () => {
         }
       }
 
-      console.log("Payload final:", payload);  // 👀 vuelve a inspeccionar si falla
+      console.log("Payload final:", payload);
 
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${usuario.id}`, {
         method: 'PUT',
@@ -104,8 +105,6 @@ const User = () => {
       console.error(err);
     }
   };
-
-
 
   const handleDelete = async () => {
     const confirmacion = window.confirm("¿Estás seguro que deseas borrar tu perfil?");
@@ -149,9 +148,11 @@ const User = () => {
       <div className="user-perfil-card">
         {isEditing ? (
           <>
+            {/* IZQUIERDA: nombre, apellido, email, teléfono, dirección */}
             <div className="user-columna">
               {["nombre", "apellido", "email", "telefono", "direccion"].map((campo) => (
-                <p key={campo}><strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>
+                <p key={campo}>
+                  <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>
                   <input
                     type="text"
                     name={campo}
@@ -163,7 +164,8 @@ const User = () => {
               ))}
             </div>
 
-            <div className="user-columna">
+            {/* CENTRO: sexo, objetivo, peso, altura */}
+            <div className="user-columna-centro">
               {["sexo", "objetivo", "peso", "altura"].map((campo) => (
                 <p key={campo}>
                   <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>
@@ -190,10 +192,10 @@ const User = () => {
                   )}
                 </p>
               ))}
-
             </div>
 
-            <div className="user-columna-centro">
+            {/* DERECHA: imagen + botones */}
+            <div className="user-columna-derecha">
               <p><strong>Imagen:</strong></p>
               <input
                 type="text"
@@ -212,13 +214,14 @@ const User = () => {
           </>
         ) : (
           <>
+            {/* IZQUIERDA: nombre, apellido, sexo */}
             <div className="user-columna">
               <p><strong>Nombre:</strong> {usuario.nombre || "Falta"}</p>
               <p><strong>Apellido:</strong> {usuario.apellido || "Falta"}</p>
-              <p><strong>Email:</strong> {usuario.email || "Falta"}</p>
-              <p><strong>Teléfono:</strong> {usuario.telefono || "Falta"}</p>
+              <p><strong>Sexo:</strong> {usuario.sexo || "Falta"}</p>
             </div>
 
+            {/* CENTRO: imagen + botones */}
             <div className="user-columna-centro">
               <img src={usuario.imagen || "/logoCrema1.png"} alt="Usuario" className="user-imagen" />
               <div className="user-botones-perfil">
@@ -227,12 +230,11 @@ const User = () => {
               </div>
             </div>
 
-            <div className="user-columna">
-              <p><strong>Dirección:</strong> {usuario.direccion || "Falta"}</p>
-              <p><strong>Sexo:</strong> {usuario.sexo || "Falta"}</p>
+            {/* DERECHA: objetivo, peso, altura */}
+            <div className="user-columna-derecha">
               <p><strong>Objetivo:</strong> {usuario.objetivo || "Falta"}</p>
-              <p><strong>Altura:</strong> {usuario.altura ? `${usuario.altura} cm` : "Falta"}</p>
               <p><strong>Peso:</strong> {usuario.peso ? `${usuario.peso} kg` : "Falta"}</p>
+              <p><strong>Altura:</strong> {usuario.altura ? `${usuario.altura} cm` : "Falta"}</p>
             </div>
           </>
         )}
@@ -242,28 +244,31 @@ const User = () => {
         <div className="user-fila">
           <div className="user-seccion">
             <h2>Tu entrenador</h2>
-            {entrenador ? (
-              <>
-                <img
-                  src={entrenador.imagen || "/logoCrema1.png"}
-                  alt="Entrenador"
-                  className="user-entrenador-img"
-                />
+            <>
+              <img
+                src={entrenador?.imagen || "/logoCrema1.png"}
+                alt="Entrenador"
+                className="user-entrenador-img"
+              />
+              {entrenador ? (
                 <div className="d-flex justify-content-center mt-2 gap-2 flex-wrap">
                   <Link
-                    to={`/entrenadores/${entrenador.nombre?.toLowerCase().replace(/ /g, "-")}`}
+                    to={`/usuario/${entrenador.id}`}
                     className="user-btn-entrenador-link"
                   >
                     {entrenador.nombre}
                   </Link>
+
                   <Link to="/profesionales" className="btn btn-outline-secondary">
                     Ver más entrenadores
                   </Link>
                 </div>
-              </>
-            ) : (
-              <Link to="/profesionales" className="btn btn-primary mt-3">Ver entrenadores</Link>
-            )}
+              ) : (
+                <div className="d-flex justify-content-center mt-2">
+                  <Link to="/profesionales" className="btn user-btn-editar">Ver entrenadores</Link>
+                </div>
+              )}
+            </>
           </div>
 
           <div className="user-seccion">
@@ -307,10 +312,8 @@ const User = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
-
 };
 
 export default User;

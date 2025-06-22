@@ -102,13 +102,23 @@ def update_user(id):
 
     # Asignación de campos seguros
     user.nombre = body.get("nombre", user.nombre)
+    user.apellido = body.get("apellido", user.apellido)
     user.email = body.get("email", user.email)
     user.telefono = body.get("telefono", user.telefono)
     user.direccion = body.get("direccion", user.direccion)
     user.sexo = body.get("sexo", user.sexo)
     user.imagen = body.get("imagen", user.imagen)
+    user.objetivo = body.get("objetivo", user.objetivo) 
+    user.altura = body.get("altura", user.altura)       
+    user.peso = body.get("peso", user.peso) 
     user.experiencia = body.get("experiencia", user.experiencia)
     user.profession_type = body.get("profession_type", user.profession_type)
+    user.apellido = body.get("apellido", user.apellido)
+    user.objetivo = body.get("objetivo", user.objetivo)
+    user.altura = body.get("altura", user.altura)
+    user.peso = body.get("peso", user.peso)
+
+    
 
     if "descripcion" in body:
         user.descripcion = body["descripcion"] or ""

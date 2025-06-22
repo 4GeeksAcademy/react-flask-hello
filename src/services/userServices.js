@@ -86,4 +86,21 @@ userServices.vincularProfesional = async (userId, profesionalId) => {
   }
 };
 
+userServices.getUserById = async (id) => {
+  try {
+    const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || "Algo salió mal al obtener el usuario por ID");
+    return data;
+  } catch (error) {
+    console.error("Error en getUserById:", error);
+    return null;
+  }
+};
+
+
 export default userServices;

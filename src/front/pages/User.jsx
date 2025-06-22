@@ -65,7 +65,7 @@ const User = () => {
           payload[campo] = datosLimpios[campo];
         }
       }
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users/", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${usuario.id}`, {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",

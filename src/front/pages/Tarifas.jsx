@@ -132,7 +132,10 @@ const Tarifas = () => {
       )}
       <div className="d-flex justify-content-center mt-4">
 
-        <btn  onClick={handleSelectPlan} className="btn btn-success"> Comprar {eleccionSeleccionada?.nombre} </btn>
+        <button onClick={handleSelectPlan} className="btn-comprar-tarifa">
+          Comprar {eleccionSeleccionada?.nombre}
+        </button>
+
       </div>
     </div>
   );

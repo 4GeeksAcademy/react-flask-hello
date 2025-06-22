@@ -1,0 +1,99 @@
+/* UsuarioPage adaptado al estilo de ProfesoresPage con nuevas secciones */
+
+.usuario-page {
+  max-width: 1000px;
+  margin: 3rem auto 0 auto; /* Añadido margen superior */
+  padding: 2rem;
+  background-color: #ecefca;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', sans-serif;
+  color: #2a3d4d;
+}
+
+.usuario-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.usuario-header h2 {
+  font-size: 2.5rem;
+  color: #2a3d4d;
+  margin-bottom: 1rem;
+}
+
+.usuario-principal {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.usuario-columna {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.usuario-centro {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.usuario-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.usuario-nombre {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.usuario-datos-secundarios {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background-color: #ecefca;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.usuario-datos-secundarios p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  flex: 1;
+}
+
+.usuario-datos-secundarios strong {
+  color: #000;
+}
+
+
+
+@media (max-width: 768px) {
+  .usuario-principal {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .usuario-datos-secundarios {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .usuario-datos-secundarios p {
+    width: 100%;
+  }
+}

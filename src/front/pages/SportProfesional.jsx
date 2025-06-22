@@ -51,6 +51,7 @@ const SportProfesional = () => {
         if (!res.ok) throw new Error("Este usuario no tiene plan");
         const data = await res.json();
         console.log(data);
+
         setPlan(data);
         setModoEdicion(false);
       } catch (error) {

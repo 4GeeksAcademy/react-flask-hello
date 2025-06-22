@@ -85,32 +85,63 @@ def create_user():
     return jsonify(user.serialize()), 201
 
 
-@api.route('/users', methods=['PUT'])
+@api.route('/users/<int:id>', methods=['PUT'])
 @jwt_required()
-def update_user():
-    id = get_jwt_identity()
+def update_user(id):
+    user_id_from_token = get_jwt_identity()
+
+    # Seguridad: Solo puedes editar tu propio perfil
+    if str(user_id_from_token) != str(id):
+        return jsonify({"msg": "No tienes permiso para editar este usuario"}), 403
+
     user = User.query.get(id)
     if not user:
-        abort(404, description="usuario no encontrado")
-    data = request.get_json() or {}
-    updatable = (
-        'nombre', 'email', 'password', 'is_active',
-        'peso', 'altura', 'objetivo', 'apellido', 'imagen', 'sexo',
-        'telefono', 'profession_type', 'experiencia', 'direccion'
-    )
-    if not any(field in data for field in updatable):
-        raise APIException(
-            f"No hay campos validos para actualizar", status_code=400)
-    for field in updatable:
-        if field in data:
-            if data[field] is not None or data[field] != 0:
-                setattr(user, field, data[field])
+        return jsonify({"msg": "Usuario no encontrado"}), 404
 
-            else:
-                data[field] = 0
-                setattr(user, field, data[field])
-    db.session.commit()
+    body = request.get_json() or {}
+
+    # Asignación de campos seguros
+    user.nombre = body.get("nombre", user.nombre)
+    user.apellido = body.get("apellido", user.apellido)
+    user.email = body.get("email", user.email)
+    user.telefono = body.get("telefono", user.telefono)
+    user.direccion = body.get("direccion", user.direccion)
+    user.sexo = body.get("sexo", user.sexo)
+    user.imagen = body.get("imagen", user.imagen)
+    user.objetivo = body.get("objetivo", user.objetivo) 
+    user.altura = body.get("altura", user.altura)       
+    user.peso = body.get("peso", user.peso) 
+    user.experiencia = body.get("experiencia", user.experiencia)
+    user.profession_type = body.get("profession_type", user.profession_type)
+    user.apellido = body.get("apellido", user.apellido)
+    user.objetivo = body.get("objetivo", user.objetivo)
+    user.altura = body.get("altura", user.altura)
+    user.peso = body.get("peso", user.peso)
+
+    
+
+    if "descripcion" in body:
+        user.descripcion = body["descripcion"] or ""
+
+    # ✅ CORRECTO: fuera del bloque anterior y con buena identación
+    if "profesional_id" in body:
+        profesional_id = body["profesional_id"]
+
+        # Elimina vínculos anteriores
+        UserProfesional.query.filter_by(user_id=user.id).delete()
+
+        # Crea nuevo vínculo
+        nuevo = UserProfesional(user_id=user.id, profesional_id=profesional_id)
+        db.session.add(nuevo)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al guardar el usuario", "detalle": str(e)}), 500
+
     return jsonify(user.serialize()), 200
+
 
 
 @api.route('/users', methods=['DELETE'])
@@ -217,12 +248,14 @@ def delete_user_professional():
     db.session.commit()
     return '', 204
 
-# @api.route('/professionals/<int:pid>', methods=['GET'])
-# def get_professional(pid):
-#     pro = Professional.query.get(pid)
-#     if not pro:
-#         abort(404, description= "Professional no encotrado")
-#     return jsonify(pro.serialize()),200
+
+@api.route('/professionals/<int:id>', methods=['GET'])
+def get_professional(id):
+    user = User.query.get(id)
+    if not user or not user.is_professional:
+        return jsonify({"error": "Entrenador no encontrado"}), 404
+    return jsonify(user.serialize()), 200
+
 
 
 # @api.route('/professionals', methods=['POST'])
@@ -590,68 +623,105 @@ def delete_subscription(sid):
 
 # PAYMENTS
 
-@api.route('/payments', methods=['GET'])
-def list_payments():
-    pays = Payment.query.all()
-    return jsonify([p.serialize() for p in pays]), 200
+@api.route("/api/payments", methods=["POST"])
+@jwt_required()
+def register_payment():
+    data = request.get_json()
 
+    session_id = data.get("session_id")
+    user_id = data.get("user_id")
+    subscription_plan_id = data.get("subscription_id")
+    amount = data.get("amount")
+    method = data.get("method", "stripe")
+    status = data.get("status", "complete")
 
-@api.route('/payments/<int:pid>', methods=['GET'])
-def get_payment(pid):
-    p = Payment.query.get(pid)
-    if not p:
-        abort(404, description="No se ha encontrado el pago")
-    return jsonify(p.serialize()), 200
+    if not session_id or not user_id or not subscription_plan_id:
+        return jsonify({"error": "Faltan datos requeridos"}), 400
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    plan = SubscriptionPlan.query.get(subscription_plan_id)
+    if not plan:
+        return jsonify({"error": "Plan de suscripción no encontrado"}), 404
+
+    end_date = datetime.utcnow() + timedelta(days=plan.duration_month * 30)
+
+    subscription = Subscription(
+        user_id=user_id,
+        subscription_plan_id=subscription_plan_id,
+        start_date=datetime.utcnow(),
+        end_date=end_date,
+        status="active"
+    )
+    db.session.add(subscription)
+    db.session.commit()
+
+    payment = Payment(
+        subscription_id=subscription.id,
+        amount=amount,
+        method=method,
+        paid_at=datetime.utcnow(),
+        status=status
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Pago y suscripción registrados",
+        "subscription": subscription.serialize()
+    }), 200
 
 
 @api.route('/payments', methods=['POST'])
 @jwt_required()
 def create_payment():
 
-        data = request.get_json() or {}
-        required = ('subscription_id', 'amount',
-                    'method', 'status', 'session_id')
-        user_id = get_jwt_identity()
-        if not all(f in data for f in required):
-            return jsonify(
-                {"error": f"Faltan datos obligatorios: {', '.join(required)}"}), 400
-        stm = select(SubscriptionPlan).where(
-            SubscriptionPlan.name == data['subscription_id'].capitalize()
-        )
-        plan = db.session.execute(stm).scalar_one_or_none()
-        if not plan:
-            return jsonify(
-                {"error": "Plan de subscripción no encontrado"}), 400
+    data = request.get_json() or {}
+    required = ('subscription_id', 'amount',
+                'method', 'status', 'session_id')
+    user_id = get_jwt_identity()
+    if not all(f in data for f in required):
+        return jsonify(
+            {"error": f"Faltan datos obligatorios: {', '.join(required)}"}), 400
+    stm = select(SubscriptionPlan).where(
+        SubscriptionPlan.name == data['subscription_id'].capitalize()
+    )
+    plan = db.session.execute(stm).scalar_one_or_none()
+    if not plan:
+        return jsonify(
+            {"error": "Plan de subscripción no encontrado"}), 400
 
-        subscription = Subscription(
-            user_id=user_id,
-            subscription_plan_id=plan.id,
-            start_date=datetime.utcnow().date(),
-            end_date=(datetime.utcnow() + timedelta(days=30)).date(),
-            status=data['status']
-        )
-        if not subscription.user_id:
-            db.session.rollback()
-            return jsonify({"error": "Usuario no encontrado"}), 400
+    subscription = Subscription(
+        user_id=user_id,
+        subscription_plan_id=plan.id,
+        start_date=datetime.utcnow().date(),
+        end_date=(datetime.utcnow() + timedelta(days=30)).date(),
+        status=data['status']
+    )
+    if not subscription.user_id:
+        db.session.rollback()
+        return jsonify({"error": "Usuario no encontrado"}), 400
 
-        db.session.add(subscription)
-        db.session.commit()
+    db.session.add(subscription)
+    db.session.commit()
 
-        payment = Payment(
-            subscription_id=subscription.id,
-            amount=data['amount'],
-            method=data['method'],
-            paid_at=datetime.utcnow(),
-            status=data['status']
-        )
-        if not payment.subscription_id:
-            db.session.rollback()
-            return jsonify({"error": "Subscripción no encontrada"}), 400
+    payment = Payment(
+        subscription_id=subscription.id,
+        amount=data['amount'],
+        method=data['method'],
+        paid_at=datetime.utcnow(),
+        status=data['status']
+    )
+    if not payment.subscription_id:
+        db.session.rollback()
+        return jsonify({"error": "Subscripción no encontrada"}), 400
 
-        db.session.add(payment)
-        db.session.commit()
+    db.session.add(payment)
+    db.session.commit()
 
-        return jsonify(payment.serialize()), 201
+    return jsonify(payment.serialize()), 201
 
 
 @api.route('/payments/<int:pid>', methods=['PUT'])
@@ -1066,7 +1136,8 @@ def delete_training_entry(entry_id):
 @jwt_required()
 def list_nutrition_entries():
     user_id = get_jwt_identity()
-    stm = select(NutritionEntry).where(NutritionEntry.profesional_id == user_id)
+    stm = select(NutritionEntry).where(
+        NutritionEntry.profesional_id == user_id)
     entries = db.session.execute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
 
@@ -1119,7 +1190,7 @@ def create_nutrition_entry():
             media_mañana=data["plan"][dia].get('Almuerzo'),
             comida=data["plan"][dia].get('Comida'),
             cena=data["plan"][dia].get('Cena')
-            )
+        )
         db.session.add(entry)
         db.session.commit()
         NutritionEntries = NutritionEntry.query.filter_by(
@@ -1153,4 +1224,3 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
- 

@@ -220,6 +220,25 @@ h4 {
     color: #1c2d3a;
 }
 
+.btn-comprar-tarifa {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-comprar-tarifa:hover {
+  background-color: #ECEFCA;
+  color: #213448;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+
 
 @media (max-width: 840px) {
   .grid-opciones {

@@ -4,29 +4,27 @@ import { Navbar } from "../components/Navbar"
 import { Footer } from "../components/Footer"
 import { NavbarUser } from "../components/navbarUser"
 
-// Base component that maintains the navbar and footer throughout the page and the scroll to top functionality.
 export const Layout = () => {
+  const location = useLocation();
 
-    const location = useLocation()
+  const userAreaRoutes = [
+    "/User",
+    "/Profesores",
+    "/checkout",
+    "/Login"
+  ];
 
-    const userAreaRoutes =  [ 
-        "/User",
-        "/Profesores",
-        "/checkout",
-        "/Login"
-    ]
+  const showUserNavbar = userAreaRoutes.includes(location.pathname);
 
-    const showUserNavbar = userAreaRoutes.includes(location.pathname)
-
-
-
-
-
-    return (
-        <ScrollToTop>
-             <Navbar />
-                <Outlet />
-            <Footer />
-        </ScrollToTop>
-    )
-}
+  return (
+    <div id="app">
+      <ScrollToTop>
+        <Navbar />
+        <main style={{ flex: 1 }}>
+          <Outlet />
+        </main>
+        <Footer />
+      </ScrollToTop>
+    </div>
+  );
+};

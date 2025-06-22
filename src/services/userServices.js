@@ -1,23 +1,6 @@
 const userServices = {};
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-// userServices.register = async (formData) => {
-//   try {
-//     const resp = await fetch(backendUrl + "/api/register", {
-//         method: 'POST',
-//         headers: {
-//         'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(formData)
-//     });
-//     const data = await resp.json();
-//     if (!resp.ok) throw new Error(data.error || "something went wrong");
-//     localStorage.setItem("token", data.token)
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 userServices.register = async (formData) => {
   try {
     const resp = await fetch(backendUrl + "/api/register", {
@@ -40,19 +23,18 @@ userServices.register = async (formData) => {
   }
 };
 
-
 userServices.login = async (formData) => {
   try {
     const resp = await fetch(backendUrl + "/api/login", {
-        method: 'POST',
-        headers: {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+      },
+      body: JSON.stringify(formData)
     });
     if (!resp.ok) throw Error("something went wrong");
     const data = await resp.json();
-    localStorage.setItem("token", data.token)
+    localStorage.setItem("token", data.token);
     return data;
   } catch (error) {
     console.log(error);
@@ -60,28 +42,47 @@ userServices.login = async (formData) => {
 };
 
 userServices.getUserInfo = async () => {
-     try {
-      if (!localStorage.getItem('token')) {
-       return;
-      } else {
+  try {
+    if (!localStorage.getItem('token')) return;
+
     const resp = await fetch(backendUrl + "/api/private", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
     });
-    if (resp.status != 200) {
-     localStorage.removeItem('token');
-     return;
+
+    if (resp.status !== 200) {
+      localStorage.removeItem('token');
+      return;
     }
-    if (!resp.ok) throw Error("something went wrong");
+
     const data = await resp.json();
-    console.log(data)
+    console.log(data);
     return data;
-  }} catch (error) {
+  } catch (error) {
     console.log(error);
   }
-}
+};
+
+// NUEVA FUNCIONALIDAD: vincular profesional
+userServices.vincularProfesional = async (userId, profesionalId) => {
+  try {
+    const resp = await fetch(`${backendUrl}/api/users/${userId}/vincular_profesional/${profesionalId}`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    });
+
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || "Error al vincular profesional");
+    return { success: true, data };
+  } catch (error) {
+    console.error("❌ Error en vincularProfesional:", error.message);
+    return { success: false, error: error.message };
+  }
+};
 
 export default userServices;

@@ -12,29 +12,30 @@ const ProfesoresPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    userServices.getUserInfo().then((user) => {
-      let datos = {
-        id: user.id,
-        nombre: user.nombre || "",
-        imagen: user.imagen || "/logoCrema1.png",
-        especialidad: user.profession_type || "",
-        email: user.email || "",
-        telefono: user.telefono || "",
-        experiencia: user.experiencia !== null ? String(user.experiencia) : "",
-        descripcion: user.descripcion || "",
-        direccion: user.direccion || "",
-        sexo: user.sexo || "",
-        horario: [
-          "Lunes a Viernes: 9:00 - 13:00",
-          "Martes y Jueves: 17:00 - 20:00"
-        ],
-        miembrosAsignados: user.usuarios_asignados?.map(u => u.nombre) || []
-      };
-      setProfesor(datos);
-      dispatch({ type: "get_user_info", payload: user });
-    }).catch((error) => {
-      console.error("Error al cargar datos del profesor:", error);
-    });
+    userServices.getUserInfo()
+      .then((user) => {
+        let datos = {
+          id: user.id,
+          nombre: user.nombre || "",
+          imagen: user.imagen ?? "/logoCrema1.png",
+          especialidad: user.profession_type || "",
+          email: user.email || "",
+          telefono: user.telefono || "",
+          experiencia: user.experiencia !== null ? String(user.experiencia) : "",
+          direccion: user.direccion || "",
+          sexo: user.sexo || "",
+          horario: [
+            "Lunes a Viernes: 9:00 - 13:00",
+            "Martes y Jueves: 17:00 - 20:00"
+          ],
+          miembrosAsignados: user.usuarios_asignados?.map(u => u.nombre) || []
+        };
+        setProfesor(datos);
+        dispatch({ type: "get_user_info", payload: user });
+      })
+      .catch((error) => {
+        console.error("Error al cargar datos del profesor:", error);
+      });
   }, []);
 
   const handleProfesorChange = (e) => {
@@ -44,19 +45,25 @@ const ProfesoresPage = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
+
       const payload = {
-        nombre: profesor.nombre,
-        email: profesor.email,
-        telefono: profesor.telefono,
-        direccion: profesor.direccion,
-        sexo: profesor.sexo,
-        imagen: profesor.imagen,
+        nombre: profesor.nombre || null,
+        email: profesor.email || null,
+        telefono: profesor.telefono || null,
+        direccion: profesor.direccion || null,
+        sexo: profesor.sexo || null,
         experiencia: profesor.experiencia !== "" ? parseInt(profesor.experiencia) : null,
-        profession_type: profesor.especialidad,
-        descripcion: profesor.descripcion
+        profession_type: profesor.especialidad !== "" ? profesor.especialidad : null,
+        imagen: profesor.imagen?.trim() || null
       };
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${profesor.id}`, {
+
+      if (profesor.imagen?.trim()) {
+        payload.imagen = profesor.imagen.trim();
+      }
+
+      const url = `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/api/users/${profesor.id}`;
+      const res = await fetch(url, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -65,14 +72,14 @@ const ProfesoresPage = () => {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Error al guardar el perfil");
+      const text = await res.text(); // Para debug
+      if (!res.ok) throw new Error(text);
 
-      const updated = await res.json();
+      const updated = JSON.parse(text);
       setProfesor({
         ...profesor,
         ...updated,
         experiencia: updated.experiencia !== null ? String(updated.experiencia) : "",
-        descripcion: updated.descripcion || ""
       });
       dispatch({ type: "ACTUALIZAR_USUARIO", payload: updated });
       setIsEditing(false);
@@ -88,7 +95,7 @@ const ProfesoresPage = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,7 +125,7 @@ const ProfesoresPage = () => {
               <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
                 <input
-                  type="text"
+                  type={campo === "experiencia" ? "number" : "text"}
                   name={campo}
                   value={profesor[campo] || ""}
                   onChange={handleProfesorChange}
@@ -140,7 +147,11 @@ const ProfesoresPage = () => {
               placeholder="URL de la imagen"
             />
           ) : (
-            <img src={profesor.imagen} alt="Foto del profesor" />
+            <img
+              src={profesor.imagen}
+              alt="Foto del profesor"
+              onError={(e) => (e.target.src = "/logoCrema1.png")}
+            />
           )}
 
           <div className="botones-perfil">
@@ -171,32 +182,6 @@ const ProfesoresPage = () => {
               profesor.especialidad || "Faltante"
             )}
           </p>
-
-          <p><strong>Experiencia:</strong>{" "}
-            {isEditing ? (
-              <input
-                type="number"
-                name="experiencia"
-                value={profesor.experiencia}
-                onChange={handleProfesorChange}
-              />
-            ) : (
-              profesor.experiencia || "Faltante"
-            )}
-          </p>
-
-          <p><strong>Descripción:</strong>{" "}
-            {isEditing ? (
-              <textarea
-                name="descripcion"
-                value={profesor.descripcion}
-                onChange={handleProfesorChange}
-              />
-            ) : (
-              profesor.descripcion || "Faltante"
-            )}
-          </p>
-
           <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
             <img
               src="/logoCrema1.png"

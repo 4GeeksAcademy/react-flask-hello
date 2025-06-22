@@ -88,12 +88,19 @@ def create_user():
 @api.route('/users/<int:id>', methods=['PUT'])
 @jwt_required()
 def update_user(id):
-    body = request.get_json()
-    user = User.query.get(id)
+    user_id_from_token = get_jwt_identity()
 
+    # Seguridad: Solo puedes editar tu propio perfil
+    if str(user_id_from_token) != str(id):
+        return jsonify({"msg": "No tienes permiso para editar este usuario"}), 403
+
+    user = User.query.get(id)
     if not user:
         return jsonify({"msg": "Usuario no encontrado"}), 404
 
+    body = request.get_json() or {}
+
+    # Asignación de campos seguros
     user.nombre = body.get("nombre", user.nombre)
     user.email = body.get("email", user.email)
     user.telefono = body.get("telefono", user.telefono)
@@ -102,10 +109,19 @@ def update_user(id):
     user.imagen = body.get("imagen", user.imagen)
     user.experiencia = body.get("experiencia", user.experiencia)
     user.profession_type = body.get("profession_type", user.profession_type)
-    user.descripcion = body.get("descripcion", user.descripcion)
 
-    db.session.commit()
+    # Controlamos si viene 'descripcion' como null
+    if "descripcion" in body:
+        user.descripcion = body["descripcion"] or ""
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al guardar el usuario", "detalle": str(e)}), 500
+
     return jsonify(user.serialize()), 200
+
 
 
 
@@ -1192,4 +1208,6 @@ def delete_nutrition_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return '', 204
+ 
+
  

@@ -143,7 +143,41 @@
   color: #ECEFCA;
   cursor: pointer;
 }
-git pull
+
+.flecha-transicion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: flechaAnimada 1s ease-in-out infinite alternate;
+}
+
+@keyframes flechaAnimada {
+  0% { transform: translateX(0); opacity: 0.5; }
+  100% { transform: translateX(10px); opacity: 1; }
+}
+
+.animacion-transicion {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-left-color: #28a745;
+  animation: giroCircular 1s linear infinite;
+}
+
+@keyframes giroCircular {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+
 
 @keyframes fadeSlideIn {
   from {

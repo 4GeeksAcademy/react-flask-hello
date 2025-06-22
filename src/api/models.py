@@ -72,7 +72,8 @@ class User(db.Model):
     template_items_created = relationship(
         'TemplateItem', back_populates='creator')
     training_entries = relationship('TrainingEntry', back_populates='user')
-    nutrition_entries = relationship('NutritionEntry', back_populates='user', foreign_keys="NutritionEntry.user_id")
+    nutrition_entries = relationship(
+        'NutritionEntry', back_populates='user', foreign_keys="NutritionEntry.user_id")
     profesionales_contratados = relationship(
         "UserProfesional",
         back_populates="user",
@@ -112,8 +113,9 @@ class User(db.Model):
             "telefono": self.telefono,
             "subscription": [sub.serialize() for sub in self.subscriptions],
             "profesionales_contratados": [
-                up.profesional.basic_serialize() for up in self.profesionales_contratados
-            ],
+                up.profesional.basic_serialize() for up in self.profesionales_contratados if up.profesional
+            ][:1],
+
             "usuarios_contratantes": [
                 up.user.basic_serialize() for up in self.usuarios_contratantes
             ]
@@ -434,7 +436,8 @@ class NutritionEntry(db.Model):
     fecha: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False)
 
-    user = relationship("User", foreign_keys=[user_id], back_populates="nutrition_entries")
+    user = relationship("User", foreign_keys=[
+                        user_id], back_populates="nutrition_entries")
     profesional = relationship("User", foreign_keys=[profesional_id])
 
     def serialize(self):

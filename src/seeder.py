@@ -3,12 +3,10 @@ from app import app
 from api.models import db, User, PlanTemplate, TemplateItem, PlanTemplateItem, SubscriptionPlan, Subscription, Payment, Event, EventSignup, SupportTicket
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-
 with app.app_context():
     # Borra todo
     db.drop_all()
     db.create_all()
-
     # === USERS ===
     user1 = User(
         email="cliente@example.com",
@@ -20,9 +18,7 @@ with app.app_context():
         nombre="Cristian",
         apellido="Pérez",
         experiencia=5,
-
     )
-
     user2 = User(
         email="entrenador@example.com",
         password=generate_password_hash('pepe123'),
@@ -33,7 +29,6 @@ with app.app_context():
         nombre="Pere",
         apellido="Martínez",
     )
-
     user3 = User(
         email="nutricionista@example.com",
         password=generate_password_hash('pepe123'),
@@ -43,12 +38,9 @@ with app.app_context():
         experiencia=8,
         nombre="María",
         apellido="Gómez",
-
     )
-
     db.session.add_all([user1, user2, user3])
     db.session.commit()
-
     # === PLANES ===
     plan = PlanTemplate(
         user_id=user2.id,
@@ -58,7 +50,6 @@ with app.app_context():
     )
     db.session.add(plan)
     db.session.commit()
-
     # === ITEMS ===
     item1 = TemplateItem(
         item_type="exercise",
@@ -75,7 +66,6 @@ with app.app_context():
         orden=1,
         creator_id=user2.id
     )
-
     item2 = TemplateItem(
         item_type="exercise",
         nombre="Press Banca",
@@ -90,12 +80,9 @@ with app.app_context():
         grasas=5,
         orden=2,
         creator_id=user2.id
-
     )
-
     db.session.add_all([item1, item2])
     db.session.commit()
-
     # === ASOCIACIÓN PLAN <-> ITEMS ===
     pti1 = PlanTemplateItem(plan_template_id=plan.id,
                             template_item_id=item1.id, orden=1)
@@ -103,7 +90,6 @@ with app.app_context():
                             template_item_id=item2.id, orden=2)
     db.session.add_all([pti1, pti2])
     db.session.commit()
-
     # === SUBSCRIPTION PLANS ===
     basic_plan = SubscriptionPlan(
         name="Básico",
@@ -112,7 +98,6 @@ with app.app_context():
         description="Acceso a planes y eventos",
         price_id=os.getenv("VITE_BASIC_PRICE_ID")
     )
-
     premium_plan = SubscriptionPlan(
         name="Premium",
         price=55.00,
@@ -127,10 +112,8 @@ with app.app_context():
         description="Acceso completo + contacto directo con profesionales",
         price_id=os.getenv("VITE_DMPC_PRICE_ID")
     )
-
     db.session.add_all([basic_plan, premium_plan, dmpc_plan])
     db.session.commit()
-
     # === SUBSCRIPTION ===
     sub = Subscription(
         user_id=user1.id,
@@ -139,10 +122,8 @@ with app.app_context():
         end_date=(datetime.utcnow() + timedelta(days=30)).date(),
         status="activa"
     )
-
     db.session.add(sub)
     db.session.commit()
-
     # === PAYMENTS ===
     payment = Payment(
         subscription_id=sub.id,
@@ -150,10 +131,8 @@ with app.app_context():
         method="tarjeta",
         status="pagado"
     )
-
     db.session.add(payment)
     db.session.commit()
-
     # === EVENTS ===
     event = Event(
         nombre="Bootcamp en el parque",
@@ -164,28 +143,21 @@ with app.app_context():
         ubicacion="Parque Central",
         capacidad=20
     )
-
     db.session.add(event)
     db.session.commit()
-
     # === SIGNUP ===
     signup = EventSignup(
         event_id=event.id,
         user_id=user1.id,
         estado="confirmado"
     )
-
     db.session.add(signup)
     db.session.commit()
-
     # === TICKET ===
     ticket = SupportTicket(
         user_id=user1.id,
         asunto="Error al acceder al plan",
         mensaje="No puedo ver el contenido del plan 'Fuerza Inicial'.",
     )
-
     db.session.add(ticket)
     db.session.commit()
-
-    print("Base de datos poblada con datos de ejemplo.")

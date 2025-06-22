@@ -29,6 +29,9 @@ import LoginPage from "./pages/LoginPage";
 import { PrivatePage } from "./pages/PrivatePage";
 import Epersonalizado from "./pages/Epersonalizado";
 import ContactoPage from "./pages/ContactoPage";
+import EntrenadorInfo from "./pages/Entrenadorinfo";
+import UsuarioPage from "./pages/UsuarioPage";
+
 
 
 export const router = createBrowserRouter(
@@ -62,6 +65,8 @@ export const router = createBrowserRouter(
       <Route path="/tarifas/:tipo" element={<Tarifas />} />
       <Route path="/Epersonalizado" element={<Epersonalizado />} />
       <Route path="/ContactoPage" element={<ContactoPage />} />
+      <Route path="/entrenador/:id" element={<EntrenadorInfo />} />
+      <Route path="/usuario/:id" element={<UsuarioPage />} />
     </Route>
   )
 );

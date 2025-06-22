@@ -1,8 +1,14 @@
 """empty message
 
-Revision ID: a30288be9b4d
+<<<<<<<< HEAD:migrations/versions/891a42ecdbe3_.py
+Revision ID: 891a42ecdbe3
 Revises: 
-Create Date: 2025-06-20 08:25:44.161563
+Create Date: 2025-06-22 12:27:34.066181
+========
+Revision ID: bd5f4a1d2028
+Revises: 
+Create Date: 2025-06-19 14:06:59.482709
+>>>>>>>> 1bdd25bcb3b244a5e611ba41528563eec22a4086:migrations/versions/bd5f4a1d2028_.py
 
 """
 from alembic import op
@@ -10,7 +16,11 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a30288be9b4d'
+<<<<<<<< HEAD:migrations/versions/891a42ecdbe3_.py
+revision = '891a42ecdbe3'
+========
+revision = 'bd5f4a1d2028'
+>>>>>>>> 1bdd25bcb3b244a5e611ba41528563eec22a4086:migrations/versions/bd5f4a1d2028_.py
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -65,12 +75,14 @@ def upgrade():
     op.create_table('nutrition_entries',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('profesional_id', sa.Integer(), nullable=False),
     sa.Column('dia_semana', sa.String(length=40), nullable=False),
     sa.Column('desayuno', sa.Text(), nullable=True),
     sa.Column('media_mañana', sa.Text(), nullable=True),
     sa.Column('comida', sa.Text(), nullable=False),
     sa.Column('cena', sa.Text(), nullable=False),
     sa.Column('fecha', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['profesional_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -127,9 +139,12 @@ def upgrade():
     op.create_table('training_entries',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('profesional_id', sa.Integer(), nullable=False),
+    sa.Column('dia_semana', sa.String(length=40), nullable=False),
     sa.Column('grupo', sa.String(length=200), nullable=False),
     sa.Column('nota', sa.Text(), nullable=False),
     sa.Column('fecha', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['profesional_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

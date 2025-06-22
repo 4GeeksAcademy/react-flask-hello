@@ -1,139 +1,114 @@
+.user-perfil-container {
+  padding: 2rem;
+  background: #1c2d3a;
+  color: #2a3d4d;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
 
-.perfil-titulo {
+.user-perfil-titulo {
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2rem;
-  color: #ecefca;
+  color: #ECEFCA;
 }
 
-.perfil-card {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: #ecefca !important;
-  color: #2a3d4d;
+.user-perfil-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem 2rem;
+  background-color: #ECEFCA;
   padding: 2rem;
   border-radius: 12px;
   max-width: 1000px;
   width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  flex-wrap: wrap;
-  gap: 2rem;
+  align-items: start;
 }
 
-
-
-.columna {
-  flex: 1;
-  min-width: 250px;
-}
-
-.perfil-container h2 {
-  color: #2a3d4d !important;
-}
-
-
-.columna-centro {
+.user-perfil-card p {
+  margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  width: 100%;
 }
 
-.columna-centro img {
+.user-input,
+.user-perfil-card select {
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  width: 100%;
+  background-color: #f7f7f7;
+  color: #1c2d3a;
+  box-sizing: border-box;
+}
+
+.user-imagen {
   width: 200px;
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto 1rem auto;
 }
 
-.columna-centro img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+.user-entrenador-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: 0 auto;
 }
 
-.btn-editar {
+.user-logo-gris {
+  width: 180px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.user-botones-perfil {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  grid-column: 3;
+  margin-top: 1rem;
+}
+
+.user-btn-editar,
+.user-btn-ver,
+.user-btn-guardar,
+.user-btn-cancelar {
   background-color: #2a3d4d;
-  color: #ecefca;
+  color: #ECEFCA;
   border: none;
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease, border 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
 }
 
-.btn-editar:hover {
-  background-color: #ecefca;
+.user-btn-editar:hover,
+.user-btn-ver:hover,
+.user-btn-guardar:hover,
+.user-btn-cancelar:hover {
+  background-color: #ECEFCA;
   color: #2a3d4d;
   transform: scale(1.03);
-  border: 2px solid #2a3d4d; 
 }
 
-
-.columna p {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.secciones-inferiores {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  margin-top: 4rem;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 1400px;
-  transition: all 0.3s ease-in-out;
-}
-
-
-.seccion h2 {
-  color: #ecefca;
-  margin-bottom: 1.2rem;
-  font-size: 1.5rem;
-}
-
-.seccion p,
-.seccion li {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #2a3d4d !important;
-}
-
-.seccion ul {
-  list-style-type: disc;
-  padding-left: 1.2rem;
-  text-align: left;
-}
-
-.entrenador-img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.7rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.entrenador-nombre {
-  font-weight: bold;
-  font-size: 1.15rem;
-}
-
-.botones-perfil {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.btn-borrar {
+.user-btn-borrar {
   background-color: #b32929;
   color: #fff;
   border: none;
@@ -142,124 +117,146 @@
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn-borrar:hover {
+.user-btn-borrar:hover {
   background-color: #ff0000;
   transform: scale(1.03);
 }
 
-.perfil-container h2 {
-  color: #2a3d4d !important;
-}
-
-
-.btn-entrenador-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.btn-entrenador-link {
+.user-mensaje-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: #2a3d4d;
-  color: #ecefca;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease, border 0.3s ease;
-  text-decoration: none;
+  color: #ECEFCA;
+  border: 3px solid #ecefca;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 9999;
+  animation: fadein 0.5s ease, fadeout 0.5s ease 3.5s;
 }
 
-.btn-entrenador-link:hover {
-  background-color: #ecefca;
-  color: #2a3d4d;
-  transform: scale(1.03);
-  border: 2px solid #2a3d4d;
+@keyframes fadein {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
 }
 
-.columna-izquierda {
+@keyframes fadeout {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to   { opacity: 0; transform: translate(-50%, -60%); }
+}
+
+.user-secciones-inferiores {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-}
-
-.logo-gris {
-  transition: all 0.3s ease-in-out;
-  object-fit: contain;
-  margin: 0 auto;
-}
-
-.logo-small {
-  width: 180px;
-  height: 180px;
-}
-
-.logo-large {
-  width: 280px;
-  height: 280px;
-}
-
-.secciones-fila {
-  display: flex;
   gap: 2rem;
+  margin-top: 4rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.user-fila {
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  width: 100%;
 }
 
-.seccion {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 320px; /* 👈 Ajusta si necesitas más */
+.user-seccion {
   flex: 1;
-  background-color: #ecefca !important;
+  min-width: 280px;
+  background-color: #ECEFCA;
   padding: 1.8rem;
   border-radius: 20px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   text-align: center;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.seccion:hover {
+.user-seccion:hover {
   transform: scale(1.02);
 }
 
+.user-seccion h2 {
+  color: #2a3d4d;
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+}
 
-/* ✅ Media queries bien cerradas */
+.user-seccion p,
+.user-seccion li {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2a3d4d;
+}
+
+.user-seccion ul {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  text-align: left;
+}
+
+.user-btn-entrenador-link {
+  background-color: #2a3d4d;
+  color: #ECEFCA;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.user-btn-entrenador-link:hover {
+  background-color: #ECEFCA;
+  color: #2a3d4d;
+  border: 1px solid #2a3d4d;
+  font-weight: bold;
+}
+
+.user-seccion .user-btn-editar,
+.user-seccion .user-btn-entrenador-link,
+.user-seccion .btn-outline-secondary,
+.user-seccion .btn-primary,
+.user-seccion .border-danger {
+  margin-top: auto;
+  align-self: center;
+}
+
+.user-seccion-membresia {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
-  .perfil-card {
+  .user-perfil-card {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  .columna {
-    min-width: 100%;
-  }
-
-  .columna-centro img {
+  .user-imagen {
     width: 150px;
     height: 150px;
   }
 
-  .columna p {
-    font-size: 1rem;
-  }
-
-  .secciones-inferiores {
+  .user-secciones-inferiores {
     flex-direction: column;
     align-items: center;
   }
-
-  .perfil-boton-editar {
-    justify-content: center;
-  }
-}
-
-.logo-gris{
-    width: 280px;
-    height: 210px;
 }

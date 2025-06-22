@@ -2,30 +2,95 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/ProfesoresPage.css";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import userServices from "../../services/userServices.js";
 
 const ProfesoresPage = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [profesor, setProfesor] = useState({
-    nombre: "Pepe Strong",
-    imagen: "https://randomuser.me/api/portraits/men/75.jpg",
-    especialidad: "Fuerza / Hipertrofia",
-    email: "pepe.strong@gympro.com",
-    telefono: "+34 678 456 123",
-    experiencia: "5 años",
-    direccion: "Calle del Hierro, 21, Valencia",
-    sexo: "Masculino",
-    horario: [
-      "Lunes a Viernes: 9:00 - 13:00",
-      "Martes y Jueves: 17:00 - 20:00"
-    ],
-    miembrosAsignados: ["David Vivar", "Sara González", "Leo Martínez"]
-  });
-
   const { store, dispatch } = useGlobalReducer();
+  const [isEditing, setIsEditing] = useState(false);
+  const [mensaje, setMensaje] = useState(null);
+  const [profesor, setProfesor] = useState(null);
+  const [filtro, setFiltro] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    userServices.getUserInfo().then((user) => {
+      let datos = {
+        id: user.id,
+        nombre: user.nombre || "",
+        imagen: user.imagen ?? "/logoCrema1.png",
+        especialidad: user.profession_type || "",
+        email: user.email || "",
+        telefono: user.telefono || "",
+        experiencia: user.experiencia !== null ? String(user.experiencia) : "",
+        descripcion: user.descripcion || "",
+        direccion: user.direccion || "",
+        sexo: user.sexo || "",
+        horario: [
+          "Lunes a Viernes: 9:00 - 13:00",
+          "Martes y Jueves: 17:00 - 20:00"
+        ],
+        miembrosAsignados: (user.usuarios_contratantes || []).reverse()
+      };
+      setProfesor(datos);
+      dispatch({ type: "get_user_info", payload: user });
+    }).catch((error) => {
+      console.error("Error al cargar datos del profesor:", error);
+    });
+  }, []);
 
   const handleProfesorChange = (e) => {
     setProfesor({ ...profesor, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      try {
+        new URL(profesor.imagen);
+      } catch (err) {
+        alert("La URL de la imagen no es válida.");
+        return;
+      }
+
+      const payload = {
+        nombre: profesor.nombre || null,
+        email: profesor.email || null,
+        telefono: profesor.telefono || null,
+        direccion: profesor.direccion || null,
+        sexo: profesor.sexo || null,
+        experiencia: profesor.experiencia !== "" ? parseInt(profesor.experiencia) : null,
+        profession_type: profesor.especialidad !== "" ? profesor.especialidad : null,
+        descripcion: profesor.descripcion || null,
+        imagen: profesor.imagen?.trim() || null
+      };
+
+      const url = `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/api/users/${profesor.id}`;
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const text = await res.text();
+      if (!res.ok) throw new Error(text);
+
+      const updated = JSON.parse(text);
+      setProfesor({
+        ...profesor,
+        ...updated,
+        experiencia: updated.experiencia !== null ? String(updated.experiencia) : "",
+      });
+      dispatch({ type: "ACTUALIZAR_USUARIO", payload: updated });
+      setIsEditing(false);
+      setMensaje("Perfil del profesor actualizado correctamente");
+      setTimeout(() => setMensaje(null), 4000);
+    } catch (error) {
+      console.error("Error al guardar el perfil del profesor:", error);
+    }
   };
 
   const handleDelete = async () => {
@@ -33,7 +98,7 @@ const ProfesoresPage = () => {
     if (!confirmacion) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,7 +106,6 @@ const ProfesoresPage = () => {
       });
       if (!res.ok) throw new Error("Error al borrar el perfil");
       localStorage.removeItem("token");
-      dispatch({ type: "BORRAR_USUARIO" });
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -49,121 +113,145 @@ const ProfesoresPage = () => {
     }
   };
 
+  if (!profesor) return <p className="text-center mt-5">Cargando datos del profesor...</p>;
+
+  const miembrosFiltrados = profesor.miembrosAsignados.filter((u) => {
+    const valor = `${u.nombre} ${u.apellido}`.toLowerCase();
+    return valor.includes(filtro.toLowerCase());
+  });
+
   return (
-    <div className="perfil-container">
-      <h1 className="perfil-titulo">Perfil del Profesor</h1>
+    <div className="prof-container">
+      {mensaje && <div className="prof-toast">{mensaje}</div>}
 
-      <div className="perfil-card">
-        <div className="columna columna-izquierda">
-          {["nombre", "email", "telefono", "direccion", "sexo", "experiencia"].map((campo) => (
-            <p className="mt-2" key={campo}>
-              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type="text"
-                  name={campo}
-                  value={profesor[campo]}
-                  onChange={handleProfesorChange}
-                />
-              ) : (
-                profesor[campo] || "Falta"
-              )}
-            </p>
-          ))}
-        </div>
+      <h1 className="prof-titulo">Perfil del Profesor</h1>
 
-        <div className="columna columna-centro">
-          {isEditing ? (
-            <input
-              type="text"
-              name="imagen"
-              value={profesor.imagen}
-              onChange={handleProfesorChange}
-              placeholder="URL de la imagen"
-            />
-          ) : (
-            <img src={profesor.imagen} alt="Foto del profesor" />
-          )}
+      <div className="prof-card">
+        {isEditing ? (
+          <>
+            <div className="prof-columna">
+              {["nombre", "email", "telefono", "direccion"].map((campo) => (
+                <p key={campo}><strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>
+                  <input name={campo} value={profesor[campo]} onChange={handleProfesorChange} /></p>
+              ))}
+            </div>
+            <div className="prof-columna">
+              {["sexo", "experiencia", "especialidad"].map((campo) => (
+                <p key={campo}>
+                  <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>
+                  {campo === "sexo" ? (
+                    <select
+                      name="sexo"
+                      value={profesor.sexo}
+                      onChange={handleProfesorChange}
+                      className="prof-input"
+                    >
+                      <option value="">Selecciona...</option>
+                      <option value="Hombre">Hombre</option>
+                      <option value="Mujer">Mujer</option>
+                      <option value="Indefinido">Indefinido</option>
+                    </select>
+                  ) : (
+                    <input
+                      name={campo}
+                      value={profesor[campo]}
+                      onChange={handleProfesorChange}
+                      className="prof-input"
+                    />
+                  )}
+                </p>
+              ))}
+            </div>
+            <div className="prof-columna-centro">
+              <p><strong>Imagen:</strong></p>
+              <input name="imagen" value={profesor.imagen} onChange={handleProfesorChange} />
+              <img src={profesor.imagen} className="prof-imagen-profesor" onError={(e) => (e.target.src = "/logoCrema1.png")} />
+              <div className="prof-botones">
+                <button className="prof-btn-guardar" onClick={handleSave}>Guardar</button>
+                <button className="prof-btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="prof-columna">
+              <p><strong>Nombre:</strong> {profesor.nombre}</p>
+              <p><strong>Email:</strong> {profesor.email}</p>
+              <p><strong>Teléfono:</strong> {profesor.telefono}</p>
+            </div>
+            <div className="prof-columna-centro">
+              <img src={profesor.imagen} alt="Foto del profesor" className="prof-imagen-profesor" onError={(e) => (e.target.src = "/logoCrema1.png")} />
+              <div className="prof-botones">
+                <button className="prof-btn-editar" onClick={() => setIsEditing(true)}>Editar</button>
+                <button className="prof-btn-borrar" onClick={handleDelete}>Borrar</button>
+              </div>
+            </div>
+            <div className="prof-columna">
+              <p><strong>Dirección:</strong> {profesor.direccion}</p>
+              <p><strong>Sexo:</strong> {profesor.sexo}</p>
+              <p><strong>Especialidad:</strong> {profesor.especialidad}</p>
+              <p><strong>Experiencia:</strong> {profesor.experiencia} años</p>
 
-          <div className="botones-perfil">
-            {isEditing ? (
-              <>
-                <button className="btn-guardar" onClick={() => setIsEditing(false)}>Guardar</button>
-                <button className="btn-cancelar" onClick={() => setIsEditing(false)}>Cancelar</button>
-              </>
-            ) : (
-              <>
-                <button className="btn-editar" onClick={() => setIsEditing(true)}>Editar perfil</button>
-                <button className="btn-borrar" onClick={handleDelete}>Borrar profesor</button>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="columna columna-derecha">
-          <p><strong>Especialidad:</strong>{" "}
-            {isEditing ? (
-              <input
-                type="text"
-                name="especialidad"
-                value={profesor.especialidad}
-                onChange={handleProfesorChange}
-              />
-            ) : (
-              profesor.especialidad
-            )}
-          </p>
-          <p><strong>Horario:</strong></p>
-          <ul>
-            {profesor.horario.map((h, i) => <li key={i}>{h}</li>)}
-          </ul>
-          <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
-            <img
-              src="/logoCrema1.png"
-              alt="Logo salud"
-              className="logo-gris"
-            />
-          </div>
-        </div>
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="secciones-inferiores">
-        <div className="secciones-fila">
-          <div className="seccion">
+      <div className="prof-secciones">
+        <div className="prof-fila">
+          <div className="prof-seccion no-hover sin-hover">
             <h2>Miembros asignados</h2>
-            <ul>
-              {profesor.miembrosAsignados.map((m, i) => <li key={i}>{m}</li>)}
-            </ul>
+            <input
+              type="text"
+              placeholder="Buscar por nombre o apellido"
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="prof-input-filtro"
+            />
+            <div className="prof-scroll-miembros">
+              <ul className="prof-miembros-lista">
+                {miembrosFiltrados.length > 0 ? (
+                  miembrosFiltrados.map((u, i) => (
+                    <li key={i} className="prof-miembro">
+                      <span className="prof-nombre">{u.nombre} {u.apellido}</span>
+                      <button onClick={() => navigate(`/usuario/${u.id}`)} className="prof-btn-ver">Ver</button>
+                    </li>
+                  ))
+                ) : (
+                  <li>No hay usuarios asignados.</li>
+                )}
+              </ul>
+            </div>
           </div>
 
-          <div className="seccion">
+          <div className="prof-seccion no-hover sin-hover">
             <h2>Calendario de sesiones</h2>
             <p>Próximamente se integrará el calendario con reservas.</p>
           </div>
 
-          <div className="seccion">
+          <div className="prof-seccion no-hover sin-hover">
             <h2>Notas del profesor</h2>
             <p>“David está progresando genial en el plan de hipertrofia 💪”</p>
           </div>
         </div>
 
-        <div className="secciones-fila">
-          <div className="seccion">
+        <div className="prof-fila">
+          <div className="prof-seccion">
             <h2>Plan Nutrición</h2>
             <p>Accede al seguimiento del plan alimenticio de los miembros.</p>
-            <Link to="/nutricionProfesional" className="btn-editar">Ver Plan</Link>
+            <Link to="/nutricionProfesional" className="prof-btn-editar">Ver Plan</Link>
           </div>
 
-          <div className="seccion">
+          <div className="prof-seccion">
             <h2>Plan Deporte</h2>
             <p>Consulta y ajusta los entrenamientos asignados a cada usuario.</p>
-            <Link to="/sportProfesional" className="btn-editar">Ver Plan</Link>
+            <Link to="/sportProfesional" className="prof-btn-editar">Ver Plan</Link>
           </div>
 
-          <div className="seccion">
+          <div className="prof-seccion">
             <h2>Eventos</h2>
             <p>Organiza o consulta eventos y actividades disponibles.</p>
-            <Link to="/Eventos" className="btn-editar">Ver Eventos</Link>
+            <Link to="/Eventos" className="prof-btn-editar">Ver Eventos</Link>
           </div>
         </div>
       </div>

@@ -1,52 +1,69 @@
 .fondo {
-    min-height: 100vh;
-    padding-bottom: 50px;
+  min-height: 100vh;
+  padding-bottom: 50px;
 }
 
 .hero h1 {
-    color: white;
-    font-weight: bold;
+  color: white;
+  font-weight: bold;
 }
 
 .trainer-profile ul {
-    padding-left: 1.2rem;
+  padding-left: 1.2rem;
 }
 
 .trainer-card-1 {
-    background-color: #e6eac2;
-    border-radius: 16px;
-    color: #213448;
+  background-color: #e6eac2;
+  border-radius: 16px;
+  color: #213448;
 }
 
 .trainer-img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .btn-outline-dark {
-    border-color: #213448;
-    color: #213448;
+  border-color: #213448;
+  color: #213448;
 }
 
 .btn-outline-dark:hover {
-    background-color: #213448;
-    color: #fff;
-    border-color: #213448;
+  background-color: #213448;
+  color: #fff;
+  border-color: #213448;
+}
+
+.btn-solicitar-entrenador {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-solicitar-entrenador:hover {
+  background-color: #ECEFCA;
+  color: #213448;
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .text-black {
-    color: #213448 !important;
+  color: #213448 !important;
 }
 
 .card h5 {
-    color: #213448;
-    font-weight: bold;
+  color: #213448;
+  font-weight: bold;
 }
 
 .shadow {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .entrenador-grid {
@@ -95,4 +112,111 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   user-select: none;
+}
+
+.alerta-entrenador {
+  background-color: #213448;
+  color: #ECEFCA;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: fadeSlideIn 0.3s ease-out;
+}
+
+.btn-mas-info {
+  background-color: transparent;
+  color: #213448;
+  border: 2px solid #213448;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.btn-mas-info:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  cursor: pointer;
+}
+
+.flecha-transicion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: flechaAnimada 1s ease-in-out infinite alternate;
+}
+
+@keyframes flechaAnimada {
+  0% { transform: translateX(0); opacity: 0.5; }
+  100% { transform: translateX(10px); opacity: 1; }
+}
+
+.animacion-transicion {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-left-color: #28a745;
+  animation: giroCircular 1s linear infinite;
+}
+
+@keyframes giroCircular {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.animacion-transicion {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 6px solid #ccc;
+  border-top: 6px solid #333;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-limpiar-filtros {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: 2px solid #e6eac2;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-limpiar-filtros:hover {
+  background-color: transparent;
+  color: #ECEFCA;
+  border: 2px solid #213448;
 }

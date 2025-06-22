@@ -12,7 +12,8 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
-
+from datetime import timedelta
+CORS(api, supports_credentials=True)
 
 import stripe
 from flask_bcrypt import Bcrypt
@@ -23,18 +24,15 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
-CORS(app, 
-     resources={r"/api/*": {
-         "origins": "*",
-         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-         "allow_headers": ["Content-Type", "Authorization"],
-         "supports_credentials": True
-     }})
+CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
+
+
 app.url_map.strict_slashes = False
 
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=8)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 
@@ -47,7 +45,8 @@ if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
         "postgres://", "postgresql://")
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mydb.sqlite"
+
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)

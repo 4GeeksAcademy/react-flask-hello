@@ -14,10 +14,9 @@ const NutricionPage = () => {
     { tittle: "Ganancia Muscular", img: "/gananciaMuscular.jpg", parrafo: "Protocolos hipercalóricos con alto contenido proteico, tiempos de comida estratégicos y enfoque en anabolismo muscular sostenido." },
     { tittle: "Salud General", img: "/saludGeneral.jpg", parrafo: "Dieta normocalórica con adecuada distribución de macro y micronutrientes, enfocada en salud digestiva, inmunológica y energética." }
   ]
-
+ 
   return (
     <div className="nutricion-page container mt-5">
-      {/* Hero */}
       <section className="npHero text-center py-5">
         <h1 className="display-4 tittle">Nutrición Personalizada</h1>
         <p className="lead">

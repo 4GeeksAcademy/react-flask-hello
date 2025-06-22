@@ -11,11 +11,8 @@ userServices.register = async (formData) => {
       body: JSON.stringify(formData)
     });
     const data = await resp.json();
-
     if (!resp.ok) throw new Error(data.error || "something went wrong");
-
     localStorage.setItem("token", data.token);
-
     return { success: true, token: data.token };
   } catch (error) {
     console.log(error);
@@ -43,45 +40,49 @@ userServices.login = async (formData) => {
 
 userServices.getUserInfo = async () => {
   try {
-    if (!localStorage.getItem('token')) return;
-
-    const resp = await fetch(backendUrl + "/api/private", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-    });
-
-    if (resp.status !== 200) {
-      localStorage.removeItem('token');
+    if (!localStorage.getItem('token')) {
       return;
+    } else {
+      const resp = await fetch(backendUrl + "/api/private", {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+      });
+      if (resp.status !== 200) {
+        localStorage.removeItem('token');
+        return;
+      }
+      if (!resp.ok) throw Error("something went wrong");
+      const data = await resp.json();
+      console.log(data);
+      return data;
     }
-
-    const data = await resp.json();
-    console.log(data);
-    return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-// NUEVA FUNCIONALIDAD: vincular profesional
 userServices.vincularProfesional = async (userId, profesionalId) => {
   try {
-    const resp = await fetch(`${backendUrl}/api/users/${userId}/vincular_profesional/${profesionalId}`, {
-      method: "POST",
+    const resp = await fetch(`${backendUrl}/api/users/${userId}`, {
+      method: "PUT",
       headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token")
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        profesional_id: profesionalId,
+      }),
     });
 
     const data = await resp.json();
-    if (!resp.ok) throw new Error(data.error || "Error al vincular profesional");
-    return { success: true, data };
-  } catch (error) {
-    console.error("❌ Error en vincularProfesional:", error.message);
-    return { success: false, error: error.message };
+    if (!resp.ok) throw new Error(data?.msg || "Error al vincular");
+    return { success: true, ...data };
+  } catch (err) {
+    console.error("❌ Error en vincularProfesional:", err.message);
+    return { success: false, error: err.message };
   }
 };
 

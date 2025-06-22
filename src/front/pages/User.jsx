@@ -17,40 +17,30 @@ const User = () => {
     datos.experiencia = typeof datos.experiencia === "number" ? datos.experiencia.toString() : datos.experiencia;
     return {
       ...datos,
-      peso: datos.peso ? parseFloat(datos.peso.replace(", ", ".").replace("'", ".")) : null,
-      altura: datos.altura ? parseFloat(datos.altura.replace(", ", ".").replace("'", ".")) : null,
+      peso: datos.peso ? parseFloat(datos.peso.replace(",", ".").replace("'", ".")) : null,
+      altura: datos.altura ? parseFloat(datos.altura.replace(",", ".").replace("'", ".")) : null,
       experiencia: datos.experiencia ? parseInt(datos.experiencia) : 0
     };
   };
 
   const historial = [
-    "se apuntó al evento 'yoga al aire libre'",
+    "Se apuntó al evento 'Yoga al aire libre'",
     "Entrenó fuerza en el gimnasio",
     "Asistió a clase de Boxeo"
   ];
 
   useEffect(() => {
-    userServices.getUserInfo().then((user) => {
-      let aux = { ...user };
-      user.peso = user.peso !== null ? String(user.peso) : "";
-      user.altura = user.altura !== null ? String(user.altura) : "";
-      user.experiencia = user.experiencia !== null ? String(user.experiencia) : "";
-      dispatch({ type: "get_user_info", payload: aux });
-    }).catch((error) => {
-      console.error("Error fetching user info:", error);
-    });
-
-    const fetchEntrenador = async () => {
-      try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/entrenador");
-        const data = await res.json();
-        setEntrenadorSeleccionado(data);
-      } catch (error) {
-        console.error("Error al obtener entrenador:", error);
-      }
-    };
-
-    fetchEntrenador();
+    userServices.getUserInfo()
+      .then((user) => {
+        let aux = { ...user };
+        user.peso = user.peso !== null ? String(user.peso) : "";
+        user.altura = user.altura !== null ? String(user.altura) : "";
+        user.experiencia = user.experiencia !== null ? String(user.experiencia) : "";
+        dispatch({ type: "get_user_info", payload: aux });
+      })
+      .catch((error) => {
+        console.error("Error fetching user info:", error);
+      });
   }, []);
 
   useEffect(() => {
@@ -129,18 +119,18 @@ const User = () => {
     );
   }
 
+  const entrenador = store.user?.profesionales_contratados?.[0];
+
   return (
     <div className="perfil-container">
-      {mensaje && (
-        <div className="mensaje-toast">{mensaje}</div>
-      )}
-
+      {mensaje && <div className="mensaje-toast">{mensaje}</div>}
       <h1 className="perfil-titulo">Perfil del Usuario</h1>
+
       <div className="perfil-card">
         <div className="columna columna-izquierda">
           {["nombre", "apellido", "email", "telefono", "direccion", "sexo"].map((campo) => (
             <p className="mt-3" key={campo}>
-              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}</strong>{" "}
+              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
               {isEditing ? (
                 <input
                   type="text"
@@ -183,80 +173,52 @@ const User = () => {
         </div>
 
         <div className="columna columna-derecha">
-          <p><strong>Objetivo:</strong>{" "}
-            {isEditing ? (
-              <input
-                type="text"
-                name="objetivo"
-                value={usuario.objetivo || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              usuario.objetivo || "Falta"
-            )}
-          </p>
-
-          <p><strong>Altura:</strong>{" "}
-            {isEditing ? (
-              <input
-                type="number"
-                name="altura"
-                value={usuario.altura || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              `${usuario.altura || "Falta"} cm`
-            )}
-          </p>
-
-          <p><strong>Peso:</strong>{" "}
-            {isEditing ? (
-              <input
-                type="number"
-                name="peso"
-                value={usuario.peso || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              `${usuario.peso || "Falta"} kg`
-            )}
-          </p>
-
+          {["objetivo", "altura", "peso"].map((campo) => (
+            <p key={campo}>
+              <strong>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</strong>{" "}
+              {isEditing ? (
+                <input
+                  type={campo === "objetivo" ? "text" : "number"}
+                  name={campo}
+                  value={usuario[campo] || ""}
+                  onChange={handleChange}
+                />
+              ) : (
+                `${usuario[campo] || "Falta"}${campo !== "objetivo" ? campo === "peso" ? " kg" : " cm" : ""}`
+              )}
+            </p>
+          ))}
           <div className="logo-columna-derecha mt-3 text-center p-2 rounded">
-            <img
-              src="/logoCrema1.png"
-              alt="Logo salud"
-              className="logo-gris"
-            />
+            <img src="/logoCrema1.png" alt="Logo salud" className="logo-gris" />
           </div>
         </div>
       </div>
 
       <div className="secciones-inferiores">
-        <div className="seccion">
-          <h2>{store.user?.profesionales_contratados?.[0] ? store.user.profesionales_contratados[0].nombre : "Entrenador"}</h2>
-          {store.user?.profesionales_contratados?.[0] ? (
+        <div className="seccion text-center">
+          <h2>Tu entrenador</h2>
+          {entrenador ? (
             <>
               <img
-                src={store.user.profesionales_contratados[0].image || "/logoCrema1.png"}
+                src={entrenador.imagen || "/logoCrema1.png"}
                 alt="Entrenador"
-                className="entrenador-img"
+                className="entrenador-img mx-auto d-block"
               />
-              <div className="btn-entrenador-wrapper">
+              <div className="d-flex justify-content-center mt-2 gap-2 flex-wrap">
                 <Link
-                  to={`/entrenadores/${store.user.profesionales_contratados[0].nombre?.toLowerCase().replace(/ /g, "-")}`}
+                  to={`/entrenadores/${entrenador.nombre?.toLowerCase().replace(/ /g, "-")}`}
                   className="btn-entrenador-link"
                 >
-                  {store.user.profesionales_contratados[0].nombre || "Ver perfil del entrenador"}
+                  {entrenador.nombre}
+                </Link>
+
+                <Link to="/profesionales" className="btn btn-outline-secondary">
+                  Ver más entrenadores
                 </Link>
               </div>
             </>
           ) : (
-            <div className="btn-entrenador-wrapper">
-              <Link to="/profesionales" className="btn-entrenador-link">
-                Ver entrenadores
-              </Link>
-            </div>
+            <Link to="/profesionales" className="btn btn-primary mt-3">Ver entrenadores</Link>
           )}
         </div>
 
@@ -269,14 +231,15 @@ const User = () => {
 
         <div className="seccion">
           <h2>Membresía</h2>
-          {store.user?.subscription?.length > 0 ?
+          {store.user?.subscription?.length > 0 ? (
             <>
               <p className="mb-0"><strong>Nivel</strong></p>
               <p className="fs-3 fw-bold">{store.user.subscription[0].plan.name}</p>
               <p><strong>Finaliza:</strong> {store.user.subscription[0].end_date.split("-").reverse().join("/")}</p>
             </>
-            : <Link to="/Tarifas" className="border border-danger text-danger">No tienes una membresía activa.</Link>
-          }
+          ) : (
+            <Link to="/Tarifas" className="border border-danger text-danger">No tienes una membresía activa.</Link>
+          )}
         </div>
       </div>
 

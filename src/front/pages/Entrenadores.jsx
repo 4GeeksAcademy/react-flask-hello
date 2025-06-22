@@ -6,12 +6,19 @@ import userServices from "../../services/userServices.js";
 
 const Entrenadores = () => {
     const [allTrainers, setAllTrainers] = useState([]);
-    const [selectedTrainer, setSelectedTrainer] = useState(null);
     const [mensajeCambio, setMensajeCambio] = useState(null);
-    const [entrenadorAnterior, setEntrenadorAnterior] = useState(null);
 
-    const { store } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const navigate = useNavigate();
+
+    const fetchUserInfo = async () => {
+        try {
+            const user = await userServices.getUserInfo();
+            dispatch({ type: "get_user_info", payload: user });
+        } catch (error) {
+            console.error("Error al refrescar el usuario:", error);
+        }
+    };
 
     useEffect(() => {
         const fetchTrainers = async () => {
@@ -29,6 +36,8 @@ const Entrenadores = () => {
 
     const handleSelectTrainer = async (trainer) => {
         try {
+            console.log("👉 Intentando seleccionar:", trainer.nombre);
+
             if (!store.user?.subscription || store.user.subscription.length === 0) {
                 return navigate('/Tarifas');
             }
@@ -45,26 +54,36 @@ const Entrenadores = () => {
             if (resp.status === 401) return navigate("/login");
 
             if (resp.ok) {
-                if (selectedTrainer) setEntrenadorAnterior(selectedTrainer);
-                setSelectedTrainer(trainer);
+                console.log("✅ Enroll_user OK");
 
-                // ⬇️ Vincula al profesional en la base de datos
                 const resVinculo = await userServices.vincularProfesional(store.user.id, trainer.id);
+                console.log("🔄 Resultado vinculación:", resVinculo);
+
                 if (!resVinculo.success) {
                     console.error("❌ No se pudo vincular el profesional:", resVinculo.error);
                 }
 
+                const updatedUser = await userServices.getUserInfo();
+                console.log("🆕 Usuario actualizado:", updatedUser);
+
+                dispatch({ type: "get_user_info", payload: updatedUser });
+
                 setMensajeCambio({
-                    anterior: selectedTrainer,
+                    anterior: store.user?.profesionales_contratados?.[0],
                     nuevo: trainer
                 });
 
                 setTimeout(() => setMensajeCambio(null), 4000);
+            } else {
+                console.error("❌ Fallo en /enroll_user");
             }
+
         } catch (error) {
             console.error("Error al seleccionar entrenador:", error);
         }
     };
+
+
 
     const irADetalle = (id) => {
         navigate(`/entrenador/${id}`);
@@ -106,39 +125,39 @@ const Entrenadores = () => {
                     </div>
                 )}
 
-                {selectedTrainer && (
+                {store.user?.profesionales_contratados?.[0] && (
                     <div className="trainer-card-1 trainer-destacado p-4 rounded shadow d-flex justify-content-center align-items-center">
                         <div className="entrenador-grid">
                             <div className="col-izquierda">
-                                <p><strong>Nombre:</strong><br />{selectedTrainer.nombre || "Sin nombre"} {selectedTrainer.apellido || ""}</p>
+                                <p><strong>Nombre:</strong><br />{store.user.profesionales_contratados[0].nombre || "Sin nombre"} {store.user.profesionales_contratados[0].apellido || ""}</p>
                                 <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
                             </div>
 
                             <div className="col-centro text-center">
                                 <img
-                                    src={selectedTrainer.imagen || "https://i.pravatar.cc/300"}
-                                    alt={`Imagen de ${selectedTrainer.nombre}`}
+                                    src={store.user.profesionales_contratados[0].imagen || "https://i.pravatar.cc/300"}
+                                    alt={`Imagen de ${store.user.profesionales_contratados[0].nombre}`}
                                     className="trainer-img-grande"
                                 />
                                 <div className="estado-seleccionado mt-3">Seleccionado</div>
                             </div>
 
                             <div className="col-derecha">
-                                <p><strong>Email:</strong><br />{selectedTrainer.email}</p>
-                                <p><strong>Especialidad:</strong><br />{selectedTrainer.profession_type || "No especificada"}</p>
+                                <p><strong>Email:</strong><br />{store.user.profesionales_contratados[0].email}</p>
+                                <p><strong>Especialidad:</strong><br />{store.user.profesionales_contratados[0].profession_type || "No especificada"}</p>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {allTrainers.filter(t => selectedTrainer?.id !== t.id).length > 0 && (
+                {allTrainers.filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id).length > 0 && (
                     <h1 className="text-center mb-4">Otros Entrenadores</h1>
                 )}
 
                 <div className="container">
                     <div className="row gy-4">
                         {allTrainers
-                            .filter(t => selectedTrainer?.id !== t.id)
+                            .filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id)
                             .map((trainer, index) => (
                                 <div className="col-md-6" key={index}>
                                     <div className="trainer-card-1 d-flex flex-column p-3 rounded shadow h-100 justify-content-between">

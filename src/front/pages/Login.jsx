@@ -10,7 +10,7 @@ const Login = () => {
         email: "",
         password: ""
     });
-    const [error, setError] = useState(""); // Nuevo estado para errores
+    const [error, setError] = useState("");
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

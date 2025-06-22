@@ -120,10 +120,6 @@ user10 = User(
     telefono=685726001,
     profession_type="nutricionista"
 )
-
-db.session.add_all([user1, user2, user3])
-db.session.commit()
-
 # === PLANES ===
 plan = PlanTemplate(
     user_id=user2.id,

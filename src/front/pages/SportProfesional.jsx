@@ -40,7 +40,7 @@ const SportProfesional = () => {
 
     const fetchPlan = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + `api/training_entries/${usuarioSeleccionado.id}`,
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${usuarioSeleccionado.id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

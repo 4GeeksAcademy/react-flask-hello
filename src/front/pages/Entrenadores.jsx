@@ -104,7 +104,7 @@ const Entrenadores = () => {
     const trainersFiltrados = allTrainers
         .filter(t => store.user?.profesionales_contratados?.[0]?.id !== t.id)
         .filter(t =>
-            t.nombre.toLowerCase().includes(filtroNombre.toLowerCase()) &&
+            (t.nombre?.toLowerCase() || "").includes(filtroNombre.toLowerCase()) &&
             (filtroEspecialidad === "Todas" || t.profession_type === filtroEspecialidad)
         );
 
@@ -152,8 +152,10 @@ const Entrenadores = () => {
                         <div className="entrenador-grid">
                             <div className="col-izquierda">
                                 <p><strong>Nombre:</strong><br />{store.user.profesionales_contratados[0].nombre || "Sin nombre"} {store.user.profesionales_contratados[0].apellido || ""}</p>
-                                <p><strong>Descripción:</strong><br />Entrenador con experiencia en fuerza y resistencia.</p>
+                                <p><strong>Descripción:</strong><br />{store.user.profesionales_contratados[0].descripcion || "Sin descripción."}</p>
+                                <p><strong>Experiencia:</strong><br />{store.user.profesionales_contratados[0].experiencia ?? "No indicada"} años</p>
                             </div>
+
                             <div className="col-centro text-center">
                                 <img
                                     src={store.user.profesionales_contratados[0].imagen || "https://i.pravatar.cc/300"}

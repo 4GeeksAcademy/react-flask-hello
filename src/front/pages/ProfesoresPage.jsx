@@ -22,6 +22,7 @@ const ProfesoresPage = () => {
         email: user.email || "",
         telefono: user.telefono || "",
         experiencia: user.experiencia !== null ? String(user.experiencia) : "",
+        descripcion: user.descripcion || "",
         direccion: user.direccion || "",
         sexo: user.sexo || "",
         horario: [
@@ -60,6 +61,7 @@ const ProfesoresPage = () => {
         sexo: profesor.sexo || null,
         experiencia: profesor.experiencia !== "" ? parseInt(profesor.experiencia) : null,
         profession_type: profesor.especialidad !== "" ? profesor.especialidad : null,
+        descripcion: profesor.descripcion || null,
         imagen: profesor.imagen?.trim() || null
       };
 
@@ -159,7 +161,6 @@ const ProfesoresPage = () => {
                   )}
                 </p>
               ))}
-
             </div>
             <div className="prof-columna-centro">
               <p><strong>Imagen:</strong></p>
@@ -189,6 +190,8 @@ const ProfesoresPage = () => {
               <p><strong>Dirección:</strong> {profesor.direccion}</p>
               <p><strong>Sexo:</strong> {profesor.sexo}</p>
               <p><strong>Especialidad:</strong> {profesor.especialidad}</p>
+              <p><strong>Experiencia:</strong> {profesor.experiencia} años</p>
+
             </div>
           </>
         )}
@@ -205,18 +208,20 @@ const ProfesoresPage = () => {
               onChange={(e) => setFiltro(e.target.value)}
               className="prof-input-filtro"
             />
-            <ul>
-              {miembrosFiltrados.length > 0 ? (
-                miembrosFiltrados.map((u, i) => (
-                  <li key={i} className="prof-miembro">
-                    <span className="prof-nombre">{u.nombre} {u.apellido}</span>
-                    <button onClick={() => navigate(`/usuario/${u.id}`)} className="prof-btn-ver">Ver</button>
-                  </li>
-                ))
-              ) : (
-                <li>No hay usuarios asignados.</li>
-              )}
-            </ul>
+            <div className="prof-scroll-miembros">
+              <ul className="prof-miembros-lista">
+                {miembrosFiltrados.length > 0 ? (
+                  miembrosFiltrados.map((u, i) => (
+                    <li key={i} className="prof-miembro">
+                      <span className="prof-nombre">{u.nombre} {u.apellido}</span>
+                      <button onClick={() => navigate(`/usuario/${u.id}`)} className="prof-btn-ver">Ver</button>
+                    </li>
+                  ))
+                ) : (
+                  <li>No hay usuarios asignados.</li>
+                )}
+              </ul>
+            </div>
           </div>
 
           <div className="prof-seccion no-hover sin-hover">

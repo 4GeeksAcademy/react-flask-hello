@@ -1,109 +1,126 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/sportProfesional.css";
 
+const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+const crearPlanVacio = () => {
+  return diasSemana.reduce((acc, dia) => {
+    acc[dia] = {
+      Grupo: "",
+      Nota: "",
+    };
+    return acc;
+  }, {});
+};
+
 const SportProfesional = () => {
-  const [usuariosRegistrados, setUsuariosRegistrados] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  const [planEntrenamiento, setPlanEntrenamiento] = useState(null);
+  const [plan, setPlan] = useState(null);
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
-  const [planNutricion, setPlanNutricion] = useState(null);
-  const planBase = {
-    // Lunes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-    // Martes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-    // Miércoles: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-    // Jueves: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-    // Viernes: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-    // Sábado: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" }, 
-    // Domingo: { Parte superior: "", Parte inferior: "", Cardio: "", ABS: "" },
-  };
 
-  // Cargar usuarios
+  // Cargar usuarios al montar
   useEffect(() => {
-    fetch(import.meta.env.VITE_BACKEND_URL + "/api/professionals_user", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+    const fetchUsuarios = async () => {
+      try {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users");
+        const data = await res.json();
+        setUsuarios(data);
+      } catch (error) {
+        console.error("Error al cargar usuarios:", error);
       }
-    })
-      .then(res => res.json())
-      .then(data => setUsuariosRegistrados(data))
-      .catch(err => console.error("Error al cargar usuarios:", err));
+    };
+    fetchUsuarios();
   }, []);
 
-  // Cargar plan Entrenamiento
+  // Cargar plan nutricional cuando cambia el usuario
   useEffect(() => {
-    if (usuarioSeleccionado) {
-      fetch(import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${usuarioSeleccionado.id}`, {headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }})
-        .then(res => {
-          if (!res.ok) throw new Error("No existe plan");
-          return res.json();
-        })
-        .then(data => {
-          setPlanEntrenamiento(data);
-          setModoEdicion(false);
-        })
-        .catch(err => {
-          console.warn("Usuario sin plan:", err);
-          setPlanNutricion(null);
-        });
-    }
+    if (!usuarioSeleccionado) return;
+
+    const fetchPlan = async () => {
+      try {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + `api/training_entries/${usuarioSeleccionado.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!res.ok) throw new Error("Este usuario no tiene plan");
+        const data = await res.json();
+        console.log(data);
+        setPlan(data);
+        setModoEdicion(false);
+      } catch (error) {
+        setPlan(null);
+      }
+    };
+
+    fetchPlan();
   }, [usuarioSeleccionado]);
 
   const handleEditarPlan = () => setModoEdicion(true);
 
-  const handleGuardarCambios = () => {
-    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries/${usuarioSeleccionado.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
-      body: JSON.stringify(planEntrenamiento)
-    })
-      .then(res => res.json())
-      .then(() => {
-        alert("¡Plan guardado correctamente!");
-        setModoEdicion(false);
-      })
-      .catch(err => alert("Error al guardar: " + err));
+  const handleGuardarCambios = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}api/training_entries/${diaActivo.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(diaActivo),
+        }
+      );
+      await res.json();
+      alert("¡Plan actualizado correctamente!");
+      setModoEdicion(false);
+    } catch (err) {
+      alert("Error al guardar el plan.");
+    }
   };
 
-  const handleCrearNuevoPlan = () => {
-    const nuevoPlan = {
-      userId: usuarioSeleccionado.id,
-      ...planBase
-    };
+  const handleCrearNuevoPlan = async () => {
+    try {
+      const nuevoPlan = {
+        userId: usuarioSeleccionado.id,
+        plan: crearPlanVacio()
+      };
 
-    fetch(import.meta.env.VITE_BACKEND_URL + `/api/training_entries`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
-      body: JSON.stringify(nuevoPlan)
-    })
-      .then(res => res.json())
-      .then(() => {
-        alert("Plan creado correctamente");
-        setPlanNutricion(nuevoPlan);
-        setModoEdicion(true);
-      })
-      .catch(err => alert("Error al crear el plan: " + err));
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/training_entries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(nuevoPlan),
+      });
+
+      if (!res.ok) throw new Error("Error al crear el plan");
+      const data = await res.json();
+      console.log(data);
+      alert("¡Plan creado correctamente!");
+      setPlan({...nuevoPlan.plan});
+      setModoEdicion(true);
+    } catch (err) {
+      alert("Error al crear nuevo plan: " + err.message);
+    }
   };
+console.log("Plan:", plan);
 
-  const handleCambioComida = (entrenamiento, nuevoTexto) => {
-    setPlanNutricion(prev => ({
-      ...prev,
-      [diaActivo]: {
-        ...prev[diaActivo],
-        [entrenamiento]: nuevoTexto
-      }
-    }));
-  };
-
+  const handleInputChange = (e) => {
+    const { value, name } = e.target;
+    setDiaActivo({...diaActivo, [name]: value});
+  }
   return (
-    <div className="sport-profesional container mt-5 ">
-      <section className="sport-header text-center py-5">
-        <h1 className="display-4">Deporte Personalizado</h1>
-        <p className="lead">
-          Mejora tu salud con planes de deporte adaptados a tus objetivos.
-        </p>
+    <div className="sport-profesional container mt-5">
+      <section className="npHero text-center py-5">
+        <h1 className="display-4 tittle">Sport Profesional</h1>
+        <p className="lead">Gestiona los planes de entrenamiento de tus clientes fácilmente.</p>
       </section>
 
       <section className="text-center my-4">
@@ -111,80 +128,76 @@ const SportProfesional = () => {
         <select
           className="form-select w-50 mx-auto mb-3"
           onChange={(e) => {
-            const user = usuariosRegistrados.find(u => u.id === parseInt(e.target.value));
-            
-            setUsuarioSeleccionado(user.user);
+            const selected = usuarios.find(u => u.id === parseInt(e.target.value));
+            setUsuarioSeleccionado(selected);
             setDiaActivo("Lunes");
           }}
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-
-          {usuariosRegistrados?.map(user => {
-
-            return (
-              <option key={user.id} value={user.id}>{`${user.user?.nombre} ${user.user?.apellido}`}</option>
-            )
+          {usuarios.map(user =>{ 
+            if (!user.is_professional) {
+               return (
+            <option key={user.id} value={user.id}>{user.nombre}</option>
+          )
+            }
           })}
         </select>
+
+        {usuarioSeleccionado && plan === null && (
+          <div>
+            <p>Este usuario no tiene plan entrenamiento.</p>
+            <button className="btn btn-primary" onClick={handleCrearNuevoPlan}>
+              Crear nuevo plan
+            </button>
+          </div>
+        )}
+
+        {usuarioSeleccionado && plan && (
+          <>
+            {!modoEdicion ? (
+              <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
+                Editar Plan Nutricional
+              </button>
+            ) : (
+              <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
+                Guardar Cambios
+              </button>
+            )}
+          </>
+        )}
       </section>
 
-      {/* Botón de Editar fuera del bloque del plan */}
-      {usuarioSeleccionado && !modoEdicion && (
-        <div className="text-center mb-4">
-          <button className="btn btn-warning" onClick={handleEditarPlan}>
-            Editar Plan de Entrenamiento
-          </button>
-        </div>
-      )}
-
-      {usuarioSeleccionado && (
-        <section className="tabla-Entrenamiento my-5">
+      {usuarioSeleccionado && plan && (
+        <section className="tabla-nutricion my-5">
           <h2 className="text-center subtittle mb-4">
             Plan Semanal de {usuarioSeleccionado.nombre}
           </h2>
 
           <div className="button d-flex justify-content-center flex-wrap mb-4">
-
-            {planEntrenamiento != null && Object.keys(planEntrenamiento)?.map((dia) => (
+            {plan.map((dia) => (
               <button
-                key={dia}
+                key={dia.id}
                 onClick={() => setDiaActivo(dia)}
                 className={`btn mx-1 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-primary"}`}
               >
-                {dia}
+                {dia.dia_semana}
               </button>
             ))}
           </div>
 
           <div className="card p-3">
-            <h3 className="mb-4 text-center">{diaActivo}</h3>
+            <h3 className="mb-4 text-center">{diaActivo.dia_semana}</h3>
             <ul className="list-group">
-              {planEntrenamiento != null && Object.entries(planEntrenamiento[diaActivo])?.map(([Entrenamiento, texto]) => (
-                  <li key={Entrenamiento} className="list-group-item text-dark">
-                    <strong>{Entrenamiento}:</strong>
-                    {modoEdicion ? (
-                      <input
-                        type="text"
-                        value={texto}
-                        className="form-control mt-2"
-                        onChange={(e) => handleCambioEntrenamiento(Entrenamiento, e.target.value)}
-                      />
-                    ) : (
-                      <span className="ms-2">{texto}</span>
-                    )}
-                  </li>
-                ))}
+              <li>
+                <label htmlFor="" className="form-label text-light">Grupo :</label>
+                <input type="text" value={diaActivo.grupo} name="grupo" onChange={handleInputChange}/>
+              </li>
+              <li>
+                <label htmlFor="" className="form-label text-light">Nota :</label>
+                <input type="text" value={diaActivo.nota} name="nota" onChange={handleInputChange}/>
+              </li>
             </ul>
-
-            {/* Botón de Guardar separado visualmente */}
-            {modoEdicion && (
-              <div className="text-center mt-4">
-                <button className="btn btn-success" onClick={handleGuardarCambios}>
-                  Guardar Cambios
-                </button>
-              </div>
-            )}
           </div>
         </section>
       )}
@@ -193,6 +206,3 @@ const SportProfesional = () => {
 };
 
 export default SportProfesional;
-
-
-

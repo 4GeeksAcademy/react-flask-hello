@@ -81,7 +81,7 @@ const User = () => {
         }
       }
 
-      console.log("Payload final:", payload);  // 👀 vuelve a inspeccionar si falla
+      console.log("Payload final:", payload);
 
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${usuario.id}`, {
         method: 'PUT',

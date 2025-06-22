@@ -6,8 +6,8 @@ const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sába
 const crearPlanVacio = () => {
   return diasSemana.reduce((acc, dia) => {
     acc[dia] = {
-      Grupo: "",
-      Nota: "",
+      grupo: "",
+      nota: "",
     };
     return acc;
   }, {});
@@ -51,6 +51,7 @@ const SportProfesional = () => {
         if (!res.ok) throw new Error("Este usuario no tiene plan");
         const data = await res.json();
         console.log(data);
+
         setPlan(data);
         setModoEdicion(false);
       } catch (error) {
@@ -66,7 +67,7 @@ const SportProfesional = () => {
   const handleGuardarCambios = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}api/training_entries/${diaActivo.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/training_entries/${diaActivo.id}`,
         {
           method: "PUT",
           headers: {
@@ -84,33 +85,34 @@ const SportProfesional = () => {
     }
   };
 
-  const handleCrearNuevoPlan = async () => {
-    try {
-      const nuevoPlan = {
-        userId: usuarioSeleccionado.id,
-        plan: crearPlanVacio()
-      };
+const handleCrearNuevoPlan = async () => {
+  try {
+    const nuevoPlan = {
+      userId: usuarioSeleccionado.id,
+      plan: crearPlanVacio()
+    };
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/training_entries`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(nuevoPlan),
-      });
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/training_entries`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(nuevoPlan),
+    });
 
-      if (!res.ok) throw new Error("Error al crear el plan");
-      const data = await res.json();
-      console.log(data);
-      alert("¡Plan creado correctamente!");
-      setPlan({...nuevoPlan.plan});
-      setModoEdicion(true);
-    } catch (err) {
-      alert("Error al crear nuevo plan: " + err.message);
-    }
-  };
-console.log("Plan:", plan);
+    if (!res.ok) throw new Error("Error al crear el plan");
+
+    const data = await res.json();
+
+    alert("¡Plan creado correctamente!");
+    setPlan(data.Training_entry_list); 
+    setDiaActivo(data.Training_entry_list[0]); 
+    setModoEdicion(true);
+  } catch (err) {
+    alert("Error al crear nuevo plan: " + err.message);
+  }
+};
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
@@ -157,7 +159,7 @@ console.log("Plan:", plan);
           <>
             {!modoEdicion ? (
               <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
-                Editar Plan Nutricional
+                Editar Plan Entrenamiento
               </button>
             ) : (
               <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
@@ -169,7 +171,7 @@ console.log("Plan:", plan);
       </section>
 
       {usuarioSeleccionado && plan && (
-        <section className="tabla-nutricion my-5">
+        <section className="tabla-sport my-5">
           <h2 className="text-center subtittle mb-4">
             Plan Semanal de {usuarioSeleccionado.nombre}
           </h2>
@@ -190,11 +192,11 @@ console.log("Plan:", plan);
             <h3 className="mb-4 text-center">{diaActivo.dia_semana}</h3>
             <ul className="list-group">
               <li>
-                <label htmlFor="" className="form-label text-light">Grupo :</label>
+                <label className="form-label text-light">Grupo :</label>
                 <input type="text" value={diaActivo.grupo} name="grupo" onChange={handleInputChange}/>
               </li>
               <li>
-                <label htmlFor="" className="form-label text-light">Nota :</label>
+                <label className="form-label text-light">Nota :</label>
                 <input type="text" value={diaActivo.nota} name="nota" onChange={handleInputChange}/>
               </li>
             </ul>

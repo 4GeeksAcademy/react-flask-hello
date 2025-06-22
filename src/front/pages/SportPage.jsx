@@ -17,7 +17,7 @@ const SportPage = () => {
     return (
         <div className="sport-page container mt-5 ">
             <section className="sport-header text-center py-5">
-                <h1 className="display-4">Deporte Personalizado</h1>
+                <h1 className="display-4 fw-bold">Deporte Personalizado</h1>
                 <p className="lead">
                     Mejora tu salud con planes de deporte adaptados a tus objetivos.
                 </p>

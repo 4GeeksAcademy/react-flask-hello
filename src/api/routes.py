@@ -1050,12 +1050,6 @@ def register():
         return jsonify({"error": "something went wrong", "success": False}), 400
 
 
-# Grupos musculares permitidos:
-VALID_MUSCLE_GROUPS = [
-    "hombros", "pecho", "abdomen", "espalda", "biceps",
-    "triceps", "quadriceps", "isquiotibiales", "gemelos"
-]
-
 @api.route('/training_entries', methods=['GET'])
 @jwt_required()
 def list_training_entries():
@@ -1095,8 +1089,8 @@ def create_training_entry():
             user_id=data["userId"],
             profesional_id=user_id,
             dia_semana=dia,
-            grupo=data["plan"][dia].get('Grupo'),
-            nota=data["plan"][dia].get('Nota'),
+            grupo = data["plan"][dia].get('Grupo'),
+            nota = data["plan"][dia].get('Nota'),
             )
         db.session.add(entry)
         db.session.commit()

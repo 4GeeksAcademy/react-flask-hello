@@ -46,7 +46,6 @@ const UsuarioPage = () => {
             <div className="usuario-datos-secundarios">
                 <p><strong>Altura:</strong> {usuario.altura ? `${usuario.altura} cm` : "No disponible"}</p>
                 <p><strong>Peso:</strong> {usuario.peso ? `${usuario.peso} kg` : "No disponible"}</p>
-                <p><strong>Experiencia:</strong> {usuario.experiencia !== null ? `${usuario.experiencia} años` : "No especificada"}</p>
             </div>
         </div>
     );

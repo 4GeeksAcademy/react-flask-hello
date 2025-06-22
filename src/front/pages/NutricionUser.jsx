@@ -23,7 +23,7 @@ const NutricionUser = () => {
     const fetchPlan = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries/${userId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/nutrition_entries}`,
           {
             headers: {
               "Content-Type": "application/json",

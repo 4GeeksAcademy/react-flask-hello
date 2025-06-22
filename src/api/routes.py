@@ -1139,7 +1139,7 @@ def list_nutrition_entries():
 
 @api.route('/nutrition_entries/<int:user_id>', methods=['GET'])
 @jwt_required()
-def get_nutrition_entry(user_id):
+def get_nutrition_entries_for_user(user_id):
     professional_id = get_jwt_identity()
     NutritionEntries = NutritionEntry.query.filter_by(
         user_id=user_id,
@@ -1149,20 +1149,19 @@ def get_nutrition_entry(user_id):
         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
     NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
     return jsonify(NutritionEntries_serialized), 200
-  
     
-# @api.route('/user/nutrition_entries', methods=['GET'])
-# @jwt_required()
-# def get_nutrition_entry(user_id):
-#     user_id = get_jwt_identity()
-#     NutritionEntries = NutritionEntry.query.filter_by(
-#         user_id=user_id,
-#     ).all()
-#     if not NutritionEntries:
-#         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
-#     NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
-#     return jsonify(NutritionEntries_serialized), 200
-
+@api.route('/user/nutrition_entries', methods=['GET'])
+@jwt_required()
+def get_my_nutrition_entries():
+    user_id = get_jwt_identity()
+    
+    NutritionEntries = NutritionEntry.query.filter_by(
+        user_id=user_id,
+    ).all()
+    if not NutritionEntries:
+        return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
+    NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
+    return jsonify(NutritionEntries_serialized), 200
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()

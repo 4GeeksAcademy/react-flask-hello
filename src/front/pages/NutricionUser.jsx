@@ -23,7 +23,7 @@ const NutricionUser = () => {
     const fetchPlan = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/user/nutrition_entries}`,
+          `${import.meta.env.VITE_BACKEND_URL}api/user/nutrition_entries`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -41,7 +41,29 @@ const NutricionUser = () => {
         if (!response.ok) throw new Error("Error al obtener los datos");
 
         const data = await response.json();
-        setPlanNutricion(data);
+
+        //ordeno el array por id ascendente:
+        data.sort((a,b) => a.id - b.id);
+
+
+        //transformo un array en un objeto por dia:
+        const planPorDia = data.reduce((acc, entry) => {
+          if (!acc[entry.dia_semana]) {
+          acc[entry.dia_semana] = {
+            Desayuno: entry.desayuno,
+            "Media Mañana": entry.media_mañana,
+            Comida: entry.comida,
+            Cena: entry.cena
+          };
+        }
+          return acc;
+        }, {});
+
+
+
+
+
+        setPlanNutricion(planPorDia);
         setLoading(false);
       } catch (err) {
         console.error("Error:", err);
@@ -51,7 +73,7 @@ const NutricionUser = () => {
     };
 
     fetchPlan();
-  }, [userId]);
+  }, [store.user, userId, navigate]);
 
   if (loading)
     return <div className="text-center np-hero mt-5">Cargando plan nutricional...</div>;
@@ -102,4 +124,5 @@ const NutricionUser = () => {
   );
 };
 
-export default NutricionUser;
+
+export default NutricionUser

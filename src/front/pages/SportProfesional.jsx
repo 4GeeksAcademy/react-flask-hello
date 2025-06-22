@@ -104,7 +104,7 @@ const handleCrearNuevoPlan = async () => {
     if (!res.ok) throw new Error("Error al crear el plan");
 
     const data = await res.json();
-
+ 
     alert("¡Plan creado correctamente!");
     setPlan(data.Training_entry_list); 
     setDiaActivo(data.Training_entry_list[0]); 

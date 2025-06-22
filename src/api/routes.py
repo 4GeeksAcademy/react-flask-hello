@@ -1102,14 +1102,14 @@ def delete_training_entry(entry_id):
 def list_nutrition_entries():
     user_id = get_jwt_identity()
     stm = select(NutritionEntry).where(NutritionEntry.profesional_id == user_id)
-    entries = db.session.execute(stm).scalars.all()
+    entries = db.session.execute(stm).scalars().all()
     return jsonify([e.serialize() for e in entries]), 200
 
 
 
 @api.route('/nutrition_entries/<int:user_id>', methods=['GET'])
 @jwt_required()
-def get_nutrition_entry(user_id):
+def get_nutrition_entries_for_user(user_id):
     professional_id = get_jwt_identity()
     NutritionEntries = NutritionEntry.query.filter_by(
         user_id=user_id,
@@ -1122,8 +1122,9 @@ def get_nutrition_entry(user_id):
     
 @api.route('/user/nutrition_entries', methods=['GET'])
 @jwt_required()
-def get_nutrition_entry(user_id):
+def get_my_nutrition_entries():
     user_id = get_jwt_identity()
+    
     NutritionEntries = NutritionEntry.query.filter_by(
         user_id=user_id,
     ).all()

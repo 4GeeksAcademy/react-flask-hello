@@ -3,7 +3,6 @@ import "../../styles/nutricionUser.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
 
-
 const NutricionUser = () => {
   const [planNutricion, setPlanNutricion] = useState({});
   const [diaActivo, setDiaActivo] = useState("Lunes");
@@ -14,15 +13,17 @@ const NutricionUser = () => {
   const userId = store.user?.id;
 
   useEffect(() => {
+    if (!store.user?.subscription?.length > 0) {
+      navigate("/Tarifas");
+      return;
+    }
 
-      
-    if (!store.user?.subscription?.length>0) navigate("/Tarifas");
     if (!userId) return;
 
     const fetchPlan = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_BACKEND_URL + `/api/nutrition_entries/${userId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/nutrition_entries}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -66,34 +67,35 @@ const NutricionUser = () => {
 
       <section className="tabla-nutricion my-4">
         <div className="button d-flex justify-content-center flex-wrap mb-4">
-          {Object.keys(planNutricion)
-            .filter((dia) => dia !== "id" && dia !== "userId")
-            .map((dia) => (
-              <button
-                key={dia}
-                onClick={() => setDiaActivo(dia)}
-                className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"
-                  }`}
-              >
-                {dia}
-              </button>
-            ))}
+          {Object.keys(planNutricion).map((dia) => (
+            <button
+              key={dia}
+              onClick={() => setDiaActivo(dia)}
+              className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"}`}
+            >
+              {dia}
+            </button>
+          ))}
         </div>
 
-        <div className="card p-3">
+        <div className="card p-3 bg-dark text-light border-light">
           <h2 className="text-center mb-4">{diaActivo}</h2>
-          <ul className="list-group">
-            {Object.entries(planNutricion[diaActivo] || {}).map(
-              ([comida, detalle]) => (
-                <li
-                  key={comida}
-                  className="list-group-item bg-dark text-light border-light"
-                >
-                  <strong>{comida}:</strong> {detalle}
-                </li>
-              )
-            )}
-          </ul>
+          <table className="table table-dark table-bordered">
+            <thead>
+              <tr>
+                <th>Comida</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(planNutricion[diaActivo] || {}).map(([comida, detalle]) => (
+                <tr key={comida}>
+                  <td><strong>{comida}</strong></td>
+                  <td>{detalle}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
     </div>

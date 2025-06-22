@@ -54,7 +54,7 @@ const ProfesoresPage = () => {
         profession_type: profesor.especialidad,
       };
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${profesor.id}`, {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users/${profesor.id}", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -939,34 +939,6 @@ def get_user_inf():
         print(e)
         return jsonify({"error": "something went wrong"})
 
-# @api.route('/register', methods=['POST'])
-# def register():
-#     try:
-#         data = request.json
-
-#         if not data['email'] or not data['password']:
-#             return jsonify({"error": 'missing data'})
-
-#         stm = select(User).where(User.email == data['email'])
-
-#         existing_user = db.session.execute(stm).scalar_one_or_none()
-#         if existing_user:
-#             return jsonify({"error": 'email taken, try logging in'})
-
-#         hashed_password = generate_password_hash(data['password'])
-
-#         new_user = User(
-#             email=data['email'],
-#             password=hashed_password,
-#             is_active=True
-#             )
-
-#         db.session.add(new_user)
-#         db.session.commit()
-
-#         token = create_access_token(identity=str(new_user.id))
-
-#         return jsonify({"msg": "register ok", "token": token, "success": True}), 201
 
 
 @api.route('/register', methods=['POST'])
@@ -1014,24 +986,27 @@ VALID_MUSCLE_GROUPS = [
     "triceps", "quadriceps", "isquiotibiales", "gemelos"
 ]
 
-
 @api.route('/training_entries', methods=['GET'])
 @jwt_required()
 def list_training_entries():
     user_id = get_jwt_identity()
-    stm = select(TrainingEntry).where(TrainingEntry.user_id == user_id)
+    stm = select(TrainingEntry).where(TrainingEntry.profesional_id == user_id)
     entries = db.session.execute(stm).scalars.all()
     return jsonify([e.serialize() for e in entries]), 200
 
 
-@api.route('/training_entries/<int:entry_id>', methods=['GET'])
+@api.route('/training_entries/<int:user_id>', methods=['GET'])
 @jwt_required()
-def get_training_entry(entry_id):
-    user_id = get_jwt_identity()
-    entry = TrainingEntry.query.get(entry_id)
-    if not entry or str(entry.user_id) != user_id:
-        abort(404, description="Entrada de entrenamiento no encontrado")
-    return jsonify(entry.serialize()), 200
+def get_training_entry(user_id):
+    professional_id = get_jwt_identity()
+    TrainingEntries = TrainingEntry.query.filter_by(
+        user_id=user_id,
+        profesional_id=professional_id
+    ).all()
+    if not TrainingEntries:
+        return jsonify({"error": "No se encuentra el plan entrenamiento para este usuario"}), 404
+    TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
+    return jsonify(TrainingEntries_serialized), 200
 
 
 @api.route('/training_entries', methods=['POST'])
@@ -1039,48 +1014,38 @@ def get_training_entry(entry_id):
 def create_training_entry():
     user_id = get_jwt_identity()
     data = request.get_json() or {}
-    required = ('grupo', 'nota')
-    if not all(f in data for f in required):
-        raise APIException(
-            f"faltan campos: {', '.join(required)}", status_code=400)
-
-    # validar grupos musculares
-    if data['grupo'] not in VALID_MUSCLE_GROUPS:
-        raise APIException(
-            f"grupo '{data['grupo']}' no valido. Elige uno de: {', '.join(VALID_MUSCLE_GROUPS)}", status_code=400)
-
-    entry = TrainingEntry(
-        user_id=user_id,
-        grupo=data['grupo'],
-        nota=data['nota']
-    )
-    db.session.add(entry)
-    db.session.commit()
-    return jsonify(entry.serialize()), 201
+    exists = TrainingEntry.query.filter_by(
+        user_id=data["userId"],
+        profesional_id=user_id
+    ).first()
+    if exists:
+        return jsonify({"error": "Ya existe un plan entrenamiento para este usuario"}), 400
+    for dia in data["plan"]:
+        entry = TrainingEntry(
+            user_id=data["userId"],
+            profesional_id=user_id,
+            dia_semana=dia,
+            grupo=data["plan"][dia].get('Grupo'),
+            nota=data["plan"][dia].get('Nota'),
+            )
+        db.session.add(entry)
+        db.session.commit()
+        TrainingEntries = TrainingEntry.query.filter_by(
+            user_id=data["userId"],
+            profesional_id=user_id,
+        ).all()
+        TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
+    return jsonify({"message": "Plan entrenamiento creado correctamente", "Training_entry_list": TrainingEntries_serialized}), 201
 
 
 @api.route('/training_entries/<int:entry_id>', methods=['PUT'])
 @jwt_required()
 def update_training_entry(entry_id):
     user_id = get_jwt_identity()
-    entry = TrainingEntry.query.get(entry_id)
-    if not entry or str(entry.user_id) != user_id:
-        abort(404, description="Entrada de entrenamiento no encontrada")
-
+    entry = TrainingEntry.query.filter_by(id = entry_id).first()
     data = request.get_json() or {}
-    updatable = ('grupo', 'nota')
-    if not any(field in data for field in updatable):
-        raise APIException("No hay campos para actualizar", status_code=400)
-    # modifica el grupo muscular
-    if 'grupo' in data:
-        if data['grupo'] not in VALID_MUSCLE_GROUPS:
-            raise APIException(
-                f"grupo '{data['grupo']}' no valido. Elige uno de:{','.join(VALID_MUSCLE_GROUPS)}", status_code=400)
-        entry.grupo = data['grupo']
-
-    if 'nota' in data:
-        entry.nota = data['nota']
-
+    for key, value in data.items():
+        setattr(entry, key, value)
     db.session.commit()
     return jsonify(entry.serialize()), 200
 
@@ -1091,7 +1056,7 @@ def delete_training_entry(entry_id):
     user_id = get_jwt_identity()
     entry = TrainingEntry.query.get(entry_id)
     if not entry or str(entry.user_id) != user_id:
-        abort(404, description="Entrada de entrenamiento no encontrada")
+        abort(404, description="No se encuentra la entrada de nutricion")
     db.session.delete(entry)
     db.session.commit()
     return '', 204
@@ -1119,18 +1084,20 @@ def get_nutrition_entry(user_id):
         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
     NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
     return jsonify(NutritionEntries_serialized), 200
+  
     
-@api.route('/user/nutrition_entries', methods=['GET'])
-@jwt_required()
-def get_nutrition_entry(user_id):
-    user_id = get_jwt_identity()
-    NutritionEntries = NutritionEntry.query.filter_by(
-        user_id=user_id,
-    ).all()
-    if not NutritionEntries:
-        return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
-    NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
-    return jsonify(NutritionEntries_serialized), 200
+# @api.route('/user/nutrition_entries', methods=['GET'])
+# @jwt_required()
+# def get_nutrition_entry(user_id):
+#     user_id = get_jwt_identity()
+#     NutritionEntries = NutritionEntry.query.filter_by(
+#         user_id=user_id,
+#     ).all()
+#     if not NutritionEntries:
+#         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
+#     NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
+#     return jsonify(NutritionEntries_serialized), 200
+
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()

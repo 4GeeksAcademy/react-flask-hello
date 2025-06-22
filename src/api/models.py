@@ -71,7 +71,7 @@ class User(db.Model):
     support_tickets = relationship('SupportTicket', back_populates='user')
     template_items_created = relationship(
         'TemplateItem', back_populates='creator')
-    training_entries = relationship('TrainingEntry', back_populates='user')
+    training_entries = relationship('TrainingEntry', back_populates='user', foreign_keys="TrainingEntry.user_id")
     nutrition_entries = relationship('NutritionEntry', back_populates='user', foreign_keys="NutritionEntry.user_id")
     profesionales_contratados = relationship(
         "UserProfesional",
@@ -400,14 +400,16 @@ class TrainingEntry(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('users.id'), nullable=False)
-    # pecho, espalda, biceps, etc...
+    profesional_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('users.id'), nullable=False)
+    dia_semana: Mapped[str] = mapped_column(String(40), nullable=False)
     grupo: Mapped[str] = mapped_column(String(200), nullable=False)
-    # series: 4x12 con descanso de 'x'
     nota: Mapped[str] = mapped_column(Text, nullable=False)
     fecha: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False)
 
-    user = relationship('User', back_populates='training_entries')
+    user = relationship("User", foreign_keys=[user_id], back_populates="training_entries")
+    profesional = relationship("User", foreign_keys=[profesional_id])
 
     def serialize(self):
         return {

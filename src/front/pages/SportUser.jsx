@@ -4,15 +4,12 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate, Link } from "react-router-dom";
 
 const SportUser = () => {
-const SportUser = () => {
   const [planEntrenamiento, setPlanEntrenamiento] = useState({});
   const [diaActivo, setDiaActivo] = useState("Lunes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { store } = useGlobalReducer();
-  const { store } = useGlobalReducer();
   const navigate = useNavigate();
-  const userId = store.user?.id;
   const userId = store.user?.id;
 
   useEffect(() => {
@@ -95,7 +92,6 @@ const SportUser = () => {
             <button
               key={dia}
               onClick={() => setDiaActivo(dia)}
-              className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"}`}
               className={`btn mx-2 mb-2 ${dia === diaActivo ? "btn-primary" : "btn-outline-light"}`}
             >
               {dia}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionProfesional.css";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
@@ -16,6 +17,9 @@ const crearPlanVacio = () => {
 };
 
 const NutricionProfesional = () => {
+  const { store } = useGlobalReducer();
+  const profesionalId = store.user?.id;
+
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
   const [plan, setPlan] = useState(null);
@@ -31,21 +35,23 @@ const NutricionProfesional = () => {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${profesionalId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         const data = await res.json();
-        setUsuarios(data);
+        setUsuarios(data.usuarios_contratantes || []);
       } catch (error) {
         console.error("Error al cargar usuarios:", error);
       }
     };
-    fetchUsuarios();
-  }, []);
+    if (profesionalId) fetchUsuarios();
+  }, [profesionalId]);
 
   useEffect(() => {
     if (!usuarioSeleccionado) return;
     const fetchPlan = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + `api/nutrition_entries/${usuarioSeleccionado.id}`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/nutrition_entries/${usuarioSeleccionado.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -134,13 +140,9 @@ const NutricionProfesional = () => {
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-          {usuarios.map(user => {
-            if (!user.is_professional) {
-              return (
-                <option key={user.id} value={user.id}>{user.nombre}</option>
-              );
-            }
-          })}
+          {usuarios.map(user => (
+            <option key={user.id} value={user.id}>{user.nombre} {user.apellido}</option>
+          ))}
         </select>
 
         {usuarioSeleccionado && plan === null && (
@@ -188,7 +190,6 @@ const NutricionProfesional = () => {
                 </button>
               );
             })}
-
           </div>
 
           <div className={`card p-3 ${!modoEdicion ? "bloqueado" : ""}`}>

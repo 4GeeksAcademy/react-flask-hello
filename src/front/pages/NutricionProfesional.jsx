@@ -107,7 +107,12 @@ const NutricionProfesional = () => {
       if (!res.ok) throw new Error("Error al crear el plan");
       const data = await res.json();
       mostrarAlerta("¡Plan creado correctamente!");
-      setPlan({ ...nuevoPlan.plan });
+      const planComoArray = diasSemana.map((dia) => ({
+        dia_semana: dia,
+        ...nuevoPlan.plan[dia],
+      }));
+      setPlan(planComoArray);
+
       setModoEdicion(true);
     } catch (err) {
       mostrarAlerta("Error al crear nuevo plan: " + err.message);

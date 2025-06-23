@@ -46,8 +46,6 @@ const NutricionUser = () => {
         //ordeno el array por id ascendente:
         data.sort((a,b) => a.id - b.id);
 
-
-        //transformo un array en un objeto por dia:
         const planPorDia = data.reduce((acc, entry) => {
           if (!acc[entry.dia_semana]) {
           acc[entry.dia_semana] = {

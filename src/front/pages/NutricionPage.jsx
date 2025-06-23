@@ -40,9 +40,9 @@ const NutricionPage = () => {
       <section className="beneficios my-5">
         <h2 className="text-center subtittle mb-4">¿Por qué elegirnos?</h2>
           <ul className="list-group list-group-flush caja-bot">
-            <li className="list-group-item">🍏 Asesoramiento profesional</li>
-            <li className="list-group-item">🧬 Ejercicios adaptadas a tu metabolismo</li>
-            <li className="list-group-item">📊 Seguimiento de resultados</li>
+            <li className="list-group-item">Asesoramiento profesional</li>
+            <li className="list-group-item">Ejercicios adaptadas a tu metabolismo</li>
+            <li className="list-group-item">Seguimiento de resultados</li>
           </ul>
       </section>
 

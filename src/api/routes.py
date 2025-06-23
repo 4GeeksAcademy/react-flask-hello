@@ -108,17 +108,15 @@ def update_user(id):
     user.direccion = body.get("direccion", user.direccion)
     user.sexo = body.get("sexo", user.sexo)
     user.imagen = body.get("imagen", user.imagen)
-    user.objetivo = body.get("objetivo", user.objetivo) 
-    user.altura = body.get("altura", user.altura)       
-    user.peso = body.get("peso", user.peso) 
+    user.objetivo = body.get("objetivo", user.objetivo)
+    user.altura = body.get("altura", user.altura)
+    user.peso = body.get("peso", user.peso)
     user.experiencia = body.get("experiencia", user.experiencia)
     user.profession_type = body.get("profession_type", user.profession_type)
     user.apellido = body.get("apellido", user.apellido)
     user.objetivo = body.get("objetivo", user.objetivo)
     user.altura = body.get("altura", user.altura)
     user.peso = body.get("peso", user.peso)
-
-    
 
     if "descripcion" in body:
         user.descripcion = body["descripcion"] or ""
@@ -141,7 +139,6 @@ def update_user(id):
         return jsonify({"error": "Error al guardar el usuario", "detalle": str(e)}), 500
 
     return jsonify(user.serialize()), 200
-
 
 
 @api.route('/users', methods=['DELETE'])
@@ -255,7 +252,6 @@ def get_professional(id):
     if not user or not user.is_professional:
         return jsonify({"error": "Entrenador no encontrado"}), 404
     return jsonify(user.serialize()), 200
-
 
 
 # @api.route('/professionals', methods=['POST'])
@@ -1010,7 +1006,6 @@ def get_user_inf():
         return jsonify({"error": "something went wrong"})
 
 
-
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -1069,7 +1064,21 @@ def get_training_entry(user_id):
     ).all()
     if not TrainingEntries:
         return jsonify({"error": "No se encuentra el plan entrenamiento para este usuario"}), 404
-    TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
+    TrainingEntries_serialized = [entry.serialize()
+                                  for entry in TrainingEntries]
+    return jsonify(TrainingEntries_serialized), 200
+
+@api.route('/user/training_entries', methods=['GET'])
+@jwt_required()
+def get_my_training_entries():
+    user_id = get_jwt_identity()
+    TrainingEntries = TrainingEntry.query.filter_by(
+        user_id=user_id,
+    ).all()
+    if not TrainingEntries:
+        return jsonify({"error": "No se encuentra el plan entrenamiento para este usuario"}), 404
+    TrainingEntries_serialized = [entry.serialize()
+                                  for entry in TrainingEntries]
     return jsonify(TrainingEntries_serialized), 200
 
 
@@ -1089,16 +1098,17 @@ def create_training_entry():
             user_id=data["userId"],
             profesional_id=user_id,
             dia_semana=dia,
-            grupo = data["plan"][dia].get('Grupo'),
-            nota = data["plan"][dia].get('Nota'),
-            )
+            grupo=data["plan"][dia].get('Grupo'),
+            nota=data["plan"][dia].get('Nota'),
+        )
         db.session.add(entry)
         db.session.commit()
         TrainingEntries = TrainingEntry.query.filter_by(
             user_id=data["userId"],
             profesional_id=user_id,
         ).all()
-        TrainingEntries_serialized = [entry.serialize() for entry in TrainingEntries]
+        TrainingEntries_serialized = [
+            entry.serialize() for entry in TrainingEntries]
     return jsonify({"message": "Plan entrenamiento creado correctamente", "Training_entry_list": TrainingEntries_serialized}), 201
 
 
@@ -1106,7 +1116,7 @@ def create_training_entry():
 @jwt_required()
 def update_training_entry(entry_id):
     user_id = get_jwt_identity()
-    entry = TrainingEntry.query.filter_by(id = entry_id).first()
+    entry = TrainingEntry.query.filter_by(id=entry_id).first()
     data = request.get_json() or {}
     for key, value in data.items():
         setattr(entry, key, value)
@@ -1136,7 +1146,6 @@ def list_nutrition_entries():
     return jsonify([e.serialize() for e in entries]), 200
 
 
-
 @api.route('/nutrition_entries/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_nutrition_entries_for_user(user_id):
@@ -1147,21 +1156,25 @@ def get_nutrition_entries_for_user(user_id):
     ).all()
     if not NutritionEntries:
         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
-    NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
+    NutritionEntries_serialized = [entry.serialize()
+                                   for entry in NutritionEntries]
     return jsonify(NutritionEntries_serialized), 200
-    
+
+
 @api.route('/user/nutrition_entries', methods=['GET'])
 @jwt_required()
 def get_my_nutrition_entries():
     user_id = get_jwt_identity()
-    
+
     NutritionEntries = NutritionEntry.query.filter_by(
         user_id=user_id,
     ).all()
     if not NutritionEntries:
         return jsonify({"error": "No se encuentra el plan nutricional para este usuario"}), 404
-    NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
+    NutritionEntries_serialized = [entry.serialize()
+                                   for entry in NutritionEntries]
     return jsonify(NutritionEntries_serialized), 200
+
 
 @api.route('/nutrition_entries', methods=['POST'])
 @jwt_required()
@@ -1190,7 +1203,8 @@ def create_nutrition_entry():
             user_id=data["userId"],
             profesional_id=user_id,
         ).all()
-        NutritionEntries_serialized = [entry.serialize() for entry in NutritionEntries]
+        NutritionEntries_serialized = [
+            entry.serialize() for entry in NutritionEntries]
     return jsonify({"message": "Plan nutricional creado correctamente", "Nutrition_entry_list": NutritionEntries_serialized}), 201
 
 
@@ -1198,7 +1212,7 @@ def create_nutrition_entry():
 @jwt_required()
 def update_nutrition_entry(entry_id):
     user_id = get_jwt_identity()
-    entry = NutritionEntry.query.filter_by(id = entry_id).first()
+    entry = NutritionEntry.query.filter_by(id=entry_id).first()
     print(entry)
     data = request.get_json() or {}
     for key, value in data.items():

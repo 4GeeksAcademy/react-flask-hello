@@ -1,56 +1,40 @@
-.video-container {
-    height: 180px;
-  }
-  
-  .play-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0.625rem;
-  }/* Estilos para la página de entrenamiento personalizado */
-
+/* Estilos para la página de entrenamiento personalizado */
 /* Reset y estilos base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Contenedor principal */
 .entrenamiento-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #909ec0 0%, #4b32b9 50%, #0f172a 100%);
-  padding: 1.5rem;
+  background: linear-gradient(135deg,  #213448 100%);
+  padding: 4rem 1.5rem 1.5rem 1.5rem; /* top, right, bottom, left */
 }
 
 .entrenamiento-wrapper {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 /* Encabezado principal */
 .entrenamiento-header {
   text-align: center;
   margin-bottom: 3rem;
 }
-
 .entrenamiento-title {
   font-size: 3rem;
   font-weight: bold;
-  color: white;
+  color: #ECEFCA;
   margin-bottom: 1rem;
 }
-
 .entrenamiento-subtitle {
   font-size: 1.25rem;
-  color: #d1d5db;
+  color: #ECEFCA;
   max-width: 32rem;
   margin: 0 auto;
 }
-
 /* Grid de grupos musculares */
 .grupos-grid {
   display: grid;
@@ -58,100 +42,84 @@ body {
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
-
 /* Tarjetas de grupos musculares */
 .grupo-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
+  background: #ECEFCA;
   border-radius: 1rem;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #213448;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
 }
-
 .grupo-card:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(34, 34, 181, 0.5);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(147, 51, 234, 0.25);
 }
-
 .grupo-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
-
 .grupo-icon {
   width: 2rem;
   height: 2rem;
-  color: #0f0731;
+  color: #03000D;
   transition: color 0.3s ease;
 }
-
 .grupo-card:hover .grupo-icon {
-  color: #0a0316;
+  color: #0A0316;
 }
-
 .grupo-arrow {
   width: 1.5rem;
   height: 1.5rem;
-  color: #9ca3af;
+  color: #94B4C1;
   transition: all 0.3s ease;
 }
-
 .grupo-card:hover .grupo-arrow {
-  color: white;
+  color: #213448;
   transform: translateX(4px);
 }
-
 .grupo-nombre {
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
+  color: #213448;
   margin-bottom: 0.5rem;
   transition: color 0.3s ease;
 }
-
 .grupo-card:hover .grupo-nombre {
-  color: #e9d5ff;
+  color: #213448;
 }
-
 .grupo-descripcion {
-  color: #9ca3af;
+  color: #213448;
   transition: color 0.3s ease;
 }
-
 .grupo-card:hover .grupo-descripcion {
-  color: #d1d5db;
+  color: #213448;
 }
-
 .grupo-progress-bar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #290284, #3b82f6);
+  background: linear-gradient(90deg, #F1F3F5, #94B4C1);
   border-radius: 0 0 1rem 1rem;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
 .grupo-card:hover .grupo-progress-bar {
   opacity: 1;
 }
-
 /* Vista de ejercicios */
 .ejercicios-container {
   max-width: 1000px;
   margin: 0 auto;
 }
-
 .ejercicios-header {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
@@ -160,7 +128,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 2rem;
 }
-
 .btn-volver {
   display: flex;
   align-items: center;
@@ -172,123 +139,103 @@ body {
   margin-bottom: 1.5rem;
   transition: color 0.3s ease;
 }
-
 .btn-volver:hover {
-  color: #7298cc;
+  color: #7298CC;
 }
-
 .btn-volver-icon {
   width: 1.25rem;
   height: 1.25rem;
   margin-right: 0.5rem;
   transform: rotate(180deg);
 }
-
 .ejercicios-title-container {
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
 }
-
 .ejercicios-title-icon {
   width: 2rem;
   height: 2rem;
-  color: #5593f7;
+  color: #213448;
   margin-right: 0.75rem;
 }
-
 .ejercicios-title {
   font-size: 2rem;
   font-weight: bold;
   color: white;
 }
-
 /* Grid de ejercicios */
 .ejercicios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 1.5rem;
 }
-
 /* Tarjetas de ejercicios */
 .ejercicio-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
+  background: #ECEFCA;
   border-radius: 0.75rem;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #213448;
   transition: all 0.3s ease;
 }
-
 .ejercicio-card:hover {
-  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
-
 .ejercicio-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
-
 .ejercicio-nombre {
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: #213448;
   flex: 1;
   margin-right: 0.5rem;
 }
-
 .ejercicio-icon {
   width: 1.5rem;
   height: 1.5rem;
   color: #080121;
   flex-shrink: 0;
 }
-
 .ejercicio-descripcion {
-  color: #d1d5db;
+  color: #213448;
   margin-bottom: 1rem;
   line-height: 1.6;
 }
-
 .ejercicio-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
-
 .tag-series {
-  background: rgba(147, 51, 234, 0.2);
-  color: #7abaef;
+  background: #94B4C1;
+  color: #213448;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
-  border: 1px solid rgba(147, 51, 234, 0.3);
+  border: 1px solid #213448;
 }
-
 .tag-repeticiones {
   background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
+  color: #94B4C1;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid #547792;
 }
-
 /* Footer */
 .entrenamiento-footer {
   text-align: center;
   margin-top: 3rem;
 }
-
 .footer-text {
-  color: #9ca3af;
+  color: #DADFE8;
 }
-
 /* Estilos del video */
 .video-container {
   position: relative;
@@ -297,16 +244,14 @@ body {
   margin: 1rem 0;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(243, 240, 240, 0.003);
 }
-
 .video-iframe {
   width: 100%;
   height: 100%;
   border: none;
   border-radius: 0.5rem;
 }
-
 .video-overlay {
   position: absolute;
   top: 0;
@@ -316,16 +261,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(240, 235, 235, 0.3);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
-
 .video-container:hover .video-overlay {
   opacity: 1;
 }
-
 .play-icon {
   width: 3rem;
   height: 3rem;
@@ -335,51 +278,41 @@ body {
   padding: 0.75rem;
   backdrop-filter: blur(8px);
 }
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .entrenamiento-title {
     font-size: 2.5rem;
   }
-  
   .entrenamiento-subtitle {
     font-size: 1.125rem;
   }
-  
   .grupos-grid {
     grid-template-columns: 1fr;
   }
-  
   .ejercicios-grid {
     grid-template-columns: 1fr;
   }
-  
   .grupo-card,
   .ejercicio-card {
     padding: 1.5rem;
   }
 }
-
 @media (max-width: 480px) {
   .entrenamiento-container {
     padding: 1rem;
   }
-  
   .entrenamiento-title {
     font-size: 2rem;
   }
-  
   .grupo-card,
   .ejercicio-card,
   .ejercicios-header {
     padding: 1rem;
   }
-  
   .ejercicio-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
   .ejercicio-nombre {
     margin-right: 0;
     margin-bottom: 0.5rem;

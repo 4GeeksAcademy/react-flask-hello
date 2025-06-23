@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 0e1f335c36ec
+Revision ID: 76033bb40eb7
 Revises: 
-Create Date: 2025-06-21 07:37:13.518979
+Create Date: 2025-06-23 15:07:37.854237
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0e1f335c36ec'
+revision = '76033bb40eb7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,8 +23,8 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password', sa.String(length=256), nullable=False),
     sa.Column('name', sa.String(length=120), nullable=False),
-    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('role', sa.Enum('administrator', 'client', name='roleenum'), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
@@ -33,13 +33,21 @@ def upgrade():
     sa.Column('name', sa.String(length=120), nullable=False),
     sa.Column('color', sa.String(length=120), nullable=False),
     sa.Column('type', sa.String(length=120), nullable=False),
-    sa.Column('model', sa.Integer(), nullable=False),
     sa.Column('serial_number', sa.String(length=20), nullable=False),
-    sa.Column('piezes', sa.Integer(), nullable=False),
+    sa.Column('pieces', sa.Integer(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('status', sa.Enum('available', 'rent', name='carrole'), nullable=False),
+    sa.Column('model', sa.Integer(), nullable=False),
+    sa.Column('make', sa.String(length=120), nullable=False),
+    sa.Column('year', sa.Integer(), nullable=False),
+    sa.Column('fuel_type', sa.String(length=50), nullable=False),
+    sa.Column('transmission', sa.String(length=50), nullable=False),
+    sa.Column('cylinders', sa.Integer(), nullable=False),
+    sa.Column('displacement', sa.String(length=50), nullable=False),
+    sa.Column('drive', sa.String(length=50), nullable=False),
+    sa.Column('image_url', sa.String(length=500), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('license_plate')

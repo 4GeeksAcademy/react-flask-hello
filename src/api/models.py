@@ -52,14 +52,24 @@ class Car(db.Model):
     name: Mapped[str] = mapped_column(String(120), nullable=False)
     color: Mapped[str] = mapped_column(String(120), nullable=False)
     type: Mapped[str] = mapped_column(String(120), nullable=False)
-    model: Mapped[int] = mapped_column(Integer, nullable=False)
     serial_number: Mapped[str] = mapped_column(String(20), nullable=False)
-    piezes: Mapped[int] = mapped_column(Integer, nullable=False)
+    pieces: Mapped[int] = mapped_column(Integer, nullable=False)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     status: Mapped[enum.Enum] = mapped_column(Enum(CarRole), default=CarRole.available, nullable=False)
     
+    model: Mapped[str] = mapped_column(String(120), nullable=False)
+    make: Mapped[str] = mapped_column(String(120), nullable=False)
+    year: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    fuel_type: Mapped[str] = mapped_column(String(50))
+    transmission: Mapped[str] = mapped_column(String(50))
+    cylinders: Mapped[int] = mapped_column(Integer)
+    displacement: Mapped[str] = mapped_column(String(50))
+    drive: Mapped[str] = mapped_column(String(50))
+    image_url: Mapped[str] = mapped_column(String(500))
+
     # Relaciones
     bookings = relationship('Booking', back_populates='car', lazy='dynamic')
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
@@ -71,13 +81,20 @@ class Car(db.Model):
             "name": self.name,
             "color": self.color,
             "type": self.type,
-            "model": self.model,
             "serial_number": self.serial_number,
-            "piezes": self.piezes,
+            "pieces": self.pieces,
             "price": self.price,
+            "status": self.status.value,
             "created_at": self.created_at.isoformat(),
             "is_active": self.is_active,
-            "status": self.status.value,
+
+            # External API
+           
+            "make": self.make,
+            "model": self.model,
+            "year": self.year,
+
+            "image_url": self.image_url,
             "user_id": self.user_id
         }
 

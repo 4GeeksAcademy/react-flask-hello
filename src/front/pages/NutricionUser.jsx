@@ -12,6 +12,7 @@ const NutricionUser = () => {
   const navigate = useNavigate();
   const userId = store.user?.id;
 
+  
   useEffect(() => {
     if (!store.user?.subscription?.length > 0) {
       navigate("/Tarifas");
@@ -100,9 +101,9 @@ const NutricionUser = () => {
           ))}
         </div>
 
-        <div className="card p-3 bg-dark text-light border-light">
+        <div className="card p-3 text-light border-light">
           <h2 className="text-center mb-4">{diaActivo}</h2>
-          <table className="table table-dark table-bordered">
+          <table className="table tablita  table-bordered">
             <thead>
               <tr>
                 <th>Comida</th>

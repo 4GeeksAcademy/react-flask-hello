@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, Dumbbell, Target, Play } from 'lucide-react';
 import "../../styles/Epersonalizado.css";
+import { useParams } from 'react-router-dom';
 
 const Home = () => {
+  const { grupo } = useParams();
   const [grupoSeleccionado, setGrupoSeleccionado] = useState(null);
+
+  useEffect(() => {
+    if (grupo) {
+      setGrupoSeleccionado(grupo);
+    }
+  }, [grupo]);
+
+
 
   const gruposMusculares = {
     hombro: {
-      nombre: 'Hombro',  
+      nombre: 'Hombro',
       entrenamientos: [
         {
           nombre: 'Press militar con mancuernas',
@@ -321,20 +331,20 @@ const Home = () => {
     return (
       <div className="entrenamiento-container">
         <div className="ejercicios-container">
-          <button 
+          <button
             onClick={volver}
             className="btn-volver"
           >
             <ChevronRight className="btn-volver-icon" />
             Volver a grupos musculares
           </button>
-          
+
           <div className="ejercicios-header">
             <div className="ejercicios-title-container">
               <Target className="ejercicios-title-icon" />
               <h1 className="ejercicios-title">Entrenamientos de {grupo.nombre}</h1>
             </div>
-            
+
             <div className="ejercicios-grid">
               {grupo.entrenamientos.map((entrenamiento, index) => {
                 const videoId = getYouTubeVideoId(entrenamiento.video);
@@ -344,9 +354,9 @@ const Home = () => {
                       <h3 className="ejercicio-nombre">{entrenamiento.nombre}</h3>
                       <Dumbbell className="ejercicio-icon" />
                     </div>
-                    
+
                     <p className="ejercicio-descripcion">{entrenamiento.descripcion}</p>
-                    
+
                     {/* Video de YouTube */}
                     {videoId && (
                       <div className="video-container">
@@ -363,7 +373,7 @@ const Home = () => {
                         </div>
                       </div>
                     )}
-                    
+
                     <div className="ejercicio-tags">
                       <span className="tag-series">
                         {entrenamiento.series}
@@ -393,7 +403,7 @@ const Home = () => {
             Selecciona el grupo muscular que quieres entrenar y descubre 4 ejercicios específicos
           </p>
         </div>
-        
+
         <div className="grupos-grid">
           {Object.entries(gruposMusculares).map(([key, grupo]) => (
             <button
@@ -405,20 +415,20 @@ const Home = () => {
                 <Dumbbell className="grupo-icon" />
                 <ChevronRight className="grupo-arrow" />
               </div>
-              
+
               <h2 className="grupo-nombre">
                 {grupo.nombre}
               </h2>
-              
+
               <p className="grupo-descripcion">
                 4 ejercicios específicos
               </p>
-              
+
               <div className="grupo-progress-bar"></div>
             </button>
           ))}
         </div>
-        
+
         <div className="entrenamiento-footer">
           <p className="footer-text">
             💪 Haz clic en cualquier grupo muscular para ver los ejercicios recomendados

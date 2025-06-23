@@ -96,6 +96,7 @@ body {
 }
 
 
+
 .tarjetaNp:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
@@ -201,4 +202,27 @@ body {
 
 .tabla-nutricion h4 {
   color: #ECEFCA;
+}
+
+
+
+/* Tabla sin fondo y texto amarillo */
+.tabla-nutricion .tablita {
+  background-color: transparent !important;
+  color: yellow !important;
+  border-color: yellow !important;
+}
+
+.tabla-nutricion .tablita th,
+.tabla-nutricion .tablita td {
+  background-color: transparent !important;
+  color: #ECEFCA;
+  border-color: #ECEFCA;
+}
+
+/* Opcional: bordes más suaves */
+.tabla-nutricion .tablita th,
+.tabla-nutricion .tablita td {
+  border-width: 1px;
+  border-style: solid;
 }

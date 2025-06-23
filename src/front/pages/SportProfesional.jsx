@@ -85,38 +85,38 @@ const SportProfesional = () => {
     }
   };
 
-const handleCrearNuevoPlan = async () => {
-  try {
-    const nuevoPlan = {
-      userId: usuarioSeleccionado.id,
-      plan: crearPlanVacio()
-    };
+  const handleCrearNuevoPlan = async () => {
+    try {
+      const nuevoPlan = {
+        userId: usuarioSeleccionado.id,
+        plan: crearPlanVacio()
+      };
 
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/training_entries`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(nuevoPlan),
-    });
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/training_entries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(nuevoPlan),
+      });
 
-    if (!res.ok) throw new Error("Error al crear el plan");
+      if (!res.ok) throw new Error("Error al crear el plan");
 
-    const data = await res.json();
- 
-    alert("¡Plan creado correctamente!");
-    setPlan(data.Training_entry_list); 
-    setDiaActivo(data.Training_entry_list[0]); 
-    setModoEdicion(true);
-  } catch (err) {
-    alert("Error al crear nuevo plan: " + err.message);
-  }
-};
+      const data = await res.json();
+
+      alert("¡Plan creado correctamente!");
+      setPlan(data.Training_entry_list);
+      setDiaActivo(data.Training_entry_list[0]);
+      setModoEdicion(true);
+    } catch (err) {
+      alert("Error al crear nuevo plan: " + err.message);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
-    setDiaActivo({...diaActivo, [name]: value});
+    setDiaActivo({ ...diaActivo, [name]: value });
   }
   return (
     <div className="sport-profesional container mt-5">
@@ -137,11 +137,11 @@ const handleCrearNuevoPlan = async () => {
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-          {usuarios.map(user =>{ 
+          {usuarios.map(user => {
             if (!user.is_professional) {
-               return (
-            <option key={user.id} value={user.id}>{user.nombre}</option>
-          )
+              return (
+                <option key={user.id} value={user.id}>{user.nombre}</option>
+              )
             }
           })}
         </select>
@@ -156,17 +156,19 @@ const handleCrearNuevoPlan = async () => {
         )}
 
         {usuarioSeleccionado && plan && (
-          <>
-            {!modoEdicion ? (
-              <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
+          <div className="d-flex justify-content-center gap-3 mb-4">
+            {!modoEdicion && (
+              <button className="btn btn-warning" onClick={handleEditarPlan}>
                 Editar Plan Entrenamiento
               </button>
-            ) : (
-              <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
+            )}
+
+            {modoEdicion && (
+              <button className="btn btn-success" onClick={handleGuardarCambios}>
                 Guardar Cambios
               </button>
             )}
-          </>
+          </div>
         )}
       </section>
 
@@ -193,11 +195,23 @@ const handleCrearNuevoPlan = async () => {
             <ul className="list-group">
               <li>
                 <label className="form-label text-light">Grupo :</label>
-                <input type="text" value={diaActivo.grupo} name="grupo" onChange={handleInputChange}/>
+                <input
+                  type="text"
+                  value={diaActivo.grupo}
+                  name="grupo"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
               <li>
                 <label className="form-label text-light">Nota :</label>
-                <input type="text" value={diaActivo.nota} name="nota" onChange={handleInputChange}/>
+                <input
+                  type="text"
+                  value={diaActivo.nota}
+                  name="nota"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
             </ul>
           </div>

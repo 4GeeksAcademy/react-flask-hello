@@ -1,0 +1,92 @@
+.container_login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Footer del formulario */
+.form-footer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Línea: checkbox a la izquierda y enlace a la derecha */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* Checkbox */
+.remember-label {
+  display: flex;
+  align-items: center;
+  color: #f0f0d0;
+}
+
+.remember-label input[type="checkbox"] {
+  margin-right: 5px;
+  accent-color: #007bff;
+}
+
+/* Link */
+.forgot-password {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Botón login */
+.button_login {
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px solid;
+  border-color: #ECEFCA;
+}
+
+.options-row {
+  display: flex;
+  justify-content: center;
+}
+
+.error-message {
+    color: #ff4d4f;
+    background-color: #fff1f0;
+    border: 1px solid #f07e78;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 500;
+}

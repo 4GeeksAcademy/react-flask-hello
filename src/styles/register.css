@@ -1,0 +1,60 @@
+.container_register {
+  height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h2 {
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 24px;
+  color: #ecefca;
+}
+
+span {
+  font-size: 14px;
+  color: #ecefca;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.button_login {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 12px 30px;
+  background-color: #32a88b;
+  color: white;
+  border-radius: 20px;
+}
+
+.button_login:hover {
+  background-color: #289376;
+}
+
+.checkbox1{
+    display: flex;
+    width: 15px;
+}
+
+.container_login{
+    min-height: 65vh;
+}
+

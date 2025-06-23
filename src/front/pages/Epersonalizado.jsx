@@ -7,7 +7,7 @@ const Home = () => {
 
   const gruposMusculares = {
     hombro: {
-      nombre: 'Hombro', 
+      nombre: 'Hombro',  
       entrenamientos: [
         {
           nombre: 'Press militar con mancuernas',

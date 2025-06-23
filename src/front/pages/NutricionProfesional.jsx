@@ -107,7 +107,7 @@ const NutricionProfesional = () => {
       const data = await res.json();
       console.log(data);
       alert("¡Plan creado correctamente!");
-      setPlan({ ...nuevoPlan.plan });
+      setPlan(data.Nutrition_entry_list);
       setModoEdicion(true);
     } catch (err) {
       alert("Error al crear nuevo plan: " + err.message);
@@ -191,7 +191,7 @@ const NutricionProfesional = () => {
           </h2>
 
           <div className="button d-flex justify-content-center flex-wrap mb-4">
-            {plan.map((dia) => (
+            {plan && plan.map((dia) => (
               <button
                 key={dia.id}
                 onClick={() => setDiaActivo(dia)}

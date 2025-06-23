@@ -12,6 +12,7 @@ const NutricionUser = () => {
   const navigate = useNavigate();
   const userId = store.user?.id;
 
+  
   useEffect(() => {
     if (!store.user?.subscription?.length > 0) {
       navigate("/Tarifas");

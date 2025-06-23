@@ -107,13 +107,13 @@ const NutricionProfesional = () => {
       const data = await res.json();
       console.log(data);
       alert("¡Plan creado correctamente!");
-      setPlan({...nuevoPlan.plan});
+      setPlan({ ...nuevoPlan.plan });
       setModoEdicion(true);
     } catch (err) {
       alert("Error al crear nuevo plan: " + err.message);
     }
   };
-console.log("Plan:", plan);
+  console.log("Plan:", plan);
   const handleCambioComida = (comida, texto) => {
     setPlan(prev => ({
       ...prev,
@@ -123,11 +123,11 @@ console.log("Plan:", plan);
       }
     }));
   };
-console.log({diaActivo: diaActivo});
+  console.log({ diaActivo: diaActivo });
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
-    setDiaActivo({...diaActivo, [name]: value});
+    setDiaActivo({ ...diaActivo, [name]: value });
   }
   return (
     <div className="nutricion-profesional container mt-5">
@@ -148,11 +148,11 @@ console.log({diaActivo: diaActivo});
           defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-          {usuarios.map(user =>{ 
+          {usuarios.map(user => {
             if (!user.is_professional) {
-               return (
-            <option key={user.id} value={user.id}>{user.nombre}</option>
-          )
+              return (
+                <option key={user.id} value={user.id}>{user.nombre}</option>
+              )
             }
           })}
         </select>
@@ -166,18 +166,21 @@ console.log({diaActivo: diaActivo});
           </div>
         )}
 
+
         {usuarioSeleccionado && plan && (
-          <>
-            {!modoEdicion ? (
-              <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
+          <div className="d-flex justify-content-center gap-3 mb-4">
+            {!modoEdicion && (
+              <button className="btn btn-warning" onClick={handleEditarPlan}>
                 Editar Plan Nutricional
               </button>
-            ) : (
-              <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
+            )}
+
+            {modoEdicion && (
+              <button className="btn btn-success" onClick={handleGuardarCambios}>
                 Guardar Cambios
               </button>
             )}
-          </>
+          </div>
         )}
       </section>
 
@@ -204,19 +207,43 @@ console.log({diaActivo: diaActivo});
             <ul className="list-group">
               <li>
                 <label htmlFor="" className="form-label text-light">Desayuno:</label>
-                <input type="text" value={diaActivo.desayuno} name="desayuno" onChange={handleInputChange}/>
+                <input
+                  type="text"
+                  value={diaActivo.desayuno}
+                  name="desayuno"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
               <li>
-                <label htmlFor="" className="form-label text-light">Media Mañana :</label>
-                <input type="text" value={diaActivo.media_mañana} name="media_mañana" onChange={handleInputChange}/>
+                <label htmlFor="" className="form-label text-light">Media Mañana:</label>
+                <input
+                  type="text"
+                  value={diaActivo.media_mañana}
+                  name="media_mañana"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
               <li>
                 <label htmlFor="" className="form-label text-light">Comida:</label>
-                <input type="text" value={diaActivo.comida} name="comida" onChange={handleInputChange}/>
+                <input
+                  type="text"
+                  value={diaActivo.comida}
+                  name="comida"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
               <li>
                 <label htmlFor="" className="form-label text-light">Cena:</label>
-                <input type="text" value={diaActivo.cena} name="cena" onChange={handleInputChange}/>
+                <input
+                  type="text"
+                  value={diaActivo.cena}
+                  name="cena"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
               </li>
             </ul>
           </div>

@@ -71,7 +71,7 @@ const User = () => {
         }
 
         if (campo === "telefono") {
-          payload[campo] = parseInt(valor); // ✅ Convertir explícitamente
+          payload[campo] = parseInt(valor);
         }
         else if (campo === "peso" || campo === "altura") {
           payload[campo] = parseFloat(valor);

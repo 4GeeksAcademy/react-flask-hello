@@ -127,6 +127,7 @@ const NutricionProfesional = () => {
     }
   };
 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setDiaActivo(prev => ({ ...prev, [name]: value }));
@@ -141,6 +142,49 @@ const NutricionProfesional = () => {
   };
 
   
+  const handleCrearNuevoPlan = async () => {
+    try {
+      const nuevoPlan = {
+        userId: usuarioSeleccionado.id,
+        plan: crearPlanVacio()
+      };
+
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(nuevoPlan),
+      });
+
+      if (!res.ok) throw new Error("Error al crear el plan");
+      const data = await res.json();
+      console.log(data);
+      alert("¡Plan creado correctamente!");
+      setPlan({ ...nuevoPlan.plan });
+      setModoEdicion(true);
+    } catch (err) {
+      alert("Error al crear nuevo plan: " + err.message);
+    }
+  };
+  console.log("Plan:", plan);
+  const handleCambioComida = (comida, texto) => {
+    setPlan(prev => ({
+      ...prev,
+      [diaActivo]: {
+        ...prev[diaActivo],
+        [comida]: texto
+      }
+    }));
+  };
+  console.log({ diaActivo: diaActivo });
+
+  const handleInputChange = (e) => {
+    const { value, name } = e.target;
+    setDiaActivo({ ...diaActivo, [name]: value });
+  }
+
   return (
     <div className="nutricion-profesional container mt-5">
       <section className="npHero text-center py-5">
@@ -159,14 +203,24 @@ const NutricionProfesional = () => {
           }}
         >
           <option value="" disabled>Elige un usuario</option>
+
           {usuarios.map(u => (
             <option key={u.id} value={u.id}>{u.nombre}</option>
           ))}
+
+          {usuarios.map(user => {
+            if (!user.is_professional) {
+              return (
+                <option key={user.id} value={user.id}>{user.nombre}</option>
+              )
+            }
+          })}
         </select>
 
         {usuarioSeleccionado && !plan.length && (
           <p>Este usuario no tiene plan nutricional.</p>
         )}
+
 
         {usuarioSeleccionado && plan.length > 0 && !modoEdicion && (
           <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
@@ -177,6 +231,23 @@ const NutricionProfesional = () => {
           <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
             Guardar Cambios
           </button>
+
+
+        {usuarioSeleccionado && plan && (
+          <div className="d-flex justify-content-center gap-3 mb-4">
+            {!modoEdicion && (
+              <button className="btn btn-warning" onClick={handleEditarPlan}>
+                Editar Plan Nutricional
+              </button>
+            )}
+
+            {modoEdicion && (
+              <button className="btn btn-success" onClick={handleGuardarCambios}>
+                Guardar Cambios
+              </button>
+            )}
+          </div>
+
         )}
       </section>
 
@@ -205,6 +276,7 @@ const NutricionProfesional = () => {
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo.dia_semana}</h3>
             <ul className="list-group">
+
               {["desayuno", "media_mañana", "comida", "cena"].map(field => (
                 <li key={field} className="mb-2">
                   <label className="form-label text-light text-capitalize">
@@ -220,6 +292,48 @@ const NutricionProfesional = () => {
                   />
                 </li>
               ))}
+
+              <li>
+                <label htmlFor="" className="form-label text-light">Desayuno:</label>
+                <input
+                  type="text"
+                  value={diaActivo.desayuno}
+                  name="desayuno"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
+              </li>
+              <li>
+                <label htmlFor="" className="form-label text-light">Media Mañana:</label>
+                <input
+                  type="text"
+                  value={diaActivo.media_mañana}
+                  name="media_mañana"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
+              </li>
+              <li>
+                <label htmlFor="" className="form-label text-light">Comida:</label>
+                <input
+                  type="text"
+                  value={diaActivo.comida}
+                  name="comida"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
+              </li>
+              <li>
+                <label htmlFor="" className="form-label text-light">Cena:</label>
+                <input
+                  type="text"
+                  value={diaActivo.cena}
+                  name="cena"
+                  onChange={handleInputChange}
+                  disabled={!modoEdicion}
+                />
+              </li>
+
             </ul>
           </div>
         </section>

@@ -1,154 +1,95 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/nutricionProfesional.css";
 
+const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-const diasSemana = [
-  "Lunes", "Martes", "Miércoles", "Jueves",
-  "Viernes", "Sábado", "Domingo"
-];
-
-
-const crearPlanVacio = () => 
-  diasSemana.map(dia => ({
-    id: null,
-    dia_semana: dia,
-    desayuno: "",
-    media_mañana: "",
-    comida: "",
-    cena: ""
-  }));
+const crearPlanVacio = () => {
+  return diasSemana.reduce((acc, dia) => {
+    acc[dia] = {
+      Desayuno: "",
+      Almuerzo: "",
+      Comida: "",
+      Cena: ""
+    };
+    return acc;
+  }, {});
+};
 
 const NutricionProfesional = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  const [plan, setPlan] = useState([]);           // sera siempre array
-  const [diaActivo, setDiaActivo] = useState(null);
+  const [plan, setPlan] = useState(null);
+  const [diaActivo, setDiaActivo] = useState("Lunes");
   const [modoEdicion, setModoEdicion] = useState(false);
+  const [alerta, setAlerta] = useState(null);
 
+  const mostrarAlerta = (mensaje) => {
+    setAlerta(mensaje);
+    setTimeout(() => setAlerta(null), 3000);
+  };
 
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`);
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/users");
         const data = await res.json();
-        setUsuarios(data.filter(u => !u.is_professional));
-      } catch (err) {
-        console.error("Error al cargar usuarios:", err);
+        setUsuarios(data);
+      } catch (error) {
+        console.error("Error al cargar usuarios:", error);
       }
     };
     fetchUsuarios();
   }, []);
 
-  
   useEffect(() => {
     if (!usuarioSeleccionado) return;
-
     const fetchPlan = async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries/${usuarioSeleccionado.id}`,
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-        );
-        if (!res.ok) {
-          // si 404 o similar, montamos un plan vacío
-          const vacio = crearPlanVacio();
-          setPlan(vacio);
-          setDiaActivo(vacio[0]);
-          setModoEdicion(true);
-          return;
-        }
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + `api/nutrition_entries/${usuarioSeleccionado.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (!res.ok) throw new Error("Este usuario no tiene plan");
         const data = await res.json();
-
-        // 2.a) Ordena por id ascendente
-        data.sort((a, b) => a.id - b.id);
-
-        // 2.b) Inicializa plan y día activo
         setPlan(data);
-        setDiaActivo(data[0]);
         setModoEdicion(false);
-      } catch (err) {
-        console.error("Error al cargar plan:", err);
+      } catch (error) {
+        setPlan(null);
       }
     };
-
     fetchPlan();
   }, [usuarioSeleccionado]);
-
 
   const handleEditarPlan = () => setModoEdicion(true);
 
   const handleGuardarCambios = async () => {
     try {
-      
-      if (diaActivo.id === null) {
-        // Creamos el plan completo
-        const body = {
-          userId: usuarioSeleccionado.id,
-          plan: plan.reduce((acc, entry) => {
-            acc[entry.dia_semana] = {
-              Desayuno: entry.desayuno,
-              "Media Mañana": entry.media_mañana,
-              Comida: entry.comida,
-              Cena: entry.cena
-            };
-            return acc;
-          }, {})
-        };
-        await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify(body)
-          }
-        );
-      } else {
-        // Editamos un día concreto con PUT
-        await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries/${diaActivo.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify(diaActivo)
-          }
-        );
-      }
-      alert("¡Plan guardado correctamente!");
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}api/nutrition_entries/${diaActivo.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(diaActivo),
+        }
+      );
+      await res.json();
+      mostrarAlerta("¡Plan actualizado correctamente!");
       setModoEdicion(false);
     } catch (err) {
-      console.error(err);
-      alert("Error al guardar el plan");
+      mostrarAlerta("Error al guardar el plan.");
     }
   };
 
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setDiaActivo(prev => ({ ...prev, [name]: value }));
-    // actualizar también en el array de plan
-    setPlan(prev =>
-      prev.map(entry =>
-        entry.dia_semana === diaActivo.dia_semana
-          ? { ...entry, [name]: value }
-          : entry
-      )
-    );
-  };
-
-  
   const handleCrearNuevoPlan = async () => {
     try {
       const nuevoPlan = {
         userId: usuarioSeleccionado.id,
         plan: crearPlanVacio()
       };
-
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/nutrition_entries`, {
         method: "POST",
         headers: {
@@ -157,36 +98,25 @@ const NutricionProfesional = () => {
         },
         body: JSON.stringify(nuevoPlan),
       });
-
       if (!res.ok) throw new Error("Error al crear el plan");
       const data = await res.json();
-      console.log(data);
-      alert("¡Plan creado correctamente!");
+      mostrarAlerta("¡Plan creado correctamente!");
       setPlan({ ...nuevoPlan.plan });
       setModoEdicion(true);
     } catch (err) {
-      alert("Error al crear nuevo plan: " + err.message);
+      mostrarAlerta("Error al crear nuevo plan: " + err.message);
     }
   };
-  console.log("Plan:", plan);
-  const handleCambioComida = (comida, texto) => {
-    setPlan(prev => ({
-      ...prev,
-      [diaActivo]: {
-        ...prev[diaActivo],
-        [comida]: texto
-      }
-    }));
-  };
-  console.log({ diaActivo: diaActivo });
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     setDiaActivo({ ...diaActivo, [name]: value });
-  }
+  };
 
   return (
     <div className="nutricion-profesional container mt-5">
+      {alerta && <div className="alerta-flotante">{alerta}</div>}
+
       <section className="npHero text-center py-5">
         <h1 className="display-4 tittle">Nutrición Profesional</h1>
         <p className="lead">Gestiona los planes de alimentación de tus clientes fácilmente.</p>
@@ -196,42 +126,31 @@ const NutricionProfesional = () => {
         <h2 className="subtittle mb-3">Selecciona un usuario</h2>
         <select
           className="form-select w-50 mx-auto mb-3"
-          defaultValue=""
-          onChange={e => {
-            const sel = usuarios.find(u => u.id === +e.target.value);
-            setUsuarioSeleccionado(sel);
+          onChange={(e) => {
+            const selected = usuarios.find(u => u.id === parseInt(e.target.value));
+            setUsuarioSeleccionado(selected);
+            setDiaActivo("Lunes");
           }}
+          defaultValue=""
         >
           <option value="" disabled>Elige un usuario</option>
-
-          {usuarios.map(u => (
-            <option key={u.id} value={u.id}>{u.nombre}</option>
-          ))}
-
           {usuarios.map(user => {
             if (!user.is_professional) {
               return (
                 <option key={user.id} value={user.id}>{user.nombre}</option>
-              )
+              );
             }
           })}
         </select>
 
-        {usuarioSeleccionado && !plan.length && (
-          <p>Este usuario no tiene plan nutricional.</p>
+        {usuarioSeleccionado && plan === null && (
+          <div>
+            <p>Este usuario no tiene plan nutricional.</p>
+            <button className="btn btn-primary" onClick={handleCrearNuevoPlan}>
+              Crear nuevo plan
+            </button>
+          </div>
         )}
-
-
-        {usuarioSeleccionado && plan.length > 0 && !modoEdicion && (
-          <button className="btn btn-warning mb-4" onClick={handleEditarPlan}>
-            Editar Plan Nutricional
-          </button>
-        )}
-        {usuarioSeleccionado && modoEdicion && (
-          <button className="btn btn-success mb-4" onClick={handleGuardarCambios}>
-            Guardar Cambios
-          </button>
-
 
         {usuarioSeleccionado && plan && (
           <div className="d-flex justify-content-center gap-3 mb-4">
@@ -240,100 +159,56 @@ const NutricionProfesional = () => {
                 Editar Plan Nutricional
               </button>
             )}
-
             {modoEdicion && (
               <button className="btn btn-success" onClick={handleGuardarCambios}>
                 Guardar Cambios
               </button>
             )}
           </div>
-
         )}
       </section>
 
-      {usuarioSeleccionado && plan.length > 0 && (
+      {usuarioSeleccionado && plan && (
         <section className="tabla-nutricion my-5">
           <h2 className="text-center subtittle mb-4">
             Plan Semanal de {usuarioSeleccionado.nombre}
           </h2>
-
           <div className="button d-flex justify-content-center flex-wrap mb-4">
-            {plan.map((entry) => (
-              <button
-                key={entry.id ?? entry.dia_semana}
-                onClick={() => setDiaActivo(entry)}
-                className={`btn mx-1 mb-2 ${
-                  entry.dia_semana === diaActivo?.dia_semana
-                    ? "btn-primary"
-                    : "btn-outline-primary"
-                }`}
-              >
-                {entry.dia_semana}
-              </button>
-            ))}
+            {diasSemana.map((nombreDia) => {
+              const dia = plan.find((d) => d.dia_semana === nombreDia);
+              if (!dia) return null;
+
+              return (
+                <button
+                  key={dia.id ?? nombreDia}
+                  onClick={() => setDiaActivo(dia)}
+                  className={`btn mx-1 mb-2 ${dia.dia_semana === diaActivo?.dia_semana ? "btn-primary" : "btn-outline-primary"}`}
+                >
+                  {dia.dia_semana}
+                </button>
+              );
+            })}
+
           </div>
 
-          <div className="card p-3">
+          <div className={`card p-3 ${!modoEdicion ? "bloqueado" : ""}`}>
             <h3 className="mb-4 text-center">{diaActivo.dia_semana}</h3>
-            <ul className="list-group">
-
-              {["desayuno", "media_mañana", "comida", "cena"].map(field => (
-                <li key={field} className="mb-2">
+            <ul className="list-group no-bullets">
+              {["desayuno", "media_mañana", "comida", "cena"].map((comida) => (
+                <li key={comida} className="mb-2">
                   <label className="form-label text-light text-capitalize">
-                    {field.replace("_", " ")}:
+                    {comida.replace("_", " ")}:
                   </label>
-                  <input 
+                  <input
                     type="text"
-                    className="form-control"
-                    name={field}
-                    value={diaActivo[field]||""}
+                    name={comida}
+                    value={diaActivo[comida] || ""}
                     onChange={handleInputChange}
                     disabled={!modoEdicion}
+                    className="form-control"
                   />
                 </li>
               ))}
-
-              <li>
-                <label htmlFor="" className="form-label text-light">Desayuno:</label>
-                <input
-                  type="text"
-                  value={diaActivo.desayuno}
-                  name="desayuno"
-                  onChange={handleInputChange}
-                  disabled={!modoEdicion}
-                />
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Media Mañana:</label>
-                <input
-                  type="text"
-                  value={diaActivo.media_mañana}
-                  name="media_mañana"
-                  onChange={handleInputChange}
-                  disabled={!modoEdicion}
-                />
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Comida:</label>
-                <input
-                  type="text"
-                  value={diaActivo.comida}
-                  name="comida"
-                  onChange={handleInputChange}
-                  disabled={!modoEdicion}
-                />
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Cena:</label>
-                <input
-                  type="text"
-                  value={diaActivo.cena}
-                  name="cena"
-                  onChange={handleInputChange}
-                  disabled={!modoEdicion}
-                />
-              </li>
-
             </ul>
           </div>
         </section>

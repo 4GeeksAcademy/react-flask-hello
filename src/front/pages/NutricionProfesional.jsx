@@ -201,24 +201,48 @@ console.log({diaActivo: diaActivo});
 
           <div className="card p-3">
             <h3 className="mb-4 text-center">{diaActivo.dia_semana}</h3>
-            <ul className="list-group">
-              <li>
-                <label htmlFor="" className="form-label text-light">Desayuno:</label>
-                <input type="text" value={diaActivo.desayuno} name="desayuno" onChange={handleInputChange}/>
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Media Mañana :</label>
-                <input type="text" value={diaActivo.media_mañana} name="media_mañana" onChange={handleInputChange}/>
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Comida:</label>
-                <input type="text" value={diaActivo.comida} name="comida" onChange={handleInputChange}/>
-              </li>
-              <li>
-                <label htmlFor="" className="form-label text-light">Cena:</label>
-                <input type="text" value={diaActivo.cena} name="cena" onChange={handleInputChange}/>
-              </li>
-            </ul>
+           <ul className="list-group">
+  <li>
+    <label htmlFor="" className="form-label text-light">Desayuno:</label>
+    <input
+      type="text"
+      value={diaActivo.desayuno}
+      name="desayuno"
+      onChange={handleInputChange}
+      disabled={!modoEdicion}
+    />
+  </li>
+  <li>
+    <label htmlFor="" className="form-label text-light">Media Mañana:</label>
+    <input
+      type="text"
+      value={diaActivo.media_mañana}
+      name="media_mañana"
+      onChange={handleInputChange}
+      disabled={!modoEdicion}
+    />
+  </li>
+  <li>
+    <label htmlFor="" className="form-label text-light">Comida:</label>
+    <input
+      type="text"
+      value={diaActivo.comida}
+      name="comida"
+      onChange={handleInputChange}
+      disabled={!modoEdicion}
+    />
+  </li>
+  <li>
+    <label htmlFor="" className="form-label text-light">Cena:</label>
+    <input
+      type="text"
+      value={diaActivo.cena}
+      name="cena"
+      onChange={handleInputChange}
+      disabled={!modoEdicion}
+    />
+  </li>
+</ul>
           </div>
         </section>
       )}

@@ -59,6 +59,7 @@
 		"@stripe/stripe-js": "^7.3.1",
 		"@vis.gl/react-google-maps": "^1.5.3",
 		"bootstrap": "^5.3.6",
+		"cors": "^2.8.5",
 		"lucide-react": "^0.511.0",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",

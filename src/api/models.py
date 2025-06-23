@@ -403,8 +403,8 @@ class TrainingEntry(db.Model):
     profesional_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('users.id'), nullable=False)
     dia_semana: Mapped[str] = mapped_column(String(40), nullable=False)
-    grupo: Mapped[str] = mapped_column(String(200), nullable=False)
-    nota: Mapped[str] = mapped_column(Text, nullable=False)
+    grupo: Mapped[str] = mapped_column(String(200), nullable=True)
+    nota: Mapped[str] = mapped_column(Text, nullable=True)
     fecha: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False)
 
@@ -417,7 +417,8 @@ class TrainingEntry(db.Model):
             "user_id": self.user_id,
             "grupo": self.grupo,
             "nota": self.nota,
-            "fecha": self.fecha.isoformat()
+            "fecha": self.fecha.isoformat(),
+            "dia_semana": self.dia_semana
         }
 
 

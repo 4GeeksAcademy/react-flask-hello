@@ -18,6 +18,42 @@ def get_price_for_type(type_):
 
 # --- AUTHENTICATION ROUTES ---
 
+# @api.route('/signup', methods=['POST'])
+# def create_user():
+#     data = request.get_json()
+
+#     required_fields = ['email', 'password', 'name', 'address', 'phone', 'identification']
+#     missing_fields = [field for field in required_fields if not data.get(field)]
+
+#     if missing_fields:
+#         return jsonify({'msg': f"Missing fields: {', '.join(missing_fields)}"}), 400
+
+#     email = data['email']
+#     existing_user = User.query.filter_by(email=email).first()
+#     if existing_user:
+#         return jsonify({'msg': 'Email is already in use'}), 409
+
+#     hashed_password = generate_password_hash(data['password'])
+
+#     new_user = User(
+#         name=data['name'],
+#         email=email,
+#         password=hashed_password,
+#         is_admin=data.get('is_admin', False),
+#         address=data['address'],
+#         phone=data['phone'],
+#         identification=data['identification']
+#     )
+#     db.session.add(new_user)
+
+#     try:
+#         db.session.commit()
+#         return jsonify(new_user.serialize()), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({'msg': 'Internal Server Error', 'error': str(e)}), 500
+
+
 @api.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json() or {}

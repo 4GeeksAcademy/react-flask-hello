@@ -6,11 +6,11 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .entrenamiento-container {
   min-height: 100vh;
-  background: linear-gradient(135deg,  #213448 100%);
+  background: linear-gradient(135deg, #213448 100%);
   padding: 4rem 1.5rem 1.5rem 1.5rem; /* top, right, bottom, left */
 }
 
@@ -26,12 +26,14 @@ body {
 .entrenamiento-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #ECEFCA;
+  color: #ecefca;
+  color: #ecefca;
   margin-bottom: 1rem;
 }
 .entrenamiento-subtitle {
   font-size: 1.25rem;
-  color: #ECEFCA;
+  color: #ecefca;
+  color: #ecefca;
   max-width: 32rem;
   margin: 0 auto;
 }
@@ -44,9 +46,11 @@ body {
 }
 /* Tarjetas de grupos musculares */
 .grupo-card {
-  background: #ECEFCA;
+  background: #ecefca;
+  background: #ecefca;
   border-radius: 1rem;
   padding: 2rem;
+  border: 1px solid #213448;
   border: 1px solid #213448;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -68,19 +72,21 @@ body {
 .grupo-icon {
   width: 2rem;
   height: 2rem;
-  color: #03000D;
+  color: #03000d;
   transition: color 0.3s ease;
 }
 .grupo-card:hover .grupo-icon {
-  color: #0A0316;
+  color: #0a0316;
 }
 .grupo-arrow {
   width: 1.5rem;
   height: 1.5rem;
-  color: #94B4C1;
+  color: #94b4c1;
+  color: #94b4c1;
   transition: all 0.3s ease;
 }
 .grupo-card:hover .grupo-arrow {
+  color: #213448;
   color: #213448;
   transform: translateX(4px);
 }
@@ -88,17 +94,21 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   color: #213448;
+  color: #213448;
   margin-bottom: 0.5rem;
   transition: color 0.3s ease;
 }
 .grupo-card:hover .grupo-nombre {
   color: #213448;
+  color: #213448;
 }
 .grupo-descripcion {
+  color: #213448;
   color: #213448;
   transition: color 0.3s ease;
 }
 .grupo-card:hover .grupo-descripcion {
+  color: #213448;
   color: #213448;
 }
 .grupo-progress-bar {
@@ -107,7 +117,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #F1F3F5, #94B4C1);
+  background: linear-gradient(90deg, #f1f3f5, #94b4c1);
   border-radius: 0 0 1rem 1rem;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -140,7 +150,7 @@ body {
   transition: color 0.3s ease;
 }
 .btn-volver:hover {
-  color: #7298CC;
+  color: #7298cc;
 }
 .btn-volver-icon {
   width: 1.25rem;
@@ -157,6 +167,7 @@ body {
   width: 2rem;
   height: 2rem;
   color: #213448;
+  color: #213448;
   margin-right: 0.75rem;
 }
 .ejercicios-title {
@@ -172,9 +183,11 @@ body {
 }
 /* Tarjetas de ejercicios */
 .ejercicio-card {
-  background: #ECEFCA;
+  background: #ecefca;
+  background: #ecefca;
   border-radius: 0.75rem;
   padding: 1.5rem;
+  border: 1px solid #213448;
   border: 1px solid #213448;
   transition: all 0.3s ease;
 }
@@ -191,6 +204,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   color: #213448;
+  color: #213448;
   flex: 1;
   margin-right: 0.5rem;
 }
@@ -202,6 +216,7 @@ body {
 }
 .ejercicio-descripcion {
   color: #213448;
+  color: #213448;
   margin-bottom: 1rem;
   line-height: 1.6;
 }
@@ -211,21 +226,26 @@ body {
   gap: 0.75rem;
 }
 .tag-series {
-  background: #94B4C1;
+  background: #94b4c1;
+  color: #213448;
+  background: #94b4c1;
   color: #213448;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
   border: 1px solid #213448;
+  border: 1px solid #213448;
 }
 .tag-repeticiones {
   background: rgba(59, 130, 246, 0.2);
-  color: #94B4C1;
+  color: #94b4c1;
+  color: #94b4c1;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
+  border: 1px solid #547792;
   border: 1px solid #547792;
 }
 /* Footer */
@@ -234,7 +254,7 @@ body {
   margin-top: 3rem;
 }
 .footer-text {
-  color: #DADFE8;
+  color: #dadfe8;
 }
 /* Estilos del video */
 .video-container {
@@ -244,6 +264,7 @@ body {
   margin: 1rem 0;
   border-radius: 0.5rem;
   overflow: hidden;
+  background: rgba(243, 240, 240, 0.003);
   background: rgba(243, 240, 240, 0.003);
 }
 .video-iframe {
@@ -261,6 +282,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(240, 235, 235, 0.3);
   background: rgba(240, 235, 235, 0.3);
   opacity: 0;
   transition: opacity 0.3s ease;

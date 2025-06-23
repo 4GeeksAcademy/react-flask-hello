@@ -1,0 +1,228 @@
+body {
+  background: #213448;
+  color: #ECEFCA;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nutricion-user {
+  padding-top: 10px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin-bottom: 0;
+  background: #213448;
+}
+
+
+.logo-navbar {
+  height: 90px;
+  object-fit: contain;
+}
+
+.nutricion-user .npHero {
+  background-color: #547792;
+  border-radius: 20px;
+}
+
+.npHero {
+  background-image: url("/comdia.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  color: white;
+  margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 260px;
+}
+
+.npHero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.npHero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.tarjetaNp {
+  background: #ECEFCA;
+}
+
+
+.nutricion-user .tittle,
+.nutricion-user .subtittle {
+  color: white;
+  font-weight: bold;
+}
+
+.nutricion-user .card-title {
+  color: #547792;
+}
+
+
+.tarjetaNp {
+  background-color: #ECEFCA;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+
+.tarjetaNp:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  color: #5a8dee;
+  font-weight: bold;
+}
+
+.card-text {
+  color: #213448;
+}
+
+.beneficios {
+  padding: 2rem 1rem;
+  border-radius: 10px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.beneficios .subtittle {
+  color: #ECEFCA;
+  font-weight: bold;
+}
+
+.caja-bot {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.nutricion-user .beneficios .list-group-item {
+  background-color: #ECEFCA;
+  color: #213448;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}
+
+.button_login {
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.button_login:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 2px;
+  border-color: #ECEFCA;
+}
+
+.tabla-nutricion .btn {
+  min-width: 150px;
+  padding: 10px 20px;
+  border: 2px solid #ECEFCA;
+  background-color: #ECEFCA;
+  color: #213448;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.tabla-nutricion .btn:hover {
+  background-color: #213448;
+  color: #ECEFCA;
+  border-radius: 20px;
+  border-color: #ECEFCA;
+}
+
+.tabla-nutricion .card {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tabla-nutricion .card {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.tabla-nutricion .list-group-item {
+  background-color: #213448;
+  color: #ECEFCA;
+  border: 1px solid #ECEFCA;
+}
+
+.tabla-nutricion h4 {
+  color: #ECEFCA;
+}
+
+
+
+/* Tabla sin fondo y texto amarillo */
+.tabla-nutricion .tablita {
+  background-color: transparent !important;
+  color: yellow !important;
+  border-color: yellow !important;
+}
+
+.tabla-nutricion .tablita th,
+.tabla-nutricion .tablita td {
+  background-color: transparent !important;
+  color: #ECEFCA;
+  border-color: #ECEFCA;
+}
+
+/* Opcional: bordes más suaves */
+.tabla-nutricion .tablita th,
+.tabla-nutricion .tablita td {
+  border-width: 1px;
+  border-style: solid;
+}

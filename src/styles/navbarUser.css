@@ -1,0 +1,136 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.1s ease-in-out;
+  box-shadow: 0 10px 30px #94B4C1;
+  backdrop-filter: blur(8px);
+}
+
+.logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  background-image: linear-gradient(10deg, #2e66a2, rgb(66, 66, 64));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-highlight {
+  color: #213448;
+}
+
+.menu {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ECEFCA;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px #ECEFCA;
+}
+
+.menu-item.hover {
+  transform: translateY(-2px);
+}
+
+.menu-link {
+  padding: 20px 0;
+  display: block;
+  position: relative;
+  color: #365271;
+  text-decoration: none;
+}
+
+.menu-link-after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(to right, rgba(236, 239, 202, 0.56), rgb(255, 255, 255));
+  transition: width 0.3s ease;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #ECEFCA, rgb(107, 120, 237));
+  z-index: 2000;
+  transition: width 0.1s ease-out;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #ECEFCA;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .menu.mobile {
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    background: rgb(29, 29, 29);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .menu.mobile.open {
+    transform: translateX(0);
+  }
+}
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  background-image: linear-gradient(10deg, #213448, rgb(66, 66, 64));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-decoration: none;  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-text:visited,
+.logo-text:link,
+.logo-text:hover,
+.logo-text:active {
+  color: transparent;
+  text-decoration: none; 
+}

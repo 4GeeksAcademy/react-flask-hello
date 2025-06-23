@@ -1,0 +1,172 @@
+.parallax-camera {
+  position: relative;
+  width: 100vw;
+  height: 80vh;
+  overflow: hidden;
+  background-color: black;
+}
+
+.parallax-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.parallax-image {
+  width: 100vw;
+  height: 80vh;
+  object-fit: cover;
+  transition: transform 1s ease-in-out, transform-origin 1s ease-in-out;
+}
+
+.camera-controls {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 10;
+}
+
+.camera-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #3851669f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.camera-controls button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* UI que aparece al hacer zoom a la izquierda */
+.left-ui {
+  position: absolute;
+  top: 20%;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  z-index: 20;
+  max-width: 300px;
+}
+
+.mensaje-nutricion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.4;
+  z-index: 30;
+}
+
+
+.botones-nutricion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.botones-nutricion button {
+  padding: 10px 16px;
+  font-size: 15px;
+  background: #3851669c;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.botones-nutricion button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* UI que aparece al hacer zoom a la derecha */
+.right-ui {
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  z-index: 20;
+  max-width: 300px;
+}
+
+.mensaje-entrenamiento {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #3851669c;
+  color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.4;
+  z-index: 30;
+}
+
+
+.botones-entrenamiento {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.botones-entrenamiento button {
+  padding: 10px 16px;
+  font-size: 15px;
+  background: #3851669f;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.botones-entrenamiento button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.titulo-superior {
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 58px;
+  font-weight: bold;
+  color: white;
+  z-index: 30;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  font-family: 'Arial Black', sans-serif;
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+.titulo-oculto {
+  opacity: 0;
+}
+
+.linkparallax {
+  color: #ECEFCA;
+  text-decoration: none;
+}
+

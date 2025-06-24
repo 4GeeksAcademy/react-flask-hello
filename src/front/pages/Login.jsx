@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,7 +15,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+            const res = await fetch(`${backendUrl}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -30,15 +32,15 @@ const Login = () => {
 
             sessionStorage.setItem("token", data.access_token);
 
-            dispatch({
-                type: "SET_TOKEN",
-                payload: data.access_token
-            });
+            // dispatch({
+            //     type: "SET_TOKEN",
+            //     payload: data.access_token
+            // });
 
-            dispatch({
-                type: "SET_USER",
-                payload: data.user
-            });
+            // dispatch({
+            //     type: "SET_USER",
+            //     payload: data.user
+            // });
 
             navigate("/private");
         } catch (err) {

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function DescriptionSubcompactCar() {
   const { license_plate } = useParams();
   const [car, setCar] = useState(null);
-  useEffect(() => fetch(`/api/cars/${license_plate}`).then(r=>r.json()).then(setCar), [license_plate]);
+  useEffect(() => fetch(`${backendUrl}/api/cars/${license_plate}`).then(r=>r.json()).then(setCar), [license_plate]);
   if (!car) return <div>Loading...</div>;
   return (
     <div>

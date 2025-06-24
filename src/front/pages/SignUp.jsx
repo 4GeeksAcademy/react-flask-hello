@@ -1,25 +1,28 @@
 import { useState } from "react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function SignUp() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        is_admin: false
+        address: "",
+        phone: ""
     });
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: type === "checkbox" ? checked : value
+            [name]: value
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData)
         try {
-            const resp = await fetch("https://turbo-funicular-wr54xg64jwq73g74v-3001.app.github.dev/api/signup", {
+            const resp = await fetch(backendUrl+"/api/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
@@ -41,39 +44,29 @@ export function SignUp() {
                 <div className="row mt-2">
                     <div className="col-6">
                         <label for="inputEmail4" className="form-label">Email</label>
-                        <input type="email" className="form-control" id="inputEmail4" />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="form-control" id="inputEmail4" />
                     </div>
                     <div className="col-6">
                         <label for="inputPassword4" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="inputPassword4" />
+                        <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-control" id="inputPassword4" />
                     </div>
                 </div>
                 <div className="col-12">
                     <label for="inputFullName" className="form-label">Full Name</label>
-                    <input type="text" className="form-control" id="inputFullName" placeholder="Full Name" />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} className="form-control" id="inputFullName" placeholder="Full Name" />
                 </div>
                 <div className="col-12">
                     <label for="inputAddress" className="form-label">Address</label>
-                    <input type="text" className="form-control" id="inputAddress" placeholder="123 Main ST" />
+                    <input type="text" name="address" value={formData.address} onChange={handleChange} className="form-control" id="inputAddress" placeholder="123 Main ST" />
                 </div>
                 <div className="row">
                     <div className="col-6">
                         <label for="inputPhone" className="form-label">Phone</label>
-                        <input type="phone" className="form-control" id="inputPhone" />
+                        <input type="phone" name="phone" value={formData.phone} onChange={handleChange} className="form-control" id="inputPhone" />
                     </div>
-                    <div className="col-6">
-                        <label for="inputID" className="form-label">ID</label>
-                        <input type="ID" className="form-control" id="inputID" />
-                    </div>
+                    
                 </div>
-                <div className="col-12">
-                    <div className="form-check">
-                        <input className="form-check-input" type="checkbox" id="gridCheck" onChange={handleChange}/>
-                        <label className="form-check-label" for="gridCheck">
-                            Admin?
-                        </label>
-                    </div>
-                </div>
+                
                 <div className="col-12 mb-2 d-flex justify-content-center">
                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Sign up</button>
                 </div>

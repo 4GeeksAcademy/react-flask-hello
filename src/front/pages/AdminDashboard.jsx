@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function AdminDashboard() {
   const { store } = useGlobalReducer();
@@ -100,11 +101,11 @@ export default function AdminDashboard() {
     };
 
     try {
-      const res = await fetch("https://legendary-guide-6qvv94vp7w73r5rw-3001.app.github.dev/api/cars/import", {
+      const res = await fetch(backendUrl+"/api/cars/import", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${store.token}`
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`
         },
         body: JSON.stringify(payload)
       });

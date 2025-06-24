@@ -20,10 +20,12 @@ class CarRole(enum.Enum):
 class User(db.Model):
     __tablename__ = 'users'
     
-    id: Mapped[int] = mapped_column(Integer, Sequence('user_id_seq'), primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(256), nullable=False)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
+    address: Mapped[str] = mapped_column(String(120), nullable=False)
+    phone: Mapped[str] = mapped_column(String(120), nullable=False)
     role: Mapped[enum.Enum] = mapped_column(Enum(RoleEnum), default=RoleEnum.client, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     

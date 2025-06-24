@@ -1,52 +1,67 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import React, { useEffect } from "react";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import CardSubcompactCar from "../components/CardSubcompactCar.jsx";
+import CardMediumCar from "../components/CardMediumCar.jsx";
+import CardPremiumCar from "../components/CardPremiumCar.jsx";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-export const Home = () => {
+export default function Home() {
+  const { store, dispatch } = useGlobalReducer();
 
-	const { store, dispatch } = useGlobalReducer()
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
+    fetch(backendUrl+"/api/cars?type=subcompact", { headers })
+      .then(r => r.json())
+      .then(data => dispatch({ type: "set_cars", category: "subcompact", payload: data }))
+      .catch(console.error);
 
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
+    fetch(backendUrl+"/api/cars?type=medium", { headers })
+      .then(r => r.json())
+      .then(data => dispatch({ type: "set_cars", category: "medium", payload: data }))
+      .catch(console.error);
 
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
+    fetch(backendUrl+"/api/cars?type=premium", { headers })
+      .then(r => r.json())
+      .then(data => dispatch({ type: "set_cars", category: "premium", payload: data }))
+      .catch(console.error);
+  }, []);
 
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
+  // validaciones
 
-			return data
+  return (
+    <div className="container my-4">
+      <h2>Favorites</h2>
+      {store.favorites.length === 0 ? <p>No favorites yet.</p> :
+        <div className="d-flex flex-wrap">
+          {store.favorites.map(v => (
+            <CardSubcompactCar key={v.license_plate} vehicle={v} />
+          ))}
+        </div>
+      }
 
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
+      <h2>Subcompact Cars</h2>
+      {store.subcompact.length === 0 ? <p>No cars available in this category.</p> :
+        <div className="d-flex flex-wrap">
+          {store.subcompact.map(v => <CardSubcompactCar key={v.license_plate} vehicle={v} />)}
+        </div>
+      }
 
-	}
+      <h2>Medium Cars</h2>
+      {store.medium.length === 0 ? <p>No cars available in this category.</p> :
+        <div className="d-flex flex-wrap">
+          {store.medium.map(v => <CardMediumCar key={v.license_plate} vehicle={v} />)}
+        </div>
+      }
 
-	useEffect(() => {
-		loadMessage()
-	}, [])
+      <h2>Premium Cars</h2>
+      {store.premium.length === 0 ? <p>No cars available in this category.</p> :
+        <div className="d-flex flex-wrap">
+          {store.premium.map(v => <CardPremiumCar key={v.license_plate} vehicle={v} />)}
+        </div>
+      }
+    </div>
+  );
+}
 
-	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
-		</div>
-	);
-}; 

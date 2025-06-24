@@ -1,0 +1,25 @@
+body {
+  background-image: linear-gradient(0deg, #124652, #199ab7);
+}
+
+.text-ct-secondary {
+  color: #60e0a5;
+}
+
+.text-ct-gray {
+  color: #a6bcc2;
+}
+
+.section-title {
+  color: #fbff06;
+}
+
+.card-background {
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(3px);
+  border: 0.15rem solid rgb(229, 229, 229, 0.25);
+}
+
+.ct-services-bg {
+  mix-blend-mode: soft-light;
+}

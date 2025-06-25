@@ -2,6 +2,21 @@ body {
   background-image: linear-gradient(0deg, #124652, #199ab7);
 }
 
+.ct-btn-outline-accent {
+  border: 0.15rem #fbff06 solid;
+  border-radius: 2rem;
+  /*padding: 0.5rem 5rem 0.5rem 5rem;*/
+  color: white;
+  font-weight: bold;
+}
+
+.ct-btn-outline-accent:hover {
+  background-color: #fbff06;
+  /*padding: 0.5rem 5rem 0.5rem 5rem;*/
+  color: #217b8f;
+  font-weight: bolder;
+}
+
 .text-ct-secondary {
   color: #60e0a5;
 }
@@ -12,6 +27,19 @@ body {
 
 .section-title {
   color: #fbff06;
+}
+
+.process-section-title {
+  background: none;
+  border-style: none;
+  font-size: xx-large;
+  color: #fbff06;
+  transition: 0.2s ease;
+}
+
+.process-section-title:hover {
+  color: #fbff06;
+  font-size: 2.08rem;
 }
 
 .card-background {

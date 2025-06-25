@@ -7,12 +7,12 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { Link } from "react-router-dom";
 
 export const Footer = () => (
-	<footer className="footer mt-auto py-3 mx-5">
-		<div className="container-fluid">
+	<footer className="footer mt-auto py-3 mx-3">
+		<div className="container">
 			<div className="row">
 				<div className="col text-center text-sm-start">
 					<img src={logoFooter} alt="clooudTech logo" className="mb-3" />
-					<p className="text-white mb-3 d-none d-sm-block">Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam mauris sed ma.</p>
+					<p className="text-white mb-3 w-50 d-none d-sm-block mb-4">Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam mauris sed ma.</p>
 					<div className="fs-2 d-flex gap-3 text-white justify-content-center justify-content-sm-start">
 						<FontAwesomeIcon icon={faFacebookSquare} />
 						<FontAwesomeIcon icon={faInstagram} />

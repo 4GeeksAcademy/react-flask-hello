@@ -15,11 +15,24 @@ body {
 }
 
 .card-background {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 16%);
   backdrop-filter: blur(3px);
   border: 0.15rem solid rgb(229, 229, 229, 0.25);
+  box-shadow: 1px 2px 6px rgb(0, 0, 0, 0.29);
 }
 
 .ct-services-bg {
   mix-blend-mode: soft-light;
+  opacity: 50%;
+}
+
+.ct-description-p {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .ct-description-p {
+    width: 40%;
+    margin: auto;
+  }
 }

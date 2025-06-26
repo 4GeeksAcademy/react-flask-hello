@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Services } from "../components/Services/Services.jsx";
+import { Process } from "../components/Process.jsx";
 
 
 export const Home = () => {
@@ -37,7 +38,8 @@ export const Home = () => {
 		<>
 			<div className="bg-secondary-subtle" style={{ height: "600px" }}>Hero Header Home</div>
 			<Services />
-			
+			<Process />
+
 		</>
 	);
 }; 

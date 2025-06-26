@@ -1,0 +1,115 @@
+:root {
+      /* RED */
+      --red-100: #FDE8ED;
+      --red-300: #F9A3B5;
+      --red-500: #D9214E;
+      --red-700: #A21538;
+      --red-900: #6C0C25;
+
+      /* BROWN */
+      --brown-100: #F3E9E5;
+      --brown-300: #D0A897;
+      --brown-500: #98654F;
+      --brown-700: #6A4333;
+      --brown-900: #3D251A;
+
+      /* ORANGE */
+      --orange-100: #FFF3DB;
+      --orange-300: #FDC56B;
+      --orange-500: #F69B11;
+      --orange-700: #B96D00;
+      --orange-900: #804800;
+
+      /* YELLOW */
+      --yellow-100: #FFFBE3;
+      --yellow-300: #FFE566;
+      --yellow-500: #FFC700;
+      --yellow-700: #A88400;
+      --yellow-900: #665100;
+
+      /* MINT */
+      --mint-100: #E4F7ED;
+      --mint-300: #88D8AE;
+      --mint-500: #47BE7D;
+      --mint-700: #2F7C53;
+      --mint-900: #1D4D33;
+      
+      /* GREEN */
+      --green-100: #C1F6D6;
+      --green-300: #70EFA7;
+      --green-500: #00CF53;
+      --green-700: #009E3E;
+      --green-900: #005B26;
+
+      /* AQUA */
+      --aqua-100: #DFF7FB;
+      --aqua-300: #76DBEC;
+      --aqua-500: #06B6D4;
+      --aqua-700: #047A91;
+      --aqua-900: #035160;
+
+      /* BLUE */
+      --blue-100: #DBF1FF;
+      --blue-300: #7DCEFA;
+      --blue-500: #0095E8;
+      --blue-700: #0068A3;
+      --blue-900: #004066;
+
+      /* PURPLE */
+      --purple-100: #E8E8FF;
+      --purple-300: #9C9BF0;
+      --purple-500: #3F3CE1;
+      --purple-700: #2B28A5;
+      --purple-900: #1B1A6C;
+
+      /* GRAYSCALE */      
+      --gray-100: #F7FAFC;
+      --gray-300: #CBD5E0;
+      --gray-500: #A0AEC0;
+      --gray-700: #4A5568;
+      --gray-900: #1A202C;
+
+      /*BLACK & WHITE*/
+      --black: #000000;
+      --white: #FFFFFF;
+    }
+
+body{
+  background-image: linear-gradient(180deg, var(--blue-900), var(--mint-700));
+  color: white;
+}
+.gradient-text {
+  background: linear-gradient(to right, #00A3FF, var(--green-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.white-bg{
+  background-color: var(--white);
+  
+}
+.flex-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.not-found-container {
+  background: white;
+  position: relative;
+  color: var(--gray-500);
+  min-height: 100vh;   
+  
+}
+.not-found-container img {
+
+  z-index: 1 ;
+}
+
+.not-found-number {
+  position: absolute;
+  font-size: 25rem; 
+  font-weight: 100;
+  color: var(--gray-100);
+  
+}

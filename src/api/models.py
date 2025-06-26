@@ -44,6 +44,8 @@ class User(db.Model):
         back_populates='user', cascade='all, delete-orphan')
     author_of_comment: Mapped[list['Comment']] = relationship(
         back_populates='comment_author', cascade='all, delete-orphan')
+    def __str__(self):
+        return f'User {self.full_name}'
     
 class Project(db.Model):
     __tablename__ = 'project'
@@ -62,7 +64,8 @@ class Project(db.Model):
         back_populates='project', cascade='all, delete-orphan')
     roles: Mapped[list['Role']] = relationship(
         back_populates='project', cascade='all, delete-orphan')
-    
+    def __str__(self):
+        return f'Project {self.title}'
 
 class Project_Member(db.Model):
     __tablename__ = 'project_member'
@@ -71,6 +74,8 @@ class Project_Member(db.Model):
     project_id: Mapped[int] = mapped_column(ForeignKey('project.id'))
     member: Mapped[User] = relationship(back_populates='member_of')
     project: Mapped[Project] = relationship(back_populates='members')
+    def __str__(self):
+        return f'Project Member {self.member.full_name} in {self.project.title}'
 
 class Task(db.Model):
     __tablename__= 'task'
@@ -87,6 +92,8 @@ class Task(db.Model):
         back_populates='task', cascade='all, delete-orphan')
     tags: Mapped[list['Tags']] = relationship(
         back_populates='task', cascade='all, delete-orphan')
+    def __str__(self):
+        return f'Task {self.title} in Project {self.project.title}'
 
 class Comment(db.Model):
     __tablename__='comment'
@@ -98,6 +105,8 @@ class Comment(db.Model):
     task: Mapped[Task] = relationship(back_populates='comments')
     author_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     comment_author: Mapped[User] = relationship(back_populates='author_of_comment')
+    def __str__(self):
+        return f'Comment {self.title}: {self.description} on Task {self.task.title} by {self.comment_author.full_name}'
 
 class Role(db.Model):
     __tablename__='role'
@@ -107,6 +116,8 @@ class Role(db.Model):
     user: Mapped[User] = relationship(back_populates='roles')
     project_id: Mapped[int] = mapped_column(ForeignKey('project.id'))
     project: Mapped[Project] = relationship(back_populates='roles')
+    def __str__(self):
+        return f'Role {self.status} for User {self.user.full_name} in Project {self.project.title}'
 
 class Tags(db.Model):
     __tablename__='tags'

@@ -30,7 +30,7 @@ class User(db.Model):
     phone: Mapped[int] = mapped_column(Integer, nullable=True)
     country: Mapped[str] = mapped_column(String(120), nullable=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    profile_picture_url: Mapped[str] = mapped_column(String, unique=True, nullable=True)
+    profile_picture_url: Mapped[str] = mapped_column(String, nullable=True)
     random_profile_color: Mapped[int] = mapped_column(Integer, nullable=True)
     time_zone: Mapped[str] = mapped_column(String(120), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
@@ -46,6 +46,20 @@ class User(db.Model):
         back_populates='comment_author', cascade='all, delete-orphan')
     def __str__(self):
         return f'User {self.full_name}'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'full_name': self.full_name,
+            'email': self.email,
+            'phone': self.phone,
+            'country': self.country,
+            'created_at': self.created_at,
+            'profile_picture_url': self.profile_picture_url,
+            'random_profile_color': self.random_profile_color,
+            'time_zone': self.time_zone,
+            'is_active': self.is_active
+        }
     
 class Project(db.Model):
     __tablename__ = 'project'
@@ -66,6 +80,19 @@ class Project(db.Model):
         back_populates='project', cascade='all, delete-orphan')
     def __str__(self):
         return f'Project {self.title}'
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'created_at': self.created_at.isoformat(),
+            'proyect_picture_url': self.proyect_picture_url,
+            'due_date': self.due_date.isoformat(),
+            'status': self.status.value,
+            'admin_id': self.admin_id,
+            'admin_full_name': self.admin.full_name,
+            'members': [member.serialize() for member in self.members]
+        }
 
 class Project_Member(db.Model):
     __tablename__ = 'project_member'
@@ -76,6 +103,14 @@ class Project_Member(db.Model):
     project: Mapped[Project] = relationship(back_populates='members')
     def __str__(self):
         return f'Project Member {self.member.full_name} in {self.project.title}'
+    def serialize(self):
+        return {
+            'id': self.id,
+            'member_id': self.member_id,
+            'project_id': self.project_id,
+            'member_full_name': self.member.full_name,
+            'project_title': self.project.title
+        }
 
 class Task(db.Model):
     __tablename__= 'task'
@@ -94,6 +129,20 @@ class Task(db.Model):
         back_populates='task', cascade='all, delete-orphan')
     def __str__(self):
         return f'Task {self.title} in Project {self.project.title}'
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'created_at': self.created_at.isoformat(),
+            'status': self.status.value,
+            'author_id': self.author_id,
+            'task_author': self.task_author.full_name,
+            'project_id': self.project_id,
+            'project': self.project.title,
+            'comments': [comment.serialize() for comment in self.comments],
+            'tags': [tag.tag for tag in self.tags]
+        }
 
 class Comment(db.Model):
     __tablename__='comment'
@@ -108,6 +157,18 @@ class Comment(db.Model):
     def __str__(self):
         return f'Comment {self.title}: {self.description} on Task {self.task.title} by {self.comment_author.full_name}'
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'created_at': self.created_at.isoformat(),
+            'task_id': self.task_id,
+            'task_title': self.task.title,
+            'author_id': self.author_id,
+            'author_full_name': self.comment_author.full_name
+        }
+
 class Role(db.Model):
     __tablename__='role'
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -119,9 +180,28 @@ class Role(db.Model):
     def __str__(self):
         return f'Role {self.status} for User {self.user.full_name} in Project {self.project.title}'
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'status': self.status.value,
+            'user_id': self.user_id,
+            'user_full_name': self.user.full_name,
+            'project_id': self.project_id,
+            'project_title': self.project.title
+        }
+
 class Tags(db.Model):
     __tablename__='tags'
     id: Mapped[int] = mapped_column(primary_key=True)
     tag: Mapped[str] = mapped_column(String(120), nullable=False)
     task_id: Mapped[int] = mapped_column(ForeignKey('task.id'))
     task: Mapped[Task] = relationship(back_populates='tags')
+    def __str__(self):
+        return f'Tag {self.tag} for Task {self.task.title}'
+    def serialize(self):
+        return {
+            'id': self.id,
+            'tag': self.tag,
+            'task_id': self.task_id,
+            'task_title': self.task.title
+        }

@@ -1,95 +1,180 @@
 :root {
-      /* RED */
-      --red-100: #FDE8ED;
-      --red-300: #F9A3B5;
-      --red-500: #D9214E;
-      --red-700: #A21538;
-      --red-900: #6C0C25;
+  /* RED */
+  --red-100: #fde8ed;
+  --red-300: #f9a3b5;
+  --red-500: #d9214e;
+  --red-700: #a21538;
+  --red-900: #6c0c25;
 
-      /* BROWN */
-      --brown-100: #F3E9E5;
-      --brown-300: #D0A897;
-      --brown-500: #98654F;
-      --brown-700: #6A4333;
-      --brown-900: #3D251A;
+  /* BROWN */
+  --brown-100: #f3e9e5;
+  --brown-300: #d0a897;
+  --brown-500: #98654f;
+  --brown-700: #6a4333;
+  --brown-900: #3d251a;
 
-      /* ORANGE */
-      --orange-100: #FFF3DB;
-      --orange-300: #FDC56B;
-      --orange-500: #F69B11;
-      --orange-700: #B96D00;
-      --orange-900: #804800;
+  /* ORANGE */
+  --orange-100: #fff3db;
+  --orange-300: #fdc56b;
+  --orange-500: #f69b11;
+  --orange-700: #b96d00;
+  --orange-900: #804800;
 
-      /* YELLOW */
-      --yellow-100: #FFFBE3;
-      --yellow-300: #FFE566;
-      --yellow-500: #FFC700;
-      --yellow-700: #A88400;
-      --yellow-900: #665100;
+  /* YELLOW */
+  --yellow-100: #fffbe3;
+  --yellow-300: #ffe566;
+  --yellow-500: #ffc700;
+  --yellow-700: #a88400;
+  --yellow-900: #665100;
 
-      /* MINT */
-      --mint-100: #E4F7ED;
-      --mint-300: #88D8AE;
-      --mint-500: #47BE7D;
-      --mint-700: #2F7C53;
-      --mint-900: #1D4D33;
-      
-      /* GREEN */
-      --green-100: #C1F6D6;
-      --green-300: #70EFA7;
-      --green-500: #00CF53;
-      --green-700: #009E3E;
-      --green-900: #005B26;
+  /* MINT */
+  --mint-100: #e4f7ed;
+  --mint-300: #88d8ae;
+  --mint-500: #47be7d;
+  --mint-700: #2f7c53;
+  --mint-900: #1d4d33;
 
-      /* AQUA */
-      --aqua-100: #DFF7FB;
-      --aqua-300: #76DBEC;
-      --aqua-500: #06B6D4;
-      --aqua-700: #047A91;
-      --aqua-900: #035160;
+  /* GREEN */
+  --green-100: #c1f6d6;
+  --green-300: #70efa7;
+  --green-500: #00cf53;
+  --green-700: #009e3e;
+  --green-900: #005b26;
 
-      /* BLUE */
-      --blue-100: #DBF1FF;
-      --blue-300: #7DCEFA;
-      --blue-500: #0095E8;
-      --blue-700: #0068A3;
-      --blue-900: #004066;
+  /* AQUA */
+  --aqua-100: #dff7fb;
+  --aqua-300: #76dbec;
+  --aqua-500: #06b6d4;
+  --aqua-700: #047a91;
+  --aqua-900: #035160;
 
-      /* PURPLE */
-      --purple-100: #E8E8FF;
-      --purple-300: #9C9BF0;
-      --purple-500: #3F3CE1;
-      --purple-700: #2B28A5;
-      --purple-900: #1B1A6C;
+  /* BLUE */
+  --blue-100: #dbf1ff;
+  --blue-300: #7dcefa;
+  --blue-500: #0095e8;
+  --blue-700: #0068a3;
+  --blue-900: #004066;
 
-      /* GRAYSCALE */      
-      --gray-100: #F7FAFC;
-      --gray-300: #CBD5E0;
-      --gray-500: #A0AEC0;
-      --gray-700: #4A5568;
-      --gray-900: #1A202C;
+  /* PURPLE */
+  --purple-100: #e8e8ff;
+  --purple-300: #9c9bf0;
+  --purple-500: #3f3ce1;
+  --purple-700: #2b28a5;
+  --purple-900: #1b1a6c;
 
-      /*BLACK & WHITE*/
-      --black: #000000;
-      --white: #FFFFFF;
-    }
+  /* GRAYSCALE */
+  --gray-100: #f7fafc;
+  --gray-300: #cbd5e0;
+  --gray-500: #a0aec0;
+  --gray-700: #4a5568;
+  --gray-900: #1a202c;
 
-body{
-  background-image: linear-gradient(180deg, var(--blue-900), var(--mint-700));
+  /*BLACK & WHITE*/
+  --black: #000000;
+  --white: #ffffff;
+}
+
+body {
+  background-image: linear-gradient(
+    180deg,
+    #051322,
+    var(--blue-500),
+    var(--mint-500)
+  );
   color: white;
+  background-repeat: no-repeat;
 }
 .gradient-text {
-  background: linear-gradient(to right, #00A3FF, var(--green-500));
+  background: linear-gradient(to right, #00a3ff, var(--green-500));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.white-bg{
+.white-bg {
   background-color: var(--white);
-  
 }
-.flex-center{
+.vh-100 {
+  height: 100vh;
+}
+.vh-50 {
+  height: 50vh;
+}
+
+.curved-div {
+  width: 100%;
+  height: 130vh;
+  padding-top: 5%;
+  background: white;
+  clip-path: url(#curvedClip);
+}
+
+.circle {
+  display: inline-block;
+  line-height: 0px;
+  border-radius: 50%;
+  background-color: var(--green-100);
+  color: var(--green-500);
+}
+
+.circle span {
+  display: inline-block;
+  padding-top: 50%;
+  padding-bottom: 50%;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.home {
+  position: relative;
+}
+.home span {
+  position: absolute;
+  width: 70vw;
+  height: 80vh;
+  bottom: -10vh;
+}
+.home-b {
+  margin-top: 15vh;
+  margin-bottom: 10vh;
+}
+.border-dash {
+  border: var(--gray-500);
+  border: dashed 2px;
+}
+.home-tech {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--gray-500);
+}
+.home-tech-box {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--gray-500);
+  border: 2px var(--gray-900);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(255, 255, 255, 0.1);
+}
+.portrait {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teamcardHW {
+  height: 400px;
+  width: 360px;
+}
+.teamcardHW a {
+  text-decoration: none;
+  color: var(--black);
+}
+
+.flex-center {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -98,18 +183,15 @@ body{
   background: white;
   position: relative;
   color: var(--gray-500);
-  min-height: 100vh;   
-  
+  min-height: 100vh;
 }
 .not-found-container img {
-
-  z-index: 1 ;
+  z-index: 1;
 }
 
 .not-found-number {
   position: absolute;
-  font-size: 25rem; 
+  font-size: 80vh;
   font-weight: 100;
   color: var(--gray-100);
-  
 }

@@ -4,6 +4,7 @@ import { Services } from "../components/Services/Services.jsx";
 import { Process } from "../components/Process.jsx";
 import { Projects } from "../components/Projects.jsx";
 import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
+import { Team } from "../components/Team/Team.jsx";
 
 
 export const Home = () => {
@@ -43,6 +44,7 @@ export const Home = () => {
 			<Process />
 			<Projects />
 			<Testimonials />
+			<Team />
 		</>
 	);
 }; 

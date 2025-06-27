@@ -5,7 +5,7 @@ import serviceBg from "../../assets/img/servicesBackground.png"
 export const Services = () => {
     return (
         <section className="d-flex justify-content-center mx-3 position-relative">
-            <img src={serviceBg} alt="" className="mx-auto ct-services-bg position-absolute w-100 h-100 object-fit-cover d-none d-sm-block" />
+            <img src={serviceBg} alt="CloudTech services background image" className="mx-auto ct-services-bg position-absolute w-100 h-100 object-fit-cover d-none d-sm-block" />
 
             <div className="container py-5">
                 <div className="d-flex flex-column text-center justify-content-center">

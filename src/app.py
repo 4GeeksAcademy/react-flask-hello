@@ -6,10 +6,12 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+import datetime, random
+from sqlalchemy.exc import IntegrityError
 
 # from models import Person
 
@@ -65,6 +67,60 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+@app.route('/register', methods=['POST'])
+def register():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg':'debes enviar información en el body'}), 400
+    if 'full_name' not in body:
+        return jsonify({'msg':'debes enviar un campo full_name'}), 400
+    if body['full_name'].strip() == '':
+        return jsonify({'msg': 'Debes enviar un nombre válido'}), 400
+    if 'email' not in body:
+        return jsonify({'msg':'debes enviar un campo email'}), 400
+    if body['email'].strip() == '':
+        return jsonify({'msg': 'Debes enviar un email válido'}), 400
+    if 'password' not in body:
+        return jsonify({'msg':'Debes enviar un campo password'}), 400
+    if body['password'].strip()=='':
+        return jsonify({'msg':'Debes enviar un password válido'}), 400
+    if 'country' not in body:
+        return jsonify({'msg':'Debes enviar un campo country'}), 400
+    if body['country'].strip()=='':
+        return jsonify({'msg':'Debes enviar un country válido'}), 400
+    
+    if 'phone' not in body:
+        phone=None
+    else:
+        phone=body['phone']
+
+    if 'profile_picture_url' not in body:
+        profile_picture_url=None
+    else:
+        profile_picture_url=body['profile_picture_url']
+
+    if profile_picture_url is None:
+        random_profile_color= random.randint(1, 7)
+    else:
+        random_profile_color=None
+
+    new_user=User()
+    new_user.full_name=body['full_name']
+    new_user.email=body['email']
+    new_user.password=body['password']
+    new_user.phone=phone
+    new_user.country=body['country']
+    new_user.created_at=datetime.datetime.now().strftime('%Y-%m-%d')
+    new_user.profile_picture_url=profile_picture_url
+    new_user.profile_color=random_profile_color
+    new_user.is_active=True
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'msg': 'Ingresa un email distinto.'}), 400
+    return jsonify({'msg': 'ok', 'new_user':new_user.serialize()}), 201
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

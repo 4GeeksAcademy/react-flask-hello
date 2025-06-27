@@ -9,21 +9,21 @@ import comparadiseProject1 from "../assets/img/Portfolio/comparadise2.png"
 
 export const Projects = () => {
     return (
-        <section>
+        <section className="mx-3">
             <div className="container py-5">
                 <div className="d-flex flex-column text-center justify-content-center mb-5">
                     <h2 className="section-title">Nuestros proyectos</h2>
                     <p className="text-white ct-description-p">Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan. </p>
                 </div>
-                <div className="row h-100">
-                    <div className="col-6">
+                <div className="row g-2 g-lg-3 h-100">
+                    <div className="col col-lg-6">
                         <div className="d-flex flex-column h-100">
                             <img src={muraProject1} className="mb-3 rounded-5 object-fit-cover flex-grow-1" alt="cloudtech portfolio image 1" />
                             <img src={bestfriendProject1} className="mb-3 rounded-5 object-cover" alt="cloudtech portfolio image 2" />
                         </div>
 
                     </div>
-                    <div className="col-6">
+                    <div className="col col-lg-6">
                         <div className="d-flex flex-column h-100">
                             <img src={comparadiseProject1} className="mb-3 rounded-5 object-fit-cover" alt="cloudtech portfolio image 4" />
                             <img src={vocaltechProject} className="mb-3 rounded-5 flex-grow-1 object-fit-cover" alt="cloudtech portfolio image 3" />

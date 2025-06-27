@@ -3,6 +3,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Services } from "../components/Services/Services.jsx";
 import { Process } from "../components/Process.jsx";
 import { Projects } from "../components/Projects.jsx";
+import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
 
 
 export const Home = () => {
@@ -41,6 +42,7 @@ export const Home = () => {
 			<Services />
 			<Process />
 			<Projects />
+			<Testimonials />
 		</>
 	);
 }; 

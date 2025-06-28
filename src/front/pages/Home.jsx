@@ -107,9 +107,9 @@ export const Home = () => {
         </h3>
 
         <div class="row justify-content-center ali pt-3 g-2 px-5">
-          <div className=" col-4">
+          <div className=" col-12 col-md-auto">
 
-            <div className="border-dash rounded p-2 teamcardHW flex-center flex-column ">
+            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
                 <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
@@ -122,9 +122,9 @@ export const Home = () => {
               </span>
             </div>
           </div>
-          <div className=" col-4">
+          <div className=" col-12 col-md-auto">
 
-            <div className="border-dash rounded p-2 teamcardHW flex-center flex-column ">
+            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
                 <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
@@ -137,9 +137,9 @@ export const Home = () => {
               </span>
             </div>
           </div>
-          <div className=" col-4">
+          <div className=" col-12 col-md-auto">
 
-            <div className="border-dash rounded p-2 teamcardHW flex-center flex-column ">
+            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
                 <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
@@ -147,7 +147,7 @@ export const Home = () => {
                 Abraham
               </h5>
               <span className="flex-center mb-5">
-                <img src={GHicon} style={{ width: '2rem', height: '2rem', color:"black" }} className="me-4"></img>
+                <img src={GHicon} style={{ width: '2rem', height: '2rem' }} className="me-4"></img>
                 <a href="https://github.com/Ablandaeta">Github</a>
               </span>
             </div>

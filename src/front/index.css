@@ -195,3 +195,7 @@ body {
   font-weight: 100;
   color: var(--gray-100);
 }
+
+.not-found-message{
+  font-size: 5vh;
+}

@@ -153,6 +153,7 @@ body {
     0 0 20px rgba(255, 255, 255, 0.25),
     0 0 30px rgba(255, 255, 255, 0.1);
 }
+
 .portrait {
   border-radius: 50%;
   aspect-ratio: 1/1;

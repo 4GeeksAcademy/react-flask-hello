@@ -13,7 +13,7 @@ import Design3 from "../assets/img/SVG/Desing3.svg"
 export const Home = () => {
   return (
     <>
-      <div className="flex-center flex-column">
+      <div className="flex-center flex-column vh-50" id="home">
         <h1 className="mb-2">Create Projects and Organize your teams</h1>
         <h2 className="gradient-text mb-5">
           <strong>The Best App</strong>
@@ -57,7 +57,7 @@ export const Home = () => {
       <div className="curved-div text-dark">
         <div class="container-fluid text-center mt-5">
           <div className="mb-5">
-            <h3>
+            <h3 id="howitworks">
               <strong> How It Works</strong>
             </h3>
             <p> Just follow this simple steps to conect with your team</p>
@@ -102,7 +102,7 @@ export const Home = () => {
       </div>
 
       <div className="container text-center home-b ">
-        <h3 className="mb-4">
+        <h3 className="mb-4" id="ourteam">
           <strong> Our Team</strong>
         </h3>
 

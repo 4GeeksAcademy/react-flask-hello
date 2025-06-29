@@ -17,7 +17,9 @@ from api.commands import setup_commands
 
 # Environment setup
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../dist/')
+
+# Point to the root directory where app.py and index.html live
+static_file_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -125,3 +127,4 @@ def login():
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+

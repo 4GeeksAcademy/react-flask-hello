@@ -19,6 +19,7 @@ import { App } from "./pages/App";
 function PrivateRoute({ children }) {
   const { store } = useContext(Context);
   return store.token ? children : <Navigate to="/login" />;
+}
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

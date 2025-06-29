@@ -18,18 +18,23 @@ export const Home = () => {
   return (
     <>
       <div className="flex-center flex-column vh-50" id="home">
-        <h1 className="mb-2">Create Projects and Organize your teams</h1>
-        <h2 className="gradient-text mb-5">
-          <strong>The Best App</strong>
+        <h1 className="mb-2 text-center">Create Projects and Organize your teams <br/> with</h1>
+        <div className="rounded text-center p-2 mb-5">
+        <h2 className="gradient-text ">
+          <strong>Echo Board</strong>
         </h2>
 
+        </div>  
+    
         {store.token ? (
           <h4 className="text-success">You're logged in and ready to go 🚀</h4>
         ) : (
           <h4 className="text-danger">Please log in to access your dashboard</h4>
         )}
 
-        <h2 className="rounded home-tech text-center p-2 mb-5" style={{ width: '13em' }}>
+        {/* Technologies Section */}
+
+        <h2 className="text-center mb-5" >
           Built with these Technologies
         </h2>
 
@@ -78,6 +83,14 @@ export const Home = () => {
         </div>
       </div>
 
+      {/* App Image Section
+      <div className="home flex-center mb-4">
+        <span className="border border-2 rounded shadow-lg">
+          <img src="" className="img-cover" 
+
+        </span>
+      </div>*/}
+
       {/* Our Team Section */}
       <div className="container text-center home-b">
         <h3 className="mb-4" id="ourteam"><strong>Our Team</strong></h3>
@@ -91,7 +104,7 @@ export const Home = () => {
             <div key={idx} className="col-12 col-md-auto">
               <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column">
                 <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px' }}>
-                  <img
+                  <img className='img-cover'
                     src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
                     alt={`${member.name}'s portrait`}
                   />
@@ -99,7 +112,7 @@ export const Home = () => {
                 <h5 className="mb-5">{member.name}</h5>
                 <span className="flex-center mb-5">
                   <img src={GHicon} alt="GitHub icon" style={{ width: '2rem', height: '2rem' }} className="me-4" />
-                  <a href={member.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <a className="text-black" href={member.github} target="_blank" rel="noopener noreferrer">GitHub</a>
                 </span>
               </div>
             </div>

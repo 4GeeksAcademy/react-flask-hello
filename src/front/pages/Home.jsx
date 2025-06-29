@@ -14,12 +14,13 @@ export const Home = () => {
   return (
     <>
       <div className="flex-center flex-column vh-50" id="home">
-        <h1 className="mb-2">Create Projects and Organize your teams</h1>
-        <h2 className="gradient-text mb-5">
-          <strong>The Best App</strong>
+        <h1 className="mb-2 text-center">Create Projects and Organize your teams <br/> with</h1>
+        <div className="rounded text-center p-2 mb-5">
+        <h2 className="gradient-text ">
+          <strong>Echo Board</strong>
         </h2>
-               
-            <h2 className="rounded home-tech text-center p-2 mb-5" style={{ width: '13em'}}>Buid with this Technologies</h2>
+        </div>       
+            <h2 className="mb-5" style={{ width: '13em'}}>Buid with this Technologies</h2>
           
           <div className="container d-flex justify-content-center pt-3 ">
 
@@ -65,7 +66,7 @@ export const Home = () => {
 
           <div class="row justify-content-center pt-3 g-2 px-5">
 
-            <div className="col-4">
+            <div className="col-12 col-lg-3 mb-4">
               <img src={Design2} style={{ width: '100%', height: '8rem' }} ></img>
               <h5 className="my-2">
                 <span className='circle me-2 '> <span>1</span> </span>
@@ -74,7 +75,7 @@ export const Home = () => {
               <p>Start by creating your project, give a name :D</p>
             </div>
 
-            <div className="col-4">
+            <div className="col-12 col-lg-3 m-4">
               <img src={Design3} style={{ width: '100%', height: '8rem' }} ></img>
               <h5 className="my-2">
                 <span className='circle me-2 '> <span>2</span> </span>
@@ -83,10 +84,10 @@ export const Home = () => {
               <p>Add all your staff to get to work</p>
             </div>
 
-            <div className="col-4">
+            <div className="col-12 col-lg-3">
               <img src={Design1} style={{ width: '100%', height: '8rem' }} ></img>
               <h5 className="my-2">
-                <span className='circle me-2 '> <span>3</span> </span>
+                <span className='circle me-2 mb-4'> <span>3</span> </span>
                 <strong>Feed Back The Progress</strong>
               </h5>
               <p>Post your developments, give and receive comments from your co-workers</p>
@@ -97,6 +98,7 @@ export const Home = () => {
       </div>
       <div className="home flex-center mb-4">
         <span className="border border-2 rounded shadow-lg">
+          {/*<img src="" className="img-cover" */}
 
         </span>
       </div>
@@ -106,12 +108,12 @@ export const Home = () => {
           <strong> Our Team</strong>
         </h3>
 
-        <div class="row justify-content-center ali pt-3 g-2 px-5">
+        <div class="row justify-content-center pt-3 g-2 px-5">
           <div className=" col-12 col-md-auto">
 
             <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
+                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
               <h5 className="mb-5">
                 Luna
@@ -126,7 +128,7 @@ export const Home = () => {
 
             <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
+                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
               <h5 className="mb-5">
                 Roberta
@@ -141,7 +143,7 @@ export const Home = () => {
 
             <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
               <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
+                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
               </div>
               <h5 className="mb-5">
                 Abraham

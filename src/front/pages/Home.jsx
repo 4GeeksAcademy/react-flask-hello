@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
+
 import BSicon from "../assets/img/SVG/Bootstrap.svg";
 import GHicon from "../assets/img/SVG/GitHub.svg";
 import JSicon from "../assets/img/SVG/JavaScript.svg";
 import Reacticon from "../assets/img/SVG/React.svg";
 import PYicon from "../assets/img/SVG/Python.svg";
-import SQLAicon from "../assets/img/SVG/SQLA.svg"
-import Flaskicon from "../assets/img/SVG/Flask.svg"
-import Design1 from "../assets/img/SVG/Desing1.svg"
-import Design2 from "../assets/img/SVG/Desing2.svg"
-import Design3 from "../assets/img/SVG/Desing3.svg"
+import SQLAicon from "../assets/img/SVG/SQLA.svg";
+import Flaskicon from "../assets/img/SVG/Flask.svg";
+import Design1 from "../assets/img/SVG/Desing1.svg";
+import Design2 from "../assets/img/SVG/Desing2.svg";
+import Design3 from "../assets/img/SVG/Desing3.svg";
 
 export const Home = () => {
+  const { store } = useContext(Context);
+
   return (
     <>
       <div className="flex-center flex-column vh-50" id="home">
@@ -19,7 +23,14 @@ export const Home = () => {
         <h2 className="gradient-text ">
           <strong>Echo Board</strong>
         </h2>
+
         </div>  
+    
+        {store.token ? (
+          <h4 className="text-success">You're logged in and ready to go 🚀</h4>
+        ) : (
+          <h4 className="text-danger">Please log in to access your dashboard</h4>
+        )}
 
         {/* Technologies Section */}
 
@@ -71,6 +82,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
+
       {/* App Image Section
       <div className="home flex-center mb-4">
         <span className="border border-2 rounded shadow-lg">

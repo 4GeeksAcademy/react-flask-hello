@@ -31,22 +31,19 @@ class User(db.Model):
     country: Mapped[str] = mapped_column(String(120), nullable=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     profile_picture_url: Mapped[str] = mapped_column(String, nullable=True)
-    random_profile_color: Mapped[int] = mapped_column(Integer, nullable=True)
+    random_profile_color: Mapped[int] = mapped_column(Integer, nullable=True)  # Make sure this is in sync
     time_zone: Mapped[str] = mapped_column(String(120), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    admin_of: Mapped[list['Project']]=relationship(
-        back_populates='admin', cascade='all, delete-orphan')
-    member_of: Mapped[list['Project_Member']] = relationship(
-        back_populates='member', cascade='all, delete-orphan')
-    author_of_task: Mapped[list['Task']] = relationship(
-        back_populates='task_author', cascade='all, delete-orphan')
-    roles: Mapped[list['Role']] = relationship(
-        back_populates='user', cascade='all, delete-orphan')
-    author_of_comment: Mapped[list['Comment']] = relationship(
-        back_populates='comment_author', cascade='all, delete-orphan')
+
+    admin_of: Mapped[list['Project']] = relationship(back_populates='admin', cascade='all, delete-orphan')
+    member_of: Mapped[list['Project_Member']] = relationship(back_populates='member', cascade='all, delete-orphan')
+    author_of_task: Mapped[list['Task']] = relationship(back_populates='task_author', cascade='all, delete-orphan')
+    roles: Mapped[list['Role']] = relationship(back_populates='user', cascade='all, delete-orphan')
+    author_of_comment: Mapped[list['Comment']] = relationship(back_populates='comment_author', cascade='all, delete-orphan')
+
     def __str__(self):
         return f'User {self.full_name}'
-    
+
     def serialize(self):
         return {
             'id': self.id,
@@ -60,7 +57,7 @@ class User(db.Model):
             'time_zone': self.time_zone,
             'is_active': self.is_active
         }
-    
+
 class Project(db.Model):
     __tablename__ = 'project'
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -70,16 +67,16 @@ class Project(db.Model):
     proyect_picture_url: Mapped[str] = mapped_column(String, unique=True, nullable=True)
     due_date: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     status: Mapped[ProjectStatus] = mapped_column(Enum(ProjectStatus), nullable=False, default=ProjectStatus.yet_to_start)
-    admin_id: Mapped[int]= mapped_column(ForeignKey('user.id'))
-    admin: Mapped[User]=relationship(back_populates='admin_of')
-    members: Mapped[list['Project_Member']] = relationship(
-        back_populates='project', cascade='all, delete-orphan')
-    tasks: Mapped[list['Task']] = relationship(
-        back_populates='project', cascade='all, delete-orphan')
-    roles: Mapped[list['Role']] = relationship(
-        back_populates='project', cascade='all, delete-orphan')
+
+    admin_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    admin: Mapped[User] = relationship(back_populates='admin_of')
+    members: Mapped[list['Project_Member']] = relationship(back_populates='project', cascade='all, delete-orphan')
+    tasks: Mapped[list['Task']] = relationship(back_populates='project', cascade='all, delete-orphan')
+    roles: Mapped[list['Role']] = relationship(back_populates='project', cascade='all, delete-orphan')
+
     def __str__(self):
         return f'Project {self.title}'
+
     def serialize(self):
         return {
             'id': self.id,
@@ -101,8 +98,10 @@ class Project_Member(db.Model):
     project_id: Mapped[int] = mapped_column(ForeignKey('project.id'))
     member: Mapped[User] = relationship(back_populates='member_of')
     project: Mapped[Project] = relationship(back_populates='members')
+
     def __str__(self):
         return f'Project Member {self.member.full_name} in {self.project.title}'
+
     def serialize(self):
         return {
             'id': self.id,
@@ -113,22 +112,23 @@ class Project_Member(db.Model):
         }
 
 class Task(db.Model):
-    __tablename__= 'task'
+    __tablename__ = 'task'
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(120), nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    status: Mapped[TaskStatus] = mapped_column(Enum(TaskStatus), nullable=False, default=ProjectStatus.in_progress)
+    status: Mapped[TaskStatus] = mapped_column(Enum(TaskStatus), nullable=False, default=TaskStatus.in_progress)
+
     author_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     task_author: Mapped[User] = relationship(back_populates='author_of_task')
     project_id: Mapped[int] = mapped_column(ForeignKey('project.id'))
     project: Mapped[Project] = relationship(back_populates='tasks')
-    comments: Mapped[list['Comment']] = relationship(  
-        back_populates='task', cascade='all, delete-orphan')
-    tags: Mapped[list['Tags']] = relationship(
-        back_populates='task', cascade='all, delete-orphan')
+    comments: Mapped[list['Comment']] = relationship(back_populates='task', cascade='all, delete-orphan')
+    tags: Mapped[list['Tags']] = relationship(back_populates='task', cascade='all, delete-orphan')
+
     def __str__(self):
         return f'Task {self.title} in Project {self.project.title}'
+
     def serialize(self):
         return {
             'id': self.id,
@@ -145,7 +145,7 @@ class Task(db.Model):
         }
 
 class Comment(db.Model):
-    __tablename__='comment'
+    __tablename__ = 'comment'
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(120), nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
@@ -154,6 +154,7 @@ class Comment(db.Model):
     task: Mapped[Task] = relationship(back_populates='comments')
     author_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     comment_author: Mapped[User] = relationship(back_populates='author_of_comment')
+
     def __str__(self):
         return f'Comment {self.title}: {self.description} on Task {self.task.title} by {self.comment_author.full_name}'
 
@@ -170,13 +171,14 @@ class Comment(db.Model):
         }
 
 class Role(db.Model):
-    __tablename__='role'
+    __tablename__ = 'role'
     id: Mapped[int] = mapped_column(primary_key=True)
     status: Mapped[RoleType] = mapped_column(Enum(RoleType), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user: Mapped[User] = relationship(back_populates='roles')
     project_id: Mapped[int] = mapped_column(ForeignKey('project.id'))
     project: Mapped[Project] = relationship(back_populates='roles')
+
     def __str__(self):
         return f'Role {self.status} for User {self.user.full_name} in Project {self.project.title}'
 
@@ -191,13 +193,15 @@ class Role(db.Model):
         }
 
 class Tags(db.Model):
-    __tablename__='tags'
+    __tablename__ = 'tags'
     id: Mapped[int] = mapped_column(primary_key=True)
     tag: Mapped[str] = mapped_column(String(120), nullable=False)
     task_id: Mapped[int] = mapped_column(ForeignKey('task.id'))
     task: Mapped[Task] = relationship(back_populates='tags')
+
     def __str__(self):
         return f'Tag {self.tag} for Task {self.task.title}'
+
     def serialize(self):
         return {
             'id': self.id,

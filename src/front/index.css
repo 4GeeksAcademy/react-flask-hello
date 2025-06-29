@@ -167,9 +167,8 @@ body {
   height: 400px;
   width: 360px;
 }
-.teamcardHW a {
+a {
   text-decoration: none;
-  color: var(--black);
 }
 
 .flex-center {

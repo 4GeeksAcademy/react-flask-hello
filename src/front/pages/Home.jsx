@@ -19,34 +19,24 @@ export const Home = () => {
         <h2 className="gradient-text ">
           <strong>Echo Board</strong>
         </h2>
-        </div>       
-            <h2 className="mb-5" style={{ width: '13em'}}>Buid with this Technologies</h2>
-          
-          <div className="container d-flex justify-content-center pt-3 ">
+        </div>  
 
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={BSicon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={JSicon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={Reacticon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={PYicon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={SQLAicon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>
-            <div className="home-tech-box rounded mx-3 p-2">
-              <img src={Flaskicon} style={{ width: '3rem', height: '3rem' }} ></img>
-            </div>              
-                      
+        {/* Technologies Section */}
 
-          </div>
+        <h2 className="text-center mb-5" >
+          Built with these Technologies
+        </h2>
+
+        <div className="container d-flex justify-content-center pt-3">
+          {[BSicon, JSicon, Reacticon, PYicon, SQLAicon, Flaskicon].map((icon, index) => (
+            <div key={index} className="home-tech-box rounded mx-3 p-2">
+              <img src={icon} alt={`tech-${index}`} style={{ width: '3rem', height: '3rem' }} />
+            </div>
+          ))}
         </div>
-      
+      </div>
+
+      {/* SVG ClipPath */}
       <svg width="0" height="0">
         <defs>
           <clipPath id="curvedClip" clipPathUnits="objectBoundingBox">
@@ -55,105 +45,66 @@ export const Home = () => {
         </defs>
       </svg>
 
+      {/* How It Works Section */}
       <div className="curved-div text-dark">
-        <div class="container-fluid text-center mt-5">
+        <div className="container-fluid text-center mt-5">
           <div className="mb-5">
-            <h3 id="howitworks">
-              <strong> How It Works</strong>
-            </h3>
-            <p> Just follow this simple steps to conect with your team</p>
+            <h3 id="howitworks"><strong>How It Works</strong></h3>
+            <p>Just follow these simple steps to connect with your team</p>
           </div>
 
-          <div class="row justify-content-center pt-3 g-2 px-5">
-
-            <div className="col-12 col-lg-3 mb-4">
-              <img src={Design2} style={{ width: '100%', height: '8rem' }} ></img>
-              <h5 className="my-2">
-                <span className='circle me-2 '> <span>1</span> </span>
-                <strong>Setup Your Project</strong>
-              </h5>
-              <p>Start by creating your project, give a name :D</p>
-            </div>
-
-            <div className="col-12 col-lg-3 m-4">
-              <img src={Design3} style={{ width: '100%', height: '8rem' }} ></img>
-              <h5 className="my-2">
-                <span className='circle me-2 '> <span>2</span> </span>
-                <strong>Invite Your Team</strong>
-              </h5>
-              <p>Add all your staff to get to work</p>
-            </div>
-
-            <div className="col-12 col-lg-3">
-              <img src={Design1} style={{ width: '100%', height: '8rem' }} ></img>
-              <h5 className="my-2">
-                <span className='circle me-2 mb-4'> <span>3</span> </span>
-                <strong>Feed Back The Progress</strong>
-              </h5>
-              <p>Post your developments, give and receive comments from your co-workers</p>
-            </div>
-
+          <div className="row justify-content-center pt-3 g-2 px-5">
+            {[
+              { img: Design2, title: "Setup Your Project", desc: "Start by creating your project, give it a name :D" },
+              { img: Design3, title: "Invite Your Team", desc: "Add all your staff to get to work" },
+              { img: Design1, title: "Feed Back The Progress", desc: "Post your developments, give and receive comments from co-workers" }
+            ].map((step, idx) => (
+              <div key={idx} className="col-12 col-md-4 mb-4">
+                <img src={step.img} alt={step.title} style={{ width: '100%', height: '8rem' }} />
+                <h5 className="my-2">
+                  <span className='circle me-2'><span>{idx + 1}</span></span>
+                  <strong>{step.title}</strong>
+                </h5>
+                <p>{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+      {/* App Image Section
       <div className="home flex-center mb-4">
         <span className="border border-2 rounded shadow-lg">
-          {/*<img src="" className="img-cover" */}
+          <img src="" className="img-cover" 
 
         </span>
-      </div>
+      </div>*/}
 
-      <div className="container text-center home-b ">
-        <h3 className="mb-4" id="ourteam">
-          <strong> Our Team</strong>
-        </h3>
+      {/* Our Team Section */}
+      <div className="container text-center home-b">
+        <h3 className="mb-4" id="ourteam"><strong>Our Team</strong></h3>
 
-        <div class="row justify-content-center pt-3 g-2 px-5">
-          <div className=" col-12 col-md-auto">
-
-            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
-              <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
+        <div className="row justify-content-center pt-3 g-2 px-5">
+          {[
+            { name: "Luna", github: "https://github.com/LunaB28" },
+            { name: "Roberta", github: "https://github.com/robertaval" },
+            { name: "Abraham", github: "https://github.com/Ablandaeta" }
+          ].map((member, idx) => (
+            <div key={idx} className="col-12 col-md-auto">
+              <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column">
+                <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px' }}>
+                  <img className='img-cover'
+                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                    alt={`${member.name}'s portrait`}
+                  />
+                </div>
+                <h5 className="mb-5">{member.name}</h5>
+                <span className="flex-center mb-5">
+                  <img src={GHicon} alt="GitHub icon" style={{ width: '2rem', height: '2rem' }} className="me-4" />
+                  <a className="text-black" href={member.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                </span>
               </div>
-              <h5 className="mb-5">
-                Luna
-              </h5>
-              <span className="flex-center mb-5">
-                <img src={GHicon} style={{ width: '2rem', height: '2rem' }} className="me-4"></img>
-                <a href="https://github.com/LunaB28">Github</a>
-              </span>
             </div>
-          </div>
-          <div className=" col-12 col-md-auto">
-
-            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
-              <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
-              </div>
-              <h5 className="mb-5">
-                Roberta
-              </h5>
-              <span className="flex-center mb-5">
-                <img src={GHicon} style={{ width: '2rem', height: '2rem' }} className="me-4"></img>
-                <a href="https://github.com/robertaval">Github</a>
-              </span>
-            </div>
-          </div>
-          <div className=" col-12 col-md-auto">
-
-            <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column ">
-              <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px', }}>
-                <img className="img-cover" src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" />
-              </div>
-              <h5 className="mb-5">
-                Abraham
-              </h5>
-              <span className="flex-center mb-5">
-                <img src={GHicon} style={{ width: '2rem', height: '2rem' }} className="me-4"></img>
-                <a href="https://github.com/Ablandaeta">Github</a>
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>

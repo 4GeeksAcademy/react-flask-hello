@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export const AppNavbar = () => {
 
-    const [access, setAccess] = useState(false) // set to "true" si esta indentificado o singed in 
+    const [access, setAccess] = useState(true) // set to "true" si esta indentificado o singed in 
 
 
     return (
@@ -31,7 +31,13 @@ export const AppNavbar = () => {
                     > P
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item text-danger text-end " href="#">Log out</a></li>
+                        <li>
+                            <Link to='/'>
+                            <button class="dropdown-item text-danger text-end " >
+                            Log out
+                            </button>
+                            </Link>
+                        </li>
 
                     </ul>
                 </div>}

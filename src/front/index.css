@@ -80,3 +80,31 @@ body {
     margin: auto;
   }
 }
+
+.animated-link {
+  position: relative;
+  text-decoration: none;
+  color: #60e0a5;
+  transition: color 0.3s ease-in-out;
+}
+
+.animated-link::after {
+  content: "\f061";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 100%;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.2s ease-in-out, transform 0.3s ease-in-out;
+  margin-left: 5px;
+}
+
+.animated-link:hover {
+  color: #88ffc8;  
+}
+
+.animated-link:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}

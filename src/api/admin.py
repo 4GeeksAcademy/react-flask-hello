@@ -13,7 +13,7 @@ class UserModelView(ModelView):
 
 class ProjectModelView(ModelView):
     column_auto_select_related = True
-    column_list = ['id', 'title', 'description', 'created_at', 'proyect_picture_url',
+    column_list = ['id', 'title', 'description', 'created_at', 'project_picture_url',
                    'due_date', 'status', 'admin_of', 'admin', 'members', 'tasks', 'roles']
 
 

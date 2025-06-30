@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { navLinks } from "../utils/navLinks";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
+import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -8,42 +9,108 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 export const Navbar = () => {
 
 	return (
-		<nav className="container mt-3">
-      		<div className="navbar navbar-expand-md bg-white rounded shadow-sm px-4 py-2">
-				<Link className="navbar-brand" href="#" to="/">
-					<img src={LogoNavbar} alt="Cloudtech" className="Cloudtech-navbar-logo"/>
-				</Link>
+		<>
+			<nav className="container-fluid mt-4 mb-3 d-none d-lg-block">
+				<div className="navbar fixed-top navbar-expand-md custom-navbar rounded-pill px-4 my-3 mx-5">
+					<Link className="navbar-brand px-3" to="/">
+						<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />
+					</Link>
 
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-bs-toggle="hiddencanvas"
-					data-bs-target="#hiddencanvasNavbar"
-					aria-controls="hiddencanvasNavbar"
-					>	
-					<span className="navbar-toggler-icon"></span>
+					<button
+						className="navbar-toggler"
+						type="button"
+						data-bs-toggle="offcanvas"
+						data-bs-target="#mobileMenuOffcanvas"
+						aria-controls="mobileMenuOffcanvas"
+					>
+						<span className="navbar-toggler-icon"></span>
+					</button>
+
+						<div className="d-none d-lg-flex justify-content-end w-100">
+							<ul className="navbar-nav align-items-center gap-3">
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover" to="/">Inicio</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover" to="/nosotros">Nosotros</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover" to="/servicios">Servicios</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover" to="/proyectos">Proyectos</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="btn btn-contact rounded-pill" to="/contacto">Contáctanos</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+			</nav>
+
+			<div className="d-lg-none mobile-nav-trigger">
+				<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />
+					<button
+						className="navbar-toggler"
+						type="button"
+						data-bs-toggle="offcanvas"
+						data-bs-target="#mobileMenuOffcanvas"
+						aria-controls="mobileMenuOffcanvas"
+					>
+				<span className="navbar-toggler-icon"></span>
 				</button>
+			</div>
+		
+			<div
+				className="offcanvas offcanvas-start custom-mobile-menu"
+				tabIndex="-1"
+				id="mobileMenuOffcanvas"
+				aria-labelledby="mobileMenuOffcanvasLabel"
+			>
+				<div className="offcanvas-body">
+					<div className="mobile-menu-header">
+						<h5 className="offcanvas-title" id="mobileMenuOffcanvasLabel">
+							<img src={LogoNavMovil} alt="CloudTech Logo Movil" className="navbar-logo-1" />
+						</h5>
 
-			<div className="collapse navbar-collaps justify-content-end" id="hiddencanvasNavbar">
-				<ul className="navbar-nav align-items-center gap-2">
-					<li className="nav-item">
-						<Link className="nav-link custom-hover" to="/">Inicio</Link>
-					</li>
-					<li className="nav-item">
-						<Link className="nav-link custom-hover" to="/nosotros">Nosotros</Link>
-					</li>
-					<li className="nav-item">
-						<Link className="nav-link custom-hover" to="/">Servcios</Link>
-					</li>
-					<li className="nav-item">
-						<Link className="nav-link custom-hover" to="/" >Inicio</Link>
-					</li>
-					<li className="nav-item">
-						<Link className="nav-link custom-hover" to="/" >Inicio</Link>
-					</li>
-				</ul>
+						<button
+							type="button"
+							className="btn-close btn-close-white"
+							data-bs-dismiss="offcanvas"
+							aria-label="Close"
+						>
+						</button>
+					</div>
+				
+				{/* Contenido centrado */}
+				<div className="mobile-menu-content">
+							<ul className="navbar-nav gap-4">
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover mobile-link no-shift-hover" to="/">Inicio</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover mobile-link no-shift-hover" to="/nosotros">Nosotros</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover mobile-link no-shift-hover" to="/servicios">Servicios</Link>
+								</li>
+
+								<li className="nav-item">
+									<Link className="nav-link no-shift-hover mobile-link no-shift-hover" to="/proyectos">Proyectos</Link>
+								</li>
+							</ul>
+						<div className="mt-5 w-100 px-4">
+							<Link className="btn btn-contact rounded-pill mobile-btn" to="/contacto">Contáctanos</Link>
+						</div>
+					</div>
+				</div>
 			</div>
-			</div>
-		</nav>
+		</>
 	);
 };

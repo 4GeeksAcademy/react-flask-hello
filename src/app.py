@@ -1,48 +1,45 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
-
 import os
 import datetime
 import random
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 
-from api.utils import APIException, generate_sitemap, create_token
+from api.utils import APIException, generate_sitemap
 from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+
 # Environment setup
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 
-# Point to the root directory where app.py and index.html live
+# Static file directory (for SPA mode)
 static_file_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Initialize Flask app
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-# Database configuration
+# Database config
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dev.db"  # fallback DB
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dev.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")  # <-- Use .env key
 
-# Initialize DB and Migrate with the app
+# Initialize extensions
 db.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
-
-# Setup admin and CLI commands
+jwt = JWTManager(app)
 setup_admin(app)
 setup_commands(app)
-
-# Register API blueprint
 app.register_blueprint(api, url_prefix='/api')
 
 # Error handler
@@ -50,7 +47,7 @@ app.register_blueprint(api, url_prefix='/api')
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# Sitemap (development only)
+# Development sitemap route
 @app.route('/')
 def sitemap():
     if ENV == "development":
@@ -66,7 +63,7 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0
     return response
 
-# ✅ REGISTER endpoint
+# --- REGISTER endpoint (with password hashing)
 @app.route('/register', methods=['POST'])
 def register():
     body = request.get_json(silent=True)
@@ -84,16 +81,17 @@ def register():
     phone = body.get('phone')
     profile_picture_url = body.get('profile_picture_url')
     random_profile_color = None if profile_picture_url else random.randint(1, 7)
+    hashed_password = generate_password_hash(body['password'])
 
     new_user = User(
         full_name=body['full_name'],
         email=body['email'],
-        password=body['password'],
+        password=hashed_password,
         phone=phone,
         country=body['country'],
-        created_at=datetime.datetime.now().strftime('%Y-%m-%d'),
+        created_at=datetime.datetime.now(),
         profile_picture_url=profile_picture_url,
-        profile_color=random_profile_color,
+        random_profile_color=random_profile_color,
         is_active=True
     )
     db.session.add(new_user)
@@ -105,26 +103,40 @@ def register():
 
     return jsonify({'msg': 'ok', 'new_user': new_user.serialize()}), 201
 
-# ✅ LOGIN endpoint with JWT
+# --- LOGIN endpoint (JWT + hash check)
 @app.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
     if not body or 'email' not in body or 'password' not in body:
         return jsonify({'msg': 'Email y contraseña requeridos'}), 400
 
-    user = User.query.filter_by(email=body['email'], password=body['password']).first()
-    if not user:
+    user = User.query.filter_by(email=body['email']).first()
+    if not user or not check_password_hash(user.password, body['password']):
         return jsonify({'msg': 'Credenciales inválidas'}), 401
 
-    token = create_token(user.id)
-
+    token = create_access_token(identity=user.id)
     return jsonify({
         "access_token": token,
         "user": user.serialize()
     }), 200
 
-# Run app
+# --- Protected route example
+@app.route('/private', methods=['GET'])
+@jwt_required()
+def private():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'msg': 'User not found'}), 404
+    return jsonify({
+        'msg': 'Este es un endpoint privado!',
+        'user': user.serialize()
+    }), 200
+
+# --- Run app ---
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
 

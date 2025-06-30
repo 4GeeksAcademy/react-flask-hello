@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useStore } from "../store";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { store, dispatch } = useStore();
+  const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -63,3 +63,4 @@ export function Login() {
     </div>
   );
 }
+

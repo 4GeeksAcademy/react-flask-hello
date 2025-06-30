@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 import BSicon from "../assets/img/SVG/Bootstrap.svg";
 import GHicon from "../assets/img/SVG/GitHub.svg";
@@ -13,19 +13,20 @@ import Design2 from "../assets/img/SVG/Desing2.svg";
 import Design3 from "../assets/img/SVG/Desing3.svg";
 
 export const Home = () => {
-  const { store } = useContext(Context);
+  const { store } = useGlobalReducer();
 
   return (
     <>
       <div className="flex-center flex-column vh-50" id="home">
-        <h1 className="mb-2 text-center">Create Projects and Organize your teams <br/> with</h1>
+        <h1 className="mb-2 text-center">
+          Create Projects and Organize your teams <br /> with
+        </h1>
         <div className="rounded text-center p-2 mb-5">
-        <h2 className="gradient-text ">
-          <strong>Echo Board</strong>
-        </h2>
+          <h2 className="gradient-text ">
+            <strong>Echo Board</strong>
+          </h2>
+        </div>
 
-        </div>  
-    
         {store.token ? (
           <h4 className="text-success">You're logged in and ready to go 🚀</h4>
         ) : (
@@ -33,10 +34,7 @@ export const Home = () => {
         )}
 
         {/* Technologies Section */}
-
-        <h2 className="text-center mb-5" >
-          Built with these Technologies
-        </h2>
+        <h2 className="text-center mb-5">Built with these Technologies</h2>
 
         <div className="container d-flex justify-content-center pt-3">
           {[BSicon, JSicon, Reacticon, PYicon, SQLAicon, Flaskicon].map((icon, index) => (
@@ -63,7 +61,6 @@ export const Home = () => {
             <h3 id="howitworks"><strong>How It Works</strong></h3>
             <p>Just follow these simple steps to connect with your team</p>
           </div>
-
           <div className="row justify-content-center pt-3 g-2 px-5">
             {[
               { img: Design2, title: "Setup Your Project", desc: "Start by creating your project, give it a name :D" },
@@ -83,18 +80,9 @@ export const Home = () => {
         </div>
       </div>
 
-      {/* App Image Section
-      <div className="home flex-center mb-4">
-        <span className="border border-2 rounded shadow-lg">
-          <img src="" className="img-cover" 
-
-        </span>
-      </div>*/}
-
       {/* Our Team Section */}
       <div className="container text-center home-b">
         <h3 className="mb-4" id="ourteam"><strong>Our Team</strong></h3>
-
         <div className="row justify-content-center pt-3 g-2 px-5">
           {[
             { name: "Luna", github: "https://github.com/LunaB28" },
@@ -122,3 +110,4 @@ export const Home = () => {
     </>
   );
 };
+

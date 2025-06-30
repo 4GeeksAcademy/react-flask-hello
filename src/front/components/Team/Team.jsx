@@ -13,7 +13,7 @@ export const Team = () => {
                 </div>
                 <div className="row my-3">
                     {teamContent.map(teamMember => (
-                        <div key={teamMember.id} className="col-4">
+                        <div key={teamMember.id} className="col-md-6 col-lg-4 mb-4">
                             <Card
                                 name={teamMember.name}
                                 position={teamMember.position}

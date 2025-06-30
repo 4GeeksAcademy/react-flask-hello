@@ -114,7 +114,7 @@ def login():
     if not user or not check_password_hash(user.password, body['password']):
         return jsonify({'msg': 'Credenciales inválidas'}), 401
 
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=str(user.id))
     return jsonify({
         "access_token": token,
         "user": user.serialize()
@@ -131,6 +131,29 @@ def private():
     return jsonify({
         'msg': 'Este es un endpoint privado!',
         'user': user.serialize()
+    }), 200
+
+# --- Protected endpoint GET projects
+@app.route('/projects', methods=['GET'])
+@jwt_required()
+def get_projects():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'msg': 'User not found'}), 404
+
+    admin_of = [project.serialize() for project in user.admin_of]
+    member_of = [project.project.serialize() for project in user.member_of]
+
+    if not admin_of and not member_of:
+        return jsonify({'msg': 'No projects found for this user', 'user_projects': []}), 200
+
+    return jsonify({
+        'msg': 'Projects retrieved successfully',
+        'user_projects': {
+            'admin': admin_of,
+            'member': member_of
+        },
     }), 200
 
 # --- Run app ---

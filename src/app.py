@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db, User, Project, Task, Comment
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -114,24 +114,42 @@ def login():
     if not user or not check_password_hash(user.password, body['password']):
         return jsonify({'msg': 'Credenciales inválidas'}), 401
 
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=str(user.id))
     return jsonify({
         "access_token": token,
         "user": user.serialize()
     }), 200
 
-# --- Protected route example
-@app.route('/private', methods=['GET'])
+# --- Protected routes
+@app.route('/project', methods=['POST'])
 @jwt_required()
-def private():
+def new_project():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
     if not user:
         return jsonify({'msg': 'User not found'}), 404
-    return jsonify({
-        'msg': 'Este es un endpoint privado!',
-        'user': user.serialize()
-    }), 200
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg': 'Debes enviar información en el body'}), 400
+    if 'title' not in body or body['title'].strip() == '':
+        return jsonify({'msg': 'Debes enviar un título válido'}), 400
+    if 'due_date' not in body or body['due_date'].strip() == '':
+        return jsonify({'msg': 'Debes enviar una fecha de entrega válida'}), 400
+    
+    description=body.get('description')
+    project_picture_url=body.get('project_picture_url')
+
+    new_project = Project(
+        title=body['title'],
+        description=description,
+        created_at=datetime.datetime.now(),
+        project_picture_url=project_picture_url,
+        due_date=datetime.datetime.strptime(body['due_date'], '%Y-%m-%d'),
+        admin=user
+    )
+    db.session.add(new_project)
+    db.session.commit()
+    return jsonify({'msg': 'ok', 'new_project': new_project.serialize()}), 201
 
 # --- Run app ---
 if __name__ == '__main__':

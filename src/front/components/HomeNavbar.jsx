@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../assets/img/SVG/logo.svg'
+import logo from '../assets/img/SVG/logo_v2.svg'
 import { Link } from 'react-router-dom'
 
 
@@ -8,14 +8,14 @@ export const HomeNavbar = () => {
         document.getElementById(id).scrollIntoView({ behavior: "smooth" });
     }
     return (
-        <div className='container py-1'>
+        <div className='container-fluid px-5 py-none'>
             <a class="navbar-brand d-flex align-items-center text-white" href="#">
-                <img src={logo} alt="Logo" style={{ width: '5rem', height: '5rem' }} class="d-inline-block mx-2 " />
+                <img src={logo} alt="Logo" style={{ width: '7rem', height: '7rem' }} class="d-inline-block mx-2 " />
                 EchoBoard
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon navbar-dark"></span>
             </button>
             
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,7 +31,7 @@ export const HomeNavbar = () => {
                 </li>
 
             </ul>
-            <Link to="/" className='shadow-lg '>
+            <Link to="/" className='shadow-lg ms-3'>
                 <button className='btn text-white' style={{ background: "var(--green-500)" }}>Sing In</button>
             </Link>
             </div>

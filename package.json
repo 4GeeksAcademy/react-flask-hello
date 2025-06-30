@@ -1,62 +1,41 @@
 {
-	"name": "react-hello-webapp",
-	"engines": {
-		"node": ">=20.0.0"
-	},
-	"version": "1.0.1",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "vite",
-        "start": "vite",
-        "build": "vite build",
-        "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
-	},
-	"author": {
-		"name": "Alejandro Sanchez",
-		"url": "http://alesanchezr.com/"
-	},
-	"contributors": [
-		{
-			"name": "Alejandro Sanchez",
-			"url": "http://alesanchezr.com/"
-		},
-		{
-			"name": "Ignacio Cordoba",
-			"url": "http://github.com/nachovz"
-		}
-	],
-	"license": "ISC",
-	"devDependencies": {
-		"@types/react": "^18.2.18",
-        "@types/react-dom": "^18.2.7",
-        "@vitejs/plugin-react": "^4.0.4",
-        "eslint": "^8.46.0",
-        "eslint-plugin-react": "^7.33.1",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.3",
-        "vite": "^4.4.8"
-	},
-	"babel": {
-		"presets": [
-			"@babel/preset-env",
-			"@babel/preset-react"
-		],
-		"plugins": [
-			"@babel/plugin-proposal-class-properties",
-			[
-				"@babel/plugin-transform-runtime",
-				{
-					"regenerator": true
-				}
-			]
-		]
-	},
-	"dependencies": {
-		"prop-types": "^15.8.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "^6.18.0"
-	}
+  "name": "onix-2.0-ecommerce",
+  "version": "1.0.0",
+  "description": "E-commerce platform built with React and Flask",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "react",
+    "flask",
+    "ecommerce",
+    "onix"
+  ],
+  "author": "Pedro",
+  "license": "MIT",
+  "dependencies": {
+    "@stripe/react-stripe-js": "^2.1.0",
+    "@stripe/stripe-js": "^2.1.0",
+    "axios": "^1.4.0",
+    "cloudinary": "^2.7.0",
+    "lucide-react": "^0.263.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0",
+    "react-toastify": "^9.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^3.4.17",
+    "vite": "^4.1.0"
+  }
 }

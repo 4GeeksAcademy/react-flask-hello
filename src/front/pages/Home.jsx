@@ -44,7 +44,7 @@ export const Home = () => {
 			<Process />
 			<Projects />
 			<Testimonials />
-			<Team />
+			
 		</>
 	);
 }; 

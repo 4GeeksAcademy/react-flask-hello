@@ -1,7 +1,13 @@
 export const Contact = () => {
     return (
         <section>
-            <h1>Contact Test</h1>
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+
+                    </div>
+                </div>
+            </div>
         </section>
     )
 }

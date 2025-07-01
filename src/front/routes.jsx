@@ -11,6 +11,7 @@ import ColorPalettePreview from "./pages/ColorPalettePreview";
 import { NotFound } from "./pages/NotFound";
 import { Login } from "./pages/Login";
 import { App } from "./pages/App";
+import { NewProject } from "./pages/NewProject";
 import Dashboard from "./pages/Dashboard"; 
 
 // Import global reducer/context hook
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/cpp" element={<ColorPalettePreview />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/newproject" element={<NewProject />} />   
       <Route path="/app" element={<App />} />
 
       {/* Private routes */}

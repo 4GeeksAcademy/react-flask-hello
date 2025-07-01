@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../assets/img/SVG/logo_v2.svg'
+import logo from '../assets/img/SVG/logo_v3.svg'
 import GHicon from '../assets/img/SVG/GitHub.svg'
 import { Link } from 'react-router-dom'
 

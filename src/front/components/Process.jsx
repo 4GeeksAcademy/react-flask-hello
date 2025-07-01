@@ -38,11 +38,11 @@ export const Process = () => {
                                 <div className="col-12 col-sm-6 pe-md-3">
                                     <div className="d-flex justify-content-center justify-content-sm-end mb-4">
                                         <div className="d-flex flex-column align-items-center gap-3">
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Capacidad 1</buton>
-                                            <buton className="ct-btn-outline-accent px-4 py-2">Capacidad 2</buton>
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Capacidad 3</buton>
-                                            <buton className="ct-btn-outline-accent px-4 py-2">Capacidad 4</buton>
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Capacidad 5</buton>
+                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 1</button>
+                                            <button className="ct-btn-outline-accent px-4 py-2">Capacidad 2</button>
+                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 3</button>
+                                            <button className="ct-btn-outline-accent px-4 py-2">Capacidad 4</button>
+                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 5</button>
                                         </div>
                                     </div>
                                 </div>

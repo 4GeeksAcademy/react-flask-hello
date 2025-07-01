@@ -2,6 +2,10 @@ import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Services } from "../components/Services/Services.jsx";
 import { Process } from "../components/Process.jsx";
+import { Projects } from "../components/Projects.jsx";
+import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
+import { Team } from "../components/Team/Team.jsx";
+import { HeaderHome } from "../components/HeaderHome.jsx";
 
 
 export const Home = () => {
@@ -36,10 +40,12 @@ export const Home = () => {
 
 	return (
 		<>
-			<div className="bg-secondary-subtle" style={{ height: "600px" }}>Hero Header Home</div>
+			<HeaderHome />
 			<Services />
 			<Process />
-
+			<Projects />
+			<Testimonials />
+			
 		</>
 	);
 }; 

@@ -10,11 +10,13 @@ export function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch({ type: "error", payload: null }); // clear errors
+
     try {
-      const res = await fetch("/login", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -24,9 +26,13 @@ export function Login() {
         return;
       }
 
+      // Save token in localStorage (for persistence)
       localStorage.setItem("token", data.access_token);
-      dispatch({ type: "login", payload: { user: data.user, token: data.access_token } });
-      navigate("/");
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Update store
+      dispatch({ type: "LOGIN_SUCCESS", payload: { user: data.user, token: data.access_token } });
+      navigate("/dashboard");
     } catch (err) {
       dispatch({ type: "error", payload: "Error de conexión con el servidor" });
     }

@@ -93,7 +93,9 @@ export const Home = () => {
               <div className="border-dash rounded p-2 m-1 teamcardHW flex-center flex-column">
                 <div className="rounded-circle mb-5 mt-4 flex-center portrait" style={{ width: '150px' }}>
                   <img className='img-cover'
-                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      member.name
+                    )}&background=random`}
                     alt={`${member.name}'s portrait`}
                   />
                 </div>

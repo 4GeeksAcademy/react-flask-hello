@@ -84,9 +84,12 @@ body {
   color: white;
   background-repeat: no-repeat;
 }
+
+
 .gradient-text {
   background: linear-gradient(to right, #00a3ff, var(--green-500));
   -webkit-background-clip: text;
+  background-clip: text; /* Standard property for compatibility */
   -webkit-text-fill-color: transparent;
   font-size: 4rem;
 }
@@ -196,4 +199,52 @@ a {
 
 .not-found-message{
   font-size: 5vh;
+}
+
+/* --- Alert styles --- */
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  display: block;
+}
+
+.alert-danger {
+  background: var(--red-100);
+  color: var(--red-700);
+  border-color: var(--red-300);
+}
+
+.alert-success {
+  background: var(--green-100);
+  color: var(--green-900);
+  border-color: var(--green-300);
+}
+
+.alert-warning {
+  background: var(--yellow-100);
+  color: var(--yellow-900);
+  border-color: var(--yellow-300);
+}
+
+.alert-info {
+  background: var(--aqua-100);
+  color: var(--aqua-700);
+  border-color: var(--aqua-300);
+}
+
+.alert .close {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
 }

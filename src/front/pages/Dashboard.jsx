@@ -6,19 +6,19 @@ export default function Dashboard() {
   const { store, dispatch } = useGlobalReducer();
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState(null);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!store.token) {
-      // Si no hay token, redirige inmediatamente
       navigate("/login");
       return;
     }
 
     const fetchProjects = async () => {
       setLoading(true);
-      setError(null);
+      // Clean any old error (optional, you can remove this if you want to persist previous errors)
+      dispatch({ type: "error", payload: null });
+
       try {
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/projects`,
@@ -30,20 +30,23 @@ export default function Dashboard() {
           }
         );
         const data = await res.json();
-        // Token expirado/inválido: 401 o 422 => fuerza logout
+
+        // Token expired/invalid: 401 or 422 => force logout
         if (res.status === 401 || res.status === 422) {
           dispatch({ type: "LOGOUT" });
+          dispatch({ type: "error", payload: "Session expired. Please log in again." });
           navigate("/login");
           return;
         }
+
         if (!res.ok) {
-          setError(data.msg || "Error fetching projects.");
+          dispatch({ type: "error", payload: data.msg || "Error fetching projects." });
           setProjects(null);
         } else {
           setProjects(data.user_projects);
         }
       } catch (err) {
-        setError("No se pudo conectar con el backend.");
+        dispatch({ type: "error", payload: "Could not connect to backend." });
       } finally {
         setLoading(false);
       }
@@ -53,7 +56,6 @@ export default function Dashboard() {
   }, [store.token, dispatch, navigate]);
 
   if (!store.token) {
-    // Esto se verá solo por un microsegundo si no hay token.
     return <p>Redirigiendo a login...</p>;
   }
 
@@ -61,7 +63,6 @@ export default function Dashboard() {
     <div className="container py-5">
       <h2>Panel de usuario: Tus Proyectos</h2>
       {loading && <p>Cargando proyectos...</p>}
-      {error && <div className="alert alert-danger">{error}</div>}
 
       {projects ? (
         <div>
@@ -88,6 +89,7 @@ export default function Dashboard() {
     </div>
   );
 }
+
 
 
 

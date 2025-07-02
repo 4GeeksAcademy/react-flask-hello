@@ -7,6 +7,7 @@ export const initialStore = () => {
     token: token || null,
     user: user ? JSON.parse(user) : null,
     error: null, // so you can track errors in your store
+    profile_colors:["red","brown","orange","yellow","mint","green","aqua","blue","purple"]
   };
 };
 

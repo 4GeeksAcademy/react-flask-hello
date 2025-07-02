@@ -7,22 +7,22 @@ from sqlalchemy.exc import IntegrityError
 
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Project, Task, Comment
-from api.routes import api
+from api.routes import api  # Only /api/hello or similar test endpoints here!
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Environment setup
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-
-# Static file directory (for SPA mode)
 static_file_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Initialize Flask app
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+CORS(app)
 
 # Database config
 db_url = os.getenv("DATABASE_URL")
@@ -32,9 +32,9 @@ if db_url is not None:
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dev.db"
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv(
-    "JWT_SECRET_KEY", "super-secret-key")  # <-- Use .env key
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS
+           
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")  # Use your .env value
 
 # Initialize extensions
 db.init_app(app)
@@ -42,7 +42,7 @@ migrate = Migrate(app, db, compare_type=True)
 jwt = JWTManager(app)
 setup_admin(app)
 setup_commands(app)
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api')  # ONLY /api/hello, no main endpoints here
 
 # Error handler
 
@@ -133,9 +133,8 @@ def login():
         "user": user.serialize()
     }), 200
 
-# --- Protected routes
 
-
+# --- CREATE PROJECT endpoint (protected)
 @app.route('/project', methods=['POST'])
 @jwt_required()
 def new_project():
@@ -153,6 +152,9 @@ def new_project():
 
     description = body.get('description')
     project_picture_url = body.get('project_picture_url')
+
+    description = body.get('description')
+    project_picture_url = body.get('project_picture_url')
     status = body.get('status', 'in progress')
     new_project = Project(
         title=body['title'],
@@ -167,9 +169,8 @@ def new_project():
     db.session.commit()
     return jsonify({'msg': 'ok', 'new_project': new_project.serialize()}), 201
 
-# --- Protected endpoint GET projects
 
-
+# --- GET PROJECTS endpoint (protected)
 @app.route('/projects', methods=['GET'])
 @jwt_required()
 def get_projects():

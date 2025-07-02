@@ -1,15 +1,24 @@
-import { Outlet } from "react-router-dom/dist"
-import ScrollToTop from "../components/ScrollToTop"
-import { Navbar } from "../components/Navbar"
-import { Footer } from "../components/Footer"
+import { Outlet } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
+import { ErrorAlert } from "../components/ErrorAlert";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
-// Base component that maintains the navbar and footer throughout the page and the scroll to top functionality.
+
 export const Layout = () => {
+    const { store, dispatch } = useGlobalReducer();
+
+   
+    const handleCloseError = () => dispatch({ type: "error", payload: null });
+
     return (
         <ScrollToTop>
             <Navbar />
-                <Outlet />
+            {/* Show error at the top */}
+            <ErrorAlert error={store.error} onClose={handleCloseError} />
+            <Outlet />
             <Footer />
         </ScrollToTop>
-    )
-}
+    );
+};

@@ -11,14 +11,15 @@ export const HomeNavbar = () => {
         <div className='container-fluid px-5 py-none'>
             <a class="navbar-brand d-flex align-items-center text-white" href="#">
                 <img src={logo} alt="Logo" style={{ width: '4rem', height: '4rem' }} class="d-inline-block mx-2 " />
+
                 EchoBoard
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon navbar-dark"></span>
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon navbar-dark"></span>
             </button>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className='nav mx-auto '>
                 <li className='nav-item'>
                     <button className='nav-link text-white' onClick={() => { goTo('home') }}> Home</button>
@@ -31,8 +32,9 @@ export const HomeNavbar = () => {
                 </li>
 
             </ul>
-            <Link to="/login" className='shadow-lg ms-3'>
-                <button className='btn text-white' style={{ background: "var(--green-500)" }}>Sing In</button>
+
+            <Link to="login" className='shadow-lg ms-3'>
+                <button className='btn text-white' style={{ background: "var(--green-500)" }}>Log In</button>
             </Link>
             </div>
 

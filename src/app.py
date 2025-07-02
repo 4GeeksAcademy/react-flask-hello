@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Project, Task, Comment
-from api.routes import api
+from api.routes import api  # Only /api/hello or similar test endpoints here!
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
@@ -17,8 +17,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Environment setup
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-
-# Static file directory (for SPA mode)
 static_file_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Initialize Flask app
@@ -34,7 +32,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dev.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")  # <-- Use .env key
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")  # Use your .env value
 
 # Initialize extensions
 db.init_app(app)
@@ -42,7 +40,7 @@ migrate = Migrate(app, db, compare_type=True)
 jwt = JWTManager(app)
 setup_admin(app)
 setup_commands(app)
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api')  # ONLY /api/hello, no main endpoints here
 
 # Error handler
 @app.errorhandler(APIException)
@@ -122,7 +120,7 @@ def login():
         "user": user.serialize()
     }), 200
 
-# --- Protected routes
+# --- CREATE PROJECT endpoint (protected)
 @app.route('/project', methods=['POST'])
 @jwt_required()
 def new_project():
@@ -137,9 +135,9 @@ def new_project():
         return jsonify({'msg': 'Debes enviar un título válido'}), 400
     if 'due_date' not in body or body['due_date'].strip() == '':
         return jsonify({'msg': 'Debes enviar una fecha de entrega válida'}), 400
-    
-    description=body.get('description')
-    project_picture_url=body.get('project_picture_url')
+
+    description = body.get('description')
+    project_picture_url = body.get('project_picture_url')
 
     new_project = Project(
         title=body['title'],
@@ -153,7 +151,7 @@ def new_project():
     db.session.commit()
     return jsonify({'msg': 'ok', 'new_project': new_project.serialize()}), 201
 
-# --- Protected endpoint GET projects
+# --- GET PROJECTS endpoint (protected)
 @app.route('/projects', methods=['GET'])
 @jwt_required()
 def get_projects():
@@ -180,6 +178,9 @@ def get_projects():
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+
 
 
 

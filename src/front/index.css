@@ -228,6 +228,7 @@ h1, h2, h3, h4, h5, h6 {
 /* HeaderHome */
 .hero-header-home {
   min-height: 90vh;
+  margin-top: 4rem;
   background-size: cover;
   background-position: center;
 }

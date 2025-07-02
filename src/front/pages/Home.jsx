@@ -40,12 +40,13 @@ export const Home = () => {
 
 	return (
 		<>
+			<div className="bg-dark w-100 h-100"></div>
 			<HeaderHome />
 			<Services />
 			<Process />
 			<Projects />
 			<Testimonials />
-			
+
 		</>
 	);
 }; 

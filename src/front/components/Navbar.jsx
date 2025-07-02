@@ -12,7 +12,7 @@ export const Navbar = () => {
 
 	return (
 		<>
-			<nav className="container-fluid mt-5 d-none d-lg-block">
+			<nav className="container my-5 d-none d-lg-block">
 				<div className="navbar fixed-top navbar-expand-md custom-navbar rounded-pill px-4 my-3 mx-5">
 					<Link className="navbar-brand px-3" to="/">
 						<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />

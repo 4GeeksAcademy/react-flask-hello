@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Project, Task, Comment
-from api.routes import api  # Only /api/hello or similar test endpoints here
+from api.routes import api  # Only /api/hello or similar test endpoints here!
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
@@ -178,6 +178,7 @@ def get_projects():
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
 
 
 

@@ -95,7 +95,7 @@ body {
   min-height: 100vh;
 }
 .vh-50 {
-  height: 50vh;
+  min-height: 50vh;
 }
 
 .curved-div {

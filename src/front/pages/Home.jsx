@@ -5,6 +5,7 @@ import { Process } from "../components/Process.jsx";
 import { Projects } from "../components/Projects.jsx";
 import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
 import { Team } from "../components/Team/Team.jsx";
+import { HeaderHome } from "../components/HeaderHome.jsx";
 
 
 export const Home = () => {
@@ -39,12 +40,13 @@ export const Home = () => {
 
 	return (
 		<>
-			<div className="bg-secondary-subtle" style={{ height: "600px" }}>Hero Header Home</div>
+			<div className="bg-dark w-100 h-100"></div>
+			<HeaderHome />
 			<Services />
 			<Process />
 			<Projects />
 			<Testimonials />
-			
+
 		</>
 	);
 }; 

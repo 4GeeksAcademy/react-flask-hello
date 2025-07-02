@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
+import { ProjectCard } from "../components/ProjectCard";
 
 export default function Dashboard() {
   const { store, dispatch } = useGlobalReducer();
@@ -69,7 +70,9 @@ export default function Dashboard() {
           <ul>
             {(projects.admin && projects.admin.length > 0)
               ? projects.admin.map(proj => (
-                <li key={proj.id}>{proj.title}</li>
+                console.log(proj),
+
+                <ProjectCard key={proj.id} project={proj} />
               ))
               : <li>No eres admin de ningún proyecto.</li>
             }
@@ -78,7 +81,7 @@ export default function Dashboard() {
           <ul>
             {(projects.member && projects.member.length > 0)
               ? projects.member.map(proj => (
-                <li key={proj.id}>{proj.title}</li>
+                <ProjectCard key={proj.id} project={proj} />
               ))
               : <li>No eres miembro de ningún proyecto.</li>
             }

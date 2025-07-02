@@ -10,6 +10,7 @@ from api.models import db, User, Project, Task, Comment
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +24,7 @@ static_file_dir = os.path.dirname(os.path.realpath(__file__))
 # Initialize Flask app
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+CORS(app)
 
 # Database config
 db_url = os.getenv("DATABASE_URL")

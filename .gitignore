@@ -1,82 +1,29 @@
-# ignore all files starting with .
-.*
-
-# track this file .gitignore (i.e. do NOT ignore it)
-!.gitignore
-!.github
-php_errorlog
-.log
-
-# do not ignore gitpod and render files
-!.gitpod.Dockerfile
-!.welcome
-!.devcontainer
-!.devcontainer/*
-!Dockerfile.render
-!.gitpod.yml
-!render.yml
-!.render-buildpacks.json
-
-# track webpack configs (i.e. do NOT ignore it)
-!composer.json
-!webpack.config.js
-!package.json
-!webpack.production.js
-!webpack.development.js
-
-# track readme.md in the root (i.e. do NOT ignore it)
-!README.md
-
-# ignore OS generated files
-ehthumbs.db
-Thumbs.db
-
-# ignore Editor files
-*.sublime-project
-*.sublime-workspace
-*.komodoproject
-
-# ignore log files and databases
+# Logs
+logs
 *.log
-*.sql
-*.sqlite
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# ignore compiled files
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+node_modules
+dist
+dist-ssr
+*.local
 
-# ignore packaged files
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
-# ignore node/grunt dependency directories
-node_modules/
-
-# webpack output
-dist/*
-!public/
-!public/*
-
-# ignore the dist directory were our bundle files are going to be
-!.gitkeep
-!.htaccess
-!.eslintrc
-!.env.example
-.now
-
-# backend stuff
-.venv
-database.database
-database.db
-diagram.png
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.db
 __pycache__/
+
+# Ignore package-lock.json
+package-lock.json

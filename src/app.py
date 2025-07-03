@@ -32,9 +32,9 @@ if db_url is not None:
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dev.db"
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS
-           
-app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret-key")  # Use your .env value
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv(
+    "JWT_SECRET_KEY", "super-secret-key")  # Use your .env value
 
 # Initialize extensions
 db.init_app(app)
@@ -42,7 +42,8 @@ migrate = Migrate(app, db, compare_type=True)
 jwt = JWTManager(app)
 setup_admin(app)
 setup_commands(app)
-app.register_blueprint(api, url_prefix='/api')  # ONLY /api/hello, no main endpoints here
+# ONLY /api/hello, no main endpoints here
+app.register_blueprint(api, url_prefix='/api')
 
 # Error handler
 

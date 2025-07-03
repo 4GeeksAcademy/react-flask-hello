@@ -9,8 +9,8 @@ export const HomeNavbar = () => {
     }
     return (
         <div className='container-fluid px-5 py-none'>
-            <a class="navbar-brand d-flex align-items-center text-white" href="#">
-                <img src={logo} alt="Logo" style={{ width: '4rem', height: '4rem' }} class="d-inline-block mx-2 " />
+            <a className="navbar-brand d-flex align-items-center text-white" href="#">
+                <img src={logo} alt="Logo" style={{ width: '4rem', height: '4rem' }} className="d-inline-block mx-2 " />
 
                 EchoBoard
             </a>

@@ -100,6 +100,9 @@ body {
 .vh-50 {
   min-height: 50vh;
 }
+.vh-70 {
+  min-height: 70vh;
+}
 
 .curved-div {
   width: 100%;
@@ -247,4 +250,7 @@ a {
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
+}
+.bg-blue-500 {
+  background-color: var(--blue-500);
 }

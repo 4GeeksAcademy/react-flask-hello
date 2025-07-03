@@ -4,7 +4,7 @@ import { Services } from "../components/Services/Services.jsx";
 import { Process } from "../components/Process.jsx";
 import { Projects } from "../components/Projects.jsx";
 import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
-import { Team } from "../components/Team/Team.jsx";
+import { HomeHeaderAlt } from "../components/HomeHeaderAlt.jsx";
 import { HeaderHome } from "../components/HeaderHome.jsx";
 
 
@@ -40,8 +40,8 @@ export const Home = () => {
 
 	return (
 		<>
-			<div className="bg-dark w-100 h-100"></div>
-			<HeaderHome />
+			<HomeHeaderAlt />
+
 			<Services />
 			<Process />
 			<Projects />

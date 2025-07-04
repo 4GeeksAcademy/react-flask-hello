@@ -13,7 +13,7 @@ export const Projects = () => {
             <div className="container py-5">
                 <div className="d-flex flex-column text-center justify-content-center mb-5">
                     <h2 className="section-title">Nuestros proyectos</h2>
-                    <p className="text-white ct-description-p">Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan. </p>
+                    <p className="text-white ct-description-p">Hemos creado universos digitales únicos que resuelven desafíos y conectan a las marcas con sus audiencias. Sabemos que cada proyecto es una historia que refleja innovación y resultados claros, y estamos dispuestos a plasmarlo en tu visión.</p>
                 </div>
                 <div className="row g-2 g-lg-3 h-100">
                     <div className="col col-lg-6">

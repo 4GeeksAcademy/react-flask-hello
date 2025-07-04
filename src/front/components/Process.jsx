@@ -26,6 +26,9 @@ export const Process = () => {
         }
     };
 
+    const firstColumnCapacities = capacitiesData.slice(0, Math.ceil(capacitiesData.length / 2));
+    const secondColumnCapacities = capacitiesData.slice(Math.ceil(capacitiesData.length / 2));
+
     return (
         <section>
             <div className="container py-5">
@@ -57,16 +60,31 @@ export const Process = () => {
                             <>
                                 <div className="col-12 col-sm-6 pe-md-3">
                                     <div className="d-flex justify-content-center justify-content-sm-end mb-4">
-                                        <div className="d-flex flex-column align-items-center gap-3">
-                                            {capacitiesData.map(capacity => (
-                                                <button
-                                                    key={capacity.id}
-                                                    className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
-                                                    onClick={() => setActiveContent(capacity.id)}
-                                                >
-                                                    {capacity.label}
-                                                </button>
-                                            ))}
+                                        <div className="row w-100 justify-content-sm-end">
+                                            {/* Primera columna de botones */}
+                                            <div className="col-12 col-md-6 d-flex flex-column align-items-center align-items-sm-end gap-3 mb-3 mb-md-0">
+                                                {firstColumnCapacities.map(capacity => (
+                                                    <button
+                                                        key={capacity.id}
+                                                        className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
+                                                        onClick={() => setActiveContent(capacity.id)}
+                                                    >
+                                                        {capacity.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            {/* Segunda columna de botones */}
+                                            <div className="col-12 col-md-6 d-flex flex-column align-items-center align-items-sm-start gap-3">
+                                                {secondColumnCapacities.map(capacity => (
+                                                    <button
+                                                        key={capacity.id}
+                                                        className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
+                                                        onClick={() => setActiveContent(capacity.id)}
+                                                    >
+                                                        {capacity.label}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

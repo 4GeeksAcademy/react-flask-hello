@@ -83,7 +83,7 @@ export const Process = () => {
                                             {processData.map(process => (
                                                 <button
                                                     key={process.id}
-                                                    className={`ct-btn-outline-accent px-5 py-2 ${activeContent === process.id ? 'active-inner-button' : ''}`}
+                                                    className={`ct-btn-outline-accent px-4 py-2 ${activeContent === process.id ? 'active-inner-button' : ''}`}
                                                     onClick={() => setActiveContent(process.id)}
                                                 >
                                                     {process.label}

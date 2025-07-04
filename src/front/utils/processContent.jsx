@@ -54,27 +54,32 @@ export const capacitiesData = [
 export const processData = [
     {
         id: 'paso1',
-        label: 'Paso 1',
-        text: 'Detalles del Paso 1. En esta fase inicial, nos centramos en la recolección de requisitos y la planificación del proyecto, estableciendo las bases para el éxito futuro.'
+        label: '01. Recopilación de Información y Necesidades',
+        text: 'Antes de iniciar cualquier proyecto, nos enfocamos en comprender a fondo tus necesidades, metas de negocio y cualquier restricción o preferencia. Evaluamos riesgos potenciales y definimos los criterios de éxito y objetivos a cumplir. La comunicación es clave, y validamos la dirección del proyecto a través de presentaciones de resultados y reuniones periódicas para asegurar una comunicación ideal.'
     },
     {
         id: 'paso2',
-        label: 'Paso 2',
-        text: 'Descripción del Paso 2. Aquí se realiza el diseño de la solución, elaborando prototipos y esquemas que guiarán el desarrollo, garantizando una experiencia de usuario óptima.'
+        label: '02. Onboarding y Descubrimiento',
+        text: 'Nuestro equipo se sumerge en tu marca y negocio. Exponemos los puntos esenciales que hemos extraído de tu identidad, definimos objetivos claros, criterios de éxito y limitaciones. Si ya tienes una presencia online, realizamos una auditoría inicial para identificar puntos de mejora. Analizamos también a la competencia para identificar oportunidades y soluciones UX/UI que podemos adoptar para tu beneficio.'
     },
     {
         id: 'paso3',
-        label: 'Paso 3',
-        text: 'Contenido del Paso 3. La fase de desarrollo implica la codificación y construcción de las funcionalidades, siguiendo las mejores prácticas y metodologías ágiles.'
+        label: '03. Arquitectura de Contenido Web',
+        text: 'Estructuramos la arquitectura de tu sitio. Definimos qué información debe ir en cada página y cómo se conectan las páginas y los elementos entre sí, creando un sitemap claro y una jerarquía de contenido intuitiva. Esto permite visualizar el flujo de la información, planificar el viaje del usuario y anticipar la ubicación estratégica de elementos clave, asegurando una navegación fluida y una experiencia de usuario optimizada.'
     },
     {
         id: 'paso4',
-        label: 'Paso 4',
-        text: 'Información del Paso 4. Las pruebas exhaustivas son cruciales en este punto para identificar y corregir errores, asegurando la calidad y estabilidad del producto final.'
+        label: '04. Wireframes de Baja Fidelidad (Low-Fidelity)',
+        text: 'Desarrollamos esquemas visuales básicos del sitio web, enfocándonos en la estructura y el diseño de la información sin detalles estéticos. Determinamos la distribución de elementos, la forma de bloques de contenido y la posición de los llamados a la acción (CTAs). En esta etapa, utilizaremos textos de prueba para asegurar que el contenido se alinee con los elementos visuales y resolver posibles conflictos en la arquitectura. Desde una mirada de desarrollo evaluamos la complejidad para minimizar riesgos, al momento de la implementación.'
     },
     {
         id: 'paso5',
-        label: 'Paso 5',
-        text: 'Conclusión del Paso 5. Finalmente, la implementación y despliegue del proyecto, seguido de un monitoreo continuo y soporte para garantizar su funcionamiento óptimo.'
+        label: '05. Conceptos Visuales',
+        text: 'Considerando tu industria, un análisis competitivo, tu manual de marca, si lo tienes, y tus preferencias, creamos moodboards visuales. Estos muestran el tono emocional de tu producto, ejemplos de colores, formas y estilos que guiarán la fase de diseño final. Posteriormente, aplicamos el diseño del moodboard elegido a los wireframes de baja fidelidad, definiendo colores, estilos de texto, tamaños de encabezados y seleccionando contenido ilustrativo e íconos.'
+    },
+    {
+        id: 'paso6',
+        label: '06. Diseño Final y Desarrollo (Implementación)',
+        text: 'Una vez aprobada la dirección de diseño, nuestro equipo finaliza las páginas aprobadas, integrando colores y estilos de texto en la biblioteca de elementos. El diseño se extiende al resto del sitio, creando una librería de elementos y reglas que permiten construir nuevas páginas y módulos rápidamente. Esto incluye componentes de UI y sus estados, color y estilos de fuente, asegurando coherencia y eficiencia. Después, el diseño pasa a desarrollo, donde nuestro equipo lo programa completamente sea en web dev, wordpress o algún CMS, optimizado, responsive y seguro. El trabajo coordinado entre diseño y desarrollo asegura que el resultado final cumpla con todos los requisitos del cliente.'
     }
 ];

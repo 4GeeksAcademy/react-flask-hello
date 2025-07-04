@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
-import { navLinks } from "../utils/navLinks";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
 import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-
 export const Navbar = () => {
-	const contactLink = navLinks[navLinks.length - 1];
-	const mainLinks = navLinks.slice(0, -1);
-
+   
 	return (
 		<>
+            {/* --- NAVBAR DE ESCRITORIO --- */}
 			<nav className="container my-5 d-none d-lg-block">
 				<div className="navbar fixed-top navbar-expand-md custom-navbar rounded-pill px-4 my-3 mx-5">
 					<Link className="navbar-brand px-3" to="/">
@@ -20,24 +17,27 @@ export const Navbar = () => {
 
 					<div className="d-none d-lg-flex justify-content-end w-100">
 						<ul className="navbar-nav align-items-center gap-3">
-
-							{mainLinks.map((link) => (
-								<li className="nav-item" key={link.to}>
-									<Link className="nav-link no-shift-hover" to={link.to}>
-										{link.label}
-									</Link>
-								</li>
-							))}
-								<li className="nav-item">
-									<Link className="btn btn-contact rounded-pill" to={contactLink.to}>
-										{contactLink.label}
-									</Link>
-								</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover" to="/">Inicio</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover" to="/about">Nosotros</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover" to="/services">Servicios</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover" to="/projects">Proyectos</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="btn btn-contact rounded-pill" to="/contact">Contáctanos</Link>
+							</li>
 						</ul>
 					</div>	
 				</div>
 			</nav>
 
+            {/* --- NAVBAR MÓVIL (TRIGGER Y OFFCANVAS) --- */}
 			<div className="d-lg-none mobile-nav-trigger">
 				<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />
 				<button
@@ -62,7 +62,6 @@ export const Navbar = () => {
 						<h5 className="offcanvas-title" id="mobileMenuOffcanvasLabel">
 							<img src={LogoNavMovil} alt="CloudTech Logo Movil" className="navbar-logo-1" />
 						</h5>
-
 						<button
 							type="button"
 							className="btn-close btn-close-white"
@@ -74,16 +73,21 @@ export const Navbar = () => {
 
 					<div className="mobile-menu-content">
 						<ul className="navbar-nav gap-4">
-							{mainLinks.map((link) => (
-								<li className="nav-link no-shift-hover mobile-link" to={link.to}>
-									{link.label}
-								</li>
-							))}
+                            <li className="nav-item">
+								<Link className="nav-link no-shift-hover mobile-link" to="/">Inicio</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover mobile-link" to="/about">Nosotros</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover mobile-link" to="/services">Servicios</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link no-shift-hover mobile-link" to="/projects">Proyectos</Link>
+							</li>
 						</ul>
 						<div className="mt-5 w-100 px-4">
-							<Link className="btn btn-contact rounded-pill mobile-btn" to={contactLink.to}>
-								{contactLink.label}
-							</Link>
+							<Link className="btn btn-contact rounded-pill mobile-btn" to="/contact">Contáctanos</Link>
 						</div>
 					</div>
 				</div>

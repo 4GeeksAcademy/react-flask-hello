@@ -112,6 +112,7 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateX(0);
 }
 
+/* Navbar */
 .custom-navbar {
   background-color: #04171B;
   padding-left: 1.5rem !important;
@@ -125,11 +126,17 @@ h1, h2, h3, h4, h5, h6 {
   /* padding-left: 10%; */
 }
 
-.custom-navbar .nav-link {
+.custom-navbar a.nav-link, 
+.custom-navbar a.nav-link:visited {
   color: #FFFFFF;
   font-size: 1rem;
   padding: 0.5rem 0.8rem;
   transition: color 0.3s ease, font-weight 0.3s ease; 
+  text-decoration: none;
+}
+
+.custom-navbar .nav-link.active {
+  color: #FFFFFF !important;
 }
 
 .custom-navbar .nav-link:hover {

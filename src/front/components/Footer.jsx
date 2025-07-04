@@ -12,7 +12,7 @@ export const Footer = () => (
 			<div className="row">
 				<div className="col text-center text-sm-start">
 					<img src={logoFooter} alt="clooudTech logo" className="mb-3" />
-					<p className="text-white mb-3 w-50 d-none d-sm-block mb-4">Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam mauris sed ma.</p>
+					<p className="text-white mb-3 w-75 d-none d-sm-block mb-4">Moldeamos ideas para crear universos digitales.</p>
 					<div className="fs-2 d-flex gap-3 text-white justify-content-center justify-content-sm-start">
 						<FontAwesomeIcon icon={faFacebookSquare} />
 						<FontAwesomeIcon icon={faInstagram} />

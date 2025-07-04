@@ -8,25 +8,25 @@ export const testimonialsContent = [
         id: 0,
         name: "Abril Altamirano",
         position: "Editora General",
-        review: '“Lorem ipsum dolor sit amet consectetur. Sed adipiscing cursus sed ipsum pellentesque pulvinar. Diam lectus non posuere urna porta dolor. Aliquet sed in eleifend arcu”.',
+        review: '“El equipo no solo construyó un sitio web en WordPress que refleja fielmente nuestra identidad, sino que nos dotó de las funcionalidades editoriales y de seguridad. Comprendieron nuestra visión sobre la literatura y la autogestión, permitiéndonos construir una amplia comunidad de creadores en Ecuador y Latinoamérica."',
         profilePicture: client1,
         logo: company1
 
     },
     {
         id: 1,
-        name: "Leandro Buzeta",
-        position: "Founder & CEO",
-        review: '“Lorem ipsum dolor sit amet consectetur. Sed adipiscing cursus sed ipsum pellentesque pulvinar. Diam lectus non posuere urna porta dolor. Aliquet sed in eleifend arcu”.',
+        name: "Gabriela Suárez",
+        position: "Editora",
+        review: `${'“Con '} ${"'Búsquedas'"} ${'se materializó el espacio digital seguro y respetuoso que necesitábamos para fomentar el diálogo. El trabajo realizado nos permitió tejer una red viva entre distintas corrientes y experiencias, recogiendo textos y reflexiones personales. Valoramos enormemente cómo el equipo entendió la esencia de nuestro proyecto, facilitando que distintas voces compartan sus comprensiones y se nutran mutuamente.”'}`,
         profilePicture: client2,
         logo: company2
 
     },
     {
         id: 2,
-        name: "Abril Altamirano",
+        name: "David Pinto",
         position: "Editora General",
-        review: '“Lorem ipsum dolor sit amet consectetur. Sed adipiscing cursus sed ipsum pellentesque pulvinar. Diam lectus non posuere urna porta dolor. Aliquet sed in eleifend arcu”.',
+        review: '“Nos entregaron una solución que difunde literatura y arte a nivel internacional, superando limitaciones geográficas. Su equipo comprendió nuestro modelo colaborativo y su creatividad integró una biblioteca virtual y una sección interactiva de sonido, impulsando la obra de autores con una experiencia inmersiva.”',
         profilePicture: client1,
         logo: company1
 

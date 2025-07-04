@@ -1,10 +1,30 @@
 import { useState } from "react"
+import { capacitiesData, processData } from "../utils/processContent";
+
 
 export const Process = () => {
     const [activeSection, setActiveSection] = useState('capacidades');
+    const [activeContent, setActiveContent] = useState('capacidad1');
 
     const activeColor = "#fbff06"
     const inactiveColor = "#A8AB02"
+
+    const handleMainSection = (section) => {
+        setActiveSection(section);
+        if (section === 'capacidades') {
+            setActiveContent('capacidad1');
+        } else {
+            setActiveContent('paso1');
+        }
+    };
+
+    const getCurrentContent = () => {
+        if (activeSection === 'capacidades') {
+            return capacitiesData.find(capacity => capacity.id === activeContent)?.text || capacitiesData[0].text;
+        } else {
+            return processData.find(process => process.id === activeContent)?.text || processData[0].text;
+        }
+    };
 
     return (
         <section>
@@ -14,7 +34,7 @@ export const Process = () => {
                         <div className="d-flex justify-content-end">
                             <button
                                 className="process-section-title mb-4"
-                                onClick={() => setActiveSection('capacidades')}
+                                onClick={() => handleMainSection('capacidades')}
                                 style={{ color: activeSection === 'capacidades' ? activeColor : inactiveColor }}
                             >Capacidades</button>
                         </div>
@@ -24,7 +44,7 @@ export const Process = () => {
                         <div className="d-flex justify-content-start">
                             <button
                                 className="process-section-title mb-4"
-                                onClick={() => setActiveSection('proceso')}
+                                onClick={() => handleMainSection('proceso')}
                                 style={{ color: activeSection === 'proceso' ? activeColor : inactiveColor }}
                             >
                                 Proceso
@@ -38,18 +58,21 @@ export const Process = () => {
                                 <div className="col-12 col-sm-6 pe-md-3">
                                     <div className="d-flex justify-content-center justify-content-sm-end mb-4">
                                         <div className="d-flex flex-column align-items-center gap-3">
-                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 1</button>
-                                            <button className="ct-btn-outline-accent px-4 py-2">Capacidad 2</button>
-                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 3</button>
-                                            <button className="ct-btn-outline-accent px-4 py-2">Capacidad 4</button>
-                                            <button className="ct-btn-outline-accent px-5 py-2">Capacidad 5</button>
+                                            {capacitiesData.map(capacity => (
+                                                <button
+                                                    key={capacity.id}
+                                                    className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
+                                                    onClick={() => setActiveContent(capacity.id)}
+                                                >
+                                                    {capacity.label}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="col ps-sm-5 text-center text-sm-start">
-                                    <p className="text-white">Lorem ipsum dolor sit amet consectetur. Turpis nulla est hendrerit facilisis mollis faucibus accumsan tempus id. In et a faucibus aenean nunc. Risus lorem fermentum eu dui. Maecenas egestas sit elementum enim nisi consectetur metus non. Pellentesque quam at urna sed ipsum. Dignissim placerat molestie donec vitae. Blandit dolor elementum vitae integer convallis lectus tortor in ipsum.
-                                        Magna placerat volutpat odio egestas. Vestibulum sit cursus id interdum. Nunc vel quis purus pellentesque viverra fermentum aliquam. </p>
+                                    <p className="text-white">{getCurrentContent()}</p>
                                 </div>
                             </>
                         ) : (
@@ -57,17 +80,21 @@ export const Process = () => {
                                 <div className="col-12 col-sm-6 pe-sm-5">
                                     <div className="d-flex justify-content-center justify-content-sm-end mb-4">
                                         <div className="d-flex flex-column align-items-center gap-3">
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Paso 1</buton>
-                                            <buton className="ct-btn-outline-accent px-4 py-2">Paso 2</buton>
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Paso 3</buton>
-                                            <buton className="ct-btn-outline-accent px-4 py-2">Paso 4</buton>
-                                            <buton className="ct-btn-outline-accent px-5 py-2">Paso 5</buton>
+                                            {processData.map(process => (
+                                                <button
+                                                    key={process.id}
+                                                    className={`ct-btn-outline-accent px-5 py-2 ${activeContent === process.id ? 'active-inner-button' : ''}`}
+                                                    onClick={() => setActiveContent(process.id)}
+                                                >
+                                                    {process.label}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="col ps-sm-5 text-center text-sm-start">
-                                    <p className="text-white">Otro contenido necesario para explicar la secci'on de proceso </p>
+                                    <p className="text-white">{getCurrentContent()}</p>
                                 </div>
                             </>
                         )

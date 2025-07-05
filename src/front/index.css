@@ -65,6 +65,11 @@ h6 {
   font-size: 2.08rem;
 }
 
+.ct-paragraph {
+  font-size: 16pt;
+  line-height: 180%;
+}
+
 /* Services cards, components & background */
 
 .card.card-background {
@@ -77,6 +82,11 @@ h6 {
 .ct-services-bg {
   mix-blend-mode: soft-light;
   opacity: 50%;
+}
+
+.ct-team-bg {
+  mix-blend-mode: darken;
+  opacity: 39%;
 }
 
 .card-title.text-ct-secondary {

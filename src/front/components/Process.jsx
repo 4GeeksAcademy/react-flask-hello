@@ -90,7 +90,7 @@ export const Process = () => {
                                 </div>
 
                                 <div className="col ps-sm-5 text-center text-sm-start">
-                                    <p className="text-white">{getCurrentContent()}</p>
+                                    <p className="text-white ct-paragraph">{getCurrentContent()}</p>
                                 </div>
                             </>
                         ) : (
@@ -112,7 +112,7 @@ export const Process = () => {
                                 </div>
 
                                 <div className="col ps-sm-5 text-center text-sm-start">
-                                    <p className="text-white">{getCurrentContent()}</p>
+                                    <p className="text-white ct-paragraph">{getCurrentContent()}</p>
                                 </div>
                             </>
                         )

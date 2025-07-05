@@ -25,7 +25,7 @@ export const teamContent = [
     },
     {
         id: 2,
-        name: "David Pinto",
+        name: "Santiago Montoya",
         position: "Fullstack Developer",
         description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
         image: devProfile3,

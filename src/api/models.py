@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 db = SQLAlchemy()
@@ -14,6 +14,7 @@ class Lead(db.Model):
     phone: Mapped[str] = mapped_column(String(15), unique=True, nullable=False)
     company: Mapped[str] = mapped_column(
         String(50), unique=False, nullable=True)
+    message: Mapped[str] = mapped_column(Text, nullable=True)
 
     def serialize(self):
         return {
@@ -21,5 +22,6 @@ class Lead(db.Model):
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
-            "company": self.company
+            "company": self.company,
+            "message": self.message
         }

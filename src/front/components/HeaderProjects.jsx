@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import HomeAbout from "../assets/img/HomeAbout.jpg"
+import HomeProjects from "../assets/img/HomeProjects.jpg"
 
-export const HeaderAbout = () => {
+export const HeaderProjects = () => {
 
     return (
 
         <section className="w-100 h-100 mb-5 position-relative">
-                    <img src={HomeAbout} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block"/>
+                    <img src={HomeProjects} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block"/>
                     <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
                     <div className="container w-100 h-100">
                         <div className="row text-center z-0">
-                            <div className="col-6"></div>
+                            <div className="col-6"></div> 
                             <div className="col-6 my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
                                 <h1 className="hero-title-home display-3 fw-bolder text-warning mt-sm-0 mt-5 mb-4">
                                     Lorem, ipsum<br />dolor sit amet.

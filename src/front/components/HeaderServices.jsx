@@ -1,34 +1,34 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import HomeAbout from "../assets/img/HomeAbout.jpg"
+import HomeServices from "../assets/img/HomeServices.jpg"
 
-export const HeaderAbout = () => {
-
-    const headerStyle = {
-        backgroundImage: `url(${HomeAbout})`
-    };
+export const HeaderServices = () => {
 
     return (
 
-        <header className="hero-header-home position-relative" style={headerStyle}>
-            <div className="hero-overlay-home d-flex justify-content-center align-items-center">
-                <div className="container">
-                    <div className="d-flex flex-column align-items-center text-center">
-                        <h1 className="hero-title-home display-3 fw-bolder text-warning mb-4">
-                            Lorem, ipsum.<br />Lorem ipsum dolor sit amet.
-                        </h1>
-
-                        <p className="hero-subtitle-home fs-5 text-white w-75 mb-5">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet dolorum iste enim consequatur corporis ipsa tenetur modi sunt ullam placeat.
-                        </p>
-
-                        <div className="d-flex flex-column justify-content-center flex-md-row gap-3 w-75">
-                            <Link to="/projects" className="btn btn-outline-light btn-lg rounded-pill px-4">Proyectos</Link>
-                            <Link to="/contact" className="btn btn-outline-yellow btn-lg rounded-pill px-4">Contáctanos</Link>
+        <section className="w-100 h-100 mb-5 position-relative">
+                    <img src={HomeServices} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block"/>
+                    <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
+                    <div className="container w-100 h-100">
+                        <div className="row text-center z-0"> 
+                            <div className="col-6 my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
+                                <h1 className="hero-title-home display-3 fw-bolder text-warning mt-sm-0 mt-5 mb-4">
+                                    Lorem, ipsum<br />dolor sit amet.
+                                </h1>
+        
+                                <p className="hero-subtitle-home fs-5 text-white w-75 mb-5">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet dolorum iste enim consequatur corporis ipsa tenetur modi sunt ullam placeat.
+                                </p>
+        
+                                <div className="d-flex flex-column justify-content-center flex-md-row gap-3 w-100">
+                                    <Link to="/proyectos" className="btn btn-outline-light btn-lg rounded-pill px-5">Proyectos</Link>
+                                    <Link to="/contacto" className="btn btn-outline-yellow btn-lg rounded-pill px-5">Contáctanos</Link>
+                                </div>
+                            </div>
+                            <div className="col-6"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </header>
+                </section>
+
+    
     )
 }

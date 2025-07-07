@@ -1,45 +1,45 @@
 import { Link } from "react-router-dom";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
 import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export const Navbar = () => {
-   
+
 	return (
 		<>
-            {/* --- NAVBAR DE ESCRITORIO --- */}
-			<nav className="container my-5 d-none d-lg-block">
-				<div className="navbar fixed-top navbar-expand-md custom-navbar rounded-pill px-4 my-3 mx-5">
-					<Link className="navbar-brand px-3" to="/">
-						<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />
+			{/* --- NAVBAR DE ESCRITORIO --- */}
+			<nav className="navbar fixed-top navbar-expand-md d-none d-lg-block py-3 justify-content-center">
+				<div className="container bg-black rounded-pill px-4 py-2 d-flex justify-content-between align-items-center">
+					<Link className="navbar-brand" to="/">
+						<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
 					</Link>
 
-					<div className="d-none d-lg-flex justify-content-end w-100">
-						<ul className="navbar-nav align-items-center gap-3">
-							<li className="nav-item">
-								<Link className="nav-link no-shift-hover" to="/">Inicio</Link>
-							</li>
-							<li className="nav-item">
-								<Link className="nav-link no-shift-hover" to="/about">Nosotros</Link>
-							</li>
-							<li className="nav-item">
-								<Link className="nav-link no-shift-hover" to="/services">Servicios</Link>
-							</li>
-							<li className="nav-item">
-								<Link className="nav-link no-shift-hover" to="/projects">Proyectos</Link>
-							</li>
-							<li className="nav-item">
-								<Link className="btn btn-contact rounded-pill" to="/contact">Contáctanos</Link>
-							</li>
-						</ul>
-					</div>	
+					{/* <div className="d-none d-lg-flex justify-content-end w-100"> */}
+					<ul className="navbar-nav flex-row align-items-center gap-3">
+						<li className="nav-item">
+							<Link className="nav-link text-white" to="/">Inicio</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link text-white" to="/about">Nosotros</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link text-white" to="/services">Servicios</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link text-white" to="/projects">Proyectos</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="btn btn-outline-custom-yellow rounded-pill py-2 px-4 fw-medium" to="/contact">Contáctanos</Link>
+						</li>
+					</ul>
+					{/* </div>	 */}
 				</div>
 			</nav>
 
-            {/* --- NAVBAR MÓVIL (TRIGGER Y OFFCANVAS) --- */}
-			<div className="d-lg-none mobile-nav-trigger">
-				<img src={LogoNavbar} alt="CloudTech Logo" className="navbar-logo" />
+			{/* --- NAVBAR MÓVIL (TRIGGER Y OFFCANVAS) --- */}
+			<div className="d-lg-none fixed-top bg-black d-flex justify-content-between align-items-center mx-3 my-4 p-3 rounded-pill">
+				<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
 				<button
 					className="navbar-toggler"
 					type="button"
@@ -47,7 +47,7 @@ export const Navbar = () => {
 					data-bs-target="#mobileMenuOffcanvas"
 					aria-controls="mobileMenuOffcanvas"
 				>
-					<span className="navbar-toggler-icon"></span>
+					<FontAwesomeIcon icon={faBars} className="fa-icon-yellow" size="xl" />
 				</button>
 			</div>
 
@@ -57,10 +57,10 @@ export const Navbar = () => {
 				id="mobileMenuOffcanvas"
 				aria-labelledby="mobileMenuOffcanvasLabel"
 			>
-				<div className="offcanvas-body">
-					<div className="mobile-menu-header">
-						<h5 className="offcanvas-title" id="mobileMenuOffcanvasLabel">
-							<img src={LogoNavMovil} alt="CloudTech Logo Movil" className="navbar-logo-1" />
+				<div className="ooffcanvas-body d-flex flex-column">
+					<div className="bg-custom-mobile-header d-flex justify-content-between align-items-center mx-3 my-4 p-3 rounded-pill">
+						<h5 className="offcanvas-title mb-0" id="mobileMenuOffcanvasLabel">
+							<img src={LogoNavMovil} alt="CloudTech Logo Movil" className="h-auto w-auto" />
 						</h5>
 						<button
 							type="button"
@@ -71,23 +71,23 @@ export const Navbar = () => {
 						</button>
 					</div>
 
-					<div className="mobile-menu-content">
+					<div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
 						<ul className="navbar-nav gap-4">
-                            <li className="nav-item">
-								<Link className="nav-link no-shift-hover mobile-link" to="/">Inicio</Link>
+							<li className="nav-item">
+								<Link className="nav-link text-white fs-2 fw-medium" to="/">Inicio</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link no-shift-hover mobile-link" to="/about">Nosotros</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/about">Nosotros</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link no-shift-hover mobile-link" to="/services">Servicios</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/services">Servicios</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link no-shift-hover mobile-link" to="/projects">Proyectos</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/projects">Proyectos</Link>
 							</li>
 						</ul>
 						<div className="mt-5 w-100 px-4">
-							<Link className="btn btn-contact rounded-pill mobile-btn" to="/contact">Contáctanos</Link>
+							<Link className="btn btn-outline-custom-yellow rounded-pill w-100 py-3 fs-5 fw-bold" to="/contact">Contáctanos</Link>
 						</div>
 					</div>
 				</div>

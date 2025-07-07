@@ -40,7 +40,7 @@ export const Home = () => {
 
 	return (
 		<>
-			<HomeHeaderAlt />
+			<HeaderHome />
 
 			<Services />
 			<Process />

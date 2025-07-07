@@ -1,6 +1,10 @@
 import devProfile1 from '../assets/img/Team/teammember1.jpg'
 import devProfile2 from '../assets/img/Team/teammember2.jpg'
 import devProfile3 from '../assets/img/Team/teammember3.png'
+import cat1 from '../assets/img/Team/cat1.jpg'
+import cat2 from '../assets/img/Team/cat2.avif'
+import cat3 from '../assets/img/Team/cat3.png'
+
 
 export const teamContent = [
     {
@@ -9,6 +13,7 @@ export const teamContent = [
         position: "Comunicador y Desarrollador",
         description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
         image: devProfile1,
+        catImage: cat1,
         mailLink: 'dpinto@cloudtech.com.ec',
         linkedinLink: 'https://www.linkedin.com/in/davidpinto6/',
         githubLink: ''
@@ -19,6 +24,7 @@ export const teamContent = [
         position: "Fullstack Developer",
         description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
         image: devProfile2,
+        catImage: cat2,
         mailLink: 'jmpinto@cloudtech.com.ec',
         linkedinLink: 'https://www.linkedin.com/in/jm-pinto/',
         githubLink: 'https://github.com/UkuJoeMP'
@@ -29,6 +35,7 @@ export const teamContent = [
         position: "Fullstack Developer",
         description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
         image: devProfile3,
+        catImage: cat3,
         mailLink: 'smontoya@cloudtech.com.ec',
         linkedinLink: 'https://www.linkedin.com/in/santiago-montoya-ord%C3%B3%C3%B1ez-nk7/',
         githubLink: 'https://github.com/santgeek'

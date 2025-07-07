@@ -70,6 +70,48 @@ h6 {
   line-height: 180%;
 }
 
+/* Cat transition effect */
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.card-img-wrapper .original-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.card-img-wrapper .cat-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--cat-image-url);
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.card-img-wrapper:hover .original-image {
+  opacity: 0;
+}
+
+.card-img-wrapper:hover .cat-image-overlay {
+  opacity: 1;
+}
+
 /* Services cards, components & background */
 
 .card.card-background {

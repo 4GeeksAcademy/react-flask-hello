@@ -5,7 +5,7 @@ export const HeaderProjects = () => {
 
     return (
 
-        <section className="w-100 h-100 mb-5 position-relative">
+        <section className="w-100 h-100 mb-5 mt-5 position-relative">
                     <img src={HomeProjects} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block"/>
                     <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
                     <div className="container w-100 h-100">
@@ -21,8 +21,8 @@ export const HeaderProjects = () => {
                                 </p>
         
                                 <div className="d-flex flex-column justify-content-center flex-md-row gap-3 w-100">
-                                    <Link to="/proyectos" className="btn btn-outline-light btn-lg rounded-pill px-5">Proyectos</Link>
-                                    <Link to="/contacto" className="btn btn-outline-yellow btn-lg rounded-pill px-5">Contáctanos</Link>
+                                    {/* <Link to="/projects" className="btn btn-outline-light btn-lg rounded-pill px-5">Proyectos</Link> */}
+                                    <Link to="/contact" className="btn btn-outline-yellow btn-lg rounded-pill px-5">Contáctanos</Link>
                                 </div>
                             </div>
                         </div>

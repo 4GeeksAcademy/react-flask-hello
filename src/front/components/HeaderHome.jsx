@@ -21,8 +21,8 @@ export const HeaderHome = () => {
                         </p>
 
                         <div className="d-flex flex-column justify-content-center flex-md-row gap-3 w-100">
-                            <Link to="/proyectos" className="btn btn-outline-light btn-lg rounded-pill px-5">Proyectos</Link>
-                            <Link to="/contacto" className="btn btn-outline-yellow btn-lg rounded-pill px-5">Contáctanos</Link>
+                            <Link to="/projects" className="btn btn-outline-light btn-lg rounded-pill px-5">Proyectos</Link>
+                            <Link to="/contact" className="btn btn-outline-yellow btn-lg rounded-pill px-5">Contáctanos</Link>
                         </div>
                     </div>
                 </div>

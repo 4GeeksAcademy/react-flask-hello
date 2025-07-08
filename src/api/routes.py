@@ -28,6 +28,7 @@ def validate_lead_data(data):
     email = data.get("email")
     phone = data.get("phone")
     company = data.get("company")
+    message = data.get("message")
 
     if not name or not name.strip():
         errors["name"] = "Name field is required."
@@ -46,7 +47,8 @@ def validate_lead_data(data):
         "name": name.strip() if name else None,
         "email": email.strip() if email else None,
         "phone": phone.strip() if phone else None,
-        "company": company.strip() if company else None
+        "company": company.strip() if company else None,
+        "message": message.strip() if message else None
     }
 
 
@@ -71,7 +73,8 @@ def add_lead():
             name=clean_data["name"],
             email=clean_data["email"],
             phone=clean_data["phone"],
-            company=clean_data["company"]
+            company=clean_data["company"],
+            message=clean_data["message"]
         )
 
         db.session.add(new_lead)

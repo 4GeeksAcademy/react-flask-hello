@@ -4,10 +4,17 @@ import { faGithubSquare } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
-export const Card = ({ name, position, description, image, mailLink, linkedinLink, githubLink }) => {
+export const Card = ({ name, position, description, image, catImage, mailLink, linkedinLink, githubLink }) => {
     return (
         <div className="card h-100 card-background rounded-5 pb-3">
-            <img src={image} className="card-img-to overflow-hidden w-100 h-100 object-fit-cover rounded-top-5" alt="CloudTech Team member profile picture" />
+            <div className="card-img-wrapper overflow-hidden rounded-top-5">
+                <img src={image} className="original-image w-100 h-100 object-fit-cover" alt="CloudTech Team member profile picture" />
+                <div
+                    className="cat-image-overlay cat-transition"
+                    style={{ '--cat-image-url': `url(${catImage})` }}
+                ></div>
+            </div>
+
             <div className="card-body text-center text-white pt-4">
                 <h3 className="section-title mb-1">{name}</h3>
                 <h5 className="mt-0 mb-3">{position}</h5>

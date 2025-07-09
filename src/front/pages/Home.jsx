@@ -40,11 +40,10 @@ export const Home = () => {
 
 	return (
 		<>
-			<HomeHeaderAlt />
-
+			<HeaderHome />
 			<Services />
 			<Process />
-			<Projects />
+			<Projects limit={4} />
 			<Testimonials />
 
 		</>

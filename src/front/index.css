@@ -81,7 +81,7 @@ h6 {
 
 .ct-paragraph {
   font-size: 16pt;
-  line-height: 180%;
+  line-height: 170%;
 }
 
 /* Cat transition effect */
@@ -151,11 +151,40 @@ h6 {
 
 .ct-description-p {
   width: 100%;
+  font-size: 16pt;
+  line-height: 170%;
+}
+
+@media (min-width: 800px) {
+  .ct-description-p {
+    width: 80%;
+    margin: auto;
+  }
 }
 
 @media (min-width: 1200px) {
   .ct-description-p {
-    width: 40%;
+    width: 50%;
+    margin: auto;
+  }
+}
+
+.ct-reviews {
+  width: 100%;
+  font-size: 16pt;
+  line-height: 170%;
+}
+
+@media (min-width: 800px) {
+  .ct-reviews {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ct-reviews {
+    width: 70%;
     margin: auto;
   }
 }

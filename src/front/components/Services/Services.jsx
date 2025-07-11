@@ -1,8 +1,11 @@
 import { Card } from "./Card"
 import { servicesContent } from "../../utils/servicesContent"
 import serviceBg from "../../assets/img/servicesBackground.png"
+import { useTranslation } from "react-i18next"
 
 export const Services = () => {
+    const { t } = useTranslation();
+
     const groupedServices = servicesContent.reduce((acc, service) => {
         if (!acc[service.id]) {
             acc[service.id] = [];
@@ -12,9 +15,21 @@ export const Services = () => {
     }, {})
 
     const sections = [
-        { id: 'web', title: 'Desarrollo Web', subtitle: 'Construyendo tu universo digital' },
-        { id: 'communication', title: 'Comunicación', subtitle: 'Reunimos tus audiencias' },
-        { id: 'software', title: 'Soluciones de software', subtitle: 'Potenciamos tus capacidades' }
+        {
+            id: 'web',
+            title: t('services.webDevelopmentTitle'),
+            subtitle: t('services.webDevelopmentSubtitle')
+        },
+        {
+            id: 'communication',
+            title: t('services.communicationTitle'),
+            subtitle: t('services.communicationSubtitle')
+        },
+        {
+            id: 'software',
+            title: t('services.softwareSolutionsTitle'),
+            subtitle: t('services.softwareSolutionsSubtitle')
+        }
     ]
 
     return (
@@ -23,8 +38,8 @@ export const Services = () => {
 
             <div className="container py-5">
                 <div className="d-flex flex-column text-center justify-content-center">
-                    <h2 className="section-title">Conoce nuestros servicios</h2>
-                    <p className="text-white ct-description-p">Cada uno de nuestros servicios está diseñado para construir y amplificar tu presencia digital, convirtiendo tus ideas en productos y resultados medibles. Explora cómo podemos dar forma a tu universo online. </p>
+                    <h2 className="section-title">{t('services.sectionTitle')}</h2>
+                    <p className="text-white ct-description-p">{t('services.sectionDescription')}</p>
                 </div>
 
                 {sections.map(section => (
@@ -32,12 +47,12 @@ export const Services = () => {
                         <h3 className="section-title mb-0">{section.title}</h3>
                         <h5 className="text-white mb-4 fw-normal fst-italic">{section.subtitle}</h5>
                         {groupedServices[section.id] && groupedServices[section.id].map(service => (
-                            <div key={service.id} className="col-md-6 col-lg-4 col-xl-3 mb-4">
+                            <div key={service.title} className="col-md-6 col-lg-4 col-xl-3 mb-4">
                                 <Card
-                                    title={service.title}
+                                    title={t(service.title)}
                                     icon={service.icon}
-                                    description={service.description}
-                                    link={service.link}
+                                    description={t(service.description)}
+                                    link={t(service.link)}
                                 />
                             </div>
                         ))

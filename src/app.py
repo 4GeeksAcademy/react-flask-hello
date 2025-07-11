@@ -42,6 +42,10 @@ app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
 
+@app.before_request
+def handle_options_request():
+    if request.method == 'OPTIONS':
+        return '', 204
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):

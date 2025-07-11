@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { projectsContent } from "../utils/projectsContent";
+import { useTranslation } from "react-i18next";
 
 export const Projects = ({ limit = 0 }) => {
+    const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState("");
 
@@ -33,8 +35,8 @@ export const Projects = ({ limit = 0 }) => {
         <section className="mx-3">
             <div className="container py-5">
                 <div className="d-flex flex-column text-center justify-content-center mb-5">
-                    <h2 className="section-title">Nuestros proyectos</h2>
-                    <p className="text-white ct-description-p">Hemos creado universos digitales únicos que resuelven desafíos y conectan a las marcas con sus audiencias. Sabemos que cada proyecto es una historia que refleja innovación y resultados claros, y estamos dispuestos a plasmarlo en tu visión.</p>
+                    <h2 className="section-title">{t('projects.sectionTitle')}</h2>
+                    <p className="text-white ct-description-p">{t('projects.sectionDescription')}</p>
                 </div>
                 <div className="row g-2 g-lg-3 h-100">
                     <div className="col col-lg-6">
@@ -69,13 +71,17 @@ export const Projects = ({ limit = 0 }) => {
                 {limit > 0 ? (
                     <div className="row text-center mt-5">
                         <div className="col">
-                            <Link to={"/projects"} className="ct-btn-outline-accent text-decoration-none py-2 px-5">Explora nuestro portafolio</Link>
+                            <Link to={"/projects"} className="ct-btn-outline-accent text-decoration-none py-2 px-5">
+                                {t('projects.sectionPortfolioButton')}
+                            </Link>
                         </div>
                     </div>
                 ) : (
                     <div className="row text-center mt-5">
                         <div className="col">
-                            <Link to={"/contact"} className="ct-btn-outline-accent text-decoration-none py-2 px-5">Conectemos ahora</Link>
+                            <Link to={"/contact"} className="ct-btn-outline-accent text-decoration-none py-2 px-5">
+                                {t('projects.sectionCTAButton')}
+                            </Link>
                         </div>
                     </div>
                 )}

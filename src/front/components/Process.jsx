@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { capacitiesData, processData } from "../utils/processContent";
+import { useTranslation } from "react-i18next";
 
 
 export const Process = () => {
+    const { t } = useTranslation();
     const [activeSection, setActiveSection] = useState('capacidades');
     const [activeContent, setActiveContent] = useState('capacidad1');
 
@@ -19,10 +21,13 @@ export const Process = () => {
     };
 
     const getCurrentContent = () => {
+        let contentItem;
         if (activeSection === 'capacidades') {
-            return capacitiesData.find(capacity => capacity.id === activeContent)?.text || capacitiesData[0].text;
+            contentItem = capacitiesData.find(capacity => capacity.id === activeContent) || capacitiesData[0];
+            return t(contentItem.text);
         } else {
-            return processData.find(process => process.id === activeContent)?.text || processData[0].text;
+            contentItem = processData.find(process => process.id === activeContent) || processData[0];
+            return t(contentItem.text);
         }
     };
 
@@ -39,7 +44,7 @@ export const Process = () => {
                                 className="process-section-title mb-4"
                                 onClick={() => handleMainSection('capacidades')}
                                 style={{ color: activeSection === 'capacidades' ? activeColor : inactiveColor }}
-                            >Capacidades</button>
+                            >{t('process.sectionToggleCapacities')}</button>
                         </div>
                     </div>
 
@@ -50,7 +55,7 @@ export const Process = () => {
                                 onClick={() => handleMainSection('proceso')}
                                 style={{ color: activeSection === 'proceso' ? activeColor : inactiveColor }}
                             >
-                                Proceso
+                                {t('process.sectionToggleProcess')}
                             </button>
                         </div>
                     </div>
@@ -69,7 +74,7 @@ export const Process = () => {
                                                         className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
                                                         onClick={() => setActiveContent(capacity.id)}
                                                     >
-                                                        {capacity.label}
+                                                        {t(capacity.label)}
                                                     </button>
                                                 ))}
                                             </div>
@@ -81,7 +86,7 @@ export const Process = () => {
                                                         className={`ct-btn-outline-accent px-4 py-2 ${activeContent === capacity.id ? 'active-inner-button' : ''}`}
                                                         onClick={() => setActiveContent(capacity.id)}
                                                     >
-                                                        {capacity.label}
+                                                        {t(capacity.label)}
                                                     </button>
                                                 ))}
                                             </div>
@@ -104,7 +109,7 @@ export const Process = () => {
                                                     className={`ct-btn-outline-accent px-4 py-2 ${activeContent === process.id ? 'active-inner-button' : ''}`}
                                                     onClick={() => setActiveContent(process.id)}
                                                 >
-                                                    {process.label}
+                                                    {t(process.label)}
                                                 </button>
                                             ))}
                                         </div>

@@ -1,4 +1,33 @@
 {
+  "headers": {
+    "headerHome": {
+      "headLine": "Moldeamos ideas para crear universos digitales",
+      "headerDescription": "Construimos entornos digitales que fortalecen tu marca y unen tus audiencias. Creamos presencias online que aseguran resultados medibles y un crecimiento escalable.",
+      "portfolioButton": "Proyectos",
+      "contactButton": "Contáctanos"
+    },
+    "headerAbout": {
+      "headLine": "Tu visión, el motor de nuestra creatividad",
+      "headerDescription": "Moldeamos tus ideas en experiencias web poderosas que reflejan la esencia de tu marca y cumplen tus objetivos estratégicos.",
+      "portfolioButton": "Proyectos",
+      "contactButton": "Contáctanos"
+    },
+    "headerServices": {
+      "headLine": "Tu Universo a Medida",
+      "headerDescription": "Nuestros servicios son el puente entre tus ideas y soluciones digitales potentes que impulsarán tu marca y generarán crecimiento sostenido.",
+      "portfolioButton": "Proyectos",
+      "contactButton": "Contáctanos"
+    },
+    "headerProjects": {
+      "headLine": "Diseñamos y conectamos tu ecosistema digital",
+      "headerDescription": "Exploramos la intersección entre estrategia, diseño y tecnología para construir soluciones digitales únicas que resuelven desafíos reales y canalizan los esfuerzos hacia una experiencia inigualable.",
+      "contactButton": "Contáctanos"
+    }
+  },
+  "about": {
+    "sectionTitle": "¿Quiénes somos?",
+    "sectionDescription": "Somos una empresa que cree en el valor de unir la creatividad y la tecnología. Combinamos estrategia, diseño de vanguardia y tecnología robusta para crear una presencia online intuitiva y funcional."
+  },
   "services": {
     "sectionTitle": "Conoce nuestros servicios",
     "sectionDescription": "Cada uno de nuestros servicios está diseñado para construir y amplificar tu presencia digital, convirtiendo tus ideas en productos y resultados medibles. Explora cómo podemos dar forma a tu universo online.",
@@ -60,5 +89,146 @@
         "link": "Adquirir licencia completa"
       }
     }
+  },
+  "process": {
+    "sectionToggleCapacities": "Capacidades",
+    "sectionToggleProcess": "Proceso",
+    "capacities": {
+      "webConcept": {
+        "label": "Conceptualización Web",
+        "text": "Proceso creativo y estratégico que define los fundamentos visuales y estructurales de un sitio web. Identificamos los valores centrales y objetivos de tu marca, traduciéndolos en diseños de prueba alineados con la audiencia. Exploramos múltiples borradores de layout, paletas de color, tipografía y flujos de usuario. Generamos un marco claro y accionable para un sitio funcional, estéticamente impactante y alineado con las metas de tu negocio."
+      },
+      "webAudit": {
+        "label": "Auditoría Web",
+        "text": "Evaluamos tu sitio web exhaustivamente para identificar mejoras en usabilidad, rendimiento, accesibilidad y diseño. Proporcionamos insights accionables, detectando barreras para la interacción del usuario y el crecimiento de tu negocio. Analizamos métricas clave (tiempos de carga, navegación). La auditoría identifica optimizaciones rápidas y a largo plazo (imágenes, estructura), entregando un informe detallado con recomendaciones priorizadas para mejoras impactantes en tu web."
+      },
+      "webIntDev": {
+        "label": "Desarrollo Web Integral",
+        "text": "Servicio integral de creación web. Entregamos una presencia digital cohesiva y personalizada, alineada con tus objetivos y audiencia. Desarrollamos una arquitectura de información escalable para navegación fluida y comunicación efectiva. La fase de diseño crea una identidad visual completa con UI kits y elementos interactivos. El resultado es un sitio optimizado, de alto rendimiento y visualmente atractivo que impulsa la interacción y el crecimiento de tu negocio a largo plazo."
+      },
+      "webDesignSystems": {
+        "label": "Sistemas de Diseño Web",
+        "text": "Creamos marcos reutilizables para simplificar actualizaciones y asegurar consistencia visual en tu ecosistema digital. Basados en estándares de la industria, organizamos elementos UI (botones, tipografía, colores) en módulos escalables para una creación eficiente de páginas, reduciendo recursos. Identificamos componentes clave, los ensamblamos en patrones y plantillas, y realizamos pruebas exhaustivas. Con documentación y capacitación, este sistema optimiza flujos, mejora la colaboración y apoya la escalabilidad web."
+      },
+      "webUpkeep": {
+        "label": "Mantenimiento Web",
+        "text": "Aseguramos que tu sitio web se mantenga seguro, funcional y alineado con tus objetivos de negocio. Nuestro servicio incluye actualizaciones rutinarias, monitoreo de rendimiento, corrección de errores y pruebas de calidad para anticipar problemas. Optimizamos el rendimiento, la velocidad de carga, la seguridad y realizamos actualizaciones menores de diseño o contenido. Esto garantiza un funcionamiento consistente, la satisfacción del usuario y una presencia digital confiable para tu marca."
+      },
+      "serviceIntegration": {
+        "label": "Integración de Servicios",
+        "text": "Mejoramos la funcionalidad de tu web conectándola con herramientas y servicios externos clave. Esto incluye plataformas de análisis, soporte al cliente, pasarelas de pago y agendamiento automático. Evaluamos tus necesidades y seleccionamos las herramientas adecuadas. Nuestro equipo gestiona la integración técnica para asegurar compatibilidad y un funcionamiento fluido, alineando todo con tu marca. El soporte post-integración garantiza sistemas eficientes, maximizando el valor."
+      },
+      "strategicCommunication": {
+        "label": "Comunicación Estratégica",
+        "text": "Desarrollamos hojas de ruta completas para tu comunicación digital. Incluimos investigación exhaustiva de audiencia y competidores, definición de voz de marca, creación de pilares de contenido y planificación multicanal. Nuestro objetivo es que cada mensaje contribuya a tus metas de negocio, asegurando coherencia y efectividad a largo plazo."
+      },
+      "seoAndDigitalContent": {
+        "label": "SEO & Contenido Digital",
+        "text": "No solo escribimos, optimizamos. Creamos textos que captan la atención humana y la de los motores de búsqueda. Esto incluye redacción persuasiva, investigación de palabras clave, estructuración de contenido para la legibilidad (UX Writing) y adaptación de mensajes para cada plataforma, asegurando que tu contenido sea descubierto y genere la acción deseada."
+      },
+      "communityManagement": {
+        "label": "Gestión de Comunidades",
+        "text": "Vamos más allá de la publicación en redes. Construimos y nutrimos relaciones significativas con tu audiencia. Nuestra capacidad abarca la interacción activa, la moderación efectiva, la gestión de la reputación online y la creación de experiencias que aumentan tu audiencia y tus futuros clientes."
+      },
+      "metrics": {
+        "label": "Métricas y Resultados",
+        "text": "Medimos el impacto real de cada mensaje. Analizamos métricas clave en redes sociales, blogs y campañas para obtener insights accionables sobre el comportamiento de tu audiencia y el rendimiento del contenido. Esto nos permite optimizar estrategias en tiempo real y demostrar el retorno de inversión (ROI) de cada esfuerzo, ajustando el rumbo para asegurar el cumplimiento de tus objetivos de comunicación."
+      }
+    },
+    "steps": {
+      "firstStep": {
+        "label": "01. Recopilación de Información y Necesidades",
+        "text": "Antes de iniciar cualquier proyecto, nos enfocamos en comprender a fondo tus necesidades, metas de negocio y cualquier restricción o preferencia. Evaluamos riesgos potenciales y definimos los criterios de éxito y objetivos a cumplir. La comunicación es clave, y validamos la dirección del proyecto a través de presentaciones de resultados y reuniones para asegurar una comunicación ideal."
+      },
+      "secondStep": {
+        "label": "02. Onboarding y Descubrimiento",
+        "text": "Nuestro equipo se sumerge en tu marca y negocio. Exponemos los puntos esenciales de tu identidad, definimos objetivos claros, criterios de éxito y limitaciones. Si ya tienes presencia online, realizamos una auditoría inicial para mejoras. Analizamos la competencia para identificar oportunidades y soluciones UX/UI a tu beneficio."
+      },
+      "thirdStep": {
+        "label": "03. Arquitectura de Contenido Web",
+        "text": "Estructuramos la arquitectura de tu sitio. Definimos qué información va en cada página y cómo se conectan los elementos, creando un sitemap claro y una jerarquía de contenido intuitiva. Esto permite visualizar el flujo, planificar la experiencia del usuario y anticipar la ubicación estratégica de elementos clave, asegurando una navegación fluida y una experiencia de usuario optimizada."
+      },
+      "fourthStep": {
+        "label": "04. Wireframes de Baja Fidelidad (Low-Fidelity)",
+        "text": "Desarrollamos esquemas visuales básicos de tu web, enfocándonos en la estructura y diseño sin detalles estéticos. Determinamos la experiencia de Usuario, distribución de elementos, forma de bloques de contenido y posición de CTAs. Usamos textos de prueba para alinear contenido con lo visual y resolver conflictos. Desde desarrollo, evaluamos la complejidad para minimizar riesgos en la implementación."
+      },
+      "fifthStep": {
+        "label": "05. Conceptos Visuales",
+        "text": "Considerando tu industria, análisis competitivo, manual de marca y preferencias, creamos moodboards visuales. Estos muestran el tono emocional de tu producto, ejemplos de colores, formas y estilos que guiarán el diseño final. Aplicamos el diseño del moodboard elegido a los wireframes, definiendo colores, estilos de texto, tamaños de encabezados y seleccionando contenido ilustrativo e íconos."
+      },
+      "sixthStep": {
+        "label": "06. Diseño Final y Desarrollo (Implementación)",
+        "text": "Una vez aprobada la dirección de diseño, finalizamos e integramos colores/estilos. Creamos una librería de elementos/reglas para construir páginas y módulos UI rápidamente, asegurando coherencia y eficiencia. El diseño pasa a desarrollo para programación completa (web dev, WordPress, otros CMS), optimizado, responsive y seguro. La coordinación diseño-desarrollo asegura que el resultado final cumpla los requisitos del cliente."
+      }
+    }
+  },
+
+  "projects": {
+    "sectionTitle": "Nuestros proyectos",
+    "sectionDescription": "Hemos creado universos digitales únicos que resuelven desafíos y conectan a las marcas con sus audiencias. Sabemos que cada proyecto es una historia que refleja innovación y resultados claros, y estamos dispuestos a plasmarlo en tu visión.",
+    "sectionCTAButton": "Conectemos ahora",
+    "sectionPortfolioButton": "Explora nuestro portafolio"
+  },
+  "testimonials": {
+    "sectionTitle": "Nuestros clientes",
+    "testimony1": {
+      "position": "Editor General",
+      "review": "“El equipo no solo construyó un sitio web en WordPress que refleja fielmente nuestra identidad, sino que nos dotó de las funcionalidades editoriales y de seguridad. Comprendieron nuestra visión sobre la literatura y la autogestión, permitiéndonos construir una amplia comunidad de creadores en Ecuador y Latinoamérica.”"
+    },
+    "testimony2": {
+      "position": "Editora",
+      "review": "“Con 'Búsquedas' se materializó el espacio digital seguro y respetuoso que necesitábamos para fomentar el diálogo. El trabajo realizado nos permitió tejer una red viva entre distintas corrientes y experiencias, recogiendo textos y reflexiones personales. Valoramos enormemente cómo el equipo entendió la esencia de nuestro proyecto, facilitando que distintas voces compartan sus comprensiones y se nutran mutuamente.”"
+    },
+    "testimony3": {
+      "position": "Editor General",
+      "review": "“Nos entregaron una solución que difunde literatura y arte a nivel internacional, superando limitaciones geográficas. Su equipo comprendió nuestro modelo colaborativo y su creatividad integró una biblioteca virtual y una sección interactiva de sonido, impulsando la obra de autores con una experiencia inmersiva.”"
+    }
+  },
+  "team": {
+    "sectionTitle": "Conoce a nuestro equipo",
+    "sectionDescription": "Nuestro compromiso es generar conexiones reales y un crecimiento medible para tu negocio. En CloudTech, tu singularidad cobra vida en un universo digital a medida y sofisticado.",
+    "sectionCTAButton": "Hablemos de tu proyecto",
+    "card": {
+      "teamMember1": {
+        "position": "Comunicador estratégico",
+        "description": "Comunicador y estratega digital con más de una década de experiencia. Experto en crear contenidos y campañas impactantes con piezas multimedia y estrategias a medida, utiliza su versatilidad para la creación de narrativas complejas que reflejen los objetivos deseados y generen impacto."
+      },
+      "teamMember2": {
+        "position": "Fullstack Developer",
+        "description": "Programador Fullstack en JavaScript, React y Python, con un enfoque en la interacción y comunicación. Su trayectoria en traducción le permite hacer que la tecnología sea comprensible, creando plataformas dinámicas que optimizan la experiencia de usuarios, fomentando la conexión global."
+      },
+      "teamMember3": {
+        "position": "Fullstack Developer",
+        "description": "Desarrollador Fullstack experto en JavaScript, React y Python, apasionado por optimizar procesos y diseñar interfaces responsivas. Transforma conceptos técnicos complejos en soluciones claras, garantizando software e interfaces funcionales y amigables que mejoran la experiencia del usuario."
+      }
+    }
+  },
+  "benefits": {
+    "sectionTitle": "Beneficios del desarrollo web",
+    "sectionDescription": "Invertir en una presencia digital profesional es clave para el éxito de tu marca. Un sitio web bien desarrollado no es solo una vitrina, es una herramienta estratégica que impulsa tu crecimiento y conecta de manera efectiva con tu audiencia.",
+    "card": {
+      "benefit1": {},
+      "benefit2": {},
+      "benefit3": {},
+      "benefit4": {},
+      "benefit5": {},
+      "benefit6": {}
+    }
+  },
+  "values": {
+    "sectionTitle": "Valores",
+    "sectionDescription": "Nuestra esencia se fundamenta en principios sólidos que guían cada proyecto y cada interacción. Son el motor que nos impulsa a crear universos digitales que verdaderamente transforman tu visión.",
+    "card": {
+      "value1": {},
+      "value2": {},
+      "value3": {},
+      "value4": {},
+      "value5": {},
+      "value6": {}
+    }
+  },
+  "contact": {
+    "sectionTitle": "Contáctanos",
+    "sectionDescription": "Tu proyecto es nuestro próximo reto."
   }
 }

@@ -11,6 +11,7 @@ h1 {
 
 p {
   font-family: "Manrope", sans-serif;
+  
 }
 h2,
 h3,
@@ -260,4 +261,23 @@ h6 {
   .hero-subtitle-home {
     font-size: 1rem;
   }
+}
+/* Benefits cards, components & background */
+.section-title {
+  color: #e2e505;
+  font-weight: bold;
+}
+.text-ct-secondary {
+  color: #60E0A5;
+}
+.ct-description-p{
+  color: #ffff;
+}
+.card-divider {
+    border: none;
+    border-top: 1px solid #6ee6b9; 
+    opacity: 1;
+}
+.card-background {
+  color: transparent;
 }

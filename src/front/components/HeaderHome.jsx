@@ -6,9 +6,10 @@ export const HeaderHome = () => {
 
     return (
 
-        <section className="w-100 h-100 mb-5 mt-5 position-relative">
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
-            <img src={HomeOne} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block"/>
+        
+        <section className="w-100 h-100 position-relative">
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
+            <img src={HomeOne} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block"/>
             <div className="container w-100 h-100">
                 <div className="row text-center z-0">
                     <div className="col my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1">

@@ -1,64 +1,237 @@
 {
+  "headers": {
+    "headerHome": {
+      "headLine": "We shape ideas to create digital universes",
+      "headerDescription": "We build digital environments that strengthen your brand and unite your audiences. We create an online presence that ensures measurable results and scalable growth.",
+      "portfolioButton": "Projects",
+      "contactButton": "Contact Us"
+    },
+    "headerAbout": {
+      "headLine": "Your Vision, The Engine of Our Creativity",
+      "headerDescription": "We mold your ideas into powerful web experiences that reflect your brand's essence and meet your strategic objectives.",
+      "portfolioButton": "Projects",
+      "contactButton": "Contact Us"
+    },
+    "headerServices": {
+      "headLine": "Your custom-made universe",
+      "headerDescription": "Our services are the bridge between your ideas and powerful digital solutions that will boost your brand and generate sustained growth.",
+      "portfolioButton": "Projects",
+      "contactButton": "Contact Us"
+    },
+    "headerProjects": {
+      "headLine": "We Design and Connect Your Digital Ecosystem",
+      "headerDescription": "We explore the intersection between strategy, design, and technology to build unique digital solutions that solve real challenges and channel efforts towards an unparalleled experience.",
+      "contactButton": "Contact Us"
+    }
+  },
+  "footer": {
+    "footerSlogan": "We Mold Ideas to Create Digital Universes"
+  },
+  "about": {
+    "sectionTitle": "Who We Are",
+    "sectionDescription": "We are a company that believes in the value of uniting creativity and technology. We combine strategy, cutting-edge design, and robust technology to create an intuitive and functional online presence. Our commitment is to generate real connections and measurable growth for your business. At CloudTech, your uniqueness comes to life in a custom-made and sophisticated digital universe. "
+  },
   "services": {
-    "sectionTitle": "Discover Our Services",
-    "sectionDescription": "Each of our services is designed to build and amplify your digital presence, transforming your ideas into measurable products and results. Explore how we can shape your online universe.",
+    "sectionTitle": "Meet Our Team",
+    "sectionDescription": "Our team is the heart of CloudTech, where creativity meets technology to bring your most ambitious projects to life. Meet the minds behind your digital universe.",
     "webDevelopmentTitle": "Web Development",
-    "webDevelopmentSubtitle": "Building your digital universe",
-    "communicationTitle": "Communication",
-    "communicationSubtitle": "Bringing your audiences together",
+    "webDevelopmentSubtitle": "Building Your Digital Universe",
+    "communicationTitle": "Digital Communication",
+    "communicationSubtitle": "Uniting your audiences",
     "softwareSolutionsTitle": "Software Solutions",
-    "softwareSolutionsSubtitle": "Empowering your capabilities",
+    "softwareSolutionsSubtitle": "Tools to bring your ideas to life",
     "card": {
       "wordpress": {
         "title": "Wordpress",
-        "description": "Potencia tu presencia con la plataforma CMS más versátil y popular. Diseñamos y desarrollamos sitios WordPress a medida, fáciles de gestionar y optimizados para el crecimiento de tu marca.",
-        "link": "Tu web con WordPress"
+        "description": "Boost your presence with the most versatile and popular CMS platform. We design and develop custom WordPress sites, easy to manage and optimized for your brand's growth.",
+        "link": "Your Website with WordPress"
       },
       "webdev": {
         "title": "Web Dev",
-        "description": "Para soluciones únicas y necesidades específicas. Construimos desarrollos web personalizados con las últimas tecnologías, garantizando funcionalidad, escalabilidad y rendimiento excepcional.",
-        "link": "Explora el desarrollo a medida"
+        "description": "We build custom web development with the latest technologies, ensuring exceptional functionality, scalability, and performance for unique solutions and specific needs.",
+        "link": "Explore Custom Development"
       },
       "ecommerce": {
         "title": "E-commerce",
-        "description": "Lanza y comienza a vender con tu tienda online gracias a un diseño intuitivo y funcionalidades avanzadas. Creamos experiencias de compra que convierten visitantes en clientes fieles y aumentan tus ventas.",
-        "link": "Impulsa tu E-commerce"
+        "description": "Launch and start selling with your online store thanks to intuitive design and advanced functionalities. We create shopping experiences that convert visitors into loyal customers and increase your sales.",
+        "link": "Boost your E-commerce"
       },
       "webflow": {
         "title": "WebFlow",
-        "description": "Diseñamos sitios web visualmente impresionantes y altamente funcionales sin código complejo. Ideal para proyectos que demandan diseño de vanguardia y autonomía en la gestión.",
-        "link": "Descubre Webflow"
+        "description": "We design visually stunning and highly functional websites without complex code. Ideal for agile projects demanding cutting-edge design and management autonomy.",
+        "link": "Discover Webflow"
       },
       "socialMedia": {
-        "title": "Manejo de redes",
-        "description": "Gestionamos tus plataformas sociales con estrategia y creatividad. Construimos comunidades, aumentamos el engagement y fortalecemos la presencia de tu marca e interacción con tu público.",
-        "link": "Impulsa tu marca en redes"
+        "title": "Social Media Management",
+        "description": "We manage your social platforms with strategy and creativity. We build communities, increase engagement, and strengthen your brand's presence and interaction with your audience.",
+        "link": "Boost your Brand"
       },
       "copyWriting": {
         "title": "Copywriting",
-        "description": "Creamos textos persuasivos y optimizados para web, blogs, redes sociales y campañas que captan la atención, transmiten un mensaje claro y convierten visitantes y seguidores en clientes.",
-        "link": "Escríbenos"
+        "description": "We create persuasive texts optimized for web, blogs, social media, and campaigns that capture attention, convey a clear message, and convert visitors and followers into customers.",
+        "link": "Write to Us"
       },
       "contentProduction": {
-        "title": "Producción de contenido",
-        "description": "Contamos tu historia con videos, post de redes sociales, artículos de blog y más. Generamos contenido de valor que posiciona tu marca como referente en tu sector.",
-        "link": "Crea con nosotros"
+        "title": "Content Production",
+        "description": "We tell your story with videos, social media posts, blog articles, and more. We generate valuable content that positions your brand as a reference in your sector.",
+        "link": "Create with Us"
       },
       "communicationStrategy": {
-        "title": "Estrategia de comunicación",
-        "description": "Planificamos la hoja de ruta de tu comunicación digital. Investigamos, definimos tu voz y creamos un plan integral que reúne todo tu universo digital para cumplir tus objetivos.",
-        "link": "Descubre tu potencial"
+        "title": "Communication Strategy",
+        "description": "We plan your digital communication roadmap. We research, define your voice, and create an integral plan that brings together your entire digital universe to achieve your objectives.",
+        "link": "Discover your Potential"
       },
       "autocadLt": {
         "title": "AutoCAD LT",
-        "description": "Transforma tus ideas en planos precisos con el software de dibujo 2D líder en la industria. Crea, edita y documenta tus diseños con eficiencia, optimizando tu flujo de trabajo y entrega tus proyectos en tiempo récord.",
-        "link": "Potencia tu diseño 2D"
+        "description": "Transform your ideas into precise blueprints with the industry-leading 2D drawing software. Create, edit, and document your designs with efficiency, optimizing your workflow and delivering projects in record time.",
+        "link": "Power your 2D design"
       },
       "autocadIst": {
         "title": "AutoCAD IST",
-        "description": "Diseña sin límites en 2D y 3D con la herramienta más completa para arquitectos e ingenieros. Acelera tus flujos de trabajo y crea diseños impactantes con potentes funciones de modelado, visualización y automatización.",
-        "link": "Adquirir licencia completa"
+        "description": "Design without limits in 2D and 3D with the most complete tool for architects and engineers. Accelerate your workflows and create impactful designs with powerful modeling, visualization, and automation features.",
+        "link": "Acquire Full License"
       }
     }
+  },
+  "process": {
+    "sectionToggleCapacities": "Capabilities",
+    "sectionToggleProcess": "Process",
+    "capacities": {
+      "webConcept": {
+        "label": "Web Concept Design",
+        "text": "A creative and strategic process that defines a website's visual and structural foundations. We identify your brand's core values and objectives, translating them into test designs aligned with the audience. We explore multiple drafts detailing layout, color palettes, typography, and user flows. This generates a clear, actionable framework for a functional, aesthetically impactful site aligned with your business goals."
+      },
+      "webAudit": {
+        "label": "Web Audit",
+        "text": "We exhaustively evaluate your website to identify opportunities for improvement in usability, performance, accessibility, and design. We provide actionable insights, detecting barriers to user interaction and business growth. We analyze key metrics (load times, navigation). The audit identifies quick and long-term optimizations (images, structure), delivering a detailed report with prioritized recommendations for impactful web enhancements."
+      },
+      "webIntDev": {
+        "label": "Full Website Development",
+        "text": "Comprehensive web creation service. We deliver a cohesive and personalized digital presence, aligned with your objectives and audience. We develop scalable information architecture for fluid navigation and effective communication. The design phase creates a complete visual identity with custom UI kits, responsive designs, and interactive elements. The result is an optimized, high-performance, visually appealing site that drives interaction and supports long-term business growth."
+      },
+      "webDesignSystems": {
+        "label": "Web Design Systems",
+        "text": "We create reusable frameworks to simplify updates and ensure visual consistency in your digital ecosystem. Based on industry standards, we organize UI elements (buttons, typography, colors) into scalable modules for efficient page creation, reducing resources. We identify key components, assemble them into patterns and templates, and conduct exhaustive tests. With documentation and training, this system optimizes workflows, improves collaboration, and supports web scalability."
+      },
+      "webUpkeep": {
+        "label": "Website Maintenance",
+        "text": "We ensure your website remains secure, functional, and aligned with your business objectives. Our service includes routine updates, performance monitoring, error correction, and proactive quality tests to anticipate issues. We optimize performance, load speed, security, and perform minor design/content updates. This guarantees consistent operation, user satisfaction, and a reliable digital presence for your brand."
+      },
+      "serviceIntegration": {
+        "label": "Service Integration",
+        "text": "We enhance your website's functionality by connecting it with key external tools and services. This includes analytics platforms, customer support systems, payment gateways, and automated scheduling. We evaluate your needs and select the right tools. Our team manages technical integration to ensure compatibility and smooth operation, aligning everything with your brand. Post-integration support ensures efficient systems, maximizing value."
+      },
+      "strategicCommunication": {
+        "label": "Communication Strategy",
+        "text": "We develop complete roadmaps for your digital communication. We include exhaustive audience and competitor research, define your brand's voice, create content pillars, and plan multi-channel. Our goal is for every message to contribute to your business objectives, ensuring long-term coherence and effectiveness."
+      },
+      "seoAndDigitalContent": {
+        "label": "SEO & Digital Content",
+        "text": "We don't just write; we optimize. We create texts that capture human attention and that of search engines. This includes persuasive copywriting, keyword research, content structuring for readability (UX Writing), and message adaptation for each platform, ensuring your content is discovered and drives desired action."
+      },
+      "communityManagement": {
+        "label": "Community Management",
+        "text": "We go beyond social media posting. We build and nurture meaningful relationships with your audience. Our capability covers active interaction, effective moderation, online reputation management, and creating experiences that grow your audience and future customers."
+      },
+      "metrics": {
+        "label": "Metrics and Results",
+        "text": "We go beyond social media posting. We build and nurture meaningful relationships with your audience. Our capability covers active interaction, effective moderation, online reputation management, and creating experiences that grow your audience and future customers."
+      }
+    },
+    "steps": {
+      "firstStep": {
+        "label": "01. Information Gathering and Needs",
+        "text": "Before starting any project, we focus on thoroughly understanding your needs, business goals, and any restrictions or preferences. We evaluate potential risks and define success criteria and objectives to be met. Communication is key, and we validate the project's direction through results presentations and meetings to ensure ideal communication."
+      },
+      "secondStep": {
+        "label": "02. Onboarding and Discovery",
+        "text": "Our team immerses itself in your brand and business. We outline the essential points extracted from your identity, define clear objectives, success criteria, and limitations. If you already have an online presence, we conduct an initial audit for improvements. We also analyze the competition to identify opportunities and UX/UI solutions beneficial to you."
+      },
+      "thirdStep": {
+        "label": "03. Web Content Architecture",
+        "text": "We structure your site's architecture. We define what information goes on each page and how pages and elements connect, creating a clear sitemap and intuitive content hierarchy. This allows visualizing flow, planning user experience, and anticipating the strategic placement of key elements, ensuring fluid navigation and optimized user experience."
+      },
+      "fourthStep": {
+        "label": "04. Low-Fidelity Wireframes",
+        "text": "We develop basic visual schemes of your website, focusing on structure and information design without aesthetic details. We determine user experience, element distribution, content block forms, and CTA placement. We use placeholder texts to align content with visuals and resolve architectural conflicts. From a development perspective, we assess complexity to minimize implementation risks."
+      },
+      "fifthStep": {
+        "label": "05. Visual Concepts",
+        "text": "Considering your industry, competitive analysis, brand manual, and preferences, we create visual moodboards. These show your product's emotional tone, examples of colors, shapes, and styles that will guide the final design phase. Subsequently, we apply the chosen moodboard's design to the low-fidelity wireframes, defining colors, text styles, heading sizes, and selecting illustrative content and icons."
+      },
+      "sixthStep": {
+        "label": "06. Final Design and Development",
+        "text": "Once the design direction is approved, our team finalizes the approved pages, integrating colors and text styles into the element library. The design extends to the rest of the site, creating a library of elements and rules allowing quick construction of new pages and UI modules, ensuring coherence and efficiency. The design then moves to development, where our team fully programs it (web dev, WordPress, other CMS), optimized, responsive, and secure. Coordinated design-development work ensures the final result meets all client requirements."
+      }
+    }
+  },
+
+  "projects": {
+    "sectionTitle": "Our Projects",
+    "sectionDescription": "We have created unique digital universes that solve challenges and connect brands with their audiences. We know that every project is a story reflecting innovation and clear results, and we are ready to bring your vision to life.",
+    "sectionCTAButton": "Conectemos ahora",
+    "sectionPortfolioButton": "Explore our portfolio"
+  },
+  "testimonials": {
+    "sectionTitle": "Our clients",
+    "testimony1": {
+      "position": "General Editor",
+      "review": "“With the production of our website, MURA has consolidated as the space for literary and artistic experimentation we sought. The team not only built a WordPress site that faithfully reflects our identity, but also provided us with editorial and security functionalities. They understood our vision for literature and self-management, allowing us to build a vibrant community of creators in Ecuador and Latin America.”"
+    },
+    "testimony2": {
+      "position": "Editor",
+      "review": "“With 'Búsquedas', the secure and respectful digital space we needed to foster dialogue materialized. The work done allowed us to weave a living network between different currents and experiences, collecting texts and personal reflections. We greatly value how the team understood our project's essence, facilitating diverse voices to share their understandings and mutually enrich each other.”"
+    },
+    "testimony3": {
+      "position": "Director",
+      "review": "“They delivered a solution that disseminates literature and art internationally, overcoming geographical limitations. Their team understood our collaborative model and their creativity integrated an extensive virtual library and an interactive sound section, boosting authors' work with an immersive experience.”"
+    }
+  },
+  "team": {
+    "sectionTitle": "Meet Our Team",
+    "sectionDescription": "Our team is the heart of CloudTech, where creativity meets technology to bring your most ambitious projects to life. Meet the minds behind your digital universe.",
+    "sectionCTAButton": "Let's talk about your project",
+    "card": {
+      "teamMember1": {
+        "position": "Strategic Communicator",
+        "description": "Digital communicator and strategist with over a decade of experience. Expert in creating impactful content and campaigns with multimedia pieces and custom strategies, he uses his versatility to create complex narratives that reflect desired objectives and generate impact."
+      },
+      "teamMember2": {
+        "position": "Fullstack Developer",
+        "description": "Fullstack Developer in JavaScript, React, and Python, with a focus on interaction and communication. His background in translation allows him to make technology understandable, creating dynamic platforms that optimize user experience, fostering global connection."
+      },
+      "teamMember3": {
+        "position": "Fullstack Developer",
+        "description": "Fullstack Developer expert in JavaScript, React, and Python, passionate about optimizing processes and designing responsive interfaces. He transforms complex technical concepts into clear solutions, ensuring functional and user-friendly software and interfaces that enhance user experience."
+      }
+    }
+  },
+  "benefits": {
+    "sectionTitle": "Web Development Benefits",
+    "sectionDescription": "Investing in a professional digital presence is key to your brand's success. A well-developed website is not just a showcase; it's a strategic tool that drives your growth and connects effectively with your audience.",
+    "card": {
+      "benefit1": {},
+      "benefit2": {},
+      "benefit3": {},
+      "benefit4": {},
+      "benefit5": {},
+      "benefit6": {}
+    }
+  },
+  "values": {
+    "sectionTitle": "Our Values",
+    "sectionDescription": "At CloudTech, our essence is founded on solid principles that guide every project and every interaction. They are the engine that drives us to create digital universes that truly transform your vision.",
+    "card": {
+      "value1": {},
+      "value2": {},
+      "value3": {},
+      "value4": {},
+      "value5": {},
+      "value6": {}
+    }
+  },
+  "contact": {
+    "sectionTitle": "Contact Us",
+    "sectionDescription": "Your project is our next challenge."
   }
 }

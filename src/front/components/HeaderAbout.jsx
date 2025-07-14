@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import HomeAbout from "../assets/img/HomeAbout.jpg"
+import { useTranslation } from "react-i18next";
 
 export const HeaderAbout = () => {
+    const { t } = useTranslation();
 
     return (
         
@@ -28,6 +30,6 @@ export const HeaderAbout = () => {
                     </div>
                 </section>
 
-    
+
     )
 }

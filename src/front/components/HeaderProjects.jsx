@@ -12,8 +12,7 @@ export const HeaderProjects = () => {
             <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
             <div className="container w-100 h-100">
                 <div className="row text-center z-0">
-                    <div className="col-6"></div>
-                    <div className="col-6 my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
+                    <div className="col-12 col-lg-6 offst-lg-6 my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
                         <h1 className="hero-title-home display-3 fw-bolder text-warning mt-sm-0 mt-5 mb-4">
                             {t('headers.headerProjects.headLine')}
                         </h1>

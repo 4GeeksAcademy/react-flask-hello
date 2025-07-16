@@ -218,6 +218,20 @@ h6 {
   transform: translateX(0);
 }
 
+/* Language switch */
+
+.flag-icon-main {
+  width: 24px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.flag-icon-dropdown {
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+}
+
 /* Navbar */
 .btn-outline-custom-yellow {
   color: #fbff06 !important;

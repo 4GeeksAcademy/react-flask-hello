@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
 import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export const Navbar = () => {
 
@@ -29,6 +30,9 @@ export const Navbar = () => {
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link text-white" to="/projects">Proyectos</Link>
+						</li>
+						<li className="nav-item">
+							<LanguageSwitcher />
 						</li>
 						<li className="nav-item">
 							<Link className="btn btn-outline-custom-yellow rounded-pill py-2 px-4 fw-medium" to="/contact">Contáctanos</Link>

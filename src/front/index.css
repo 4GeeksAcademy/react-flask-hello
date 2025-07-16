@@ -315,3 +315,22 @@ h6 {
 .card-background {
   color: transparent;
 }
+/* header contacto */
+.form-label-contact {
+  color: #48c9b0 !important;
+}
+
+.textarea-contact {
+  border-radius: 1.5rem !important;
+}
+
+.btn-submit-contact {
+  background-color: #48c9b0 !important;
+  color: #f7ff00 !important;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-submit-contact:hover {
+  background-color: #40b3a0 !important;
+}

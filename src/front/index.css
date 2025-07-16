@@ -1,0 +1,10 @@
+.navbar{
+    background-color: #eae164;
+    
+    
+}
+
+.search-bar input.form-control {
+  box-shadow: none !important;
+  outline: none; 
+}

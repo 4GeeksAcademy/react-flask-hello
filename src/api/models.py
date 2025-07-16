@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
 
@@ -37,6 +38,7 @@ class Product(db.Model):
     coste: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     price: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     pet_type_id: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    stok: Mapped[int] = mapped_column(primary_key=True)
 
 
     def serialize(self):
@@ -45,10 +47,11 @@ class Product(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+    
 class Product_Category(db.Model):
     category_id: Mapped[int] = mapped_column(primary_key=True)
     product: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-
+    produc_id: Mapped[int] = mapped_column(primary_key=True)
 
     def serialize(self):
         return {

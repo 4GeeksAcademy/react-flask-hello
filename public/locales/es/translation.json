@@ -24,6 +24,9 @@
       "contactButton": "Contáctanos"
     }
   },
+  "footer": {
+    "footerSlogan": "Moldeamos ideas para crear universos digitales."
+  },
   "about": {
     "sectionTitle": "¿Quiénes somos?",
     "sectionDescription": "Somos una empresa que cree en el valor de unir la creatividad y la tecnología. Combinamos estrategia, diseño de vanguardia y tecnología robusta para crear una presencia online intuitiva y funcional."
@@ -36,7 +39,7 @@
     "communicationTitle": "Comunicación",
     "communicationSubtitle": "Reunimos tus audiencias",
     "softwareSolutionsTitle": "Soluciones de software",
-    "softwareSolutionsSubtitle": "Potenciamos tus capacidades",
+    "softwareSolutionsSubtitle": "Herramientas para materializar tus ideas",
     "card": {
       "wordpress": {
         "title": "Wordpress",

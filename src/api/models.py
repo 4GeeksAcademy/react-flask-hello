@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean,ForeingKey, List
+from sqlalchemy import String, Boolean,ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
 
 
 db = SQLAlchemy()
@@ -35,7 +36,7 @@ class Category(db.Model):
         } 
     
 class PetType(db.Model):
-    id: Mapped[bool] = mapped_column(Boolean(), nullable=False) 
+    id: Mapped[bool] = mapped_column(primary_key= True, nullable=True) 
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     products: Mapped[List["Product"]] = relationship(
         back_populates = "product", cascade = "all, delete-orphan"
@@ -55,7 +56,7 @@ class Product(db.Model):
     coste: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     price: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     
-    pet_type_id: Mapped[int] = mapped_column(ForeingKey("pet_type.id"))
+    pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
 
     pet_type: Mapped["PetType"] = relationship(back_populates="product")
     stock: Mapped[int] = mapped_column(primary_key=True)
@@ -74,9 +75,9 @@ class Product(db.Model):
         }
     
 class ProductCategory(db.Model):
-    category_id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
-    category_id: Mapped[int] = mapped_column(ForeingKey("category_id.id"))
+    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
 
     product: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     produc_id: Mapped[int] = mapped_column(primary_key=True)

@@ -331,20 +331,16 @@ h6 {
 }
 /* header contacto */
 .form-label-contact {
-  color: #48c9b0 !important;
-}
-
-.textarea-contact {
-  border-radius: 1.5rem !important;
+  color: #60E0A5 !important;
 }
 
 .btn-submit-contact {
-  background-color: #48c9b0 !important;
-  color: #f7ff00 !important;
+  background-color: #217B8F !important;
+  color: #e2e505 !important;
   font-weight: bold;
   border: none;
 }
 
 .btn-submit-contact:hover {
-  background-color: #40b3a0 !important;
+  background-color: #2799b3 !important;
 }

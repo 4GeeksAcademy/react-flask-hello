@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
 import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export const Navbar = () => {

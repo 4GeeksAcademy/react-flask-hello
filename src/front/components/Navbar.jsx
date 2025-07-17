@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import LogoNavbar from "../assets/img/LogoNavbar.svg";
 import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export const Navbar = () => {
@@ -10,8 +10,9 @@ export const Navbar = () => {
 	return (
 		<>
 			{/* --- NAVBAR DE ESCRITORIO --- */}
+			{/* <div className="container w-100 mb-5"></div> */}
 			<nav className="navbar fixed-top navbar-expand-md d-none d-lg-block py-3 justify-content-center">
-				<div className="container bg-black rounded-pill px-5 py-2 d-flex justify-content-between align-items-center">
+				<div className="container bg-black rounded-pill px-5 py-1 d-flex justify-content-between align-items-center">
 					<Link className="navbar-brand" to="/">
 						<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
 					</Link>
@@ -56,22 +57,23 @@ export const Navbar = () => {
 			</div>
 
 			<div
-				className="offcanvas offcanvas-start custom-mobile-menu"
+				className="offcanvas offcanvas-start custom-mobile-menu vh-100 vw-100"
 				tabIndex="-1"
 				id="mobileMenuOffcanvas"
 				aria-labelledby="mobileMenuOffcanvasLabel"
 			>
-				<div className="ooffcanvas-body d-flex flex-column">
+				<div className="offcanvas-body d-flex flex-column">
 					<div className="bg-custom-mobile-header d-flex justify-content-between align-items-center mx-3 my-4 p-3 rounded-pill">
 						<h5 className="offcanvas-title mb-0" id="mobileMenuOffcanvasLabel">
 							<img src={LogoNavMovil} alt="CloudTech Logo Movil" className="h-auto w-auto" />
 						</h5>
 						<button
 							type="button"
-							className="btn-close btn-close-white"
+							className="btn"
 							data-bs-dismiss="offcanvas"
 							aria-label="Close"
 						>
+							<FontAwesomeIcon icon={faXmark} className="text-white" size="xl" />
 						</button>
 					</div>
 
@@ -91,7 +93,7 @@ export const Navbar = () => {
 							</li>
 						</ul>
 						<div className="mt-5 w-100 px-4">
-							<Link className="btn btn-outline-custom-yellow rounded-pill w-100 py-3 fs-5 fw-bold" to="/contact">Contáctanos</Link>
+							<Link className="btn btn-outline-custom-yellow rounded-pill w-100 py-2 fs-5 fw-bold" to="/contact">Contáctanos</Link>
 						</div>
 					</div>
 				</div>

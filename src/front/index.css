@@ -11,6 +11,7 @@ h1 {
 
 p {
   font-family: "Manrope", sans-serif;
+  
 }
 h2,
 h3,
@@ -308,4 +309,38 @@ h6 {
   .hero-subtitle-home {
     font-size: 1rem;
   }
+}
+/* Benefits cards, components & background */
+.section-title {
+  color: #e2e505;
+  font-weight: bold;
+}
+.text-ct-secondary {
+  color: #60E0A5;
+}
+.ct-description-p{
+  color: #ffff;
+}
+.card-divider {
+    border: none;
+    border-top: 1px solid #6ee6b9; 
+    opacity: 1;
+}
+.card-background {
+  color: transparent;
+}
+/* header contacto */
+.form-label-contact {
+  color: #60E0A5 !important;
+}
+
+.btn-submit-contact {
+  background-color: #217B8F !important;
+  color: #e2e505 !important;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-submit-contact:hover {
+  background-color: #2799b3 !important;
 }

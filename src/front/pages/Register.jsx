@@ -94,10 +94,6 @@ export const Register = () => {
                 />
             </label>
 
-            <button type="submit" disabled={sending}>
-                {sending ? "Enviando..." : "Registrarse"}
-            </button>
-
             {message && <p style={{ color: "green" }}>{message}</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
         </form>

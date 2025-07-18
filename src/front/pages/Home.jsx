@@ -1,17 +1,22 @@
 import React from "react";
-import CurvedText from "../components/CurvedText"; // Importing the CurvedText component
+import CurvedText from "../components/CurvedText";
 import { Link } from "react-router-dom";
-import dalmata from "/dalmata.png"; // Assuming this is the path to the image
-import fotoPrincipal from "/fotoPrincipal.png"; // Assuming this is the path to the image
-
+import dalmata from "/dalmata.png";
+import fotoPrincipal from "/fotoPrincipal.png";
 
 const Home = () => {
   return (
-    <section className="landing-body container-fluid py-5">
-      <div className="row align-items-center justify-content-center">
+    <section className="landing-body container-fluid my-0 py-0">
+      <div className="row align-items-center justify-content-center col-12">
 
-        {/* Producto destacado */}
-        <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
+
+        <div id="carouselExampleDark"
+          style={{
+            width: "300px",     // ajusta el tamaño
+            display: "block",   // necesario para centrar con margin
+            margin: "0 auto",   // centra horizontalmente
+          }}
+          className="carousel carousel-dark slide col-4" data-bs-ride="carousel">
           <div className="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -53,7 +58,7 @@ const Home = () => {
         </div>
 
 
-        <div className="col-md-5 text-center mb-4">
+        <div className="col-md-4 text-center">
           <CurvedText />
 
 
@@ -70,7 +75,7 @@ const Home = () => {
         </div>
 
         {/* Imagen decorativa */}
-        <div className="col-md-3 mb-4 text-center img-fluid">
+        <div className="col-md-4 text-center img-fluid">
           <img src="./dalmata.png"
             style={{
               width: "300px",     // ajusta el tamaño

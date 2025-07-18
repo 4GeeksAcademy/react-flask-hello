@@ -3,11 +3,16 @@ import logoPatitas from "/logoPatitas.png";
 export const Navbar = () => {
   return (
     <nav className="navbar w-100 p-0 m-0">
-      <div className="d-flex justify-content-between align-items-center w-100 px-3 py-2">
-        <span className="navbar-brand mb-0 h1">
-          <img src="/logoPatitas.png" alt="Logo Patitas" />
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 px-3">
+        <span className="navbar-brand mb-2 mb-md-0 col-12 col-md-2 text-center text-md-start">
+          <img
+            src="/logoPatitas.png"
+            alt="Logo"
+            className="img-fluid"
+            style={{ maxHeight: "200px", height: "auto", width: "auto" }}
+          />
         </span>
-        <div className="search-bar my-2 mx-auto w-50 d-flex bg-white border border-dark rounded-pill">
+        <div className="search-bar my-2 my-md-0 mx-auto w-100 w-md-50 d-flex bg-white border border-dark rounded-pill">
           <button className="btn" type="submit" aria-label="Buscar">
             <span className="input-group-text bg-transparent border-0">
               <i className="fa-solid fa-magnifying-glass"></i>
@@ -29,7 +34,7 @@ export const Navbar = () => {
             </span>
           </button>
         </div>
-        <div className="buttons d-flex justify-content-end">
+        <div className="buttons d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
           <button
             className="bg-transparent border-0 me-2"
             aria-label="Perfil de usuario"
@@ -42,11 +47,11 @@ export const Navbar = () => {
             aria-label="Carrito de compras"
             type="button"
           >
-            <i className="fa-solid fa-cart-shopping fs-2 me-5"></i>
+            <i className="fa-solid fa-cart-shopping fs-2 me-md-5"></i>
           </button>
         </div>
       </div>
-      <div className="d-flex justify-content-center align-items-center fs-1 w-100">
+      <div className="d-flex justify-content-center align-items-center fs-1 w-100 mt-3 mt-md-1">
         <p className="m-0 me-2">
           <i className="fa-solid fa-dog"></i> |
         </p>
@@ -56,8 +61,14 @@ export const Navbar = () => {
       </div>
       <hr className="thick-hr m-0 w-100 mt-2" />
       <div className="d-flex justify-content-center align-items-center mt-2 w-100">
-        <p className="m-0 text-primary">Envíos en menos de 48 horas</p>
+        <p className="m-0 text-primary text-center">Envíos en menos de 48 horas</p>
       </div>
     </nav>
   );
 };
+
+
+
+
+
+

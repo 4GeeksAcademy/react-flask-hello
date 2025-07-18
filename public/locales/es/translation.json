@@ -266,8 +266,40 @@
       }
     }
   },
+  "workWithUs": {
+    "sectionTitle": "¿Por qué trabajar con nosotros? ",
+    "sectionDescription": "Moldeamos ideas para crear universos digitales que no solo lucen bien, sino que generan un impacto real y medible. Elegirnos significa aliarse con un equipo que combina creatividad, experiencia y un proceso estructurado para llevar tu marca al siguiente nivel con resultados reales.",
+    "workWithUsCTA": "Conectemos ahora",
+    "statistics": {
+      "customerSatisfaction": "Satisfacción de clientes",
+      "activeUsers": "Usuarios activos al año",
+      "completedProjects": "Proyectos completados",
+      "yearsOfExperience": "Años de experiencia"
+    }
+  },
   "contact": {
-    "sectionTitle": "Contáctanos",
-    "sectionDescription": "Tu proyecto es nuestro próximo reto."
+    "sectionTitle": "Conectemos",
+    "sectionDescription": "Tu proyecto es nuestro próximo reto.",
+    "formButton": "Enviar",
+    "whatsAppButton": "Cuéntanos tu idea",
+    "labels": {
+      "nameLabel": "Nombre completo:",
+      "phoneLabel": "Teléfono:",
+      "emailLabel": "Email:",
+      "projectNameLabel": "Nombre de tu proyecto:",
+      "messageLabel": "Cuéntanos lo que necesitas:"
+    },
+    "placeholders": {
+      "nameHolder": "Tu nombre",
+      "phoneHolder": "Tu teléfono",
+      "emailHolder": "Tu correo",
+      "projectHolder": "El nombre de tu proyecto o compañía.",
+      "messageHolder": "Tu idea va aquí..."
+    },
+    "alerts": {
+      "alertSuccess": "¡Gracias! Tu mensaje ha sido enviado.",
+      "alertError": "¡Ups! Ocurrió un problema, intenta nuevamente.",
+      "loading": "Enviando..."
+    }
   }
 }

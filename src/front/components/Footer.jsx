@@ -25,11 +25,11 @@ export const Footer = () => {
 						</div>
 					</div>
 					<div className="col text-white text-end d-flex flex-column d-none d-sm-flex">
-						<Link to={"/"} className="fs-5 fw-bold text-decoration-none text-white">CloudTech</Link>
-						<Link to={"/about"} className="fs-5 text-decoration-none text-white">Nosotros</Link>
-						<Link to={"/services"} className="fs-5 text-decoration-none text-white">Servicios</Link>
-						<Link to={"/projects"} className="fs-5 text-decoration-none text-white">Proyectos</Link>
-						<Link to={"/contact"} className="fs-5 text-decoration-none text-white">Contacto</Link>
+						<Link to={"/"} className="footerLink fs-5 fw-bold">CloudTech</Link>
+						<Link to={"/about"} className="footerLink fs-5">Nosotros</Link>
+						<Link to={"/services"} className="footerLink fs-5">Servicios</Link>
+						<Link to={"/projects"} className="footerLink fs-5">Proyectos</Link>
+						<Link to={"/contact"} className="footerLink fs-5">Contacto</Link>
 
 					</div>
 				</div>

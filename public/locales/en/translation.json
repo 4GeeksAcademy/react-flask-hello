@@ -266,8 +266,40 @@
       }
     }
   },
+  "workWithUs": {
+    "sectionTitle": "Why Work With Us?",
+    "sectionDescription": "We mold ideas to create digital universes that not only look good but generate real, measurable impact. Choosing us means partnering with a team that combines creativity, experience, and a structured process to take your brand to the next level with real results.",
+    "workWithUsCTA": "Contact Us",
+    "statistics": {
+      "customerSatisfaction": "Client Satisfaction",
+      "activeUsers": "Active Users per Year",
+      "completedProjects": "Completed Projects",
+      "yearsOfExperience": "Years of Experience"
+    }
+  },
   "contact": {
-    "sectionTitle": "Contact Us",
-    "sectionDescription": "Your project is our next challenge."
+    "sectionTitle": "Let's connect!",
+    "sectionDescription": "Your project is our next challenge",
+    "formButton": "Send",
+    "whatsAppButton": "Tell us your idea",
+    "labels": {
+      "nameLabel": "Full name:",
+      "phoneLabel": "Phone:",
+      "emailLabel": "Email:",
+      "projectNameLabel": "Name of your project:",
+      "messageLabel": "Tell us what you need:"
+    },
+    "placeholders": {
+      "nameHolder": "Your name",
+      "phoneHolder": "Your phone",
+      "emailHolder": "Your email",
+      "projectHolder": "Your project or company name",
+      "messageHolder": "Your idea goes here..."
+    },
+    "alerts": {
+      "alertSuccess": "Thanks! Your message was sent.",
+      "alertError": "Oops! A problem occurred, please try again.",
+      "loading": "Sending..."
+    }
   }
 }

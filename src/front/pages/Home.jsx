@@ -6,6 +6,7 @@ import { Projects } from "../components/Projects.jsx";
 import { Testimonials } from "../components/Testimonial/Testimonials.jsx";
 import { HeaderHome } from "../components/HeaderHome.jsx";
 import { Benefits } from "../components/Benefits/Benefits.jsx";
+import { WorkWithUS } from "../components/WorkWithUs.jsx";
 
 
 export const Home = () => {
@@ -20,6 +21,7 @@ export const Home = () => {
 			<Projects limit={4} />
 			<Testimonials />
 			<Benefits />
+			<WorkWithUS />
 
 		</>
 	);

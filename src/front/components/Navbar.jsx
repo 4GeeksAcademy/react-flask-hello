@@ -4,8 +4,19 @@ import LogoNavMovil from "../assets/img/LogoNavMovil.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useRef } from "react";
 
 export const Navbar = () => {
+
+	const offcanvasRef = useRef()
+	const handleLinkClick = () => {
+		const offcanvasElement = offcanvasRef.current;
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+
+		if (offcanvasInstance) {
+			offcanvasInstance.hide();
+		};
+	};
 
 	return (
 		<>
@@ -44,7 +55,9 @@ export const Navbar = () => {
 
 			{/* --- NAVBAR MÓVIL (TRIGGER Y OFFCANVAS) --- */}
 			<div className="d-lg-none fixed-top bg-black d-flex justify-content-between align-items-center mx-3 my-4 p-3 rounded-pill">
-				<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
+				<Link className="navbar-brand" to="/">
+					<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
+				</Link>
 				<button
 					className="navbar-toggler"
 					type="button"
@@ -57,6 +70,7 @@ export const Navbar = () => {
 			</div>
 
 			<div
+				ref={offcanvasRef}
 				className="offcanvas offcanvas-start custom-mobile-menu vh-100 vw-100"
 				tabIndex="-1"
 				id="mobileMenuOffcanvas"
@@ -70,7 +84,7 @@ export const Navbar = () => {
 						<button
 							type="button"
 							className="btn"
-							data-bs-dismiss="offcanvas"
+							onClick={handleLinkClick}
 							aria-label="Close"
 						>
 							<FontAwesomeIcon icon={faXmark} className="text-white" size="xl" />
@@ -80,20 +94,20 @@ export const Navbar = () => {
 					<div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
 						<ul className="navbar-nav gap-4">
 							<li className="nav-item">
-								<Link className="nav-link text-white fs-2 fw-medium" to="/">Inicio</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/" onClick={handleLinkClick}>Inicio</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link text-white fs-2 fw-medium" to="/about">Nosotros</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/about" onClick={handleLinkClick}>Nosotros</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link text-white fs-2 fw-medium" to="/services">Servicios</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/services" onClick={handleLinkClick}>Servicios</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="nav-link text-white fs-2 fw-medium" to="/projects">Proyectos</Link>
+								<Link className="nav-link text-white fs-2 fw-medium" to="/projects" onClick={handleLinkClick}>Proyectos</Link>
 							</li>
 						</ul>
 						<div className="mt-5 w-100 px-4">
-							<Link className="btn btn-outline-custom-yellow rounded-pill w-100 py-2 fs-5 fw-bold" to="/contact">Contáctanos</Link>
+							<Link className="btn btn-outline-custom-yellow rounded-pill w-100 py-2 fs-5 fw-bold" to="/contact" onClick={handleLinkClick}>Contáctanos</Link>
 						</div>
 					</div>
 				</div>

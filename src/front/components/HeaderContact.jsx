@@ -69,19 +69,19 @@ const HeaderContact = () => {
                 <div className="container w-100 h-100">
                     <div className="row align-items-center justify-content-center justify-content-lg-end">
                          <div className="col-12 col-lg-6 z-1 align-items-center">
-                            <h1 className="display-4 fw-bolder text-warning mb-4 mt-4 text-lg-start text-center d-none d-lg-block">
+                            <h1 className="display-4 fw-bolder text-warning w-100 mb-4 mt-4 text-lg-center text-center d-none d-lg-block">
                                 Conectemos
                             </h1>
 
-                            <h1 className="display-4 fw-bolder text-warning mb-4 mt-4 text-center d-lg-none">
+                            <h1 className="display-4 fw-bolder text-warning w-100 mb-4 mt-4 text-center d-lg-none">
                                 Conectemos
                             </h1>
 
-                            <p className="hero-subtitle-home fs-5 text-white fw-bold w-75 mb-4 d-none d-lg-block text-lg-start">
+                            <p className="hero-subtitle-home fs-5 text-white fw-bold w-100 mb-4 d-none d-lg-block text-lg-center">
                                 Tu proyecto es nuestro próximo reto.
                             </p>
 
-                            <p className="hero-subtitle-home fs-5 text-white fw-bold w-75 mb-4 text-center d-lg-none">
+                            <p className="hero-subtitle-home fs-5 text-white fw-bold w-100 mb-4 text-center d-lg-none">
                                 Tu proyecto es nuestro próximo reto.
                             </p>
 

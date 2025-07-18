@@ -344,3 +344,10 @@ h6 {
 .btn-submit-contact:hover {
   background-color: #2799b3 !important;
 }
+/* Work With Us  */
+.text-stat-number{
+  color: #60E0A5;
+}
+.text-stat-symbol{
+  color: #fbff06;
+}

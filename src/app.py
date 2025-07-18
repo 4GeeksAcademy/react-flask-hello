@@ -7,9 +7,16 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, RolEnum
+
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
 
 # from models import Person
 
@@ -17,6 +24,10 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')
+jwt = JWTManager(app)
+
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -101,6 +112,30 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'msg': 'ok', 'user': new_user.serialize()})
+
+
+#CREACION DEL ENDPOINT DE LOGIN
+
+@app.route('/login', methods = ['POST'])
+def login():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg': 'Debes enviar informacion en el body'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'El campo Email es obligatorio'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+
+    user = User.query.filter_by(email=body['email']).first()
+    print(user)
+
+    if user is None:
+        return jsonify({'msg': 'Usuario o contraseña incorrectos'}), 400
+    if user.password != body['password']:
+        return jsonify({'msg': 'Usuario o contraseña incorrectos' }), 400
+
+    access_token = create_access_token(identity=user.email)
+    return jsonify({'msg': 'ok', 'token': access_token}), 200
 
 
 # this only runs if `$ python src/main.py` is executed

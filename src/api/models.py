@@ -71,7 +71,7 @@ class AuxOrdenServicio(db.Model):
         back_populates="ordenes_asociadas")
 
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.servicio}'
 
     def serialize(self):
         return {
@@ -113,12 +113,13 @@ class User(db.Model):
     def serialize(self):
         return {
             'id_user': self.id_user,
+            'nombre': self.nombre,
             'identificacion': self.identificacion,
             'telefono': self.telefono,
             'email': self.email,
             'is_active': self.is_active,
             'foto_usuario': self.foto_usuario,
-            'rol': self.rol
+            #'rol': self.rol
             # do not serialize the password, its a security breach
         }
 

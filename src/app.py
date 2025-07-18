@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User, RolEnum
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -64,6 +64,43 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+#CREACION DE ENDPOINT DEL PROYECTO
+
+#CREACION DE ENDPOINT DEL PROYECTO
+
+#ENDPOINT PARA REGISTRAR NUEVO USUARIO
+@app.route('/register', methods = ['POST'])
+def register_user():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg': 'Debes enviar informacion de nuevo usuario en el body'}), 400
+    if 'nombre' not in body:
+        return jsonify({'msg': 'Debes enviar el nombre del usuario a registrar'})
+    if 'identificacion' not in body:
+        return jsonify({'msg': 'Debes enviar la identificacion del usuario a crear'})
+    if 'password' not in body:
+        return jsonify({'msg': 'Debes enviar el password del usuario'})
+    if 'telefono' not in body:
+        return jsonify({'msg': 'Debes enviar un numero telefonico del usuario'})
+    if 'email' not in body:
+        return jsonify({'msg': 'Debes enviar el email e usuario'})
+    if 'foto_usuario' not in body:
+        return jsonify({'msg': 'Debes subir la foto del usuario'})
+    
+    new_user = User()
+    new_user.nombre = body['nombre']
+    new_user.identificacion = body['identificacion']
+    new_user.password = body['password']
+    new_user.telefono = body['telefono']
+    new_user.email = body['email']
+    new_user.is_active = True
+    new_user.foto_usuario = body['foto_usuario']
+    new_user.rol = RolEnum.CLIENTE
+    
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'msg': 'ok', 'user': new_user.serialize()})
 
 
 # this only runs if `$ python src/main.py` is executed

@@ -54,6 +54,8 @@
 		]
 	},
 	"dependencies": {
+		"@cloudinary/react": "^1.14.3",
+		"@cloudinary/url-gen": "^1.21.0",
 		"cloudinary": "^2.7.0",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",

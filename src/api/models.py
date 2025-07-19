@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean,ForeignKey
+from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 
@@ -11,6 +11,11 @@ class User(db.Model):
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
+    is_active: Mapped [bool] = mapped_column(Boolean(), nullable=False)
+
+    order: Mapped [List["Order"]] = relationship(
+        back_populates= "user", cascade= "all, delete-orphan"
+    )
 
 
     def serialize(self):
@@ -21,10 +26,35 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
+class Order(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    
+    
+    user: Mapped ["User"] = relationship(
+        back_populates= "order" 
+    )
+    order_item: Mapped [List["OrderItem"]] = relationship(
+        back_populates= "order", cascade= "all, delete-orphan"
+    )
+
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.id,
+            
+            # do not serialize the password, its a security breach
+        }
+    
 class Category(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    description: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(String(), nullable=False)
+    
+    product_category: Mapped[List["ProductCategory"]] = relationship(
+        back_populates="category", cascade= "all, delete-orphan"
+    )
 
 
     def serialize(self):
@@ -36,7 +66,7 @@ class Category(db.Model):
         } 
     
 class PetType(db.Model):
-    id: Mapped[bool] = mapped_column(primary_key= True, nullable=True) 
+    id: Mapped[int] = mapped_column(primary_key= True) 
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     products: Mapped[List["Product"]] = relationship(
         back_populates = "product", cascade = "all, delete-orphan"
@@ -51,15 +81,23 @@ class PetType(db.Model):
 class Product(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    description: Mapped[str] = mapped_column(nullable=False)
-    photo: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    coste: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    price: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    
+    description: Mapped[str] = mapped_column(String(), nullable=False)
+    photo: Mapped[str] = mapped_column(String(), nullable=False) 
+    coste: Mapped[float] = mapped_column(Float(), nullable=False)
+    price: Mapped[float] = mapped_column(Float(), nullable=False)
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
+    stock: Mapped[int] = mapped_column(Integer(), nullable=True)
 
-    pet_type: Mapped["PetType"] = relationship(back_populates="product")
-    stock: Mapped[int] = mapped_column(primary_key=True)
+    pet_type: Mapped["PetType"] = relationship(
+        back_populates="product")
+    
+    order_items: Mapped[List["OrderItem"]] = relationship(
+        back_populates= "product", cascade= "all, delete-orphan"
+    )
+
+    product_category: Mapped[List["ProductCategory"]] = relationship(
+        back_populates="product", cascade= "all, delete-orphan"
+    )
 
 
     def serialize(self):
@@ -78,37 +116,42 @@ class ProductCategory(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
-
-    product: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    produc_id: Mapped[int] = mapped_column(primary_key=True)
+    product_id: Mapped[int] = mapped_column("product.id")
+    
+    product_category: Mapped["Product"] = relationship (
+        back_populates="product_category"
+    )
+    category: Mapped["Category"] = relationship(
+        back_populates="product_category"
+    )
 
     def serialize(self):
         return {
             "id": self.id,
+            "category_id": self.id,
+            "product": self.product,
+            "product_id": self.produc_id,
         
             # do not serialize the password, its a security breach
         }
-class Order(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
+class OrderItem(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    order_id: Mapped[int] = mapped_column("order.id")
+    product_id: Mapped[int] = mapped_column("product.id")
+    cant: Mapped[int] = mapped_column(Integer(), nullable=False)
+    order: Mapped ["Order"] = relationship(
+        back_populates= "order_item"
+    )
+    product: Mapped["Product"]= relationship(
+        back_populates= "order_item"
+    )
 
     def serialize(self):
         return {
             "id": self.id,
-            
-            # do not serialize the password, its a security breach
-        }
-class Order_product(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    order_id: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    product_id: Mapped[str] = mapped_column(nullable=False)
-    cant: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-
-
-    def serialize(self):
-        return {
-            "id": self.id,
+            "order_id": self.order_id,
+            "product_id": self.product_id,
             "cant": self.cant,
             # do not serialize the password, its a security breach
         }

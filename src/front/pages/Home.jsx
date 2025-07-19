@@ -1,14 +1,12 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Navbar } from "../components/Navbar"
+import React from "react";
+import { Navbar } from "../components/Navbar";
+import { Carousel } from "../components/Carousel";
 
 export const Home = () => {
-
-	return (
+  return (
     <div>
       <Navbar />
-	</div>
-	)
-
-}; 
+	  <Carousel />
+    </div>
+  );
+};

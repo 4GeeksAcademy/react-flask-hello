@@ -168,7 +168,29 @@ def crear_vehiculo():
     return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
 
     
+#ENDPOINT PARA HACER OBTENER (GET) DE LOS VEHICULOS
 
+@app.route('/mis_vehiculos', methods = ['GET'])
+@jwt_required()
+def mostrar_vehiculos():
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    print(user_current)
+    print(user_current.id_user)
+    id_propietario = user_current.id_user
+    vehiculos = Vehiculos.query.filter_by(user_id = id_propietario).all()    
+    print(vehiculos)
+
+    lista_vehiculos = []
+
+    for v in vehiculos:
+        lista_vehiculos.append({        
+            'matricula': v.matricula
+    })
+    
+    return jsonify({'msg': 'OK', 'vehiculos': lista_vehiculos})
+
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

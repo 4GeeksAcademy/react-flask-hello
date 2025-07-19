@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, RolEnum
+from api.models import db, User, RolEnum, Vehiculos
 
 from api.routes import api
 from api.admin import setup_admin
@@ -136,6 +136,38 @@ def login():
 
     access_token = create_access_token(identity=user.email)
     return jsonify({'msg': 'ok', 'token': access_token}), 200
+
+
+#ENDPOINT PARA CREAR VEHICULOS
+
+@app.route('/crear_vehiculo', methods = ['POST'])
+def crear_vehiculo():
+    body = request.get_json(silent = True)
+    if body is None:
+        return jsonify({'msg': 'debes enviar informacion del vehiculo en el body'}), 400
+    if 'matricula' not in body:
+        return jsonify({'msg': 'debes enviar la matricula del vehiculo'}), 400
+    if 'marca' not in body:
+        return jsonify({'msg': 'debes enviar la marca del vehiculo'}), 400
+    if 'modelo' not in body:
+        return jsonify({'msg': 'debes enviar el modelo del vehiculo'}), 400
+    if 'year' not in body:
+        return jsonify({'msg': 'debes enviar el año del vehiculo'}), 400
+    if 'user_id' not in body:
+        return jsonify({'msg': 'Debes enviar el Id de un usuario existente'})
+
+    new_car = Vehiculos()
+    new_car.matricula = body['matricula']
+    new_car.marca = body['marca']
+    new_car.modelo = body['modelo']
+    new_car.year = body['year']
+    new_car.user_id = body['user_id']
+
+    db.session.add(new_car)
+    db.session.commit()
+    return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
+
+    
 
 
 # this only runs if `$ python src/main.py` is executed

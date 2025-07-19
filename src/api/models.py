@@ -111,6 +111,8 @@ class User(db.Model):
         return f'{self.nombre}'
 
     def serialize(self):
+        print(self.rol)
+        print(type(self.rol))
         return {
             'id_user': self.id_user,
             'nombre': self.nombre,
@@ -119,7 +121,7 @@ class User(db.Model):
             'email': self.email,
             'is_active': self.is_active,
             'foto_usuario': self.foto_usuario,
-            #'rol': self.rol
+            'rol': self.rol.value
             # do not serialize the password, its a security breach
         }
 

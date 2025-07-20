@@ -11,6 +11,8 @@ import { About } from "./pages/About";
 import { ServicesPage } from "./pages/Services";
 import { Portfolio } from "./pages/Projects";
 import { Contact } from "./pages/Contact";
+import { Admin } from "./pages/Admin";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +31,8 @@ export const router = createBrowserRouter(
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/projects" element={<Portfolio />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/admin" element={<Admin />} />
+      {/* <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} /> */}
     </Route>
   )
 );

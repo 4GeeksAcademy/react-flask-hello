@@ -134,7 +134,7 @@ def login():
     if user.password != body['password']:
         return jsonify({'msg': 'Usuario o contraseña incorrectos' }), 400
 
-    access_token = create_access_token(identity=user.email)
+    access_token = create_access_token(identity=user.email)  # despues de mail expires_delta=timedelta(hours=2)
     return jsonify({'msg': 'ok', 'token': access_token}), 200
 
 
@@ -185,7 +185,7 @@ def mostrar_vehiculos():
 
     for v in vehiculos:
         lista_vehiculos.append({        
-            'matricula': v.matricula
+            'matricula': v.matricula 
     })
     
     return jsonify({'msg': 'OK', 'vehiculos': lista_vehiculos})

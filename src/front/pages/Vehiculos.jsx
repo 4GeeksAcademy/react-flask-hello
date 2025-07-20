@@ -6,32 +6,34 @@ import { VehicleCard } from "../components/VehicleCard.jsx";
 
 export const Vehiculos = () => {
 
-  const [infoVehiculos, setInfoVehiculos] = useState({})
+  const [infoVehiculos, setInfoVehiculos] = useState([])
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
     fetch(import.meta.env.VITE_BACKEND_URL + "/all_vehicles", {
       method: "GET",
       headers: {
-      "Content-Type": "application/json",}
+        "Content-Type": "application/json",
+      }
     })
       .then((response) => {
         if (!response.ok) {
-          alert('Error al traer la informacion')}
-          return response.json()
-        
+          alert('Error al traer la informacion')
+        }
+        return response.json()
+
       })
       .then((data) => {
-        console.log("Estoy trayendo informacion") 
+        console.log("Estoy trayendo informacion")
         console.log(data.vehiculos)
-        setInfoVehiculos(data.vehiculos) 
+        setInfoVehiculos(data.vehiculos)
       })
-      .catch((error) => {error})
+      .catch((error) => { error })
   }
 
-useEffect(()=>{
-  getVehicles()
-}, [])
+  useEffect(() => {
+    getVehicles()
+  }, [])
 
   return (
     <div>
@@ -40,11 +42,16 @@ useEffect(()=>{
       <div className='container text-center mt-5 mb-3'>
         <h1 className="d-inline-block px-5 py-2 border border-primary-subtle rounded-pill text-light" style={{ backgroundColor: '#003366' }}>Mis Vehiculos</h1>
         <div className='d-flex flex-column py-3'>
+          {
+            infoVehiculos.map((vehiculo, index) => {
+              return (
+                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} />
+              )
 
+            })
 
-          <VehicleCard />
-        
-        
+          }
+
         </div>
 
       </div>

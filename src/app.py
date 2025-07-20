@@ -201,6 +201,7 @@ def get_all_vehicles():
     for vehicle in vehicles:
         vehicles_serialized.append(vehicle.serialize())
 
+    print(vehicles_serialized)
     return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
 
     

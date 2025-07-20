@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 
-export const VehicleCard = () => {
+export const VehicleCard = (props) => {
 
     return (
         <div>
@@ -17,22 +17,22 @@ export const VehicleCard = () => {
                     </div>
                     <div className="col-md-6">
                         <div className="card-body">
-                            <h5 className="card-title d-flex justify-content-start">MARCA</h5>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">MATRICULA</p>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">MODELO</p>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">AÑO</p>
+                            <h3 className="card-title d-flex justify-content-start ms-5 mt-3">Matricula {props.matricula}</h3>
+                            <h5 className="card-text d-flex justify-content-start text-body-secondary ms-5 mt-4">Marca: {props.marca}</h5>
+                            <h5 className="card-text d-flex justify-content-start text-body-secondary ms-5 mt-2">Modelo: {props.modelo}</h5>
+                            <h5 className="card-text d-flex justify-content-start text-body-secondary ms-5 mt-2">Año: {props.year}</h5>
                         </div>
                     </div>
                     <div className="col-md-2 p-4">
                         
-                            <button className='btn btn-light my-1 mx-5'><i className="fa-solid fa-pencil"></i></button>
-                            <button className='btn btn-light my-1 mx-5'><i className="fa-solid fa-trash"></i></button>
+                            <button className='btn btn-light my-2 mx-5'><i className="fa-solid fa-pencil"></i></button>
+                            <button className='btn btn-light my-2 mx-5'><i className="fa-solid fa-trash"></i></button>
 
 
                     </div>
                 </div>
             </div>
-            )
+            
 
 
 

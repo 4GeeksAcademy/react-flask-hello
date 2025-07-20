@@ -233,5 +233,11 @@
   "contact": {
     "sectionTitle": "Contact Us",
     "sectionDescription": "Your project is our next challenge."
+  },
+  "whatsapp": {
+    "accountName": "CloudTech Sistemas",
+    "statusMessage": "Usually replies within an hour",
+    "chatMessage": "¡Hi there! 👋 How can we help you?",
+    "placeholder": "Type your message..."
   }
 }

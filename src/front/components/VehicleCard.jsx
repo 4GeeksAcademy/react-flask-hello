@@ -13,14 +13,14 @@ export const VehicleCard = () => {
             <div className="card border border-2 border-primary mb-3 rounded-4" style={{ Width: "100%" }}>
                 <div className="row g-0">
                     <div className="col-md-4 d-flex align-items-center justify-content-center">
-                        <img src="https://i.pinimg.com/736x/eb/21/8f/eb218ff389898aae7ae7b28894860ec5.jpg" className="p-2 m-2img-fluid rounded-start" alt="..." />
+                        <img src="https://i.pinimg.com/736x/eb/21/8f/eb218ff389898aae7ae7b28894860ec5.jpg" className="p-2 m-2 img-fluid rounded-start" alt="..." />
                     </div>
                     <div className="col-md-6">
                         <div className="card-body">
-                            <h5 className="card-title d-flex justify-content-start">propiedad nombre</h5>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">propiedad direccion</p>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">propiedad telefono</p>
-                            <p className="card-text d-flex justify-content-start text-body-secondary ">propiedad email</p>
+                            <h5 className="card-title d-flex justify-content-start">MARCA</h5>
+                            <p className="card-text d-flex justify-content-start text-body-secondary ">MATRICULA</p>
+                            <p className="card-text d-flex justify-content-start text-body-secondary ">MODELO</p>
+                            <p className="card-text d-flex justify-content-start text-body-secondary ">AÑO</p>
                         </div>
                     </div>
                     <div className="col-md-2 p-4">

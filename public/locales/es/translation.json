@@ -301,5 +301,11 @@
       "alertError": "¡Ups! Ocurrió un problema, intenta nuevamente.",
       "loading": "Enviando..."
     }
+  },
+  "whatsapp": {
+    "accountName": "CloudTech Sistemas",
+    "statusMessage": "Normalmente responde en 1 hora",
+    "chatMessage": "¡Hola! 👋 ¿Cómo podemos ayudarte?",
+    "placeholder": "Escribe tu mensaje..."
   }
 }

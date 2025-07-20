@@ -60,15 +60,15 @@ const HeaderContact = () => {
     };
 
     return (
-        <section className="header-contact-form w-100 position-relative d-flex align-items-center py-5 my-5">
+        <section className="w-100 h-100 mb-5 mt-5 position-relative ">
             <img
                 src={HomeContact}
                 alt="CloudTech background image"
-                className="z-n1 position-absolute w-100 h-100 object-fit-cover" />
+                className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block" />
 
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-25 z-n1"></div>
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-25 mx-auto mt-5"></div>
             <div className="container w-100 h-100">
-                <div className="row align-items-center justify-content-center justify-content-lg-end">
+                <div className="row align-items-center justify-content-center justify-content-lg-end pt-5">
                     <div className="col-12 col-lg-6 z-1 align-items-center">
                         <h1 className="display-4 fw-bolder text-warning w-100 mb-4 mt-4 text-lg-center text-center d-none d-lg-block">
                             {t('contact.sectionTitle')}

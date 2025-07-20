@@ -67,7 +67,7 @@ const Home = () => {
             }}
           />
           <div className="shop-now mt-3">
-            <button className="btn btn-outline-primary">Shop now</button>
+            <button style={{ color: "#3c6ca8" }} className="btn btn-outline">Shop now</button>
           </div>
         </div>
 

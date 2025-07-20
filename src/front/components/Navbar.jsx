@@ -36,13 +36,14 @@ export const Navbar = () => {
         </div>
         <div className="buttons d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
           <button
-            style={{}} className="bg-transparent border-0 me-2"
+            style={{ color: "#3c6ca8" }} className="bg-transparent border-0 me-2"
             aria-label="Perfil de usuario"
             type="button"
           >
             <i className="fa-solid fa-user fs-2"></i>
           </button>
           <button
+            style={{ color: "#3c6ca8" }}
             className="bg-transparent border-0"
             aria-label="Carrito de compras"
             type="button"

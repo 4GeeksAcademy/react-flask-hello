@@ -17,9 +17,8 @@ const CurvedText = () => {
                         startOffset="50%"
                         style={{
                             fontSize: "24px",
-                            fill: "#3653f0",
+                            fill: "#3c6ca8",
                             fontWeight: "600",
-                            fontFamily: "Arial Rounded MT Bold, sans-serif",
                         }}
                     >
                         Donde cada huellita cuenta...

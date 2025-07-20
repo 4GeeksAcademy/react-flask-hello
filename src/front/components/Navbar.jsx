@@ -36,7 +36,7 @@ export const Navbar = () => {
         </div>
         <div className="buttons d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
           <button
-            className="bg-transparent border-0 me-2"
+            style={{}} className="bg-transparent border-0 me-2"
             aria-label="Perfil de usuario"
             type="button"
           >
@@ -51,17 +51,19 @@ export const Navbar = () => {
           </button>
         </div>
       </div>
-      <div className="d-flex justify-content-center align-items-center fs-1 w-100 mt-3 mt-md-1">
+      <div className="icon-container d-flex justify-content-center align-items-center fs-1 w-100 mt-3 mt-md-1">
         <p className="m-0 me-2">
-          <i className="fa-solid fa-dog"></i> |
+          <i style={{ color: "#3c6ca8" }} className="fa-solid fa-dog me-3"></i>
         </p>
         <p className="m-0">
-          <i className="fa-solid fa-cat"></i>
+          <i style={{ color: "#3c6ca8" }} className="fa-solid fa-cat"></i>
         </p>
       </div>
       <hr className="thick-hr m-0 w-100 mt-2" />
       <div className="d-flex justify-content-center align-items-center mt-2 w-100">
-        <p className="m-0 text-primary text-center">Envíos en menos de 48 horas</p>
+        <p style={{
+          color: "#3c6ca8",
+        }} className="m-0 text-center">Envíos en menos de 48 horas</p>
       </div>
     </nav>
   );

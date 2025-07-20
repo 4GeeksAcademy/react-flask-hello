@@ -3,6 +3,9 @@ import CurvedText from "../components/CurvedText";
 import { Link } from "react-router-dom";
 import dalmata from "/dalmata.png";
 import fotoPrincipal from "/fotoPrincipal.png";
+import Carrusel1 from "/Carrusel1.png";
+import Carrusel2 from "/Carrusel2.png";
+import Carrusel3 from "/Carrusel3.png";
 
 const Home = () => {
   return (
@@ -12,9 +15,9 @@ const Home = () => {
 
         <div id="carouselExampleDark"
           style={{
-            width: "300px",     // ajusta el tamaño
-            display: "block",   // necesario para centrar con margin
-            margin: "0 auto",   // centra horizontalmente
+            width: "300px",
+            display: "block",
+            margin: "0 auto",
           }}
           className="carousel carousel-dark slide col-4" data-bs-ride="carousel">
           <div className="carousel-indicators">
@@ -25,24 +28,18 @@ const Home = () => {
 
           <div className="carousel-inner">
             <div className="carousel-item active" data-bs-interval="10000">
-              <img src="/producto1.jpg" className="d-block w-75 mx-auto" alt="Producto 1" />
+              <img src={Carrusel1} className="d-block w-75 mx-auto" alt="Producto 1" />
               <div className="carousel-caption d-none d-md-block">
-                <h5>Producto 1</h5>
-                <p>Descripción del producto destacado 1.</p>
               </div>
             </div>
             <div className="carousel-item" data-bs-interval="2000">
-              <img src="/producto2.jpg" className="d-block w-75 mx-auto" alt="Producto 2" />
+              <img src={Carrusel2} className="d-block w-75 mx-auto" alt="Producto 2" />
               <div className="carousel-caption d-none d-md-block">
-                <h5>Producto 2</h5>
-                <p>Descripción del producto destacado 2.</p>
               </div>
             </div>
             <div className="carousel-item">
-              <img src="/producto3.jpg" className="d-block w-75 mx-auto" alt="Producto 3" />
+              <img src={Carrusel3} className="d-block w-75 mx-auto" alt="Producto 3" />
               <div className="carousel-caption d-none d-md-block">
-                <h5>Producto 3</h5>
-                <p>Descripción del producto destacado 3.</p>
               </div>
             </div>
           </div>
@@ -64,9 +61,9 @@ const Home = () => {
 
           <img src="./fotoPrincipal.png"
             style={{
-              width: "300px",     // ajusta el tamaño
-              display: "block",   // necesario para centrar con margin
-              margin: "0 auto",   // centra horizontalmente
+              width: "300px",
+              display: "block",
+              margin: "0 auto",
             }}
           />
           <div className="shop-now mt-3">
@@ -74,13 +71,12 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Imagen decorativa */}
         <div className="col-md-4 text-center img-fluid">
           <img src="./dalmata.png"
             style={{
-              width: "300px",     // ajusta el tamaño
-              display: "block",   // necesario para centrar con margin
-              margin: "0 auto",   // centra horizontalmente
+              width: "300px",
+              display: "block",
+              margin: "0 auto",
             }} />
         </div>
       </div>

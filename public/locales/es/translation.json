@@ -210,31 +210,98 @@
     "sectionTitle": "Beneficios del desarrollo web",
     "sectionDescription": "Invertir en una presencia digital profesional es clave para el éxito de tu marca. Un sitio web bien desarrollado no es solo una vitrina, es una herramienta estratégica que impulsa tu crecimiento y conecta de manera efectiva con tu audiencia.",
     "card": {
-      "benefit1": {},
-      "benefit2": {},
-      "benefit3": {},
-      "benefit4": {},
-      "benefit5": {},
-      "benefit6": {}
+      "benefit1": {
+        "title": "Credibilidad y Profesionalismo",
+        "description": "Un sitio web moderno y funcional genera confianza instantánea. Refuerza la autoridad de tu marca, proyecta una imagen sólida y establece la credibilidad necesaria para atraer y retener a tus clientes."
+      },
+      "benefit2": {
+        "title": "Experiencia de Usuario Superior (UX)",
+        "description": "Una UX optimizada garantiza que cada interacción sea satisfactoria, manteniendo a tu audiencia comprometida y facilitando el acceso a la información que buscan, sobre ti, tu marca, tus servicios, tus productos o tu catálogo."
+      },
+      "benefit3": {
+        "title": "Visibilidad y Alcance Global",
+        "description": "Un sitio web te abre al mundo. Te permite llegar a audiencias ilimitadas las 24 horas del día, 7 días a la semana, trascendiendo barreras geográficas y temporales para que tu marca esté siempre accesible."
+      },
+      "benefit4": {
+        "title": "Optimización SEO en Buscadores",
+        "description": "Aumentamos la visibilidad de tu marca en Google y otros buscadores. A través de estrategias SEO integradas, atraemos tráfico orgánico de calidad, asegurando que tu sitio aparezca cuando tus clientes potenciales busquen tus productos o servicios."
+      },
+      "benefit5": {
+        "title": "Ventaja Competitiva Clave",
+        "description": "Destácate en tu sector con una presencia digital que supera a la competencia. Un sitio web estratégico y actualizado no solo cumple tus objetivos, sino que te posiciona como líder innovador y te diferencia claramente en el mercado."
+      },
+      "benefit6": {
+        "title": "Escalabilidad y Adaptabilidad",
+        "description": "Tu negocio evoluciona, y tu web también debe hacerlo. Creamos soluciones flexibles y escalables que crecen contigo, permitiéndote añadir nuevas funcionalidades, expandir contenidos o integrar herramientas conforme tus necesidades cambien."
+      }
     }
   },
   "values": {
     "sectionTitle": "Valores",
     "sectionDescription": "Nuestra esencia se fundamenta en principios sólidos que guían cada proyecto y cada interacción. Son el motor que nos impulsa a crear universos digitales que verdaderamente transforman tu visión.",
     "card": {
-      "value1": {},
-      "value2": {},
-      "value3": {},
-      "value4": {},
-      "value5": {},
-      "value6": {}
+      "value1": {
+        "title": "Innovación Constante",
+        "description": "Nos comprometemos a estar siempre a la vanguardia de la tecnología y el diseño. Exploramos nuevas soluciones y tendencias para construir universos digitales que no solo satisfagan tus necesidades actuales, sino que también anticipen el futuro de tu marca en el ciberespacio."
+      },
+      "value2": {
+        "title": "Enfoque en Resultados",
+        "description": "Cada acción que tomamos está orientada a generar valor tangible y medible para tu negocio. Nos dedicamos a transformar tus objetivos en métricas claras y crecimiento sostenido, asegurando que tu inversión digital se traduzca en éxito real y conexiones duraderas."
+      },
+      "value3": {
+        "title": "Colaboración Estratégica",
+        "description": "Creemos firmemente en el poder del trabajo colaborativo. Establecemos una alianza transparente, escuchando tu visión y co-creando soluciones digitales a medida. Tu éxito es nuestra prioridad y juntos moldeamos tu presencia online."
+      },
+      "value4": {
+        "title": "Excelencia Digital",
+        "description": "Buscamos la máxima calidad en cada detalle de tu universo digital. Desde la estrategia hasta el código y el diseño, nos esforzamos por superar las expectativas, garantizando soluciones robustas, intuitivas y de vanguardia que elevan tu marca."
+      },
+      "value5": {
+        "title": "Pasión por el desarrollo",
+        "description": "Nuestra dedicación va más allá del desarrollo. Nos apasiona ver cómo nuestras creaciones digitales transforman negocios y generan conexiones reales. Impulsamos cada proyecto con entusiasmo, comprometidos con el éxito y la visibilidad de tu marca."
+      },
+      "value6": {
+        "title": "Transparencia y Confianza",
+        "description": "Operamos con total honestidad y claridad en cada etapa del proceso. Construimos relaciones sólidas basadas en la comunicación abierta y la confianza mutua, asegurando que siempre estés informado y seguro del camino que seguimos juntos."
+      }
+    }
+  },
+  "workWithUs": {
+    "sectionTitle": "¿Por qué trabajar con nosotros? ",
+    "sectionDescription": "Moldeamos ideas para crear universos digitales que no solo lucen bien, sino que generan un impacto real y medible. Elegirnos significa aliarse con un equipo que combina creatividad, experiencia y un proceso estructurado para llevar tu marca al siguiente nivel con resultados reales.",
+    "workWithUsCTA": "Conectemos ahora",
+    "statistics": {
+      "customerSatisfaction": "Satisfacción de clientes",
+      "activeUsers": "Usuarios activos al año",
+      "completedProjects": "Proyectos completados",
+      "yearsOfExperience": "Años de experiencia"
     }
   },
   "contact": {
-    "sectionTitle": "Contáctanos",
-    "sectionDescription": "Tu proyecto es nuestro próximo reto."
-  }, 
-
+    "sectionTitle": "Conectemos",
+    "sectionDescription": "Tu proyecto es nuestro próximo reto.",
+    "formButton": "Enviar",
+    "whatsAppButton": "Cuéntanos tu idea",
+    "labels": {
+      "nameLabel": "Nombre completo:",
+      "phoneLabel": "Teléfono:",
+      "emailLabel": "Email:",
+      "projectNameLabel": "Nombre de tu proyecto:",
+      "messageLabel": "Cuéntanos lo que necesitas:"
+    },
+    "placeholders": {
+      "nameHolder": "Tu nombre",
+      "phoneHolder": "Tu teléfono",
+      "emailHolder": "Tu correo",
+      "projectHolder": "El nombre de tu proyecto o compañía.",
+      "messageHolder": "Tu idea va aquí..."
+    },
+    "alerts": {
+      "alertSuccess": "¡Gracias! Tu mensaje ha sido enviado.",
+      "alertError": "¡Ups! Ocurrió un problema, intenta nuevamente.",
+      "loading": "Enviando..."
+    }
+  },
   "whatsapp": {
     "accountName": "CloudTech Sistemas",
     "statusMessage": "Normalmente responde en 1 hora",

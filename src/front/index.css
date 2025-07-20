@@ -11,7 +11,6 @@ h1 {
 
 p {
   font-family: "Manrope", sans-serif;
-  
 }
 h2,
 h3,
@@ -218,6 +217,18 @@ h6 {
   transform: translateX(0);
 }
 
+/* Footer links*/
+
+.footerLink {
+  color: white;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  color: #fbff06;
+}
+
 /* Language switch */
 
 .flag-icon-main {
@@ -316,26 +327,26 @@ h6 {
   font-weight: bold;
 }
 .text-ct-secondary {
-  color: #60E0A5;
+  color: #60e0a5;
 }
-.ct-description-p{
+.ct-description-p {
   color: #ffff;
 }
 .card-divider {
-    border: none;
-    border-top: 1px solid #6ee6b9; 
-    opacity: 1;
+  border: none;
+  border-top: 1px solid #6ee6b9;
+  opacity: 1;
 }
 .card-background {
   color: transparent;
 }
 /* header contacto */
 .form-label-contact {
-  color: #60E0A5 !important;
+  color: #60e0a5 !important;
 }
 
 .btn-submit-contact {
-  background-color: #217B8F !important;
+  background-color: #217b8f !important;
   color: #e2e505 !important;
   font-weight: bold;
   border: none;
@@ -345,9 +356,9 @@ h6 {
   background-color: #2799b3 !important;
 }
 /* Work With Us  */
-.text-stat-number{
-  color: #60E0A5;
+.text-stat-number {
+  color: #60e0a5;
 }
-.text-stat-symbol{
+.text-stat-symbol {
   color: #fbff06;
 }

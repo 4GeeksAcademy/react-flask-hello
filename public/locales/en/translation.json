@@ -29,7 +29,7 @@
   },
   "about": {
     "sectionTitle": "Who We Are",
-    "sectionDescription": "We are a company that believes in the value of uniting creativity and technology. We combine strategy, cutting-edge design, and robust technology to create an intuitive and functional online presence. Our commitment is to generate real connections and measurable growth for your business. At CloudTech, your uniqueness comes to life in a custom-made and sophisticated digital universe. "
+    "sectionDescription": "We are a company that believes in the value of uniting creativity and technology. We combine strategy, cutting-edge design, and robust technology to create an intuitive and functional online presence."
   },
   "services": {
     "sectionTitle": "Meet Our Team",
@@ -210,29 +210,97 @@
     "sectionTitle": "Web Development Benefits",
     "sectionDescription": "Investing in a professional digital presence is key to your brand's success. A well-developed website is not just a showcase; it's a strategic tool that drives your growth and connects effectively with your audience.",
     "card": {
-      "benefit1": {},
-      "benefit2": {},
-      "benefit3": {},
-      "benefit4": {},
-      "benefit5": {},
-      "benefit6": {}
+      "benefit1": {
+        "title": "Credibility & Professionalism",
+        "description": "A modern, functional website instantly builds trust. It reinforces your brand's authority, projects a strong image, and establishes the credibility needed to attract and retain customers."
+      },
+      "benefit2": {
+        "title": "Superior User Experience (UX)",
+        "description": "Optimized UX ensures every interaction is satisfactory, keeping your audience engaged and facilitating access to information they seek about you, your brand, services, products, or catalog."
+      },
+      "benefit3": {
+        "title": "Global Visibility & Reach",
+        "description": "A website opens you to the world. It allows you to reach unlimited audiences 24/7, transcending geographical and time barriers so your brand is always accessible."
+      },
+      "benefit4": {
+        "title": "SEO Optimization for Search",
+        "description": "We boost your brand's visibility on Google and other search engines. Through integrated SEO strategies, we attract quality organic traffic, ensuring your site appears when potential clients search for your products or services."
+      },
+      "benefit5": {
+        "title": "Key Competitive Advantage",
+        "description": "Stand out in your sector with a digital presence that surpasses the competition. A strategic, updated website not only meets your objectives but also positions you as an innovative leader, clearly differentiating you in the market."
+      },
+      "benefit6": {
+        "title": "Scalability & Adaptability",
+        "description": "Your business evolves, and your website must too. We create flexible, scalable solutions that grow with you, allowing you to add new features, expand content, or integrate tools as your needs change."
+      }
     }
   },
   "values": {
     "sectionTitle": "Our Values",
     "sectionDescription": "At CloudTech, our essence is founded on solid principles that guide every project and every interaction. They are the engine that drives us to create digital universes that truly transform your vision.",
     "card": {
-      "value1": {},
-      "value2": {},
-      "value3": {},
-      "value4": {},
-      "value5": {},
-      "value6": {}
+      "value1": {
+        "title": "Constant Innovation",
+        "description": "We are committed to always being at the forefront of technology and design. We explore new solutions and trends to build digital universes that not only meet your current needs but also anticipate your brand's future in cyberspace."
+      },
+      "value2": {
+        "title": "Results Focus",
+        "description": "Every action we take is aimed at generating tangible and measurable value for your business. We are dedicated to transforming your objectives into clear metrics and sustained growth, ensuring your digital investment translates into real success and lasting connections."
+      },
+      "value3": {
+        "title": "Strategic Collaboration",
+        "description": "We firmly believe in the power of collaborative work. We establish a transparent alliance, listening to your vision and co-creating custom digital solutions. Your success is our priority, and together we mold your online presence."
+      },
+      "value4": {
+        "title": "Digital Excellence",
+        "description": "We seek the highest quality in every detail of your digital universe. From strategy to code and design, we strive to exceed expectations, guaranteeing robust, intuitive, and cutting-edge solutions that elevate your brand."
+      },
+      "value5": {
+        "title": "Passion for Development",
+        "description": "Our dedication goes beyond development. We are passionate about seeing how our digital creations transform businesses and generate real connections. We drive every project with enthusiasm, committed to your brand's success and visibility."
+      },
+      "value6": {
+        "title": "Transparency and Trust",
+        "description": "We operate with total honesty and clarity at every stage of the process. We build solid relationships based on open communication and mutual trust, ensuring you are always informed and confident in the path we take together."
+      }
+    }
+  },
+  "workWithUs": {
+    "sectionTitle": "Why Work With Us?",
+    "sectionDescription": "We mold ideas to create digital universes that not only look good but generate real, measurable impact. Choosing us means partnering with a team that combines creativity, experience, and a structured process to take your brand to the next level with real results.",
+    "workWithUsCTA": "Contact Us",
+    "statistics": {
+      "customerSatisfaction": "Client Satisfaction",
+      "activeUsers": "Active Users per Year",
+      "completedProjects": "Completed Projects",
+      "yearsOfExperience": "Years of Experience"
     }
   },
   "contact": {
-    "sectionTitle": "Contact Us",
-    "sectionDescription": "Your project is our next challenge."
+    "sectionTitle": "Let's connect!",
+    "sectionDescription": "Your project is our next challenge",
+    "formButton": "Send",
+    "whatsAppButton": "Tell us your idea",
+    "labels": {
+      "nameLabel": "Full name:",
+      "phoneLabel": "Phone:",
+      "emailLabel": "Email:",
+      "projectNameLabel": "Name of your project:",
+      "messageLabel": "Tell us what you need:"
+    },
+    "placeholders": {
+      "nameHolder": "Your name",
+      "phoneHolder": "Your phone",
+      "emailHolder": "Your email",
+      "projectHolder": "Your project or company name",
+      "messageHolder": "Your idea goes here..."
+    },
+    "alerts": {
+      "alertSuccess": "Thanks! Your message was sent.",
+      "alertError": "Oops! A problem occurred, please try again.",
+      "loading": "Sending..."
+    }
   },
   "whatsapp": {
     "accountName": "CloudTech Sistemas",

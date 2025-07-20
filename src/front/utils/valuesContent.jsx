@@ -1,42 +1,32 @@
 export const valuesContent = [
     {
         id: 1,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
+        title: "values.card.value1.title",
+        description: "values.card.value1.description"
     },
     {
         id: 2,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
+        title: "values.card.value2.title",
+        description: "values.card.value2.description"
     },
     {
         id: 3,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
+        title: "values.card.value3.title",
+        description: "values.card.value3.description"
     },
     {
         id: 4,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
+        title: "values.card.value4.title",
+        description: "values.card.value4.description"
     },
     {
         id: 5,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
+        title: "values.card.value5.title",
+        description: "values.card.value5.description"
     },
     {
         id: 6,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
-    },
-    {
-        id: 7,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
-    },
-    {
-        id: 8,
-        title: "Mobile App",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero soluta omnis fugiat nulla nobis quod cupiditate numquam placeat assumenda animi maiores veniam vero quis, beatae recusandae ducimus praesentium corrupti suscipit."
-    }                        
+        title: "values.card.value6.title",
+        description: "values.card.value6.description"
+    }
 ];

@@ -17,13 +17,14 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
-
+from flask_cors import CORS
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+CORS(app)
 
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')
 jwt = JWTManager(app)
@@ -190,7 +191,26 @@ def mostrar_vehiculos():
     
     return jsonify({'msg': 'OK', 'vehiculos': lista_vehiculos})
 
-    
+#ENDPOINT PARA TRAER TODOS LOS VEHICULOS
+
+@app.route('/all_vehicles', methods=['GET'])
+def get_all_vehicles():
+    vehicles = Vehiculos.query.all()
+    vehicles_serialized = []
+
+    for vehicle in vehicles:
+        vehicles_serialized.append(vehicle.serialize())
+
+    print(vehicles_serialized)
+    return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
+
+#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
+
+
+
+#ENDPOINT PARA BORRAR VEHICULOS 
+
+#ENDPOINT PRA EDITAR VEHICULOS   
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

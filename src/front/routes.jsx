@@ -13,6 +13,9 @@ import React from "react";
 import CurvedText from "./components/CurvedText"; // Importing the CurvedText component
 import { Perros } from "./pages/Perros.jsx";
 import { Gatos } from "./pages/Gatos.jsx";
+import { Registro } from "./pages/Registro.jsx"; // Importing the Registro component
+import { Carrito } from "./pages/Carrito.jsx"; // Importing the Carrito component
+import { Login } from "./pages/Login.jsx"; // Importing the Login component
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +35,11 @@ export const router = createBrowserRouter(
       <Route path="/curved-text" element={<CurvedText />} /> {/* Route for CurvedText component */}
       <Route path="/perros" element={<Perros />} /> {/* Route for Perros page */}
       <Route path="/gatos" element={<Gatos />} /> {/* Route for Gatos page */}
+      {/* Add more routes as needed */}
+      <Route path="/registro" element={<Registro />} /> {/* Route for RegistroModal */}
+      <Route path="/carrito" element={<Carrito />} /> {/* Route for Carrito page */}
+      <Route path="/login" element={<Login />} /> {/* Route for Login page */}
+
       {/* Add more routes as needed */}
     </Route>
   )

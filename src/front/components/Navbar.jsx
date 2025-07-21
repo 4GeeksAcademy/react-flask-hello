@@ -5,12 +5,14 @@ export const Navbar = () => {
     <nav className="navbar w-100 p-0 m-0">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 px-3">
         <span className="navbar-brand mb-2 mb-md-0 col-12 col-md-2 text-center text-md-start">
-          <img
-            src="/logoPatitas.png"
-            alt="Logo"
-            className="img-fluid"
-            style={{ maxHeight: "200px", height: "auto", width: "auto" }}
-          />
+          <Link to="/">
+            <img
+              src="/logoPatitas.png"
+              alt="Logo"
+              className="img-fluid"
+              style={{ maxHeight: "200px", height: "auto", width: "auto" }}
+            />
+          </Link>
         </span>
         <div className="search-bar my-2 my-md-0 mx-auto w-100 w-md-50 d-flex bg-white border border-dark rounded-pill">
           <button className="btn" type="submit" aria-label="Buscar">
@@ -19,29 +21,25 @@ export const Navbar = () => {
             </span>
           </button>
           <input
-            className="form-control text-center border-0"
+            className="form-control text-center border-0 bg-transparent"
             type="search"
             placeholder="Qué estás buscando?"
             aria-label="Buscar"
           />
-          <button
-            className="bg-transparent border-0 me-3"
-            aria-label="Limpiar búsqueda"
-            type="button"
-          >
-            <span>
-              <i className="fa-solid fa-x"></i>
-            </span>
-          </button>
+          
         </div>
         <div className="buttons d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
-          <button
-            style={{ color: "#3c6ca8" }} className="bg-transparent border-0 me-2"
-            aria-label="Perfil de usuario"
-            type="button"
-          >
-            <i className="fa-solid fa-user fs-2"></i>
-          </button>
+          <Link to ="/registro">
+            <button
+              style={{ color: "#3c6ca8" }} className="bg-transparent border-0 me-2"
+              aria-label="Perfil de usuario"
+              type="button"
+            >
+              <i className="fa-solid fa-user fs-2"></i>
+            </button>
+          </Link >
+
+          <Link to="/carrito">
           <button
             style={{ color: "#3c6ca8" }}
             className="bg-transparent border-0"
@@ -50,6 +48,7 @@ export const Navbar = () => {
           >
             <i className="fa-solid fa-cart-shopping fs-2 me-md-5"></i>
           </button>
+          </Link>
         </div>
       </div>
       <div className="icon-container d-flex justify-content-center align-items-center fs-1 w-100 mt-3 mt-md-1">

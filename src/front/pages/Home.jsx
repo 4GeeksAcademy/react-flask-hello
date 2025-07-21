@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CurvedText from "../components/CurvedText";
 import { Link } from "react-router-dom";
 import dalmata from "/dalmata.png";
@@ -7,7 +7,13 @@ import Carrusel1 from "/Carrusel1.png";
 import Carrusel2 from "/Carrusel2.png";
 import Carrusel3 from "/Carrusel3.png";
 
-const Home = () => {
+
+const Home = () => { 
+  const[destacados, setDestacados] = useState([
+    { id: 1, name: "Producto 1", precio: 23, image: Carrusel1 },
+    { id: 2, name: "Producto 2", precio: 21, image: Carrusel2 },
+    { id: 3, name: "Producto 3", precio: 18, image: Carrusel3 }
+  ]);
   return (
     <section className="landing-body container-fluid my-0 py-0">
       <div className="row align-items-center justify-content-center col-12">
@@ -27,7 +33,17 @@ const Home = () => {
           </div>
 
           <div className="carousel-inner">
-            <div className="carousel-item active" data-bs-interval="10000">
+            { destacados.map((producto) => (
+              <div className={`carousel-item ${producto.id === 1 ? "active" : ""}`} key={producto.id}>
+                <img src={producto.image} className="d-block w-75 mx-auto" alt={producto.name} />
+                <div className="carousel-caption d-none d-md-block">
+                  <h5>{producto.name}</h5>
+                  <p>${producto.precio}</p>
+                  <Link to={`/producto/${producto.id}`} className="btn btn-primary">Ver producto</Link>
+                </div>
+              </div>
+            ))}
+            {/* <div className="carousel-item active" data-bs-interval="10000">
               <img src={Carrusel1} className="d-block w-75 mx-auto" alt="Producto 1" />
               <div className="carousel-caption d-none d-md-block">
               </div>
@@ -41,7 +57,7 @@ const Home = () => {
               <img src={Carrusel3} className="d-block w-75 mx-auto" alt="Producto 3" />
               <div className="carousel-caption d-none d-md-block">
               </div>
-            </div>
+            </div> */}
           </div>
 
           <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">

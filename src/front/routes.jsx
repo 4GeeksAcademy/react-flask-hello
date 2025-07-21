@@ -11,6 +11,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import React from "react";
 import CurvedText from "./components/CurvedText"; // Importing the CurvedText component
+import { Perros } from "./pages/Perros.jsx";
+import { Gatos } from "./pages/Gatos.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,8 @@ export const router = createBrowserRouter(
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
       <Route path="/curved-text" element={<CurvedText />} /> {/* Route for CurvedText component */}
+      <Route path="/perros" element={<Perros />} /> {/* Route for Perros page */}
+      <Route path="/gatos" element={<Gatos />} /> {/* Route for Gatos page */}
       {/* Add more routes as needed */}
     </Route>
   )

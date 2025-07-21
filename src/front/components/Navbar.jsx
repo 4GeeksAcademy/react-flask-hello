@@ -53,12 +53,22 @@ export const Navbar = () => {
         </div>
       </div>
       <div className="icon-container d-flex justify-content-center align-items-center fs-1 w-100 mt-3 mt-md-1">
-        <p className="m-0 me-2">
-          <i style={{ color: "#3c6ca8" }} className="fa-solid fa-dog me-3"></i>
-        </p>
-        <p className="m-0">
-          <i style={{ color: "#3c6ca8" }} className="fa-solid fa-cat"></i>
-        </p>
+        <div>
+          <Link to="/perros">
+            <p className="m-0 me-2">
+              <i style={{ color: "#3c6ca8" }} className="fa-solid fa-dog me-3"></i>
+            </p>
+          </Link>
+        </div>
+
+        <div>
+          <Link to="/gatos">
+            <p className="m-0 me-2">
+              <i style={{ color: "#3c6ca8" }} className="fa-solid fa-cat me-3"></i>
+            </p>
+          </Link>
+        </div>
+
       </div>
       <hr className="thick-hr m-0 w-100 mt-2" />
       <div className="d-flex justify-content-center align-items-center mt-2 w-100">

@@ -10,14 +10,14 @@ export const Carousel = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '20px'
+            marginTop: '10px'
         }}>
             <div
                 className="carousel-inner"
                 style={{
                     borderRadius: '60px',
-                    width: '80%',
-                    height: '30vh',
+                    width: '90%',
+                    height: '50vh',
                     objectFit: 'contain'
                 }}
             >
@@ -39,6 +39,7 @@ export const Carousel = () => {
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                 <span className="visually-hidden">Next</span>
             </button>
+
         </div>
     );
 };

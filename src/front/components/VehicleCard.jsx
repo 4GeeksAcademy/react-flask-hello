@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 export const VehicleCard = (props) => {
 
 function eliminarVehiculo(id_vehiculo) {
-    const token = ""
+  
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzExNjgxOCwianRpIjoiMGU5YWE0NGQtZDQ4Ni00NDFjLWE5OTUtNjhhY2M4NWFjYzc3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzExNjgxOCwiY3NyZiI6ImM5YWE0NzI5LTYyODYtNDJkNS04ZjA0LTI3ZDNhNDBmYjkzZCIsImV4cCI6MTc1MzEyNDAxOH0.-HfjHyo5FzX8_6dYd7zfxmeoNaXfQyVJqmCVFx8BfQQ"
   fetch(import.meta.env.VITE_BACKEND_URL + `/eliminar_vehiculo/${id_vehiculo}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' +  token //localStorage.getItem('token') // JWT
@@ -21,7 +22,7 @@ function eliminarVehiculo(id_vehiculo) {
       if (data.msg === 'Vehículo eliminado correctamente') {
         alert('Vehículo eliminado con éxito')
         // Llamar de nuevo a getVehicles() o similar para actualizar la lista
-        //getVehicles()
+        getVehicles()
       } else {
         alert(data.msg)
       }
@@ -48,9 +49,12 @@ function eliminarVehiculo(id_vehiculo) {
                             </div>
                         </div>
                         <div className="col-md-2 p-4">
-
+                                                
+                                                                                                            
                             <button className='btn btn-light my-2 mx-5'><i className="fa-solid fa-pencil"></i></button>
-                            <button onClick={() => eliminarVehiculo(props.id_vehiculo)} className='btn btn-light my-2 mx-5'><i className="fa-solid fa-trash"></i></button>
+                            <button onClick={() => {
+                              console.log(props.id_vehiculo)
+                              eliminarVehiculo(props.id_vehiculo)}} className='btn btn-light my-2 mx-5'><i className="fa-solid fa-trash"></i></button>
 
 
                         </div>

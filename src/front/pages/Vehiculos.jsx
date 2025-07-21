@@ -10,7 +10,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzA2NjExNywianRpIjoiNGVmMDc0NDItMmRjOS00NDQxLTk5MWYtM2JkMWM4MGQ1NjhmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzA2NjExNywiY3NyZiI6ImVkMGRhNDE2LThmNzUtNDE1Mi05MmI0LWVjZTJkYWMxY2NjYSIsImV4cCI6MTc1MzA2NzAxN30.aeCtTRYSsjvaTzQJpponlebPb2H-5xx7kBYKIN-X_Gc"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzExNjgxOCwianRpIjoiMGU5YWE0NGQtZDQ4Ni00NDFjLWE5OTUtNjhhY2M4NWFjYzc3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzExNjgxOCwiY3NyZiI6ImM5YWE0NzI5LTYyODYtNDJkNS04ZjA0LTI3ZDNhNDBmYjkzZCIsImV4cCI6MTc1MzEyNDAxOH0.-HfjHyo5FzX8_6dYd7zfxmeoNaXfQyVJqmCVFx8BfQQ"
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -59,8 +59,8 @@ export const Vehiculos = () => {
   }
 
   useEffect(() => {
-    //getVehicles()
-    getAllVehicles()
+    getVehicles()
+    //getAllVehicles()
   }, [])
 
   return (
@@ -72,8 +72,9 @@ export const Vehiculos = () => {
         <div className='d-flex flex-column py-3'>
           {
             infoVehiculos.map((vehiculo, index) => {
+              
               return (
-                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} />
+                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} id_vehiculo = {vehiculo.id_vehiculo} />
               )
 
             })

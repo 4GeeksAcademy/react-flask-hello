@@ -10,10 +10,13 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    fetch(import.meta.env.VITE_BACKEND_URL + "/all_vehicles", {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzA2NjExNywianRpIjoiNGVmMDc0NDItMmRjOS00NDQxLTk5MWYtM2JkMWM4MGQ1NjhmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzA2NjExNywiY3NyZiI6ImVkMGRhNDE2LThmNzUtNDE1Mi05MmI0LWVjZTJkYWMxY2NjYSIsImV4cCI6MTc1MzA2NzAxN30.aeCtTRYSsjvaTzQJpponlebPb2H-5xx7kBYKIN-X_Gc"
+
+    fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "authorization": 'Bearer ' + token
       }
     })
       .then((response) => {
@@ -26,6 +29,7 @@ export const Vehiculos = () => {
       .then((data) => {
         console.log("Estoy trayendo informacion")
         console.log(data.vehiculos)
+        console.log(data)
         setInfoVehiculos(data.vehiculos)
       })
       .catch((error) => { error })

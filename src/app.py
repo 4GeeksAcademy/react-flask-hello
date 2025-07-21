@@ -169,7 +169,7 @@ def crear_vehiculo():
     return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
 
     
-#ENDPOINT PARA HACER OBTENER (GET) DE LOS VEHICULOS
+#ENDPOINT PARA HACER (GET) DE LOS VEHICULOS DE UN USUARIO
 
 @app.route('/mis_vehiculos', methods = ['GET'])
 @jwt_required()
@@ -182,14 +182,14 @@ def mostrar_vehiculos():
     vehiculos = Vehiculos.query.filter_by(user_id = id_propietario).all()    
     print(vehiculos)
 
-    lista_vehiculos = []
+    vehicles_serialized_by_user = []
 
-    for v in vehiculos:
-        lista_vehiculos.append({        
-            'matricula': v.matricula 
-    })
-    
-    return jsonify({'msg': 'OK', 'vehiculos': lista_vehiculos})
+    for vehicle in vehiculos:
+        vehicles_serialized_by_user.append(vehicle.serialize())
+
+    print(vehicles_serialized_by_user)
+    return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized_by_user})
+
 
 #ENDPOINT PARA TRAER TODOS LOS VEHICULOS
 

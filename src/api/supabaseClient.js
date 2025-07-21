@@ -5,4 +5,4 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Esto es para realizar la autentificacion con google mediante supabase
+// Esto es para realizar la autentificaciones mediante supabase

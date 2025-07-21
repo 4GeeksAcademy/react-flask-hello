@@ -27,7 +27,7 @@ export const Home = () => {
         }
     };
 
-    useEffect(() => {
+    useEffect(() => { // El use effect que setea el mensaje del backend y el usuario de supabase
         loadMessage();
 
         supabase.auth.getUser().then(({ data: { user } }) => {
@@ -43,7 +43,7 @@ export const Home = () => {
         };
     }, []);
 
-    const handleLogin = async () => {
+    const handleLogin = async () => { // Funcion para iniciar sesión con Google y redirigir a la pagina principal 
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
@@ -57,7 +57,7 @@ export const Home = () => {
         if (error) console.error('Error al iniciar sesión:', error.message);
     };
 
-    const handleLogout = async () => {
+    const handleLogout = async () => { // Funcion para cerrar sesión y limpiar el usuario
         await supabase.auth.signOut();
         setUser(null);
     };

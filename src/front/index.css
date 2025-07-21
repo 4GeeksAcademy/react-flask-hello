@@ -1,0 +1,9 @@
+.servicio-card .overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.servicio-card:hover .overlay {
+  opacity: 1;
+}

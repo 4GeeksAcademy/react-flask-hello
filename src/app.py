@@ -204,7 +204,13 @@ def get_all_vehicles():
     print(vehicles_serialized)
     return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
 
-    
+#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
+
+
+
+#ENDPOINT PARA BORRAR VEHICULOS 
+
+#ENDPOINT PRA EDITAR VEHICULOS   
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

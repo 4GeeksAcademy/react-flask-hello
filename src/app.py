@@ -169,7 +169,7 @@ def crear_vehiculo():
     return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
 
     
-#ENDPOINT PARA HACER (GET) DE LOS VEHICULOS DE UN USUARIO
+#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
 
 @app.route('/mis_vehiculos', methods = ['GET'])
 @jwt_required()
@@ -204,11 +204,25 @@ def get_all_vehicles():
     print(vehicles_serialized)
     return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
 
-#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
-
-
 
 #ENDPOINT PARA BORRAR VEHICULOS 
+
+@app.route('/eliminar_vehiculo/<int:id_vehiculo>', methods=['DELETE'])
+@jwt_required()
+def eliminar_vehiculo(id_vehiculo):
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    if not user_current:
+        return jsonify({'msg': 'Usuario no encontrado'}), 404
+    # Buscar el vehículo con ese ID que pertenezca al usuario autenticado
+    vehiculo = Vehiculos.query.filter_by(id=id_vehiculo, user_id=user_current.id_user).first()
+    if not vehiculo:
+        return jsonify({'msg': 'Vehículo no encontrado o no te pertenece'}), 404
+
+    db.session.delete(vehiculo)
+    db.session.commit()
+    return jsonify({'msg': 'Vehículo eliminado correctamente'}), 200
+
 
 #ENDPOINT PRA EDITAR VEHICULOS   
 

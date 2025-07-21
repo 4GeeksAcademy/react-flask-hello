@@ -35,8 +35,32 @@ export const Vehiculos = () => {
       .catch((error) => { error })
   }
 
+ function getAllVehicles() {
+    console.log("estoy trayendo info de vehiculos")
+    fetch(import.meta.env.VITE_BACKEND_URL + "/all_vehicles", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          alert('Error al traer la informacion')
+        }
+        return response.json()
+
+      })
+      .then((data) => {
+        console.log("Estoy trayendo informacion")
+        console.log(data.vehiculos)
+        setInfoVehiculos(data.vehiculos)
+      })
+      .catch((error) => { error })
+  }
+
   useEffect(() => {
-    getVehicles()
+    //getVehicles()
+    getAllVehicles()
   }, [])
 
   return (

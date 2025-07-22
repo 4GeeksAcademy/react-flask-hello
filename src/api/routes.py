@@ -8,11 +8,11 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
 
-api = Blueprint('api', __name__)
-bcrypt = Bcrypt()
+cart= Blueprint('cart', __name__)
+
 
 # Allow CORS requests to this API
-CORS(api)
+CORS(cart)
 
 
 

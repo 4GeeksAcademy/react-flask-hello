@@ -341,6 +341,9 @@ h6 {
   color: transparent;
 }
 /* header contacto */
+.header{
+  margin-bottom: 4rem !important;
+}
 .form-label-contact {
   color: #60e0a5 !important;
 }

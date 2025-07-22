@@ -15,11 +15,11 @@ export const HeaderHome = () => {
             <div className="container w-100 h-100 z-1">
                 <div className="row text-center z-1">
                     <div className="col my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1">
-                        <h1 className="hero-title-home display-3 fw-bolder text-warning mt-sm-0 mt-5 mb-4">
+                        <h1 className="hero-title-home display-3 fw-bolder text-warning w-75 mt-sm-0 mt-5 mb-4">
                             {t('headers.headerHome.headLine')}
                         </h1>
 
-                        <p className="hero-subtitle-home fs-5 text-white w-75 mb-5">
+                        <p className="hero-subtitle-home fs-5 text-white w-50 mb-5">
                             {t('headers.headerHome.headerDescription')}
                         </p>
 

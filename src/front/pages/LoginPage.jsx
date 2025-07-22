@@ -1,18 +1,59 @@
 import { Link } from "react-router-dom";
+import React, { useState } from 'react';
 import "../login.css";
 
 export const LoginPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const BACKEND_URL = 'https://humble-disco-56p955jr77x37w76-3001.app.github.dev';
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recargar la página)
+        setIsLoading(true); // Muestra un indicador de carga
+
+        try {
+            // Realiza la llamada POST al endpoint de login del backend
+            const response = await fetch(`${BACKEND_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }), // Envía las credenciales como JSON
+            });
+
+            const data = await response.json(); // Parsea la respuesta JSON
+
+            if (response.ok) { // Si la respuesta es exitosa (código 2xx)
+                localStorage.setItem('jwt_token', data.token); // Almacena el token JWT en localStorage
+                console.log('✅ Verificación Exitosa: ¡Inicio de sesión correcto!'); // Mensaje de éxito en consola
+                console.log('🔑 Token JWT recibido y almacenado:', data.token); // Muestra el token
+                // Puedes añadir aquí lógica para mostrar un mensaje en la UI si lo deseas,
+                // pero por ahora nos centramos en console.log.
+            } else {
+                // Si hay un error en la respuesta del backend
+                console.error('❌ Verificación Fallida:', data.msg || 'Credenciales incorrectas.'); // Mensaje de error en consola
+                // Puedes añadir aquí lógica para mostrar un mensaje de error en la UI si lo deseas.
+            }
+        } catch (error) {
+            // Captura errores de red o del servidor (ej. el backend no está corriendo)
+            console.error('🚨 Error de Conexión:', 'No se pudo conectar con el servidor. Verifica que el backend esté funcionando.', error); // Mensaje de error de conexión
+        } finally {
+            setIsLoading(false); // Oculta el indicador de carga, independientemente del resultado
+        }
+    };
 
     return (
         <div className="login-page-container">
             <div className="container-fluid h-100">
                 <div className="row h-100 g-0">
-                        <div className="ps-2 pt-4">
+                    <div className="ps-2 pt-4">
                         <Link to="/" className="back-link">
                             <i className="fas fa-arrow-left"></i> Volver
                         </Link>
-                        </div>
-                        <div className="col-md-7 d-none d-md-flex left-panel">
+                    </div>
+                    <div className="col-md-7 d-none d-md-flex left-panel">
                         <div className="d-flex flex-column justify-content-center align-items-center text-center w-100">
                             <img src="tu-ruta-al-logo.png" alt="AutoTekc Logo" className="img-fluid mb-4" />
                             <h1 className="logo-text fw-bold mb-3" style={{ fontSize: '2.8rem' }}>AutoTekc</h1>
@@ -26,19 +67,25 @@ export const LoginPage = () => {
                                 <h2 className="text-center fw-bold mb-2 welcome-text">Bienvenido</h2>
                                 <p className="text-center">Inicia tu camino al cuidado de tu auto.</p>
 
-                                <form>
+                                <form onSubmit={handleSubmit}>
                                     <div className="my-5">
                                         <label htmlFor="email" className="form-label visually-hidden">Correo electrónico</label>
                                         <div className="input-group">
                                             <span className="input-group-text"><i className="fas fa-envelope"></i></span>
-                                            <input type="email" className="form-control" id="email" placeholder="Correo electrónico" />
+                                            <input type="email" className="form-control" id="email" placeholder="Correo electrónico"
+                                            value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required/>
                                         </div>
                                     </div>
                                     <div className="mt-5">
                                         <label htmlFor="password" className="form-label visually-hidden">Contraseña</label>
                                         <div className="input-group">
                                             <span className="input-group-text"><i className="fas fa-lock"></i></span>
-                                            <input type="password" className="form-control" id="password" placeholder="Contraseña" />
+                                            <input type="password" className="form-control" id="password" placeholder="Contraseña"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                required />
                                         </div>
                                     </div>
                                     <div className="mt-2 mb-5 form-check">
@@ -49,7 +96,9 @@ export const LoginPage = () => {
                                         <button type="submit" className="btn btn-primary btn-lg">Login</button>
                                     </div>
                                     <div className="text-center mt-5">
-                                        <a href="#" className="fw-bold">¿Has olvidado tu contraseña?</a>
+                                        <a href="#" className="fw-bold"
+                                            disabled={isLoading}
+                                        >¿Has olvidado tu contraseña?</a>
                                     </div>
                                 </form>
                             </div>

@@ -60,7 +60,8 @@ const HeaderContact = () => {
     };
 
     return (
-        <section className="w-100 h-100 mb-5 mt-5 position-relative ">
+        <>
+        <section className="header w-100 h-100 mb-5 mt-5 position-relative ">
             <img
                 src={HomeContact}
                 alt="CloudTech background image"
@@ -211,9 +212,13 @@ const HeaderContact = () => {
                         </form>
 
                     </div>
-                </div>
+                </div>    
             </div>
         </section>
+        <div className="h-100 mb-4">
+            <br/>
+        </div>
+    </>
     );
 };
 

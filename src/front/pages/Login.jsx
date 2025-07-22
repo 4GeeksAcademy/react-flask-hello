@@ -33,27 +33,23 @@ export const Login = () => {
 
 
         try {
-            // Realiza la llamada POST al endpoint de login del backend
             const response = await fetch(`${BACKEND_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }), // Envía las credenciales como JSON
+                body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json(); // Parsea la respuesta JSON
+            const data = await response.json();
 
-            if (response.ok) { // Si la respuesta es exitosa (código 2xx)
-                localStorage.setItem('jwt_token', data.token); // Almacena el token JWT en localStorage
-                console.log('✅ Verificación Exitosa: ¡Inicio de sesión correcto!'); // Mensaje de éxito en consola
-                console.log('🔑 Token JWT recibido y almacenado:', data.token); // Muestra el token
-                // Puedes añadir aquí lógica para mostrar un mensaje en la UI si lo deseas,
-                // pero por ahora nos centramos en console.log.
+            if (response.ok) {
+                localStorage.setItem('jwt_token', data.token);
+                console.log('✅ Verificación Exitosa: ¡Inicio de sesión correcto!');
+                console.log('🔑 Token JWT recibido y almacenado:', data.token);
             } else {
                 // Si hay un error en la respuesta del backend
                 console.error('❌ Verificación Fallida:', data.msg || 'Credenciales incorrectas.'); // Mensaje de error en consola
-                // Puedes añadir aquí lógica para mostrar un mensaje de error en la UI si lo deseas.
             }
             if (rememberMe) {
                 localStorage.setItem('rememberedEmail', email);
@@ -63,10 +59,9 @@ export const Login = () => {
                 localStorage.removeItem('rememberMeChecked');
             }
         } catch (error) {
-            // Captura errores de red o del servidor (ej. el backend no está corriendo)
             console.error('🚨 Error de Conexión:', 'No se pudo conectar con el servidor. Verifica que el backend esté funcionando.', error); // Mensaje de error de conexión
         } finally {
-            setIsLoading(false); // Oculta el indicador de carga, independientemente del resultado
+            setIsLoading(false);
         }
     };
 
@@ -106,21 +101,18 @@ export const Login = () => {
                                     </div>
                                     <div className="mt-5">
                                         <label htmlFor="password" className="form-label visually-hidden">Contraseña</label>
-                                        {/* Nuevo contenedor personalizado para el input de contraseña y sus íconos */}
                                         <div className="input-wrapper">
-                                            {/* Ícono de candado a la izquierda */}
                                             <i className="fas fa-lock password-icon-left"></i>
                                             <input
                                                 type={showPassword ? "text" : "password"}
                                                 id="password"
-                                                className="form-control password-input" // Clase personalizada para el input
+                                                className="form-control password-input"
                                                 placeholder="Contraseña"
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 required
                                                 autoComplete="new-password"
                                             />
-                                            {/* Ícono de mostrar/ocultar contraseña a la derecha */}
                                             <i
                                                 className={showPassword ? "fas fa-eye password-icon-right" : "fas fa-eye-slash password-icon-right"}
                                                 onClick={togglePasswordVisibility}
@@ -134,7 +126,8 @@ export const Login = () => {
                                         <label className="form-check-label text-white" htmlFor="rememberMe">Recordarme</label>
                                     </div>
                                     <div className="d-grid gap-2 my-5">
-                                        <button type="submit" className="btn btn-primary btn-lg">Login</button>
+                                        <button type="submit" className="btn btn-primary btn-lg" disabled={isLoading}>
+                                            {isLoading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>}Login</button>
                                     </div>
                                     <div className="text-center mt-5">
                                         <a href="#" className="fw-bold"

@@ -11,11 +11,11 @@ export const HeaderHome = () => {
         <>
         {/* Header para escritorio */}
             <div className="d-none d-lg-block">
-                <section className="w-100 h-100 d-flex mb-5 position-relative">
+                <section className="w-100 h-100 d-flex position-relative">
                     <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
                     <img src={HomeOne} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block"/>
                     <div className="container w-100 h-100 z-1">
-                        <div className="row text-center z-1">
+                        <div className="row text-center z-1 my-5">
                             <div className="col pt-5 pt-lg-0 my-5 d-flex flex-column justify-content-center align-items-center z-1">
                                 <h1 className="hero-title-home display-3 fw-bolder w-75 mt-sm-0 mt-5 mb-4">
                                     {t('headers.headerHome.headLine')}

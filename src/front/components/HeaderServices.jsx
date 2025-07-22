@@ -9,7 +9,7 @@ export const HeaderServices = () => {
 
         <section className="w-100 h-100 mb-5 position-relative">
             <img src={HomeServices} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block" />
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-75 mx-auto"></div>
             <div className="container w-100 h-100 py-5">
                 <div className="row text-center z-0">
                     <div className="col-12 col-lg-6 my-5 my-lg-0 pt-5 pt-lg-0 d-flex flex-column justify-content-center align-items-center z-1 text-center">

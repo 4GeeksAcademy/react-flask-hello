@@ -9,15 +9,15 @@ export const HeaderProjects = () => {
 
         <section className="w-100 h-100 mb-5 position-relative">
             <img src={HomeProjects} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block" />
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-75 mx-auto"></div>
             <div className="container w-100 h-100 py-5 py-lg-2">
                 <div className="row text-center z-0">
-                    <div className="col-12 mt-5 mt-lg-0 col-lg-6 offst-lg-6 my-5 my-lg-3 py-3 d-flex flex-column justify-content-center align-items-center z-1 text-center">
-                        <h1 className="hero-title-home display-3 fw-bolder mt-sm-0 mt-2 mb-4 pt-5 pt-lg-0">
+                    <div className="col-12 pt-5 pt-lg-0 col-lg-6 offset-lg-6 my-5 my-lg-2 py-5 py-lg-3 d-flex flex-column justify-content-center align-items-center z-1 text-lg-end">
+                        <h1 className="hero-title-home display-3 fw-bolder mt-sm-0 mt-2 mb-4 pt-5 pt-lg-0 text-center">
                             {t('headers.headerProjects.headLine')}
                         </h1>
 
-                        <p className="hero-subtitle-home fs-5 text-white w-75 mb-4">
+                        <p className="hero-subtitle-home fs-5 text-white w-75 mb-4 text-center">
                             {t('headers.headerProjects.headerDescription')}
                         </p>
 

@@ -1,0 +1,124 @@
+body {
+  margin: 0px;
+  font-family: "Muli", sans-serif;
+}
+
+:root {
+  --carousel-item-height: 250px;
+}
+.carousel {
+  width: 100%;
+  overflow-x: scroll;
+  padding: 30px;
+  position: relative;
+  box-sizing: border-box;
+  text-align: center;
+  scroll-behavior: smooth;
+}
+.carousel__container {
+  white-space: nowrap;
+  margin: 70px 0px;
+  padding-bottom: 10px;
+}
+.carousel-item {
+  background-color: #aa8fc7;
+  width: 200px;
+  height: 250px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-right: 10px;
+  display: inline-block;
+  cursor: pointer;
+  transition: 450ms all;
+  transform-origin: center left;
+  position: relative;
+}
+.carousel-item:hover ~ .carousel-item {
+  transform: translate3d(100px, 0, 0);
+}
+.carousel__container:hover .carousel-item {
+  opacity: 0.3;
+}
+.carousel__container:hover .carousel-item:hover {
+  transform: scale(1.5);
+  opacity: 1;
+}
+.carousel-item__img {
+  width: 200px;
+  height: var(--carousel-item-height);
+  object-fit: cover;
+}
+.carousel-item__details {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  font-size: 10px;
+  color: white;
+  opacity: 0;
+  transition: 450ms opacity;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  white-space: normal;
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.carousel-item__details:hover {
+  opacity: 1;
+}
+.carousel-item__details--title {
+  font-size: 15px;
+}
+
+.carousel-item__details--icons {
+  color: #caa5f1;
+}
+.carousel::-webkit-scrollbar {
+  height: 5px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.carousel::-webkit-scrollbar-track-piece {
+  max-width: 100px;
+}
+.carousel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  background-color: gray;
+}
+.scroll-left {
+  display: block;
+  position: absolute;
+  top: calc(var(--carousel-item-height) - 30px);
+  left: 0;
+  z-index: 1;
+}
+.scroll-right {
+  display: block;
+  position: absolute;
+  top: calc(var(--carousel-item-height) - 30px);
+  right: 0;
+  z-index: 2;
+}
+.scroll-chevron {
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #fafafa;
+}
+.main {
+  position: relative;
+  width: 800px;
+  margin: 0 auto;
+}

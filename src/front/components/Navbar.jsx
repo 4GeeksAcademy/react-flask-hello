@@ -1,21 +1,20 @@
 import { useState } from "react"
-import { Link } from "react-router-dom";
-
 
 export default function Navbar() {
 
-const [view, setview] = useState (false) 
+  const [view, setview] = useState(false)
+  const [juegosDropdown, setJuegosDropdown] = useState(false)
 
 
   return (
-    <nav class="bg-gray-800">
+    <nav class="bg-indigo-900">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
 
             <button type="button" aria-controls="mobile-menu" aria-expanded="false" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
               <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
+              <span class="sr-only">Abrir menu principal</span>
 
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="block size-6">
                 <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -36,15 +35,37 @@ const [view, setview] = useState (false)
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
 
-                <a href="#" aria-current="page" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+                <a href="#" aria-current="page" class="rounded-md hover:bg-indigo-700 px-3 py-2 text-sm font-medium text-white">Game Store</a>
+                <div class="relative">
+                  <button
+                    type="button"
+                    onClick={() => setJuegosDropdown(!juegosDropdown)}
+                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white"
+                  >
+                    Juegos
+                  </button>
+
+                  {juegosDropdown && (
+                    <div class="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Juegos de Mesa</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Play Station</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Nintendo</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Xbox</a>
+                    </div>
+                  )}
+                </div>
+                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Contacto</a>
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  class="px-1 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-indigo-400"
+                />
+
               </div>
             </div>
           </div>
           <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+            <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
@@ -55,42 +76,41 @@ const [view, setview] = useState (false)
 
             <div class="relative ml-3">
               <div>
-                <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
+                <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-indigo-700 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                   <span class="absolute -inset-1.5"></span>
-                  <span class="sr-only">Open user menu</span>
-                  <img onClick={()=>setview(!view)} src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-8 w-12 rounded-full" />
+                  <span class="sr-only">Menu de usuario</span>
+                  <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" class="size-8 w-12 rounded-full" />
                 </button>
               </div>
 
-              <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+              <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (
                     <>
-                    <Link to = "/Login">
-                    <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-gray-700">Login</a>
-
-                    </Link>
-                      
-                      <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-gray-700">Settings</a>
-                      <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-gray-700">Sign out</a>
+                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
+                      <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
+                      <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
                     </>
                   )
                 }
-               
               </div>
             </div>
           </div>
         </div>
       </div>
 
-
       <div id="mobile-menu" class="sm:hidden">
         <div class="space-y-1 px-2 pt-2 pb-3">
 
-          <a href="#" aria-current="page" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white">Dashboard</a>
-          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+          <a href="#" aria-current="page" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white">Game Store</a>
+          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Juegos</a>
+          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Contacto</a>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            class="px-1 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
+
         </div>
       </div>
     </nav>

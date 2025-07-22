@@ -7,13 +7,13 @@ export const HeaderServices = () => {
 
     return (
 
-        <section className="w-100 h-100 mb-5 mt-5 position-relative">
-            <img src={HomeServices} alt="CloudTech background image" className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block" />
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto mt-5"></div>
-            <div className="container w-100 h-100">
+        <section className="w-100 h-100 mb-5 position-relative">
+            <img src={HomeServices} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block" />
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
+            <div className="container w-100 h-100 py-5">
                 <div className="row text-center z-0">
-                    <div className="col-12 col-lg-6 my-5 pt-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
-                        <h1 className="hero-title-home display-3 fw-bolder text-warning mt-sm-0 mt-5 mb-4">
+                    <div className="col-12 col-lg-6 my-5 my-lg-0 pt-5 pt-lg-0 d-flex flex-column justify-content-center align-items-center z-1 text-center">
+                        <h1 className="hero-title-home display-3 fw-bolder mt-sm-0 mt-5 mt-lg-0 mb-4 pt-5 pt-lg-0">
                             {t('headers.headerServices.headLine')}
                         </h1>
 
@@ -25,7 +25,7 @@ export const HeaderServices = () => {
                             <Link to="/projects" className="btn btn-outline-light btn-lg rounded-pill px-5">
                                 {t('headers.headerHome.portfolioButton')}
                             </Link>
-                            <Link to="/contact" className="btn btn-outline-yellow btn-lg rounded-pill px-5">
+                            <Link to="/contact" className="btn btn-outline btn-lg rounded-pill px-5">
                                 {t('headers.headerHome.contactButton')}
                             </Link>
                         </div>

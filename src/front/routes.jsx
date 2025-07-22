@@ -31,7 +31,7 @@ export const router = createBrowserRouter(
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/projects" element={<Portfolio />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/admin" element={<Admin />} />
+      {/* <Route path="/admin" element={<Admin />} /> */}
       {/* <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} /> */}
     </Route>
   )

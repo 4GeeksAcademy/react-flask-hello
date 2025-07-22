@@ -43,7 +43,7 @@ export const WorkWithUS = () => {
                             <p className="text-white fw-semibold">{t('workWithUs.statistics.completedProjects')}</p>
                         </div>
 
-                        <div className="col-12 mt-4">
+                        <div className="col-12">
                             <p className="display-5 fw-bold mb-1">
                                 <span className="text-stat-number">+</span>
                                 <span className="text-stat-symbol">5</span>

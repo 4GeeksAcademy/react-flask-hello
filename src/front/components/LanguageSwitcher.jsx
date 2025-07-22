@@ -20,7 +20,7 @@ function LanguageSwitcher() {
             <button type="button" className="btn btn-link dropdown-toggle p-0" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src={activeFlag} alt="current language" className='flag-icon-main' />
             </button>
-            <ul className='dropdown-menu'>
+            <ul className='dropdown-menu dropdown-menu-dark'>
                 <li>
                     <button className='dropdown-item' onClick={() => changeLanguage('es')}>
                         <img src={flagES} alt="Español" className='flag-icon-dropdown' />

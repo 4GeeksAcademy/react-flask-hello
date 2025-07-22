@@ -10,7 +10,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzE1NDkxMiwianRpIjoiOTUwMTcwYmYtZTMyZS00NTk2LTkzMGMtODg2Y2YxYjgwMTI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzE1NDkxMiwiY3NyZiI6IjU5ZmUwMjVlLTFiMjgtNDJhMy1hZTQ4LTQxNzRmMDk4MzJlYyIsImV4cCI6MTc1MzE1NTgxMn0.dlTiRc9rNUtM0ENvQ2py1cwGsdBv6If_DqY0nd5J8Ng"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzIwMzQ5NSwianRpIjoiZTllOWRhMmMtMTUwZi00N2MwLWEyNjktOTEwMDBmZTkzNDY0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzIwMzQ5NSwiY3NyZiI6ImU5NDE4NDZkLThhYTUtNGM2Yy05NmU3LTUyYTk3ZjQ2NzUzMSIsImV4cCI6MTc1MzIwNDM5NX0.qHQC6Crdtt00qkKAoA7q_nvWPabK3DWRCLM-jTJTHag"
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -35,7 +35,7 @@ export const Vehiculos = () => {
       .catch((error) => { error })
   }
 
- function getAllVehicles() {
+  function getAllVehicles() {
     console.log("estoy trayendo info de vehiculos")
     fetch(import.meta.env.VITE_BACKEND_URL + "/all_vehicles", {
       method: "GET",
@@ -68,13 +68,18 @@ export const Vehiculos = () => {
       <Navbar />
 
       <div className='container text-center mt-5 mb-3'>
-        <h1 className="d-inline-block px-5 py-2 border border-primary-subtle rounded-pill text-light" style={{ backgroundColor: '#003366' }}>Mis Vehiculos</h1>
+        <div>
+          <h1 className="d-inline-block px-5 py-2 border border-primary-subtle rounded-pill text-light" style={{ backgroundColor: '#003366' }}>Mis Vehiculos</h1>
+        </div>
+        
+        <button className="btn btn-primary btn-lg mt-5 mb-2">Crear nuevo vehiculo</button>
+        
         <div className='d-flex flex-column py-3'>
           {
             infoVehiculos.map((vehiculo, index) => {
-              
+
               return (
-                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} id_vehiculo = {vehiculo.id_vehiculo} />
+                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} id_vehiculo={vehiculo.id_vehiculo} />
               )
 
             })

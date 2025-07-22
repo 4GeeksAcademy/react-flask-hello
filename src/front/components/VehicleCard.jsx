@@ -8,8 +8,8 @@ export const VehicleCard = (props) => {
 
 function eliminarVehiculo(id_vehiculo) {
   
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzE1NDkxMiwianRpIjoiOTUwMTcwYmYtZTMyZS00NTk2LTkzMGMtODg2Y2YxYjgwMTI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzE1NDkxMiwiY3NyZiI6IjU5ZmUwMjVlLTFiMjgtNDJhMy1hZTQ4LTQxNzRmMDk4MzJlYyIsImV4cCI6MTc1MzE1NTgxMn0.dlTiRc9rNUtM0ENvQ2py1cwGsdBv6If_DqY0nd5J8Ng"
-  fetch(import.meta.env.VITE_BACKEND_URL + `/eliminar_vehiculo/${id_vehiculo}`, {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzIwMzQ5NSwianRpIjoiZTllOWRhMmMtMTUwZi00N2MwLWEyNjktOTEwMDBmZTkzNDY0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzIwMzQ5NSwiY3NyZiI6ImU5NDE4NDZkLThhYTUtNGM2Yy05NmU3LTUyYTk3ZjQ2NzUzMSIsImV4cCI6MTc1MzIwNDM5NX0.qHQC6Crdtt00qkKAoA7q_nvWPabK3DWRCLM-jTJTHag"
+  fetch(import.meta.env.VITE_BACKEND_URL + `eliminar_vehiculo/${id_vehiculo}`, {
     method: "DELETE",
     headers: {
       'Content-Type': 'application/json',

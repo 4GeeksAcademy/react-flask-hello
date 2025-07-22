@@ -20,6 +20,8 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
 from flask_cors import CORS
+
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -27,7 +29,6 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 CORS(app)
-
 
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')
 jwt = JWTManager(app)
@@ -218,7 +219,7 @@ def eliminar_vehiculo(id_vehiculo):
     if not user_current:
         return jsonify({'msg': 'Usuario no encontrado'}), 404
     # Buscar el vehículo con ese ID que pertenezca al usuario autenticado
-    vehiculo = Vehiculos.query.filter_by(id=id_vehiculo, user_id=user_current.id_user).first()
+    vehiculo = Vehiculos.query.filter_by(id_vehiculo=id_vehiculo, user_id=user_current.id_user).first()
     if not vehiculo:
         return jsonify({'msg': 'Vehículo no encontrado o no te pertenece'}), 404
 

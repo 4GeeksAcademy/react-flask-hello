@@ -21,17 +21,32 @@
     overflow: hidden;
 }
 
-.login-card .form-group label {
-    color: #ccc;
+/* Estilos para el input-group general (email) */
+.login-card .input-group {
+    position: relative; /* Asegura que los hijos absolutos se posicionen respecto a este */
+    margin-bottom: 1rem;
 }
 
+.login-card .input-group-text {
+    background-color: transparent;
+    border: none;
+    color: #ccc;
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none; /* Esto hace que el ícono no sea clickeable, solo visual */
+    align-items: center;
+}
+
+/* Estilos generales para form-control */
 .login-card .form-control {
     background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.5);
     color: #333;
     border-radius: 0.5rem !important;
-    padding: 0.75rem 1rem;
-    padding-left: 3rem;
+    padding: 0.75rem 1rem; /* Padding base */
     position: relative;
     z-index: 1;
 }
@@ -60,29 +75,6 @@
 
 .login-card a:hover {
     text-decoration: underline;
-}
-
-.input-group:focus-within .input-group-text {
-    border-color: transparent;
-    box-shadow: none;
-}
-
-.login-card .input-group {
-    position: relative;
-    margin-bottom: 1rem;
-}
-
-.login-card .input-group-text {
-    background-color: transparent;
-    border: none;
-    color: #ccc;
-    position: absolute;
-    top: 50%;
-    left: 0.75rem;
-    transform: translateY(-50%);
-    z-index: 2;
-    pointer-events: none;
-    align-items: center;
 }
 
 .back-link {
@@ -120,6 +112,58 @@
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
     display: flex;
-    overflow-y: hidden; 
+    overflow-y: hidden;
     overflow-x: hidden;
+}
+
+/* --- NUEVOS ESTILOS PARA EL CAMPO DE CONTRASEÑA Y SUS ÍCONOS --- */
+
+/* Contenedor para el input de contraseña y sus íconos */
+.input-wrapper {
+    position: relative;
+    margin-bottom: 1rem; /* Espacio inferior, similar a .input-group */
+}
+
+/* Estilo para el input de contraseña (el campo de texto en sí) */
+.input-wrapper .password-input {
+    width: 100%;
+    /* Reutiliza estilos base de form-control, pero ajusta paddings */
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #333;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem; /* Padding vertical y base horizontal */
+    padding-left: 3rem;   /* Espacio para el ícono de la izquierda */
+    padding-right: 3rem;  /* Espacio para el ícono de la derecha */
+    position: relative;
+    z-index: 1;
+}
+
+/* Estilo base para ambos íconos dentro del password-input-wrapper */
+.input-wrapper .fas {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc; /* Color de los íconos */
+    z-index: 2; /* Asegura que estén por encima del input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Para ayudar a centrar verticalmente */
+    width: 2.5rem; /* Ancho para el área del ícono */
+}
+
+/* Posicionamiento específico para el ícono de candado (izquierda) */
+.input-wrapper .password-icon-left {
+    left: 0; /* Alineado al borde izquierdo */
+    pointer-events: none; /* No clickeable */
+}
+
+/* Posicionamiento específico para el ícono de ojo (derecha) */
+.input-wrapper .password-icon-right {
+    right: 0; /* Alineado al borde derecho */
+    cursor: pointer; /* Hace que sea clickeable */
+    /* Puedes añadir un padding horizontal si quieres que el área clickeable sea más grande */
+    padding-right: 0.75rem; /* Ajusta este valor para el espacio del ícono */
+    padding-left: 0.75rem;
 }

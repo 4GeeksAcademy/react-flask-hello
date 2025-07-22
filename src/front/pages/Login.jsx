@@ -1,17 +1,36 @@
 import { Link } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../login.css";
 
-export const LoginPage = () => {
+export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const BACKEND_URL = 'https://humble-disco-56p955jr77x37w76-3001.app.github.dev';
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    useEffect(() => {
+        const storedEmail = localStorage.getItem('rememberedEmail');
+        const storedRememberMe = localStorage.getItem('rememberMeChecked');
+
+        if (storedEmail) {
+            setEmail(storedEmail);
+        }
+        if (storedRememberMe === 'true') {
+            setRememberMe(true);
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Previene el comportamiento por defecto del formulario (recargar la página)
         setIsLoading(true); // Muestra un indicador de carga
+
 
         try {
             // Realiza la llamada POST al endpoint de login del backend
@@ -35,6 +54,13 @@ export const LoginPage = () => {
                 // Si hay un error en la respuesta del backend
                 console.error('❌ Verificación Fallida:', data.msg || 'Credenciales incorrectas.'); // Mensaje de error en consola
                 // Puedes añadir aquí lógica para mostrar un mensaje de error en la UI si lo deseas.
+            }
+            if (rememberMe) {
+                localStorage.setItem('rememberedEmail', email);
+                localStorage.setItem('rememberMeChecked', 'true');
+            } else {
+                localStorage.removeItem('rememberedEmail');
+                localStorage.removeItem('rememberMeChecked');
             }
         } catch (error) {
             // Captura errores de red o del servidor (ej. el backend no está corriendo)
@@ -70,26 +96,41 @@ export const LoginPage = () => {
                                 <form onSubmit={handleSubmit}>
                                     <div className="my-5">
                                         <label htmlFor="email" className="form-label visually-hidden">Correo electrónico</label>
-                                        <div className="input-group">
-                                            <span className="input-group-text"><i className="fas fa-envelope"></i></span>
-                                            <input type="email" className="form-control" id="email" placeholder="Correo electrónico"
-                                            value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required/>
+                                        <div className="input-wrapper">
+                                            <i className="fas fa-envelope"></i>
+                                            <input type="email" className="form-control password-input" id="email" placeholder="Correo electrónico"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                required />
                                         </div>
                                     </div>
                                     <div className="mt-5">
                                         <label htmlFor="password" className="form-label visually-hidden">Contraseña</label>
-                                        <div className="input-group">
-                                            <span className="input-group-text"><i className="fas fa-lock"></i></span>
-                                            <input type="password" className="form-control" id="password" placeholder="Contraseña"
+                                        {/* Nuevo contenedor personalizado para el input de contraseña y sus íconos */}
+                                        <div className="input-wrapper">
+                                            {/* Ícono de candado a la izquierda */}
+                                            <i className="fas fa-lock password-icon-left"></i>
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                id="password"
+                                                className="form-control password-input" // Clase personalizada para el input
+                                                placeholder="Contraseña"
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
-                                                required />
+                                                required
+                                                autoComplete="new-password"
+                                            />
+                                            {/* Ícono de mostrar/ocultar contraseña a la derecha */}
+                                            <i
+                                                className={showPassword ? "fas fa-eye password-icon-right" : "fas fa-eye-slash password-icon-right"}
+                                                onClick={togglePasswordVisibility}
+                                            ></i>
                                         </div>
                                     </div>
                                     <div className="mt-2 mb-5 form-check">
-                                        <input type="checkbox" className="form-check-input" id="rememberMe" />
+                                        <input type="checkbox" className="form-check-input" id="rememberMe"
+                                            checked={rememberMe}
+                                            onChange={(e) => setRememberMe(e.target.checked)} />
                                         <label className="form-check-label text-white" htmlFor="rememberMe">Recordarme</label>
                                     </div>
                                     <div className="d-grid gap-2 my-5">
@@ -114,4 +155,4 @@ export const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default Login;

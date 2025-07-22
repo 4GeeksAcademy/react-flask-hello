@@ -22,8 +22,8 @@ export const HeaderAbout = () => {
                         </p>
 
                         <div className="d-flex flex-column justify-content-center flex-md-row gap-3 w-100">
-                            <Link to="/proyectos" className="btn btn-outline-light btn-lg rounded-pill px-5">{t('headerAbout.portfolioButton')}</Link>
-                            <Link to="/contacto" className="btn btn-outline btn-lg rounded-pill px-5">{t('headerAbout.contactButton')}</Link>
+                            <Link to="/proyectos" className="btn btn-outline-light btn-lg rounded-pill px-5">{t('headers.headerAbout.portfolioButton')}</Link>
+                            <Link to="/contacto" className="btn btn-outline btn-lg rounded-pill px-5">{t('headers.headerAbout.contactButton')}</Link>
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
-#CORS(app)
+CORS(app)
 
 
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')
@@ -134,13 +134,13 @@ def login():
     print(user)
 
     if user is None:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos'}), 400
+        return jsonify({'msg': 'Usuario o contraseña incorrectos 1'}), 400
     if user.password != body['password']:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos' }), 400
-    
-    access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
-    return jsonify({'msg': 'ok', 'token': access_token}), 200
+        return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
 
+    access_token = create_access_token(identity=user.email)  # despues de mail expires_delta=timedelta(hours=2)
+    return jsonify({'msg': 'ok', 'token': access_token}), 200
+                                                                                                    
 
 #ENDPOINT PARA CREAR VEHICULOS
 

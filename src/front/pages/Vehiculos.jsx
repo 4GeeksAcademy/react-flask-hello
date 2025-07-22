@@ -10,7 +10,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzExNjgxOCwianRpIjoiMGU5YWE0NGQtZDQ4Ni00NDFjLWE5OTUtNjhhY2M4NWFjYzc3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzExNjgxOCwiY3NyZiI6ImM5YWE0NzI5LTYyODYtNDJkNS04ZjA0LTI3ZDNhNDBmYjkzZCIsImV4cCI6MTc1MzEyNDAxOH0.-HfjHyo5FzX8_6dYd7zfxmeoNaXfQyVJqmCVFx8BfQQ"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzE1NDkxMiwianRpIjoiOTUwMTcwYmYtZTMyZS00NTk2LTkzMGMtODg2Y2YxYjgwMTI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzE1NDkxMiwiY3NyZiI6IjU5ZmUwMjVlLTFiMjgtNDJhMy1hZTQ4LTQxNzRmMDk4MzJlYyIsImV4cCI6MTc1MzE1NTgxMn0.dlTiRc9rNUtM0ENvQ2py1cwGsdBv6If_DqY0nd5J8Ng"
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",

@@ -1,19 +1,110 @@
 import { Link } from "react-router-dom";
 
-export const Navbar = () => {
+// src/components/NavbarAgricola.js
+import React from 'react';
 
-	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div>
-			</div>
-		</nav>
-	);
+// --- Estilos CSS en línea para la Navbar ---
+const navbarContainerStyles = {
+  backgroundColor: '#8bc34a', // Verde oliva claro, evocando campos
+  padding: '15px 30px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  boxShadow: '0 4px 10px rgba(0, 70, 0, 0.2)', // Sombra sutil con tono verde
+  fontFamily: 'Arial, sans-serif',
+  borderRadius: '8px', // Bordes redondeados para un toque orgánico
+  margin: '20px auto',
+  maxWidth: '1200px',
+  boxSizing: 'border-box',
 };
+
+const logoStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none', // Elimina el subrayado del enlace
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '1.8em',
+  textShadow: '1px 1px 3px rgba(0,0,0,0.2)',
+  letterSpacing: '0.5px',
+};
+
+const logoSvgStyles = {
+  marginRight: '10px',
+  width: '35px',
+  height: '35px',
+  fill: '#ffeb3b', // Amarillo cereal
+};
+
+const navLinksStyles = {
+  display: 'flex',
+  gap: '25px',
+};
+
+const linkStyles = {
+  color: 'white',
+  textDecoration: 'none',
+  fontSize: '1.1em',
+  padding: '8px 15px',
+  borderRadius: '5px',
+  transition: 'background-color 0.3s ease, transform 0.2s ease',
+  fontWeight: 'bold',
+  letterSpacing: '0.2px',
+};
+
+const linkHoverStyles = {
+  backgroundColor: '#689f38', // Verde más oscuro al pasar el ratón
+  transform: 'translateY(-2px)',
+};
+
+// --- Componente NavbarAgricola ---
+export const Navbar = () => {
+  return (
+    <nav style={navbarContainerStyles}>
+      {/* Logo y Nombre de la Empresa */}
+      <a href="/" style={logoStyles}>
+        {/* SVG de Cereal (representación simple) */}
+        <svg style={logoSvgStyles} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2zm-3-4h2v4H8zm0 6h2v2H8zm6-6h2v4h-2zm0 6h2v2h-2z"/>
+        </svg>
+        AgroCereal
+      </a>
+
+      {/* Enlaces de Navegación */}
+      <div style={navLinksStyles}>
+        <a 
+          href="/registro" 
+          style={linkStyles}
+          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+        >
+          Registro
+        </a>
+        <a 
+          href="/login" 
+          style={linkStyles}
+          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+        >
+          Login
+        </a>
+        <a 
+          href="/ofertas" 
+          style={linkStyles}
+          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+        >
+          Ver todas las ofertas
+        </a>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+
+//onClick={(e) =>
+  //                  setCoordinates({
+    //                  latitude: e.detail.latLng?.lat || 0,
+      //                longitude: e.detail.latLng?.lng || 0,
+        //            })
+          //        }

@@ -2,9 +2,16 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
-
+import enum
 
 db = SQLAlchemy()
+
+class Status(enum.Enum):
+    CART = 'cart'
+    PENDING = 'pending'
+    COMPLETED = 'completed'
+    CANCELLED = 'cancelled'
+    
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -29,6 +36,7 @@ class User(db.Model):
 class Order(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    status: Mapped[Status] = mapped_column(default= Status.CART)
     
     
     user: Mapped ["User"] = relationship(
@@ -155,3 +163,6 @@ class OrderItem(db.Model):
             "cant": self.cant,
             # do not serialize the password, its a security breach
         }
+    
+
+

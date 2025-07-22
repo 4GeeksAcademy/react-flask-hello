@@ -11,6 +11,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Login } from "./pages/login/Login";
 import { AboutUs } from "./pages/aboutus/AboutUs";
+import { Contact } from "./pages/contact/Contact";
+
 
 
 
@@ -31,6 +33,8 @@ export const router = createBrowserRouter(
         <Route path="/demo" element={<Demo />} />
         <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
         <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA CONTACT STORE*/}
+        <Route path="/contact" element={<Contact />} /> {/* PAGINA CONTACT STORE*/}
+
 
         
       </Route>

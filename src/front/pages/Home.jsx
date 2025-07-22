@@ -33,7 +33,7 @@ export const Home = () => {
 	}, [])
 
 	return (
-		<div className="text-center mt-">
+		<div className="text-center w-200 h-48">
 			
 		</div>
 	);

@@ -1,8 +1,9 @@
 import client1 from "../assets/img/Testimonials/clientprofile1.jpg"
 import company1 from "../assets/img/Testimonials/companylogo1.png"
-import client2 from "../assets/img/Testimonials/clientprofile2.png"
+import client2 from "../assets/img/Testimonials/clientProfile2.png"
 import company2 from "../assets/img/Testimonials/companylogo2.png"
-import client3 from "../assets/img/Testimonials/clientProfile3.jpg"
+import client3 from "../assets/img/Testimonials/clientProfile3.png"
+import company3 from "../assets/img/Testimonials/companylogo3.png"
 
 export const testimonialsContent = [
     {
@@ -29,7 +30,7 @@ export const testimonialsContent = [
         position: 'testimonials.testimony3.position',
         review: 'testimonials.testimony3.review',
         profilePicture: client1,
-        logo: company1
+        logo: company3
 
     }
 ]

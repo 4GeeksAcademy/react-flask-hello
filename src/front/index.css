@@ -365,3 +365,15 @@ h6 {
 .text-stat-symbol {
   color: #fbff06;
 }
+
+/* Admin Styles */
+
+.adminOption {
+  color: white;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.adminOption:hover {
+  color: #fbff06;
+}

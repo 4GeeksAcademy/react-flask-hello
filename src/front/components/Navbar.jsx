@@ -22,7 +22,7 @@ export const Navbar = () => {
 		<>
 			{/* --- NAVBAR DE ESCRITORIO --- */}
 			{/* <div className="container w-100 mb-5"></div> */}
-			<nav className="navbar fixed-top navbar-expand-md d-none d-lg-block py-3 justify-content-center">
+			<nav className="navbar sticky-top navbar-expand-md d-none d-lg-block py-3 justify-content-center">
 				<div className="container bg-black rounded-pill px-5 py-1 d-flex justify-content-between align-items-center">
 					<Link className="navbar-brand" to="/">
 						<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
@@ -54,7 +54,7 @@ export const Navbar = () => {
 			</nav>
 
 			{/* --- NAVBAR MÓVIL (TRIGGER Y OFFCANVAS) --- */}
-			<div className="d-lg-none fixed-top bg-black d-flex justify-content-between align-items-center mx-3 my-4 p-3 rounded-pill">
+			<div className="d-lg-none fixed-top bg-black d-flex justify-content-between align-items-center mx-3 mt-3 p-3 rounded-pill">
 				<Link className="navbar-brand" to="/">
 					<img src={LogoNavbar} alt="CloudTech Logo" className="h-auto w-auto" />
 				</Link>
@@ -67,6 +67,7 @@ export const Navbar = () => {
 				>
 					<FontAwesomeIcon icon={faBars} className="fa-icon-yellow" size="xl" />
 				</button>
+				
 			</div>
 
 			<div

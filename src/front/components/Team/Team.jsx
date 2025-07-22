@@ -7,7 +7,7 @@ export const Team = () => {
     const { t } = useTranslation();
 
     return (
-        <section className="d-flex justify-content-center mx-3 position-relative">
+        <section className="d-flex justify-content-center position-relative">
             <img src={teamBg} alt="CloudTech team background section" className="mx-auto ct-team-bg position-absolute w-100 h-100 object-fit-cover d-none d-sm-block" />
             < div className="container py-4">
                 <div className="d-flex flex-column text-center justify-content-center mb-4">

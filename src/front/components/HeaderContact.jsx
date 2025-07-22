@@ -61,21 +61,21 @@ const HeaderContact = () => {
 
     return (
         <>
-        <section className="header w-100 h-100 mb-5 mt-5 position-relative ">
+        <section className="header w-100 h-100 position-relative ">
             <img
                 src={HomeContact}
                 alt="CloudTech background image"
-                className="z-n1 mx-auto position-absolute mt-5 w-100 h-100 object-fit-cover d-sm-block" />
+                className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block mb-5" />
 
-            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-25 mx-auto mt-5"></div>
-            <div className="container w-100 h-100">
-                <div className="row align-items-center justify-content-center justify-content-lg-end pt-5">
-                    <div className="col-12 col-lg-6 z-1 align-items-center">
-                        <h1 className="display-4 fw-bolder text-warning w-100 mb-4 mt-4 text-lg-center text-center d-none d-lg-block">
+            <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
+            <div className="container w-100 h-100 py-2">
+                <div className="row align-items-center justify-content-center justify-content-lg-end mb-5">
+                    <div className="col-12 col-lg-6 z-1 align-items-center pt-5 mt-5 pt-lg-0 mt-lg-3">
+                        <h1 className="hero-title-home display-4 fw-bolder w-100 mt-2 text-lg-center text-center d-none d-lg-block">
                             {t('contact.sectionTitle')}
                         </h1>
 
-                        <h1 className="display-4 fw-bolder text-warning w-100 mb-4 mt-4 text-center d-lg-none">
+                        <h1 className="hero-title-home display-4 fw-bolder w-100 mt-5 text-center d-lg-none">
                             {t('contact.sectionTitle')}
                         </h1>
 
@@ -104,7 +104,7 @@ const HeaderContact = () => {
                             </div>
 
                             <div className="row mb-3">
-                                <div className="col-sm-6">
+                                <div className="col-6">
                                     <label
                                         htmlFor="phone"
                                         className="form-label fw-bold form-label-contact">
@@ -125,7 +125,7 @@ const HeaderContact = () => {
                                         <div className="invalid-feedback fw-bold">{error.phone}</div>}
                                 </div>
 
-                                <div className="col-sm-6 mt-3 mt-sm-0">
+                                <div className="col-6">
                                     <label htmlFor="email" className="form-label fw-bold form-label-contact">
                                         {t('contact.labels.emailLabel')}
                                     </label>
@@ -204,7 +204,7 @@ const HeaderContact = () => {
                                     href="https://wa.me/593978879838"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn btn-outline-yellow btn-lg rounded-pill px-5 w-100"
+                                    className="btn btn-outline btn-lg rounded-pill px-5 w-100"
                                 >
                                     {t('contact.whatsAppButton')} <FontAwesomeIcon icon={faWhatsapp} />
                                 </a>

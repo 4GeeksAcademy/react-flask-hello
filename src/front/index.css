@@ -6,7 +6,7 @@ body {
 h1 {
   font-family: "Exo 2", sans-serif;
   font-weight: bold;
-  color: #e2e505;
+  color: #fbff06;
 }
 
 p {
@@ -296,12 +296,16 @@ h6 {
   background-color: rgba(10, 25, 30, 0.5);
 }
 
-.btn-outline-yellow {
+.hero-title-home{
+  color: #fbff06 !important;
+}
+
+.btn-outline {
   color: #fbff06 !important;
   border-color: #fbff06 !important;
 }
 
-.btn-outline-yellow:hover {
+.btn-outline:hover {
   background-color: #fbff06 !important;
   color: #217b8f !important;
   border-color: #fbff06 !important;
@@ -318,7 +322,7 @@ h6 {
   }
 
   .hero-subtitle-home {
-    font-size: 1rem;
+    font-size: 3rem;
   }
 }
 /* Benefits cards, components & background */

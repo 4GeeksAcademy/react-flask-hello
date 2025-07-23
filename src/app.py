@@ -228,7 +228,42 @@ def eliminar_vehiculo(id_vehiculo):
     return jsonify({'msg': 'Vehículo eliminado correctamente'}), 200
 
 
-#ENDPOINT PRA EDITAR VEHICULOS   
+#ENDPOINT PARA CREAR VEHICULOS DE UN USUARIO ESPECIFICO
+
+@app.route('/crear_mis_vehiculos', methods = ['POST'])
+@jwt_required()
+def crear_mis_vehiculos():
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    print(user_current)
+    print(user_current.id_user)
+    id_propietario = user_current.id_user
+    
+    body = request.get_json(silent = True)
+    if body is None:
+        return jsonify({'msg': 'debes enviar informacion del vehiculo en el body'}), 400
+    if 'matricula' not in body:
+        return jsonify({'msg': 'debes enviar la matricula del vehiculo'}), 400
+    if 'marca' not in body:
+        return jsonify({'msg': 'debes enviar la marca del vehiculo'}), 400
+    if 'modelo' not in body:
+        return jsonify({'msg': 'debes enviar el modelo del vehiculo'}), 400
+    if 'year' not in body:
+        return jsonify({'msg': 'debes enviar el año del vehiculo'}), 400
+    if 'user_id' not in body:
+        return jsonify({'msg': 'Debes enviar el Id de un usuario existente'})
+
+    new_car = Vehiculos()
+    new_car.matricula = body['matricula']
+    new_car.marca = body['marca']
+    new_car.modelo = body['modelo']
+    new_car.year = body['year']
+    new_car.user_id = id_propietario
+
+    db.session.add(new_car)
+    db.session.commit()
+    return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

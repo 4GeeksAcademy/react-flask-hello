@@ -19,7 +19,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI0MjYxMiwianRpIjoiY2Q5NzI1N2YtYWIwZi00NGEyLTgxOTItNTNiM2IzNzI1NWZjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI0MjYxMiwiY3NyZiI6IjkwZGMzODgzLThmYWEtNGFjNi1iOTYzLTRiZDRmYjI5ZDIwOCIsImV4cCI6MTc1MzI0OTgxMn0.jJLnKmId0SjZc7CAT_CwJmLbBOALa82Yd7SNiUfkRN8" // localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI3NTk3MiwianRpIjoiMDQ1NmI4MWUtY2U2My00NTRkLWI5YWQtZWQzM2IyMzUxZTVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI3NTk3MiwiY3NyZiI6ImI0MTE3NGU1LTMzNDQtNGNlNC1iNTNiLTExYjdjM2VhNzQzOCIsImV4cCI6MTc1MzI4MzE3Mn0.vL472QHCcoXFW-Mq9yghZfxJCTcpxWtHvHM0bbsjbhA" // localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -36,8 +36,8 @@ export const Vehiculos = () => {
 
       })
       .then((data) => {
-        console.log("Estoy trayendo informacion")
-        console.log(data.vehiculos)
+        console.log("Estoy trayendo informacion de los vehiculos")
+        console.log(data.vehiculos[0].user_id)
         console.log(data)
         setInfoVehiculos(data.vehiculos)
       })
@@ -70,6 +70,27 @@ export const Vehiculos = () => {
   function crearVehiculo(e){
     e.preventDefault()
     console.log(infoNewCar)
+    console.log("estoy creando vehiculos")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI3NTk3MiwianRpIjoiMDQ1NmI4MWUtY2U2My00NTRkLWI5YWQtZWQzM2IyMzUxZTVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI3NTk3MiwiY3NyZiI6ImI0MTE3NGU1LTMzNDQtNGNlNC1iNTNiLTExYjdjM2VhNzQzOCIsImV4cCI6MTc1MzI4MzE3Mn0.vL472QHCcoXFW-Mq9yghZfxJCTcpxWtHvHM0bbsjbhA" // localStorage.getItem("token-jwt")
+    
+    fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
+      method: "POST",
+      body: JSON.stringify(infoNewCar),
+      headers : {
+        'Content-Type': 'application/json',
+        "authorization": 'Bearer ' + token
+      }
+    })
+    .then((response)=>{
+      if(!response.ok) throw new Error("El error al crear registro de nuevo vehiculo")
+      return response.json()
+    })
+    .then((data)=> {
+      console.log(data)
+      alert("Registro creado de manera exitosa")
+      window.location.href = '/vehiculos'
+      })
+    .catch((error)=>{error})
   }
 
   useEffect(() => {

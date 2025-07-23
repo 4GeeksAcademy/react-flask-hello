@@ -3,14 +3,23 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Navbar } from "../components/Navbar"
 import { VehicleCard } from "../components/VehicleCard.jsx";
+import { matchPath } from "react-router-dom";
 
 export const Vehiculos = () => {
 
   const [infoVehiculos, setInfoVehiculos] = useState([])
+  
+ const [infoNewCar, setInfoNewCar] = useState({
+  matricula: "",
+  marca: "",
+  modelo: "",
+  year: "",
+  user_id: ""
+})
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzIzNTE0MSwianRpIjoiOTU1ZmQwOWQtNDkzMS00NWE4LWJkNTItODk2YzczMDA1MmU0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzIzNTE0MSwiY3NyZiI6ImI5ZmVkYWIyLTg1MWQtNGEzMi04Y2Y0LWFmMWEzYmVkOWNiNyIsImV4cCI6MTc1MzI0MjM0MX0.1r3s1P8eyq6xGxVEFlQrPAI53vgZ_tS3-MEdssz9RQI" // localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI0MjYxMiwianRpIjoiY2Q5NzI1N2YtYWIwZi00NGEyLTgxOTItNTNiM2IzNzI1NWZjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI0MjYxMiwiY3NyZiI6IjkwZGMzODgzLThmYWEtNGFjNi1iOTYzLTRiZDRmYjI5ZDIwOCIsImV4cCI6MTc1MzI0OTgxMn0.jJLnKmId0SjZc7CAT_CwJmLbBOALa82Yd7SNiUfkRN8" // localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -58,6 +67,11 @@ export const Vehiculos = () => {
       .catch((error) => { error })
   }
 
+  function crearVehiculo(e){
+    e.preventDefault()
+    console.log(infoNewCar)
+  }
+
   useEffect(() => {
     getVehicles()
     //getAllVehicles()
@@ -83,29 +97,34 @@ export const Vehiculos = () => {
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body text-start">
-                  <form>
+                  <form onSubmit={crearVehiculo}>
                     <div className="mb-3">
                       <label for="matricula" className="col-form-label text-light text-start">Matricula:</label>
-                      <input type="text" className="form-control" id="matricula" />
+                      <input type="text" className="form-control" id="matricula"
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, matricula: e.target.value })}/>
                     </div>
                     <div className="mb-3">
                       <label for="marca" className="col-form-label text-light text-start">Marca:</label>
-                      <input type="text" className="form-control" id="marca" />
+                      <input type="text" className="form-control" id="marca" 
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, marca: e.target.value })}/>
                     </div>
                     <div className="mb-3">
                       <label for="modelo" className="col-form-label text-light text-start">Modelo:</label>
-                      <input type="text" className="form-control" id="modelo" />
+                      <input type="text" className="form-control" id="modelo" 
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, modelo: e.target.value })}/>
                     </div>
                     <div className="mb-3">
                       <label for="year" className="col-form-label text-light text-start">Año:</label>
-                      <input type="text" className="form-control" id="year" />
+                      <input type="text" className="form-control" id="year" 
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, year: e.target.value })}/>
                     </div>
+                    <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" className="btn btn-primary">Registrar</button>
+                </div>
                   </form>
                 </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" className="btn btn-primary">Registrar</button>
-                </div>
+                
               </div>
             </div>
           </div>

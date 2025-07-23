@@ -11,7 +11,7 @@ export const VehicleCard = (props) => {
 
   function eliminarVehiculo(id_vehiculo) {
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI0MDcxNSwianRpIjoiMDZmNjc1NzYtN2I0Yi00N2JlLTkzYWUtOWU5YzQyNGVkYjllIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI0MDcxNSwiY3NyZiI6IjhlZmVlOGQyLTk3YzYtNDU5Zi1hZWU4LWQyN2ExYzQxNWEwMiIsImV4cCI6MTc1MzI0NzkxNX0.nyhVAUoq-_QK6uRVYyw-ed4ZRmyqe1XfyiEdMWyFWzI" //localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI0MjYxMiwianRpIjoiY2Q5NzI1N2YtYWIwZi00NGEyLTgxOTItNTNiM2IzNzI1NWZjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI0MjYxMiwiY3NyZiI6IjkwZGMzODgzLThmYWEtNGFjNi1iOTYzLTRiZDRmYjI5ZDIwOCIsImV4cCI6MTc1MzI0OTgxMn0.jJLnKmId0SjZc7CAT_CwJmLbBOALa82Yd7SNiUfkRN8" //localStorage.getItem("token-jwt")
     fetch(import.meta.env.VITE_BACKEND_URL + `eliminar_vehiculo/${id_vehiculo}`, {
       method: "DELETE",
       headers: {

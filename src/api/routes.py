@@ -1,10 +1,10 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, Blueprint #url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User
+from api.models import db, User, Objetivo, Articulo
 from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
@@ -123,3 +123,83 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
     return jsonify({"msg": "Usuario eliminado"}), 200
+@api.route("/user/token", methods=['POST'])
+@jwt_required()
+def token():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    try:
+        access_token = create_access_token(identity=str(user.id))  
+        return jsonify({"token": access_token}), 200  
+    except Exception as e:
+        return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
+    
+
+@api.route('/objetivos', methods=['POST'])
+@jwt_required()
+def crear_objetivo():
+    data = request.get_json()
+    user_id = get_jwt_identity()
+    objetivo = Objetivo(
+        titulo=data['titulo'],
+        descripcion=data.get('descripcion'),
+        cantidad_meta=data['cantidad_meta'],
+        fecha_limite=datetime.strptime(data['fecha_limite'], '%Y-%m-%d'),
+        user_id=user_id
+    )
+    db.session.add(objetivo)
+    db.session.commit()
+    return jsonify({"msg": "Objetivo creado"}), 201
+
+@api.route('/objetivos', methods=['GET'])
+@jwt_required()
+def listar_objetivos():
+    user_id = get_jwt_identity()
+    objetivos = Objetivo.query.filter_by(user_id=user_id).all()
+    return jsonify([{
+        "id": o.id, "titulo": o.titulo, "cantidad_meta": o.cantidad_meta,
+        "fecha_limite": o.fecha_limite.isoformat(), "completado": o.completado
+    } for o in objetivos]), 200
+
+@api.route('/objetivos/<int:id>', methods=['PUT'])
+@jwt_required()
+def editar_objetivo(id):
+    data = request.get_json()
+    objetivo = Objetivo.query.get(id)
+    if objetivo:
+        objetivo.titulo = data.get('titulo', objetivo.titulo)
+        objetivo.descripcion = data.get('descripcion', objetivo.descripcion)
+        objetivo.cantidad_meta = data.get('cantidad_meta', objetivo.cantidad_meta)
+        objetivo.fecha_limite = datetime.strptime(data['fecha_limite'], '%Y-%m-%d')
+        db.session.commit()
+        return jsonify({"msg": "Objetivo actualizado"}), 200
+    return jsonify({"msg": "No encontrado"}), 404
+
+@api.route('/objetivos/<int:id>/cerrar', methods=['PUT'])
+@jwt_required()
+def cerrar_objetivo(id):
+    objetivo = Objetivo.query.get(id)
+    if objetivo:
+        objetivo.completado = True
+        db.session.commit()
+        return jsonify({"msg": "Objetivo cerrado"}), 200
+    return jsonify({"msg": "No encontrado"}), 404
+
+
+@api.route('/inversiones', methods=['GET'])
+def listar_articulos():
+    articulos = Articulo.query.all()
+    return jsonify([{
+        "id": a.id, "titulo": a.titulo, "texto": a.texto[:120] + "...",
+        "url_imagen": a.url_imagen, "enlace": a.enlace
+    } for a in articulos]), 200
+
+@api.route('/inversiones/<int:id>', methods=['GET'])
+def detalle_articulo(id):
+    a = Articulo.query.get(id)
+    if not a:
+        return jsonify({"msg": "Artículo no encontrado"}), 404
+    return jsonify({
+        "id": a.id, "titulo": a.titulo, "texto": a.texto,
+        "url_imagen": a.url_imagen, "enlace": a.enlace
+    }), 200

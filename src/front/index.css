@@ -1,0 +1,19 @@
+.reset-password {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.reset-password .emoji{
+    font-size: 3rem;
+}
+
+.forgot-password{
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.forgot-password .emoji {
+  font-size: 3rem;
+}

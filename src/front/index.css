@@ -1,6 +1,6 @@
 .login-page-container {
     position: relative;
-    width: 100vw;
+    /* width: 100vw; */
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -84,17 +84,6 @@ body.dark-theme .btn-dark {
     border-color: #f8f9fa;
 }
 
-.login-page-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
 
 .video-background {
     position: absolute;
@@ -217,17 +206,7 @@ body.dark-theme .btn-dark {
     }
 }
 
-.login-page-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
+
 
 .video-background {
     position: absolute;

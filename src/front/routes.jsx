@@ -9,7 +9,7 @@ import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
+import { Registro } from "./pages/Registro";
 
 
 export const router = createBrowserRouter(
@@ -19,7 +19,7 @@ export const router = createBrowserRouter(
             <Route path="/single/:theId" element={<Single />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/registro" element={<Registro />} />
         </Route>
     )
 );

@@ -6,8 +6,9 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
+
+from api.database.db import db
+from api.routes.user import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 

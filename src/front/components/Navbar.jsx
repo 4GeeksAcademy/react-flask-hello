@@ -76,7 +76,7 @@ export default function Navbar() {
             </button>
 
             <div class="relative ml-3">
-              <Link to="/login">
+              <Link to="/Login">
                 <div>
                   <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-indigo-700 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                     <span class="absolute -inset-1.5"></span>

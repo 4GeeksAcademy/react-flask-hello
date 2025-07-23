@@ -1,5 +1,5 @@
 import './login.css'
-
+import { Facebook } from 'lucide-react';
 
 export const Login = () => {
 
@@ -51,7 +51,10 @@ export const Login = () => {
 						<div className="group">
 							<button className='button bg-blue'>Crear cuenta</button>
 						</div>
-						<div className="hr"></div>
+						<div className="">
+							
+
+						</div>
 
 					</div>
 				</div>

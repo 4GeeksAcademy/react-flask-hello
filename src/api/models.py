@@ -163,6 +163,3 @@ class OrderItem(db.Model):
             "cant": self.cant,
             # do not serialize the password, its a security breach
         }
-    
-
-

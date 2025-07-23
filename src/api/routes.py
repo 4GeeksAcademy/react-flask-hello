@@ -16,6 +16,7 @@ CORS(api)
 
 bcrypt = Bcrypt()
 
+
 @api.route('/private-hello', methods=['POST', 'GET'])
 @jwt_required()
 def handle_private_hello():

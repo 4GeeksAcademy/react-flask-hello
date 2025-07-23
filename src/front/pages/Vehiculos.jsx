@@ -19,7 +19,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI3NTk3MiwianRpIjoiMDQ1NmI4MWUtY2U2My00NTRkLWI5YWQtZWQzM2IyMzUxZTVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI3NTk3MiwiY3NyZiI6ImI0MTE3NGU1LTMzNDQtNGNlNC1iNTNiLTExYjdjM2VhNzQzOCIsImV4cCI6MTc1MzI4MzE3Mn0.vL472QHCcoXFW-Mq9yghZfxJCTcpxWtHvHM0bbsjbhA" // localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -71,7 +71,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzI3NTk3MiwianRpIjoiMDQ1NmI4MWUtY2U2My00NTRkLWI5YWQtZWQzM2IyMzUxZTVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzI3NTk3MiwiY3NyZiI6ImI0MTE3NGU1LTMzNDQtNGNlNC1iNTNiLTExYjdjM2VhNzQzOCIsImV4cCI6MTc1MzI4MzE3Mn0.vL472QHCcoXFW-Mq9yghZfxJCTcpxWtHvHM0bbsjbhA" // localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("token-jwt")
     
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
@@ -109,7 +109,7 @@ export const Vehiculos = () => {
 
         <div>
 
-          <button type="button" class="btn btn-primary btn-lg mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+          <button type="button" class="btn btn-primary btn-lg mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registra un nuevo vehiculo</button>
           <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content" style={{ backgroundColor: '#214f84'}}>

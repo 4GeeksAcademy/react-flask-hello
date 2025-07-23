@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-
+import { Settings } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 export default function Navbar() {
 
@@ -30,33 +31,33 @@ export default function Navbar() {
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex shrink-0 items-center">
               <Link to="/">
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="h-8 w-auto" />
+                <img src="/assets/logo.png" alt="logo" class="h-8 w-auto" />
               </Link>
 
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
 
-                <a href="#" aria-current="page" class="rounded-md hover:bg-indigo-700 px-3 py-2 text-sm font-medium text-white">Game Store</a>
+                <a href="#" aria-current="page" class="rounded-md hover:bg-indigo-700 px-3 py-2 text-xl font-bold text-white">Game Store</a>
                 <div class="relative">
                   <button
                     type="button"
                     onClick={() => setJuegosDropdown(!juegosDropdown)}
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white"
+                    class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:bg-indigo-700 hover:text-white"
                   >
                     Juegos 
                   </button>
 
                   {juegosDropdown && (
                     <div class="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
-                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Juegos de Mesa</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Play Station</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Nintendo</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Xbox</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Juegos de Mesa</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Play Station</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Nintendo</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Xbox</a>
                     </div>
                   )}
                 </div>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Contacto</a>
+                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:bg-indigo-700 hover:text-white">Contacto</a>
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -85,13 +86,13 @@ export default function Navbar() {
                   </button>
                 </div>
               </Link>
-              <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+              <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class=" absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (
                     <>
-                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login </a>
-                      <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
-                      <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
+                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Login </a>
+                      <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Ajustes<Settings /></a>
+                      <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-yellow-200">Cerrar sesión <LogOut /></a>
                     </>
                   )
                 }

@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from models.User import User
-from database.db import db
+from api.models.User import User
+from api.database.db import db
+import bcrypt
 
 
 
-api = Blueprint("/api/user",__name__)
+api = Blueprint("api",__name__)
 
 
 @api.route('/register', methods = ["POST"])

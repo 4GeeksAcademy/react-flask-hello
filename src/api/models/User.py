@@ -1,7 +1,7 @@
 
 from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
-from database.db import db
+from api.database.db import db
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -16,7 +16,7 @@ class User(db.Model):
         return {
            "id": self.id,
             "email": self.email,
-             "username" :self.username,
+             "username" :self.username
             # do not serialize the password, its a security breach
         }
     

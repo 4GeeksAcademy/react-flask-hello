@@ -2,13 +2,20 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
-
+import enum
 
 db = SQLAlchemy()
 
+class Status(enum.Enum):
+    CART = 'cart'
+    PENDING = 'pending'
+    COMPLETED = 'completed'
+    CANCELLED = 'cancelled'
+    
+
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(120),nullable=True) 
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped [bool] = mapped_column(Boolean(), nullable=False)
@@ -29,6 +36,7 @@ class User(db.Model):
 class Order(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    status: Mapped[Status] = mapped_column(default= Status.CART)
     
     
     user: Mapped ["User"] = relationship(
@@ -69,7 +77,7 @@ class PetType(db.Model):
     id: Mapped[int] = mapped_column(primary_key= True) 
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     products: Mapped[List["Product"]] = relationship(
-        back_populates = "product", cascade = "all, delete-orphan"
+        back_populates = "pet_type", cascade = "all, delete-orphan"
     )
 
     def serialize(self):
@@ -89,13 +97,13 @@ class Product(db.Model):
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
 
     pet_type: Mapped["PetType"] = relationship(
-        back_populates="product")
+        back_populates="products")
     
     order_items: Mapped[List["OrderItem"]] = relationship(
         back_populates= "product", cascade= "all, delete-orphan"
     )
 
-    product_category: Mapped[List["ProductCategory"]] = relationship(
+    list_product_category: Mapped[List["ProductCategory"]] = relationship(
         back_populates="product", cascade= "all, delete-orphan"
     )
 
@@ -116,10 +124,10 @@ class ProductCategory(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
-    product_id: Mapped[int] = mapped_column("product.id")
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
     
-    product_category: Mapped["Product"] = relationship (
-        back_populates="product_category"
+    product: Mapped["Product"] = relationship (
+        back_populates="list_product_category"
     )
     category: Mapped["Category"] = relationship(
         back_populates="product_category"
@@ -137,14 +145,14 @@ class ProductCategory(db.Model):
 
 class OrderItem(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    order_id: Mapped[int] = mapped_column("order.id")
-    product_id: Mapped[int] = mapped_column("product.id")
+    order_id: Mapped[int] = mapped_column(ForeignKey("order.id")) 
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
     cant: Mapped[int] = mapped_column(Integer(), nullable=False)
     order: Mapped ["Order"] = relationship(
         back_populates= "order_item"
     )
     product: Mapped["Product"]= relationship(
-        back_populates= "order_item"
+        back_populates= "order_items"
     )
 
     def serialize(self):

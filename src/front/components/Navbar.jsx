@@ -44,7 +44,7 @@ export default function Navbar() {
                     onClick={() => setJuegosDropdown(!juegosDropdown)}
                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white"
                   >
-                    Juegos <ShoppingCart />
+                    Juegos
                   </button>
 
                   {juegosDropdown && (

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { ShoppingCart } from 'lucide-react';
 
 export default function Navbar() {
 
@@ -43,7 +44,7 @@ export default function Navbar() {
                     onClick={() => setJuegosDropdown(!juegosDropdown)}
                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white"
                   >
-                    Juegos
+                    Juegos <ShoppingCart />
                   </button>
 
                   {juegosDropdown && (

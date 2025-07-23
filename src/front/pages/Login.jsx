@@ -9,11 +9,11 @@ export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
-    const BACKEND_URL = 'https://humble-disco-56p955jr77x37w76-3001.app.github.dev';
+    const BACKEND_URL="https://reimagined-guacamole-7q4xww65qqwfpqqr-3001.app.github.dev/"
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-    };
+    };  
 
     useEffect(() => {
         const storedEmail = localStorage.getItem('rememberedEmail');
@@ -138,7 +138,7 @@ export const Login = () => {
                             </div>
 
                             <div className="register-section mt-auto">
-                                <p className="mb-0">¿Aún no tienes una cuenta? <a href="#" className="fw-bold">Regístrate acá</a></p>
+                                <p className="mb-0">¿Aún no tienes una cuenta? <Link to="/register" className="text-white fw-bold text-decoration-none">Regístrate acá</Link></p>
                             </div>
                         </div>
                     </div>
@@ -147,5 +147,3 @@ export const Login = () => {
         </div>
     );
 };
-
-export default Login;

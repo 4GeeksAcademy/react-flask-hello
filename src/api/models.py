@@ -96,7 +96,7 @@ class User(db.Model):
     telefono: Mapped[str] = mapped_column(String(11))
     email: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    foto_usuario: Mapped[str] = mapped_column(String(100))
+    foto_usuario: Mapped[str] = mapped_column(String(255), nullable=True)
     rol: Mapped[RolEnum] = mapped_column(
         Enum(RolEnum, name="rol_enum"), nullable=False)
 

@@ -15,7 +15,7 @@ export const ForgotPasswordPage = () => {
     return (
         <div className="signup-page-container">
             <div className="login-content-wrapper">
-                <div className="login-form-card p-4 shadow-lg rounded">
+                <div className="login-form-card p-4">
                     <h2 className="text-center mb-4">Forgot your password?</h2>
                     <p className="text-center text-muted mb-4">
                         Enter your email address below and we'll send you a password reset link.

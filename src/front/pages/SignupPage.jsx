@@ -54,7 +54,7 @@ export const SignupPage = () => {
     return (
         <div className="signup-page-container">
             <div className="login-content-wrapper">
-                <div className="login-form-card p-4 shadow-lg rounded">
+                <div className="login-form-card p-4">
                     <h2 className="text-center mb-4">Regístrate</h2>
                     <form onSubmit={handleSignup}>
                         <div className="mb-3">

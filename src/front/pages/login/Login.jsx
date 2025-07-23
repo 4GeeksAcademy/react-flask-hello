@@ -1,5 +1,4 @@
 import './login.css'
-import { Facebook } from 'lucide-react';
 
 export const Login = () => {
 

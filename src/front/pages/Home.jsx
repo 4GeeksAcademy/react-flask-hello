@@ -29,7 +29,7 @@ export const Home = () => {
     };
 
     return (
-        <div>
+        <div className="bg-black">
             <Login />
         </div>
     );

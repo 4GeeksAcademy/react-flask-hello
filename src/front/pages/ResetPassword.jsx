@@ -42,11 +42,14 @@ export const ResetPassword = () => {
     setResetLoading(true);
 
     try {
-      const res = await fetch("https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/api/change-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, password: newPassword }),
-      });
+      const res = await fetch(
+        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/change-password",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ old_password: token, new_password: newPassword }),
+        }
+      );
 
       const data = await res.json();
       if (res.ok) {
@@ -121,6 +124,3 @@ export const ResetPassword = () => {
     </div>
   );
 };
-
-
-

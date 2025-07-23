@@ -9,6 +9,8 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+import {Login }  from "./pages/Login";
+import {Footer }  from "./components/Footer";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
 
@@ -29,6 +31,7 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/login" element={<Login />} />
     </Route>
   )
 );

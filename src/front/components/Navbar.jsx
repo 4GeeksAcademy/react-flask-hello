@@ -28,10 +28,10 @@ export default function Navbar() {
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex shrink-0 items-center">
-              <Link to ="/">
-               <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="h-8 w-auto" />
+              <Link to="/">
+                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="h-8 w-auto" />
               </Link>
-             
+
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
@@ -74,21 +74,21 @@ export default function Navbar() {
               </svg>
             </button>
 
-
             <div class="relative ml-3">
-              <div>
-                <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-indigo-700 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
-                  <span class="absolute -inset-1.5"></span>
-                  <span class="sr-only">Menu de usuario</span>
-                  <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" class="size-8 w-12 rounded-full" />
-                </button>
-              </div>
-
+              <Link to="/login">
+                <div>
+                  <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-indigo-700 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Menu de usuario</span>
+                    <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" class="size-8 w-12 rounded-full" />
+                  </button>
+                </div>
+              </Link>
               <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (
                     <>
-                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
+                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login </a>
                       <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
                       <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
                     </>

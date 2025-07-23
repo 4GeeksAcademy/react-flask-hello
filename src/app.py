@@ -139,7 +139,7 @@ def login():
     if user.password != body['password']:
         return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
 
-    access_token = create_access_token(identity=user.email)  # despues de mail expires_delta=timedelta(hours=2)
+    access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
     return jsonify({'msg': 'ok', 'token': access_token}), 200
                                                                                                     
 

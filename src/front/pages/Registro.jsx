@@ -1,34 +1,78 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
- export const Registro = () => {
-  /*const {form,setform}=useState({
+
+export const Registro = () => {
+
+  const [form, setform] = useState({
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""})
-  }*/
+    confirmPassword: ""
+  });
+
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setform({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (form.password !== form.confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+    try {
+      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password
+        })
+      });
+      const data = await resp.json();
+      if (resp.ok) {
+        setSuccess("¡Registro exitoso! Redirigiendo...");
+        setTimeout(() => navigate("/login"), 1500);
+      } else {
+        setError(data.message || "Error en el registro.");
+      }
+    } catch (err) {
+      setError("Error de conexión.");
+    }
+  };
+
   return (
     <div>
       <h1 className="text-center mb-5">¡Bienvenido a PatitasClub!</h1>
-
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3 text-center">
           <label htmlFor="username">Nombre de usuario:</label>
-          <input className="form-control" type="text" id="username" name="username" required />
+          <input className="form-control" type="text" id="username" name="username" required value={form.username} onChange={handleChange} />
         </div>
         <div className="mb-3 text-center">
           <label htmlFor="email">Correo electrónico:</label>
-          <input className="form-control" type="email" id="email" name="email" required />
+          <input className="form-control" type="email" id="email" name="email" required value={form.email} onChange={handleChange} />
         </div>
         <div className="mb-3 text-center">
           <label htmlFor="password">Contraseña:</label>
-          <input className="form-control" type="password" id="password" name="password" required />
+          <input className="form-control" type="password" id="password" name="password" required value={form.password} onChange={handleChange} />
         </div>
         <div className="mb-3 text-center">
-          <label htmlFor="confirm-password">Confirmar contraseña:</label>
-          <input className="form-control" type="password" id="confirm-password" name="confirm-password" required />
+          <label htmlFor="confirmPassword">Confirmar contraseña:</label>
+          <input className="form-control" type="password" id="confirmPassword" name="confirmPassword" required value={form.confirmPassword} onChange={handleChange} />
         </div>
+        {error && <div className="text-danger text-center">{error}</div>}
+        {success && <div className="text-success text-center">{success}</div>}
         <div className="text-center">
           <button className="btn btn-primary mt-2" type="submit">Registrarse</button>
         </div>
@@ -41,6 +85,14 @@ import { Link } from "react-router-dom";
       </p>
     </div>
   );
+
+
+
+
+
+
+
+
 };
 
 

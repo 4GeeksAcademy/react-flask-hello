@@ -21,7 +21,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyOTkxMSwianRpIjoiYzBmZDM1NTItZmIwNy00ODdjLThhZTgtYjMwMDE5YjEwODQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyOTkxMSwiY3NyZiI6IjI1OGM1NGZmLTM2OGUtNGM2OC04ODg2LWQ5OTA2ZWZhNmE1MyIsImV4cCI6MTc1MzMzNzExMX0.qHYvmq826wKcpoAiT_EPe_-6EBr5NucCxjol512Y_DY"//localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -73,7 +73,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyOTkxMSwianRpIjoiYzBmZDM1NTItZmIwNy00ODdjLThhZTgtYjMwMDE5YjEwODQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyOTkxMSwiY3NyZiI6IjI1OGM1NGZmLTM2OGUtNGM2OC04ODg2LWQ5OTA2ZWZhNmE1MyIsImV4cCI6MTc1MzMzNzExMX0.qHYvmq826wKcpoAiT_EPe_-6EBr5NucCxjol512Y_DY"//localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
@@ -89,7 +89,9 @@ export const Vehiculos = () => {
       })
       .then((data) => {
         console.log(data)
-        alert("Registro creado de manera exitosa")
+        const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+        modal.show(); // Mostrar el modal en lugar de alert
+        //alert("Vehiculos creado exitosamente")
         getVehicles()
         setShowModal(false)
       })
@@ -145,7 +147,7 @@ export const Vehiculos = () => {
                         onChange={(e) => setInfoNewCar({ ...infoNewCar, year: e.target.value })} />
                     </div>
                     <div className="modal-footer">
-                      <button onClick={() => setShowModal(false)}  type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button onClick={() => setShowModal(false)} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" className="btn btn-primary">Registrar</button>
                     </div>
                   </form>
@@ -157,7 +159,7 @@ export const Vehiculos = () => {
           {showModal && (
             <div
               className="modal-backdrop fade show"
-              onClick={()=>{setShowModal(false)}} // Cierra al hacer clic en el backdrop
+              onClick={() => { setShowModal(false) }} // Cierra al hacer clic en el backdrop
             />
           )}
         </div>
@@ -181,7 +183,27 @@ export const Vehiculos = () => {
         </div>
 
       </div>
+
+      <div class="modal fade" id="modalExito" tabindex="-1" aria-labelledby="modalExitoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="modalExitoLabel">Éxito</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              ¡Registro creado de manera exitosa!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+
+
   )
 
 }; 

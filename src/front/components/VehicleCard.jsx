@@ -11,7 +11,7 @@ export const VehicleCard = (props) => {
 
   function eliminarVehiculo(id_vehiculo) {
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzM2NDAzNCwianRpIjoiNDFkNDBiMzUtODdjMy00ZjIxLTlmYjktMjNlYTI0MWVkM2JkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzM2NDAzNCwiY3NyZiI6Ijg1YjUzMGIzLWU2MGYtNDQzZi1hOWVhLTg5M2FlMzMwYTRlMSIsImV4cCI6MTc1MzM3MTIzNH0.0q0jZ3Tq8rTIXCULNtOemcLNHiOaF3cRW89nIwFzhtE"//localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("token-jwt")
     fetch(import.meta.env.VITE_BACKEND_URL + `eliminar_vehiculo/${id_vehiculo}`, {
       method: "DELETE",
       headers: {

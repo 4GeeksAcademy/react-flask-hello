@@ -1,0 +1,30 @@
+.register-card {
+    min-height: auto;
+    height: auto;
+    max-width: 500px;
+    margin: 2rem auto;
+}
+
+.custom-control-register .form-check-input {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    margin-right: 0.5rem;
+    float: left;
+}
+
+.custom-control-register .form-check-label {
+    padding-left: 0.5rem;
+    display: block;
+    overflow: hidden;
+}
+
+.register-card > div:first-child {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-card .register-section {
+    margin-top: auto;
+}

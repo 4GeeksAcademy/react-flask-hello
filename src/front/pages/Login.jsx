@@ -9,11 +9,9 @@ export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
-    const BACKEND_URL = 'https://humble-disco-56p955jr77x37w76-3001.app.github.dev';
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-    };
+    };  
 
     useEffect(() => {
         const storedEmail = localStorage.getItem('rememberedEmail');
@@ -28,12 +26,12 @@ export const Login = () => {
     }, []);
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recargar la página)
-        setIsLoading(true); // Muestra un indicador de carga
+        e.preventDefault();
+        setIsLoading(true);
 
 
         try {
-            const response = await fetch(`${BACKEND_URL}/login`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +136,7 @@ export const Login = () => {
                             </div>
 
                             <div className="register-section mt-auto">
-                                <p className="mb-0">¿Aún no tienes una cuenta? <a href="#" className="fw-bold">Regístrate acá</a></p>
+                                <p className="mb-0">¿Aún no tienes una cuenta? <Link to="/register" className="text-white fw-bold text-decoration-none">Regístrate acá</Link></p>
                             </div>
                         </div>
                     </div>
@@ -147,5 +145,3 @@ export const Login = () => {
         </div>
     );
 };
-
-export default Login;

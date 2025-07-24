@@ -3,23 +3,25 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Navbar } from "../components/Navbar"
 import { VehicleCard } from "../components/VehicleCard.jsx";
-import { matchPath } from "react-router-dom";
+import { matchPath, useNavigate } from "react-router-dom";
 
 export const Vehiculos = () => {
 
+  const navigate = useNavigate()
   const [infoVehiculos, setInfoVehiculos] = useState([])
-  
- const [infoNewCar, setInfoNewCar] = useState({
-  matricula: "",
-  marca: "",
-  modelo: "",
-  year: "",
-  user_id: ""
-})
+  const [showModal, setShowModal] = useState(false)
+
+  const [infoNewCar, setInfoNewCar] = useState({
+    matricula: "",
+    marca: "",
+    modelo: "",
+    year: "",
+    user_id: ""
+  })
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyMDM2OSwianRpIjoiM2NkODVjNzUtMjYwMi00MjRmLTg4MWYtN2FjNjk2OWVlMGMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyMDM2OSwiY3NyZiI6IjM5MWVkNjYwLTY3NjAtNGQ4YS04ODU2LTY3YmRjNzJlZTY1ZiIsImV4cCI6MTc1MzMyNzU2OX0.hInKnCeTMq6_oJ6SYwxTA4b4J9MHMzutVm2wh_gqODA"//localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -67,30 +69,31 @@ export const Vehiculos = () => {
       .catch((error) => { error })
   }
 
-  function crearVehiculo(e){
+  function crearVehiculo(e) {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = localStorage.getItem("token-jwt")
-    
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyMDM2OSwianRpIjoiM2NkODVjNzUtMjYwMi00MjRmLTg4MWYtN2FjNjk2OWVlMGMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyMDM2OSwiY3NyZiI6IjM5MWVkNjYwLTY3NjAtNGQ4YS04ODU2LTY3YmRjNzJlZTY1ZiIsImV4cCI6MTc1MzMyNzU2OX0.hInKnCeTMq6_oJ6SYwxTA4b4J9MHMzutVm2wh_gqODA"//localStorage.getItem("token-jwt")
+
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
       body: JSON.stringify(infoNewCar),
-      headers : {
+      headers: {
         'Content-Type': 'application/json',
         "authorization": 'Bearer ' + token
       }
     })
-    .then((response)=>{
-      if(!response.ok) throw new Error("El error al crear registro de nuevo vehiculo")
-      return response.json()
-    })
-    .then((data)=> {
-      console.log(data)
-      alert("Registro creado de manera exitosa")
-      window.location.href = '/vehiculos'
+      .then((response) => {
+        if (!response.ok) throw new Error("El error al crear registro de nuevo vehiculo")
+        return response.json()
       })
-    .catch((error)=>{error})
+      .then((data) => {
+        console.log(data)
+        alert("Registro creado de manera exitosa")
+        getVehicles()
+        setShowModal(false)
+      })
+      .catch((error) => { error })
   }
 
   useEffect(() => {
@@ -109,47 +112,54 @@ export const Vehiculos = () => {
 
         <div>
 
-          <button type="button" class="btn btn-primary btn-lg mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registra un nuevo vehiculo</button>
-          <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <button onClick={() => { setShowModal(true) }} type="button" class="btn btn-primary btn-lg mt-4"
+            data-bs-whatever="@mdo">Registra un nuevo vehiculo</button>
+          <div className={`modal fade ${showModal == true ? "show d-block" : ""} `} id="exampleModal" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden={!showModal}>
             <div className="modal-dialog">
-              <div className="modal-content" style={{ backgroundColor: '#214f84'}}>
+              <div className="modal-content" style={{ backgroundColor: '#214f84' }}>
                 <div className="modal-header">
                   <h1 className="modal-title fs-5 text-light" id="exampleModalLabel">Registro de nuevo vehiculo</h1>
-                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button onClick={() => { setShowModal(false) }} type="button" className="btn-close" aria-label="Close"></button>
                 </div>
                 <div className="modal-body text-start">
                   <form onSubmit={crearVehiculo}>
                     <div className="mb-3">
                       <label for="matricula" className="col-form-label text-light text-start">Matricula:</label>
                       <input type="text" className="form-control" id="matricula"
-                        onChange={(e) => setInfoNewCar({ ...infoNewCar, matricula: e.target.value })}/>
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, matricula: e.target.value })} />
                     </div>
                     <div className="mb-3">
                       <label for="marca" className="col-form-label text-light text-start">Marca:</label>
-                      <input type="text" className="form-control" id="marca" 
-                        onChange={(e) => setInfoNewCar({ ...infoNewCar, marca: e.target.value })}/>
+                      <input type="text" className="form-control" id="marca"
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, marca: e.target.value })} />
                     </div>
                     <div className="mb-3">
                       <label for="modelo" className="col-form-label text-light text-start">Modelo:</label>
-                      <input type="text" className="form-control" id="modelo" 
-                        onChange={(e) => setInfoNewCar({ ...infoNewCar, modelo: e.target.value })}/>
+                      <input type="text" className="form-control" id="modelo"
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, modelo: e.target.value })} />
                     </div>
                     <div className="mb-3">
                       <label for="year" className="col-form-label text-light text-start">Año:</label>
-                      <input type="text" className="form-control" id="year" 
-                        onChange={(e) => setInfoNewCar({ ...infoNewCar, year: e.target.value })}/>
+                      <input type="text" className="form-control" id="year"
+                        onChange={(e) => setInfoNewCar({ ...infoNewCar, year: e.target.value })} />
                     </div>
                     <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" className="btn btn-primary">Registrar</button>
-                </div>
+                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" className="btn btn-primary">Registrar</button>
+                    </div>
                   </form>
                 </div>
-                
+
               </div>
             </div>
           </div>
-
+          {showModal && (
+            <div
+              className="modal-backdrop fade show"
+              onClick={()=>{setShowModal(false)}} // Cierra al hacer clic en el backdrop
+            />
+          )}
         </div>
 
 

@@ -77,17 +77,14 @@ def get_user():
 
 # GET pedir informacion sobre todas las ofertas disponibles de todos los usuarios
 @api.route("/user/ofertas", methods=["GET"])
-@jwt_required()
+
 def get_ofertas():
-    current_user = get_jwt_identity()
-    user = User.query.get(current_user)
+
     ofertas = Oferta.query.all()
     iterar_ofertas = [oferta.serialize() for oferta in ofertas]
-    if user is None:
-        return jsonify("Usuario no valido"),400
     if ofertas is None:
-        return jsonify("No hay ofertas disponibles")
-    return jsonify(iterar_ofertas)
+        return jsonify("No hay ofertas disponibles"),404
+    return jsonify({"ofertas": iterar_ofertas}),200
 
 # GET pedir informacion sobre una oferta
 

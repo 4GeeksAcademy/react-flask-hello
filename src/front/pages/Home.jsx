@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 
 export const Home = () => {
-  const { store } = useGlobalReducer();
+  const { store,dispatch } = useGlobalReducer();
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+console.log(offers)
   // Form state
   const [form, setForm] = useState({ name: "", seller: "", price: "", unit: "", img: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -18,11 +18,13 @@ export const Home = () => {
       try {
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
         if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined");
-
-        const res = await fetch(`${backendUrl}/api/offers`);
-        if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+        
+        const res = await fetch(`https://animated-pancake-x5pjxq9vv4gj2ppgx-3001.app.github.dev/api/user/ofertas`);
+        console.log(res)
+        
         const data = await res.json();
-        setOffers(data);
+        console.log(data)
+        setOffers(data.ofertas);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -44,14 +46,29 @@ export const Home = () => {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL;
-      const res = await fetch(`${backendUrl}/api/offers`, {
+      const token = store.token
+      const res = await fetch(`https://animated-pancake-x5pjxq9vv4gj2ppgx-3001.app.github.dev/api/user/ofertas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+         },
         body: JSON.stringify(form)
+      });
+        const resUser = await fetch(`https://animated-pancake-x5pjxq9vv4gj2ppgx-3001.app.github.dev/api/user`, {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+         },
       });
       if (!res.ok) throw new Error(await res.text());
       const newOffer = await res.json();
+      const usuarioLogeado = await resUser.json();
+      dispatch({
+              type : "add_user",
+              payload : usuarioLogeado
+          })
       setOffers(prev => [newOffer, ...prev]);
       setForm({ name: "", seller: "", price: "", unit: "", img: "" });
     } catch (err) {
@@ -67,7 +84,7 @@ export const Home = () => {
         <div className="col-md-8">
           <div className="bg-white p-4 rounded shadow-sm mb-4">
             {/* Conditionally show form if user is logged in */}
-            {store.user ? (
+            {store.usuarios ? (
               <>
                 <h2 className="text-success mb-3">Crear Nueva Oferta</h2>
                 {submitError && <div className="alert alert-danger">{submitError}</div>}

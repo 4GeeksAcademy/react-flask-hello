@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import useGlobalReducer from '../hooks/useGlobalReducer';
 
-// src/components/NavbarAgricola.js
-import React from 'react';
 
 // --- Estilos CSS en línea para la Navbar ---
 const navbarContainerStyles = {
@@ -56,48 +56,87 @@ const linkHoverStyles = {
   backgroundColor: '#689f38', // Verde más oscuro al pasar el ratón
   transform: 'translateY(-2px)',
 };
+const buttonStyles = {
+  ...linkStyles, // Inherit base link styles
+  border: 'none',
+  backgroundColor: 'transparent', // Make button background transparent by default
+  // Specific styles for hover/active states if needed for buttons
+};
+
+const buttonHoverStyles = {
+    backgroundColor: '#689f38', // Darker green on hover
+    transform: 'translateY(-2px)',
+};
 
 // --- Componente NavbarAgricola ---
 export const Navbar = () => {
-  return (
+  const navigate = useNavigate();
+  const { store, dispatch } = useGlobalReducer();
+
+  const handleLogout = () => {
+
+    dispatch({ type: 'eliminar_usuario' }); // Dispatch the action
+    localStorage.removeItem('jwt_token');
+    // 3. Redirect to login page
+    navigate('/login');
+    console.log('User logged out.'); // For debugging
+  };
+
+  return ( 
     <nav style={navbarContainerStyles}>
       {/* Logo y Nombre de la Empresa */}
-      <a href="/" style={logoStyles}>
+      <Link to="/" style={logoStyles}>
         {/* SVG de Cereal (representación simple) */}
         <svg style={logoSvgStyles} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2zm-3-4h2v4H8zm0 6h2v2H8zm6-6h2v4h-2zm0 6h2v2h-2z"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2zm-3-4h2v4H8zm0 6h2v2H8zm6-6h2v4h-2zm0 6h2v2h-2z" />
         </svg>
         AgroCereal
-      </a>
+      </Link>
+      {store.usuarios ? (
+        <>
+            <span style={{ ...linkStyles, cursor: 'default' }}>
+              Hola, {store.usuarios.username || 'Agricultor'}! 
+            </span>
+            <button
+              onClick={handleLogout}
+              style={{...buttonStyles, backgroundColor: '#c23b22'}} // Red for logout button
+              onMouseOver={(e) => Object.assign(e.currentTarget.style, {...buttonStyles, ...buttonHoverStyles})}
+              onMouseOut={(e) => Object.assign(e.currentTarget.style, {...buttonStyles, backgroundColor: '#c23b22'})}
+            >
+              Cerrar Sesión
+            </button>
 
-      {/* Enlaces de Navegación */}
-      <div style={navLinksStyles}>
-        <a 
-          href="/registro" 
-          style={linkStyles}
-          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
-          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
-        >
-          Registro
-        </a>
-        <a 
-          href="/login" 
-          style={linkStyles}
-          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
-          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
-        >
-          Login
-        </a>
-        <a 
-          href="/ofertas" 
-          style={linkStyles}
-          onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
-          onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
-        >
-          Ver todas las ofertas
-        </a>
-      </div>
+        </>
+      ) : (
+        <div style={navLinksStyles}>
+          <Link
+            to="/registro"
+            style={linkStyles}
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+          >
+            Registro
+          </Link>
+          <Link
+            to="/login"
+            style={linkStyles}
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+          >
+            Login
+          </Link>
+          <Link
+            to="/ofertas"
+            style={linkStyles}
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, linkHoverStyles)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, linkStyles)}
+          >
+            Ver todas las ofertas
+          </Link></div>
+        )}
+      
     </nav>
   );
 };
+
 export default Navbar;

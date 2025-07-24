@@ -9,6 +9,9 @@ export const initialStore=()=>{
     ],
     lastSelectedCoordinates:[
 
+    ],
+    token:[
+
     ]
   }
 }
@@ -43,6 +46,19 @@ export default function storeReducer(store, action = {}) {
         ...store,
         lastSelectedCoordinates:[nuevaCordenate.latitude,nuevaCordenate.longitude]
       };
+    case 'add_token':
+      const newToken = action.payload
+      
+      return{
+        ...store,
+        token:[newToken]
+      };
+    case "eliminar_usuario":
+      return{
+        ...store,
+        usuarios:null,
+        token:null
+      }
     default:
       throw Error('Unknown action.');
 

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useGlobalReducer from '../hooks/useGlobalReducer';
 
 export const Login = () => {
+  const { store,dispatch } = useGlobalReducer();
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
@@ -25,15 +27,23 @@ export const Login = () => {
     });
 
     const data = await resp.json();
+  
 
     if (resp.ok) {
       setMessage("¡Ingreso al campo exitoso!");
+      
       setTimeout(() => navigate("/"), 2000); // o la ruta a tu "granja" principal
+
     } else {
       setError(data.msg || "¡Terreno resbaladizo! Error al iniciar sesión.");
     }
 
     setSending(false);
+
+    dispatch({
+              type : "add_token",
+              payload : data.token
+          })
   };
 
   return (

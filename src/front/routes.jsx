@@ -13,6 +13,7 @@ import {Login }  from "./pages/Login";
 import {Footer }  from "./components/Footer";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
+import { Formulario } from "./pages/Formulario";
 import { Page404 } from "./pages/Page404";
 import { Loader} from "./pages/Loader";
 
@@ -33,6 +34,7 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
+      <Route path="/Formulario" element={<Formulario />} />
       <Route path="/login" element={<Login />} />
       {/* <Route path="/loader" element={<Loader />} /> Esta pagina es un intento independiente. Alexis */}
     </Route>

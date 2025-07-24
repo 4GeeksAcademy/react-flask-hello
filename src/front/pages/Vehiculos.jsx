@@ -21,7 +21,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyOTkxMSwianRpIjoiYzBmZDM1NTItZmIwNy00ODdjLThhZTgtYjMwMDE5YjEwODQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyOTkxMSwiY3NyZiI6IjI1OGM1NGZmLTM2OGUtNGM2OC04ODg2LWQ5OTA2ZWZhNmE1MyIsImV4cCI6MTc1MzMzNzExMX0.qHYvmq826wKcpoAiT_EPe_-6EBr5NucCxjol512Y_DY"//localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -73,7 +73,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzMyOTkxMSwianRpIjoiYzBmZDM1NTItZmIwNy00ODdjLThhZTgtYjMwMDE5YjEwODQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzMyOTkxMSwiY3NyZiI6IjI1OGM1NGZmLTM2OGUtNGM2OC04ODg2LWQ5OTA2ZWZhNmE1MyIsImV4cCI6MTc1MzMzNzExMX0.qHYvmq826wKcpoAiT_EPe_-6EBr5NucCxjol512Y_DY"//localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
@@ -145,7 +145,7 @@ export const Vehiculos = () => {
                         onChange={(e) => setInfoNewCar({ ...infoNewCar, year: e.target.value })} />
                     </div>
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button onClick={() => setShowModal(false)}  type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" className="btn btn-primary">Registrar</button>
                     </div>
                   </form>

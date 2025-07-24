@@ -141,6 +141,7 @@ class Vehiculos(db.Model):
     user: Mapped["User"] = relationship(back_populates="vehiculos")
     ordenes_trabajo: Mapped[list["Orden_de_trabajo"]
                             ] = relationship(back_populates="vehiculo")
+    
 
     def __str__(self):
         return f'{self.matricula}'

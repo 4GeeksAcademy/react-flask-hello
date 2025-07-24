@@ -8,6 +8,8 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, RolEnum, Vehiculos
 
+from datetime import timedelta
+
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -18,6 +20,8 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
 from flask_cors import CORS
+
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -128,13 +132,13 @@ def login():
     print(user)
 
     if user is None:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos'}), 400
+        return jsonify({'msg': 'Usuario o contraseña incorrectos 1'}), 400
     if user.password != body['password']:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos' }), 400
+        return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
 
-    access_token = create_access_token(identity=user.email)  # despues de mail expires_delta=timedelta(hours=2)
+    access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
     return jsonify({'msg': 'ok', 'token': access_token}), 200
-
+                                                                                                    
 
 #ENDPOINT PARA CREAR VEHICULOS
 
@@ -166,7 +170,7 @@ def crear_vehiculo():
     return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
 
     
-#ENDPOINT PARA HACER OBTENER (GET) DE LOS VEHICULOS
+#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
 
 @app.route('/mis_vehiculos', methods = ['GET'])
 @jwt_required()
@@ -179,14 +183,14 @@ def mostrar_vehiculos():
     vehiculos = Vehiculos.query.filter_by(user_id = id_propietario).all()    
     print(vehiculos)
 
-    lista_vehiculos = []
+    vehicles_serialized_by_user = []
 
-    for v in vehiculos:
-        lista_vehiculos.append({        
-            'matricula': v.matricula 
-    })
-    
-    return jsonify({'msg': 'OK', 'vehiculos': lista_vehiculos})
+    for vehicle in vehiculos:
+        vehicles_serialized_by_user.append(vehicle.serialize())
+
+    print(vehicles_serialized_by_user)
+    return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized_by_user})
+
 
 #ENDPOINT PARA TRAER TODOS LOS VEHICULOS
 
@@ -201,11 +205,62 @@ def get_all_vehicles():
     print(vehicles_serialized)
     return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
 
-#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
-
-
 
 #ENDPOINT PARA BORRAR VEHICULOS 
+
+@app.route('/eliminar_vehiculo/<int:id_vehiculo>', methods=['DELETE'])
+@jwt_required()
+def eliminar_vehiculo(id_vehiculo):
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    if not user_current:
+        return jsonify({'msg': 'Usuario no encontrado'}), 404
+    # Buscar el vehículo con ese ID que pertenezca al usuario autenticado
+    vehiculo = Vehiculos.query.filter_by(id_vehiculo=id_vehiculo, user_id=user_current.id_user).first()
+    if not vehiculo:
+        return jsonify({'msg': 'Vehículo no encontrado o no te pertenece'}), 404
+
+    db.session.delete(vehiculo)
+    db.session.commit()
+    return jsonify({'msg': 'Vehículo eliminado correctamente'}), 200
+
+
+#ENDPOINT PARA CREAR VEHICULOS DE UN USUARIO ESPECIFICO
+
+@app.route('/crear_mis_vehiculos', methods = ['POST'])
+@jwt_required()
+def crear_mis_vehiculos():
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    print(user_current)
+    print(user_current.id_user)
+    id_propietario = user_current.id_user
+    
+    body = request.get_json(silent = True)
+    if body is None:
+        return jsonify({'msg': 'debes enviar informacion del vehiculo en el body'}), 400
+    if 'matricula' not in body:
+        return jsonify({'msg': 'debes enviar la matricula del vehiculo'}), 400
+    if 'marca' not in body:
+        return jsonify({'msg': 'debes enviar la marca del vehiculo'}), 400
+    if 'modelo' not in body:
+        return jsonify({'msg': 'debes enviar el modelo del vehiculo'}), 400
+    if 'year' not in body:
+        return jsonify({'msg': 'debes enviar el año del vehiculo'}), 400
+    if 'user_id' not in body:
+        return jsonify({'msg': 'Debes enviar el Id de un usuario existente'})
+
+    new_car = Vehiculos()
+    new_car.matricula = body['matricula']
+    new_car.marca = body['marca']
+    new_car.modelo = body['modelo']
+    new_car.year = body['year']
+    new_car.user_id = id_propietario
+
+    db.session.add(new_car)
+    db.session.commit()
+    return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
+
 
 #ENDPOINT PRA EDITAR VEHICULOS
 
@@ -251,7 +306,7 @@ def update_user_profile(user_id):
         db.session.rollback()
         print(f"Error al actualizar perfil de usuario: {e}")
         return jsonify({'msg': 'Error al actualizar el perfil de usuario', 'error': str(e)}), 500
-
+      
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

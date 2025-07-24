@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const Register = () => {
-    const navigate = useNavigate(); // Hook para la navegación programática
-    const BACKEND_URL="https://reimagined-guacamole-7q4xww65qqwfpqqr-3001.app.github.dev/"
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         nombre: '',
         identificacion: '',
         password: '',
+        confirmPassword: '',
         telefono: '',
         email: '',
         foto_usuario: '',
@@ -19,38 +19,68 @@ export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [message, setMessage] = useState(null); // Para mostrar mensajes al usuario
+    const [passwordMatchError, setPasswordMatchError] = useState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    const validateForm = () => {
+        const { nombre, identificacion, password, confirmPassword, telefono, email, acceptTerms } = formData;
+
+        const allFieldsFilled = nombre.trim() !== '' &&
+            identificacion.trim() !== '' &&
+            password.trim() !== '' &&
+            confirmPassword.trim() !== '' &&
+            telefono.trim() !== '' &&
+            email.trim() !== '';
+
+
+        const passwordsMatch = password === confirmPassword && password !== '';
+
+        const termsAccepted = acceptTerms;
+
+        setIsFormValid(allFieldsFilled && passwordsMatch && termsAccepted);
+    };
+
+    useEffect(() => {
+        validateForm();
+    }, [formData]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value,
+        setFormData(prevFormData => {
+            const newFormData = {
+                ...prevFormData,
+                [name]: type === 'checkbox' ? checked : value,
+            };
+
+            if (name === 'password' || name === 'confirmPassword') {
+                if (newFormData.password && newFormData.confirmPassword) {
+                    setPasswordMatchError(newFormData.password !== newFormData.confirmPassword);
+                } else {
+                    setPasswordMatchError(false);
+                }
+            }
+            return newFormData;
         });
-        // Limpiar mensaje al empezar a escribir de nuevo
+
+
         if (message) setMessage(null);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage(null); // Limpiar mensajes previos
+        setMessage(null);
 
-        if (formData.password !== formData.confirmPassword) {
-            setMessage('Las contraseñas no coinciden.');
-            return;
-        }
-
-        // Preparar los datos para enviar al backend, mapeando los nombres
         const dataToSend = {
             nombre: formData.nombre,
             identificacion: formData.identificacion,
             password: formData.password,
             telefono: formData.telefono,
             email: formData.email,
-            foto_usuario: formData.foto_usuario, // Asegúrate de que este campo tenga un valor válido, quizás una URL predeterminada o si planeas una carga de archivos
+            foto_usuario: formData.foto_usuario,
         };
 
         try {
-            const response = await fetch(`${BACKEND_URL}/register`, { // Asume que tienes BACKEND_URL en tus variables de entorno
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, { // Asume que tienes BACKEND_URL en tus variables de entorno
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,12 +91,11 @@ export const Register = () => {
             const result = await response.json();
 
             if (response.ok) {
-                setMessage('¡Registro exitoso! Redirigiendo al login...');
+                setMessage('¡Tu usuario ha sido Registrado correctamente!...');
                 setTimeout(() => {
-                    navigate('/login'); // Redirige al usuario a la página de login
-                }, 2000); // Espera 2 segundos antes de redirigir
+                    navigate('/login');
+                }, 2000);
             } else {
-                // Si la respuesta no es OK (ej. 400 Bad Request)
                 setMessage(`Error al registrar: ${result.msg || 'Ha ocurrido un error inesperado.'}`);
             }
         } catch (error) {
@@ -77,6 +106,20 @@ export const Register = () => {
 
     return (
         <div className="login-page-container d-flex justify-content-center align-items-center">
+            {message && (
+                                        <div className={`alert ${message.includes('correctamente') ? 'alert-success' : 'alert-danger'} d-flex align-items-center alert-dismissible fade show text-center`} role="alert"
+                                            style={{
+                                                position: 'fixed',
+                                                top: '50%',
+                                                left: '50%',
+                                                transform: 'translate(-50%, -50%)',
+                                                zIndex: 1050,
+                                                maxWidth: '500px',
+                                                width: '90%'
+                                            }}>
+                                            {message}
+                                        </div>
+                                    )}
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-lg-5 col-md-8 col-sm-10">
@@ -89,11 +132,6 @@ export const Register = () => {
 
                                 <form onSubmit={handleSubmit}>
                                     {/* Mensajes de feedback */}
-                                    {message && (
-                                        <div className={`alert ${message.includes('exitoso') ? 'alert-success' : 'alert-danger'}`} role="alert">
-                                            {message}
-                                        </div>
-                                    )}
 
                                     {/* Nombre y Apellido */}
                                     <div className="input-group mb-3">
@@ -108,7 +146,7 @@ export const Register = () => {
                                         />
                                     </div>
 
-                                    {/* Identificación (DNI/Cédula) - Nuevo campo */}
+                                    {/* Identificación */}
                                     <div className="input-group mb-3">
                                         <input
                                             type="text"
@@ -134,7 +172,7 @@ export const Register = () => {
                                         />
                                     </div>
 
-                                    {/* Número de Teléfono - Nuevo campo */}
+                                    {/* Número de Teléfono */}
                                     <div className="input-group mb-3">
                                         <input
                                             type="tel" // Usa type="tel" para números de teléfono
@@ -166,7 +204,7 @@ export const Register = () => {
                                     </div>
 
                                     {/* Repite la Contraseña */}
-                                    <div className="input-wrapper mb-3">
+                                    <div className="input-wrapper mb-0">
                                         <i className="fas fa-lock password-icon-left"></i>
                                         <input
                                             type={showConfirmPassword ? "text" : "password"}
@@ -182,9 +220,14 @@ export const Register = () => {
                                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         ></i>
                                     </div>
+                                    {passwordMatchError && (
+                                        <div className="invalid-feedback d-block mb-3 text-start">
+                                            Las contraseñas no coinciden.
+                                        </div>
+                                    )}
 
                                     {/* Checkbox de Términos y Condiciones */}
-                                    <div className="form-check text-white mb-4 custom-control-register">
+                                    <div className="form-check text-white my-4 custom-control-register">
                                         <input
                                             className="form-check-input"
                                             type="checkbox"
@@ -200,7 +243,7 @@ export const Register = () => {
                                     </div>
 
                                     <div className="d-grid">
-                                        <button type="submit" className="btn btn-primary">
+                                        <button type="submit" className="btn btn-primary" disabled={!isFormValid}>
                                             Registrar
                                         </button>
                                     </div>

@@ -1,32 +1,30 @@
 .register-card {
-    min-height: auto; /* Anula el min-height de login-card para que el contenido determine la altura */
-    height: auto; /* Asegura que la altura se ajuste al contenido */
-    max-width: 500px; /* Limita el ancho máximo para que no sea demasiado grande */
-    margin: 2rem auto; /* Centra la tarjeta y da un margen superior/inferior */
+    min-height: auto;
+    height: auto;
+    max-width: 500px;
+    margin: 2rem auto;
 }
 
-/* Ajustes para el checkbox de términos y condiciones */
 .custom-control-register .form-check-input {
-    background-color: #f8f9fa; /* Fondo blanco para el checkbox */
-    border: 1px solid #ced4da; /* Borde para el checkbox */
-    margin-right: 0.5rem; /* Espacio entre el checkbox y el texto */
-    float: left; /* Alinea el checkbox a la izquierda */
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    margin-right: 0.5rem;
+    float: left;
 }
 
 .custom-control-register .form-check-label {
-    padding-left: 0.5rem; /* Ajusta el padding para que el texto no se pegue al checkbox */
-    display: block; /* Permite que el texto se ajuste al ancho */
-    overflow: hidden; /* Oculta el desbordamiento si el texto es muy largo */
+    padding-left: 0.5rem;
+    display: block;
+    overflow: hidden;
 }
 
-/* Centrado del contenido dentro de la tarjeta de registro */
 .register-card > div:first-child {
-    flex-grow: 1; /* Permite que la sección superior ocupe el espacio disponible */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra verticalmente el contenido */
+    justify-content: center;
 }
 
 .register-card .register-section {
-    margin-top: auto; /* Empuja la sección de registro al final de la tarjeta */
+    margin-top: auto;
 }

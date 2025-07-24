@@ -9,8 +9,6 @@ export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
-    const BACKEND_URL="https://reimagined-guacamole-7q4xww65qqwfpqqr-3001.app.github.dev/"
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };  
@@ -28,12 +26,12 @@ export const Login = () => {
     }, []);
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recargar la página)
-        setIsLoading(true); // Muestra un indicador de carga
+        e.preventDefault();
+        setIsLoading(true);
 
 
         try {
-            const response = await fetch(`${BACKEND_URL}/login`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -218,7 +218,6 @@ def get_all_vehicles():
 def update_user_profile(user_id):
     current_user_id = get_jwt_identity()
 
-    # Verificación de autorización si solo el usuario puede actualizar su propio perfil
     if current_user_id != user_id:
         return jsonify({"msg": "No autorizado para actualizar este perfil"}), 403
 

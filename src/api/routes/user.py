@@ -16,7 +16,7 @@ def register():
     print(new_password)
 
     if "username" and "email" and "password" not in body:
-        return jsonify("Error, debes introducir los campos obligatorios")
+        return jsonify("Error, debes introducir los campos obligatorios"),400
 
     new_user = User()
     new_user.username = body["username"]

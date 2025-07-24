@@ -59,6 +59,8 @@ class Category(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(), nullable=False)
+
+    
     
     product_category: Mapped[List["ProductCategory"]] = relationship(
         back_populates="category", cascade= "all, delete-orphan"
@@ -95,6 +97,7 @@ class Product(db.Model):
     price: Mapped[float] = mapped_column(Float(), nullable=False)
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
+
 
     pet_type: Mapped["PetType"] = relationship(
         back_populates="products")

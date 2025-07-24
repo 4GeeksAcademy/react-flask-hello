@@ -2,21 +2,20 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.utils import generate_sitemap, APIException
+from api.utils import generate_sitemap, APIException, Product
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token
 from api.models import User, db
 from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
-bcrypt = Bcrypt()
+
 
 # Allow CORS requests to this API
 CORS(api)
 
 bcrypt = Bcrypt()
-
-
+    
 @api.route('/private-hello', methods=['POST', 'GET'])
 @jwt_required()
 def handle_private_hello():
@@ -88,4 +87,85 @@ def register():
     except Exception as e:
         db.session.rollback()
         print("Error saving user:", e)
-        return jsonify({"error": "Error en el servidor"}), 500
+        return jsonify({"error": "Error en el servidor"}),500
+
+
+
+
+
+
+#el carrito
+@api.route('/hello')
+def home():
+    return "¡Funcionando Correctamente!"
+
+#Productos
+@api.route('/product', methods=['GET'])
+def get_product():
+    list_products= Product.query.all()
+    products=[Product.serialize for Product in list_products]
+    print(list_products[0].name)
+    return jsonify({"messaje": "Lista de productos"}),200
+
+@api.route('/product<int:id>', methods=['GET'])
+def get_product_id():
+    product_id= Product.query.get()
+    print(product_id)
+    
+    if not product:
+        return jsonify({"messaje":"producto con el id #{id} no encontrado"}),404
+
+    
+    
+    
+@api.route('/new', methods=['POST']) 
+def new_product():
+    data_request= request.get_json()
+    
+    #inicio de la validacion
+
+    required_Add=['name','descrption','photo','coste','price','pet_ype_id','stock']
+    error={}
+
+    for Add in required_Add:
+
+        if Add not in data_request or data_request[Add] is None:
+            error[Add]= f"El campo {Add} es obligatorio"    
+        if error:
+            return jsonify({"error":"¡Revisa los Detalles!"})
+    try:
+        name=data_request.get('name')
+        description=data_request.get('description')
+        photo=data_request.get('photo')
+        coste=data_request.get('coste')
+        price=data_request.get('price')
+        pet_type_id=data_request.get('pet_type_id')
+        stock=data_request.get('stock')
+
+    product_new= Product(
+        name=name,
+        description=description,
+        photo=photo,
+        coste=coste,
+        price=price,
+        pet_type_id=pet_type_id,
+        stock=stock
+    )
+
+    db.session.add(product_new)
+    db.session.commit()
+    
+    return jsonify({"sms":"endponid creado exitosamente"}),201
+
+    except Exception as e:
+    print(e)
+    return jsonify({"error": "Error en el servidor"}),500
+
+
+
+
+@api.route('/update', methods=['PUT'])   
+def update_product():
+
+@api.route('/delete', methods=['DELETE'])   
+def delete_product(): 

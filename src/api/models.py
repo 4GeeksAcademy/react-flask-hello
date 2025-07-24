@@ -32,7 +32,7 @@ class User(db.Model):
     monto = db.Column(db.Float, nullable=False)
     categoria = db.Column(db.String(120))
     fecha = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) """
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Objetivo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,4 +48,4 @@ class Articulo(db.Model):
     titulo = db.Column(db.String(255), nullable=False)
     texto = db.Column(db.Text, nullable=False)
     url_imagen = db.Column(db.String(255))
-    enlace = db.Column(db.String(255))
+    enlace = db.Column(db.String(255)) """ 

@@ -15,10 +15,11 @@ export const Carousel = () => {
             <div
                 className="carousel-inner"
                 style={{
-                    borderRadius: '60px',
+                    borderRadius: '80px',
                     width: '90%',
-                    height: '50vh',
-                    objectFit: 'contain'
+                    height: '58vh',
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
             >
                 <div className="carousel-item active" data-bs-interval="10000">

@@ -8,11 +8,11 @@ import Carrusel2 from "/Carrusel2.png";
 import Carrusel3 from "/Carrusel3.png";
 
 
-const Home = () => { 
-  const[destacados, setDestacados] = useState([
-    { id: 1, name: "Producto 1", precio: 23, image: Carrusel1 },
-    { id: 2, name: "Producto 2", precio: 21, image: Carrusel2 },
-    { id: 3, name: "Producto 3", precio: 18, image: Carrusel3 }
+const Home = () => {
+  const [destacados, setDestacados] = useState([
+    { id: 1, name: "Pienso premium", precio: 18, image: Carrusel1 },
+    { id: 2, name: "Champú especial", precio: 15, image: Carrusel2 },
+    { id: 3, name: "Pienso para gatos", precio: 21, image: Carrusel3 }
   ]);
   return (
     <section className="landing-body container-fluid my-0 py-0">
@@ -33,13 +33,15 @@ const Home = () => {
           </div>
 
           <div className="carousel-inner">
-            { destacados.map((producto) => (
+            {destacados.map((producto) => (
               <div className={`carousel-item ${producto.id === 1 ? "active" : ""}`} key={producto.id}>
                 <img src={producto.image} className="d-block w-75 mx-auto" alt={producto.name} />
                 <div className="carousel-caption d-none d-md-block">
-                  <h5>{producto.name}</h5>
-                  <p>${producto.precio}</p>
-                  <Link to={`/producto/${producto.id}`} className="btn btn-primary">Ver producto</Link>
+                  <div className="d-flex justify-content-center gap-2 align-items-center fw-bold text-white">
+                    <span>{producto.name}</span>
+                    <span>€{producto.precio}</span>
+                  </div>
+                  <Link to={`/producto/${producto.id}`} style={{ color: "#3c6ca8" }} className="btn btn-mt-2">Ver producto</Link>
                 </div>
               </div>
             ))}

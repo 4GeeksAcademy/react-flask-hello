@@ -31,12 +31,13 @@ export const Registro = () => {
       return;
     }
     try {
-      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}register`, {
+      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: form.email,
-          password: form.password
+          password: form.password,
+          username: form.username // <-- Agrega este campo
         })
       });
       const data = await resp.json();

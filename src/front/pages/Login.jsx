@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 export const Login = () => {
   const [form, setForm] = useState({
-    username: "",
+    email: "",
     password: ""
   });
   const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export const Login = () => {
     setError("");
 
     try {
-      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}login`, {
+      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -30,7 +30,10 @@ export const Login = () => {
         })
       });
       const data = await resp.json();
-      if (resp.ok) {
+      console.log("Login response:", data); // <-- Agrega este log
+
+      if (resp.ok && data.token) {
+        localStorage.setItem("token", data.token); // Guarda el token
         navigate("/dashboard");
       } else {
         setError(data.message || "Error en el inicio de sesión.");
@@ -46,8 +49,8 @@ export const Login = () => {
 
       <form onSubmit={handleSubmit} className="container">
         <div className="mb-3 text-center">
-          <label htmlFor="username">Nombre de usuario:</label>
-          <input className="form-control" type="text" id="username" name="username" required value={form.username} onChange={handleChange} />
+          <label htmlFor="email">Correo electrónico:</label>
+          <input className="form-control" type="email" id="email" name="email" required value={form.email} onChange={handleChange} />
         </div>
         <div className="mb-3 text-center">
           <label htmlFor="password">Contraseña:</label>
@@ -57,6 +60,11 @@ export const Login = () => {
           <button className="btn btn-primary mt-2" type="submit">Iniciar sesión</button>
         </div>
       </form>
+      {error && (
+        <div className="alert alert-danger text-center" role="alert">
+          {error}
+        </div>
+      )}
       <p className="text-center mt-3">
         ¿No tienes una cuenta? <Link to="/registro">Regístrate aquí</Link>
       </p>

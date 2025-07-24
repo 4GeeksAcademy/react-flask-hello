@@ -16,6 +16,7 @@ import { Gatos } from "./pages/Gatos.jsx";
 import { Registro } from "./pages/Registro.jsx"; // Importing the Registro component
 import { Carrito } from "./pages/Carrito.jsx"; // Importing the Carrito component
 import { Login } from "./pages/Login.jsx"; // Importing the Login component
+import { Dashboard } from "./pages/Dashboard"; // Importing the Dashboard component
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,7 @@ export const router = createBrowserRouter(
       <Route path="/registro" element={<Registro />} /> {/* Route for RegistroModal */}
       <Route path="/carrito" element={<Carrito />} /> {/* Route for Carrito page */}
       <Route path="/login" element={<Login />} /> {/* Route for Login page */}
+      <Route path="/dashboard" element={<Dashboard />} /> {/* Route for Dashboard page */}
 
       {/* Add more routes as needed */}
     </Route>

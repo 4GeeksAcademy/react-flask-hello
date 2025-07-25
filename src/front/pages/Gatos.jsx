@@ -3,5 +3,6 @@ export const Gatos = () => {
     <div>
       <h1>Gatos</h1>
     </div>
+    
   );
 };

@@ -45,21 +45,7 @@ const Home = () => {
                 </div>
               </div>
             ))}
-            {/* <div className="carousel-item active" data-bs-interval="10000">
-              <img src={Carrusel1} className="d-block w-75 mx-auto" alt="Producto 1" />
-              <div className="carousel-caption d-none d-md-block">
-              </div>
-            </div>
-            <div className="carousel-item" data-bs-interval="2000">
-              <img src={Carrusel2} className="d-block w-75 mx-auto" alt="Producto 2" />
-              <div className="carousel-caption d-none d-md-block">
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={Carrusel3} className="d-block w-75 mx-auto" alt="Producto 3" />
-              <div className="carousel-caption d-none d-md-block">
-              </div>
-            </div> */}
+
           </div>
 
           <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
@@ -85,7 +71,7 @@ const Home = () => {
             }}
           />
           <div className="shop-now mt-3">
-            <button style={{ color: "#3c6ca8" }} className="btn btn-outline">Shop now</button>
+            <p style={{ color: "#3c6ca8" }} className="">Conectando corazones y patitas</p>
           </div>
         </div>
 

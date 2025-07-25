@@ -18,7 +18,7 @@ export const Home = () => {
     {
     src: "https://images4.alphacoders.com/595/595710.jpg",
     },
-    // Puedes añadir más objetos aquí
+    // Puedes añadir más objetos aquí para el nuevo carousel
   ];
   const responsive = {
     superLargeDesktop: {

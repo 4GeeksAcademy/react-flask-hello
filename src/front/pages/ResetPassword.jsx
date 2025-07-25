@@ -26,7 +26,6 @@ const PasswordValidation = ({ password }) => {
 };
 
 export const ResetPassword = () => {
-
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
@@ -49,11 +48,14 @@ export const ResetPassword = () => {
 
     try {
       const res = await fetch(
-        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/change-password",
+        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/new-password",
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ old_password: token, new_password: newPassword }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ✅ Token como header
+          },
+          body: JSON.stringify({ password: newPassword }), // ✅ Solo se manda la nueva contraseña
         }
       );
 
@@ -62,7 +64,7 @@ export const ResetPassword = () => {
         setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
         setToken("");
         setNewPassword("");
-        localStorage.removeItem("token"); 
+        localStorage.removeItem("token");
       } else {
         setResetMessage(data.msg || "❌ Ups! Error al resetear la contraseña");
       }
@@ -131,5 +133,6 @@ export const ResetPassword = () => {
     </div>
   );
 };
+
 
 

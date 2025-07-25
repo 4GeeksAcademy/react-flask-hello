@@ -18,7 +18,7 @@ export const ForgotPassword = () => {
 
     try {
       const res = await fetch(
-        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/api/new-password",
+        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/forgotten",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -28,13 +28,13 @@ export const ForgotPassword = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("✅ Enlace enviado. Revisa tu correo.");
+        setMessage("✅ Enlace/token generado. Revisa tu correo o continúa.");
         setEmail("");
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
       } else {
-        setMessage(data.msg || "❌ Error al enviar el correo.");
+        setMessage(data.msg || "❌ Error al generar el token.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -51,7 +51,6 @@ export const ForgotPassword = () => {
           🔒
         </div>
         <h3>¿Olvidaste tu contraseña?</h3>
-        <p className="text-muted">Te enviaremos un enlace por correo</p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -67,7 +66,7 @@ export const ForgotPassword = () => {
           />
         </div>
         <button className="btn btn-primary w-100" type="submit" disabled={loading}>
-          {loading ? "Enviando..." : "Enviar enlace"}
+          {loading ? "Enviando..." : "Generar token"}
         </button>
       </form>
 

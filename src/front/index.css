@@ -21,6 +21,19 @@
     margin: 0;
     padding: 0;
 }
+
+.signup-page-container {
+    position: relative;
+    /* width: 100vw; */
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
 .video-background {
     position: absolute;
     top: 50%;
@@ -32,6 +45,17 @@
     z-index: -1;
     transform: translate(-50%, -50%);
     object-fit: cover;
+    filter: brightness(0.7);
+    opacity: 0.4;
+}
+
+.imagen-background {
+    position: absolute;
+    /* top: 50%; */
+    /* left: 50%; */
+    z-index: -1;
+    /* transform: translate(-50%, -50%); */
+    /* object-fit: cover; */
     filter: brightness(0.7);
     opacity: 0.4;
 }
@@ -141,17 +165,4 @@ body.dark-theme .btn-dark {
     .festquila-footer .d-flex.flex-column.align-items-md-start {
         align-items: center !important;
     }
-}
-
-.signup-page-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    background-color: #000000;
 }

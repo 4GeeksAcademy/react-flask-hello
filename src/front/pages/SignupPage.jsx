@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import imagenBack from "../assets/fondo-orquesta.jpg"
 
 export const SignupPage = () => {
     const [email, setEmail] = useState("");
@@ -53,6 +54,9 @@ export const SignupPage = () => {
 
     return (
         <div className="signup-page-container">
+            <div className="imagen-background">
+                <img src={imagenBack} alt="imagen fondo" />
+            </div>
             <div className="login-content-wrapper">
                 <div className="login-form-card p-4">
                     <h2 className="text-center mb-4">Regístrate</h2>

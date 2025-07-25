@@ -10,15 +10,16 @@ export const Carousel = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '20px'
+            marginTop: '18px'
         }}>
             <div
-                className="carousel-inner"
+                className="carousel-inner "
                 style={{
-                    borderRadius: '60px',
-                    width: '80%',
-                    height: '30vh',
-                    objectFit: 'contain'
+                    borderRadius: '50px',
+                    width: '96%',
+                    height: '48vh',
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
             >
                 <div className="carousel-item active" data-bs-interval="10000">
@@ -39,6 +40,7 @@ export const Carousel = () => {
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                 <span className="visually-hidden">Next</span>
             </button>
+
         </div>
     );
 };

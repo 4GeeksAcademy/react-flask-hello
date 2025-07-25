@@ -101,8 +101,6 @@ def register_user():
         return jsonify({'msg': 'Debes enviar un numero telefonico del usuario'})
     if 'email' not in body:
         return jsonify({'msg': 'Debes enviar el email e usuario'})
-    if 'foto_usuario' not in body:
-        return jsonify({'msg': 'Debes subir la foto del usuario'})
     
     new_user = User()
     new_user.nombre = body['nombre']
@@ -111,7 +109,6 @@ def register_user():
     new_user.telefono = body['telefono']
     new_user.email = body['email']
     new_user.is_active = True
-    new_user.foto_usuario = body['foto_usuario']
     new_user.rol = RolEnum.CLIENTE
     
     db.session.add(new_user)
@@ -267,6 +264,52 @@ def crear_mis_vehiculos():
     db.session.commit()
     return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
 
+
+#ENDPOINT PRA EDITAR VEHICULOS
+
+
+
+#ENDPOINT PARA EDITAR PERFIL DE USUARIO
+
+@app.route('/user/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def update_user_profile(user_id):
+    current_user_id = get_jwt_identity()
+
+    if current_user_id != user_id:
+        return jsonify({"msg": "No autorizado para actualizar este perfil"}), 403
+
+    user = User.query.get(user_id)
+    if user is None:
+        return jsonify({'msg': 'Usuario no encontrado'}), 404
+
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg': 'Debes enviar información para actualizar'}), 400
+
+    if 'nombre' in body:
+        user.nombre = body['nombre']
+    if 'telefono' in body:
+        user.telefono = body['telefono']
+    if 'email' in body:
+        if body['email'] != user.email:
+            existing_user = User.query.filter_by(email=body['email']).first()
+            if existing_user:
+                return jsonify({'msg': 'Este email ya está en uso'}), 409 # Conflicto
+        user.email = body['email']
+    
+    # Manejo de foto_usuario:
+    if 'foto_usuario' in body:
+        user.foto_usuario = body['foto_usuario'] if body['foto_usuario'] else None
+
+    try:
+        db.session.commit()
+        return jsonify({'msg': 'Perfil actualizado exitosamente', 'user': user.serialize()}), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error al actualizar perfil de usuario: {e}")
+        return jsonify({'msg': 'Error al actualizar el perfil de usuario', 'error': str(e)}), 500
+      
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

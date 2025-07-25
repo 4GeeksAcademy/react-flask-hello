@@ -26,7 +26,6 @@ const PasswordValidation = ({ password }) => {
 };
 
 export const ResetPassword = () => {
-
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
@@ -59,7 +58,7 @@ export const ResetPassword = () => {
         setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
         setToken("");
         setNewPassword("");
-        localStorage.removeItem("token"); 
+        localStorage.removeItem("token");
       } else {
         setResetMessage(data.msg || "❌ Ups! Error al resetear la contraseña");
       }

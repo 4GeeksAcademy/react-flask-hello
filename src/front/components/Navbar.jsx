@@ -55,7 +55,7 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Contacto</a>
+                <a href="/Soporte" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Soporte 24/7</a>
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -88,7 +88,7 @@ export default function Navbar() {
                 {
                   view && (
                     <>
-                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
+                      <a id="user-menu-item-0" role="menuitem" href="/login" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
                       <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
                       <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
                     </>

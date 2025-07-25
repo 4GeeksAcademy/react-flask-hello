@@ -1,0 +1,96 @@
+#Soporte.Soporte {
+  background: var(--bg);
+  padding: 3rem 1rem;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1f2937;
+}
+
+.Soporte__container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1);
+  padding: 2rem;
+  animation: fadeUp .4s ease-out both;
+}
+
+.Soporte__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: .75rem;
+  font-weight: 700;
+}
+
+.Soporte__intro {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.Soporte__form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.Soporte__field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.Soporte__label {
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.Soporte__input,
+.Soporte__textarea {
+  padding: .7rem .9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #1f2937;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+  resize: vertical;
+}
+
+.Soporte__input::placeholder,
+.Soporte__textarea::placeholder {
+  color: #6b7280;
+}
+
+.Soporte__input:focus,
+.Soporte__textarea:focus {
+  outline: none;
+  border-color: #3c366b;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+.Soporte__actions {
+  text-align: center;
+}
+
+.Soporte__button {
+  background: #3c366b;
+  color: #fff;
+  border: 0;
+  padding: .75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+
+.Soporte__button:hover {
+  background: #3c366b;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

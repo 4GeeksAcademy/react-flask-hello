@@ -29,7 +29,11 @@ export const ForgotPassword = () => {
       const data = await res.json();
       if (res.ok) {
         setMessage("✅ Enlace enviado. Revisa tu correo.");
-        setEmail(""); 
+        setEmail("");
+        // Si el backend devuelve un token en data.token, guardarlo aquí:
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
       } else {
         setMessage(data.msg || "❌ Error al enviar el correo.");
       }
@@ -44,7 +48,9 @@ export const ForgotPassword = () => {
   return (
     <div className="forgot-password card p-4 shadow">
       <div className="text-center mb-4">
-        <div className="emoji">🔒</div>
+        <div className="emoji" style={{ fontSize: "2rem" }}>
+          🔒
+        </div>
         <h3>¿Olvidaste tu contraseña?</h3>
         <p className="text-muted">Te enviaremos un enlace por correo</p>
       </div>

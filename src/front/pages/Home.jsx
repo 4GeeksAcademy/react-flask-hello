@@ -84,7 +84,7 @@ console.log(offers)
         <div className="col-md-8">
           <div className="bg-white p-4 rounded shadow-sm mb-4">
             {/* Conditionally show form if user is logged in */}
-            {store.usuarios ? (
+            {store.user ? (
               <>
                 <h2 className="text-success mb-3">Crear Nueva Oferta</h2>
                 {submitError && <div className="alert alert-danger">{submitError}</div>}

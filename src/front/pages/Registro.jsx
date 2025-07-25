@@ -92,7 +92,7 @@ export const Registro = () => {
   // Función que se ejecuta al enviar el formulario
   const handleSubmit = async (e) => { // <-- Asegúrate de que esta función sea 'async'
     e.preventDefault(); // Previene la recarga de la página
-    console.log(store)
+
   
 
     const nuevoUser = {

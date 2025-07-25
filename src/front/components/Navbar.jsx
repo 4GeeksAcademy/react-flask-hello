@@ -78,7 +78,7 @@ export const Navbar = () => {
     dispatch({ type: 'eliminar_usuario' }); // Dispatch the action
     localStorage.removeItem('jwt_token');
     // 3. Redirect to login page
-    navigate('/login');
+    navigate('/');
     console.log('User logged out.'); // For debugging
   };
 
@@ -92,10 +92,10 @@ export const Navbar = () => {
         </svg>
         AgroCereal
       </Link>
-      {store.usuarios ? (
+      {store.user ? (
         <>
             <span style={{ ...linkStyles, cursor: 'default' }}>
-              Hola, {store.usuarios.username || 'Agricultor'}! 
+              Hola, {store.user.username || 'Agricultor'}! 
             </span>
             <button
               onClick={handleLogout}

@@ -59,7 +59,7 @@ def user_login():
     if bcrypt.checkpw(body["password"].encode(),user.password.encode()):
         user_serialize = user.serialize() 
         token = create_access_token(identity = str(user_serialize["id"]))
-        return jsonify({"token":token}),200
+        return jsonify({"token":token},{"user":user_serialize}),200
 
 
     return jsonify("Usuario logueado"),200

@@ -27,7 +27,11 @@ export const Login = () => {
     });
 
     const data = await resp.json();
-  
+    localStorage.setItem("jwt-token", data.token);
+    dispatch({
+      type:"add_user",
+      payload:data.user_serialize
+    })
 
     if (resp.ok) {
       setMessage("¡Ingreso al campo exitoso!");
@@ -36,14 +40,13 @@ export const Login = () => {
 
     } else {
       setError(data.msg || "¡Terreno resbaladizo! Error al iniciar sesión.");
+      dispatch({
+      type:"eliminar_user",
+    })
     }
 
     setSending(false);
 
-    dispatch({
-              type : "add_token",
-              payload : data.token
-          })
   };
 
   return (

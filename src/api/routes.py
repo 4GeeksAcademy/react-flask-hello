@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, Blueprint #url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User,Gasto
+from api.models import db, User, Gasto#, Objetivo, Articulo
 from api.utils import generate_sitemap, APIException
 import requests
 

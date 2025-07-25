@@ -9,9 +9,11 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/home/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import { Login } from "./pages/login/Login";
+import { Register } from "./pages/register/Register";
 import { AboutUs } from "./pages/aboutus/AboutUs";
 import { Contact } from "./pages/contact/Contact";
+import { Login } from "./pages/login/Login";
+
 
 
 
@@ -31,6 +33,7 @@ export const router = createBrowserRouter(
         <Route path= "/" element={<Home />} />
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
+        <Route path="/register" element={<Register />} /> {/* PAGINA REGISTER*/}
         <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
         <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA ABOUTUS STORE*/}
         <Route path="/contact" element={<Contact />} /> {/* PAGINA CONTACT STORE*/}

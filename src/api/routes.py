@@ -1,10 +1,10 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, Blueprint #url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User
+from api.models import db, User, Objetivo, Articulo
 from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
@@ -123,3 +123,15 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
     return jsonify({"msg": "Usuario eliminado"}), 200
+@api.route("/user/token", methods=['POST'])
+@jwt_required()
+def token():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    try:
+        access_token = create_access_token(identity=str(user.id))  
+        return jsonify({"token": access_token}), 200  
+    except Exception as e:
+        return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
+    
+

@@ -3,6 +3,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { supabase } from '../../api/supabaseClient.js';
 import { useEffect, useState } from 'react';
 import { Login } from "../components/Login.jsx";
+import { VistaHome } from "../components/VistaHome.jsx";
 
 export const Home = () => {
     const { store, dispatch } = useGlobalReducer();
@@ -29,8 +30,8 @@ export const Home = () => {
     };
 
     return (
-        <div className="bg-black">
-            <Login />
+        <div>
+            <VistaHome></VistaHome>
         </div>
     );
 };

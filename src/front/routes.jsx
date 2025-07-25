@@ -14,6 +14,7 @@ import {Footer }  from "./components/Footer";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
 import { Formulario } from "./pages/Formulario";
+import { Page404 } from "./pages/Page404";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +25,7 @@ export const router = createBrowserRouter(
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
 
     // Root Route: All navigation will start from here.
-    <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+    <Route path="/" element={<Layout />} errorElement={<Page404 />} >
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
@@ -33,7 +34,7 @@ export const router = createBrowserRouter(
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/Formulario" element={<Formulario />} />
-        <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
     </Route>
   )
 );

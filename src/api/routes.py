@@ -2,10 +2,12 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Lead
+from api.models import db, Lead, CTAdmin
 from api.utils import generate_sitemap, APIException
+from sqlalchemy import select
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import create_access_token
 
 api = Blueprint('api', __name__)
 
@@ -50,6 +52,49 @@ def validate_lead_data(data):
         "company": company.strip() if company else None,
         "message": message.strip() if message else None
     }
+
+
+@api.route('/admin/login', methods=['POST'])
+def admin_login():
+    admin_data = request.get_json()
+
+    if not admin_data:
+        return jsonify({"message": "Invalid Json or empty request body"}), 400
+
+    email = admin_data.get("email")
+    password = admin_data.get("password")
+
+    if not email:
+        return jsonify({"message": "No email entered"}), 400
+    if not password:
+        return jsonify({"message": "Password is required"}), 400
+
+    ct_admin = None
+
+    try:
+        ct_admin = db.session.execute(select(CTAdmin).where(
+            CTAdmin.email == email)).scalar_one_or_none()
+
+        if ct_admin is None:
+            return jsonify({"message": "Invalid credentials"}), 401
+
+        if not ct_admin.check_password(password):
+            return jsonify({"message": "Invalid credentials"}), 401
+
+        token = create_access_token(
+            identity=ct_admin.id,
+            additional_claims={"role": "ct_admin"}
+        )
+
+        return jsonify({
+            "token": token,
+            "user_id": ct_admin.id,
+            "message": "Login successful"
+        }), 200
+
+    except Exception as e:
+        print(f"Login error: {e}")
+        return jsonify({"message": "Failed login. Please try again later"}), 500
 
 
 @api.route('/contact', methods=['POST'])

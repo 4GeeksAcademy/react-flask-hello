@@ -103,32 +103,32 @@ export const Servicios = () => {
 
                     <div className="row text-center mt-5">
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-clock-history"></i>
+                            
                             <h5 className="mt-2">Experiencia</h5>
                             <p>Va casi 20 años cuidando tu auto.</p>
                         </div>
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-award"></i>
+                            
                             <h5 className="mt-2">Calidad</h5>
                             <p>Productos de máxima calidad, pintura de fábrica e insumos óptimos.</p>
                         </div>
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-wallet2"></i>
+                           
                             <h5 className="mt-2">Precio Justo</h5>
                             <p>La calidad tiene un precio, igualmente tiene la satisfacción garantizada.</p>
                         </div>
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-check-circle"></i>
+                            
                             <h5 className="mt-2">Cumplimiento</h5>
                             <p>El tiempo de nuestros clientes es valioso, por eso el cumplimiento es importante para nosotros.</p>
                         </div>
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-person-badge"></i>
+                            
                             <h5 className="mt-2">Profesionalismo</h5>
                             <p>Personal profesional, actualizado y altamente capacitado.</p>
                         </div>
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            <i className="bi bi-shield-check"></i>
+                           
                             <h5 className="mt-2">Garantía</h5>
                             <p>Ofrecemos garantía de por vida en nuestro trabajo.</p>
                         </div>
@@ -144,10 +144,7 @@ export const Servicios = () => {
                         <p><strong>Correo:</strong> <a href="mailto:online@autotek.com">online@autotek.com</a></p>
 
                         <div className="social-icons mt-4">
-                            <p><strong>Síguenos en</strong></p>
-                            <i className="bi bi-instagram me-3 fs-4"></i>
-                            <i className="bi bi-facebook me-3 fs-4"></i>
-                            <i className="bi bi-twitter-x fs-4"></i>
+                            
                         </div>
                     </div>
 

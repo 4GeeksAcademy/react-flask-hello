@@ -30,8 +30,8 @@ export const Home = () => {
     };
 
     return (
-        <div>
-            <VistaHome></VistaHome>
+        <div className="bg-yellow-300">
+            <VistaHome ></VistaHome>
         </div>
     );
 };

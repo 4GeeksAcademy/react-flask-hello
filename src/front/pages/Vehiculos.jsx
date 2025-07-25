@@ -10,6 +10,7 @@ export const Vehiculos = () => {
   const navigate = useNavigate()
   const [infoVehiculos, setInfoVehiculos] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [mensajeModal, setMensajeModal] = useState("¡Registro creado de manera exitosa!");
 
   const [infoNewCar, setInfoNewCar] = useState({
     matricula: "",
@@ -19,9 +20,17 @@ export const Vehiculos = () => {
     user_id: ""
   })
 
+  function handleAfterDelete() {
+
+    setMensajeModal("¡Vehículo eliminado correctamente!");
+    const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+    modal.show(); // Mostrar el modal en lugar de alert
+    getVehicles(); // vuelve a cargar la lista
+  }
+
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQxMDI3OSwianRpIjoiNmM1YzliMzUtZWM3NS00MDY0LTkxY2ItNmM0YjJmNmRlNTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQxMDI3OSwiY3NyZiI6IjI4MzQwYjg0LTkyMzMtNDg4My1iN2QyLWY4NzVhY2JjMjY2OSIsImV4cCI6MTc1MzQxNzQ3OX0.xCfrCI3al2mmiO5YIyJPYB9WQ8O6MMs2EQ96QNtKYDk" //localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -32,7 +41,10 @@ export const Vehiculos = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          alert('Error al traer la informacion')
+          setMensajeModal("¡Error al traer la informacion!");
+          const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+          modal.show(); // Mostrar el modal en lugar de alert
+          //alert('Error al traer la informacion')
         }
         return response.json()
 
@@ -56,7 +68,9 @@ export const Vehiculos = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          alert('Error al traer la informacion')
+        setMensajeModal("Error al traer la informacion");
+        const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+        modal.show(); // Mostrar el modal en lugar de alert
         }
         return response.json()
 
@@ -73,7 +87,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQxMDI3OSwianRpIjoiNmM1YzliMzUtZWM3NS00MDY0LTkxY2ItNmM0YjJmNmRlNTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQxMDI3OSwiY3NyZiI6IjI4MzQwYjg0LTkyMzMtNDg4My1iN2QyLWY4NzVhY2JjMjY2OSIsImV4cCI6MTc1MzQxNzQ3OX0.xCfrCI3al2mmiO5YIyJPYB9WQ8O6MMs2EQ96QNtKYDk" //localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
@@ -84,14 +98,18 @@ export const Vehiculos = () => {
       }
     })
       .then((response) => {
-        if (!response.ok) throw new Error("El error al crear registro de nuevo vehiculo")
+        if (!response.ok) {
+          setMensajeModal("¡El registro ha fallado, revise la informacion e intente de nuevo!");
+          const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+          modal.show(); // Mostrar el modal en lugar de alert
+        }
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+        console.log(data.msg)
+        setMensajeModal("¡Vehículo registrado correctamente!");
         const modal = new bootstrap.Modal(document.getElementById('modalExito'));
         modal.show(); // Mostrar el modal en lugar de alert
-        //alert("Vehiculos creado exitosamente")
         getVehicles()
         setShowModal(false)
       })
@@ -164,16 +182,12 @@ export const Vehiculos = () => {
           )}
         </div>
 
-
-
-
-
         <div className='d-flex flex-column py-3'>
           {
             infoVehiculos.map((vehiculo, index) => {
 
               return (
-                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} id_vehiculo={vehiculo.id_vehiculo} />
+                <VehicleCard matricula={vehiculo.matricula} marca={vehiculo.marca} modelo={vehiculo.modelo} year={vehiculo.year} id_vehiculo={vehiculo.id_vehiculo} onDelete={handleAfterDelete} />
               )
 
             })
@@ -184,18 +198,20 @@ export const Vehiculos = () => {
 
       </div>
 
+
+
       <div class="modal fade" id="modalExito" tabindex="-1" aria-labelledby="modalExitoLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content border-primary">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header modal-colors text-white">
               <h5 class="modal-title" id="modalExitoLabel">Éxito</h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <div class="modal-body">
-              ¡Registro creado de manera exitosa!
+            <div className="modal-body">
+              {mensajeModal}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+              <button type="button" class="btn modal-colors text-light" data-bs-dismiss="modal">Aceptar</button>
             </div>
           </div>
         </div>

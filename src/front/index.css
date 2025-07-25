@@ -1,4 +1,13 @@
 
+.modal-colors {
+
+    background-color: #007bff;
+}
+
+.modal-colors:hover {
+  background-color: #16385d; /* un color más oscuro al hacer hover */
+  color: white;
+}
 
 .servicio-card {
     position: relative;
@@ -40,3 +49,4 @@
     font-size: 2rem;
     color: #0d6efd;
 }
+

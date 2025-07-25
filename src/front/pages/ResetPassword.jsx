@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const PasswordValidation = ({ password }) => {
   if (!password) return null;
@@ -26,11 +27,17 @@ const PasswordValidation = ({ password }) => {
 };
 
 export const ResetPassword = () => {
+  // Solo usamos token de localStorage:
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token") || "";
+    setToken(savedToken);
+  }, []);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token") || "";
@@ -62,13 +69,15 @@ export const ResetPassword = () => {
       const data = await res.json();
       if (res.ok) {
         setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
+        setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
         setToken("");
         setNewPassword("");
-        localStorage.removeItem("token");
+        localStorage.removeItem("token"); // opcional: borrar token al cambiar
       } else {
         setResetMessage(data.msg || "❌ Ups! Error al resetear la contraseña");
       }
     } catch (error) {
+      setResetMessage("❌ Algo no ha salido bien..., Inténtalo de nuevo");
       setResetMessage("❌ Algo no ha salido bien..., Inténtalo de nuevo");
     } finally {
       setResetLoading(false);
@@ -91,6 +100,7 @@ export const ResetPassword = () => {
           <input
             type="text"
             className="form-control"
+            placeholder="Token"
             placeholder="Token"
             value={token}
             onChange={(e) => setToken(e.target.value)}

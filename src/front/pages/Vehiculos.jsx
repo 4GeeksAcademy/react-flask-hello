@@ -21,7 +21,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQwMjQ3NywianRpIjoiNDk1YTA2NWQtMmViYi00YTk3LTk1NTItYTdlOWI2NGRkMjIyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQwMjQ3NywiY3NyZiI6IjEyNGMxMGMzLWM2ODItNGNiOC1hYWQwLWFkODAzNTBhNTliZSIsImV4cCI6MTc1MzQwOTY3N30.KdLzdPtGSvdIpvdHAYB19hg8uylnua0koLCFAeof8zA"//localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -73,7 +73,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = localStorage.getItem("token-jwt")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQwMjQ3NywianRpIjoiNDk1YTA2NWQtMmViYi00YTk3LTk1NTItYTdlOWI2NGRkMjIyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQwMjQ3NywiY3NyZiI6IjEyNGMxMGMzLWM2ODItNGNiOC1hYWQwLWFkODAzNTBhNTliZSIsImV4cCI6MTc1MzQwOTY3N30.KdLzdPtGSvdIpvdHAYB19hg8uylnua0koLCFAeof8zA"//localStorage.getItem("token-jwt")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",
@@ -89,6 +89,7 @@ export const Vehiculos = () => {
       })
       .then((data) => {
         console.log(data)
+        
         const modal = new bootstrap.Modal(document.getElementById('modalExito'));
         modal.show(); // Mostrar el modal en lugar de alert
         //alert("Vehiculos creado exitosamente")
@@ -184,10 +185,12 @@ export const Vehiculos = () => {
 
       </div>
 
+
+
       <div class="modal fade" id="modalExito" tabindex="-1" aria-labelledby="modalExitoLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content border-primary">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header modal-colors text-white">
               <h5 class="modal-title" id="modalExitoLabel">Éxito</h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
@@ -195,7 +198,7 @@ export const Vehiculos = () => {
               ¡Registro creado de manera exitosa!
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+              <button type="button" class="btn modal-colors text-light" data-bs-dismiss="modal">Aceptar</button>
             </div>
           </div>
         </div>

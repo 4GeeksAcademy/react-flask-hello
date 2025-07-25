@@ -10,6 +10,17 @@
     padding: 0;
 }
 
+.home-page-container{
+     position: relative;
+    /* width: 100vw; */
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
 .video-background {
     position: absolute;
     top: 50%;

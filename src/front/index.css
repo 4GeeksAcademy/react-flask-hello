@@ -1,0 +1,249 @@
+.logo {
+  margin-top: 4rem;
+  margin-left: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+}
+
+.modal button {
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal button:hover {
+  background: #0056b3;
+}
+/* body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); Gradient background
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; Full screen height
+  color: #333; Text color
+} */
+
+h1, h2, h3 {
+  font-family: 'Helvetica', sans-serif;
+  color: #444; /* Darker text color for headers */
+}
+
+button {
+  background-color: #007bff; /* Button background */
+  color: #fff; /* Button text */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3; /* Hover background */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+/* .Cocktail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.drink {
+  width: 150px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.drink img {
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.drink div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.drink input[type="checkbox"] {
+  margin-bottom: 5px;
+}
+
+.drink:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+} */
+/* Container for the search functionality */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: auto;
+}
+
+.card-text {
+  display: -webkit-box; /* Necesario para que funcione -webkit-line-clamp */
+  
+  -webkit-box-orient: vertical; /* Orientación vertical */
+  overflow: hidden; /* Ocultar el contenido que excede */
+  text-overflow: ellipsis; /* Mostrar "..." al truncar */
+}
+
+
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  position: relative; /* so your "…see more" button can be positioned */
+}
+/* Search Bar */
+.search-bar {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+/* Search Input */
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+  border-color: #0056b3;
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Search Button */
+.search-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.search-button:active {
+  background-color: #004494;
+  transform: scale(0.95);
+}
+
+/* Cocktail List */
+.cocktail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Individual Cocktail Cards */
+.cocktail-card {
+  width: 250px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.cocktail-card:hover {
+  transform: scale(1.05);
+}
+
+/* Cocktail Titles */
+.cocktail-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Cocktail Images */
+.cocktail-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Glass and Category */
+.cocktail-glass, .cocktail-category {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Ingredients List */
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.ingredient-item {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Instructions */
+.cocktail-instructions {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* No Results Message */
+.no-results {
+  font-size: 1.2rem;
+  color: red;
+  margin-top: 20px;
+}
+

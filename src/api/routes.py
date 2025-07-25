@@ -11,7 +11,6 @@ from flask_bcrypt import Bcrypt
 api = Blueprint('api', __name__)
 bcrypt = Bcrypt()
 
-# Allow CORS requests to this API
 CORS(api)
 
 
@@ -23,7 +22,7 @@ def handle_private_hello():
     if user:
         response_body = {
             "message": "Hola, soy una ruta privada",
-            "user": user.serialize()  # Asegúrate que tu modelo User tenga un método serialize
+            "user": user.serialize() 
         }
         return jsonify(response_body), 200
     else:
@@ -64,7 +63,7 @@ def register():
     data_request = request.get_json()
     email = data_request.get('email')
     password = data_request.get('password')
-    name = data_request.get('username')  # <-- Cambiado para recibir el nombre
+    name = data_request.get('username')  
 
     if not email or not password:
         return jsonify({"message": "Los campos email,password son obligatorios"}), 400
@@ -74,7 +73,7 @@ def register():
     new_user = User(
         email=email,
         password=hashed_password,
-        name=name,  # <-- Guardar el nombre
+        name=name,  
         is_active=True
     )
 

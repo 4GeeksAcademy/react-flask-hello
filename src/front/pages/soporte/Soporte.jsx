@@ -1,4 +1,4 @@
-import "./Soporte.css";
+import "./soporte.css";
 export const Soporte = () => {
   const handleSubmit = (e) => {
     e.preventDefault();

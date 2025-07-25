@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import "../login.css";
 
@@ -8,6 +8,8 @@ export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+
+    const navigate = useNavigate()
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -45,6 +47,7 @@ export const Login = () => {
                 localStorage.setItem('jwt_token', data.token);
                 console.log('✅ Verificación Exitosa: ¡Inicio de sesión correcto!');
                 console.log('🔑 Token JWT recibido y almacenado:', data.token);
+                navigate('/inicioUser')
             } else {
                 // Si hay un error en la respuesta del backend
                 console.error('❌ Verificación Fallida:', data.msg || 'Credenciales incorrectas.'); // Mensaje de error en consola

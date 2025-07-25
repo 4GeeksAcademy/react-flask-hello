@@ -80,7 +80,7 @@ export const Register = () => {
         };
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, { // Asume que tienes BACKEND_URL en tus variables de entorno
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}register`, { // Asume que tienes BACKEND_URL en tus variables de entorno
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

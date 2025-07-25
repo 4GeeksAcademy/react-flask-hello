@@ -1,10 +1,7 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 export const Login = () => {
-
-
-
-
 
 //     const [email, setEmail] = useState("")
 //         const [password, setPassword] = useState("")
@@ -86,14 +83,15 @@ export const Login = () => {
                 </div>
                 <div className="text-center">
 
-                 
-                     <p className="text-sm text-gray-600">
+                 <Link to ="/Register">
+                  <p className="text-sm text-gray-600">¿No tienes cuenta? Registrate ya
                       
-                        <a href="/Register" className="font-medium text-blue-600 hover:text-blue-500">¿No tienes cuenta? Registrate ya
                         
-                        </a>
+                    
                     </p>
                  
+                 </Link>
+                    
                    
                 </div>
             </form>

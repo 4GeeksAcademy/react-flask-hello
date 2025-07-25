@@ -4,28 +4,29 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import jwt_required, create_access_token
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from api.models import User, db
 from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 bcrypt = Bcrypt()
 
-# Allow CORS requests to this API
 CORS(api)
 
-bcrypt = Bcrypt()
 
-
-@api.route('/private-hello', methods=['POST', 'GET'])
+@api.route('/private-hello', methods=['GET'])
 @jwt_required()
 def handle_private_hello():
-
-    response_body = {
-        "message": "Hola, soy una ruta privada"
-    }
-
-    return jsonify(response_body), 200
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if user:
+        response_body = {
+            "message": "Hola, soy una ruta privada",
+            "user": user.serialize() 
+        }
+        return jsonify(response_body), 200
+    else:
+        return jsonify({"message": "Usuario no encontrado"}), 404
 
 
 @api.route('/login', methods=['POST'])
@@ -60,32 +61,26 @@ def login():
 @api.route('/register', methods=["POST"])
 def register():
     data_request = request.get_json()
-    print("Register request data:", data_request)
-
     email = data_request.get('email')
     password = data_request.get('password')
-    print(f"Email: {email}, Password received: {'Yes' if password else 'No'}")
+    name = data_request.get('username')  
 
     if not email or not password:
-        print("Error: email or password missing")
         return jsonify({"message": "Los campos email,password son obligatorios"}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    print("Password hashed")
 
     new_user = User(
         email=email,
         password=hashed_password,
+        name=name,  
         is_active=True
     )
-    print("New user created:", new_user)
 
     try:
         db.session.add(new_user)
         db.session.commit()
-        print("User saved to database")
         return jsonify({"message": "usuario creado con exito"}), 201
     except Exception as e:
         db.session.rollback()
-        print("Error saving user:", e)
         return jsonify({"error": "Error en el servidor"}), 500

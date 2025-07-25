@@ -73,7 +73,7 @@ export const Navbar = () => {
       <div className="d-flex justify-content-center align-items-center mt-2 w-100">
         <p style={{
           color: "#3c6ca8",
-        }} className="m-0 text-center">Envíos en menos de 48 horas</p>
+        }} className="m-0 text-center fs-5">Envíos en menos de 48 horas.</p>
       </div>
     </nav>
   );

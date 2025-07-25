@@ -30,7 +30,6 @@ export const ForgotPassword = () => {
       if (res.ok) {
         setMessage("✅ Enlace enviado. Revisa tu correo.");
         setEmail("");
-        // Si el backend devuelve un token en data.token, guardarlo aquí:
         if (data.token) {
           localStorage.setItem("token", data.token);
         }

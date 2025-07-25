@@ -238,6 +238,9 @@ def crear_mis_vehiculos():
     print(user_current)
     print(user_current.id_user)
     id_propietario = user_current.id_user
+    new_matricula = user_current
+    print("voy a impimir userCurrent")
+    print(new_matricula)
     
     body = request.get_json(silent = True)
     if body is None:

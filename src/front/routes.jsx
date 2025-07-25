@@ -16,6 +16,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { Formulario } from "./pages/Formulario";
 import { Page404 } from "./pages/Page404";
 import { Loader} from "./pages/Loader";
+import { Page404 } from "./pages/Page404";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

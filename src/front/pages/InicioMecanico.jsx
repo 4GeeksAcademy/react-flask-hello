@@ -1,6 +1,6 @@
 import React from "react";
 
-export const InicioUser = () => {
+export const InicioMecanico = () => {
   return (
     <nav
       className="navbar navbar-expand-lg"

@@ -1,19 +1,59 @@
-.reset-password {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
+.forgot-password.card,
+.reset-password.card {
+  background-color: #fbffe4;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(183, 255, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 2rem;
+  min-height: 450px; /* Puedes ajustarlo según el contenido */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.reset-password .emoji{
-    font-size: 3rem;
+
+.forgot-password .btn,
+.reset-password .btn {
+  background-color: #b7ff00; 
+  color: #000; 
+  border: none;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(183, 255, 0, 0.4);
 }
 
-.forgot-password{
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
+.forgot-password .btn:focus,
+.reset-password .btn:focus {
+  outline: none;
+  box-shadow: 0 0 8px 3px #b7ff00;
 }
 
-.forgot-password .emoji {
-  font-size: 3rem;
+.forgot-password .btn:hover:not(:disabled),
+.reset-password .btn:hover:not(:disabled) {
+  background-color: #d4ff50; 
+  cursor: pointer;
 }
+
+.forgot-password .btn:disabled,
+.reset-password .btn:disabled {
+  background-color: #a5d300; 
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.forgot-password input.form-control,
+.reset-password input.form-control {
+  border: 2px solid #b7ff00;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.forgot-password input.form-control:focus,
+.reset-password input.form-control:focus {
+  border-color: #d4ff50;
+  box-shadow: 0 0 6px #d4ff50;
+  outline: none;
+}
+

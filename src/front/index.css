@@ -296,7 +296,7 @@ h6 {
   background-color: rgba(10, 25, 30, 0.5);
 }
 
-.hero-title-home{
+.hero-title-home {
   color: #fbff06 !important;
 }
 
@@ -345,7 +345,7 @@ h6 {
   color: transparent;
 }
 /* header contacto */
-.header{
+.header {
   margin-bottom: 4rem !important;
 }
 .form-label-contact {
@@ -380,4 +380,16 @@ h6 {
 
 .adminOption:hover {
   color: #fbff06;
+}
+
+/* Login styles */
+
+@media (max-width: 780px) {
+  .login-logo {
+    min-width: 280px;
+  }
+}
+
+.login-logo {
+  min-width: 200px;
 }

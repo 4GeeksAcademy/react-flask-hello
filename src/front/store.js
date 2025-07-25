@@ -17,6 +17,33 @@ const initialContactFormState = {
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
+    case "ADMIN_LOGIN_START":
+      return {
+        ...store,
+        loginStatus: {
+          status: "loading",
+          error: null,
+        },
+      };
+
+    case "ADMIN_LOGIN_SUCCESS":
+      return {
+        ...store,
+        loginStatus: {
+          status: "success",
+          error: null,
+        },
+      };
+
+    case "ADMIN_LOGIN_FAILURE":
+      return {
+        ...store,
+        loginStatus: {
+          status: "error",
+          error: action.payload,
+        },
+      };
+
     case "GET_ALL_LEADS_START":
       return {
         ...store,

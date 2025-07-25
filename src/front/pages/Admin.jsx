@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Leads } from "../components/Admin/Leads"
 import { AppContext } from "./Layout"
 
 export const Admin = () => {
+    const navigate = useNavigate();
     const { setShowNavbar, setShowFooter } = useContext(AppContext)
     const [activeContent, setActiveContent] = useState("");
 
@@ -24,6 +25,11 @@ export const Admin = () => {
         setActiveContent(contentName);
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken')
+        navigate('/')
+    }
+
     const renderContent = () => {
         switch (activeContent) {
             case 'leads':
@@ -36,7 +42,7 @@ export const Admin = () => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-3 col-lg-2 bg-dark text-white p-3" style={{ "height": "100vh" }}>
+                <div className="d-flex flex-column col-md-3 col-lg-2 bg-dark text-white p-3" style={{ "height": "100vh" }}>
                     <h3 className="fw-bold section-title mb-3 text-center">Panel de Administrador</h3>
                     <h4 className="mb-4 border-bottom pb-3 text-center">¡Bienvenido!</h4>
                     <ul className="nav flex-column">
@@ -53,6 +59,14 @@ export const Admin = () => {
                             </Link>
                         </li>
                     </ul>
+                    <div className="mt-auto mb-4">
+                        <Link
+                            to='/'
+                            onClick={handleLogout}
+                            className="text-decoration-none text-white fs-5 d-block text-center">
+                            Cerrar sesión
+                        </Link>
+                    </div>
                 </div>
                 <div className="col-md-9 col-lg-10 pt-4" style={{ "height": "100vh", overflowY: "auto" }}>
                     {renderContent()}

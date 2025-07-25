@@ -12,12 +12,21 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     username: Mapped[str] = mapped_column(String(120), nullable=False)
+    firstname: Mapped[str] = mapped_column(String(120), nullable=False)
+    lastname: Mapped[str] = mapped_column(String(120), nullable=False)
+    country: Mapped[str] = mapped_column(String(120), nullable=False)
+    phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
+
 
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
             "username": self.username,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "country": self.country,
+            "phone": self.phone,
             # do not serialize the password, its a security breach
         }
     def set_password(self, password):
@@ -26,15 +35,17 @@ class User(db.Model):
     def check_password(self, password):
         return Bcrypt().check_password_hash(self.password, password)
     
-""" class Gasto(db.Model):
+class Gasto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    concepto = db.Column(db.String(255), nullable=False)
-    monto = db.Column(db.Float, nullable=False)
-    categoria = db.Column(db.String(120))
-    fecha = db.Column(db.DateTime, default=datetime.utcnow)
+    sueldo = db.Column(db.Float, nullable=False)
+    is_student: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    #concepto = db.Column(db.String(255), nullable=False)
+    #monto = db.Column(db.Float, nullable=False)
+    #categoria = db.Column(db.String(120))
+    #fecha = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-class Objetivo(db.Model):
+""" class Objetivo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
     descripcion = db.Column(db.Text)

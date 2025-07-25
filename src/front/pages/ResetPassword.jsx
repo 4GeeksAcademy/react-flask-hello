@@ -26,7 +26,7 @@ const PasswordValidation = ({ password }) => {
 };
 
 export const ResetPassword = () => {
-  // Solo usamos token de localStorage:
+
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
@@ -62,7 +62,7 @@ export const ResetPassword = () => {
         setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
         setToken("");
         setNewPassword("");
-        localStorage.removeItem("token"); // opcional: borrar token al cambiar
+        localStorage.removeItem("token"); 
       } else {
         setResetMessage(data.msg || "❌ Ups! Error al resetear la contraseña");
       }

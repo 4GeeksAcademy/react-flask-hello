@@ -16,7 +16,7 @@ export const Login = () => {
             style={{
                 backgroundColor: "white",
                 color: "#000",
-                height: "100vh",
+                height: "93.4vh",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -71,7 +71,11 @@ export const Login = () => {
                         }}
                     />
                 </div>
-
+                <div>{/* Te he añadido un enlace para recuperar la contraseña en caso de que la hayas olvidado. Y queria ver como quedaba. Alexis */}
+                    <p style={{ color: "#95cf00ff" }}>
+                    ¿Olvidaste tu contraseña? <a href="/forgotpassword" style={{ color: "#95cf00ff", 
+                    textDecoration: "underline", ":hover": { color: "#B7FF00" } }}>Recuperar</a></p>
+                </div>
                 <button
                 type="submit"
                 onMouseDown={() => setIsPressed(true)}

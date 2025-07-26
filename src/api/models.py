@@ -14,20 +14,20 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     username: Mapped[str] = mapped_column(String(120), nullable=False)
-    firstname: Mapped[str] = mapped_column(String(120), nullable=False)
-    lastname: Mapped[str] = mapped_column(String(120), nullable=False)
-    country: Mapped[str] = mapped_column(String(120), nullable=False)
-    phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
+    """ firstname: Mapped[str] = mapped_column(String(120))
+    lastname: Mapped[str] = mapped_column(String(120))
+    country: Mapped[str] = mapped_column(String(120))
+    phone: Mapped[str] = mapped_column(String(27), unique=True) """
 
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "firstname": self.firstname,
-            "lastname": self.lastname,
-            "country": self.country,
-            "phone": self.phone,
+            #"firstname": self.firstname,
+            #"lastname": self.lastname,
+            #"country": self.country,
+            #"phone": self.phone,
             # do not serialize the password, its a security breach
         }
 

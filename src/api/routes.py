@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException, Product
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token
@@ -112,7 +112,7 @@ def get_product_id():
     product_id= Product.query.get()
     print(product_id)
     
-    if not product:
+    if not product_id:
         return jsonify({"messaje":"producto con el id #{id} no encontrado"}),404
 
     
@@ -132,7 +132,7 @@ def new_product():
         if Add not in data_request or data_request[Add] is None:
             error[Add]= f"El campo {Add} es obligatorio"    
         if error:
-            return jsonify({"error":"¡Revisa los Detalles!"})
+            return  make_response(jsonify({"error":"¡Revisa los Detalles!"}), 422)
     try:
         name=data_request.get('name')
         description=data_request.get('description')
@@ -142,30 +142,36 @@ def new_product():
         pet_type_id=data_request.get('pet_type_id')
         stock=data_request.get('stock')
 
-    product_new= Product(
-        name=name,
-        description=description,
-        photo=photo,
-        coste=coste,
-        price=price,
-        pet_type_id=pet_type_id,
-        stock=stock
-    )
+        product_new= Product(
+            name=name,
+            description=description,
+            photo=photo,
+            coste=coste,
+            price=price,
+            pet_type_id=pet_type_id,
+            stock=stock
+        )
 
-    db.session.add(product_new)
-    db.session.commit()
+        db.session.add(product_new)
+        db.session.commit()
     
-    return jsonify({"sms":"endponid creado exitosamente"}),201
+        return make_response(jsonify({"msg":"endponid creado exitosamente"}), 201)
 
     except Exception as e:
-    print(e)
-    return jsonify({"error": "Error en el servidor"}),500
+        print(e)
+        return make_response(jsonify({"error": "Error en el servidor"}), 500)
 
 
 
 
-@api.route('/update', methods=['PUT'])   
-def update_product():
+@api.route('/update/<int:id>', methods=['PUT'])   
+def update_product(id):
+    pass
+
+
+
+
 
 @api.route('/delete', methods=['DELETE'])   
 def delete_product(): 
+    pass

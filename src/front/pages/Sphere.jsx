@@ -25,7 +25,7 @@ const Sphere = () => {
   ];
 
   return (
-    <div className="sphere">
+    <div className="sphere" style={{backgroundImage: `url('/Mo-moneyIcon-Al.png')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>{/* Se puede cambiar la imagen de fondo de la esfera por cualquier otra imagen que se desee. Alexis */}
       {meridians}
       {latitudes.map((lat, i) => (
         <div

@@ -41,9 +41,9 @@ const Sphere = () => {
             border: lat.border ? "10px" : undefined,//He quitado los colores negro de la parte superior de la esfera. Alexis
           }}
         />
-      ))}{/* He borrado los divs de axio para quitar la linia transversal que se ve en la esfera. Alexis
+      ))}
       <div className="axis"></div>
-      <div className="axis"></div> */}
+      <div className="axis"></div>
     </div>
   );
 };

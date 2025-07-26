@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
 psycopg2-binary = "*"
@@ -22,6 +21,8 @@ bcrypt = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
 flask = "*"
+requests = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.13"

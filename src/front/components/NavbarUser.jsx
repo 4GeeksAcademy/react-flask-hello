@@ -32,7 +32,7 @@ export const NavbarUser = () => {
               <Link className="nav-link" to="/about">Perfil</Link>
             </li>
             <li className="nav-item">
-              <Link className="btn btn-info ms-3" to="/login">LogOut</Link>
+              <Link className="btn btn-info ms-3" to="/logout">LogOut</Link>
             </li>
           </ul>
         </div>

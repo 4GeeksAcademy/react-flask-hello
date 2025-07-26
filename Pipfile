@@ -22,6 +22,7 @@ flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
 email-validator = "*"
+tomli = "*"
 
 [requires]
 python_version = "3.13"

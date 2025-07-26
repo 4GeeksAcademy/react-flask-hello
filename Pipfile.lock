@@ -221,6 +221,15 @@
             "markers": "python_version >= '3.9'",
             "version": "==3.1.1"
         },
+        "flask-admin": {
+            "hashes": [
+                "sha256:24cae2af832b6a611a01d7dc35f42d266c1d6c75a426b869d8cb241b78233369",
+                "sha256:fd8190f1ec3355913a22739c46ed3623f1d82b8112cde324c60a6fc9b21c9406"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.6'",
+            "version": "==1.6.1"
+        },
         "flask-bcrypt": {
             "hashes": [
                 "sha256:062fd991dc9118d05ac0583675507b9fe4670e44416c97e0e6819d03d01f808a",

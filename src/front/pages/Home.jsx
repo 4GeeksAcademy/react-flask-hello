@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import Sphere from "./Sphere.jsx";
 
@@ -32,19 +33,31 @@ export const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className="page">
       {/* NAVBAR */}
-      <nav className="navbar navbar-light bg-light px-4 py-3 shadow-sm">
+      <nav className="navbar navbar-light bg-light px-4 py-3 shadow-sm" style={{ background: "linear-gradient(to left, #22b455, #1dd1a1, #22b455)",
+        backgroundSize: "200%",
+        transition: "0.3s linear",
+        minHeight: "6.6vh", }}>
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <div className="me-2">
-              <span role="img" aria-label="logo">💸</span>
+              <img
+                src="https://api.zoviz.com/lfp?b=K2NLr2r0IWQZfbqE&f=btCSiQWhf6m4&d=1"
+                alt="Logo"
+                style={{ width: "50%", height: "50%" }}
+              />
+              {/* <span role="img" aria-label="logo">💸</span> El icono lo he sustituido por una imagen creada en:"https://zoviz.com/es/slogan-generator". Se puede cambiar en cualquier momento*/}
             </div>
           </div>
-          <div className="navbar-brand mx-auto fw-bold fs-4">Mo’money</div>
+          <div className="navbar-brand mx-auto fw-bold fs-5" style={{ color: "#B7FF00" }}>Mo’money</div>
           <div>
-            <button className="btn btn-outline-primary me-2">Login</button>
-            <button className="btn btn-primary">Register</button>
+            <Link to="/login" className="btn btn-outline-primary me-2">Login</Link>
+            {/*<Link to="/register" className="btn btn-primary">Register</Link>
+             Los botones de Login y Register están comentados porque no se han implementado las páginas aún.
+             Se pueden descomentar cuando estén listas.
+            <button className="btn btn-outline-primary me-2">Login</button>*/}
+            <button className="btn btn-primary">Register</button> 
           </div>
         </div>
       </nav>

@@ -37,12 +37,12 @@ const Sphere = () => {
             top: `${lat.top}px`,
             left: `${lat.left}px`,
             transform: `rotateY(90deg) translateZ(${lat.z}px)`,
-            border: lat.border ? "10px solid black" : undefined,
+            border: lat.border ? "10px" : undefined,//He quitado los colores negor de la parte superior de la esfera. Alexis
           }}
         />
-      ))}
+      ))}{/* He borrado los divs de axio para quitar la linia transversal que se ve en la esfera. Alexis
       <div className="axis"></div>
-      <div className="axis"></div>
+      <div className="axis"></div> */}
     </div>
   );
 };

@@ -1,3 +1,12 @@
+body{
+  min-height: 100vh;
+}
+#root{
+  min-height: 100vh;
+}
+.page{
+  min-height: 93.4vh; /* Ajusta el valor según el tamaño de tu footer */
+}
 .forgot-password.card,
 .reset-password.card {
   background-color: #fbffe4;

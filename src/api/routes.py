@@ -2,10 +2,10 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
-from api.utils import generate_sitemap, APIException, Product
+from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token
-from api.models import User, db
+from api.models import User, db, Product
 from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
@@ -94,18 +94,18 @@ def register():
 
 
 
-#el carrito
+#el producto
 @api.route('/hello')
 def home():
-    return "¡Funcionando Correctamente!"
+    return make_response(jsonify({"msg":"¡Funcionando Correctamente!"}), 200)
 
-#Productos
+#Producto
 @api.route('/product', methods=['GET'])
 def get_product():
     list_products= Product.query.all()
     products=[Product.serialize for Product in list_products]
     print(list_products[0].name)
-    return jsonify({"messaje": "Lista de productos"}),200
+    return make_response(jsonify({"msg":"¡Producto cargado exitosamente!" }), 200)
 
 @api.route('/product<int:id>', methods=['GET'])
 def get_product_id():
@@ -113,8 +113,7 @@ def get_product_id():
     print(product_id)
     
     if not product_id:
-        return jsonify({"messaje":"producto con el id #{id} no encontrado"}),404
-
+        return make_response(jsonify({"messaje":"producto con el id #{id} no encontrado"}), 404)
     
     
     
@@ -124,7 +123,7 @@ def new_product():
     
     #inicio de la validacion
 
-    required_Add=['name','descrption','photo','coste','price','pet_ype_id','stock']
+    required_Add=['name','description','photo','coste','price','pet_type_id','stock']
     error={}
 
     for Add in required_Add:
@@ -155,7 +154,7 @@ def new_product():
         db.session.add(product_new)
         db.session.commit()
     
-        return make_response(jsonify({"msg":"endponid creado exitosamente"}), 201)
+        return make_response(jsonify({"msg":"¡Producto agregado exitosamente!"}), 201)
 
     except Exception as e:
         print(e)
@@ -166,12 +165,37 @@ def new_product():
 
 @api.route('/update/<int:id>', methods=['PUT'])   
 def update_product(id):
-    pass
+    try:
+        product= Product.query.filter_by(id=id).first()
+
+        if product: 
+            data_request= request.get_json()
+            
+            name=data_request.get('name')
+            description=data_request.get('description')
+            photo=data_request.get('photo')
+            coste=data_request.get('coste')
+            price=data_request.get('price')
+            pet_type_id=data_request.get('pet_type_id')
+            stock=data_request.get('stock')
+
+            return make_response(jsonify({"msg":"¡Producto actualizado exitosamente!"})),200
+    except Exception as e:
+        print(e)
+    
+    update_product.verified = True
+    db.session.commit()
 
 
 
 
 
-@api.route('/delete', methods=['DELETE'])   
-def delete_product(): 
-    pass
+@api.route('/delete/<int:id>', methods=['DELETE'])   
+@jwt_required()
+def delete_product(id): 
+    product= db.get_or_404(Product,id)
+
+    db.session.delete(product)
+    db.session.commit()
+   
+    return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200) 

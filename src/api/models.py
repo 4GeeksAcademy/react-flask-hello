@@ -59,7 +59,7 @@ class Category(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(), nullable=False)
-
+    
     
     
     product_category: Mapped[List["ProductCategory"]] = relationship(

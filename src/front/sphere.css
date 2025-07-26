@@ -37,19 +37,7 @@
   border-radius: 50%;
   box-shadow: inset 0 0 5px rgba(0, 128, 0, 0.3);
 }
-
-.sphere .axis {
-  position: absolute;
-  width: 600px;
-  height: 2px;
-  top: calc(50% - 1px);
-  background: linear-gradient(to left, transparent, black, transparent);
-}
-
-.sphere .axis + .axis {
-  transform: rotateX(90deg);
-}
-
+/*Eliminado el Axio por inecesario es la linia del mundo un incordio visual. Alexis*/
 @keyframes rotate {
   0% {
     transform: rotateX(30deg) rotateY(0deg) rotateZ(80deg);

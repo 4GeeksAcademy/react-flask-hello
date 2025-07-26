@@ -37,5 +37,27 @@ def generate_sitemap(app):
         <h1>Rigo welcomes you to your API!!</h1>
         <p>API HOST: <script>document.write('<input style="padding: 5px; width: 300px" type="text" value="'+window.location.href+'" />');</script></p>
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
+        <p align="justify" style="padding: 1.8rem">Aquí te explico de forma sencilla cómo funciona la API de usuarios desarrollada con Flask y Python:<br>
+        La API permite gestionar usuarios mediante los siguientes endpoints:<br>
+        /user/register:<br>
+        Este endpoint permite registrar un nuevo usuario. <br>Recibe los datos del usuario por POST (nombre de usuario, email, contraseña) y crea un objeto User en la base de datos. Devuelve un token que se usará para futuras peticiones autenticadas.<br>
+        /user/login:<br>
+        Permite iniciar sesión con el email/nombre de usuario y contraseña. Devuelve un token si las credenciales son correctas.<br>
+        /user/profile:<br>
+        Obtiene el perfil del usuario autenticado mediante el token. Requiere autorización.<br>
+        /user/update:<br>
+        Actualiza datos del perfil como nombre de usuario o email. Requiere autorización.<br>
+        /user/change-password:<br>
+        Cambia la contraseña del usuario. Requiere la contraseña actual y la nueva.<br>
+        /user/forgotten:<br>
+        Inicia sesión con el email para recuperar la cuenta. Devuelve un token.<br>
+        /user/new-password:<br>
+        Fija una nueva contraseña una vez iniciado sesión por forgotten. Requiere autorización.<br>
+        /user/delete:<br>
+        Elimina la cuenta del usuario autenticado. Requiere autorización.<br>
+        /user/token:<br>
+        Renueva el token de autorización. Requiere autorización.<br>
+        Los endpoints requieren el token JWT para autenticar las peticiones, excepto los de registro y login. Esto permite gestionar de forma segura los usuarios de la API de forma sencilla con Flask.<br>
+        Espero haber explicado de forma clara el funcionamiento básico de la API. </p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"

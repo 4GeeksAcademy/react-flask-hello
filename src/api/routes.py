@@ -28,10 +28,10 @@ def register():
     new_user.username = body["username"]
     new_user.email = body["email"]
     new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
-    new_user.firstname = body["firstname"]
+    """ new_user.firstname = body["firstname"]
     new_user.lastname = body["lastname"]
     new_user.country = body["country"]
-    new_user.phone = body["phone"]
+    new_user.phone = body["phone"] """
     new_user.is_active = True
     
     db.session.add(new_user)
@@ -48,9 +48,9 @@ def register():
         response = requests.post("http://localhost:3001/api/gasto/register", json=gasto_data)
         response_data = response.json()
         access_token = create_access_token(identity=str(new_user.id))
-        return jsonify({"msg": "Usuario registrado con éxito", "gasto": response_data, "token": access_token}), 201
+        return jsonify({"msg": "Usuario registrado con éxito", """ "gasto": response_data, """ "token": access_token}), 201
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al registrar el gasto", "error": str(e)}), 500
+        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
 #Endpoint de iniciar sesion ya sea con username o email
 @api.route("/user/login", methods=['POST'])
 def login():

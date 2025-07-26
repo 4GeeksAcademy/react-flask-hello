@@ -18,11 +18,11 @@
     "default": {
         "alembic": {
             "hashes": [
-                "sha256:1acdd7a3a478e208b0503cd73614d5e4c6efafa4e73518bb60e4f2846a37b1c5",
-                "sha256:496e888245a53adf1498fcab31713a469c65836f8de76e01399aa1c3e90dd213"
+                "sha256:b05e51e8e82efc1abd14ba2af6392897e145930c3e0a2faf2b0da2f7f7fd660d",
+                "sha256:efab6ada0dd0fae2c92060800e0bf5c1dc26af15a10e02fb4babff164b4725e2"
             ],
-            "markers": "python_version >= '3.8'",
-            "version": "==1.14.1"
+            "markers": "python_version >= '3.9'",
+            "version": "==1.16.4"
         },
         "bcrypt": {
             "hashes": [
@@ -227,6 +227,7 @@
                 "sha256:fd8190f1ec3355913a22739c46ed3623f1d82b8112cde324c60a6fc9b21c9406"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.6'",
             "version": "==1.6.1"
         },
         "flask-bcrypt": {
@@ -260,6 +261,7 @@
                 "sha256:24d8051af161782e0743af1b04a152d007bad9772b2bca67b7ec1e8ceeb3910d"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.6'",
             "version": "==4.1.0"
         },
         "flask-sqlalchemy": {
@@ -373,11 +375,11 @@
         },
         "mako": {
             "hashes": [
-                "sha256:95920acccb578427a9aa38e37a186b1e43156c87260d7ba18ca63aa4c7cbd3a1",
-                "sha256:b5d65ff3462870feec922dbccf38f6efb44e5714d7b593a656be86663d8600ac"
+                "sha256:99579a6f39583fa7e5630a28c3c1f440e4e97a414b80372649c0ce338da2ea28",
+                "sha256:baef24a52fc4fc514a0887ac600f9f1cff3d82c61d4d700a1fa84d597b88db59"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==1.3.9"
+            "version": "==1.3.10"
         },
         "markupsafe": {
             "hashes": [
@@ -715,6 +717,7 @@
                 "sha256:f8d76180d7239c94c6322f7990ae1216dae3659b7aa1cee94b6318bdffb474b9"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.8'",
             "version": "==3.1.2"
         }
     },

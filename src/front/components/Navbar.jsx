@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';  //se debd instalar - npm install react-router-hash-link
 
 export const Navbar = () => {
   return (
@@ -26,13 +27,15 @@ export const Navbar = () => {
               <Link className="nav-link" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/services">Services</Link>
+              <HashLink smooth className="nav-link" to="/#servicios">Services</HashLink>
+              
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/about">About Us</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/contact">Contact</Link>
+              <HashLink smooth className="nav-link" to="/#contactenos">Contact</HashLink>
+              
             </li>
             <li className="nav-item">
               <Link className="btn btn-info ms-3" to="/login">Login</Link>

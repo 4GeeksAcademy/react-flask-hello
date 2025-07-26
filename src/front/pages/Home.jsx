@@ -9,7 +9,9 @@ export const Home = () => {
     <div>
       <Navbar />
 	    <Carousel />
+      <div id="servicios">
       <Servicios />
+      </div>
       <Footer />
     </div>
   );

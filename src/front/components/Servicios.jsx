@@ -148,7 +148,7 @@ export const Servicios = () => {
                         </div>
                     </div>
 
-                    <div className="col-md-6">
+                    <div id= "contactenos" className="col-md-6">
                         <form>
                             <input type="text" className="form-control mb-3" placeholder="Nombre y Apellido" required />
                             <input type="email" className="form-control mb-3" placeholder="Correo Electrónico" required />

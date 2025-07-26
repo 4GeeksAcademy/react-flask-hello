@@ -31,13 +31,13 @@ export const InicioUser = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto text-uppercase">
             <li className="nav-item px-2">
-              <a className="nav-link text-white" href="#">Home</a>
+              <a className="nav-link text-white" href="/">Home</a>
             </li>
             <li className="nav-item px-2">
               <a className="nav-link text-white" href="#">Órdenes</a>
             </li>
             <li className="nav-item px-2">
-              <a className="nav-link text-info fw-bold" href="#">Mis Autos</a>
+              <a className="nav-link text-info fw-bold" href="/vehiculos">Mis Autos</a>
             </li>
             <li className="nav-item px-2">
               <a className="nav-link text-white" href="#">Notificaciones</a>

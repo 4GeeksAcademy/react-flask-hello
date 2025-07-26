@@ -50,7 +50,7 @@ class Orden_de_trabajo(db.Model):
             'id_ot': self.id_ot,
             #'nombre_cliente': self.nombre_cliente,
             'fecha_ingreso': self.fecha_ingreso,
-            'estado_servicio': self.estado_servicio,
+            'estado_servicio': self.estado_servicio.value,
             'fecha_final': self.fecha_final,
             'usuario_id': self.usuario_id,
             'vehiculo_id': self.vehiculo_id,

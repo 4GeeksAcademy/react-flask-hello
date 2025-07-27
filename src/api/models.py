@@ -24,10 +24,10 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            #"firstname": self.firstname,
-            #"lastname": self.lastname,
-            #"country": self.country,
-            #"phone": self.phone,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "country": self.country,
+            "phone": self.phone,
             # do not serialize the password, its a security breach
         }
 

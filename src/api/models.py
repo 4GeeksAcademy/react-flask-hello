@@ -24,10 +24,10 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            #"firstname": self.firstname,
-            #"lastname": self.lastname,
-            #"country": self.country,
-            #"phone": self.phone,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "country": self.country,
+            "phone": self.phone,
             # do not serialize the password, its a security breach
         }
 
@@ -47,6 +47,17 @@ class Gasto(db.Model):
     # categoria = db.Column(db.String(120))
     # fecha = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "sueldo": self.sueldo,
+            "is_student": self.is_student,
+            "concepto": self.concepto,
+            "cantidad": self.cantidad,
+            "emoji": self.emoji,
+            "user_id": self.user_id,
+        }
 
 
 """ class Objetivo(db.Model):

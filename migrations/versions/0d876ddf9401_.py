@@ -1,9 +1,15 @@
 """empty message
 
 <<<<<<<< HEAD:migrations/versions/0d876ddf9401_.py
+<<<<<<<< HEAD:migrations/versions/0d876ddf9401_.py
 Revision ID: 0d876ddf9401
 Revises: 
 Create Date: 2025-07-27 11:40:01.836043
+========
+Revision ID: 9fd7e6d099f9
+Revises: 
+Create Date: 2025-07-27 10:33:36.904431
+>>>>>>>> b32f67e (migrations/versions/04dddaac805e_.py -> migrations/versions/9fd7e6d099f9_.py):migrations/versions/9fd7e6d099f9_.py
 ========
 Revision ID: 9fd7e6d099f9
 Revises: 
@@ -17,7 +23,11 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 <<<<<<<< HEAD:migrations/versions/0d876ddf9401_.py
+<<<<<<<< HEAD:migrations/versions/0d876ddf9401_.py
 revision = '0d876ddf9401'
+========
+revision = '9fd7e6d099f9'
+>>>>>>>> b32f67e (migrations/versions/04dddaac805e_.py -> migrations/versions/9fd7e6d099f9_.py):migrations/versions/9fd7e6d099f9_.py
 ========
 revision = '9fd7e6d099f9'
 >>>>>>>> b32f67e (migrations/versions/04dddaac805e_.py -> migrations/versions/9fd7e6d099f9_.py):migrations/versions/9fd7e6d099f9_.py

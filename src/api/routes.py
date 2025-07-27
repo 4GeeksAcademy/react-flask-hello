@@ -1,10 +1,10 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, Blueprint #url_for
+from flask import Flask, request, jsonify, Blueprint  # url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User, Objetivo, Articulo
+from api.models import db, User
 from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
@@ -17,7 +17,9 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200 """
-#Endpoint de registrar al usuario
+# Endpoint de registrar al usuario
+
+
 @api.route("/user/register", methods=['POST'])
 def register():
     body = request.get_json()
@@ -25,14 +27,17 @@ def register():
     new_user = User()
     new_user.username = body["username"]
     new_user.email = body["email"]
-    new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
+    # Usar el método para hashear la contraseña
+    new_user.set_password(body["password"])
     new_user.is_active = True
 
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({"msg": "Usuario registrado con éxito"}), 201
-#Endpoind de iniciar sesion ya sea con username o email
+# Endpoind de iniciar sesion ya sea con username o email
+
+
 @api.route("/user/login", methods=['POST'])
 def login():
     body = request.get_json()
@@ -42,24 +47,29 @@ def login():
         if 'email' in body:
             login_user = body['email']
         password = body.get("password")
-        user = User.query.filter((User.username == login_user) | (User.email == login_user)).first()
+        user = User.query.filter((User.username == login_user) | (
+            User.email == login_user)).first()
 
         if user and user.check_password(password):
             access_token = create_access_token(identity=str(user.id))
-            return jsonify({"token":access_token}), 200
+            return jsonify({"token": access_token}), 200
     except:
         print("Something went wrong")
     return jsonify({"msg": "username/email o contraseña equivocados"}), 401
-#Con el Token devolver el usuario
+# Con el Token devolver el usuario
+
+
 @api.route('/user/profile', methods=['GET'])
 @jwt_required()
 def profile():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     if user is None:
-        return jsonify({"msg":"Usuario no encontrado"}), 404
-    return jsonify({"user":user.serialize()}), 200
-#Modificar el username o el email
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+    return jsonify({"user": user.serialize()}), 200
+# Modificar el username o el email
+
+
 @api.route("/user/update", methods=['PUT'])
 @jwt_required()
 def update_user():
@@ -75,6 +85,8 @@ def update_user():
     db.session.commit()
     return jsonify({"msg": "Detalles del usuario actualizados correctamente"}), 200
 # Endpoint para modificar la contraseña
+
+
 @api.route("/user/change-password", methods=['PUT'])
 @jwt_required()
 def change_password():
@@ -91,17 +103,21 @@ def change_password():
         return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
 
     return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
-#Endpoind de iniciar sesion solo con email
+# Endpoind de iniciar sesion solo con email
+
+
 @api.route("/user/forgotten", methods=['POST'])
 def forgotten():
     body = request.get_json()
     login_user = body['email']
     user = User.query.filter(User.email == login_user).first()
     if user is not None:
-            access_token = create_access_token(identity=str(user.id))
-            return jsonify({"token":access_token}), 200
-    return jsonify({"msg":"Usuario no encontrado"}), 404
+        access_token = create_access_token(identity=str(user.id))
+        return jsonify({"token": access_token}), 200
+    return jsonify({"msg": "Usuario no encontrado"}), 404
 # Endpoint para modificar la contraseña a la nueva contraseña
+
+
 @api.route("/user/new-password", methods=['PUT'])
 @jwt_required()
 def new_password():
@@ -112,8 +128,10 @@ def new_password():
     db.session.commit()
     return jsonify({"msg": "Contraseña actualizada correctamente"}), 401
 
-    #return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
+    # return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
 # Endpoint para eliminar el usuario
+
+
 @api.route("/user/delete", methods=['DELETE'])
 @jwt_required()
 def delete_user():
@@ -123,15 +141,15 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
     return jsonify({"msg": "Usuario eliminado"}), 200
+
+
 @api.route("/user/token", methods=['POST'])
 @jwt_required()
 def token():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     try:
-        access_token = create_access_token(identity=str(user.id))  
-        return jsonify({"token": access_token}), 200  
+        access_token = create_access_token(identity=str(user.id))
+        return jsonify({"token": access_token}), 200
     except Exception as e:
         return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
-    
-

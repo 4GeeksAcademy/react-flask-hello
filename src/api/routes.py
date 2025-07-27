@@ -18,6 +18,7 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200 """
+
 #Endpoint de registrar al usuario
 @api.route("/user/register", methods=['POST'])
 def register():
@@ -27,30 +28,29 @@ def register():
     new_user.username = body["username"]
     new_user.email = body["email"]
     new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
-    """ new_user.firstname = body["firstname"]
+    new_user.firstname = body["firstname"]
     new_user.lastname = body["lastname"]
     new_user.country = body["country"]
-    new_user.phone = body["phone"] """
+    new_user.phone = body["phone"]
     new_user.is_active = True
     
     db.session.add(new_user)
     db.session.commit()
-
     
     try:
         # Preparar los datos para la solicitud a la API de gastos
-        """ gasto_data = {
-            "user_id": new_user.id,  # Asumiendo que debes enviar el ID del usuario
+        gasto_data = {
+            "user_id": new_user.id,
             "sueldo": body["sueldo"],
             "is_student": body["is_student"],
         }
         # Enviar solicitud POST a la API de gastos
-        response = requests.post("http://localhost:3002/gasto/register", json=gasto_data)
-        response_data = response.json() """
+        response = requests.post("http://localhost:3001/api/gasto/register", json=gasto_data)
+        response_data = response.json()
         access_token = create_access_token(identity=str(new_user.id))
-        return jsonify({"msg": "Usuario registrado con éxito", """ "gasto": response_data, """ "token": access_token}), 201
+        return jsonify({"msg": "Usuario registrado con éxito", "gasto": response_data, "token": access_token}), 201
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
+        return jsonify({"msg": "Error al registrar el gasto", "error": str(e)}), 500
 #Endpoint de iniciar sesion ya sea con username o email
 @api.route("/user/login", methods=['POST'])
 def login():
@@ -69,6 +69,7 @@ def login():
     except:
         print("Something went wrong")
     return jsonify({"msg": "username/email o contraseña equivocados"}), 401
+
 #Con el Token devolver el usuario
 @api.route('/user/profile', methods=['GET'])
 @jwt_required()
@@ -78,6 +79,7 @@ def profile():
     if user is None:
         return jsonify({"msg":"Usuario no encontrado"}), 404
     return jsonify({"user":user.serialize()}), 200
+
 #Modificar el username o el email
 @api.route("/user/update", methods=['PUT'])
 @jwt_required()
@@ -100,13 +102,19 @@ def update_user():
         user.phone = body['phone']
 
     db.session.commit()
-    """ try:
-        response = requests.post("http://localhost:3002/gasto/update", json=gasto_data)
+    try:
+        gasto_data={
+            "user_id": user.id,
+            "sueldo": body.get("sueldo", user.gasto.sueldo if user.gasto else None),
+            "is_student": body.get("is_student", user.gasto.is_student if user.gasto else None),
+        }
+        response = requests.put("http://localhost:3001/api/gasto/update", json=gasto_data)
         response_data = response.json()
-        return jsonify({"msg": "Detalles del usuario actualizados correctamente", "gasto": response_data,}), 200
+        return jsonify({"msg": "Detalles del usuario actualizados correctamente", "gasto": response_data}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500 """
-    return jsonify({"msg": "Detalles del usuario actualizados correctamente"}), 200
+        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
+    #return jsonify({"msg": "Detalles del usuario actualizados correctamente"}), 200
+
 # Endpoint para modificar la contraseña
 @api.route("/user/change-password", methods=['PUT'])
 @jwt_required()
@@ -124,6 +132,7 @@ def change_password():
         return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
 
     return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
+
 #Endpoind de iniciar sesion solo con email
 @api.route("/user/forgotten", methods=['POST'])
 def forgotten():
@@ -134,6 +143,7 @@ def forgotten():
             access_token = create_access_token(identity=str(user.id))
             return jsonify({"token":access_token}), 200
     return jsonify({"msg":"Usuario no encontrado"}), 404
+
 # Endpoint para modificar la contraseña a la nueva contraseña
 @api.route("/user/new-password", methods=['PUT'])
 @jwt_required()
@@ -145,6 +155,7 @@ def new_password():
     db.session.commit()
     return jsonify({"msg": "Contraseña actualizada correctamente"}), 401
     #return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
+    
 # Endpoint para eliminar el usuario
 @api.route("/user/delete", methods=['DELETE'])
 @jwt_required()
@@ -152,9 +163,18 @@ def delete_user():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
 
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"msg": "Usuario eliminado"}), 200
+    try:
+        gasto_data={
+            "user_id": user.id
+        }
+        response = requests.post("http://localhost:3001/api/gasto/delete", json=gasto_data)
+        response_data = response.json()
+        return jsonify({"msg": "Usuario eliminado", "gasto": response_data}), 200
+        db.session.delete(user)
+        db.session.commit()
+    except requests.exceptions.RequestException as e:
+        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
+
 @api.route("/user/token", methods=['POST'])
 @jwt_required()
 def token():
@@ -166,6 +186,19 @@ def token():
     except Exception as e:
         return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
     
+""" @api.route("/user/logout", methods=['POST'])
+@jwt_required()
+def logout():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user is None:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+    
+    user.is_active = False
+    db.session.commit()
+    return jsonify({"msg": "Usuario desconectado exitosamente"}), 200 """
+
+
 
 @api.route("/gasto/register", methods=['POST'])
 def g_register():
@@ -181,36 +214,38 @@ def g_register():
 
     return jsonify({"msg": "Gasto registrado con éxito"}), 201
 
-""" @api.route('/gasto/profile', methods=['GET'])
+@api.route('/gasto/profile', methods=['GET'])
 @jwt_required()
 def profile():
     current_user_id = get_jwt_identity()
     gasto = Gasto.query.get(current_user_id)
     if gasto is None:
-        return jsonify({"msg":"Usuario no encontrado"}), 404
+        return jsonify({"msg":"Gasto no encontrado"}), 404
     return jsonify({"gasto":gasto.serialize()}), 200
+
 #Modificar el sueldo o el is_student
 @api.route("/gasto/update", methods=['PUT'])
 @jwt_required()
 def update_gasto():
-    current_user_id = get_jwt_identity()
-    gasto = Gasto.query.get(current_user_id)
-
     body = request.get_json()
+    gasto = Gasto.query.get(body['user_id'])
     if 'sueldo' in body:
         gasto.sueldo = body['sueldo']
     if 'is_student' in body:
         gasto.is_student = body['is_student']
-
+    if gasto is None:
+        return jsonify({"msg": "Gasto no cambiado"}), 200
     db.session.commit()
     return jsonify({"msg": "Detalles del gasto actualizados correctamente"}), 200
+
 # Endpoint para eliminar el gasto
 @api.route("/gasto/delete", methods=['DELETE'])
 @jwt_required()
 def delete_gasto():
-    current_user_id = get_jwt_identity()
-    gasto = Gasto.query.get(current_user_id)
-
+    body = request.get_json()
+    gasto = Gasto.query.get(body['user_id'])
+    if gasto is None:
+        return jsonify({"msg": "Gasto no encontrado"}), 404
     db.session.delete(gasto)
     db.session.commit()
-    return jsonify({"msg": "Gasto eliminado"}), 200 """
+    return jsonify({"msg": "Gasto eliminado"}), 200 

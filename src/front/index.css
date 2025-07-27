@@ -1,8 +1,8 @@
 body{
-  min-height: 100vh;
+  min-height: 95vh;
 }
 #root{
-  min-height: 100vh;
+  min-height: 95vh;
 }
 .page{
   min-height: 93.4vh; /* Ajusta el valor según el tamaño de tu footer */
@@ -13,13 +13,14 @@ body{
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(183, 255, 0, 0.3);
   max-width: 400px;
-  width: 100%;
+  width: 100vh;
   margin: 40px auto;
   padding: 2rem;
-  min-height: 450px; /* Puedes ajustarlo según el contenido */
+  min-height: 47vh; /* Puedes ajustarlo según el contenido */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 41.9vh;
 }
 
 

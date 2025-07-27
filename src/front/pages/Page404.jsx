@@ -26,7 +26,7 @@ body {
   padding: 9vh;
 }
 .container {
-  min-width: 80vh;
+  min-width: 100vh;
   min-height: 80vh;
   border-radius: 50px;
   background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);

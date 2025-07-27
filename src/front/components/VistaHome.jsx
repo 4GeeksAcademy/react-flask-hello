@@ -18,6 +18,7 @@ export const VistaHome = () => {
 
     return (
     <div>
+      <Login />
       <br />
       {/*titulo y encabezado*/}
       <div>
@@ -25,11 +26,11 @@ export const VistaHome = () => {
           <h1 className="text-red-500 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Knect</h1>
         </div>
         <div className="flex justify-center">
-          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">nace la nueva forma de organizarte a ti y a tu grupo de personas</p>
+          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Nace la nueva forma de organizarte a ti y a tu grupo de personas</p>
           <br />
         </div>
         <div className="flex justify-center">
-          <p>con Knect, no te perderas los eventos que mas te gustan, crearlos e incuso encontrar nuevas experiencias</p>
+          <p>Con Knect, no te perderas los eventos que mas te gustan, crearlos e incuso encontrar nuevas experiencias</p>
         </div>
          <div className="flex justify-center">
           <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Leer mas</a>

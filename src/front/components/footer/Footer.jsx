@@ -1,5 +1,5 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { Contacto } from "./Contacto";
+import Contacto from "./Contacto";
 import "./footer.css";
 
 export const Footer = () => (

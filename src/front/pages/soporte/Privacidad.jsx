@@ -1,5 +1,5 @@
 import "./privacidad.css";
-export const privacidad = () => (
+export const Privacidad = () => (
   <div className="privacidad-container">
     <h1>Política de Privacidad</h1>
 

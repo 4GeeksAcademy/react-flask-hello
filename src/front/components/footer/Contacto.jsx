@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Contacto.css";
 
-export const Contacto = () => {
+const Contacto = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,3 +36,5 @@ export const Contacto = () => {
     </>
   );
 };
+
+export default Contacto;

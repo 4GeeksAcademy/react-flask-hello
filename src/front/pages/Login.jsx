@@ -47,7 +47,8 @@ export const Login = () => {
                 localStorage.setItem('jwt_token', data.token);
                 console.log('✅ Verificación Exitosa: ¡Inicio de sesión correcto!');
                 console.log('🔑 Token JWT recibido y almacenado:', data.token);
-                navigate('/inicioUser')
+                console.log(data.tipo_de_usuario)
+                data.tipo_de_usuario == "Cliente" ? navigate('/inicioUser') : navigate('/inicioMecanico') 
             } else {
                 // Si hay un error en la respuesta del backend
                 console.error('❌ Verificación Fallida:', data.msg || 'Credenciales incorrectas.'); // Mensaje de error en consola

@@ -147,6 +147,7 @@ def login():
         return jsonify({'msg': 'El campo password es obligatorio'}), 400
 
     user = User.query.filter_by(email=body['email']).first()
+    tipo_de_usuario = user.rol.value
     print(user)
 
     if user is None:
@@ -155,7 +156,7 @@ def login():
         return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
 
     access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
-    return jsonify({'msg': 'ok', 'token': access_token}), 200
+    return jsonify({'msg': 'ok', 'token': access_token, 'tipo_de_usuario': tipo_de_usuario}), 200
                                                                                                     
 
 #ENDPOINT PARA CREAR VEHICULOS

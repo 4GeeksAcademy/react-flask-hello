@@ -18,6 +18,10 @@ class User(db.Model):
     lastname: Mapped[str] = mapped_column(String(120))
     country: Mapped[str] = mapped_column(String(120))
     phone: Mapped[str] = mapped_column(String(27), unique=True)
+<<<<<<< HEAD
+=======
+
+>>>>>>> a19092e (BD Change Full-Stack 10)
 
 
     def serialize(self):
@@ -25,10 +29,10 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            #"firstname": self.firstname,
-            #"lastname": self.lastname,
-            #"country": self.country,
-            #"phone": self.phone,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "country": self.country,
+            "phone": self.phone,
             # do not serialize the password, its a security breach
         }
 

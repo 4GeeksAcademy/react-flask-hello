@@ -19,10 +19,10 @@ sqlalchemy = "*"
 bcrypt = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
-flask = "*"
 requests = "*"
 flask-migrate = "*"
 flask-admin = "*"
+flask = "*"
 
 [requires]
 python_version = "3.13"

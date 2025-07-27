@@ -201,7 +201,7 @@ def logout():
 
 
 @api.route("/gasto/register", methods=['POST'])
-def g_register():
+def gasto_register():
     body = request.get_json()
 
     new_gasto = Gasto()
@@ -216,7 +216,7 @@ def g_register():
 
 @api.route('/gasto/profile', methods=['GET'])
 @jwt_required()
-def profile():
+def gasto_profile():
     current_user_id = get_jwt_identity()
     gasto = Gasto.query.get(current_user_id)
     if gasto is None:

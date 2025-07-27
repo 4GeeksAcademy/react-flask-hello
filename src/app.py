@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, RolEnum, Vehiculos
+from api.models import db, User, RolEnum, Vehiculos, Orden_de_trabajo
 
 from datetime import timedelta
 
@@ -83,7 +83,24 @@ def serve_any_other_file(path):
 
 #CREACION DE ENDPOINT DEL PROYECTO
 
-#CREACION DE ENDPOINT DEL PROYECTO
+#ENDPOINT PARA TRAER ORDENES DE TRABAJO
+@app.route('/ordenes_de_trabajo', methods = ['GET'])
+@jwt_required()
+def get_orden_de_trabajo():
+    email_user_current = get_jwt_identity()
+    user_current = User.query.filter_by(email=email_user_current).first()
+    id_propietario = user_current.id_user
+    ordenes_de_trabajo = Orden_de_trabajo.query.filter_by(usuario_id = id_propietario).all()    
+    print(ordenes_de_trabajo)
+
+    ot_serialized_by_user = []
+
+    for orden_de_trabajo in ordenes_de_trabajo:
+        ot_serialized_by_user.append(orden_de_trabajo.serialize())
+
+    print(ot_serialized_by_user)
+    return jsonify({'msg':'ok', 'ordenes_de_trabajo':ot_serialized_by_user})
+
 
 #ENDPOINT PARA REGISTRAR NUEVO USUARIO
 @app.route('/register', methods = ['POST'])
@@ -101,13 +118,14 @@ def register_user():
         return jsonify({'msg': 'Debes enviar un numero telefonico del usuario'})
     if 'email' not in body:
         return jsonify({'msg': 'Debes enviar el email e usuario'})
-    
+        
     new_user = User()
     new_user.nombre = body['nombre']
     new_user.identificacion = body['identificacion']
     new_user.password = body['password']
     new_user.telefono = body['telefono']
     new_user.email = body['email']
+    new_user.foto_usuario = body['foto_usuario']
     new_user.is_active = True
     new_user.rol = RolEnum.CLIENTE
     
@@ -129,6 +147,7 @@ def login():
         return jsonify({'msg': 'El campo password es obligatorio'}), 400
 
     user = User.query.filter_by(email=body['email']).first()
+    tipo_de_usuario = user.rol.value
     print(user)
 
     if user is None:
@@ -137,7 +156,7 @@ def login():
         return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
 
     access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
-    return jsonify({'msg': 'ok', 'token': access_token}), 200
+    return jsonify({'msg': 'ok', 'token': access_token, 'tipo_de_usuario': tipo_de_usuario}), 200
                                                                                                     
 
 #ENDPOINT PARA CREAR VEHICULOS
@@ -266,8 +285,6 @@ def crear_mis_vehiculos():
 
 
 #ENDPOINT PRA EDITAR VEHICULOS
-
-
 
 #ENDPOINT PARA EDITAR PERFIL DE USUARIO
 

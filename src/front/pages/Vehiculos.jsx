@@ -30,7 +30,7 @@ export const Vehiculos = () => {
 
   function getVehicles() {
     console.log("estoy trayendo info de vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQxMDI3OSwianRpIjoiNmM1YzliMzUtZWM3NS00MDY0LTkxY2ItNmM0YjJmNmRlNTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQxMDI3OSwiY3NyZiI6IjI4MzQwYjg0LTkyMzMtNDg4My1iN2QyLWY4NzVhY2JjMjY2OSIsImV4cCI6MTc1MzQxNzQ3OX0.xCfrCI3al2mmiO5YIyJPYB9WQ8O6MMs2EQ96QNtKYDk" //localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("jwt_token")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/mis_vehiculos", {
       method: "GET",
@@ -87,7 +87,7 @@ export const Vehiculos = () => {
     e.preventDefault()
     console.log(infoNewCar)
     console.log("estoy creando vehiculos")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MzQxMDI3OSwianRpIjoiNmM1YzliMzUtZWM3NS00MDY0LTkxY2ItNmM0YjJmNmRlNTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZHJlYUBub2xhc2NvLmNvbSIsIm5iZiI6MTc1MzQxMDI3OSwiY3NyZiI6IjI4MzQwYjg0LTkyMzMtNDg4My1iN2QyLWY4NzVhY2JjMjY2OSIsImV4cCI6MTc1MzQxNzQ3OX0.xCfrCI3al2mmiO5YIyJPYB9WQ8O6MMs2EQ96QNtKYDk" //localStorage.getItem("token-jwt")
+    const token = localStorage.getItem("jwt_token")
 
     fetch(import.meta.env.VITE_BACKEND_URL + "crear_mis_vehiculos", {
       method: "POST",

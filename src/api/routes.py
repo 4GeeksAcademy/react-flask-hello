@@ -17,6 +17,7 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200 """
+
 #Endpoint de registrar al usuario
 @api.route("/user/register", methods=['POST'])
 def register():

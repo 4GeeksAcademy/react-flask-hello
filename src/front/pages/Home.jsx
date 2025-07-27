@@ -53,11 +53,8 @@ export const Home = () => {
           <div className="navbar-brand mx-auto fw-bold fs-5" style={{ color: "#B7FF00" }}>Mo’money</div>
           <div>
             <Link to="/login" className="btn btn-outline-primary me-2">Login</Link>
-            {/*<Link to="/register" className="btn btn-primary">Register</Link>
-             Los botones de Login y Register están comentados porque no se han implementado las páginas aún.
-             Se pueden descomentar cuando estén listas.
-            <button className="btn btn-outline-primary me-2">Login</button>*/}
-            <button className="btn btn-primary">Register</button> 
+            
+            <Link to="/formulario" className="btn btn-primary me-2">Register</Link> 
           </div>
         </div>
       </nav>

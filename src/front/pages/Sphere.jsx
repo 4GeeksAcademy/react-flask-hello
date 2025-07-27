@@ -25,7 +25,8 @@ const Sphere = () => {
   ];
 
   return (
-    <div className="sphere" style={{backgroundImage: `url('/Mo-moneyIcon-Al.png')`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>{/* Se puede cambiar la imagen de fondo de la esfera por cualquier otra imagen que se desee. Alexis */}
+    <div className="sphere" style={{backgroundImage: `url('/Mo-moneyIcon-Al.png')`, backgroundRepeat: 'no-repeat',  backgroundSize: 'cover', 
+    }}>{/* Se puede cambiar la imagen de fondo de la esfera por cualquier otra imagen que se desee. Alexis */}
       {meridians}
       {latitudes.map((lat, i) => (
         <div
@@ -37,7 +38,7 @@ const Sphere = () => {
             top: `${lat.top}px`,
             left: `${lat.left}px`,
             transform: `rotateY(90deg) translateZ(${lat.z}px)`,
-            border: lat.border ? "10px" : undefined,//He quitado los colores negor de la parte superior de la esfera. Alexis
+            border: lat.border ? "10px" : undefined,//He quitado los colores negro de la parte superior de la esfera. Alexis
           }}
         />
       ))}{/* He borrado los divs de axio para quitar la linia transversal que se ve en la esfera. Alexis

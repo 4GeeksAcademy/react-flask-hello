@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
     const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export const Login = () => {
             style={{
                 backgroundColor: "white",
                 color: "#000",
-                height: "93.4vh",
+                height: "93.36vh",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -73,8 +74,8 @@ export const Login = () => {
                 </div>
                 <div>{/* Te he añadido un enlace para recuperar la contraseña en caso de que la hayas olvidado. Y queria ver como quedaba. Alexis */}
                     <p style={{ color: "#95cf00ff" }}>
-                    ¿Olvidaste tu contraseña? <a href="/forgotpassword" style={{ color: "#95cf00ff", 
-                    textDecoration: "underline", ":hover": { color: "#B7FF00" } }}>Recuperar</a></p>
+                    ¿Olvidaste tu contraseña? <Link to="/forgotpassword" style={{ color: "#95cf00ff", 
+                    textDecoration: "underline", ":hover": { color: "#B7FF00" } }}>Recuperar</Link></p>
                 </div>
                 <button
                 type="submit"

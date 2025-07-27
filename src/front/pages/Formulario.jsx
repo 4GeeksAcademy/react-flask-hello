@@ -27,7 +27,6 @@ export const Formulario = () => {
 
 		try {
 			
-			
 			await axios.post("http://localhost:5000/api/user/register", {
 			username: usuario,
 			email: email,

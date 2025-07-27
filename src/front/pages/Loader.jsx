@@ -1,15 +1,27 @@
  export const Loader = () => {
- 	return (
+ 	return (/* Todo el loader sacado de : "https://codepen.io/ceramicSoda/pen/ZEqXypP" */
  <svg width="512" height="512" viewBox="0 0 512 512" fill="none" overflow="hidden" xmlns="http://www.w3.org/2000/svg" opacity="0.6" >
 <use href="#cube" x="128" y="320" stroke-width="2"  opacity="0.3">
 	<animate attributeName="stroke" dur="6s" repeatCount="indefinite"
-			 values="#fbffe4;#e8ff90;#b7ff00;#5c8b00;#9fe600;#d4ff50;#f4ffc4"/>
+			 values="#fbffe4;
+			 #e8ff90;
+			 #b7ff00;
+			 #5c8b00;
+			 #9fe600;
+			 #d4ff50;
+			 #f4ffc4"/>
 </use>
 
 <rect width="512" height="512" y="384" fill="url(#fade)"/>
 <use href="#cube" x="128" y="128" stroke-width="2">
 	<animate attributeName="stroke" dur="6s" repeatCount="indefinite"
-			 values="#fbffe4;#e8ff90;#b7ff00;#5c8b00;#9fe600;#d4ff50;#f4ffc4"/>
+			 values="#fbffe4;
+			 #e8ff90;
+			 #b7ff00;
+			 #5c8b00;
+			 #9fe600;
+			 #d4ff50;
+			 #f4ffc4"/>
 </use>
 
 <defs>

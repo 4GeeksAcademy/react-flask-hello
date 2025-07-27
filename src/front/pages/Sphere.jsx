@@ -2,10 +2,12 @@ import React from "react";
 
 const Sphere = () => {
   const meridians = Array.from({ length: 36 }, (_, i) => (
+     
     <div
       className="meridian"
       key={`meridian-${i}`}
-      style={{ transform: `rotateX(${(i + 1) * 10}deg)` }}
+      style={{ transform: `rotateX(${(i + 1) * 10}deg)`
+    }}
     />
   ));
 
@@ -23,10 +25,8 @@ const Sphere = () => {
     { size: 160, top: 70, left: 70, z: 125 },
     { size: 20, top: 140, left: 140, z: 150, border: true },
   ];
-
   return (
-    <div className="sphere" style={{backgroundImage: `url('/Mo-moneyIcon-Al.png')`, backgroundRepeat: 'no-repeat',  backgroundSize: 'cover', 
-    }}>{/* Se puede cambiar la imagen de fondo de la esfera por cualquier otra imagen que se desee. Alexis */}
+    <div className="sphere" >{/* Se puede cambiar la imagen de fondo de la esfera por cualquier otra imagen que se desee. Alexis */}
       {meridians}
       {latitudes.map((lat, i) => (
         <div

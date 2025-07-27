@@ -199,7 +199,9 @@ def logout():
     return jsonify({"msg": "Usuario desconectado exitosamente"}), 200 """
 
 
+# ,
 
+# Endpoint para registrar un gasto
 @api.route("/gasto/register", methods=['POST'])
 def gasto_register():
     body = request.get_json()
@@ -233,6 +235,12 @@ def update_gasto():
         gasto.sueldo = body['sueldo']
     if 'is_student' in body:
         gasto.is_student = body['is_student']
+    if 'concepto' in body:
+        gasto.concepto = body['concepto']
+    if 'cantidad' in body:
+        gasto.cantidad = body['cantidad']
+    if 'emoji' in body:
+        gasto.emoji = body['emoji']
     if gasto is None:
         return jsonify({"msg": "Gasto no cambiado"}), 200
     db.session.commit()

@@ -26,7 +26,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'secret_key'  # clave secreta 
+app.config['JWT_SECRET_KEY'] = os.getenv("TOKEN_KEY")  # clave secreta 
 
 # Inicialización de la migración y la base de datos
 MIGRATE = Migrate(app, db, compare_type=True)

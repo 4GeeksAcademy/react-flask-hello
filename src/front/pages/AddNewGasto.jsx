@@ -7,13 +7,13 @@ export const AddNewGasto = () => {
   const [emoji, setEmoji] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
-
-  const onEmojiClick = (emojiObject, event) => {
+  // Esta función se llama al seleccionar un emoji
+  const onEmojiClick = (emojiObject) => {
     setEmoji(emojiObject.emoji);
     setShowPicker(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!concepto.trim()) {
@@ -25,49 +25,19 @@ export const AddNewGasto = () => {
       return;
     }
 
-  
-    const gasto = {
-      concepto: concepto.trim(),
-      cantidad: parseFloat(cantidad),
-      emoji: emoji || ""
-    };
+    alert(`Gasto listo para enviar:\nConcepto: ${concepto}\nCantidad: ${cantidad}\nEmoji: ${emoji || "Ninguno"}`);
 
-    try {
-      const res = await fetch("http://localhost:3001/api/gastos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(gasto)
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert("Error al guardar el gasto: " + (errorData.error || "Desconocido"));
-        return;
-      }
-
-      const data = await res.json();
-
-      alert(`Gasto guardado:\n${data.emoji} ${data.concepto} - €${data.cantidad}`);
-
-      setConcepto("");
-      setCantidad("");
-      setEmoji("");
-      setShowPicker(false);
-
-    } catch (error) {
-      alert("Error de conexión con el servidor: " + error.message);
-    }
+    setConcepto("");
+    setCantidad("");
+    setEmoji("");
+    setShowPicker(false);
   };
+
 
   return (
     <div
       className="min-vh-100 d-flex justify-content-center align-items-center"
-      style={{
-        backgroundColor: "#ffffff",
-        minHeight: "80vh",
-      }}
+      style={{ backgroundColor: "#ffffff", minHeight: "80vh" }}
     >
       <form
         className="w-100"
@@ -84,7 +54,6 @@ export const AddNewGasto = () => {
           className="p-5 rounded shadow-lg"
           style={{
             backgroundColor: "#ffffff",
-            width: "100%",
             maxWidth: "600px",
             paddingTop: "60px",
             paddingBottom: "60px",
@@ -122,7 +91,7 @@ export const AddNewGasto = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 position-relative">
             <label className="form-label">Emoji (opcional)</label>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -130,7 +99,7 @@ export const AddNewGasto = () => {
                 className="btn btn-outline-secondary"
                 onClick={() => setShowPicker(!showPicker)}
               >
-                {emoji || "😀"} {/* Muestra el emoji o uno por defecto */}
+                {emoji || "😀"}
               </button>
 
               {showPicker && (
@@ -138,6 +107,7 @@ export const AddNewGasto = () => {
                   style={{
                     position: "absolute",
                     zIndex: 999,
+                    top: "50px",
                   }}
                 >
                   <EmojiPicker onEmojiClick={onEmojiClick} />
@@ -164,3 +134,4 @@ export const AddNewGasto = () => {
     </div>
   );
 };
+

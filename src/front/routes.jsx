@@ -37,8 +37,10 @@ export const router = createBrowserRouter(
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/form" element={<Formulario />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/addnewgasto" element={<AddNewGasto />} />
       {/* <Route path="/loader" element={<Loader />} /> Esta pagina es un intento independiente. Alexis */}
       {/* <Route path="/loader" element={<Loader />} /> Esta pagina es un intento independiente. Alexis */}
+
     </Route>
   )
 );

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +20,7 @@ export const ForgotPassword = () => {
 
     try {
       const res = await fetch(
-        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/forgotten",
+        "https://cautious-fortnight-jj945v5g9qvpcpwq7-3001.app.github.dev/api/user/forgotten",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -28,33 +30,33 @@ export const ForgotPassword = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("✅ Enlace/token generado. Revisa tu correo o continúa.");
+        localStorage.setItem("token", data.token);
+        setMessage("✅ Token generado. Redirigiendo al cambio de contraseña...");
         setEmail("");
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
+
+        setTimeout(() => {
+          navigate("/resetpassword");
+        }, 1500);
       } else {
-        setMessage(data.msg || "❌ Error al generar el token.");
+        setMessage(data.msg || "❌ No se pudo generar el token.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("❌ Error de red. Inténtalo más tarde.");
+      setMessage("❌ Error de red. Intenta de nuevo más tarde.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="forgot-password card p-4 shadow">
-      <div className="text-center mb-4">
-        <div className="emoji" style={{ fontSize: "2rem" }}>
-          🔒
-        </div>
-        <h3>¿Olvidaste tu contraseña?</h3>
+    <div className="forgot-password card">
+      <div className="forgot-password-header">
+        <div className="forgot-password-emoji">🔐</div>
+        <h3 className="forgot-password-title"><strong>¿Olvidaste tu contraseña?</strong></h3>
+        <p className="forgot-password-subtitle">Introduce tu correo para generar un nuevo acceso.</p>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
+      <form onSubmit={handleSubmit} className="forgot-password-form">
+        <div className="form-group">
           <label className="form-label">Correo electrónico</label>
           <input
             type="email"
@@ -65,13 +67,14 @@ export const ForgotPassword = () => {
             required
           />
         </div>
-        <button className="btn btn-primary w-100" type="submit" disabled={loading}>
+
+        <button className="btn forgot-password-submit" type="submit" disabled={loading}>
           {loading ? "Enviando..." : "Generar token"}
         </button>
       </form>
 
       {message && (
-        <div className="alert alert-info mt-3 text-center">
+        <div className="forgot-password-message">
           {message}
         </div>
       )}

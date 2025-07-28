@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PasswordValidation = ({ password }) => {
   if (!password) return null;
@@ -8,17 +9,17 @@ const PasswordValidation = ({ password }) => {
   const hasNumber = /[0-9]/.test(password);
 
   return (
-    <div className="mt-2">
-      <p className="text-muted mb-1">Tu contraseña debe contener:</p>
-      <ul className="list-unstyled small mb-0">
-        <li className={isLongEnough ? "text-success" : "text-danger"}>
+    <div className="password-validation">
+      <p className="password-validation-title">Tu contraseña debe incluir:</p>
+      <ul className="password-validation-list">
+        <li className={isLongEnough ? "validation-success" : "validation-error"}>
           {isLongEnough ? "✅" : "❌"} Al menos 8 caracteres
         </li>
-        <li className={hasLetter ? "text-success" : "text-danger"}>
-          {hasLetter ? "✅" : "❌"} Contiene letras
+        <li className={hasLetter ? "validation-success" : "validation-error"}>
+          {hasLetter ? "✅" : "❌"} Letras (a-z)
         </li>
-        <li className={hasNumber ? "text-success" : "text-danger"}>
-          {hasNumber ? "✅" : "❌"} Contiene números
+        <li className={hasNumber ? "validation-success" : "validation-error"}>
+          {hasNumber ? "✅" : "❌"} Números (0-9)
         </li>
       </ul>
     </div>
@@ -26,17 +27,13 @@ const PasswordValidation = ({ password }) => {
 };
 
 export const ResetPassword = () => {
-  // Solo usamos token de localStorage:
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token") || "";
-    setToken(savedToken);
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token") || "";
@@ -54,62 +51,66 @@ export const ResetPassword = () => {
 
     try {
       const res = await fetch(
-        "https://vigilant-space-trout-q769qjqx64r9f657x-3001.app.github.dev/user/new-password",
+        "https://cautious-fortnight-jj945v5g9qvpcpwq7-3001.app.github.dev/api/user/new-password",
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ Token como header
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ password: newPassword }), // ✅ Solo se manda la nueva contraseña
+          body: JSON.stringify({ password: newPassword }),
         }
       );
 
       const data = await res.json();
       if (res.ok) {
-        setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
-        setResetMessage("✅ ¡Hecho! Tu contraseña ha sido actualizada");
-        setToken("");
+        setResetMessage("✅ Contraseña actualizada correctamente.");
         setNewPassword("");
-        localStorage.removeItem("token"); // opcional: borrar token al cambiar
+        localStorage.removeItem("token");
+        setToken("");
+        setResetLoading(false);
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
-        setResetMessage(data.msg || "❌ Ups! Error al resetear la contraseña");
+        setResetMessage(data.msg || "❌ Error al actualizar la contraseña.");
+        setResetLoading(false);
       }
     } catch (error) {
-      setResetMessage("❌ Algo no ha salido bien..., Inténtalo de nuevo");
-      setResetMessage("❌ Algo no ha salido bien..., Inténtalo de nuevo");
-    } finally {
+      setResetMessage("❌ Algo salió mal. Intenta de nuevo.");
       setResetLoading(false);
     }
   };
 
   return (
-    <div className="reset-password card p-4 shadow">
-      <div className="text-center mb-4">
-        <div className="emoji" style={{ fontSize: "2rem" }}>
+    <div className="reset-password card">
+      <div className="reset-password-header">
+        <div className={`reset-password-emoji ${isPasswordFocused ? "hidden" : "visible"}`}>
           {isPasswordFocused ? "🙈" : "🐵"}
         </div>
-        <h3>Crear nueva contraseña</h3>
-        <p className="text-muted">Introduce tu token y la nueva contraseña</p>
+        <h3 className="reset-password-title"><strong>Establece tu nueva contraseña</strong></h3>
+        <p className="reset-password-subtitle">Crea una contraseña segura para tu cuenta.</p>
       </div>
 
-      <form onSubmit={handleReset}>
-        <div className="mb-3">
-          <label className="form-label">Token</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            required
-          />
-        </div>
+      <form onSubmit={handleReset} className="reset-password-form">
+        {!token && (
+          <div className="form-group">
+            <label className="form-label">Token</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Pega tu token aquí"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              required
+            />
+          </div>
+        )}
 
-        <div className="mb-3">
+        <div className="form-group">
           <label className="form-label">Nueva contraseña</label>
           <input
-            id="password"
             type="password"
             className="form-control"
             placeholder="********"
@@ -123,20 +124,18 @@ export const ResetPassword = () => {
         </div>
 
         <button
-          className="btn btn-success w-100"
+          className="btn reset-password-submit"
           type="submit"
-          disabled={
-            resetLoading ||
-            !(isLongEnough && hasLetter && hasNumber) ||
-            !token
-          }
+          disabled={resetLoading || !(isLongEnough && hasLetter && hasNumber) || !token}
         >
-          {resetLoading ? "Cambiando..." : "Cambiar contraseña"}
+          {resetLoading ? "Actualizando..." : "Cambiar contraseña"}
         </button>
       </form>
 
       {resetMessage && (
-        <div className="alert alert-info mt-3 text-center">{resetMessage}</div>
+        <div className="reset-password-message">
+          {resetMessage}
+        </div>
       )}
     </div>
   );

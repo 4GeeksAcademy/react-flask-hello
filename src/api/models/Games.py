@@ -19,7 +19,9 @@ class Games(db.Model):
             "name":self.name,
             "platform": self.platform,
             "descriptio": self.description,
-            "price":self.price
+            "price":self.price,
+            "is_stock":self.is_stock
+
         }
 
     

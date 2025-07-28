@@ -9,14 +9,13 @@ bcrypt = Bcrypt()
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(
-        String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    username: Mapped[str] = mapped_column(String(120), nullable=False)
-    firstname: Mapped[str] = mapped_column(String(120), nullable=False)
-    lastname: Mapped[str] = mapped_column(String(120), nullable=False)
-    country: Mapped[str] = mapped_column(String(120), nullable=False)
+    username: Mapped[str] = mapped_column(String(120))
+    firstname: Mapped[str] = mapped_column(String(120))
+    lastname: Mapped[str] = mapped_column(String(120))
+    country: Mapped[str] = mapped_column(String(120))
     phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
 
     def serialize(self):
@@ -41,12 +40,24 @@ class Gasto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sueldo = db.Column(db.Float, nullable=False)
     is_student: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-
-    #concepto = db.Column(db.String(255), nullable=False)
-    #monto = db.Column(db.Float, nullable=False)
+    concepto = db.Column(db.String(255))
+    cantidad = db.Column(db.Float)
+    emoji = db.Column(db.String(120))
     #categoria = db.Column(db.String(120))
     #fecha = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "sueldo": self.sueldo,
+            "is_student": self.is_student,
+            "concepto": self.concepto,
+            "cantidad": self.cantidad,
+            "emoji": self.emoji,
+            "user_id": self.user_id,
+        }
+
 
 """ class Objetivo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

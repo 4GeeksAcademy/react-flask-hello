@@ -15,6 +15,7 @@ export default function ConsejoModal({ tipo, show, onClose }) {
   if (!show) return null;
 
   return (
+    
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
       <div className="bg-white rounded-2xl shadow-xl p-6 w-11/12 max-w-md text-center relative">
         <h2 className="text-xl font-bold mb-4"> ¡Consejo para {tipo}!</h2>

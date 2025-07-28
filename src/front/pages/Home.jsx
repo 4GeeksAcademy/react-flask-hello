@@ -125,7 +125,7 @@ const Home = () => {
             src={dalmata}
             alt="Dálmata"
             style={{
-              width: "300px",
+              width: "350px",
               display: "block",
               margin: "0 auto",
             }}

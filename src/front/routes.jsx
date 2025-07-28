@@ -17,6 +17,7 @@ import { Registro } from "./pages/Registro.jsx"; // Importing the Registro compo
 import { Carrito } from "./pages/Carrito.jsx"; // Importing the Carrito component
 import { Login } from "./pages/Login.jsx"; // Importing the Login component
 import { Dashboard } from "./pages/Dashboard"; // Importing the Dashboard component
+import { VistaProducto } from "./components/VistaProducto.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,8 @@ export const router = createBrowserRouter(
       <Route path="/carrito" element={<Carrito />} /> {/* Route for Carrito page */}
       <Route path="/login" element={<Login />} /> {/* Route for Login page */}
       <Route path="/dashboard" element={<Dashboard />} /> {/* Route for Dashboard page */}
+      <Route path="/vistaproducto" element={<VistaProducto />} /> {/* Route for Dashboard page */}
+
 
 
     </Route>

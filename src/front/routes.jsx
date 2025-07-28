@@ -14,6 +14,7 @@ import {Footer }  from "./components/Footer";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
 import { Page404 } from "./pages/Page404";
+import { AddNewGasto } from "./pages/AddNewGasto";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ export const router = createBrowserRouter(
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/addnewgasto" element={<AddNewGasto />}/>
     </Route>
   )
 );

@@ -20,7 +20,7 @@ export const ForgotPassword = () => {
 
     try {
       const res = await fetch(
-        "https://cautious-fortnight-jj945v5g9qvpcpwq7-3001.app.github.dev/api/user/forgotten",
+        "https://potential-space-umbrella-wrx97p74x4wx3gq9p-3001.app.github.dev/api/user/forgotten",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

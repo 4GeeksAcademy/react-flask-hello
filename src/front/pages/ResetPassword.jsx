@@ -51,7 +51,7 @@ export const ResetPassword = () => {
 
     try {
       const res = await fetch(
-        "https://cautious-fortnight-jj945v5g9qvpcpwq7-3001.app.github.dev/api/user/new-password",
+        "https://potential-space-umbrella-wrx97p74x4wx3gq9p-3001.app.github.dev/api/user/new-password",
         {
           method: "PUT",
           headers: {

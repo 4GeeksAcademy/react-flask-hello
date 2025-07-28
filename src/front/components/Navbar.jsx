@@ -60,8 +60,13 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</a>
-                
+              <Link to= "/register">
+                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
+              </Link> 
+
+              <Link to= "/formulario">
+                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Formulario</p>
+              </Link>
                 <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Contacto</a>
                 <input
                   type="text"
@@ -82,7 +87,7 @@ export default function Navbar() {
             </button>
 
             <div class="relative ml-3">
-              <Link to="/Login">
+             
                 <div>
                   <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" class="relative flex rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                     <span class="absolute -inset-1.5"></span>
@@ -90,7 +95,7 @@ export default function Navbar() {
                     <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" class="size-8 w-12 rounded-full" />
                   </button>
                 </div>
-              </Link>
+              
               <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (

@@ -1,7 +1,7 @@
 import "./home.css"
-import { ShoppingCart } from 'lucide-react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+
 export const Home = () => {
   const images = [
     {
@@ -18,6 +18,11 @@ export const Home = () => {
     {
     src: "https://images4.alphacoders.com/595/595710.jpg",
     },
+    {
+    src: "https://4kwallpapers.com/images/wallpapers/frank-woods-call-of-2560x1080-19693.jpg",
+    },
+    
+
     // Puedes añadir más objetos aquí para el nuevo carousel
   ];
   const responsive = {
@@ -42,6 +47,7 @@ export const Home = () => {
   return (
     <div className="w-full relative">
       <Carousel
+      
         responsive={responsive}
       >
         {
@@ -59,5 +65,8 @@ export const Home = () => {
         <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
       </div>
     </div>
+  
+
+
   );
 }

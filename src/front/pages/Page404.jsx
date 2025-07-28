@@ -1,10 +1,14 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 export const Page404 = () => {
  return (<section className="page_404">
-  <div class="container">
+  <div className="container">
     <h1>404</h1>
     <h2>Oops, Page Not Found</h2>
     <p>Page that you're looking for isn't found</p>
-    <button class="btn">Go Back</button>
+    <Link to="/" className="btn">Go to Home</Link>
+    {/* <button className="btn">Go Back</button> */}
   </div>
   <style>{`* {
   margin: 0;
@@ -16,18 +20,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background: linear-gradient(45deg, #22b455, #1dd1a1);
 }
+.page_404 {
+  padding: 9vh;
+}
 .container {
-  width: 54rem;
-  height: 40rem;
+  min-width: 100vh;
+  min-height: 80vh;
   border-radius: 50px;
   background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   box-shadow: 12px 12px 23px #bebebe, -12px -12px 23px #fff;
   text-align: center;
-  padding-top: 20px;
 }
 .container h1 {
   font-size: 10rem;
@@ -38,6 +45,7 @@ body {
   font-weight: 750;
 }
 .container h2 {
+  padding: 9vh 0 0 0;
   color: #204829;
   margin-top: 15rem;
   margin-bottom: 10px;

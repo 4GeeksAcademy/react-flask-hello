@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 
 
@@ -64,8 +64,8 @@ const buttonStyles = {
 };
 
 const buttonHoverStyles = {
-    backgroundColor: '#689f38', // Darker green on hover
-    transform: 'translateY(-2px)',
+  backgroundColor: '#689f38', // Darker green on hover
+  transform: 'translateY(-2px)',
 };
 
 // --- Componente NavbarAgricola ---
@@ -75,14 +75,14 @@ export const Navbar = () => {
 
   const handleLogout = () => {
 
-    dispatch({ type: 'eliminar_usuario' }); // Dispatch the action
+    dispatch({ type: 'eliminar_user' }); // Dispatch the action
     localStorage.removeItem('jwt_token');
     // 3. Redirect to login page
-    navigate('/');
+    navigate('/registro');
     console.log('User logged out.'); // For debugging
   };
 
-  return ( 
+  return (
     <nav style={navbarContainerStyles}>
       {/* Logo y Nombre de la Empresa */}
       <Link to="/" style={logoStyles}>
@@ -94,17 +94,17 @@ export const Navbar = () => {
       </Link>
       {store.user ? (
         <>
-            <span style={{ ...linkStyles, cursor: 'default' }}>
-              Hola, {store.user.username || 'Agricultor'}! 
-            </span>
-            <button
-              onClick={handleLogout}
-              style={{...buttonStyles, backgroundColor: '#c23b22'}} // Red for logout button
-              onMouseOver={(e) => Object.assign(e.currentTarget.style, {...buttonStyles, ...buttonHoverStyles})}
-              onMouseOut={(e) => Object.assign(e.currentTarget.style, {...buttonStyles, backgroundColor: '#c23b22'})}
-            >
-              Cerrar Sesión
-            </button>
+          <span style={{ ...linkStyles, cursor: 'default' }}>
+            Hola, {store.user.username || 'Agricultor'}!
+          </span>
+          <button
+            onClick={handleLogout}
+            style={{ ...buttonStyles, backgroundColor: '#c23b22' }} // Red for logout button
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, { ...buttonStyles, ...buttonHoverStyles })}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, { ...buttonStyles, backgroundColor: '#c23b22' })}
+          >
+            Cerrar Sesión
+          </button>
 
         </>
       ) : (
@@ -133,8 +133,8 @@ export const Navbar = () => {
           >
             Ver todas las ofertas
           </Link></div>
-        )}
-      
+      )}
+
     </nav>
   );
 };

@@ -27,7 +27,7 @@ export const Login = () => {
     });
 
     const data = await resp.json();
-    localStorage.setItem("jwt-token", data.token);
+    localStorage.setItem("jwt_token", data.token);
     dispatch({
       type:"add_user",
       payload:data.user_serialize
@@ -43,6 +43,7 @@ export const Login = () => {
       dispatch({
       type:"eliminar_user",
     })
+      localStorage.removeItem('jwt_token');
     }
 
     setSending(false);

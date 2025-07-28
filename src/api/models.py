@@ -9,14 +9,13 @@ bcrypt = Bcrypt()
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(
-        String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    username: Mapped[str] = mapped_column(String(120), nullable=False)
-    firstname: Mapped[str] = mapped_column(String(120), nullable=False)
-    lastname: Mapped[str] = mapped_column(String(120), nullable=False)
-    country: Mapped[str] = mapped_column(String(120), nullable=False)
+    username: Mapped[str] = mapped_column(String(120))
+    firstname: Mapped[str] = mapped_column(String(120))
+    lastname: Mapped[str] = mapped_column(String(120))
+    country: Mapped[str] = mapped_column(String(120)
     phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
 
     def serialize(self):

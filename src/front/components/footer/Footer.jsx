@@ -28,7 +28,7 @@ export const Footer = () => (
       <hr className="footer-divider" />
 
       <div className="footer-bottom">
-        © 2025 <a href="/">GameStore™</a>. All Rights Reserved.
+        © 2025 <a href="/">GameStore™</a>. All Rights Reserved..
       </div>
     </div>
   </footer>

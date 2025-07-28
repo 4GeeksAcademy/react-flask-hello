@@ -1,8 +1,28 @@
+import { useState } from "react"
+
 export const Formulario = () => {
+
+    const [img, setImg] = useState("")
+    const [name, setName] = useState("")
+    const [platform, setPlatform] = useState("")
+    const [description, setDescription] = useState("")
+    const [price, setPrice] = useState("")
+
+
+
+
+
     return (
         <form class="w-full max-w-lg mx-auto">
-            <div class="pt-2 pb-2 rounded overflow-hidden">
-                <img class="h-64 w-full object-cover rounded" src="https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg" alt="God of War Ragnarok"></img>
+            <div>
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
+                    Img
+                </label>
+                <input value={img} onChange={(e) => setImg(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+
+            </div>
+            <div>
+                <img src={img}></img>
             </div>
 
             <div class="flex flex-col space-y-4 mt-6">
@@ -10,14 +30,14 @@ export const Formulario = () => {
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name">
                         Name
                     </label>
-                    <input class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+                    <input value={name} onChange={(e) => setName(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
                 </div>
 
                 <div>
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-plataforma">
-                        Plataforma
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-platform">
+                        Platform
                     </label>
-                    <select class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataforma">
+                    <select value={platform} onChange={(e) => setPlatform(e.target.value)} class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataform">
                         <option>None</option>
                         <option>PlayStation</option>
                         <option>Xbox</option>
@@ -28,18 +48,18 @@ export const Formulario = () => {
 
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-description">
-                        Descripción
+                        Description
                     </label>
-                    <textarea class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 h-32 resize-none focus:outline-none focus:bg-white focus:border-gray-500" id="grid-description" placeholder=""></textarea>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 h-32 resize-none focus:outline-none focus:bg-white focus:border-gray-500" id="grid-description" placeholder=""></textarea>
                 </div>
 
                 <div>
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-precio">
-                        Precio
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-price">
+                        Price
                     </label>
-                    <input class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-precio" type="text" placeholder="€"></input>
+                    <input value={price} onChange={(e) => setPrice(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" type="text" placeholder="€"></input>
                 </div>
             </div>
-        </form>    
-            );
+        </form>
+    );
 }

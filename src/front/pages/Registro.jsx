@@ -140,7 +140,7 @@ export const Registro = () => {
         {error && <div className="text-danger text-center">{error}</div>}
         {success && <div className="text-success text-center">{success}</div>}
         <div className="text-center">
-          <button className="btn btn-light text-dark mt-2" type="submit">
+          <button className="btn btn-dark text-light mt-2" type="submit">
             Registrarse
           </button>
         </div>

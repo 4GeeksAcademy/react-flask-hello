@@ -38,6 +38,9 @@ db.init_app(app)
 
 jwt = JWTManager(app)
 
+# ROUTES API
+
+
 # add the admin
 setup_admin(app)
 

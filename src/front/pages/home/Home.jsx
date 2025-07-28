@@ -22,7 +22,6 @@ export const Home = () => {
       src: "https://4kwallpapers.com/images/wallpapers/frank-woods-call-of-2560x1080-19693.jpg",
     },
 
-
     // Puedes añadir más objetos aquí para el nuevo carousel
   ];
   const responsive = {
@@ -47,7 +46,6 @@ export const Home = () => {
   return (
     <div className="w-full relative">
       <Carousel
-        
         responsive={responsive}     
         infinite={true}       
         autoPlaySpeed={1000}
@@ -69,6 +67,7 @@ export const Home = () => {
         <h2 class="text-2xl font-bold mb-2 text-center sm:text-xl md:text-3xl">¡Oferta de Bienvenida!</h2>
         <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
       </div>
+
 
       <div class="flex flex-wrap justify-center gap-6">
         <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
@@ -118,8 +117,6 @@ export const Home = () => {
       </div>
 
     </div >
-
-
 
   );
 }

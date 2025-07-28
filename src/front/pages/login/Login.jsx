@@ -1,33 +1,45 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, navigate } from "react-router-dom"
 
 export const Login = () => {
 
-//     const [email, setEmail] = useState("")
-//         const [password, setPassword] = useState("")
-//     // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
 
-//     const login_user = async (email, password) => {
-//      const resp = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/token`, { 
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify({ email, password }) 
-//      })
+    // FALTA AÑADIR AL FORMULARIO LOS VALORES DE LOS INPUTS Y PROBAR EN LOGIN Y EL CERRAR SESION, HABLAR CON HORACIO COMO LO VE.
+    
 
-//      if(!resp.ok) throw Error("There was a problem in the login request")
+//      const [email, setEmail] = useState("")
+//          const [password, setPassword] = useState("")
 
-//      if(resp.status === 401){
-//           throw("Invalid credentials")
+//      // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
+
+//      const login_user = async (email, password) => {
+//       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/token`, { 
+//            method: "POST",
+//            headers: { "Content-Type": "application/json" },
+//            body: JSON.stringify({ email, password }) 
+//       })
+
+//       if(!body.ok) throw Error("There was a problem in the login request")
+
+//       if(body.status === 401){
+//            throw("Invalid credentials")
+//       }
+//       else if(body.status === 400){
+//            throw ("Invalid email or password format")
 //      }
-//      else if(resp.status === 400){
-//           throw ("Invalid email or password format")
-//      }
-//      const data = await resp.json()
+//      const data = await resp.json();
 //      // Guarda el token en la localStorage
-//      // También deberías almacenar el usuario en la store utilizando la función setItem
-//      localStorage.setItem("jwt-token", data.token);
+//       // También deberías almacenar el usuario en la store utilizando la función setItem
+//       localStorage.setItem("jwt-token", data.token);
+//       alert("Sesion iniciada correctamente");
 
-//      return data
+//       return data
+//  }
+
+// const cerrarSesion = ()=>{
+//     localStorage.removeItem("jwt-token", data.token)
+//     alert("Sesion finalizada")
+//     navigate("/Login")
 // }
 
 
@@ -69,6 +81,7 @@ export const Login = () => {
                             className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                             placeholder="Mínimo 8 caracteres"
                             minLength={8}
+                            // prueba
                           
                         />
                     </div>

@@ -30,7 +30,6 @@ export const VistaHome = () => {
         </div>
         <div className="flex justify-center">
           <img
-           src="https://e7.pngegg.com/pngimages/890/955/png-clipart-calendar-time-computer-file-cartoon-page-calendar-cartoon-character-blue-thumbnail.png" 
            className="w-1/6 h-auto"
            alt="" />
         </div>

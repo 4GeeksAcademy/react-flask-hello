@@ -65,7 +65,7 @@ export default function Navbar() {
               </Link> 
 
               <Link to= "/formulario">
-                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Formulario</p>
+                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
               </Link>
                 <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Contacto</a>
                 <input

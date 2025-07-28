@@ -9,7 +9,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     username: Mapped[str] = mapped_column(String(120), nullable=False)
-    rol:Mapped[str] = mapped_column(String(10),nullable = False)
+    
   
 
 
@@ -18,7 +18,7 @@ class User(db.Model):
            "id": self.id,
             "email": self.email,
             "username" :self.username,
-            "rol":self.rol
+           
             # do not serialize the password, its a security breach
         }
     

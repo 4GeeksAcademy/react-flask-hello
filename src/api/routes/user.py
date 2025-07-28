@@ -20,11 +20,12 @@ def register_user():
         return jsonify("Error, debes introducir los campos obligatorios"), 404
 
     new_user = User()
-    new_user.rol = body["rol"]
+   
     new_user.username = body["username"]
     new_user.email = body["email"]
     new_user.password = new_password.decode()
     new_user.is_active = True
+   
 
     db.session.add(new_user)
     db.session.commit()

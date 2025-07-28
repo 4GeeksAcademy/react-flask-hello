@@ -1,28 +1,17 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, Blueprint  # url_for
+from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User, Gasto  # , Objetivo, Articulo
+from api.models import db, User, Gasto
 from api.utils import generate_sitemap, APIException
 import requests
 
 api = Blueprint('api', __name__)
-CORS(api, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-
-""" @api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "msg": "¡Hola! Soy un mensaje que vino del backend, consulte la pestaña de red en el Inspector de Google y verá la solicitud GET"
-    }
-
-    return jsonify(response_body), 200 """
+CORS(api)
 
 # Endpoint de registrar al usuario
-
-
 @api.route("/user/register", methods=['POST'])
 def register():
     body = request.get_json()
@@ -30,17 +19,16 @@ def register():
     new_user = User()
     new_user.username = body["username"]
     new_user.email = body["email"]
-    # Usar el método para hashear la contraseña
-    new_user.set_password(body["password"])
+    new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
     new_user.firstname = body["firstname"]
     new_user.lastname = body["lastname"]
     new_user.country = body["country"]
-    new_user.phone = body["phone"]
+    new_user.phone = body["phone"] 
     new_user.is_active = True
 
     db.session.add(new_user)
     db.session.commit()
-
+    
     try:
         # Preparar los datos para la solicitud a la API de gastos
         gasto_data = {
@@ -53,12 +41,15 @@ def register():
             "http://localhost:3001/api/gasto/register", json=gasto_data)
         response_data = response.json()
         access_token = create_access_token(identity=str(new_user.id))
-        return jsonify({"msg": "Usuario registrado con éxito", """ "gasto": response_data, """ "token": access_token}), 201
+        return jsonify({
+            "msg": "Usuario registrado con éxito",
+            "gasto": response_data,
+            "token": access_token
+        }), 201
     except requests.exceptions.RequestException as e:
         return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
-# Endpoint de iniciar sesion ya sea con username o email
 
-
+# Endpoint de iniciar sesión ya sea con username o email
 @api.route("/user/login", methods=['POST'])
 def login():
     body = request.get_json()
@@ -79,20 +70,16 @@ def login():
     return jsonify({"msg": "username/email o contraseña equivocados"}), 401
 
 # Con el Token devolver el usuario
-
-
 @api.route('/user/profile', methods=['GET'])
 @jwt_required()
 def profile():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     if user is None:
-        return jsonify({"msg": "Usuario no encontrado"}), 404
+        return jsonify({"msg":"Usuario no encontrado"}), 404
     return jsonify({"user": user.serialize()}), 200
 
 # Modificar el username o el email
-
-
 @api.route("/user/update", methods=['PUT'])
 @jwt_required()
 def update_user():
@@ -114,6 +101,7 @@ def update_user():
         user.phone = body['phone']
 
     db.session.commit()
+    
     try:
         gasto_data = {
             "user_id": user.id,
@@ -126,7 +114,6 @@ def update_user():
         return jsonify({"msg": "Detalles del usuario actualizados correctamente", "gasto": response_data}), 200
     except requests.exceptions.RequestException as e:
         return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
-    # return jsonify({"msg": "Detalles del usuario actualizados correctamente"}), 200
 
 # Endpoint para modificar la contraseña
 
@@ -148,10 +135,8 @@ def change_password():
 
     return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
 
-# Endpoind de iniciar sesion solo con email
-
-
-@api.route("/user/forgotten", methods=['POST', 'OPTIONS'])
+# Endpoint de iniciar sesión solo con email (recuperación)
+@api.route("/user/forgotten", methods=['POST'])
 def forgotten():
     if request.method == 'OPTIONS':
         return '', 200
@@ -162,7 +147,7 @@ def forgotten():
     if user is not None:
         access_token = create_access_token(identity=str(user.id))
         return jsonify({"token": access_token}), 200
-    return jsonify({"msg": "Usuario no encontrado"}), 404
+    return jsonify({"msg":"Usuario no encontrado"}), 404
 
 # Endpoint para modificar la contraseña a la nueva contraseña
 
@@ -180,7 +165,6 @@ def new_password():
     user.set_password(body['password'])
     db.session.commit()
     return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
-    # return jsonify({"msg": "La contraseña actual es incorrecta"}), 401
 
 # Endpoint para eliminar el usuario
 
@@ -198,9 +182,9 @@ def delete_user():
         response = requests.post(
             "http://localhost:3001/api/gasto/delete", json=gasto_data)
         response_data = response.json()
-        return jsonify({"msg": "Usuario eliminado", "gasto": response_data}), 200
         db.session.delete(user)
         db.session.commit()
+        return jsonify({"msg": "Usuario eliminado", "gasto": response_data}), 200
     except requests.exceptions.RequestException as e:
         return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
 
@@ -217,20 +201,7 @@ def token():
         return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
 
 
-""" @api.route("/user/logout", methods=['POST'])
-@jwt_required()
-def logout():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    if user is None:
-        return jsonify({"msg": "Usuario no encontrado"}), 404
-    
-    user.is_active = False
-    db.session.commit()
-    return jsonify({"msg": "Usuario desconectado exitosamente"}), 200 """
-
-
-# ,
+# Endpoints relacionados con gastos
 
 # Endpoint para registrar un gasto
 @api.route("/gasto/register", methods=['POST'])
@@ -258,38 +229,8 @@ def gasto_profile():
     return jsonify({"gasto": gasto.serialize()}), 200
 
 # Modificar el sueldo o el is_student
-
-
 @api.route("/gasto/update", methods=['PUT'])
 @jwt_required()
 def update_gasto():
     body = request.get_json()
     gasto = Gasto.query.get(body['user_id'])
-    if 'sueldo' in body:
-        gasto.sueldo = body['sueldo']
-    if 'is_student' in body:
-        gasto.is_student = body['is_student']
-    if 'concepto' in body:
-        gasto.concepto = body['concepto']
-    if 'cantidad' in body:
-        gasto.cantidad = body['cantidad']
-    if 'emoji' in body:
-        gasto.emoji = body['emoji']
-    if gasto is None:
-        return jsonify({"msg": "Gasto no cambiado"}), 200
-    db.session.commit()
-    return jsonify({"msg": "Detalles del gasto actualizados correctamente"}), 200
-
-# Endpoint para eliminar el gasto
-
-
-@api.route("/gasto/delete", methods=['DELETE'])
-@jwt_required()
-def delete_gasto():
-    body = request.get_json()
-    gasto = Gasto.query.get(body['user_id'])
-    if gasto is None:
-        return jsonify({"msg": "Gasto no encontrado"}), 404
-    db.session.delete(gasto)
-    db.session.commit()
-    return jsonify({"msg": "Gasto eliminado"}), 200

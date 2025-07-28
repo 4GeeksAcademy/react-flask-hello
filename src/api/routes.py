@@ -183,7 +183,7 @@ def update_product(id):
     except Exception as e:
         print(e)
     
-    update_product.verified = True
+    # update_product.verified = True
     db.session.commit()
 
 

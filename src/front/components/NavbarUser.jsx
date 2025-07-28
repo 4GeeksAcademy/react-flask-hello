@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import logoB from "../assets/img/logoB.svg";
 
 export const NavbarUser = () => {
 
@@ -13,9 +14,7 @@ export const NavbarUser = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark shadow-sm mt-2 ms-2 me-2 px-3" style={{ backgroundColor: '#003366', borderRadius: '15px' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
-          AutoTekc
-        </Link>
+        <img src={logoB} alt="Logo" width={200} />
 
         <button
           className="navbar-toggler"

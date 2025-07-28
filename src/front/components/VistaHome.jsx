@@ -54,7 +54,7 @@ export const VistaHome = () => {
               className="w-1/3 h-auto border-4 border-double border-blue-500"
               alt="Imagen 1" />
             <div className="">
-              <p className="">podras guardar todos los eventos en tu calendario, <br/>  conocer todas las novedades y asistentes al evento</p>
+              <p className="m-8">podras guardar todos los eventos en tu calendario, <br/>  conocer todas las novedades y asistentes al evento</p>
             </div>
           </div>
           </div>

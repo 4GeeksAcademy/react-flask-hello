@@ -1,54 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import '@fontsource/bebas-neue';
+export default function Main() {
+  return (
+    <div className="container-fluid p-4">
+      {/* Botón perfil en la esquina superior derecha */}
+      <div className="d-flex justify-content-end mb-4">
+        <button
+          className="btn"
+          style={{
+            width: "60px",
+            height: "60px",
+            borderRadius: "50%",
+            backgroundColor: "#007bff",
+            color: "white",
+            fontSize: "18px",
+          }}
+          onClick={() => {
+            // Aquí enlazarás más adelante
+          }}
+        >
+          P
+        </button>
+      </div>
 
+      {/* Fila con dinero total y dinero ahorrado */}
+     <div className="row mb-4">
+  <div className="col-md-6">
+    <div
+      className="card text-center p-3"
+      style={{
+        backgroundColor: "white",
+        border: "3px solid #b7ff00",
+        color: "black",
+      }}
+    >
+      <h5>Dinero Total</h5>
+      <p className="display-6">0€</p>
+    </div>
+  </div>
 
-
-
-export const Main = () => {
-    return (
-        <div className="bg-light vh-100 position-relative">
-
-            {/* Botón de perfil (círculo en la derecha) */}
-            <button
-                className="btn btn-primary rounded-circle position-absolute shadow"
-                style={{
-                    top: "20px",
-                    right: "20px",
-                    width: "80px",
-                    height: "80px",
-                    border: "4px solid #b7ff00",
-                }}
-            />
-
-            {/* Contenedor de rectángulos en columna */}
-            <div
-                className="d-flex justify-content-between position-absolute w-100"
-                style={{ top: "150px" }}
-            >
-                {/* Rectángulo izquierdo */}
-                <div
-                    className="bg-success rounded shadow"
-                    style={{
-                        width: "220px",
-                        height: "120px",
-                        border: "4px solid #b7ff00",
-                        borderRadius: "220px",
-                    }}
-                />
-
-                {/* Rectángulo derecho */}
-                <div
-                    className="bg-danger rounded shadow"
-                    style={{
-                        width: "220px",
-                        height: "120px",
-                        border: "4px solid #b7ff00",                        
-                        borderRadius: "220px",
-                    }}
-                />
-            </div>
-        </div>
-    );
-};
+  <div className="col-md-6">
+    <div
+      className="card text-center p-3"
+      style={{
+        backgroundColor: "white",
+        border: "3px solid #b7ff00",
+        color: "black",
+      }}
+    >
+      <h5>Dinero Ahorrado</h5>
+      <p className="display-6">0€</p>
+    </div>
+  </div> 
+  </div>
+  </div> );
+}  

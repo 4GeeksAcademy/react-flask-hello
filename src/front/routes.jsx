@@ -16,6 +16,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { Formulario } from "./pages/Formulario";
 import { Page404 } from "./pages/Page404";
 import { Loader} from "./pages/Loader";
+import {Main} from "./pages/Main"
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
+       <Route path="/Main" element={<Main />} />
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />

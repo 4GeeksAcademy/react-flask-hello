@@ -35,7 +35,7 @@ export const NavbarUser = () => {
               <Link className="nav-link" to="/">Inicio</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/services">Mis Vehículos</Link>
+              <Link className="nav-link" to="/vehiculos">Mis Vehículos</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/about">Perfil</Link>

@@ -89,7 +89,7 @@ export const Servicios = () => {
                 </div>
 
 
-                <section className="container my-5">
+                <section id= "about" className="container my-5">
                     <div className="vision-box">
                         <h2 className="fw-bold">Visión</h2>
                         <p>

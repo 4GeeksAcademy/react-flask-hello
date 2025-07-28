@@ -13,7 +13,7 @@ export const Footer = () => (
 
         <ul className="footer-nav">
           <li><a href="/AboutUs">Equipo</a></li>
-          <li><a href="/privacidad">Política de privacidad </a></li>
+          <li><a href="/privacidad">Política de privacidad</a></li>
           <li><Contacto /></li>
         </ul>
       </div>

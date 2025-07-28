@@ -11,7 +11,11 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Register } from "./pages/register/Register";
 import { AboutUs } from "./pages/aboutus/AboutUs";
-import { Contact } from "./pages/contact/Contact";
+import { Soporte } from "./pages/soporte/Soporte.jsx";
+import { Privacidad } from "./pages/soporte/Privacidad.jsx";
+import { Login } from "./pages/login/Login.jsx";
+
+
 
 
 
@@ -33,8 +37,11 @@ export const router = createBrowserRouter(
         <Route path="/demo" element={<Demo />} />
         <Route path="/register" element={<Register />} /> {/* PAGINA REGISTER*/}
         <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
-        <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA CONTACT STORE*/}
-        <Route path="/contact" element={<Contact />} /> {/* PAGINA CONTACT STORE*/}
+        <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA AboutUs STORE*/}
+        <Route path="/soporte" element={<Soporte />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/privacidad" element={<Privacidad />} /> {/* PAGINA Soporte STORE*/}
+
+
 
 
         

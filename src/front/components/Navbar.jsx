@@ -59,7 +59,7 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Contacto</a>
+                <a href="/Soporte" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-indigo-700 hover:text-white">Soporte24/7</a>
                 <input
                   type="text"
                   placeholder="Buscar..."

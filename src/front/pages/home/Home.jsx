@@ -44,6 +44,7 @@ export const Home = () => {
     }
   };
   return (
+    <body>
     <div className="w-full relative">
       <Carousel
         responsive={responsive}     
@@ -117,6 +118,7 @@ export const Home = () => {
       </div>
 
     </div >
+    </body>
 
   );
 }

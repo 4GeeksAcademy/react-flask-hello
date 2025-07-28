@@ -1,96 +1,77 @@
-import { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { FaFacebookF, FaInstagram, FaTiktok, FaEnvelope } from "react-icons/fa";
 
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export const Footer = ({ lang = 'es' }) => {
-  useEffect(() => {
-    AOS.init({ duration: 800 });
-    AOS.refresh();
-  }, []);
+export const Footer = () => {
+    return (
+        <footer className="festquila-footer py-5">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-3 col-sm-6 mb-4">
+                        <h5 className="text-uppercase mb-4 fw-bold">Festquila</h5>
+                        <ul className="list-unstyled">
+                            <li><Link to="/about" className="text-decoration-none text-white-50">Sobre nosotros</Link></li>
+                            <li><Link to="/press" className="text-decoration-none text-white-50">Prensa</Link></li>
+                            <li><Link to="/contact" className="text-decoration-none text-white-50">Contacto</Link></li>
+                            <li><Link to="/help" className="text-decoration-none text-white-50">Centro de ayuda</Link></li>
+                        </ul>
+                    </div>
 
-  const labels = {
-    es: {
-      brand: 'FiestaXperience',
-      tagline: 'Vive la fiesta con los mejores eventos.',
-      linksTitle: 'Enlaces',
-      events: 'Próximos Eventos',
-      gallery: 'Galería',
-      contact: 'Contacto',
-      faq: 'Preguntas Frecuentes',
-      follow: 'Síguenos',
-      subscribe: 'Suscríbete',
-      placeholder: 'Tu correo electrónico',
-      button: 'Enviar',
-      rights: `© ${new Date().getFullYear()} FiestaXperience. Todos los derechos reservados.`
-    },
-    en: {
-      brand: 'FiestaXperience',
-      tagline: 'Experience the best party events.',
-      linksTitle: 'Links',
-      events: 'Upcoming Events',
-      gallery: 'Gallery',
-      contact: 'Contact',
-      faq: 'FAQ',
-      follow: 'Follow Us',
-      subscribe: 'Subscribe',
-      placeholder: 'Your email address',
-      button: 'Submit',
-      rights: `© ${new Date().getFullYear()} FiestaXperience. All rights reserved.`
-    }
-  };
+                    <div className="col-md-3 col-sm-6 mb-4">
+                        <h5 className="text-uppercase mb-4 fw-bold">Organiza con nosotros</h5>
+                        <ul className="list-unstyled">
+                            <li><Link to="/publish-event" className="text-decoration-none text-white-50">Publica tu evento</Link></li>
+                            <li><Link to="/promote-music" className="text-decoration-none text-white-50">Promueve tu música</Link></li>
+                            <li><Link to="/collaborate" className="text-decoration-none text-white-50">Colaboraciones</Link></li>
+                        </ul>
+                    </div>
 
-  const t = labels[lang];
+                    <div className="col-md-2 col-sm-6 mb-4">
+                        <h5 className="text-uppercase mb-4 fw-bold">Síguenos</h5>
+                        <ul className="list-unstyled d-flex flex-column">
+                            <li><a href="https://facebook.com/festquila" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white-50 mb-2 d-inline-block"><i className="fab fa-facebook-f me-2"></i> Facebook</a></li>
+                            <li><a href="https://instagram.com/festquila" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white-50 mb-2 d-inline-block"><i className="fab fa-instagram me-2"></i> Instagram</a></li>
+                            <li><a href="https://twitter.com/festquila" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white-50 mb-2 d-inline-block"><i className="fab fa-twitter me-2"></i> X (Twitter)</a></li>
+                            <li><a href="https://tiktok.com/festquila" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white-50 mb-2 d-inline-block"><i className="fab fa-tiktok me-2"></i> TikTok</a></li>
+                            <li><a href="https://youtube.com/festquila" target="_blank" rel="noopener noreferrer" className="text-decoration-none text-white-50 mb-2 d-inline-block"><i className="fab fa-youtube me-2"></i> YouTube</a></li>
+                        </ul>
+                    </div>
 
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState(null);
+                    <div className="col-md-2 col-sm-6 mb-4">
+                        <h5 className="text-uppercase mb-4 fw-bold">Descubre Eventos</h5>
+                        <ul className="list-unstyled">
+                            <li><Link to="/events/today" className="text-decoration-none text-white-50">Hoy</Link></li>
+                            <li><Link to="/events/upcoming" className="text-decoration-none text-white-50">Próximos</Link></li>
+                            <li><Link to="/events/genre/techno" className="text-decoration-none text-white-50">Techno</Link></li>
+                            <li><Link to="/events/city/madrid" className="text-decoration-none text-white-50">Madrid</Link></li>
+                            <li><Link to="/events/city/barcelona" className="text-decoration-none text-white-50">Barcelona</Link></li>
+                        </ul>
+                    </div>
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    
-    setStatus('success');
-    setEmail('');
-    setTimeout(() => setStatus(null), 3000);
-  };
+                    <div className="col-md-2 col-sm-12 mb-4 text-center text-md-start">
+                        <h5 className="text-uppercase mb-4 fw-bold">Descarga nuestra App</h5>
+                        <p className="text-white-50 small">Descubre los próximos planes y experiencias que mejor se adapten a ti.</p>
+                        <div className="d-flex flex-column align-items-center align-items-md-start">
+                            <a href="#" target="_blank" rel="noopener noreferrer" className="mb-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/2560px-Download_on_the_App_Store_Badge.svg.png" alt="Download on the App Store" style={{ height: '40px' }} />
+                            </a>
+                            <a href="#" target="_blank" rel="noopener noreferrer">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" alt="Get it on Google Play" style={{ height: '40px' }} />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr className="bg-white my-4" />
 
-  return (
-    <footer className="bg-dark text-light pt-5 pb-3 mt-5">
-      <div className="container">
-        <div className="row text-center text-md-start">
-          <div className="col-md-4 mb-4" data-aos="fade-up">
-            <h4 className="text-uppercase fw-bold text-primary">{t.brand}</h4>
-            <p className="text-muted">{t.tagline}</p>
-          </div>
-
-          <div className="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-            <h5 className="text-uppercase">{t.linksTitle}</h5>
-            <ul className="list-unstyled">
-              <li><a href="/eventos" className="text-light text-decoration-none">{t.events}</a></li>
-              <li><a href="/galeria" className="text-light text-decoration-none">{t.gallery}</a></li>
-              <li><a href="/contacto" className="text-light text-decoration-none">{t.contact}</a></li>
-              <li><a href="/faq" className="text-light text-decoration-none">{t.faq}</a></li>
-            </ul>
-          </div>
-
-          <div className="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-            <h5 className="text-uppercase">{t.follow}</h5>
-            <div className="d-flex justify-content-center justify-content-md-start gap-3 fs-5 mt-2">
-              <a href="https://facebook.com" className="text-light"><FaFacebookF /></a>
-              <a href="https://instagram.com" className="text-light"><FaInstagram /></a>
-              <a href="https://tiktok.com" className="text-light"><FaTiktok /></a>
-              <a href="mailto:info@fiestaxperience.com" className="text-light"><FaEnvelope /></a>
+                <div className="row">
+                    <div className="col-12 text-center text-white-50">
+                        <p className="mb-0">
+                            © {new Date().getFullYear()} Festquila. Todos los derechos reservados.
+                        </p>
+                    </div>
+                </div>
             </div>
-
-          </div>
-
-        <hr className="border-secondary" />
-
-        <div className="text-center text-muted small">
-          {t.rights}
-        </div>
-      </div>
-      </div>
-    </footer>
-  );
+        </footer>
+    );
 };

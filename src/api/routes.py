@@ -1,3 +1,4 @@
+
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
@@ -8,13 +9,12 @@ from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 from api.utils import geocode_address
+
 api = Blueprint('api', __name__)
 
-# Allow CORS requests to this API
 CORS(api)
 
-
-@api.route('/hello', methods=['POST', 'GET'])
+@api.route('/hello', methods=['GET'])
 def handle_hello():
 
     return jsonify({"message": "Hola desde el backend Flask :)"}), 200
@@ -158,6 +158,7 @@ def create_event():
         return jsonify({"msg": "Error al crear evento", "error": str(e)}), 500
 
         
+
 
 
 

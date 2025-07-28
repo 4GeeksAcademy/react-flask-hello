@@ -3,7 +3,9 @@ from sqlalchemy import String, Boolean, Text, Float, ForeignKey, DateTime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List, Optional
 from datetime import datetime
+
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -12,6 +14,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="user")
+
 
 
     def serialize(self):
@@ -112,3 +115,4 @@ class CartItem (db.Model):
             "event_id": self.event_id,
             "quantity": self.quantity,
         }
+

@@ -9,6 +9,7 @@ from api.utils import APIException, generate_sitemap
 
 from api.database.db import db
 from api.routes.user import api
+from api.routes.games import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS

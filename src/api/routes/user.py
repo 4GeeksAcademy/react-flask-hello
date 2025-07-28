@@ -5,10 +5,19 @@ import bcrypt # type: ignore
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity # type: ignore
 
 
-api = Blueprint("api/user", __name__)
+api = Blueprint("api/", __name__)
+
+# MOSTRAR TODOS LOS USUARIOS
+@api.route("/users", methods = ["GET"])
+def get_all_users():
+    users = User.query.all()
+    if users is None:
+        return jsonify("Error, no hemos encontrado ningun usuario"),404
+    users = list(map(lambda x : x.serialize(),users))
+    return jsonify({"all_users": users}),200
 
 # REGISTRO DE UN NUEVO USER
-@api.route('/register', methods=["POST"])
+@api.route('user/register', methods=["POST"])
 def register_user():
     body = request.get_json()
 
@@ -25,12 +34,11 @@ def register_user():
     new_user.email = body["email"]
     new_user.password = new_password.decode()
     new_user.is_active = True
-   
-
+    new_user.rol = body["rol"]
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify("Usuario creado")
+    return jsonify("Usuario creado"),200
 
 # REALIZAR UN LOGIN DE UN USUARIO
 @api.route("/login", methods=["POST"])
@@ -62,6 +70,17 @@ def get_user():
     return jsonify({"User": user.serialize()})
 
 
+# ELIMINAR USUARIO
+
+# @api.router("/user/<int:user_id>",methods =["DELETE"])
+# def delete_user(user_id):
+#     user = db.session.get(User,user_id)
+#     if user is None:
+#         return jsonify("Error, no se ha podido eliminar por que el usuario no existe",404)
+#     db.session.delete(user)
+#     db.session.commit()
+
+#     return jsonify("El usuario ha sido eliminado correctamente"),200
 
 
 

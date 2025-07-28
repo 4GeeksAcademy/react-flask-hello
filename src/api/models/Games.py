@@ -1,4 +1,4 @@
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean,Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from api.database.db import db
 
@@ -9,7 +9,8 @@ class Games(db.Model):
     platform:Mapped[str] = mapped_column(String(30),nullable=False)
     description: Mapped[str]= mapped_column(String(600),nullable=False)
     price: Mapped[float]=mapped_column(nullable=False)
-    is_stock: Mapped[bool] = mapped_column(Boolean(),nullable= False)
+  
+    
 
 
     def serialize(self):
@@ -18,8 +19,9 @@ class Games(db.Model):
             "img":self.img,
             "name":self.name,
             "platform": self.platform,
-            "descriptio": self.description,
+            "description": self.description,
             "price":self.price
+        
         }
 
     

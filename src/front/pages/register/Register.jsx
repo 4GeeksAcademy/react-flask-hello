@@ -6,6 +6,7 @@ export const Register = () => {
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+    const [rol,setRol] = useState("")
 
 	const registerUser = async (e) => {
 		
@@ -15,7 +16,8 @@ export const Register = () => {
 			let new_user = {
 				"username": name,
 				"email": email,
-				"password": password
+				"password": password,
+                "rol": rol
 			}
 
 			await fetch("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/register", {
@@ -39,6 +41,21 @@ export const Register = () => {
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={registerUser}>
                     <div className="space-y-4">
+                         <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                Rol
+                            </label>
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                required
+                                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                                placeholder="Tu nombre completo"
+                                value={rol}
+                                onChange={(e) => setRol(e.target.value)}
+                            />
+                        </div>
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                                 Nombre completo

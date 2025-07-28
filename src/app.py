@@ -13,7 +13,6 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-import routes.games as api_games
 
 # from models import Person
 
@@ -40,7 +39,7 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 # ROUTES API
-app.register_blueprint(api_games.api,url_prefix ="/api/games")
+
 
 # add the admin
 setup_admin(app)

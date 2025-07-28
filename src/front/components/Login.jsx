@@ -12,7 +12,7 @@ export const Login = () => {
       setUser(user);
     });
 
-    // Cambios de sesión
+    // Escucha los cambios de stado de autenticación
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
     });

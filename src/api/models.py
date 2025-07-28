@@ -15,7 +15,7 @@ class User(db.Model):
     username: Mapped[str] = mapped_column(String(120))
     firstname: Mapped[str] = mapped_column(String(120))
     lastname: Mapped[str] = mapped_column(String(120))
-    country: Mapped[str] = mapped_column(String(120)
+    country: Mapped[str] = mapped_column(String(120))
     phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
 
     def serialize(self):

@@ -22,11 +22,7 @@ flask-jwt-extended = "*"
 requests = "*"
 flask-migrate = "*"
 flask-admin = "*"
-<<<<<<< HEAD
 flask = "*"
-=======
->>>>>>> 1cedbff (User change Backend 4)
-
 [requires]
 python_version = "3.13"
 

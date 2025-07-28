@@ -28,10 +28,10 @@ def register():
     new_user.username = body["username"]
     new_user.email = body["email"]
     new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
-    """ new_user.firstname = body["firstname"]
+    new_user.firstname = body["firstname"]
     new_user.lastname = body["lastname"]
     new_user.country = body["country"]
-    new_user.phone = body["phone"] """
+    new_user.phone = body["phone"] 
     new_user.is_active = True
     
     db.session.add(new_user)

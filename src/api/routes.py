@@ -159,34 +159,42 @@ def new_product():
     except Exception as e:
         print(e)
         return make_response(jsonify({"error": "Error en el servidor"}), 500)
-
+   
 
 
 
 @api.route('/update/<int:id>', methods=['PUT'])   
 def update_product(id):
     try:
-        product= Product.query.filter_by(id=id).first()
+        product = Product.query.filter_by(id=id).first()
 
-        if product: 
-            data_request= request.get_json()
-            
-            name=data_request.get('name')
-            description=data_request.get('description')
-            photo=data_request.get('photo')
-            coste=data_request.get('coste')
-            price=data_request.get('price')
-            pet_type_id=data_request.get('pet_type_id')
-            stock=data_request.get('stock')
+        if not product:
+            return make_response(jsonify({"msg": "Producto no encontrado"}), 404)
 
-            return make_response(jsonify({"msg":"¡Producto actualizado exitosamente!"})),200
+        data_request = request.get_json()
+
+        if 'name' in data_request:
+            product.name = data_request['name']
+        if 'description' in data_request:
+            product.description = data_request['description']
+        if 'photo' in data_request:
+            product.photo = data_request['photo']
+        if 'coste' in data_request:
+            product.coste = data_request['coste']
+        if 'price' in data_request:
+            product.price = data_request['price']
+        if 'pet_type_id' in data_request:
+            product.pet_type_id = data_request['pet_type_id']
+        if 'stock' in data_request:
+            product.stock = data_request['stock']
+
+        db.session.commit()
+
+        return make_response(jsonify({"msg":"¡Producto actualizado exitosamente!"}), 200)
+    
     except Exception as e:
         print(e)
-    
-    # update_product.verified = True
-    db.session.commit()
-
-
+        return make_response(jsonify({"msg":"Error interno del servidor"}), 500)
 
 
 

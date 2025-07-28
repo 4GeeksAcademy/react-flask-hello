@@ -2,6 +2,13 @@ import { Link } from "react-router-dom";
 import servicio1 from "../assets/img/servicio1.jpg";
 import servicio2 from "../assets/img/servicio2.jpg";
 import servicio3 from "../assets/img/servicio3.jpg";
+import experience from "../assets/img/experience.svg";
+import calidad from "../assets/img/calidad.svg";
+import wallet from "../assets/img/wallet.svg";
+import cumplimiento from "../assets/img/cumplimiento.svg";
+import profesionalismo from "../assets/img/profesionalismo.svg";
+import garantia from "../assets/img/garantia.svg";
+
 
 
 
@@ -103,32 +110,37 @@ export const Servicios = () => {
 
                     <div className="row text-center mt-5">
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            
+                            <img src={experience} alt="experience" width={200} />
                             <h5 className="mt-2">Experiencia</h5>
                             <p>Va casi 20 años cuidando tu auto.</p>
                         </div>
+
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            
+                            <img src={calidad} alt="calidad" width={200} />
                             <h5 className="mt-2">Calidad</h5>
                             <p>Productos de máxima calidad, pintura de fábrica e insumos óptimos.</p>
                         </div>
+
                         <div className="col-sm-6 col-md-4 icon-feature">
-                           
+                           <img src={wallet} alt="wallet" width={200} />
                             <h5 className="mt-2">Precio Justo</h5>
                             <p>La calidad tiene un precio, igualmente tiene la satisfacción garantizada.</p>
                         </div>
+
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            
+                            <img src={cumplimiento} alt="cumplimiento" width={200} />
                             <h5 className="mt-2">Cumplimiento</h5>
                             <p>El tiempo de nuestros clientes es valioso, por eso el cumplimiento es importante para nosotros.</p>
                         </div>
+
                         <div className="col-sm-6 col-md-4 icon-feature">
-                            
+                            <img src={profesionalismo} alt="profesionalismo" width={200} />
                             <h5 className="mt-2">Profesionalismo</h5>
                             <p>Personal profesional, actualizado y altamente capacitado.</p>
                         </div>
+
                         <div className="col-sm-6 col-md-4 icon-feature">
-                           
+                           <img src={garantia} alt="garantia" width={200} />
                             <h5 className="mt-2">Garantía</h5>
                             <p>Ofrecemos garantía de por vida en nuestro trabajo.</p>
                         </div>

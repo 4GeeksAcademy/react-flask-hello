@@ -100,7 +100,6 @@ export const ResetPassword = () => {
             type="text"
             className="form-control"
             placeholder="Token"
-            placeholder="Token"
             value={token}
             onChange={(e) => setToken(e.target.value)}
             required

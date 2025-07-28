@@ -109,6 +109,9 @@ export const Login = () => {
                     <p style={{ color: "#95cf00ff" }}>
                     ¿Olvidaste tu contraseña? <Link to="/forgotpassword" style={{ color: "#95cf00ff", 
                     textDecoration: "underline", ":hover": { color: "#B7FF00" } }}>Recuperar</Link></p>
+                    <p style={{ color: "#95cf00ff" }}>
+                    ¿Todavía no tienes un usuario? <Link to="/form" style={{ color: "#95cf00ff", 
+                    textDecoration: "underline", ":hover": { color: "#B7FF00" } }}>Logeate</Link></p>
                 </div>
                 <button
                 type="submit"

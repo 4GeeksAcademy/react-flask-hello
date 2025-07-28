@@ -1,7 +1,6 @@
 import React, { useState,useEffect } from "react";
-import axios from "axios";
-import '@fontsource/bebas-neue';
-import { useNavigate } from "react-router-dom";
+/* import '@fontsource/bebas-neue'; */
+/* import { useNavigate } from "react-router-dom"; */
 
 export const Formulario = () => {
 	const [situacion, setSituacion] = useState(null);
@@ -20,9 +19,54 @@ export const Formulario = () => {
 		if (isNaN(valor)) return 0;
 		return (valor * 0.2).toFixed(2);
 	};
-	const navigate = useNavigate();
-
+	/* const navigate = useNavigate(); */
+	const situacionBoolean = ()=> {
+		if (situacion === "estudiante") {
+			return true;
+		} else if (situacion === "trabajador") {
+			return false;
+		}
+		return null;
+	};
 	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await fetch("https://special-waddle-q76694p5wq79f67p7-3001.app.github.dev/api/user/register", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					username: usuario,
+					email: email,
+					password: password,
+					firstname: nombre,
+					lastname: apellidos,
+					country: pais,
+					phone: prefijo+telefono,
+					sueldo: sueldo, // Asegúrate de definir y capturar este estado en tu formulario
+					is_student: situacionBoolean(),
+				}),
+			});
+
+			const data = await response.json();
+
+			if (response.status === 201) {// Si la respuesta es 201, el usuario se registró correctamente
+				alert("Usuario registrado con éxito ✅");
+				localStorage.setItem('token', data.token); // Guardamos el token en localStorage
+				setTimeout(() => {
+					window.location.href = '/'; // Redirige al usuario a la página de login
+				}, 1000); // Espera 1 segundo antes de redirigir
+			} else if (response.status >= 400) {// Si la respuesta es un error, mostramos el mensaje
+				alert("Error: " + data.msg);
+			}
+		} catch (error) {
+			console.error("Error al enviar el formulario:", error);
+			alert("Error al enviar el formulario ❌");
+		}
+	};
+	/* const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
@@ -38,12 +82,12 @@ export const Formulario = () => {
 			console.error("Error al enviar el formulario:", error);
 			alert("Error al enviar el formulario ❌");
 		}
-	};
+	}; */
 
 	return (
 		<div className="min-vh-100 d-flex justify-content-center align-items-center" style={{ backgroundColor: "#ffffff", minHeight: "80vh" }}>
-			<form className="w-100" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>
-				<div className="text-center" style={{ fontFamily: "'Bebas Neue', sans-serif" }}><h1>Formulario</h1></div>
+			<form className="w-100" style={{ maxWidth: "600px", margin: "1vh" }} onSubmit={handleSubmit} >
+				<div className="text-center" style={{ fontFamily: "/* 'Bebas Neue', */ sans-serif" }}><h1>Formulario</h1></div>
 				<div className="p-5 rounded shadow-lg" style={{ backgroundColor: "#ffffff" }}>
 					<div className="mb-4">
 						<label className="form-label">Nombre</label>

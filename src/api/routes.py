@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from api.models import User, db
+from api.models import User, Order, Status, db
 from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
@@ -22,7 +22,7 @@ def handle_private_hello():
     if user:
         response_body = {
             "message": "Hola, soy una ruta privada",
-            "user": user.serialize() 
+            "user": user.serialize()
         }
         return jsonify(response_body), 200
     else:
@@ -63,7 +63,7 @@ def register():
     data_request = request.get_json()
     email = data_request.get('email')
     password = data_request.get('password')
-    name = data_request.get('username')  
+    name = data_request.get('username')
 
     if not email or not password:
         return jsonify({"message": "Los campos email,password son obligatorios"}), 400
@@ -73,7 +73,7 @@ def register():
     new_user = User(
         email=email,
         password=hashed_password,
-        name=name,  
+        name=name,
         is_active=True
     )
 
@@ -84,3 +84,19 @@ def register():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error en el servidor"}), 500
+
+
+@api.route('/cart', methods=['GET'])
+@jwt_required()
+def get_cart():
+
+    user_id = get_jwt_identity()
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+
+    if not order:
+        return jsonify({"message": "Carrito vacío"}), 200
+
+    return jsonify({
+        "order_id": order.id,
+        "items": [item.serialize() for item in order.order_item]
+    }), 200

@@ -21,7 +21,7 @@ export const Login = () => {
         /* console.log("Email:", email);
         console.log("Password:", password); */
         try {
-            const response = await fetch('https://special-waddle-q76694p5wq79f67p7-3001.app.github.dev/api/user/login', {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

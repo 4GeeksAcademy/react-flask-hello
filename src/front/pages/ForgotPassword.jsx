@@ -20,7 +20,7 @@ export const ForgotPassword = () => {
 
     try {
       const res = await fetch(
-        "https://potential-space-umbrella-wrx97p74x4wx3gq9p-3001.app.github.dev/api/user/forgotten",
+        import.meta.env.VITE_BACKEND_URL + "/api/user/forgotten",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export const ForgotPassword = () => {
         setMessage(data.msg || "❌ No se pudo generar el token.");
       }
     } catch (error) {
-      setMessage("❌ Error de red. Intenta de nuevo más tarde.");
+      setMessage("❌ Error de red. Intenta de nuevo más tarde."+import.meta.env.VITE_BACKEND_URL);
     } finally {
       setLoading(false);
     }

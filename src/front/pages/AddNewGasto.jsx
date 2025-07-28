@@ -10,7 +10,7 @@ export const AddNewGasto = () => {
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE_URL = "https://potential-space-umbrella-wrx97p74x4wx3gq9p-3001.app.github.dev";
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL+"/api/gasto/update";
 
   // Obtener el user_id desde el perfil del usuario usando el token
   useEffect(() => {

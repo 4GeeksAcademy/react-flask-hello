@@ -51,7 +51,7 @@ export const ResetPassword = () => {
 
     try {
       const res = await fetch(
-        "https://potential-space-umbrella-wrx97p74x4wx3gq9p-3001.app.github.dev/api/user/new-password",
+        import.meta.env.VITE_BACKEND_URL+"/api/user/new-password",
         {
           method: "PUT",
           headers: {

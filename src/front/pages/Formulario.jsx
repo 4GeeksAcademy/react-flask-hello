@@ -32,7 +32,7 @@ export const Formulario = () => {
 		e.preventDefault();
 
 		try {
-			const response = await fetch("https://special-waddle-q76694p5wq79f67p7-3001.app.github.dev/api/user/register", {
+			const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/api/user/register", {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

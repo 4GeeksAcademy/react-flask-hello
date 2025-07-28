@@ -8,6 +8,9 @@ import wallet from "../assets/img/wallet.svg";
 import cumplimiento from "../assets/img/cumplimiento.svg";
 import profesionalismo from "../assets/img/profesionalismo.svg";
 import garantia from "../assets/img/garantia.svg";
+import IG from "../assets/img/IG.svg";
+import WA from "../assets/img/WA.svg";
+import FB from "../assets/img/FB.svg";
 
 
 
@@ -156,7 +159,9 @@ export const Servicios = () => {
                         <p><strong>Correo:</strong> <a href="mailto:online@autotek.com">online@autotek.com</a></p>
 
                         <div className="social-icons mt-4">
-                            
+                             <img src={IG} alt="IG" width={50} className="me-3"  />
+                             <img src={WA} alt="WA" width={50} className="me-3" />
+                             <img src={FB} alt="FB" width={50} />
                         </div>
                     </div>
 

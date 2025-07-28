@@ -31,7 +31,7 @@ export const Home = () => {
 
     return (
         <div>
-            <VistaHome></VistaHome>
+            <VistaHome ></VistaHome>
         </div>
     );
 };

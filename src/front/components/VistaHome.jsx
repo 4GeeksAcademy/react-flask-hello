@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Login } from "./Login.jsx";
-import { CarruselHome } from "./CarruselHome.jsx";
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -9,21 +8,22 @@ import 'slick-carousel/slick/slick-theme.css';
 export const VistaHome = () => {
 
   const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      };
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
-    return (
+  return (
     <div>
       <Login />
+      <br />
       <br />
       {/*titulo y encabezado*/}
       <div>
         <div className="flex justify-center">
-          <h1 className="text-red-500 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Knect</h1>
+          <h1 className="text-red-600 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Knect</h1>
         </div>
         <div className="flex justify-center">
           <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Nace la nueva forma de organizarte a ti y a tu grupo de personas</p>
@@ -32,26 +32,58 @@ export const VistaHome = () => {
         <div className="flex justify-center">
           <p>Con Knect, no te perderas los eventos que mas te gustan, crearlos e incuso encontrar nuevas experiencias</p>
         </div>
-         <div className="flex justify-center">
+        <div className="flex justify-center">
           <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Leer mas</a>
+
         </div>
       </div>
-        {/*carrusel de fotos*/}
-                <Slider {...settings}>
-          <div >
-            <img 
-            src="https://images.pexels.com/photos/5386754/pexels-photo-5386754.jpeg"
-            class="left-1/2 top-1/2 block -translate-x-1/2 -translate-y-1/2"
-            alt="Imagen 1" />
+      <br />
+      <br />
+
+      {/*carrusel de fotos*/}
+      <Slider {...settings}>
+        <div className="">
+          <div className="flex justify-center flex-col md:flex-row items-center">
+            <img
+              src="https://images.pexels.com/photos/5386754/pexels-photo-5386754.jpeg"
+              className="w-1/3 h-auto border-4 border-double border-blue-500"
+              alt="Imagen 1" />
+            <div className="">
+              <p className="m-8">podras guardar todos los eventos en tu calendario, <br/>  conocer todas las novedades y asistentes al evento</p>
+            </div>
           </div>
+          </div>
+
           <div>
-            <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg" alt="Imagen 2" />
+          <div className="flex justify-center flex-col md:flex-row items-center m-4">
+            <img
+              src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg"
+              className="w-1/3 h-auto border-4 border-double border-blue-500"
+              alt="Imagen 1" />
+            <div>
+              <p className="m-8"> estaras en todos los eventos, <br/> podras comunicarte con tus amigos a traves de la aplicacion</p>
+            </div>
           </div>
+         </div>
+
           <div>
-            <img src="https://images.pexels.com/photos/1974927/pexels-photo-1974927.jpeg" alt="Imagen 3" />
+          <div className="flex justify-center flex-col md:flex-row items-center m-4">
+            <img
+              src="https://images.pexels.com/photos/2859169/pexels-photo-2859169.jpeg"
+              className="w-1/3 h-auto border-4 border-double border-blue-500"
+              alt="Imagen 1" />
+            <div>
+              <p className="m-8"> puedes añadir la direccion del evento <br/> y abrilo en un instante</p>
+            </div>
+            <br />
+            <br />
+            <br />
           </div>
+         </div>
         </Slider>
-        
+        <br />
+        <br />
+        <br />
     </div>
-    );
+  );
 };

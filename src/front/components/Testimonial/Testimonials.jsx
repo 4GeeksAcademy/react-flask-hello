@@ -1,12 +1,15 @@
 import { Card } from "./Card";
 import { testimonialsContent } from "../../utils/testimonialsContent";
+import { useTranslation } from "react-i18next";
 
 export const Testimonials = () => {
+    const { t } = useTranslation();
+
     return (
         <section className="py-5">
             <div className="container">
                 <div className="d-flex flex-column text-center justify-content-center">
-                    <h2 className="section-title">Nuestros clientes</h2>
+                    <h2 className="section-title">{t('testimonials.sectionTitle')}</h2>
                 </div>
                 <div className="row">
                     <div className="col">
@@ -17,8 +20,8 @@ export const Testimonials = () => {
                                         className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                                         <Card
                                             name={card.name}
-                                            position={card.position}
-                                            review={card.review}
+                                            position={t(card.position)}
+                                            review={t(card.review)}
                                             profilePicture={card.profilePicture}
                                             logo={card.logo}
                                         />

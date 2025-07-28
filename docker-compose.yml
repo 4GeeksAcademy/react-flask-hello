@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Servicio del Backend (Python/Flask API)
+  server:
+    build:
+      context: .  # El contexto es la raíz, donde están todos los archivos
+      dockerfile: Dockerfile.backend # Especifica qué Dockerfile usar
+    restart: always
+    env_file: ./.env
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  # Servicio del Frontend (React/Vite App)
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend # Especifica el otro Dockerfile
+    restart: always
+    networks:
+      - app-network
+
+  # Servicio de la Base de Datos (PostgreSQL)
+  db:
+    image: postgres:14-alpine
+    restart: always
+    env_file: ./.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Servicio del Reverse Proxy (Nginx)
+  nginx-proxy:
+    image: nginx:stable-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-proxy/certs:/etc/nginx/certs
+    depends_on:
+      - server
+      - client
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local

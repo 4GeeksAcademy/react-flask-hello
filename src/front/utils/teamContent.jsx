@@ -10,8 +10,8 @@ export const teamContent = [
     {
         id: 0,
         name: "David Pinto",
-        position: "Comunicador y Desarrollador",
-        description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
+        position: 'team.card.teamMember1.position',
+        description: 'team.card.teamMember1.description',
         image: devProfile1,
         catImage: cat1,
         mailLink: 'dpinto@cloudtech.com.ec',
@@ -21,8 +21,8 @@ export const teamContent = [
     {
         id: 1,
         name: "José Pinto",
-        position: "Fullstack Developer",
-        description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
+        position: 'team.card.teamMember2.position',
+        description: 'team.card.teamMember2.description',
         image: devProfile2,
         catImage: cat2,
         mailLink: 'jmpinto@cloudtech.com.ec',
@@ -32,8 +32,8 @@ export const teamContent = [
     {
         id: 2,
         name: "Santiago Montoya",
-        position: "Fullstack Developer",
-        description: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi. ",
+        position: 'team.card.teamMember3.position',
+        description: 'team.card.teamMember3.description',
         image: devProfile3,
         catImage: cat3,
         mailLink: 'smontoya@cloudtech.com.ec',

@@ -18,7 +18,7 @@ export const Card = ({ name, position, description, image, catImage, mailLink, l
             <div className="card-body text-center text-white pt-4">
                 <h3 className="section-title mb-1">{name}</h3>
                 <h5 className="mt-0 mb-3">{position}</h5>
-                <p className="card-text">{description}</p>
+                <p className="card-text px-3">{description}</p>
                 <div className="d-flex justify-content-center fs-1 gap-3">
                     <Link to={mailLink} className="text-white"><FontAwesomeIcon icon={faEnvelope} /></Link>
                     <Link to={linkedinLink} className="text-white"><FontAwesomeIcon icon={faLinkedin} /></Link>

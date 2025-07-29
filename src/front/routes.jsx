@@ -13,6 +13,7 @@ import { Register } from "./pages/register/Register";
 import { AboutUs } from "./pages/aboutus/AboutUs";
 import { Contact } from "./pages/contact/Contact";
 import { Login } from "./pages/login/Login";
+import { Formulario} from "./pages/formulario/Formulario";
 
 
 
@@ -37,6 +38,7 @@ export const router = createBrowserRouter(
         <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
         <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA ABOUTUS STORE*/}
         <Route path="/contact" element={<Contact />} /> {/* PAGINA CONTACT STORE*/}
+        <Route path="/formulario" element={<Formulario />} /> {/* Formulario front*/}
 
 
         

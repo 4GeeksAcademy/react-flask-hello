@@ -59,7 +59,7 @@ class Gasto(db.Model):
         }
 
 
-""" class Objetivo(db.Model):
+class Objetivo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
     descripcion = db.Column(db.Text)
@@ -68,9 +68,29 @@ class Gasto(db.Model):
     completado = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "descripcion": self.descripcion,
+            "cantidad_meta": self.cantidad_meta,
+            "fecha_limite": self.fecha_limite,
+            "completado": self.completado
+        }
+
 class Articulo(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
     texto = db.Column(db.Text, nullable=False)
     url_imagen = db.Column(db.String(255))
-    enlace = db.Column(db.String(255)) """
+    enlace = db.Column(db.String(255)) 
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "texto": self.texto,
+            "url_imagen": self.url_imagen,
+            "fecha_limite": self.fecha_limite,
+            "enlace": self.enlace
+        }

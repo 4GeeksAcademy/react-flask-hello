@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 /* import '@fontsource/bebas-neue'; */
-/* import { useNavigate } from "react-router-dom"; */
+import { useNavigate } from "react-router-dom";
 
 export const Formulario = () => {
 	const [situacion, setSituacion] = useState(null);
@@ -19,7 +19,7 @@ export const Formulario = () => {
 		if (isNaN(valor)) return 0;
 		return (valor * 0.2).toFixed(2);
 	};
-	/* const navigate = useNavigate(); */
+	const navigate = useNavigate(); 
 	const situacionBoolean = ()=> {
 		if (situacion === "estudiante") {
 			return true;
@@ -56,7 +56,7 @@ export const Formulario = () => {
 				alert("Usuario registrado con éxito ✅");
 				localStorage.setItem('token', data.token); // Guardamos el token en localStorage
 				setTimeout(() => {
-					window.location.href = '/'; // Redirige al usuario a la página de login
+					navigate("/");//window.location.href = '/'; // Redirige al usuario a la página de login
 				}, 1000); // Espera 1 segundo antes de redirigir
 			} else if (response.status >= 400) {// Si la respuesta es un error, mostramos el mensaje
 				alert("Error: " + data.msg);

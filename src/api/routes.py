@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User, Gasto
+from api.models import db, User, Gasto, Objetivo
 from api.utils import generate_sitemap, APIException
 import requests
 
@@ -229,8 +229,108 @@ def gasto_profile():
     return jsonify({"gasto": gasto.serialize()}), 200
 
 # Modificar el sueldo o el is_student
-@api.route("/gasto/update", methods=['PUT'])
+@api.route("/gasto/update/<int:gasto_id>", methods=['PUT'])
 @jwt_required()
-def update_gasto():
+def update_gasto(gasto_id):
+    current_user_id = get_jwt_identity()
+    gasto = Gasto.query.filter_by(id=gasto_id, user_id=current_user_id).first()
+
+    if not gasto:
+        return jsonify({"msg": "Gasto no encontrado"}), 404
+
     body = request.get_json()
-    gasto = Gasto.query.get(body['user_id'])
+    if 'sueldo' in body:
+        gasto.sueldo = body['sueldo']
+    if 'is_student' in body:
+        gasto.is_student = body['is_student']
+    if 'concepto' in body:
+        gasto.concepto = body['concepto']
+    if 'cantidad' in body:
+        gasto.cantidad = body['cantidad']
+    if 'emoji' in body:
+        gasto.emoji = body['emoji']
+    
+    db.session.commit()
+    return jsonify({"msg": "Gasto actualizado correctamente", "gasto": gasto.serialize()}), 200
+
+@api.route("/gasto/delete/", methods=['DELETE'])
+@jwt_required()
+def delete_gasto(gasto_id):
+    current_user_id = get_jwt_identity()
+    gasto = Gasto.query.filter_by(id=gasto_id, user_id=current_user_id).first()
+
+    if not gasto:
+        return jsonify({"msg": "Gasto no encontrado"}), 404
+
+    db.session.delete(gasto)
+    db.session.commit()
+    return jsonify({"msg": "Gasto eliminado correctamente"}), 200
+
+
+
+@api.route("/objetivo/register", methods=['POST'])
+@jwt_required()
+def register_objetivo():
+    current_user_id = get_jwt_identity()
+    body = request.get_json()
+
+    new_objetivo = Objetivo()
+    new_objetivo.titulo = body["titulo"]
+    new_objetivo.descripcion = body.get("descripcion")
+    new_objetivo.cantidad_meta = body["cantidad_meta"]
+    new_objetivo.fecha_limite = body.get("fecha_limite")
+    new_objetivo.user_id = current_user_id
+
+    db.session.add(new_objetivo)
+    db.session.commit()
+
+    return jsonify({"msg": "Objetivo registrado con éxito", "objetivo": new_objetivo.serialize()}), 201
+
+@api.route("/objetivo/<int:objetivo_id>", methods=['GET'])
+@jwt_required()
+def get_objetivo(objetivo_id):
+    current_user_id = get_jwt_identity()
+    objetivo = Objetivo.query.filter_by(id=objetivo_id, user_id=current_user_id).first()
+
+    if not objetivo:
+        return jsonify({"msg": "Objetivo no encontrado"}), 404
+
+    return jsonify({"objetivo": objetivo.serialize()}), 200
+
+@api.route("/objetivo/update/<int:objetivo_id>", methods=['PUT'])
+@jwt_required()
+def update_objetivo(objetivo_id):
+    current_user_id = get_jwt_identity()
+    objetivo = Objetivo.query.filter_by(id=objetivo_id, user_id=current_user_id).first()
+
+    if not objetivo:
+        return jsonify({"msg": "Objetivo no encontrado"}), 404
+
+    body = request.get_json()
+    if 'titulo' in body:
+        objetivo.titulo = body['titulo']
+    if 'descripcion' in body:
+        objetivo.descripcion = body['descripcion']
+    if 'cantidad_meta' in body:
+        objetivo.cantidad_meta = body['cantidad_meta']
+    if 'fecha_limite' in body:
+        objetivo.fecha_limite = body['fecha_limite']
+    if 'completado' in body:
+        objetivo.completado = body['completado']
+
+        db.session.commit()
+    return jsonify({"msg": "Objetivo actualizado correctamente", "objetivo": objetivo.serialize()}), 200
+
+@api.route("/objetivo/delete/<int:objetivo_id>", methods=['DELETE'])
+@jwt_required()
+def delete_objetivo(objetivo_id):
+    current_user_id = get_jwt_identity()
+    objetivo = objetivo.query.filter_by(id=objetivo_id, user_id=current_user_id).first()
+
+    if not objetivo:
+        return jsonify({"msg": "Objetivo no encontrado"}), 404
+
+    db.session.delete(objetivo)
+    db.session.commit()
+    return jsonify({"msg": "Objetivo eliminado correctamente"}), 200
+

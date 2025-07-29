@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //Te añado unos cuantos imports para que puedas usar el history y redirigir al usuario después de iniciar sesión.
 
 export const Login = () => {
@@ -15,7 +16,8 @@ export const Login = () => {
     //Te añado unas cuantas variables de estado para manejar el mensaje de error y su visibilidad.
     const [message, setMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
-    
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         /* console.log("Email:", email);
@@ -34,7 +36,7 @@ export const Login = () => {
             if (response.status === 200) {
                 // Si la respuesta es 200, redirigimos al usuario
                 localStorage.setItem('token', data.token); // Guardamos el token en localStorage
-                window.location.href = '/'; // Redirigimos a la página principal
+                navigate("/");//window.location.href = '/'; // Redirigimos a la página principal
             } else if (response.status >= 400) {
                 // Si la respuesta es 401, mostramos el mensaje
                 setMessage("⛔ "+ data.msg);

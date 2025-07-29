@@ -2,7 +2,7 @@ import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-export const Home = () => {
+export const Home = ({ datosJuego }) => {
   const images = [
     {
       src: "https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg",
@@ -44,14 +44,14 @@ export const Home = () => {
     }
   };
   return (
-    
+
     <div className="w-full relative bg-indigo-800">
       <Carousel
-        responsive={responsive}     
-        infinite={true}       
+        responsive={responsive}
+        infinite={true}
         autoPlaySpeed={1000}
         customTransition="all .5"
-        transitionDuration={500}               
+        transitionDuration={500}
       >
         {
           images.map((i, index) => {
@@ -116,9 +116,24 @@ export const Home = () => {
           </div>
         </div>
       </div>
+      {datosJuego && (
+        <div className="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-lg mt-6 bg-indigo-700">
+          <img className="h-64 w-full object-cover" src={datosJuego.img} alt={datosJuego.name} />
+          <div className="px-6 py-4">
+            <div className="font-bold text-xl mb-2 text-white">{datosJuego.name}</div>
+            <p className="text-white text-base">{datosJuego.description}</p>
+          </div>
+          <div className="px-6 pt-4 pb-2">
+            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              {datosJuego.platform}
+            </span>
+            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              €{datosJuego.price}
+            </span>
+          </div>
+        </div>
+      )}
+      </div>
+      );
 
-    </div >
-  
-
-  );
 }

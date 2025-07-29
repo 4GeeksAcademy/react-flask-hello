@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+
 export const Formulario = () => {
 
     const [img, setImg] = useState("")
@@ -8,12 +9,14 @@ export const Formulario = () => {
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
 
-
-
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const nuevoJuego = { img, name, platform, description, price };
+        onEnviarDatos(nuevoJuego);
+    };
 
     return (
-        <form class="w-full max-w-lg mx-auto">
+        <form class="w-full max-w-lg mx-auto" onSubmit={handleSubmit}>
             <div>
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
                     Img
@@ -60,6 +63,12 @@ export const Formulario = () => {
                     <input value={price} onChange={(e) => setPrice(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" type="text" placeholder="€"></input>
                 </div>
             </div>
+            <button
+                type="submit"
+                className="mt-6 px-4 py-2 bg-blue-600 text-white rounded"
+            >
+                Agregar juego
+            </button>
         </form>
     );
 }

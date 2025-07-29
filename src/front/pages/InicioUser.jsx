@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavbarUser } from "../components/NavbarUser";
 
 
 export const InicioUser = () => {
 
-
+  const [ordenDeTrabajo, setOrdenDeTrabajo] = useState([])
 
   function traer_ordenes_de_servicio(){
 
@@ -21,7 +21,8 @@ export const InicioUser = () => {
       return response.json()
   })
   .then((data)=>{
-      console.log(data)
+      console.log(data.ordenes_de_trabajo)
+      setOrdenDeTrabajo(data.ordenes_de_trabajo)
   })
   .catch((error)=>{error})
   }
@@ -29,45 +30,6 @@ export const InicioUser = () => {
     useEffect(() => {
       traer_ordenes_de_servicio()
     }, [])
-
-
-  const orders = [
-    {
-      id: '0101011',
-      vehiculo: 'Peugeot ABC - 001',
-      servicios: 'Cambio de aceite, Cambio de Bujías, Balanceo de...',
-      fecha: '13/06/2025',
-      estado: 'En Proceso',
-    },
-    {
-      id: '0101010',
-      vehiculo: 'Peugeot ABC - 001',
-      servicios: 'Revisión y Reemplazo de Filtros',
-      fecha: '05/05/2025 - 06/05/2025',
-      estado: 'Finalizado',
-    },
-    {
-      id: '0101009',
-      vehiculo: 'Chevrolet AZD - 123',
-      servicios: 'Chequeo de Batería',
-      fecha: '21/02/2025',
-      estado: 'Ingresado',
-    },
-    {
-      id: '0101008',
-      vehiculo: 'Peugeot ABC - 001',
-      servicios: 'Cambio de Luces',
-      fecha: '17/01/2025 - 18/01/2025',
-      estado: 'Finalizado',
-    },
-    {
-      id: '0101007',
-      vehiculo: 'Chevrolet AZD - 123',
-      servicios: 'Revisión y ajuste de suspensión, Rotación de...',
-      fecha: '10/12/2024 - 13/12/2024',
-      estado: 'Finalizado',
-    },
-  ];
 
   const getEstadoBadge = (estado) => {
     if (estado === 'En Proceso') {
@@ -95,19 +57,23 @@ export const InicioUser = () => {
               <tr>
                 <th>Nro. de Órden</th>
                 <th>Vehículo</th>
+                <th>Mecanico</th>
                 <th>Servicios</th>
-                <th>Fecha</th>
+                <th>Fecha de ingreso</th>
+                <th>Fecha de salida</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((orden) => (
+              {ordenDeTrabajo.map((orden) => (
                 <tr key={orden.id}>
-                  <td>{orden.id}</td>
-                  <td>{orden.vehiculo}</td>
-                  <td>{orden.servicios}</td>
-                  <td>{orden.fecha}</td>
-                  <td>{getEstadoBadge(orden.estado)}</td>
+                  <td>{orden.id_ot}</td>
+                  <td>{orden.matricula_vehiculo}</td>
+                  <td>{orden.nombre_mecanico}</td>
+                  <td>{orden.servicios_asociados.map(s => s.servicio.name_service).join(", ")}</td>
+                  <td>{orden.fecha_ingreso}</td>
+                  <td>{orden.fecha_final}</td>
+                  <td>{getEstadoBadge(orden.estado_servicio)}</td>
                 </tr>
               ))}
             </tbody>

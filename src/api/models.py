@@ -17,6 +17,8 @@ class User(db.Model):
     lastname: Mapped[str] = mapped_column(String(120))
     country: Mapped[str] = mapped_column(String(120))
     phone: Mapped[str] = mapped_column(String(27), unique=True, nullable=False)
+    sueldo = db.Column(db.Float, nullable=False)
+    is_student: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
     def serialize(self):
         return {
@@ -27,6 +29,8 @@ class User(db.Model):
             "lastname": self.lastname,
             "country": self.country,
             "phone": self.phone,
+            "sueldo": self.sueldo,
+            "is_student": self.is_student,
             # do not serialize the password, its a security breach
         }
 
@@ -38,8 +42,6 @@ class User(db.Model):
 
 class Gasto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sueldo = db.Column(db.Float, nullable=False)
-    is_student: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     concepto = db.Column(db.String(255))
     cantidad = db.Column(db.Float)
     emoji = db.Column(db.String(120))
@@ -50,8 +52,6 @@ class Gasto(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "sueldo": self.sueldo,
-            "is_student": self.is_student,
             "concepto": self.concepto,
             "cantidad": self.cantidad,
             "emoji": self.emoji,
@@ -82,15 +82,23 @@ class Articulo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
     texto = db.Column(db.Text, nullable=False)
-    url_imagen = db.Column(db.String(255))
-    enlace = db.Column(db.String(255)) 
 
     def serialize(self):
         return {
             "id": self.id,
             "titulo": self.titulo,
             "texto": self.texto,
-            "url_imagen": self.url_imagen,
-            "fecha_limite": self.fecha_limite,
-            "enlace": self.enlace
         }
+class Link(db.Model): 
+    id = db.Column(db.Integer, primary_key=True)
+    url_imagen = db.Column(db.String(255))
+    enlace = db.Column(db.String(255))
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "url_imagen": self.url_imagen,
+            "enlace": self.enlace,
+            "articulo_id": self.articulo_id,
+        }    

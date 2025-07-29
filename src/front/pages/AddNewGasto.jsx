@@ -21,7 +21,7 @@ export const AddNewGasto = () => {
       return;
     }
 
-    fetch(`${API_BASE_URL}/user/profile`, {
+    fetch(`${API_BASE_URL}api/user/profile`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,
@@ -74,7 +74,7 @@ export const AddNewGasto = () => {
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/gasto/register`, {
+      const response = await fetch(`${API_BASE_URL}api/gasto/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

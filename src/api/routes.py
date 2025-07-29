@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-from api.models import db, User, Gasto, Objetivo
+from api.models import db, User, Gasto, Objetivo, Articulo, Link
 from api.utils import generate_sitemap, APIException
 import requests
 
@@ -15,21 +15,30 @@ CORS(api)
 @api.route("/user/register", methods=['POST'])
 def register():
     body = request.get_json()
-
-    new_user = User()
-    new_user.username = body["username"]
-    new_user.email = body["email"]
-    new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
-    new_user.firstname = body["firstname"]
-    new_user.lastname = body["lastname"]
-    new_user.country = body["country"]
-    new_user.phone = body["phone"] 
-    new_user.is_active = True
-
-    db.session.add(new_user)
-    db.session.commit()
-    
     try:
+        new_user = User()
+        new_user.username = body["username"]
+        new_user.email = body["email"]
+        new_user.set_password(body["password"])  # Usar el método para hashear la contraseña
+        new_user.firstname = body["firstname"]
+        new_user.lastname = body["lastname"]
+        new_user.country = body["country"]
+        new_user.phone = body["phone"] 
+        new_user.sueldo = body["sueldo"]
+        new_user.is_student = body["is_student"] 
+        new_user.is_active = True
+
+        db.session.add(new_user)
+        db.session.commit()
+        access_token = create_access_token(identity=str(new_user.id))
+        return jsonify({
+            "msg": "Usuario registrado con éxito",
+            "token": access_token
+        }), 201
+    except requests.exceptions.RequestException as e:
+        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
+
+    """ try:
         # Preparar los datos para la solicitud a la API de gastos
         gasto_data = {
             "user_id": new_user.id,
@@ -47,7 +56,7 @@ def register():
             "token": access_token
         }), 201
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500
+        return jsonify({"msg": "Error al registrar el usuario", "error": str(e)}), 500 """
 
 # Endpoint de iniciar sesión ya sea con username o email
 @api.route("/user/login", methods=['POST'])
@@ -99,10 +108,16 @@ def update_user():
         user.country = body['country']
     if 'phone' in body:
         user.phone = body['phone']
+    if 'concepto' in body:
+        user.concepto = body['concepto']
+    if 'cantidad' in body:
+        user.cantidad = body['cantidad']
+    if 'emoji' in body:
+        user.emoji = body['emoji']
 
     db.session.commit()
-    
-    try:
+    return jsonify({"msg": "Usuario actualizado correctamente"}), 200
+    """ try:
         gasto_data = {
             "user_id": user.id,
             "sueldo": body.get("sueldo", user.gasto.sueldo if user.gasto else None),
@@ -113,7 +128,7 @@ def update_user():
         response_data = response.json()
         return jsonify({"msg": "Detalles del usuario actualizados correctamente", "gasto": response_data}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
+        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500 """
 
 # Endpoint para modificar la contraseña
 
@@ -174,8 +189,14 @@ def new_password():
 def delete_user():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
-
-    try:
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+    Gasto.query.filter_by(user_id=user.id).delete()
+    Objetivo.query.filter_by(user_id=user.id).delete()
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"msg": "Usuario eliminado"}), 200
+    """ try:
         gasto_data = {
             "user_id": user.id
         }
@@ -186,7 +207,7 @@ def delete_user():
         db.session.commit()
         return jsonify({"msg": "Usuario eliminado", "gasto": response_data}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({"msg": "Error al actualizar el gasto", "error": str(e)}), 500
+        return jsonify({"msg": "Error al eliminar el gasto", "error": str(e)}), 500 """
 
 
 @api.route("/user/token", methods=['POST'])
@@ -201,34 +222,49 @@ def token():
         return jsonify({"msg": "Error al procesar el token", "error": str(e)}), 401
 
 
+#____________________________________________________________________________________
+
 # Endpoints relacionados con gastos
 
-# Endpoint para registrar un gasto
+# Registro de Gasto
 @api.route("/gasto/register", methods=['POST'])
-def gasto_register():
+@jwt_required()
+def register_gasto():
+    current_user_id = get_jwt_identity()
     body = request.get_json()
 
     new_gasto = Gasto()
-    new_gasto.user_id = body["user_id"]
-    new_gasto.sueldo = body["sueldo"]
-    new_gasto.is_student = body["is_student"]
+    new_gasto.concepto = body["concepto"]
+    new_gasto.cantidad = body["cantidad"]
+    new_gasto.emoji = body.get("emoji")
+    new_gasto.user_id = current_user_id
 
     db.session.add(new_gasto)
     db.session.commit()
 
-    return jsonify({"msg": "Gasto registrado con éxito"}), 201
+    return jsonify({"msg": "Gasto registrado con éxito", "gasto": new_gasto.serialize()}), 201
 
-
-@api.route('/gasto/profile', methods=['GET'])
+# Obtener Gasto por ID
+@api.route("/gasto/<int:gasto_id>", methods=['GET'])
 @jwt_required()
-def gasto_profile():
+def get_gasto(gasto_id):
     current_user_id = get_jwt_identity()
-    gasto = Gasto.query.get(current_user_id)
-    if gasto is None:
+    gasto = Gasto.query.filter_by(id=gasto_id, user_id=current_user_id).first()
+
+    if not gasto:
         return jsonify({"msg": "Gasto no encontrado"}), 404
+
     return jsonify({"gasto": gasto.serialize()}), 200
 
-# Modificar el sueldo o el is_student
+# Obtener todos los Gastos del usuario
+@api.route("/gasto", methods=['GET'])
+@jwt_required()
+def get_all_gastos():
+    current_user_id = get_jwt_identity()
+    gastos = Gasto.query.filter_by(user_id=current_user_id).all()
+    return jsonify({"gastos": [gasto.serialize() for gasto in gastos]}), 200
+
+# Actualizar Gasto
 @api.route("/gasto/update/<int:gasto_id>", methods=['PUT'])
 @jwt_required()
 def update_gasto(gasto_id):
@@ -239,21 +275,18 @@ def update_gasto(gasto_id):
         return jsonify({"msg": "Gasto no encontrado"}), 404
 
     body = request.get_json()
-    if 'sueldo' in body:
-        gasto.sueldo = body['sueldo']
-    if 'is_student' in body:
-        gasto.is_student = body['is_student']
     if 'concepto' in body:
         gasto.concepto = body['concepto']
     if 'cantidad' in body:
         gasto.cantidad = body['cantidad']
     if 'emoji' in body:
         gasto.emoji = body['emoji']
-    
+
     db.session.commit()
     return jsonify({"msg": "Gasto actualizado correctamente", "gasto": gasto.serialize()}), 200
 
-@api.route("/gasto/delete/", methods=['DELETE'])
+# Eliminar Gasto
+@api.route("/gasto/delete/<int:gasto_id>", methods=['DELETE'])
 @jwt_required()
 def delete_gasto(gasto_id):
     current_user_id = get_jwt_identity()
@@ -267,7 +300,9 @@ def delete_gasto(gasto_id):
     return jsonify({"msg": "Gasto eliminado correctamente"}), 200
 
 
+#____________________________________________________________________________________
 
+# Registro de Objetivo
 @api.route("/objetivo/register", methods=['POST'])
 @jwt_required()
 def register_objetivo():
@@ -286,6 +321,7 @@ def register_objetivo():
 
     return jsonify({"msg": "Objetivo registrado con éxito", "objetivo": new_objetivo.serialize()}), 201
 
+# Obtener Objetivo por ID
 @api.route("/objetivo/<int:objetivo_id>", methods=['GET'])
 @jwt_required()
 def get_objetivo(objetivo_id):
@@ -297,6 +333,15 @@ def get_objetivo(objetivo_id):
 
     return jsonify({"objetivo": objetivo.serialize()}), 200
 
+# Obtener todos los Objetivos del usuario
+@api.route("/objetivo", methods=['GET'])
+@jwt_required()
+def get_all_objetivos():
+    current_user_id = get_jwt_identity()
+    objetivos = Objetivo.query.filter_by(user_id=current_user_id).all()
+    return jsonify({"objetivos": [objetivo.serialize() for objetivo in objetivos]}), 200
+
+# Actualizar Objetivo
 @api.route("/objetivo/update/<int:objetivo_id>", methods=['PUT'])
 @jwt_required()
 def update_objetivo(objetivo_id):
@@ -321,6 +366,7 @@ def update_objetivo(objetivo_id):
         db.session.commit()
     return jsonify({"msg": "Objetivo actualizado correctamente", "objetivo": objetivo.serialize()}), 200
 
+# Eliminar Objetivo
 @api.route("/objetivo/delete/<int:objetivo_id>", methods=['DELETE'])
 @jwt_required()
 def delete_objetivo(objetivo_id):
@@ -333,4 +379,126 @@ def delete_objetivo(objetivo_id):
     db.session.delete(objetivo)
     db.session.commit()
     return jsonify({"msg": "Objetivo eliminado correctamente"}), 200
+
+
+
+#____________________________________________________________________________________
+
+# Registro de Artículo
+@api.route("/articulo/register", methods=['POST'])
+def register_articulo():
+    body = request.get_json()
+
+    new_articulo = Articulo()
+    new_articulo.titulo = body["titulo"]
+    new_articulo.texto = body["texto"]  
+
+    db.session.add(new_articulo)
+    db.session.commit()
+
+    return jsonify({"msg": "Artículo registrado con éxito", "articulo": new_articulo.serialize()}), 201
+
+# Obtener Artículo por ID
+@api.route("/articulo/<int:articulo_id>", methods=['GET'])
+def get_articulo(articulo_id):
+    articulo = Articulo.query.filter_by(id=articulo_id).first()
+
+    if not articulo:
+        return jsonify({"msg": "Artículo no encontrado"}), 404
+
+    return jsonify({"articulo": articulo.serialize()}), 200
+
+# Actualizar Artículo
+@api.route("/articulo/update/<int:articulo_id>", methods=['PUT'])
+def update_articulo(articulo_id):
+    articulo = Articulo.query.filter_by(id=articulo_id).first()
+
+    if not articulo:
+        return jsonify({"msg": "Artículo no encontrado"}), 404
+
+    body = request.get_json()
+    if 'titulo' in body:
+        articulo.titulo = body['titulo']
+    if 'texto' in body:  
+        articulo.texto = body['texto']
+
+    db.session.commit()
+    return jsonify({"msg": "Artículo actualizado correctamente", "articulo": articulo.serialize()}), 200
+
+# Eliminar Artículo y sus Links
+@api.route("/articulo/delete/<int:articulo_id>", methods=['DELETE'])
+def delete_articulo(articulo_id):
+    articulo = Articulo.query.filter_by(id=articulo_id).first()
+
+    if not articulo:
+        return jsonify({"msg": "Artículo no encontrado"}), 404
+
+    # Eliminar los Links asociados
+    Link.query.filter_by(articulo_id=articulo_id).delete()
+
+    db.session.delete(articulo)
+    db.session.commit()
+    return jsonify({"msg": "Artículo y Links eliminados correctamente"}), 200
+
+
+#____________________________________________________________________________________
+
+# Registro de Link
+@api.route("/link/register", methods=['POST'])
+def register_link():
+    body = request.get_json()
+    new_link = Link()
+    new_link.url_imagen = body["url_imagen"]
+    new_link.enlace = body["enlace"]
+    new_link.articulo_id = body["articulo_id"]  
+
+    db.session.add(new_link)
+    db.session.commit()
+
+    return jsonify({"msg": "Link registrado con éxito", "link": new_link.serialize()}), 201
+
+# Obtener Link por ID
+@api.route("/link/<int:link_id>", methods=['GET'])
+def get_link(link_id):
+    link = Link.query.filter_by(id=link_id).first()
+
+    if not link:
+        return jsonify({"msg": "Link no encontrado"}), 404
+
+    return jsonify({"link": link.serialize()}), 200
+
+# Obtener todos los Links relacionados a un Artículo
+@api.route("/articulo/<int:articulo_id>/links", methods=['GET'])
+def get_links_by_articulo(articulo_id):
+    links = Link.query.filter_by(articulo_id=articulo_id).all()
+    return jsonify({"links": [link.serialize() for link in links]}), 200
+
+# Actualizar Link
+@api.route("/link/update/<int:link_id>", methods=['PUT'])
+def update_link(link_id):
+    link = Link.query.filter_by(id=link_id).first()
+
+    if not link:
+        return jsonify({"msg": "Link no encontrado"}), 404
+
+    body = request.get_json()
+    if 'url_imagen' in body:
+        link.url_imagen = body['url_imagen']
+    if 'enlace' in body:
+        link.enlace = body['enlace']
+
+    db.session.commit()
+    return jsonify({"msg": "Link actualizado correctamente", "link": link.serialize()}), 200
+
+# Eliminar Link
+@api.route("/link/delete/<int:link_id>", methods=['DELETE'])
+def delete_link(link_id):
+    link = Link.query.filter_by(id=link_id).first()
+
+    if not link:
+        return jsonify({"msg": "Link no encontrado"}), 404
+
+    db.session.delete(link)
+    db.session.commit()
+    return jsonify({"msg": "Link eliminado correctamente"}), 200
 

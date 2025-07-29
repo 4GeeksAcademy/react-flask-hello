@@ -41,7 +41,7 @@ export const Servicios = () => {
     return (
         <>
             <section className="container my-5">
-                <h2 className="text-center fw-bold mb-5">¿Qué Ofrece AutoTekc?</h2>
+                <h2 id="about" className="text-center fw-bold mb-5">¿Qué Ofrece AutoTekc?</h2>
 
                 <div className="row gy-4">
                     {infoCards.map((item, i) => (
@@ -67,7 +67,7 @@ export const Servicios = () => {
             </section>
 
 
-            <div className="container py-5">
+            <div id="servicios" className="container py-5">
                 <div className="row g-4 justify-content-center">
                     {servicios.map((servicio, i) => (
                         <div className="col-12 col-sm-6 col-md-4" key={i}>

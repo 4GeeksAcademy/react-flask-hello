@@ -9,7 +9,7 @@ export const Home = () => {
     <div>
       <Navbar />
 	    <Carousel />
-      <div id="servicios">
+      <div>
       <Servicios />
       </div>
       <Footer />

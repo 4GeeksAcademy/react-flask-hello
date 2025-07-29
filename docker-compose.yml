@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   # Servicio del Backend (Python/Flask API)
   server:
     build:
-      context: .  # El contexto es la raíz, donde están todos los archivos
+      context: . # El contexto es la raíz, donde están todos los archivos
       dockerfile: Dockerfile.backend # Especifica qué Dockerfile usar
     restart: always
     env_file: ./.env

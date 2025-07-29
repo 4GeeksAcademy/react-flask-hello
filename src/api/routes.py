@@ -2,11 +2,16 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
+from dotenv import load_dotenv
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token
 from api.models import User, db, Product
 from flask_bcrypt import Bcrypt
+import cloudinary.uploader
+import cloudinary.api
+import os
+
 
 api = Blueprint('api', __name__)
 
@@ -15,7 +20,16 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 bcrypt = Bcrypt()
-    
+
+load_dotenv()
+
+cloudinary.config(
+    cloud_name = os.getenv("djweluz6i"),
+    api_key = os.getenv("864744287339813"),
+    api_secret = os.getenv("9miKtFF0wakoUgi-9isQYM_unAo"),
+    secure =True
+)    
+
 @api.route('/private-hello', methods=['POST', 'GET'])
 @jwt_required()
 def handle_private_hello():
@@ -94,7 +108,7 @@ def register():
 
 
 
-#el producto
+# logica para que el administrador haga CRUD de los productos
 @api.route('/hello')
 def home():
     return make_response(jsonify({"msg":"¡Funcionando Correctamente!"}), 200)
@@ -120,6 +134,14 @@ def get_product_id():
 @api.route('/new', methods=['POST']) 
 def new_product():
     data_request= request.get_json()
+    file = request.files['product']
+
+    if file:
+        upload_result = cloudinary.uploader.upload(file)
+        secure_url = upload_result['secure_url']
+
+        return f"Archivo subido con exito. url: {secure_url}"
+        
     
     #inicio de la validacion
 

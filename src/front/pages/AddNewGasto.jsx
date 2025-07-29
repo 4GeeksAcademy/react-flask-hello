@@ -12,7 +12,7 @@ export const AddNewGasto = () => {
 
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-  // Obtener el user_id desde el perfil del usuario usando el token
+  // Obtener user_id desde el perfil
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -36,8 +36,7 @@ export const AddNewGasto = () => {
         }
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setMensaje("⚠️ Error de red al obtener el perfil");
         setLoading(false);
       });
@@ -67,16 +66,16 @@ export const AddNewGasto = () => {
       return;
     }
 
+    // Datos para el backend (según tu endpoint)
     const gastoData = {
       user_id: userId,
-      concepto: concepto,
-      cantidad: parseFloat(cantidad),
-      emoji: emoji || null,
+      sueldo: parseFloat(cantidad),
+      is_student: false,
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/gasto/update`, {
-        method: "PUT",
+      const response = await fetch(`${API_BASE_URL}/gasto/register`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -87,13 +86,23 @@ export const AddNewGasto = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setMensaje("✅ Gasto guardado correctamente");
+        // Guardar localmente el gasto para usar en frontend
+        const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
+        gastosGuardados.push({
+          concepto,
+          cantidad: parseFloat(cantidad),
+          emoji,
+          fecha: new Date().toISOString(),
+        });
+        localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
+
+        setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
         setConcepto("");
         setCantidad("");
         setEmoji("");
         setShowPicker(false);
       } else {
-        setMensaje("❌ Error: " + result.msg);
+        setMensaje("❌ Error: " + (result.msg || "No se pudo guardar el gasto"));
       }
     } catch (error) {
       setMensaje("❌ Error al guardar el gasto");
@@ -106,15 +115,35 @@ export const AddNewGasto = () => {
   }
 
   return (
-    <div className="min-vh-100 d-flex justify-content-center align-items-center" style={{ backgroundColor: "#ffffff", minHeight: "80vh" }}>
-      <form className="w-100" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>
-        <div className="text-center" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+    <div
+      className="min-vh-100 d-flex justify-content-center align-items-center"
+      style={{ backgroundColor: "#ffffff", minHeight: "80vh" }}
+    >
+      <form
+        className="w-100"
+        style={{ maxWidth: "600px" }}
+        onSubmit={handleSubmit}
+      >
+        <div
+          className="text-center"
+          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        >
           <h1>¡Añade otro gasto!</h1>
         </div>
 
-        <div className="p-5 rounded shadow-lg" style={{ backgroundColor: "#ffffff", maxWidth: "600px", paddingTop: "60px", paddingBottom: "60px" }}>
+        <div
+          className="p-5 rounded shadow-lg"
+          style={{
+            backgroundColor: "#ffffff",
+            maxWidth: "600px",
+            paddingTop: "60px",
+            paddingBottom: "60px",
+          }}
+        >
           <div className="mb-4">
-            <label htmlFor="concepto" className="form-label">Concepto del gasto</label>
+            <label htmlFor="concepto" className="form-label">
+              Concepto del gasto
+            </label>
             <input
               type="text"
               id="concepto"
@@ -127,7 +156,9 @@ export const AddNewGasto = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="cantidad" className="form-label">Cantidad (€)</label>
+            <label htmlFor="cantidad" className="form-label">
+              Cantidad (€)
+            </label>
             <input
               type="number"
               id="cantidad"
@@ -144,7 +175,11 @@ export const AddNewGasto = () => {
           <div className="mb-4 position-relative">
             <label className="form-label">Emoji (opcional)</label>
             <div className="d-flex align-items-center gap-3">
-              <button type="button" className="btn btn-outline-secondary" onClick={() => setShowPicker(!showPicker)}>
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => setShowPicker(!showPicker)}
+              >
                 {emoji || "😀"}
               </button>
               {showPicker && (
@@ -159,7 +194,11 @@ export const AddNewGasto = () => {
             <button
               type="submit"
               className="btn btn-primary"
-              style={{ backgroundColor: "#b7ff00", color: "black", border: "1px solid #b7ff00" }}
+              style={{
+                backgroundColor: "#b7ff00",
+                color: "black",
+                border: "1px solid #b7ff00",
+              }}
             >
               Guardar gasto
             </button>

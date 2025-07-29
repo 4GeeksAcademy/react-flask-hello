@@ -149,6 +149,10 @@ h6 {
   color: #60e0a5;
 }
 
+.card-text {
+  font-size: 13pt;
+}
+
 .ct-description-p {
   width: 100%;
   font-size: 16pt;

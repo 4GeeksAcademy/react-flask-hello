@@ -97,6 +97,7 @@ class Product(db.Model):
     price: Mapped[float] = mapped_column(Float(), nullable=False)
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
+    
 
 
     pet_type: Mapped["PetType"] = relationship(
@@ -120,6 +121,7 @@ class Product(db.Model):
             "coste": self.coste,
             "price": self.price,
             "stock": self.stock,
+            
             # do not serialize the password, its a security breach
         }
     

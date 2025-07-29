@@ -103,9 +103,9 @@ def home():
 @api.route('/product', methods=['GET'])
 def get_product():
     list_products= Product.query.all()
-    products=[Product.serialize for Product in list_products]
+    products=[Product.serialize() for Product in list_products]
     print(list_products[0].name)
-    return make_response(jsonify({"msg":"¡Producto cargado exitosamente!" }), 200)
+    return make_response(jsonify({"msg":"¡Producto cargado exitosamente!", "products":products }), 200)
 
 @api.route('/product<int:id>', methods=['GET'])
 def get_product_id():

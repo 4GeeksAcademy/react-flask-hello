@@ -3,7 +3,7 @@ import { useEffect, useReducer } from "react";
 import storeReducer, { initialStore } from "../../store";
 
 const fetchAllLeads = async (dispatch) => {
-    const apiUrl = import.meta.env.VITE_BACKEND_URL;
+    const apiUrl = "";
     dispatch({ type: 'GET_ALL_LEADS_START' })
     try {
         const response = await fetch(`${apiUrl}/api/leads`)

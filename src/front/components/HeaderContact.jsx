@@ -18,7 +18,7 @@ const HeaderContact = () => {
     });
 
     const { status, error } = store.contactForm;
-    const apiUrl = import.meta.env.VITE_BACKEND_URL;
+    const apiUrl = "";
 
     useEffect(() => {
         if (status === 'success') {

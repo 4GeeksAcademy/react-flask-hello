@@ -5,7 +5,7 @@ import { AppContext } from "./Layout"
 import yellowLogo from '../assets/img/LogoNavbar.svg'
 
 const adminLogin = async (dispatch, loginData) => {
-    const apiUrl = import.meta.env.VITE_BACKEND_URL;
+    const apiUrl = "";
     dispatch({ type: 'ADMIN_LOGIN_START' })
     try {
         const response = await fetch(`${apiUrl}/api/admin/login`, {

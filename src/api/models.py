@@ -54,7 +54,9 @@ class Orden_de_trabajo(db.Model):
             'fecha_final': self.fecha_final,
             'usuario_id': self.usuario_id,
             'vehiculo_id': self.vehiculo_id,
-            'mecanico_id': self.mecanico_id
+            'mecanico_id': self.mecanico_id,
+            'nombre_mecanico': self.mecanico.nombre,
+            'matricula_vehiculo': self.vehiculo.matricula
         }
 
 

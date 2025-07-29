@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavbarUser } from "../components/NavbarUser";
 
 
 export const InicioUser = () => {
 
-
+  const [ordenDeTrabajo, setOrdenDeTrabajo] = useState([])
 
   function traer_ordenes_de_servicio(){
 
@@ -21,7 +21,8 @@ export const InicioUser = () => {
       return response.json()
   })
   .then((data)=>{
-      console.log(data)
+      console.log(data.ordenes_de_trabajo)
+      setOrdenDeTrabajo(data.ordenes_de_trabajo)
   })
   .catch((error)=>{error})
   }
@@ -96,18 +97,19 @@ export const InicioUser = () => {
                 <th>Nro. de Órden</th>
                 <th>Vehículo</th>
                 <th>Servicios</th>
-                <th>Fecha</th>
+                <th>Fecha de ingreso</th>
+                <th>Fecha de salida</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((orden) => (
+              {ordenDeTrabajo.map((orden) => (
                 <tr key={orden.id}>
-                  <td>{orden.id}</td>
-                  <td>{orden.vehiculo}</td>
-                  <td>{orden.servicios}</td>
-                  <td>{orden.fecha}</td>
-                  <td>{getEstadoBadge(orden.estado)}</td>
+                  <td>{orden.id_ot}</td>
+                  <td>{orden.matricula}</td>
+                  <td>{orden.fecha_ingreso}</td>
+                  <td>{orden.fecha_final}</td>
+                  <td>{getEstadoBadge(orden.estado_servicio)}</td>
                 </tr>
               ))}
             </tbody>

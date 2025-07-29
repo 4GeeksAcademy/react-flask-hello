@@ -92,7 +92,7 @@ def get_orden_de_trabajo():
     id_propietario = user_current.id_user
     ordenes_de_trabajo = Orden_de_trabajo.query.filter_by(usuario_id = id_propietario).all()    
     print(ordenes_de_trabajo)
-
+    
     ot_serialized_by_user = []
 
     for orden_de_trabajo in ordenes_de_trabajo:

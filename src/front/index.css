@@ -177,3 +177,42 @@ body {
   padding-left: 0;
   list-style: none;
 }
+
+.addgasto-container {
+  background-color: #f5f5f5; 
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.addgasto-form-wrapper {
+  max-width: 600px;
+  width: 100%;
+}
+
+.addgasto-title {
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.addgasto-form-content {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 60px 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.addgasto-btn-guardar {
+  background-color: #b7ff00 !important;
+  color: black !important;
+  border: 1px solid #b7ff00 !important;
+}
+
+.addgasto-emoji-picker-wrapper {
+  position: absolute;
+  z-index: 999;
+  top: 50px;
+}

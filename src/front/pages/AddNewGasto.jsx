@@ -7,40 +7,8 @@ export const AddNewGasto = () => {
   const [emoji, setEmoji] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [userId, setUserId] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
-  // Obtener user_id desde el perfil
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setMensaje("⚠️ No hay token. Inicia sesión.");
-      setLoading(false);
-      return;
-    }
-
-    fetch(`${API_BASE_URL}api/user/profile`, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.user && data.user.id) {
-          setUserId(data.user.id);
-        } else {
-          setMensaje("⚠️ Error al obtener el perfil del usuario");
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setMensaje("⚠️ Error de red al obtener el perfil");
-        setLoading(false);
-      });
-  }, []);
 
   const onEmojiClick = (emojiObject) => {
     setEmoji(emojiObject.emoji);
@@ -49,28 +17,31 @@ export const AddNewGasto = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!concepto.trim()) {
       alert("El concepto es obligatorio");
+      setLoading(false);
       return;
     }
 
     if (isNaN(cantidad) || parseFloat(cantidad) <= 0) {
       alert("La cantidad debe ser un número mayor que cero");
+      setLoading(false);
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
       alert("No hay token. Inicia sesión.");
+      setLoading(false);
       return;
     }
 
-    // Datos para el backend (según tu endpoint)
     const gastoData = {
-      user_id: userId,
-      sueldo: parseFloat(cantidad),
-      is_student: false,
+      concepto: concepto,
+      cantidad: parseFloat(cantidad),
+      emoji: emoji
     };
 
     try {
@@ -86,64 +57,32 @@ export const AddNewGasto = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Guardar localmente el gasto para usar en frontend
-        const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
-        gastosGuardados.push({
-          concepto,
-          cantidad: parseFloat(cantidad),
-          emoji,
-          fecha: new Date().toISOString(),
-        });
-        localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
-
         setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
         setConcepto("");
         setCantidad("");
         setEmoji("");
-        setShowPicker(false);
       } else {
         setMensaje("❌ Error: " + (result.msg || "No se pudo guardar el gasto"));
       }
     } catch (error) {
-      setMensaje("❌ Error al guardar el gasto");
+      setMensaje("❌ Error de conexión al guardar el gasto");
       console.error("Error al enviar:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-5">Cargando usuario...</div>;
-  }
-
   return (
-    <div
-      className="min-vh-100 d-flex justify-content-center align-items-center"
-      style={{ backgroundColor: "#ffffff", minHeight: "80vh" }}
-    >
-      <form
-        className="w-100"
-        style={{ maxWidth: "600px" }}
-        onSubmit={handleSubmit}
-      >
-        <div
-          className="text-center"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-        >
+    <div className="addgasto-container">
+      <form className="addgasto-form-wrapper" onSubmit={handleSubmit}>
+        <div className="addgasto-title">
           <h1>¡Añade otro gasto!</h1>
         </div>
 
-        <div
-          className="p-5 rounded shadow-lg"
-          style={{
-            backgroundColor: "#ffffff",
-            maxWidth: "600px",
-            paddingTop: "60px",
-            paddingBottom: "60px",
-          }}
-        >
+        <div className="addgasto-form-content">
+          {/* INPUT CONCEPTO */}
           <div className="mb-4">
-            <label htmlFor="concepto" className="form-label">
-              Concepto del gasto
-            </label>
+            <label htmlFor="concepto" className="form-label">Concepto del gasto</label>
             <input
               type="text"
               id="concepto"
@@ -155,10 +94,9 @@ export const AddNewGasto = () => {
             />
           </div>
 
+          {/* INPUT CANTIDAD */}
           <div className="mb-4">
-            <label htmlFor="cantidad" className="form-label">
-              Cantidad (€)
-            </label>
+            <label htmlFor="cantidad" className="form-label">Cantidad (€)</label>
             <input
               type="number"
               id="cantidad"
@@ -172,6 +110,7 @@ export const AddNewGasto = () => {
             />
           </div>
 
+          {/* EMOJI PICKER */}
           <div className="mb-4 position-relative">
             <label className="form-label">Emoji (opcional)</label>
             <div className="d-flex align-items-center gap-3">
@@ -183,27 +122,25 @@ export const AddNewGasto = () => {
                 {emoji || "😀"}
               </button>
               {showPicker && (
-                <div style={{ position: "absolute", zIndex: 999, top: "50px" }}>
+                <div className="addgasto-emoji-picker-wrapper">
                   <EmojiPicker onEmojiClick={onEmojiClick} />
                 </div>
               )}
             </div>
           </div>
 
+          {/* BOTÓN */}
           <div className="mb-3 d-flex justify-content-center">
             <button
               type="submit"
-              className="btn btn-primary"
-              style={{
-                backgroundColor: "#b7ff00",
-                color: "black",
-                border: "1px solid #b7ff00",
-              }}
+              className="btn btn-primary addgasto-btn-guardar"
+              disabled={loading}
             >
-              Guardar gasto
+              {loading ? "Guardando..." : "Guardar gasto"}
             </button>
           </div>
 
+          {/* MENSAJE */}
           {mensaje && (
             <div className="text-center mt-3">
               <p>{mensaje}</p>

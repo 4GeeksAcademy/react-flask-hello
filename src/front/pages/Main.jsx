@@ -167,6 +167,11 @@ export const Main = () => {
             </button>
           </div>
         ))}
+        <div className="text-center mb-4">
+        <Link to="/addnewgasto">
+        <button className="btn btn-warning">➕ Añadir gasto</button>
+        </Link>
+        </div>
       </div>
     </div>
   );

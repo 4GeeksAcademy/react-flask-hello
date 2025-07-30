@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EmojiPicker from "emoji-picker-react";
+import { useNavigate } from "react-router-dom";
 
 export const AddNewGasto = () => {
   const [concepto, setConcepto] = useState("");
@@ -9,6 +10,7 @@ export const AddNewGasto = () => {
   const [mensaje, setMensaje] = useState("");
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -95,6 +97,10 @@ export const AddNewGasto = () => {
           fecha: new Date().toISOString(),
         });
         localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
+        setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
+    setTimeout(() => {
+      navigate("/main"); 
+    }, 1000);
 
         setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
         setConcepto("");

@@ -100,7 +100,10 @@ export default function Navbar() {
                 {
                   view && (
                     <div class="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
-                      <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Login <LogIn className="w-4 h-4 ml-2" /> </a>
+                      <Link to="/Login">
+                        <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Login <LogIn className="w-4 h-4 ml-2" /> </a>
+                      </Link>
+                    
                       <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Perfil <CircleUser className="w-4 h-4 ml-2"/></a>
                       <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Cerrar sesión <LogOut className="w-4 h-4 ml-2" /></a>
                     </div>

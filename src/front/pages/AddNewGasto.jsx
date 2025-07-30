@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EmojiPicker from "emoji-picker-react";
+import { useNavigate } from "react-router-dom";
 
 export const AddNewGasto = () => {
   const [concepto, setConcepto] = useState("");
@@ -57,6 +58,20 @@ export const AddNewGasto = () => {
       const result = await response.json();
 
       if (response.ok) {
+        // Guardar localmente el gasto para usar en frontend
+        const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
+        gastosGuardados.push({
+          concepto,
+          cantidad: parseFloat(cantidad),
+          emoji,
+          fecha: new Date().toISOString(),
+        });
+        localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
+        setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
+    setTimeout(() => {
+      navigate("/main"); 
+    }, 1000);
+
         setMensaje(`✅ Gasto guardado: ${concepto} ${emoji} - ${cantidad}€`);
         setConcepto("");
         setCantidad("");

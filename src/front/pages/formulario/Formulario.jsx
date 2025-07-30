@@ -10,17 +10,27 @@ export const Formulario = () => {
     const [price, setPrice] = useState("")
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        const newgame = {
-            "img": img,
-            "name": name,
-            "platform": platform,
-            "description": description,
-            "price": price,
+        try {
+            e.preventDefault();
+
+            const newgame = {
+                "img": img,
+                "name": name,
+                "platform": platform,
+                "description": description,
+                "price": price,
+            }
+            await fetch("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/games/addgame", {
+                method: "POST",
+                body: JSON.stringify(newgame),
+                headers: { "Content-type": "application/json" }
+            })
+
+            alert("Juego añadido correctamente")
         }
-        await fetch ("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api")
-        
+        catch (error) {
+            console.log(error)
+        }
     };
 
     return (

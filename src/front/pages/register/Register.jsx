@@ -2,7 +2,7 @@ import './register.css'
 import { useState } from 'react'
 
 export const Register = () => {
-    // const backendUrl = import.meta.env.VITE_BACKEND_URL utilizar en los fetch
+     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
@@ -21,7 +21,7 @@ export const Register = () => {
                 "rol": rol
 			}
 
-			await fetch("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/user/register", {
+			await fetch(`${backendUrl}api/users`, {
 				method: "POST",
 				body: JSON.stringify(new_user),
 				headers: {"Content-type": "application/json"}

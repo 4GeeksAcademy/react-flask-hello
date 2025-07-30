@@ -46,7 +46,7 @@ export const Home = ({ datosJuego }) => {
   };
   return (
 
-    <div className="w-full relative bg-indigo-800">
+    <div className="w-full relative bg-black">
       <Carousel
         responsive={responsive}
         infinite={true}
@@ -65,7 +65,7 @@ export const Home = ({ datosJuego }) => {
         }
       </Carousel>
 
-      <div class="h-22 bg-indigo-800 text-white px-6 py-4 w-full mx-auto ease-in-out ">
+      <div class="h-22 bg-black text-white px-6 py-4 w-full mx-auto ease-in-out ">
         <h2 class="text-2xl font-bold mb-2 text-center sm:text-xl md:text-3xl">¡Oferta de Bienvenida!</h2>
         <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
       </div>

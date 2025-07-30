@@ -3,6 +3,8 @@ import { useState } from "react"
 
 export const Formulario = () => {
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
+
     const [img, setImg] = useState("")
     const [name, setName] = useState("")
     const [platform, setPlatform] = useState("")
@@ -19,7 +21,7 @@ export const Formulario = () => {
             "description": description,
             "price": price,
         }
-        await fetch ("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api")
+        await fetch (`${backendUrl}api/games`)
         
     };
 

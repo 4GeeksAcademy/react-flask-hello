@@ -19,8 +19,7 @@ export const Formulario = () => {
             "description": description,
             "price": price,
         }
-        await fetch ("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api")
-        
+        await fetch ("https://redesigned-yodel-55qqq4gvv7xh459v-3001.app.github.dev/api")
     };
 
     return (

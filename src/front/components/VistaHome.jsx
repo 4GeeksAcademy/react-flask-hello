@@ -1,12 +1,19 @@
-import { Link } from "react-router-dom";
 import { Login } from "./Login.jsx";
+import { Link } from "react-router-dom";
+import { AjustesUsuario } from "./AjustesUsuario.jsx";
+import { Evento } from "./Evento.jsx";
+import { Formulario } from "./Formulario.jsx";
+import { NotFound } from "./NotFound.jsx";
+import { Usuario } from "./Usuario.jsx";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export const VistaHome = () => {
-
+  //carrusel fotos 
   const settings = {
     dots: true,
     infinite: true,
@@ -14,10 +21,44 @@ export const VistaHome = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  //rutas
+
+  const navigate = useNavigate();
+
+  const rutaLogin =() => {
+    navigate("/login");
+  };
+  const rutaUsuario = () => {
+    navigate("/usuario");
+  };
+  const rutaAjustesUsuario = () => {
+    navigate("/AjustesUsuario");
+  };
+  const rutaEvento = () => {
+    navigate("/evento");
+  };
+  const rutaNotFound = () => {
+    navigate("/NotFound");
+  };
+  const rutaFormulario = () => {
+    navigate("/Formulario");
+  };
+
 
   return (
     <div>
       <Login />
+      <br />
+      <br />
+      <div className="flex justify-center">
+      {/*botones a rutas*/}
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaLogin}>Login</button>
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaUsuario}>Usuario</button>
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaEvento}>Evento</button>
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaNotFound}>Not found</button>
+      <button className="text-black bg-yellow-700 m-3" onClick={rutaFormulario}>Formulario</button>
+      </div>
       <br />
       <br />
       {/*titulo y encabezado*/}

@@ -55,7 +55,7 @@ export default function Navbar() {
                       <a href="#" class="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Juegos de Mesa</a>
                       <a href="#" class="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Play Station</a>
                       <a href="#" class="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">XboX</a>
                     </div>
                   )}
                 </div>

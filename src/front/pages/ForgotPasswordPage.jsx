@@ -21,9 +21,9 @@ export const ForgotPasswordPage = () => {
             <div className="login-content-wrapper">
                 <div className="login-form-card p-4">
                     <h2 className="text-center mb-4">Forgot your password?</h2>
-                    <p className="text-center text-muted mb-4">
+                    <h6 className="text-center mb-4">
                         Enter your email address below and we'll send you a password reset link.
-                    </p>
+                    </h6>
                     <form onSubmit={handleSendResetLink}>
                         <div className="mb-3">
                             <label htmlFor="emailInput" className="form-label">Email address</label>

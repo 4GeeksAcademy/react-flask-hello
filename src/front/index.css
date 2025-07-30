@@ -13,13 +13,15 @@
 .home-page-container {
   position: relative;
   /* width: 100vw; */
-  height: 100vh;
+  height: 100%;
+  /* min-height: 100vh; */
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
+  /* background-color: #866565; */
 }
 
 .signup-page-container {
@@ -51,11 +53,12 @@
 
 .imagen-background {
   position: absolute;
+  height: 100%;
   /* top: 50%; */
   /* left: 50%; */
   z-index: -1;
   /* transform: translate(-50%, -50%); */
-  /* object-fit: cover; */
+  object-fit: cover;
   filter: brightness(0.7);
   opacity: 0.4;
 }
@@ -199,5 +202,9 @@ body.dark-theme .btn-dark {
 }
 
 .card {
-  min-height: 420px;
+  min-height: 320px;
+}
+
+.titulos {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

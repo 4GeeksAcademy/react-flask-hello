@@ -1,4 +1,4 @@
-import imagenBack from "../assets/fondo-cantante.jpg"
+import imagenBack from "../assets/fondo-Rock.jpg"
 import React from 'react';
 
 export const Home = () => {
@@ -34,14 +34,17 @@ export const Home = () => {
             image: 'https://images.pexels.com/photos/3682820/pexels-photo-3682820.jpeg',
             link: '#',
         },
+
     ];
+
 
     return (
         <div className="home-page-container">
             <div className="imagen-background">
                 <img src={imagenBack} alt="imagen fondo" />
             </div>
-            <div className="container py-4">
+            <div className="container py-5 p-1">
+                <h2 className="titulos display-4 text-center fw-bold">TITULO 1</h2>
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
                     {cards.map((card, index) => (
                         <div className="col" key={index}>
@@ -58,7 +61,35 @@ export const Home = () => {
                             </a>
                         </div>
                     ))}
+                </div> 
+                <div id="carouselExampleFade" className="carousel slide carousel-fade py-4" data-bs-ride="carousel">
+                    <h2 className="titulos display-4 text-center fw-bold">TITULO 2</h2>
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <img src="https://images.pexels.com/photos/7502588/pexels-photo-7502588.jpeg" className="d-block w-100" alt="Imagen 1" />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="https://images.pexels.com/photos/167638/pexels-photo-167638.jpeg" className="d-block w-100" alt="Imagen 2" />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="https://images.pexels.com/photos/2263436/pexels-photo-2263436.jpeg" className="d-block w-100" alt="Imagen 3" />
+                        </div>
+                    </div>
+
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Anterior</span>
+                    </button>
+
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Siguiente</span>
+                    </button>
+                    <p className="titulos text-center py-2">MIRA LAS EXPERIENCIAS VIVIDAS EN NUESTROS EVENTOS</p>
                 </div>
+
+                {/* ESCRIBES MAS CODIGO DE AQUI PARA ABAJO */}
+
             </div>
         </div>
 

@@ -4,7 +4,7 @@ from api.database.db import db
 # from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
-api = Blueprint("api/", __name__)
+api = Blueprint("api/games", __name__)
 
 # FALTA PROBAR SI FUNCIONA CORRECTAMENTE EN POSTMAN
 # AÑADIR ELIMINAR JUEGO
@@ -12,7 +12,7 @@ api = Blueprint("api/", __name__)
 
 
 # MOSTRAR TODOS LOS JUEGOS JUEGOS
-@api.route("/games", methods = ["GET"])
+@api.route("/", methods = ["GET"])
 def get_all_games():
    all_games = Games.query.all()
    if all_games is None:
@@ -22,7 +22,7 @@ def get_all_games():
 
 
 # CREAR UN NUEVO JUEGO
-@api.route('games/addgame', methods=["POST"])
+@api.route('/addgame', methods=["POST"])
 def add_game():
 
     body = request.get_json()

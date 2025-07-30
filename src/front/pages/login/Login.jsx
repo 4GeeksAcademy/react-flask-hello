@@ -4,43 +4,42 @@ import {Link} from "react-router-dom"
 export const Login = () => {
 
 
-    // FALTA AÑADIR AL FORMULARIO LOS VALORES DE LOS INPUTS Y PROBAR EN LOGIN Y EL CERRAR SESION, HABLAR CON HORACIO COMO LO VE.
+     
     
 
-//      const [email, setEmail] = useState("")
-//          const [password, setPassword] = useState("")
+      const [email, setEmail] = useState("")
+         const [password, setPassword] = useState("")
 
-//      // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
+      // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
 
-//      const login_user = async (email, password) => {
-//       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/token`, { 
-//            method: "POST",
-//            headers: { "Content-Type": "application/json" },
-//            body: JSON.stringify({ email, password }) 
-//       })
+      const login_user = async (email, password) => {
+       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/login`, { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }) 
+       })
 
-//       if(!body.ok) throw Error("There was a problem in the login request")
+      if(!body.ok) throw Error("There was a problem in the login request")
 
-//       if(body.status === 401){
-//            throw("Invalid credentials")
-//       }
-//       else if(body.status === 400){
-//            throw ("Invalid email or password format")
-//      }
-//      const data = await resp.json();
-//      // Guarda el token en la localStorage
-//       // También deberías almacenar el usuario en la store utilizando la función setItem
-//       localStorage.setItem("jwt-token", data.token);
-//       alert("Sesion iniciada correctamente");
+       if(body.status === 401){
+            throw("Invalid credentials")
+       }
+       else if(body.status === 400){
+            throw ("Invalid email or password format")
+      }
+      const data = await resp.json();
+      // Guarda el token en la localStorage
+       // También deberías almacenar el usuario en la store utilizando la función setItem
+       localStorage.setItem("jwt-token", data.token);
+       alert("Sesion iniciada correctamente");
+       return data
+  }
 
-//       return data
-//  }
-
-// const cerrarSesion = ()=>{
-//     localStorage.removeItem("jwt-token", data.token)
-//     alert("Sesion finalizada")
-//     navigate("/Login")
-// }
+ const cerrarSesion = ()=>{
+     localStorage.removeItem("jwt-token", data.token)
+     alert("Sesion finalizada")
+     navigate("/Login")
+ }
 
 
 

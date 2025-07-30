@@ -5,19 +5,19 @@ import bcrypt # type: ignore
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity # type: ignore
 
 
-api = Blueprint("api/", __name__)
+api = Blueprint("api/user", __name__)
 
-# MOSTRAR TODOS LOS USUARIOS
-@api.route("/users", methods = ["GET"])
-def get_all_users():
-    users = User.query.all()
-    if users is None:
-        return jsonify("Error, no hemos encontrado ningun usuario"),404
-    users = list(map(lambda x : x.serialize(),users))
-    return jsonify({"all_users": users}),200
+#  MOSTRAR TODOS LOS USUARIOS
+# @api.route("/users", methods = ["GET"])
+# def get_all_users():
+#     users = User.query.all()
+#     if users is None:
+#         return jsonify("Error, no hemos encontrado ningun usuario"),404
+#     users = list(map(lambda x : x.serialize(),users))
+#     return jsonify({"all_users": users}),200
 
 # REGISTRO DE UN NUEVO USER
-@api.route('user/register', methods=["POST"])
+@api.route('/register', methods=["POST"])
 def register_user():
     body = request.get_json()
 

@@ -8,8 +8,9 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 
 from api.database.db import db
-from api.routes.user import api
-from api.routes.games import api
+
+import api.routes.user as api_user
+import api.routes.games as api_games
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
@@ -49,7 +50,9 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api_user.api, url_prefix='/api/user')
+app.register_blueprint(api_games.api, url_prefix='/api/games')
+
 
 # Handle/serialize errors like a JSON object
 

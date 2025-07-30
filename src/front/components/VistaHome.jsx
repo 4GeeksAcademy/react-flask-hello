@@ -5,8 +5,8 @@ import { Evento } from "../pages/Evento.jsx";
 import { Formulario } from "../pages/Formulario.jsx";
 import { NotFound } from "../pages/NotFound.jsx";
 import { Usuario } from "../pages/Usuario.jsx";
-import { CreateEvent } from "./pages/CreateEvent";
-import { LoginPage } from "./pages/LoginPage";
+import { CreateEvent } from "../pages/CreateEvent";
+import { LoginPage } from "../pages/LoginPage";
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

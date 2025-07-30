@@ -16,6 +16,8 @@ import { Evento } from "./pages/Evento";
 import { Usuario } from "./pages/Usuario";
 import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
+import { CreateEvent } from "./pages/CreateEvent";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +42,7 @@ export const router = createBrowserRouter(
       <Route path="usuario" element={<Usuario />} />
       <Route path="ajustesusuario" element={<AjustesUsuario />} />
       <Route path="notfound" element={<NotFound />} />
+      <Route path="createevent" element={<CreateEvent />} />
 
     </Route>
   )

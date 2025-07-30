@@ -60,9 +60,14 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</a>
-                
-                <a href="/Soporte" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
+              <Link to= "/register">
+                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
+              </Link> 
+
+              <Link to= "/formulario">
+                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
+              </Link>
+                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Contacto</a>
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -94,11 +99,11 @@ export default function Navbar() {
               <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (
-                    <>
-                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
-                      <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
-                      <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
-                    </>
+                    <div class="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                      <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Login <LogIn className="w-4 h-4 ml-2" /> </a>
+                      <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Perfil <CircleUser className="w-4 h-4 ml-2"/></a>
+                      <a className="flex items-center px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Cerrar sesión <LogOut className="w-4 h-4 ml-2" /></a>
+                    </div>
                   )
                 }
               </div>

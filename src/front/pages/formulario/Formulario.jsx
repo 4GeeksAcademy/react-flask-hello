@@ -20,7 +20,7 @@ export const Formulario = () => {
                 "description": description,
                 "price": price,
             }
-            await fetch("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/games/addgame", {
+            await fetch("https://refactored-couscous-x5p76ppwgq5v3xxr-3001.app.github.dev/api/games/addgame", {
                 method: "POST",
                 body: JSON.stringify(newgame),
                 headers: { "Content-type": "application/json" }

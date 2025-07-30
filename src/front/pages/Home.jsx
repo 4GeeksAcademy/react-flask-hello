@@ -34,7 +34,9 @@ export const Home = () => {
             image: 'https://images.pexels.com/photos/3682820/pexels-photo-3682820.jpeg',
             link: '#',
         },
+
     ];
+
 
     return (
         <div className="home-page-container">
@@ -58,6 +60,30 @@ export const Home = () => {
                             </a>
                         </div>
                     ))}
+                </div>
+                <h2>TITULO 2</h2>
+                <div id="carouselExampleFade" className="carousel slide carousel-fade p-4" data-bs-ride="carousel">
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <img src="https://images.pexels.com/photos/7502588/pexels-photo-7502588.jpeg" className="d-block w-100" alt="Imagen 1" />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="https://images.pexels.com/photos/167638/pexels-photo-167638.jpeg" className="d-block w-100" alt="Imagen 2" />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="https://images.pexels.com/photos/2263436/pexels-photo-2263436.jpeg" className="d-block w-100" alt="Imagen 3" />
+                        </div>
+                    </div>
+
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Anterior</span>
+                    </button>
+
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Siguiente</span>
+                    </button>
                 </div>
             </div>
         </div>

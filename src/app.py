@@ -11,8 +11,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
-import cloudinary.uploader
-import cloudinary.api
+
 
 
 # from models import Person
@@ -23,13 +22,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-#configuracion de cloudinary
-cloudinary.config(
-    cloud_name = os.getenv("djweluz6i"),
-    api_key = os.getenv("864744287339813"),
-    api_secret = os.getenv("9miKtFF0wakoUgi-9isQYM_unAo"),
-    secure =True
-)
+
 
 
 

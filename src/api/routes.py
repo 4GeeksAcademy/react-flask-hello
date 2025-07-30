@@ -2,15 +2,12 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
-from dotenv import load_dotenv
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token
 from api.models import User, db, Product
 from flask_bcrypt import Bcrypt
-import cloudinary.uploader
-import cloudinary.api
-import os
+
 
 
 api = Blueprint('api', __name__)
@@ -21,14 +18,6 @@ CORS(api)
 
 bcrypt = Bcrypt()
 
-load_dotenv()
-
-cloudinary.config(
-    cloud_name = os.getenv("djweluz6i"),
-    api_key = os.getenv("864744287339813"),
-    api_secret = os.getenv("9miKtFF0wakoUgi-9isQYM_unAo"),
-    secure =True
-)    
 
 @api.route('/private-hello', methods=['POST', 'GET'])
 @jwt_required()
@@ -121,29 +110,22 @@ def get_product():
     print(list_products[0].name)
     return make_response(jsonify({"msg":"¡Producto cargado exitosamente!", "products":products }), 200)
 
-@api.route('/product<int:id>', methods=['GET'])
-def get_product_id():
-    product_id= Product.query.get()
-    print(product_id)
+@api.route('/product/<int:id>', methods=['GET'])
+def get_product_id(id):
+    product = Product.query.filter_by(id=id).first()
+    print(product)
+
     
-    if not product_id:
-        return make_response(jsonify({"messaje":"producto con el id #{id} no encontrado"}), 404)
-    
+    if not product:
+        return make_response(jsonify({"messaje":f"producto con el id #{id} no encontrado"}), 404)
+    return jsonify(product.serialize())        
     
     
 @api.route('/new', methods=['POST']) 
 def new_product():
     data_request= request.get_json()
-    file = request.files['product']
-
-    if file:
-        upload_result = cloudinary.uploader.upload(file)
-        secure_url = upload_result['secure_url']
-
-        return f"Archivo subido con exito. url: {secure_url}"
-        
     
-    #inicio de la validacion
+         #inicio de la validacion
 
     required_Add=['name','description','photo','coste','price','pet_type_id','stock']
     error={}
@@ -191,7 +173,7 @@ def update_product(id):
         product = Product.query.filter_by(id=id).first()
 
         if not product:
-            return make_response(jsonify({"msg": "Producto no encontrado"}), 404)
+            return make_response(jsonify({"messaje":f"producto con el id #{id} no encontrado"}), 404)
 
         data_request = request.get_json()
 

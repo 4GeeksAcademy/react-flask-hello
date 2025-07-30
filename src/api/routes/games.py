@@ -11,7 +11,7 @@ api = Blueprint("api/games", __name__)
 # AÑADIR MODIFICAR DATOS DEL JUEGO(PRECIO,STOCK)
 
 
-# MOSTRAR TODOS LOS JUEGOS JUEGOS
+# MOSTRAR TODOS LOS JUEGOS
 @api.route("/", methods = ["GET"])
 def get_all_games():
    all_games = Games.query.all()

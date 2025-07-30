@@ -143,3 +143,19 @@ def delete_to_cart(id):
     db.session.delete(item)
     db.session.commit()
     return jsonify({"message": "Producto eliminado"}), 200
+
+
+@api.route('/cart/checkout', methods=['POST'])
+@jwt_required()
+def checkout():
+    user_id = get_jwt_identity()
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+
+    if not order:
+        return jsonify({"message": "No hay carrito para finalizar"}), 400
+
+    order.status = Status.PAID
+    db.session.commit()
+
+    return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200
+

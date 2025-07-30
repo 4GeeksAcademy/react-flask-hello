@@ -22,7 +22,7 @@ export const Login = () => {
             </video>
 
             <div className="login-content-wrapper">
-                <div className="login-form-card p-4 shadow-lg rounded">
+                <div className="login-form-card p-4">
                     <h2 className="text-center mb-4">Iniciar Sesión</h2>
                     <form onSubmit={handleLogin}>
                         <div className="mb-3">

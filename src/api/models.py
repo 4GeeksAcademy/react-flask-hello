@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Enum 
 from typing import List
 import enum
 
@@ -37,7 +36,7 @@ class User(db.Model):
 class Order(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    status: Mapped[Status] = mapped_column(Enum(Status), default=Status.CART, nullable=False)
+    status: Mapped[Status] = mapped_column(default= Status.CART)
     
     
     user: Mapped ["User"] = relationship(

@@ -12,7 +12,8 @@ export const initialStore=()=>{
         title: "Do my homework",
         background: null,
       }
-    ]
+    ],
+    all_games: []
   }
 }
 
@@ -34,5 +35,11 @@ export default function storeReducer(store, action = {}) {
       };
     default:
       throw Error('Unknown action.');
+
+      case 'setGames':
+       return{
+        ...store,
+        all_games: action.payload
+       }
   }    
 }

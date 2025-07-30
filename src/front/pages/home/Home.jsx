@@ -1,6 +1,7 @@
 import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+// import  {JuegosNuevos}  from "../components/JuegosNuevos"
 
 
 export const Home = ({ datosJuego }) => {
@@ -132,6 +133,7 @@ export const Home = ({ datosJuego }) => {
               €{datosJuego.price}
             </span>
           </div>
+          {/* <JuegosNuevos/> */}
         </div>
       )}
       </div>

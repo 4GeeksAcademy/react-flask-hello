@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 
 export const Login = () => {
 
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL
      
     
 
@@ -13,7 +13,7 @@ export const Login = () => {
       // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
 
       const login_user = async (email, password) => {
-       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/login`, { 
+       const body = await fetch(`${backendUrl}api/login`, { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }) 

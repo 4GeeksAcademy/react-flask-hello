@@ -9,10 +9,18 @@ export const Formulario = () => {
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const nuevoJuego = { img, name, platform, description, price };
-        onEnviarDatos(nuevoJuego);
+        
+        const newgame = {
+            "img": img,
+            "name": name,
+            "platform": platform,
+            "description": description,
+            "price": price,
+        }
+        await fetch ("https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api")
+        
     };
 
     return (

@@ -1,10 +1,10 @@
 import { Login } from "./Login.jsx";
 import { Link } from "react-router-dom";
-import { AjustesUsuario } from "./AjustesUsuario.jsx";
-import { Evento } from "./Evento.jsx";
-import { Formulario } from "./Formulario.jsx";
-import { NotFound } from "./NotFound.jsx";
-import { Usuario } from "./Usuario.jsx";
+import { AjustesUsuario } from "../pages/AjustesUsuario.jsx";
+import { Evento } from "../pages/Evento.jsx";
+import { Formulario } from "../pages/Formulario.jsx";
+import { NotFound } from "../pages/NotFound.jsx";
+import { Usuario } from "../pages/Usuario.jsx";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ export const VistaHome = () => {
 
   const navigate = useNavigate();
 
-  const rutaLogin =() => {
+  const rutaLogin = () => {
     navigate("/login");
   };
   const rutaUsuario = () => {
@@ -51,13 +51,13 @@ export const VistaHome = () => {
       <br />
       <br />
       <div className="flex justify-center">
-      {/*botones a rutas*/}
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaLogin}>Login</button>
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaUsuario}>Usuario</button>
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaEvento}>Evento</button>
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaNotFound}>Not found</button>
-      <button className="text-black bg-yellow-700 m-3" onClick={rutaFormulario}>Formulario</button>
+        {/*botones a rutas*/}
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaLogin}>Login</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaUsuario}>Usuario</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaEvento}>Evento</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaNotFound}>Not found</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaFormulario}>Formulario</button>
       </div>
       <br />
       <br />
@@ -90,41 +90,41 @@ export const VistaHome = () => {
               className="w-1/3 h-auto border-4 border-double border-blue-500"
               alt="Imagen 1" />
             <div className="">
-              <p className="m-8">podras guardar todos los eventos en tu calendario, <br/>  conocer todas las novedades y asistentes al evento</p>
+              <p className="m-8">podras guardar todos los eventos en tu calendario, <br />  conocer todas las novedades y asistentes al evento</p>
             </div>
           </div>
-          </div>
+        </div>
 
-          <div>
+        <div>
           <div className="flex justify-center flex-col md:flex-row items-center m-4">
             <img
               src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg"
               className="w-1/3 h-auto border-4 border-double border-blue-500"
               alt="Imagen 1" />
             <div>
-              <p className="m-8"> estaras en todos los eventos, <br/> podras comunicarte con tus amigos a traves de la aplicacion</p>
+              <p className="m-8"> estaras en todos los eventos, <br /> podras comunicarte con tus amigos a traves de la aplicacion</p>
             </div>
           </div>
-         </div>
+        </div>
 
-          <div>
+        <div>
           <div className="flex justify-center flex-col md:flex-row items-center m-4">
             <img
               src="https://images.pexels.com/photos/2859169/pexels-photo-2859169.jpeg"
               className="w-1/3 h-auto border-4 border-double border-blue-500"
               alt="Imagen 1" />
             <div>
-              <p className="m-8"> puedes añadir la direccion del evento <br/> y abrilo en un instante</p>
+              <p className="m-8"> puedes añadir la direccion del evento <br /> y abrilo en un instante</p>
             </div>
             <br />
             <br />
             <br />
           </div>
-         </div>
-        </Slider>
-        <br />
-        <br />
-        <br />
+        </div>
+      </Slider>
+      <br />
+      <br />
+      <br />
     </div>
   );
 };

@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { VistaHome } from "./VistaHome";
+import { VistaHome } from "../components/VistaHome";
 
 export const AjustesUsuario = () => {
 
   const navigate = useNavigate();
 
-  const rutaVistaHome =() => {
+  const rutaVistaHome = () => {
     navigate("/vistahome");
   };
 
   return (
-      <button className="text-black bg-yellow-700" onClick={rutaVistaHome}>Home</button>
+    <button className="text-black bg-yellow-700" onClick={rutaVistaHome}>Home</button>
   );
 };

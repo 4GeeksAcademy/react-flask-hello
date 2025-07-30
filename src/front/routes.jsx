@@ -1,14 +1,19 @@
-// Import necessary components and functions from react-router-dom.
-
 import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+import { LoginPage } from "./pages/LoginPage";
+import { VistaHome } from "./components/VistaHome";
+import { Formulario } from "./components/Formulario";
+import { Evento } from "./components/Evento";
+import { Usuario } from "./components/Usuario";
+import { AjustesUsuario } from "./components/AjustesUsuario";
+import { NotFound } from "./components/NotFound";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,6 +30,15 @@ export const router = createBrowserRouter(
         <Route path= "/" element={<Home />} />
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
+        <Route path="/home" element={<home />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="vistahome" element={<VistaHome />} />
+        <Route path="formulario" element={<Formulario />} />
+        <Route path="evento" element={<Evento />} />
+        <Route path="usuario" element={<Usuario />} />
+        <Route path="ajustesusuario" element={<AjustesUsuario />} />
+        <Route path="notfound" element={<NotFound />} />
+
       </Route>
     )
 );

@@ -1,17 +1,15 @@
+import logoB from "../assets/img/logoB.svg";
+
+
 export const Footer = () => (
-  <footer style={{ backgroundColor: "#003366" }} className="text-white py-4">
+  <footer style={{ backgroundColor: "#003366" }} className="text-white py-3">
     <div className="container">
       <div className="row text-center text-md-start align-items-center">
         
 
         <div className="col-md-4 mb-3 mb-md-0">
           <h5 className="mb-0 d-flex align-items-center">
-            <img
-              src=""
-              alt=""
-              style={{ height: "24px", marginRight: "8px" }}
-            />
-            AutoTekc Logo
+            <img src={logoB} alt="Logo" width={200} />
           </h5>
         </div>
 

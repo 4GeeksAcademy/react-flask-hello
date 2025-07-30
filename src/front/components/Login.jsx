@@ -16,6 +16,8 @@ export const Login = () => {
       listener.subscription.unsubscribe();
     };
   }, []);
+
+  // Función para iniciar sesión con Google
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
     if (error) console.error('Error al iniciar sesión con Google:', error.message);

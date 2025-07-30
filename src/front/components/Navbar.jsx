@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoPatitas from "/logoPatitas.png";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const handleUserClick = () => {
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/registro");
+    }
+  };
+
   return (
     <nav className="navbar w-100 p-0 m-0">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 px-3">
@@ -31,16 +42,22 @@ export const Navbar = () => {
         </div>
 
         <div className="buttons d-flex justify-content-center justify-content-md-end mt-2 mt-md-0">
-          <Link to="/registro">
-            <button
-              style={{ color: "#3c6ca8" }}
-              className="bg-transparent border-0 me-2"
-              aria-label="Perfil de usuario"
-              type="button"
-            >
-              <i className="fa-solid fa-user fs-2 ms-5"></i>
-            </button>
-          </Link>
+          <button
+            style={{
+              color: token ? "#fff" : "#3c6ca8",
+              backgroundColor:"transparent",
+              border: "none",
+              marginRight: "0.5rem"
+            }}
+            aria-label="Perfil de usuario"
+            type="button"
+            onClick={handleUserClick}
+          >
+            <i
+              className="fa-solid fa-user fs-2 ms-5"
+              style={{ color: token ? "#dc3545" : "#3c6ca8" }} // Solo cambia el color del ícono
+            ></i>
+          </button>
 
           <Link to="/carrito">
             <button
@@ -73,8 +90,8 @@ export const Navbar = () => {
       <hr className="thick-hr m-0 w-100 mt-2" />
 
       <div className="d-flex justify-content-center align-items-center mt-2 w-100">
-        <p style={{ color: "#3c6ca8" }} className="m-0 text-center mb-2"> 
-          Gracias por visitarnos en <strong>PatitasClub</strong>, el lugar favorito de miles de patitas felices. 
+        <p style={{ color: "#3c6ca8" }} className="m-0 text-center mb-2">
+          Gracias por visitarnos en <strong>PatitasClub</strong>, el lugar favorito de miles de patitas felices.
         </p>
       </div>
     </nav>

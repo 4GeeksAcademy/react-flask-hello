@@ -124,6 +124,9 @@ def post_ofertas():
     nueva_oferta.descripcion = body["descripcion"]
     nueva_oferta.titulo = body["titulo"]
     nueva_oferta.coordenates_vendedor = user.coordenates
+    nueva_oferta.precio_ud = body["precio_ud"]
+    nueva_oferta.ud = body["ud"]
+    nueva_oferta.img_cosecha = body["img_cosecha"]
 
     db.session.add(nueva_oferta)
     db.session.commit()

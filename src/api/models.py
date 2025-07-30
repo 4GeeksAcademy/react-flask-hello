@@ -40,6 +40,9 @@ class Oferta(db.Model):
     titulo: Mapped[str]= mapped_column(String(200),nullable=False)
     coordenates_vendedor: Mapped[str] = mapped_column(String(120),ForeignKey("user.coordenates"),nullable=False)
     coordenates_comprador: Mapped[str] = mapped_column(String(120),ForeignKey("user.coordenates"),nullable=True)
+    precio_ud: Mapped[int] = mapped_column(Integer(),nullable=True)
+    ud:Mapped[str] = mapped_column(String(200),nullable=False)
+    img_cosecha:Mapped[str] = mapped_column(String(),nullable=True)
 
     
 
@@ -53,7 +56,9 @@ class Oferta(db.Model):
             "descripcion":self.descripcion,
             "titulo":self.titulo,
             "coordenates_vendedor":self.coordenates_vendedor,
-            "coordenates_comprador":self.coordenates_comprador
+            "coordenates_comprador":self.coordenates_comprador,
+            "precio_ud":self.precio_ud,
+            "img_cosecha":self.img_cosecha
 
             # do not serialize the password, its a security breach
         }

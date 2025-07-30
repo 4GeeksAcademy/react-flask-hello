@@ -27,7 +27,8 @@ export const Login = () => {
     });
 
     const data = await resp.json();
-    localStorage.setItem("jwt_token", data.token);
+    console.log(data)
+    localStorage.setItem("jwt_token", data[0].token);
     dispatch({
       type:"add_user",
       payload:data.user_serialize

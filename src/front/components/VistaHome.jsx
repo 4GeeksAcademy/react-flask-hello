@@ -48,7 +48,7 @@ export const VistaHome = () => {
     navigate("/Formulario");
   };
  const rutaCrearEvento = () => {
-    navigate("/CreateEvent");
+    navigate("/crear-evento");
   };
   const rutaLoginPage = () => {
     navigate("/LoginPage");

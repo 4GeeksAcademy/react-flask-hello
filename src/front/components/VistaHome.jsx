@@ -6,6 +6,8 @@ import { Formulario } from "../pages/Formulario.jsx";
 import { NotFound } from "../pages/NotFound.jsx";
 import { Usuario } from "../pages/Usuario.jsx";
 import { CreateEvent } from "./pages/CreateEvent";
+import { LoginPage } from "./pages/LoginPage";
+
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
@@ -48,6 +50,9 @@ export const VistaHome = () => {
  const rutaCrearEvento = () => {
     navigate("/CreateEvent");
   };
+  const rutaLoginPage = () => {
+    navigate("/LoginPage");
+  };
 
   return (
     <div>
@@ -63,6 +68,7 @@ export const VistaHome = () => {
         <button className="text-black bg-yellow-700 m-3" onClick={rutaNotFound}>Not found</button>
         <button className="text-black bg-yellow-700 m-3" onClick={rutaFormulario}>Formulario</button>
         <button className="text-black bg-yellow-700 m-3" onClick={rutaCrearEvento}>Crear Evento</button>
+        <button className="text-black bg-yellow-700 m-3" onClick={rutaLoginPage}>Login Page</button>
 
       </div>
       <br />

@@ -15,6 +15,7 @@ import { Usuario } from "./pages/Usuario";
 import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
+import { LoginPage } from "./pages/LoginPage";
 
 
 export const router = createBrowserRouter(
@@ -41,6 +42,7 @@ export const router = createBrowserRouter(
       <Route path="ajustesusuario" element={<AjustesUsuario />} />
       <Route path="notfound" element={<NotFound />} />
       <Route path="createevent" element={<CreateEvent />} />
+      <Route path="loginpage" element={<LoginPage />} />
 
     </Route>
   )

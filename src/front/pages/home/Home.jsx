@@ -3,7 +3,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 
-export const Home = () => {
+export const Home = ({ datosJuego }) => {
   const images = [
     {
       src: "https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg",
@@ -22,7 +22,6 @@ export const Home = () => {
     {
       src: "https://4kwallpapers.com/images/wallpapers/frank-woods-call-of-2560x1080-19693.jpg",
     },
-
 
     // Puedes añadir más objetos aquí para el nuevo carousel
   ];
@@ -46,14 +45,14 @@ export const Home = () => {
     }
   };
   return (
-    <div className="w-full relative">
+
+    <div className="w-full relative bg-indigo-800">
       <Carousel
-        
-        responsive={responsive}     
-        infinite={true}       
+        responsive={responsive}
+        infinite={true}
         autoPlaySpeed={1000}
         customTransition="all .5"
-        transitionDuration={500}               
+        transitionDuration={500}
       >
         {
           images.map((i, index) => {
@@ -66,10 +65,11 @@ export const Home = () => {
         }
       </Carousel>
 
-      <div class="h-24 bg-gradient-to-r from-indigo-700 text-white px-6 py-4 w-full mx-auto ease-in-out ">
+      <div class="h-22 bg-indigo-800 text-white px-6 py-4 w-full mx-auto ease-in-out ">
         <h2 class="text-2xl font-bold mb-2 text-center sm:text-xl md:text-3xl">¡Oferta de Bienvenida!</h2>
         <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
       </div>
+
 
       <div class="flex flex-wrap justify-center gap-6">
         <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
@@ -117,10 +117,24 @@ export const Home = () => {
           </div>
         </div>
       </div>
+      {datosJuego && (
+        <div className="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-lg mt-6 bg-indigo-700">
+          <img className="h-64 w-full object-cover" src={datosJuego.img} alt={datosJuego.name} />
+          <div className="px-6 py-4">
+            <div className="font-bold text-xl mb-2 text-white">{datosJuego.name}</div>
+            <p className="text-white text-base">{datosJuego.description}</p>
+          </div>
+          <div className="px-6 pt-4 pb-2">
+            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              {datosJuego.platform}
+            </span>
+            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              €{datosJuego.price}
+            </span>
+          </div>
+        </div>
+      )}
+      </div>
+      );
 
-    </div >
-
-
-
-  );
 }

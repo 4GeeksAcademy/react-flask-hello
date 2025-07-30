@@ -1,0 +1,68 @@
+.privacidad-container {
+  padding: 2rem 1rem;
+  background: #fff;
+  color: #111;
+}
+
+.privacidad-container h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.privacidad-content {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.privacidad-intro p {
+  margin-bottom: 1rem;
+}
+
+.privacidad-title {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.privacidad-title h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.privacidad-title h3 {
+  font-size: 1.25rem;
+  color: #555;
+}
+
+.privacidad-content h3 {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.privacidad-content p {
+  margin-bottom: 1rem;
+}
+
+.privacidad-content ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.privacidad-content li {
+  margin-bottom: 0.5rem;
+}
+
+.privacidad-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.privacidad-content th,
+.privacidad-content td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+}

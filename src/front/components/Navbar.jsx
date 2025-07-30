@@ -60,14 +60,9 @@ export default function Navbar() {
                   )}
                 </div>
 
-              <Link to= "/register">
-                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
-              </Link> 
-
-              <Link to= "/formulario">
-                <p href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
-              </Link>
-                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Contacto</a>
+                <a href="#" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</a>
+                
+                <a href="/Soporte" class="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
                 <input
                   type="text"
                   placeholder="Buscar..."

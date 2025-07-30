@@ -11,9 +11,11 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Register } from "./pages/register/Register";
 import { AboutUs } from "./pages/aboutus/AboutUs";
-import { Contact } from "./pages/contact/Contact";
-import { Login } from "./pages/login/Login";
-import { Formulario} from "./pages/formulario/Formulario";
+import { Soporte } from "./pages/soporte/Soporte.jsx";
+import { Privacidad } from "./pages/soporte/Privacidad.jsx";
+import { Login } from "./pages/login/Login.jsx";
+
+
 
 
 
@@ -26,9 +28,9 @@ export const router = createBrowserRouter(
     // Root, on the contrary, create a sister Route, if you have doubts, try it!
     // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+    // Root Route: All navigation will start from here.
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>}>
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Home />} />
@@ -36,10 +38,9 @@ export const router = createBrowserRouter(
         <Route path="/demo" element={<Demo />} />
         <Route path="/register" element={<Register />} /> {/* PAGINA REGISTER*/}
         <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
-        <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA ABOUTUS STORE*/}
-        <Route path="/contact" element={<Contact />} /> {/* PAGINA CONTACT STORE*/}
-        <Route path="/formulario" element={<Formulario />} /> {/* Formulario front*/}
-
+        <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA AboutUs STORE*/}
+        <Route path="/soporte" element={<Soporte />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/privacidad" element={<Privacidad />} /> {/* PAGINA Soporte STORE*/}
 
         
       </Route>

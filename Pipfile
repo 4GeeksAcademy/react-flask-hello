@@ -9,20 +9,21 @@ verify_ssl = true
 psycopg2-binary = "*"
 python-dotenv = "*"
 gunicorn = "*"
-cloudinary = "*"
 flask-admin = "*"
 typing-extensions = "*"
 wtforms = "==3.1.2"
 sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
-flask = "*"
 flask-cors = "*"
 flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
 email-validator = "*"
+cloudinary = "*"
+flask = "*"
 tomli = "*"
+
 
 [requires]
 python_version = "3.13"

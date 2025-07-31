@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-export const Formulario = () => {
+export const Addgame = () => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -12,16 +12,25 @@ export const Formulario = () => {
     const [price, setPrice] = useState("")
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        const newgame = {
-            "img": img,
-            "name": name,
-            "platform": platform,
-            "description": description,
-            "price": price,
+        try {
+            e.preventDefault();
+
+            const newgame = {
+                "img": img,
+                "name": name,
+                "platform": platform,
+                "description": description,
+                "price": price,
+            }
+            await fetch(`${backendUrl}api/games/addgame`, {
+                method: "POST",
+                body: JSON.stringify(newgame),
+                headers: { "Content-type": "application/json" }
+            })
+            alert("Juego añadido correctamente")
+        } catch (error){
+            console.log ("error al añadir juego")
         }
-        await fetch (`${backendUrl}api/games`)  
     };
 
     return (

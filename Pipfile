@@ -22,6 +22,8 @@ flask-bcrypt = "*"
 email-validator = "*"
 cloudinary = "*"
 flask = "*"
+tomli = "*"
+
 
 [requires]
 python_version = "3.13"

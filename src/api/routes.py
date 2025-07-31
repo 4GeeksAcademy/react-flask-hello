@@ -3,8 +3,8 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException
-from flask_cors import CORS
-from api.models import User, db, Product
+from flask_cors import CORS,bcrypt
+from api.models import User, db, Product, Status, Order, OrderItem
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
@@ -206,6 +206,80 @@ def delete_product(id):
     db.session.commit()
    
     return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200) 
+
+#Cart
+# Carrito
+@api.route('/cart', methods=['GET'])
+@jwt_required()
+def get_cart():
+
+    user_id = get_jwt_identity()
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+
+    if not order:
+        return jsonify({"message": "Carrito vacío"}), 400
+
+    return jsonify({
+        "order_id": order.id,
+        "items": [item.serialize() for item in order.order_item]
+    }), 200
+
+@api.route('/cart/add', methods=['POST'])
+@jwt_required()
+def add_to_cart():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+    cant = data["cant"]
+    product_id = data["product_id"]
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+    if not order:
+        new_order = Order(user_id= user_id, status= Status.CART)
+        db.session.add(new_order)
+        db.session.commit()
+        new_item = OrderItem(order_id = new_order.id, product_id = product_id, cant = cant)
+        db.session.add(new_item)
+        db.session.commit()
+        return jsonify({
+            "order_id": new_order.id,
+            "item": new_item.serialize()
+        }), 200
+    else : 
+        new_item = OrderItem(order_id = order.id, product_id = product_id, cant = cant)
+        db.session.add(new_item)
+        db.session.commit()
+        return jsonify({
+            "order_id": order.id,
+            "item": new_item.serialize()
+        }), 200
+    
+@api.route('/cart/delete/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_to_cart(id):
+    user_id = get_jwt_identity()
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+    if not order:
+        return jsonify({"message": "Carrito no existe"}), 400
+    
+    item = OrderItem.get(id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Producto eliminado"}), 200
+
+
+@api.route('/cart/checkout', methods=['POST'])
+@jwt_required()
+def checkout():
+    user_id = get_jwt_identity()
+    order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
+
+    if not order:
+        return jsonify({"message": "No hay carrito para finalizar"}), 400
+
+    order.status = Status.PAID
+    db.session.commit()
+
+    return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200
+
 
        
 

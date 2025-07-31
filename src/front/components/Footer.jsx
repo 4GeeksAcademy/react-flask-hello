@@ -14,6 +14,9 @@ export const Footer = () => (
 				</a>
 			</div>
 			<p style={{ color: "#3c6ca8" }} className="mb-0 fs-5">¡Contáctanos!</p>
+			<div className="border-t border-gray-700 mt-10 pt-4 text-center text-sm text-gray-500">
+				© {new Date().getFullYear()} PatitasClub. Todos los derechos reservados.
+			</div>
 		</footer>
 	</>
 );

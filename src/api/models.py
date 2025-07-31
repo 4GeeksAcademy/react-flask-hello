@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Enum 
 from typing import List
 import enum
 
@@ -37,7 +36,7 @@ class User(db.Model):
 class Order(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    status: Mapped[Status] = mapped_column(Enum(Status), default=Status.CART, nullable=False)
+    status: Mapped[Status] = mapped_column(default= Status.CART)
     
     
     user: Mapped ["User"] = relationship(
@@ -60,6 +59,8 @@ class Category(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(), nullable=False)
+    
+    
     
     product_category: Mapped[List["ProductCategory"]] = relationship(
         back_populates="category", cascade= "all, delete-orphan"
@@ -96,6 +97,8 @@ class Product(db.Model):
     price: Mapped[float] = mapped_column(Float(), nullable=False)
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
+    
+
 
     pet_type: Mapped["PetType"] = relationship(
         back_populates="products")
@@ -118,6 +121,7 @@ class Product(db.Model):
             "coste": self.coste,
             "price": self.price,
             "stock": self.stock,
+            
             # do not serialize the password, its a security breach
         }
     

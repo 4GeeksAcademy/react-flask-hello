@@ -36,3 +36,10 @@ icon-container {
 .container1{
   background-color: #3c6ca8;
 }
+
+@media (min-width: 992px) {
+  .col-lg-custom {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}

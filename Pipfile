@@ -15,15 +15,15 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
+flask-sqlalchemy = "*"
+email-validator = "*"
+tomli = "*"
 flask-cors = "*"
 flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
-email-validator = "*"
 cloudinary = "*"
 flask = "*"
-tomli = "*"
-
 
 [requires]
 python_version = "3.13"

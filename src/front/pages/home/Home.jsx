@@ -1,7 +1,7 @@
 import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-// import  {JuegosNuevos}  from "../components/JuegosNuevos"
+
 
 
 export const Home = ({ datosJuego }) => {
@@ -76,6 +76,7 @@ export const Home = ({ datosJuego }) => {
         <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
           <img class="h-64 w-full object-cover" src="https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg"></img>
           <div class="px-6 py-4">
+            
             <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
             <p class="text-white text-base">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
@@ -133,9 +134,13 @@ export const Home = ({ datosJuego }) => {
               €{datosJuego.price}
             </span>
           </div>
-          {/* <JuegosNuevos/> */}
+      
         </div>
       )}
+
+      <div>
+       
+      </div>
       </div>
       );
 

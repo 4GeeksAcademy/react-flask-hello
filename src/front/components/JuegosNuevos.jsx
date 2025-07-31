@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
@@ -12,6 +11,8 @@ export const JuegosNuevos = () => {
     useEffect(() => {
         getGames()
     }, [])
+
+    
     const getGames = async () => {
         try {
             const responsive = await fetch(`${backendUrl}api/games`);

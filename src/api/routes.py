@@ -170,7 +170,7 @@ def new_product():
 @api.route('/update/<int:id>', methods=['PUT'])   
 def update_product(id):
     try:
-        product = Product.query.filter_by(id=id).first()
+        product = Product.query.get(id)
 
         if not product:
             return make_response(jsonify({"messaje":f"producto con el id #{id} no encontrado"}), 404)
@@ -203,7 +203,6 @@ def update_product(id):
 
 
 @api.route('/delete/<int:id>', methods=['DELETE'])   
-@jwt_required()
 def delete_product(id): 
     product= db.get_or_404(Product,id)
 

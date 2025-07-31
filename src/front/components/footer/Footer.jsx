@@ -4,6 +4,9 @@ import "./footer.css";
 
 export const Footer = () => (
   <footer className="site-footer">
+
+    <hr className="footer-divider" />
+    
     <div className="footer-container">
       <div className="footer-top">
         <a href="/" className="footer-brand">

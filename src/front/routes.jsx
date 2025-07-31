@@ -14,6 +14,7 @@ import { AboutUs } from "./pages/aboutus/AboutUs";
 import { Soporte } from "./pages/soporte/Soporte.jsx";
 import { Privacidad } from "./pages/soporte/Privacidad.jsx";
 import { Login } from "./pages/login/Login.jsx";
+import { Addgame } from "./pages/addgame/Addgame.jsx";
 
 
 export const router = createBrowserRouter(
@@ -36,6 +37,8 @@ export const router = createBrowserRouter(
         <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA AboutUs STORE*/}
         <Route path="/soporte" element={<Soporte />} /> {/* PAGINA Soporte STORE*/}
         <Route path="/privacidad" element={<Privacidad />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/addgame" element={<Addgame />} /> {/* PAGINA Soporte STORE*/}
+
 
         
       </Route>

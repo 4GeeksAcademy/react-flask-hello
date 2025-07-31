@@ -12,8 +12,10 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
 
       // ME FALTA PARTE DE LA LOGICA DEL FRONT PARA CONECTAR A LA API Y HACER EL LOGIN ADRIAN.B
 
-      const login_user = async (email, password) => {
-       const body = await fetch(`${backendUrl}api/login`, { 
+      const login_user = async (e) => {
+        e.preventDefault()
+
+       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/user/login`, { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }) 
@@ -27,7 +29,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
        else if(body.status === 400){
             throw ("Invalid email or password format")
       }
-      const data = await resp.json();
+      const data = await body.json();
+      console.log(data)
       // Guarda el token en la localStorage
        // También deberías almacenar el usuario en la store utilizando la función setItem
        localStorage.setItem("jwt-token", data.token);
@@ -50,7 +53,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar sesión</h2>
                 
             </div>
-            <form className="mt-8 space-y-6">
+            <form className="mt-8 space-y-6" onSubmit={login_user}>
                 <div className="space-y-4">
                     
                     <div>
@@ -58,6 +61,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
                             Email
                         </label>
                         <input
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
                             id="email"
                             name="email"
                             type="email"
@@ -73,6 +78,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
                             Contraseña
                         </label>
                         <input
+                        value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
                             id="password"
                             name="password"
                             type="password"

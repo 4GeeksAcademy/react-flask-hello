@@ -18,7 +18,7 @@ def get_all_games():
    if all_games is None:
       return jsonify("Error, no se han encontrado los juegos"),404
    all_games = list(map(lambda x: x.serialize(),all_games))
-   return jsonify({"all_games" : all_games}),200
+   return jsonify({"games" : all_games}),200
 
 
 # CREAR UN NUEVO JUEGO

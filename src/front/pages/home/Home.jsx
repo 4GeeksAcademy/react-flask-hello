@@ -1,11 +1,12 @@
 import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { Games } from "../../components/Games";
 // import { Games } from "../components/Games"
 
 
 
-export const Home = ({ datosJuego }) => {
+export const Home = () => {
   const images = [
     {
       src: "https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg",
@@ -77,7 +78,7 @@ export const Home = ({ datosJuego }) => {
         <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
           <img class="h-64 w-full object-cover" src="https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg"></img>
           <div class="px-6 py-4">
-            
+
             <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
             <p class="text-white text-base">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
@@ -120,29 +121,12 @@ export const Home = ({ datosJuego }) => {
           </div>
         </div>
       </div>
-      {datosJuego && (
-        <div className="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-lg mt-6 bg-indigo-700">
-          <img className="h-64 w-full object-cover" src={datosJuego.img} alt={datosJuego.name} />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2 text-white">{datosJuego.name}</div>
-            <p className="text-white text-base">{datosJuego.description}</p>
-          </div>
-          <div className="px-6 pt-4 pb-2">
-            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
-              {datosJuego.platform}
-            </span>
-            <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
-              €{datosJuego.price}
-            </span>
-          </div>
-      
-        </div>
-      )}
 
       <div>
-      
+       {/* <Games/> */}
+       <Games/>
       </div>
-      </div>
-      );
+    </div>
+  );
 
 }

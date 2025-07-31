@@ -10,6 +10,7 @@ export const Games = () => {
 
     useEffect(() => {
         getGames()
+        console.log(all_games)
     }, [])
 
     
@@ -17,9 +18,10 @@ export const Games = () => {
         try {
             const responsive = await fetch(`${backendUrl}api/games`);
             const data = await responsive.json();
+            console.log(data)
             dispatch({
                 type: 'setGames',
-                payload: data.results
+                payload: data.games
             })
         }
         catch (error) {

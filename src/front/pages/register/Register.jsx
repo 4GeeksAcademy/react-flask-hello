@@ -21,7 +21,7 @@ export const Register = () => {
                 "rol": rol
 			}
 
-			await fetch(`${backendUrl}api/users`, {
+			await fetch(`${backendUrl}api/user/register`, {
 				method: "POST",
 				body: JSON.stringify(new_user),
 				headers: {"Content-type": "application/json"}

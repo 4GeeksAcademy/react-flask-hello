@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
-export const JuegosNuevos = () => {
+export const Games = () => {
     const { store, dispatch } = useGlobalReducer();
     const { all_games } = store;
     const backendUrl = import.meta.env.VITE_BACKEND_URL

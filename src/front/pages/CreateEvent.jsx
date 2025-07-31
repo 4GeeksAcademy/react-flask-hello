@@ -49,13 +49,13 @@ export function CreateEvent() {
       formData.categories.length < 4
     ) {
       e.preventDefault();
-      const newTag = categoryInput.trim(); 
+      const newTag = categoryInput.trim();
 
       if (
-        isValidTag(newTag) && 
+        isValidTag(newTag) &&
         !formData.categories.includes(newTag)
       ) {
-        setFormData((prev) => ({ 
+        setFormData((prev) => ({
           ...prev,
           categories: [...prev.categories, newTag]
         }));
@@ -156,8 +156,8 @@ export function CreateEvent() {
               <input
                 type="text"
                 value={categoryInput}
-                onChange={handleCategoryInput} 
-                onKeyDown={handleCategoryKeyDown} 
+                onChange={handleCategoryInput}
+                onKeyDown={handleCategoryKeyDown}
                 placeholder={ // se rellena el placeholder al llenar las 4 etiquetas y por defecto presenta el segundo mensaje
                   formData.categories.length >= 4
                     ? "Máximo 4 etiquetas"
@@ -237,11 +237,26 @@ export function CreateEvent() {
               <label className="block text-sm font-medium text-gray-700"> Máximo de asistentes (opcional)
               </label>
               <input
-                type="number"
+                type="text"
                 name="maxGuests"
                 value={formData.maxGuests}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || /^[1-9]\d*$/.test(value)) {
+                    setFormData((prev) => ({ ...prev, maxGuests: value }));
+                  }
+                }}
+                placeholder="Mantener vacio para ilimitado"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              />
+
+              {formData.maxGuests !== "" && formData.maxGuests <= 0 && (
+                <p className="text-sm text-red-500 mt-1">
+                  El número debe ser mayor que 0 o dejarse vacío.
+                </p>
+              )}
             </div>
             <div className="flex justify-end space-x-4">
               <button

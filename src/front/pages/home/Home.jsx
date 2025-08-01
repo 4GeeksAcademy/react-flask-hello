@@ -1,7 +1,7 @@
 import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Games } from "../../components/Games";
+import { Games } from "../../components/games/Games";
 // import { Games } from "../components/Games"
 
 
@@ -123,8 +123,7 @@ export const Home = () => {
       </div>
 
       <div>
-       {/* <Games/> */}
-       <Games/>
+        <Games />
       </div>
     </div>
   );

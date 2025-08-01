@@ -2,39 +2,39 @@ import './register.css'
 import { useState } from 'react'
 
 export const Register = () => {
-     const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-	const [name, setName] = useState("")
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
-    const [rol,setRol] = useState("")
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [rol, setRol] = useState("")
 
-	const registerUser = async (e) => {
-		
-		try {
-			e.preventDefault()
+    const registerUser = async (e) => {
 
-			let new_user = {
-				"username": name,
-				"email": email,
-				"password": password,
+        try {
+            e.preventDefault()
+
+            let new_user = {
+                "username": name,
+                "email": email,
+                "password": password,
                 "rol": rol
-			}
+            }
 
-			await fetch(`${backendUrl}api/user/register`, {
-				method: "POST",
-				body: JSON.stringify(new_user),
-				headers: {"Content-type": "application/json"}
-			})
-			alert("Usuario registrado correctamente")
-		}
-		catch (error) {
-			console.log(error)
-		}
-	}
+            await fetch(`${backendUrl}api/user/register`, {
+                method: "POST",
+                body: JSON.stringify(new_user),
+                headers: { "Content-type": "application/json" }
+            })
+            alert("Usuario registrado correctamente")
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
-	return (
-		<div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    return (
+        <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 bg-white p-6 rounded-md">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Crear cuenta</h2>
@@ -42,7 +42,7 @@ export const Register = () => {
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={registerUser}>
                     <div className="space-y-4">
-                         <div>
+                        <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                                 Rol
                             </label>
@@ -127,5 +127,6 @@ export const Register = () => {
 
 
 
-	)
+    )
 }
+

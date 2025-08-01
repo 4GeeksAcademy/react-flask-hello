@@ -37,11 +37,7 @@ const HeaderContact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch({ type: 'CONTACT_SUBMIT_START' });
-        if (!apiUrl) {
-            console.error("La variable de entorno BACKEND_URL no está definida. Revisa tu archivo .env");
-            dispatch({ type: 'CONTACT_SUBMIT_FAILURE', payload: { general: 'Error de configuración del cliente.' } });
-            return;
-        }
+
         try {
             const response = await fetch(`${apiUrl}/api/contact`, {
                 method: 'POST',

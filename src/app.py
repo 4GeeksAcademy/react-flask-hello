@@ -5,10 +5,10 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
-from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from flask_login import LoginManager
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, bcrypt, CTAdmin
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -19,7 +19,15 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(CTAdmin, int(user_id))
+
+bcrypt.init_app(app)
 jwt = JWTManager(app)
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "super-secret-jwt-key")
 app.url_map.strict_slashes = False

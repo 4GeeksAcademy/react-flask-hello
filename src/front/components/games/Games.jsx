@@ -19,7 +19,7 @@ export const Games = () => {
       console.log(data);
       dispatch({
         type: "setGames",
-        payload: data.games,
+        payload: data.all_games,
       });
     } catch (error) {
       console.log(error);

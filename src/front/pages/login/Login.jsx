@@ -38,11 +38,11 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
        return data
   }
 
- const cerrarSesion = ()=>{
-     localStorage.removeItem("jwt-token", data.token)
-     alert("Sesion finalizada")
-     navigate("/Login")
- }
+//  const cerrarSesion = ()=>{
+//      localStorage.removeItem("jwt-token", data.token)
+//      alert("Sesion finalizada")
+//      navigate("/Login")
+//  }
 
 
 

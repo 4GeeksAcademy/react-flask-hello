@@ -1,16 +1,19 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Text
 from sqlalchemy.orm import Mapped, mapped_column
+from flask_bcrypt import Bcrypt
+from flask_login import UserMixin
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
-
-class CTAdmin(db.Model):
+class CTAdmin(db.Model, UserMixin):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     _password: Mapped[str] = mapped_column(
         "password", String(128), nullable=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     @property
     def password(self):
@@ -18,13 +21,11 @@ class CTAdmin(db.Model):
 
     @password.setter
     def password(self, password):
-        from app import bcrypt
         self._password = bcrypt.generate_password_hash(
             password).decode('utf-8')
 
     # Método para verificar el password
     def check_password(self, password):
-        from app import bcrypt
         return bcrypt.check_password_hash(self._password, password)
 
     def serialize(self):

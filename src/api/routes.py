@@ -207,5 +207,15 @@ def delete_product(id):
    
     return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200) 
 
-       
+# enpoind para la barra de busqueda
+
+@api.route('/search/<srt:termino>', methods= ['GET']) 
+def search_product(termino):
+    products = Product.query.filter(db.or_(
+        Product.name.ilike(f"%{termino}%"),
+        Product.description.ilike(f"%{termino}%")
+    )).all()
+
+    return make_response(jsonify({"products": [Product.serialize() for Product in products]}))
+    
 

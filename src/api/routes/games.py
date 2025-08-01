@@ -18,7 +18,7 @@ def get_all_games():
    if all_games is None:
       return jsonify("Error, no se han encontrado los juegos"),404
    all_games = list(map(lambda x: x.serialize(),all_games))
-   return jsonify({"games" : all_games}),200
+   return jsonify({"all_games" : all_games}),200
 
 
 # CREAR UN NUEVO JUEGO
@@ -47,10 +47,10 @@ def add_game():
     # ELIMINAR JUEGOS
 @api.route("games/<int:game_id>",methods = ["DELETE"])
 def delete_game(game_id):
-    game = db.session.get(Games,game_id)
-    if game is None:
+    all_game = db.session.get(Games,game_id)
+    if all_game is None:
         return jsonify("Error, no se ha encontrado el juego buscado"),404
-    db.session.delete(game)
+    db.session.delete(all_game)
     db.session.commit()
 
     return jsonify("Juego eliminado correctamente"),200

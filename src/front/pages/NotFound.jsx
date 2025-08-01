@@ -35,8 +35,8 @@ export const NotFound = () => {
       <div id="juego" className="flex justify-center hidden mt-4 p-4 bg-gray-100 rounded">
         <iframe src="./404_not_found/index.html" width="640" height="480" frameborder="0"></iframe>
       </div >
-      </div>
-      <button className="m-10 text-black bg-yellow-700" onClick={rutaVistaHome}>Home</button>
-    </div>
+    </div >
+  </div >
+
   );
-};
+}

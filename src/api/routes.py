@@ -209,7 +209,7 @@ def delete_product(id):
 
 # enpoind para la barra de busqueda
 
-@api.route('/search/<srt:termino>', methods= ['GET']) 
+@api.route('/search/<termino>', methods= ['GET']) 
 def search_product(termino):
     products = Product.query.filter(db.or_(
         Product.name.ilike(f"%{termino}%"),

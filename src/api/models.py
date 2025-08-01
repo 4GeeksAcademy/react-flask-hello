@@ -91,7 +91,7 @@ class User(db.Model):
     id_user: Mapped[int] = mapped_column(primary_key=True)
     nombre: Mapped[str] = mapped_column(String(80), nullable=False)
     identificacion: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(255), nullable=False)  # ✅ ahora soporta hash
+    password: Mapped[str] = mapped_column(String(300), nullable=False)  # ✅ ahora soporta hash
     telefono: Mapped[str] = mapped_column(String(11))
     email: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)

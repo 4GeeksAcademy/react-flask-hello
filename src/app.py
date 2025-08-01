@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, RolEnum, Vehiculos, Orden_de_trabajo
+from api.models import db, User, Orden_de_trabajo, Vehiculos, Servicio, AuxOrdenServicio, RolEnum
 
 from datetime import timedelta
 
@@ -14,15 +14,15 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
-
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_cors import CORS
+from flask_mail import Mail, Message
+import random
+from werkzeug.security import generate_password_hash
 
-
-# from models import Person
+# 🔹 Variable global para almacenar códigos de recuperación temporalmente
+reset_codes = {}
+verified_emails = {}
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
@@ -35,7 +35,7 @@ jwt = JWTManager(app)
 
 app.url_map.strict_slashes = False
 
-# database condiguration
+# Database configuration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
@@ -47,23 +47,31 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# add the admin
+# Admin y comandos
 setup_admin(app)
-
-# add the admin
 setup_commands(app)
 
-# Add all endpoints form the API with a "api" prefix
+# Blueprints
 app.register_blueprint(api, url_prefix='/api')
 
-# Handle/serialize errors like a JSON object
+# 🔹 Configuración de Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'pruebaautotek@gmail.com'  # tu correo
+app.config['MAIL_PASSWORD'] = 'hzyp ztmh iteh bevk'      # tu App Password
+app.config['MAIL_DEFAULT_SENDER'] = ('Soporte AutoTek', 'tucorreo@gmail.com')
+mail = Mail(app)
+
+# 🔹 Manejo de errores
 
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# 🔹 Sitemap
 
 
 @app.route('/')
@@ -72,263 +80,185 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# any other endpoint will try to serve it like a static file
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
     response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
+    response.cache_control.max_age = 0
     return response
 
-#CREACION DE ENDPOINT DEL PROYECTO
+# ---------------------- ENDPOINTS DEL PROYECTO ----------------------
 
-#ENDPOINT PARA TRAER ORDENES DE TRABAJO
-@app.route('/ordenes_de_trabajo', methods = ['GET'])
+# ENDPOINT PARA TRAER ORDENES DE TRABAJO
+
+@app.route('/ordenes_de_trabajo', methods=['GET'])
 @jwt_required()
 def get_orden_de_trabajo():
     email_user_current = get_jwt_identity()
     user_current = User.query.filter_by(email=email_user_current).first()
     id_propietario = user_current.id_user
-    ordenes_de_trabajo = Orden_de_trabajo.query.filter_by(usuario_id = id_propietario).all()    
-    print(ordenes_de_trabajo)
-    
+
+    rol_usuario = user_current.rol.value
+    nombre_usuario = user_current.nombre
+    print(nombre_usuario)
+
+    if rol_usuario == "Cliente":
+        ordenes_de_trabajo = Orden_de_trabajo.query.filter_by(
+            usuario_id=id_propietario).all()
+        print(ordenes_de_trabajo)
+    else:
+        ordenes_de_trabajo = Orden_de_trabajo.query.filter_by(
+            mecanico_id=id_propietario).all()
+        print(ordenes_de_trabajo)
+
     ot_serialized_by_user = []
 
     for orden_de_trabajo in ordenes_de_trabajo:
         ot_serialized_by_user.append(orden_de_trabajo.serialize())
 
     print(ot_serialized_by_user)
-    return jsonify({'msg':'ok', 'ordenes_de_trabajo':ot_serialized_by_user})
+    return jsonify({'msg': 'ok', 'ordenes_de_trabajo': ot_serialized_by_user})
+
+# 🔹 REGISTRO DE USUARIO
 
 
-#ENDPOINT PARA REGISTRAR NUEVO USUARIO
-@app.route('/register', methods = ['POST'])
+@app.route('/register', methods=['POST'])
 def register_user():
     body = request.get_json(silent=True)
-    if body is None:
+    if not body:
         return jsonify({'msg': 'Debes enviar informacion de nuevo usuario en el body'}), 400
-    if 'nombre' not in body:
-        return jsonify({'msg': 'Debes enviar el nombre del usuario a registrar'})
-    if 'identificacion' not in body:
-        return jsonify({'msg': 'Debes enviar la identificacion del usuario a crear'})
-    if 'password' not in body:
-        return jsonify({'msg': 'Debes enviar el password del usuario'})
-    if 'telefono' not in body:
-        return jsonify({'msg': 'Debes enviar un numero telefonico del usuario'})
-    if 'email' not in body:
-        return jsonify({'msg': 'Debes enviar el email e usuario'})
-        
-    new_user = User()
-    new_user.nombre = body['nombre']
-    new_user.identificacion = body['identificacion']
-    new_user.password = body['password']
-    new_user.telefono = body['telefono']
-    new_user.email = body['email']
-    new_user.foto_usuario = body['foto_usuario']
-    new_user.is_active = True
-    new_user.rol = RolEnum.CLIENTE
-    
+
+    required_fields = ['nombre', 'identificacion',
+                       'password', 'telefono', 'email']
+    for field in required_fields:
+        if field not in body:
+            return jsonify({'msg': f'Debes enviar el campo {field}'}), 400
+
+    new_user = User(
+        nombre=body['nombre'],
+        identificacion=body['identificacion'],
+        password=body['password'],
+        telefono=body['telefono'],
+        email=body['email'],
+        is_active=True,
+        rol=RolEnum.CLIENTE
+    )
+
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'msg': 'ok', 'user': new_user.serialize()})
 
+# 🔹 LOGIN
 
-#CREACION DEL ENDPOINT DE LOGIN
 
-@app.route('/login', methods = ['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     body = request.get_json(silent=True)
-    if body is None:
+    if not body:
         return jsonify({'msg': 'Debes enviar informacion en el body'}), 400
-    if 'email' not in body:
-        return jsonify({'msg': 'El campo Email es obligatorio'}), 400
-    if 'password' not in body:
-        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+
+    if 'email' not in body or 'password' not in body:
+        return jsonify({'msg': 'Email y password son obligatorios'}), 400
 
     user = User.query.filter_by(email=body['email']).first()
+    if not user or user.password != body['password']:
+        return jsonify({'msg': 'Usuario o contraseña incorrectos'}), 400
+
     tipo_de_usuario = user.rol.value
-    print(user)
-
-    if user is None:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos 1'}), 400
-    if user.password != body['password']:
-        return jsonify({'msg': 'Usuario o contraseña incorrectos 2' }), 400
-
-    access_token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))  # despues de mail expires_delta=timedelta(hours=2)
+    access_token = create_access_token(
+        identity=user.email, expires_delta=timedelta(hours=2))
     return jsonify({'msg': 'ok', 'token': access_token, 'tipo_de_usuario': tipo_de_usuario}), 200
-                                                                                                    
 
-#ENDPOINT PARA CREAR VEHICULOS
-
-@app.route('/crear_vehiculo', methods = ['POST'])
-def crear_vehiculo():
-    body = request.get_json(silent = True)
-    if body is None:
-        return jsonify({'msg': 'debes enviar informacion del vehiculo en el body'}), 400
-    if 'matricula' not in body:
-        return jsonify({'msg': 'debes enviar la matricula del vehiculo'}), 400
-    if 'marca' not in body:
-        return jsonify({'msg': 'debes enviar la marca del vehiculo'}), 400
-    if 'modelo' not in body:
-        return jsonify({'msg': 'debes enviar el modelo del vehiculo'}), 400
-    if 'year' not in body:
-        return jsonify({'msg': 'debes enviar el año del vehiculo'}), 400
-    if 'user_id' not in body:
-        return jsonify({'msg': 'Debes enviar el Id de un usuario existente'})
-
-    new_car = Vehiculos()
-    new_car.matricula = body['matricula']
-    new_car.marca = body['marca']
-    new_car.modelo = body['modelo']
-    new_car.year = body['year']
-    new_car.user_id = body['user_id']
-
-    db.session.add(new_car)
-    db.session.commit()
-    return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
-
-    
-#ENDPOINT PARA TRAER LOS VEHICULOS DE UN USUARIO LOGEADO
-
-@app.route('/mis_vehiculos', methods = ['GET'])
-@jwt_required()
-def mostrar_vehiculos():
-    email_user_current = get_jwt_identity()
-    user_current = User.query.filter_by(email=email_user_current).first()
-    print(user_current)
-    print(user_current.id_user)
-    id_propietario = user_current.id_user
-    vehiculos = Vehiculos.query.filter_by(user_id = id_propietario).all()    
-    print(vehiculos)
-
-    vehicles_serialized_by_user = []
-
-    for vehicle in vehiculos:
-        vehicles_serialized_by_user.append(vehicle.serialize())
-
-    print(vehicles_serialized_by_user)
-    return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized_by_user})
+#  RECUPERAR CONTRASEÑA (SOLO UNA FUNCIÓN)
 
 
-#ENDPOINT PARA TRAER TODOS LOS VEHICULOS
+@app.route("/recuperar-password", methods=["POST"])
+def recuperar_password():
+    data = request.get_json()
+    email = data.get("email")
 
-@app.route('/all_vehicles', methods=['GET'])
-def get_all_vehicles():
-    vehicles = Vehiculos.query.all()
-    vehicles_serialized = []
+    if not email:
+        return jsonify({"message": "El email es requerido"}), 400
 
-    for vehicle in vehicles:
-        vehicles_serialized.append(vehicle.serialize())
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"message": "El correo no está registrado"}), 404
 
-    print(vehicles_serialized)
-    return jsonify({'msg':'ok', 'vehiculos':vehicles_serialized})
+    #  GENERAR CÓDIGO DE 6 DÍGITOS
+    codigo = str(random.randint(100000, 999999))
 
+    #  GUARDAR CÓDIGO EN MEMORIA
+    reset_codes[email] = codigo
+    print(f" Código generado para {email}: {codigo}")
 
-#ENDPOINT PARA BORRAR VEHICULOS 
-
-@app.route('/eliminar_vehiculo/<int:id_vehiculo>', methods=['DELETE'])
-@jwt_required()
-def eliminar_vehiculo(id_vehiculo):
-    email_user_current = get_jwt_identity()
-    user_current = User.query.filter_by(email=email_user_current).first()
-    if not user_current:
-        return jsonify({'msg': 'Usuario no encontrado'}), 404
-    # Buscar el vehículo con ese ID que pertenezca al usuario autenticado
-    vehiculo = Vehiculos.query.filter_by(id_vehiculo=id_vehiculo, user_id=user_current.id_user).first()
-    if not vehiculo:
-        return jsonify({'msg': 'Vehículo no encontrado o no te pertenece'}), 404
-
-    db.session.delete(vehiculo)
-    db.session.commit()
-    return jsonify({'msg': 'Vehículo eliminado correctamente'}), 200
-
-
-#ENDPOINT PARA CREAR VEHICULOS DE UN USUARIO ESPECIFICO
-
-@app.route('/crear_mis_vehiculos', methods = ['POST'])
-@jwt_required()
-def crear_mis_vehiculos():
-    email_user_current = get_jwt_identity()
-    user_current = User.query.filter_by(email=email_user_current).first()
-    print(user_current)
-    print(user_current.id_user)
-    id_propietario = user_current.id_user
-    new_matricula = user_current
-    print("voy a impimir userCurrent")
-    print(new_matricula)
-    
-    body = request.get_json(silent = True)
-    if body is None:
-        return jsonify({'msg': 'debes enviar informacion del vehiculo en el body'}), 400
-    if 'matricula' not in body:
-        return jsonify({'msg': 'debes enviar la matricula del vehiculo'}), 400
-    if 'marca' not in body:
-        return jsonify({'msg': 'debes enviar la marca del vehiculo'}), 400
-    if 'modelo' not in body:
-        return jsonify({'msg': 'debes enviar el modelo del vehiculo'}), 400
-    if 'year' not in body:
-        return jsonify({'msg': 'debes enviar el año del vehiculo'}), 400
-    if 'user_id' not in body:
-        return jsonify({'msg': 'Debes enviar el Id de un usuario existente'})
-
-    new_car = Vehiculos()
-    new_car.matricula = body['matricula']
-    new_car.marca = body['marca']
-    new_car.modelo = body['modelo']
-    new_car.year = body['year']
-    new_car.user_id = id_propietario
-
-    db.session.add(new_car)
-    db.session.commit()
-    return jsonify({'msg': 'ok', 'Vehiculo': new_car.serialize()})
-
-
-#ENDPOINT PRA EDITAR VEHICULOS
-
-#ENDPOINT PARA EDITAR PERFIL DE USUARIO
-
-@app.route('/user/<int:user_id>', methods=['PUT'])
-@jwt_required()
-def update_user_profile(user_id):
-    current_user_id = get_jwt_identity()
-
-    if current_user_id != user_id:
-        return jsonify({"msg": "No autorizado para actualizar este perfil"}), 403
-
-    user = User.query.get(user_id)
-    if user is None:
-        return jsonify({'msg': 'Usuario no encontrado'}), 404
-
-    body = request.get_json(silent=True)
-    if body is None:
-        return jsonify({'msg': 'Debes enviar información para actualizar'}), 400
-
-    if 'nombre' in body:
-        user.nombre = body['nombre']
-    if 'telefono' in body:
-        user.telefono = body['telefono']
-    if 'email' in body:
-        if body['email'] != user.email:
-            existing_user = User.query.filter_by(email=body['email']).first()
-            if existing_user:
-                return jsonify({'msg': 'Este email ya está en uso'}), 409 # Conflicto
-        user.email = body['email']
-    
-    # Manejo de foto_usuario:
-    if 'foto_usuario' in body:
-        user.foto_usuario = body['foto_usuario'] if body['foto_usuario'] else None
-
+    #  ENVIAR CORREO
     try:
-        db.session.commit()
-        return jsonify({'msg': 'Perfil actualizado exitosamente', 'user': user.serialize()}), 200
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error al actualizar perfil de usuario: {e}")
-        return jsonify({'msg': 'Error al actualizar el perfil de usuario', 'error': str(e)}), 500
-      
+        msg = Message("Código de recuperación de contraseña",
+                      recipients=[email])
+        msg.body = f"""
+        Hola {user.nombre},
 
-# this only runs if `$ python src/main.py` is executed
+        Tu código de recuperación es: {codigo}
+
+        Ingresa este código en la web para restablecer tu contraseña.
+        """
+        mail.send(msg)
+
+        return jsonify({"message": "Se ha enviado un correo con tu código de recuperación"}), 200
+    except Exception as e:
+        print("❌ Error enviando correo:", e)
+        return jsonify({"message": "Hubo un problema al enviar el correo"}), 500
+
+# 🔹 VERIFICAR CÓDIGO
+
+
+@app.route("/verificar-codigo", methods=["POST"])
+def verificar_codigo():
+    data = request.get_json()
+    email = data.get("email")
+    codigo = data.get("codigo")
+
+    if not email or not codigo:
+        return jsonify({"message": "Email y código son requeridos"}), 400
+
+    if email in reset_codes and reset_codes[email] == codigo:
+        verified_emails[email] = True
+        del reset_codes[email]
+        return jsonify({"message": "Código correcto. Ahora puedes restablecer tu contraseña."}), 200
+    else:
+        return jsonify({"message": "Código incorrecto o expirado."}), 400
+
+# 🔹 CAMBIAR CONTRASEÑA
+
+
+@app.route("/resetPassword", methods=["POST"])
+def cambiar_password():
+    data = request.get_json()
+    email = data.get("email")
+    codigo = data.get("codigo")
+    nueva_password = data.get("password")
+
+    if not email or not codigo or not nueva_password:
+        return jsonify({"message": "Faltan datos"}), 400
+
+    if email not in verified_emails or not verified_emails[email]:
+        return jsonify({"message": "Primero debes verificar el código de recuperacón"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"message": "Usuario no encontrado"}), 400
+
+    user.password = nueva_password  # generate_password_hash(nueva_password)
+    db.session.commit()
+
+    del verified_emails[email]
+
+    return jsonify({"message": "Contraseña cambiada con éxito"}), 200
+
+
+# ---------------------- MAIN ----------------------
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)

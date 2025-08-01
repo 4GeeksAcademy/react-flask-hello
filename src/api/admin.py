@@ -1,7 +1,7 @@
 
 import os
 from flask_admin import Admin
-from .models import db, User, Orden_de_trabajo, Vehiculos, Servicio, AuxOrdenServicio
+from api.models import db, User, Orden_de_trabajo, Vehiculos, Servicio, AuxOrdenServicio
 from flask_admin.contrib.sqla import ModelView
 
 

@@ -95,15 +95,13 @@ class User(db.Model):
     __tablename__ = "user"
     id_user: Mapped[int] = mapped_column(primary_key=True)
     nombre: Mapped[str] = mapped_column(String(80), nullable=False)
-    identificacion: Mapped[int] = mapped_column(
-        Integer, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(12), nullable=False)
+    identificacion: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(300), nullable=False)  # ✅ ahora soporta hash
     telefono: Mapped[str] = mapped_column(String(11))
     email: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
     foto_usuario: Mapped[str] = mapped_column(String(255), nullable=True)
-    rol: Mapped[RolEnum] = mapped_column(
-        Enum(RolEnum, name="rol_enum"), nullable=False)
+    rol: Mapped[RolEnum] = mapped_column(Enum(RolEnum, name="rol_enum"), nullable=False)
 
     # RELACIONES CON OTRAS TABLAS
     vehiculos: Mapped[List["Vehiculos"]] = relationship(back_populates="user")
@@ -116,8 +114,6 @@ class User(db.Model):
         return f'{self.nombre}'
 
     def serialize(self):
-        print(self.rol)
-        print(type(self.rol))
         return {
             'id_user': self.id_user,
             'nombre': self.nombre,
@@ -127,8 +123,9 @@ class User(db.Model):
             'is_active': self.is_active,
             'foto_usuario': self.foto_usuario,
             'rol': self.rol.value
-            # do not serialize the password, its a security breach
+            # 🔒 no incluir password en serialize
         }
+
 
 
 class Vehiculos(db.Model):
@@ -180,3 +177,4 @@ class Servicio(db.Model):
             'name_service': self.name_service,
             'price': self.price
         }
+

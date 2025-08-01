@@ -1,11 +1,10 @@
-
 import click
-from api.models import db, User
+from .models import db, User
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
-Flask commands are usefull to run cronjobs or tasks outside of the API but sill in integration 
-with youy database, for example: Import the price of bitcoin every night as 12am
+Flask commands are useful to run cronjobs or tasks outside of the API but still in integration 
+with your database, for example: Import the price of bitcoin every night at 12am
 """
 def setup_commands(app):
     
@@ -15,7 +14,7 @@ def setup_commands(app):
     Note: 5 is the number of users to add
     """
     @app.cli.command("insert-test-users") # name of our command
-    @click.argument("count") # argument of out command
+    @click.argument("count") # argument of our command
     def insert_test_users(count):
         print("Creating test users")
         for x in range(1, int(count) + 1):

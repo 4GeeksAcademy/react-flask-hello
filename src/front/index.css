@@ -1,0 +1,51 @@
+
+.modal-colors {
+
+    background-color: #007bff;
+}
+
+.modal-colors:hover {
+  background-color: #16385d; /* un color más oscuro al hacer hover */
+  color: white;
+}
+
+.servicio-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.servicio-card img {
+    transition: transform 0.4s ease;
+}
+
+.servicio-card:hover img {
+    transform: scale(1.1);
+}
+
+.overlay {
+    background: rgba(0, 43, 91, 0.7);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.servicio-card:hover .overlay {
+    opacity: 1;
+}
+
+.vision-box {
+    background-color: #dceeff;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.icon-feature {
+    text-align: center;
+    padding: 20px;
+}
+
+.icon-feature i {
+    font-size: 2rem;
+    color: #0d6efd;
+}

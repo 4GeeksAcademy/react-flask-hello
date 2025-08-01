@@ -9,10 +9,9 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 from flask_bcrypt import Bcrypt
 
 
-
 api = Blueprint('api', __name__)
 
-
+bcrypt = Bcrypt()
 CORS(api)
 
 
@@ -24,7 +23,7 @@ def handle_private_hello():
     if user:
         response_body = {
             "message": "Hola, soy una ruta privada",
-            "user": user.serialize() 
+            "user": user.serialize()
         }
         return jsonify(response_body), 200
     else:
@@ -65,7 +64,7 @@ def register():
     data_request = request.get_json()
     email = data_request.get('email')
     password = data_request.get('password')
-    name = data_request.get('username')  
+    name = data_request.get('username')
 
     if not email or not password:
         return jsonify({"message": "Los campos email,password son obligatorios"}), 400
@@ -75,7 +74,7 @@ def register():
     new_user = User(
         email=email,
         password=hashed_password,
-        name=name,  
+        name=name,
         is_active=True
     )
 
@@ -86,62 +85,61 @@ def register():
     except Exception as e:
         db.session.rollback()
         print("Error saving user:", e)
-        return jsonify({"error": "Error en el servidor"}),500
-
-
-
-
+        return jsonify({"error": "Error en el servidor"}), 500
 
 
 # logica para que el administrador haga CRUD de los productos
 @api.route('/hello')
 def home():
-    return make_response(jsonify({"msg":"¡Funcionando Correctamente!"}), 200)
+    return make_response(jsonify({"msg": "¡Funcionando Correctamente!"}), 200)
 
-#Producto
+# Producto
+
+
 @api.route('/product', methods=['GET'])
 def get_product():
-    list_products= Product.query.all()
-    products=[Product.serialize() for Product in list_products]
+    list_products = Product.query.all()
+    products = [Product.serialize() for Product in list_products]
     print(list_products[0].name)
-    return make_response(jsonify({"msg":"¡Producto cargado exitosamente!", "products":products }), 200)
+    return make_response(jsonify({"msg": "¡Producto cargado exitosamente!", "products": products}), 200)
+
 
 @api.route('/product/<int:id>', methods=['GET'])
 def get_product_id(id):
     product = Product.query.filter_by(id=id).first()
     print(product)
 
-    
     if not product:
-        return make_response(jsonify({"messaje":f"producto con el id #{id} no encontrado"}), 404)
-    return jsonify(product.serialize())        
-    
-    
-@api.route('/new', methods=['POST']) 
-def new_product():
-    data_request= request.get_json()
-    
-         #inicio de la validacion
+        return make_response(jsonify({"messaje": f"producto con el id #{id} no encontrado"}), 404)
+    return jsonify(product.serialize())
 
-    required_Add=['name','description','photo','coste','price','pet_type_id','stock']
-    error={}
+
+@api.route('/new', methods=['POST'])
+def new_product():
+    data_request = request.get_json()
+
+    # inicio de la validacion
+
+    required_Add = ['name', 'description', 'photo',
+                    'coste', 'price', 'pet_type_id', 'stock']
+    error = {}
 
     for Add in required_Add:
 
         if Add not in data_request or data_request[Add] is None:
-            error[Add]= f"El campo {Add} es obligatorio"    
+            error[Add] = f"El campo {Add} es obligatorio"
         if error:
-            return  make_response(jsonify({"error":"¡Revisa los Detalles!"}), 422)
+            return make_response(jsonify({"error": "¡Revisa los Detalles!"}), 422)
     try:
-        name=data_request.get('name')
-        description=data_request.get('description')
-        photo=data_request.get('photo')
-        coste=data_request.get('coste')
-        price=data_request.get('price')
-        pet_type_id=data_request.get('pet_type_id')
-        stock=data_request.get('stock')
+        name = data_request.get('name')
+        description = data_request.get('description')
+        photo = data_request.get('photo')
+        coste = data_request.get('coste')
+        price = data_request.get('price')
+        pet_type_id = data_request.get('pet_type_id')
+        stock = data_request.get('stock')
 
-        product_new= Product(
+        product_new = Product(
             name=name,
             description=description,
             photo=photo,
@@ -153,23 +151,21 @@ def new_product():
 
         db.session.add(product_new)
         db.session.commit()
-    
-        return make_response(jsonify({"msg":"¡Producto agregado exitosamente!"}), 201)
+
+        return make_response(jsonify({"msg": "¡Producto agregado exitosamente!"}), 201)
 
     except Exception as e:
         print(e)
         return make_response(jsonify({"error": "Error en el servidor"}), 500)
-   
 
 
-
-@api.route('/update/<int:id>', methods=['PUT'])   
+@api.route('/update/<int:id>', methods=['PUT'])
 def update_product(id):
     try:
         product = Product.query.get(id)
 
         if not product:
-            return make_response(jsonify({"messaje":f"producto con el id #{id} no encontrado"}), 404)
+            return make_response(jsonify({"messaje": f"producto con el id #{id} no encontrado"}), 404)
 
         data_request = request.get_json()
 
@@ -190,25 +186,26 @@ def update_product(id):
 
         db.session.commit()
 
-        return make_response(jsonify({"msg":"¡Producto actualizado exitosamente!"}), 200)
-    
+        return make_response(jsonify({"msg": "¡Producto actualizado exitosamente!"}), 200)
+
     except Exception as e:
         print(e)
-        return make_response(jsonify({"msg":"Error interno del servidor"}), 500)
+        return make_response(jsonify({"msg": "Error interno del servidor"}), 500)
 
 
-
-@api.route('/delete/<int:id>', methods=['DELETE'])   
-def delete_product(id): 
-    product= db.get_or_404(Product,id)
+@api.route('/delete/<int:id>', methods=['DELETE'])
+def delete_product(id):
+    product = db.get_or_404(Product, id)
 
     db.session.delete(product)
     db.session.commit()
-   
-    return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200) 
 
-#Cart
+    return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200)
+
+# Cart
 # Carrito
+
+
 @api.route('/cart', methods=['GET'])
 @jwt_required()
 def get_cart():
@@ -224,6 +221,7 @@ def get_cart():
         "items": [item.serialize() for item in order.order_item]
     }), 200
 
+
 @api.route('/cart/add', methods=['POST'])
 @jwt_required()
 def add_to_cart():
@@ -233,25 +231,28 @@ def add_to_cart():
     product_id = data["product_id"]
     order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
     if not order:
-        new_order = Order(user_id= user_id, status= Status.CART)
+        new_order = Order(user_id=user_id, status=Status.CART)
         db.session.add(new_order)
         db.session.commit()
-        new_item = OrderItem(order_id = new_order.id, product_id = product_id, cant = cant)
+        new_item = OrderItem(order_id=new_order.id,
+                             product_id=product_id, cant=cant)
         db.session.add(new_item)
         db.session.commit()
         return jsonify({
             "order_id": new_order.id,
             "item": new_item.serialize()
         }), 200
-    else : 
-        new_item = OrderItem(order_id = order.id, product_id = product_id, cant = cant)
+    else:
+        new_item = OrderItem(
+            order_id=order.id, product_id=product_id, cant=cant)
         db.session.add(new_item)
         db.session.commit()
         return jsonify({
             "order_id": order.id,
             "item": new_item.serialize()
         }), 200
-    
+
+
 @api.route('/cart/delete/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_to_cart(id):
@@ -259,7 +260,7 @@ def delete_to_cart(id):
     order = Order.query.filter_by(user_id=user_id, status=Status.CART).first()
     if not order:
         return jsonify({"message": "Carrito no existe"}), 400
-    
+
     item = OrderItem.get(id)
     db.session.delete(item)
     db.session.commit()
@@ -279,7 +280,3 @@ def checkout():
     db.session.commit()
 
     return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200
-
-
-       
-

@@ -1,12 +1,13 @@
 .site-footer {
-  position: fixed;
+  position: static;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #000;
+  background: #1a202c;
   color: #d1d5db;
   padding: 2rem 1rem;
   z-index: 100;
+
 }
 
 

@@ -7,8 +7,11 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import check_password_hash
 from api.utils import geocode_address
-
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
 api = Blueprint('api', __name__)
 
 CORS(api)
@@ -21,11 +24,12 @@ def handle_hello():
 def register_user():
     data = request.get_json()
     try:
-        hashed_password = generate_password_hash(data['password'])
+        hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
         new_user = User(
             email=data['email'],
             password=hashed_password,
-            is_active=True
+            is_active=True,
+            role=data.get('role', 'usuario')  # usuario pro defecto
         )
 
         db.session.add(new_user)
@@ -36,6 +40,22 @@ def register_user():
         return jsonify({"msg": "El email ya existe"}), 400
     except Exception as e:
         return jsonify({"msg": "Error al registrar usuario", "error": str(e)}), 500
+
+@api.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+
+    if not user or not bcrypt.check_password_hash(user.password, data['password']):
+        return jsonify({"msg": "Credenciales incorrectas"}), 401
+
+    token = create_access_token(identity={
+        "id": user.id,
+        "email": user.email,
+        "role": user.role
+    })
+
+    return jsonify(access_token=token), 200
 
 @api.route('/events', methods=['GET'])
 def get_events():
@@ -127,10 +147,14 @@ def checkout(user_id):
         db.session.rollback()
         return jsonify({"msg": "Error durante el checkout", "error": str(e)}), 500
 
-@api.route('/events', methods=['POST'])  # ENDPOINT GOOGLE MAPS 
+@api.route('/events', methods=['POST']) #endpoin google maps
+@jwt_required()
 def create_event():
-    data = request.get_json()
+    current_user = get_jwt_identity()
+    if current_user['role'] not in ['admin', 'artista']:
+        return jsonify({"msg": "No autorizado para crear eventos"}), 403
 
+    data = request.get_json()
     try:
         lat = data.get("lat")
         lng = data.get("lng")
@@ -157,6 +181,7 @@ def create_event():
     except Exception as e:
         db.session.rollback()
         return jsonify({"msg": "Error al crear evento", "error": str(e)}), 500
+
 
 
         

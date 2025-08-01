@@ -99,6 +99,7 @@ def get_orden_de_trabajo():
     email_user_current = get_jwt_identity()
     user_current = User.query.filter_by(email=email_user_current).first()
     id_propietario = user_current.id_user
+
     rol_usuario = user_current.rol.value
     nombre_usuario = user_current.nombre
     print(nombre_usuario)

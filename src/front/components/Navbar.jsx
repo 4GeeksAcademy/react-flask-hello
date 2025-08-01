@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';  //se debd instalar - npm install react-router-hash-link
+import logoB from "../assets/img/logoB.svg";
+
 
 export const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark shadow-sm mt-2 ms-2 me-2 px-3" style={{ backgroundColor: '#003366', borderRadius: '15px' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
-          AutoTekc
-        </Link>
+        <img src={logoB} alt="Logo" width={200} />
 
         <button
           className="navbar-toggler"
@@ -28,10 +28,9 @@ export const Navbar = () => {
             </li>
             <li className="nav-item">
               <HashLink smooth className="nav-link" to="/#servicios">Services</HashLink>
-              
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/about">About Us</Link>
+              <HashLink smooth className="nav-link" to="/#about">About Us</HashLink>
             </li>
             <li className="nav-item">
               <HashLink smooth className="nav-link" to="/#contactenos">Contact</HashLink>

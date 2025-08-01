@@ -1,12 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import logoB from "../assets/img/logoB.svg";
+
 
 export const NavbarMecanico = () => {
+
+
+    const navigate = useNavigate()
+    
+        const handleLogout = () => {
+        localStorage.removeItem("jwt_token");
+        //setIsLogged(false);
+        navigate("/");
+        };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark shadow-sm mt-2 ms-2 me-2 px-3" style={{ backgroundColor: '#003366', borderRadius: '15px' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
-          AutoTekc
-        </Link>
+        <img src={logoB} alt="Logo" width={200} />
 
         <button
           className="navbar-toggler"
@@ -30,7 +40,7 @@ export const NavbarMecanico = () => {
               <Link className="nav-link" to="/contact">Notificaciones</Link>
             </li>
             <li className="nav-item">
-              <Link className="btn btn-info ms-3" to="/logout">LogOut</Link>
+              <button onClick={handleLogout} className="btn btn-info ms-3" to="/" >LogOut</button>
             </li>
           </ul>
         </div>

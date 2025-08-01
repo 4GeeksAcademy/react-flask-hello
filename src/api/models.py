@@ -54,7 +54,11 @@ class Orden_de_trabajo(db.Model):
             'fecha_final': self.fecha_final,
             'usuario_id': self.usuario_id,
             'vehiculo_id': self.vehiculo_id,
-            'mecanico_id': self.mecanico_id
+            'mecanico_id': self.mecanico_id,
+            'nombre_mecanico': self.mecanico.nombre,
+            'matricula_vehiculo': self.vehiculo.matricula,
+            'servicios_asociados': [s.serialize() for s in self.servicios_asociados]
+            
         }
 
 
@@ -77,7 +81,8 @@ class AuxOrdenServicio(db.Model):
         return {
             'id': self.id,
             'orden_id': self.orden_id,
-            'servicio_id': self.servicio_id
+            'servicio_id': self.servicio_id,
+            'servicio': self.servicio.serialize()  # accede al servicio completo
         }
 
 

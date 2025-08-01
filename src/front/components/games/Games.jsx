@@ -31,12 +31,26 @@ export const Games = () => {
     }
     return (
 
-        <div className="container mx-auto p-6">
+        <div class="flex flex-wrap justify-center gap-6">
             {
                 all_games.map((game, index) => {
                     return (
+                        <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
+                            <img class="h-64 w-full object-cover" src={game.img}></img>
+                            <div class="px-6 py-4">
 
-                        
+                                <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
+                                <p class="text-white text-base"> {game.name} </p>
+                                <p class="text-white text-base"> {game.platform} </p>
+                                <p class="text-white text-base"> {game.price} </p>
+
+                            </div>
+                            <div class="px-6 pt-4 pb-2">
+                               <button>Añadir</button>
+                            </div>
+                        </div>
+
+
 
                     )
                 })

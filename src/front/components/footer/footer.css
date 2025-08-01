@@ -1,8 +1,15 @@
 .site-footer {
-  background: #000;
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1a202c;
   color: #d1d5db;
   padding: 2rem 1rem;
+  z-index: 100;
+
 }
+
 
 .footer-container {
   max-width: 1200px;

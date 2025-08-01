@@ -118,7 +118,7 @@ export const ResetPassword = () => {
   };
 
   return (
-    <div className="bg-light py-3 py-md-5">
+    <div className="login-page-containre py-3 py-md-5">
       <div className="container text-center">
         <div className="row justify-content-md-center">
           {/* 📩 FORMULARIO */}

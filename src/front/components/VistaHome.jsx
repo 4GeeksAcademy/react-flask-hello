@@ -61,14 +61,14 @@ export const VistaHome = () => {
       <br />
       <div className="flex justify-center">
         {/*botones a rutas*/}
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaLogin}>Login</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaUsuario}>Usuario</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaEvento}>Evento</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaNotFound}>Not found</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaFormulario}>Formulario</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaCrearEvento}>Crear Evento</button>
-        <button className="text-black bg-yellow-700 m-3" onClick={rutaLoginPage}>Login Page</button>
+        <button className="text-black bg-yellow-700 m-5 p-1" onClick={rutaLogin}>Login</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaUsuario}>Usuario</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaEvento}>Evento</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaNotFound}>Not found</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaFormulario}>Formulario</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaCrearEvento}>Crear Evento</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaLoginPage}>Login Page</button>
 
       </div>
       <br />

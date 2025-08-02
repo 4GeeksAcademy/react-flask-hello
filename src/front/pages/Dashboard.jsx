@@ -9,9 +9,12 @@ export const Dashboard = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
+            localStorage.removeItem("token");
             setError("No se encontró el token de autenticación.");
+            navigate("/login");
             return;
         }
+
         fetch(`${import.meta.env.VITE_BACKEND_URL}api/private-hello`, {
             method: "GET",
             headers: {
@@ -24,11 +27,17 @@ export const Dashboard = () => {
                 if (data.user) {
                     setUser(data.user);
                 } else {
+                    localStorage.removeItem("token");
                     setError(data.message || "No se pudo obtener la información del usuario.");
+                    navigate("/login");
                 }
             })
-            .catch(() => setError("Error al conectar con el servidor."));
-    }, []);
+            .catch(() => {
+                localStorage.removeItem("token");
+                setError("Error al conectar con el servidor.");
+                navigate("/login");
+            });
+    }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");

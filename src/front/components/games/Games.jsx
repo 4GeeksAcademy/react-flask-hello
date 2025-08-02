@@ -32,7 +32,6 @@ export const Games = () => {
         <div key={index} className="game-card">
           <img src={game.img} alt={game.name} />
           <div className="game-card-content">
-            <h3>The Coldest Sunset</h3>
             <p>{game.name}</p>
             <p>{game.platform}</p>
             <p>{game.price}</p>

@@ -2,7 +2,7 @@ import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Games } from "../../components/games/Games";
-// import { Games } from "../components/Games"
+
 
 
 
@@ -74,53 +74,7 @@ export const Home = () => {
       </div>
 
 
-      <div class="flex flex-wrap justify-center gap-6">
-        <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
-          <img class="h-64 w-full object-cover" src="https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg"></img>
-          <div class="px-6 py-4">
-
-            <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
-            <p class="text-white text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-          </div>
-          <div class="px-6 pt-4 pb-2">
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#photography</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#travel</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#winter</span>
-          </div>
-        </div>
-
-        <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
-          <img class="h-64 w-full object-cover" src="https://4kwallpapers.com/images/wallpapers/the-super-mario-2880x1800-10955.jpg"></img>
-          <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
-            <p class="text-white text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-          </div>
-          <div class="px-6 pt-4 pb-2">
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#photography</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#travel</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#winter</span>
-          </div>
-        </div>
-
-        <div class="max-w-sm pt-2 pb-2 rounded overflow-hidden shadow-none">
-          <img class="h-64 w-full object-cover" src="https://images.alphacoders.com/137/1374992.jpg"></img>
-          <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
-            <p class="text-white text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-          </div>
-          <div class="px-6 pt-4 pb-2">
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#photography</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#travel</span>
-            <span class="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">#winter</span>
-          </div>
-        </div>
-      </div>
+     
 
       <div>
         <Games />

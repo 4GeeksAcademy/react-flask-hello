@@ -98,7 +98,7 @@ export default function Navbar() {
                 {
                   view && (
                     <>
-                      <a id="user-menu-item-0" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
+                      <a id="user-menu-item-0" role="menuitem" href="/Login" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
                       <a id="user-menu-item-1" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
                       <a id="user-menu-item-2" role="menuitem" href="#" tabindex="-1" class="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
                     </>

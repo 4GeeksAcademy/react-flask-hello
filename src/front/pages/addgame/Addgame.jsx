@@ -62,8 +62,7 @@ export const Addgame = () => {
                         <option>None</option>
                         <option>PlayStation</option>
                         <option>Xbox</option>
-                        <option>Nintendo</option>
-                        <option>Juegos de Mesa</option>
+                        <option>Nintendo</option>                        
                     </select>
                 </div>
 

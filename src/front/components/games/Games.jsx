@@ -9,14 +9,12 @@ export const Games = () => {
 
   useEffect(() => {
     getGames();
-    console.log(all_games);
   }, []);
 
   const getGames = async () => {
     try {
-      const responsive = await fetch(`${backendUrl}api/games`);
-      const data = await responsive.json();
-      console.log(data);
+      const response = await fetch(`${backendUrl}api/games`);
+      const data = await response.json();
       dispatch({
         type: "setGames",
         payload: data.all_games,
@@ -27,18 +25,35 @@ export const Games = () => {
   };
 
   return (
-    <div className="games-container">
+    <div className="flex flex-wrap justify-center gap-6">
       {all_games.map((game, index) => (
-        <div key={index} className="game-card">
-          <img src={game.img} alt={game.name} />
-          <div className="game-card-content">
-            <h3>The Coldest Sunset</h3>
-            <p>{game.name}</p>
-            <p>{game.platform}</p>
-            <p>{game.price}</p>
+        <div key={index} className="card w-1/4 pb-2 rounded overflow-hidden shadow-lg bg-gray-800">
+          <img
+            className="w-full h-64 object-cover object-center"
+            src={game.img}
+            alt={game.name}
+          />
+          <div className="px-6 py-4">
+            <div className="font-bold text-xl mb-2 text-white">{game.name}</div>
+            <p className="text-white text-base">
+              Plataforma: {game.platform}
+            </p>
+            <p className="text-white text-base">
+              Precio: {game.price} €
+            </p>
           </div>
-          <div className="game-card-footer">
-            <button>Añadir</button>
+          <div className="px-6 pt-4 pb-2">
+            {game.name && (
+              <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+                #{game.name.toLowerCase().replace(/\s+/g, "")}
+              </span>
+            )}
+            {game.platform && (
+              <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+                #{game.platform.toLowerCase().replace(/\s+/g, "")}
+              </span>
+            )}
+
           </div>
         </div>
       ))}

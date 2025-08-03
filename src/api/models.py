@@ -95,10 +95,10 @@ class Product(db.Model):
     photo: Mapped[str] = mapped_column(String(), nullable=False) 
     coste: Mapped[float] = mapped_column(Float(), nullable=False)
     price: Mapped[float] = mapped_column(Float(), nullable=False)
+    # category: Mapped[int] = mapped_column(ForeignKey("category"))
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
-    
-
+    # url: Mapped[str] = mapped_column(String(), nullable=False)
 
     pet_type: Mapped["PetType"] = relationship(
         back_populates="products")
@@ -119,9 +119,11 @@ class Product(db.Model):
             "description": self.description,
             "photo": self.photo,
             "coste": self.coste,
+            "pet_type": self.pet_type.name if self.pet_type else None,
             "price": self.price,
+            "categories": [pc.category.name for pc in self.list_product_category ],
             "stock": self.stock,
-            
+            # "url": self.url
             # do not serialize the password, its a security breach
         }
     
@@ -142,7 +144,6 @@ class ProductCategory(db.Model):
         return {
             "id": self.id,
             "category_id": self.id,
-            "product": self.product,
             "product_id": self.produc_id,
         
             # do not serialize the password, its a security breach

@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import User, db, Product, Status, Order, OrderItem
+from api.models import User, db, Product, Status, Order, OrderItem, Category, ProductCategory
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
@@ -100,7 +100,7 @@ def home():
 def get_product():
     list_products = Product.query.all()
     products = [Product.serialize() for Product in list_products]
-    print(list_products[0].name)
+    # print(list_products[0].name)
     return make_response(jsonify({"msg": "¡Producto cargado exitosamente!", "products": products}), 200)
 
 
@@ -121,7 +121,7 @@ def new_product():
     # inicio de la validacion
 
     required_Add = ['name', 'description', 'photo',
-                    'coste', 'price', 'pet_type_id', 'stock']
+                    'coste', 'price', 'pet_type_id', 'stock', 'category_ids']
     error = {}
 
     for Add in required_Add:
@@ -137,6 +137,7 @@ def new_product():
         coste = data_request.get('coste')
         price = data_request.get('price')
         pet_type_id = data_request.get('pet_type_id')
+        category_ids = data_request.get('category_ids')
         stock = data_request.get('stock')
 
         product_new = Product(
@@ -150,13 +151,28 @@ def new_product():
         )
 
         db.session.add(product_new)
-        db.session.commit()
+        db.session.flush()  
+        # Asociar categorías
+        category_ids = data_request['category_ids']
+        for cat_id in category_ids:
+            # Validar existencia de la categoría
+            category = Category.query.get(cat_id)
+            if not category:
+                return make_response(jsonify({"error": f"Categoría con ID {cat_id} no existe"}), 404)
+            
+            product_category = ProductCategory(
+                product_id=product_new.id,
+                category_id=cat_id
+            )
+            db.session.add(product_category)
 
-        return make_response(jsonify({"msg": "¡Producto agregado exitosamente!"}), 201)
+        db.session.commit()
+        return make_response(jsonify({"msg": "¡Producto creado exitosamente!"}), 201)
 
     except Exception as e:
-        print(e)
-        return make_response(jsonify({"error": "Error en el servidor"}), 500)
+        db.session.rollback()
+        print("Error al crear producto:", e)
+        return make_response(jsonify({"error": "Error interno del servidor"}), 500)
 
 
 @api.route('/update/<int:id>', methods=['PUT'])

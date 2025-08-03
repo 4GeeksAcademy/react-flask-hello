@@ -8,14 +8,14 @@ export const Carrito = () => {
       name: "Cama para perro",
       price: 29.99,
       quantity: 1,
-      image: "",
+      image: "https://via.placeholder.com/100",
     },
     {
       id: 2,
       name: "Juguete para gato",
       price: 9.99,
       quantity: 2,
-      image: "",
+      image: "https://via.placeholder.com/100",
     },
   ]);
 

@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from api.models import Purchase, db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-purchase_bp = Blueprint('purchase', __name__, url_prefix='/api/purchase')
+purchase_bp = Blueprint('purchase', __name__,)
 
 @purchase_bp.route('/', methods=['POST'])
 @jwt_required()  # Solo usuarios registrados pueden acceder

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from api.utils import geocode_address
 
-maps_bp = Blueprint('maps', __name__, url_prefix='/api/maps')
+maps_bp = Blueprint('maps', __name__, url_prefix='/maps')
 
 @maps_bp.route('/geocode', methods=['POST'])
 def geocode():

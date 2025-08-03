@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from api.models import db, CartItem
+from api.models import db, CartItem, Purchase
 
 
-cart_bp = Blueprint('cart', __name__, url_prefix='/api')
+cart_bp = Blueprint('cart', __name__,)
 
 @cart_bp.route('/cart', methods=['POST'])
 def add_to_cart():
@@ -29,3 +29,27 @@ def delete_item(item_id):
         db.session.delete(item)
         db.session.commit()
         return jsonify({"msg": "Item eliminado"}), 200
+
+
+
+@cart_bp.route('/cart/checkout/<int:user_id>', methods=['POST'])
+def checkout(user_id):
+    cart_items = CartItem.query.filter_by(user_id=user_id).all()
+    if not cart_items:
+        return jsonify({"msg": "El carrito está vacío"}), 400
+    
+    try: 
+        for item in cart_items:
+            purchase = Purchase(
+                user_id=user_id,
+                event_id=item.event_id,
+                quantity=item.quantity
+            )
+            db.session.add(purchase)
+            db.session.delete(item)  # Limpia el carrito
+
+        db.session.commit()
+        return jsonify({"msg": "Compra realizada con éxito"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Error durante el checkout", "error": str(e)}), 500

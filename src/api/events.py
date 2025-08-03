@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from api.models import db, Event
 from api.utils import geocode_address
 
-events_bp = Blueprint('events', __name__, url_prefix='/api')
+events_bp = Blueprint('events', __name__,)
 
 @events_bp.route('/events', methods=['POST'])
 def create_event():

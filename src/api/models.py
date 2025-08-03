@@ -1,10 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, ForeignKey, Integer, Float, Boolean
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, ForeignKey, Integer, Float, Boolean, Column, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship, declarative_base
 from typing import List
 import enum
 
 db = SQLAlchemy()
+Base = declarative_base()
+
+product_category = Table(
+    'product_category',
+    db.Model.metadata,
+    Column('product_id', ForeignKey('product.id'), primary_key=True),
+    Column('category_id', ForeignKey('category.id'), primary_key=True)
+)
 
 class Status(enum.Enum):
     CART = 'cart'
@@ -59,11 +67,10 @@ class Category(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(), nullable=False)
-    
-    
-    
-    product_category: Mapped[List["ProductCategory"]] = relationship(
-        back_populates="category", cascade= "all, delete-orphan"
+
+    products: Mapped[list["Product"]] = relationship(
+        secondary=product_category,
+        back_populates="categories"
     )
 
 
@@ -74,6 +81,11 @@ class Category(db.Model):
             "description": self.description,
             # do not serialize the password, its a security breach
         } 
+    def serialize_category_bis(self):
+        return {
+        "id": self.id,
+        "name": self.name,
+    }
     
 class PetType(db.Model):
     id: Mapped[int] = mapped_column(primary_key= True) 
@@ -87,6 +99,13 @@ class PetType(db.Model):
             "id": self.id,
             "name": self.name,
         }
+    def serialize_pet_type(self):
+        return {
+        "id": self.id,
+        "name": self.name,
+    }
+    
+    
 
 class Product(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -106,48 +125,37 @@ class Product(db.Model):
     order_items: Mapped[List["OrderItem"]] = relationship(
         back_populates= "product", cascade= "all, delete-orphan"
     )
-
-    list_product_category: Mapped[List["ProductCategory"]] = relationship(
-        back_populates="product", cascade= "all, delete-orphan"
+   
+    categories: Mapped[list["Category"]] = relationship(
+        secondary=product_category,
+        back_populates="products"
     )
 
-
     def serialize(self):
+        if self.categories:
+            categories = [category.serialize_category_bis() for category in self.categories]
+        if self.pet_type:
+            pet_type = self.pet_type.serialize_pet_type()
         return {
             "id": self.id,
             "name": self.name,
             "description": self.description,
             "photo": self.photo,
             "coste": self.coste,
-            "pet_type": self.pet_type.name if self.pet_type else None,
+            "pet_type": pet_type,
             "price": self.price,
-            "categories": [pc.category.name for pc in self.list_product_category ],
+            "categories": categories,
             "stock": self.stock,
             # "url": self.url
             # do not serialize the password, its a security breach
         }
-    
-class ProductCategory(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-
-    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
-    
-    product: Mapped["Product"] = relationship (
-        back_populates="list_product_category"
-    )
-    category: Mapped["Category"] = relationship(
-        back_populates="product_category"
-    )
-
-    def serialize(self):
+    def serialize_category_bis(self):
         return {
-            "id": self.id,
-            "category_id": self.id,
-            "product_id": self.produc_id,
-        
-            # do not serialize the password, its a security breach
-        }
+        "id": self.id,
+        "name": self.name,
+    }
+    
+
 
 class OrderItem(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)

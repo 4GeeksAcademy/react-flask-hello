@@ -1,0 +1,45 @@
+.navbar {
+  background-color: #eae164;
+}
+
+.search-bar input.form-control {
+  box-shadow: none !important;
+  outline: none;
+}
+
+.navbar-brand {
+  width: 200px;
+}
+
+.footer {
+  background-color: #EAE164;
+}
+.custom-hr{
+  border: 1px solid #000;
+  height: 3px;
+  background-color: #000;
+  margin: 0;
+}
+
+icon-container {
+  color: #3c6ca8;
+}
+
+.title1{
+  color:#3c6ca8
+}
+
+.title2{
+  color:#EAE164;
+}
+
+.container1{
+  background-color: #3c6ca8;
+}
+
+@media (min-width: 992px) {
+  .col-lg-custom {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}

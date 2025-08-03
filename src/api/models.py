@@ -93,6 +93,7 @@ class Product(db.Model):
     photo: Mapped[str] = mapped_column(String(), nullable=False) 
     coste: Mapped[float] = mapped_column(Float(), nullable=False)
     price: Mapped[float] = mapped_column(Float(), nullable=False)
+    category: Mapped[int] = mapped_column(ForeignKey("category"))
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
     url: Mapped[str] = mapped_column(String(), nullable=False)
@@ -116,6 +117,7 @@ class Product(db.Model):
             "description": self.description,
             "photo": self.photo,
             "coste": self.coste,
+            "pet_type": self.pet_type.name if self.pet_type else None,
             "price": self.price,
             "stock": self.stock,
             "url": self.url

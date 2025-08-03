@@ -200,6 +200,19 @@ def delete_product(id):
     db.session.delete(product)
     db.session.commit()
 
+
+# enpoind para la barra de busqueda
+
+@api.route('/search/<termino>', methods= ['GET']) 
+def search_product(termino):
+    products = Product.query.filter(db.or_(
+        Product.name.ilike(f"%{termino}%"),
+        Product.description.ilike(f"%{termino}%")
+    )).all()
+
+    return make_response(jsonify({"products": [Product.serialize() for Product in products]}))
+    
+
     return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200)
 
 # Cart
@@ -278,5 +291,6 @@ def checkout():
 
     order.status = Status.PAID
     db.session.commit()
+
 
     return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200

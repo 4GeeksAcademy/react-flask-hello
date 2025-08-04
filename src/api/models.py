@@ -131,21 +131,26 @@ class Product(db.Model):
     )
 
     def serialize(self):
+        categories = []  # Por defecto lista vacía
+        pet_type = None  # Por defecto None
+    
         if self.categories:
             categories = [category.serialize_category_bis() for category in self.categories]
         if self.pet_type:
             pet_type = self.pet_type.serialize_pet_type()
+        
         return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "photo": self.photo,
-            "coste": self.coste,
-            "pet_type": pet_type,
-            "price": self.price,
-            "categories": categories,
-            "stock": self.stock
-            }
+        "id": self.id,
+        "name": self.name,
+        "description": self.description,
+        "photo": self.photo,
+        "coste": self.coste,
+        "pet_type": pet_type,
+        "price": self.price,
+        "categories": categories,
+        "stock": self.stock
+    }
+
     
     def serialize_category_bis(self):
         return {

@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import User, db, Product, Status, Order, OrderItem, Category
+from api.models import User, db, Product, Status, Order, OrderItem, Category, PetType
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
@@ -120,7 +120,8 @@ def new_product():
 
     # inicio de la validacion
 
-    required_Add = ['name', 'description', 'photo', 'coste', 'price', 'pet_type_id', 'stock', 'categories']
+    required_Add = ['name', 'description', 'photo', 'coste',
+                    'price', 'pet_type_id', 'stock', 'categories']
     error = {}
 
     for Add in required_Add:
@@ -149,25 +150,24 @@ def new_product():
             stock=stock
         )
 
-        
-        
         categories = data_request['categories']
         for cat_id in categories:
             category = Category.query.get(cat_id)
-            
+
             if not category:
                 return make_response(jsonify({"error": f"Categoría con ID {cat_id} no existe"}), 404)
-        
+
             product_new.categories.append(
                 Category.query.get(cat_id)
             )
-        
+
         db.session.add(product_new)
-        db.session.flush() 
+        db.session.flush()
         db.session.commit()
         return make_response(jsonify({"msg": "¡Producto creado exitosamente!"}), 201)
 
     except Exception as e:
+        print(f"Error: {e}")
         db.session.rollback()
         return make_response(jsonify({"error": "Error interno del servidor"}), 500)
 
@@ -214,17 +214,14 @@ def delete_product(id):
     db.session.commit()
 
 
-
-@api.route('/search/<termino>', methods= ['GET']) 
+@api.route('/search/<termino>', methods=['GET'])
 def search_product(termino):
     products = Product.query.filter(db.or_(
         Product.name.ilike(f"%{termino}%"),
         Product.description.ilike(f"%{termino}%")
     )).all()
 
-    return make_response(jsonify({"products": [Product.serialize() for Product in products]}), 200) 
-    
-
+    return make_response(jsonify({"products": [Product.serialize() for Product in products]}), 200)
 
 
 @api.route('/cart', methods=['GET'])
@@ -288,6 +285,12 @@ def delete_to_cart(id):
     return jsonify({"message": "Producto eliminado"}), 200
 
 
+@api.route('/pettypes', methods=['GET'])
+def get_pettypes():
+    pettypes = PetType.query.all()
+    return jsonify([pt.serialize_pet_type() for pt in pettypes]), 200
+
+
 @api.route('/cart/checkout', methods=['POST'])
 @jwt_required()
 def checkout():
@@ -299,6 +302,5 @@ def checkout():
 
     order.status = Status.PAID
     db.session.commit()
-
 
     return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200

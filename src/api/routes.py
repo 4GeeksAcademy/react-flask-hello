@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import User, db, Product, Status, Order, OrderItem, Category
+from api.models import User, db, Product, Status, Order, OrderItem, Category, ProductCategory
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
@@ -160,11 +160,11 @@ def new_product():
             if not category:
                 return make_response(jsonify({"error": f"Categoría con ID {cat_id} no existe"}), 404)
             
-            # product_category = ProductCategory(
-            #     product_id=product_new.id,
-            #     category_id=cat_id
-            # )
-            # db.session.add(product_category)
+            product_category = ProductCategory(
+                product_id=product_new.id,
+                category_id=cat_id
+            )
+            db.session.add(product_category)
 
         db.session.commit()
         return make_response(jsonify({"msg": "¡Producto creado exitosamente!"}), 201)

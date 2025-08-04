@@ -1,7 +1,7 @@
 import os
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from .models import db, User, Category, PetType, Product
+from .models import db, User, Category, PetType, Product, ProductCategory
 
 # Vista personalizada para ProductCategory
 class ProductCategoryAdmin(ModelView):
@@ -26,4 +26,4 @@ def setup_admin(app):
     admin.add_view(ModelView(Category, db.session))
     admin.add_view(ModelView(PetType, db.session))
     admin.add_view(ModelView(Product, db.session))
-   
+    admin.add_view(ProductCategoryAdmin(ProductCategory, db.session))  

@@ -9,6 +9,13 @@ class Games(db.Model):
     platform:Mapped[str] = mapped_column(String(30),nullable=False)
     description: Mapped[str]= mapped_column(String(600),nullable=False)
     price: Mapped[float]=mapped_column(nullable=False)
+    genero: Mapped[str] = mapped_column(String(20),nullable=False)
+    distribuidora: Mapped[str]= mapped_column(String(20), nullable=False)
+    online:Mapped[int] = mapped_column(nullable=False)
+    offline: Mapped[int]= mapped_column(nullable=False)
+    gamemode: Mapped[str] = mapped_column(String(30),nullable=False)
+
+
   
     
 
@@ -20,7 +27,12 @@ class Games(db.Model):
             "name":self.name,
             "platform": self.platform,
             "description": self.description,
-            "price":self.price
+            "price":self.price,
+            "genero":self.genero,
+            "distribuidora": self.distribuidora,
+            "online": self.online,
+            "offline":self.offline,
+            "gamemode":self.gamemode
         
         }
 

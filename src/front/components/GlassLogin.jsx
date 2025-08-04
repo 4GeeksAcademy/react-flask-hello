@@ -19,7 +19,10 @@ export const GlassLogin = () => {
   };
 
   return (
-<div className="min-h-screen bg-cover bg-center flex items-center justify-center bg-[url('/fondo_login.jpg')]">
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: "url('/fondo_login.jpg')" }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

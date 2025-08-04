@@ -1,11 +1,18 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
 import "./games.css";
 
 export const Games = () => {
   const { store, dispatch } = useGlobalReducer();
   const { all_games } = store;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+   const navigate = useNavigate();
+
+
+   const moreInfoGame = (id) => {
+        navigate(`/DetailsGames/${id}`);
+    }
 
   useEffect(() => {
     getGames();
@@ -29,6 +36,7 @@ export const Games = () => {
       {all_games.map((game, index) => (
         <div key={index} className="card w-1/4 pb-2 rounded overflow-hidden shadow-lg bg-gray-800">
           <img
+          onClick={()=>moreInfoGame(game.id)}
             className="w-full h-64 object-cover object-center"
             src={game.img}
             alt={game.name}

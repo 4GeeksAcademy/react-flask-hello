@@ -20,6 +20,13 @@ def get_all_games():
    all_games = list(map(lambda x: x.serialize(),all_games))
    return jsonify({"all_games" : all_games}),200
 
+@api.route("/detailsgames/<id>",methods = ["GET"])
+def get_game(id):
+   game = db.session.get(Games,id)
+   if game is None:
+      return jsonify("Error, no se ha encontrado el juego"),400
+
+   return jsonify({"game":game.serialize()}),200
 
 # CREAR UN NUEVO JUEGO
 @api.route('/addgame', methods=["POST"])

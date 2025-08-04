@@ -1,7 +1,10 @@
-from flask import jsonify, url_for
+from flask import Blueprint, jsonify, url_for
 import requests
 import os
+from .user import user_bp
 
+api = Blueprint('api', __name__)
+api.register_blueprint(user_bp)
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")  # SE AGREGA GOOGLE MAPS 
 
 def geocode_address(address):

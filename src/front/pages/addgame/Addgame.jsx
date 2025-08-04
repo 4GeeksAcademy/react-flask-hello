@@ -27,6 +27,11 @@ export const Addgame = () => {
                 "platform": platform,
                 "description": description,
                 "price": price,
+                "distribuidora":distribuidora,
+                "genero": genero,
+                "offline": offline,
+                "online": online,
+                "gamemode":gamemode
             }
             await fetch(`${backendUrl}api/games/addgame`, {
                 method: "POST",
@@ -121,14 +126,7 @@ export const Addgame = () => {
                     <input value={distribuidora} onChange={(e) => setDistribuidora(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
 
                 </div>
-                   <div>
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-platform">
-                        PEGI
-                    </label>
-                    <select value={platform} onChange={(e) => setPlatform(e.target.value)} class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataform">
-                        {/* <img></img> INSERTAR IMAGEN + COMENTARIO. FALTA POR HACER */}
-                    </select>
-                </div>
+                
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-description">
                         Description

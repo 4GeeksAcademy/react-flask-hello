@@ -10,6 +10,8 @@ import { Demo } from "./pages/Demo";
 import { Login } from "./pages/Login.jsx";
 import { SignupPage } from "./pages/SignupPage.jsx";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.jsx";
+import { EventForm } from "./pages/EventForm.jsx";
+import { Prebuy } from "./pages/Prebuy.jsx";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,6 +22,8 @@ export const router = createBrowserRouter(
             <Route path="/demo" element={<Demo />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/create-event" element={<EventForm />} />
+            <Route path="/prebuy" element={<Prebuy />} />
             <Route path="*" element={<h1>Page Not Found!</h1>} />
         </Route>
     )

@@ -1,17 +1,55 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import videoBackground from "../assets/video.mp4";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { dispatch } = useGlobalReducer();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("Intentando login simulado con:", { email, password });
-        alert("Login simulado exitoso! Redirigiendo a Home.");
-        navigate("/home");
+
+        try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
+            if (!backendUrl) {
+                alert("Error: La URL del backend no está configurada.");
+                return;
+            }
+
+            const response = await fetch(`${backendUrl}/api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem("jwt_token", data.access_token);
+                
+                dispatch({
+                    type: "set_login_status",
+                    payload: {
+                        isLoggedIn: true,
+                        user_id: data.user_id, 
+                        token: data.access_token
+                    }
+                });
+
+                alert("Inicio de sesión exitoso!");
+                navigate("/home");
+            } else {
+                alert(`Error al iniciar sesión: ${data.message || response.statusText}`);
+            }
+        } catch (error) {
+            console.error("Error de conexión al iniciar sesión:", error);
+            alert("Hubo un problema al conectar con el servidor. Asegúrate de que el backend esté funcionando.");
+        }
     };
 
     return (

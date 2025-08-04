@@ -44,13 +44,19 @@ export const Games = () => {
           </div>
           <div className="px-6 pt-4 pb-2">
             {game.name && (
-              <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              <span className="inline-block bg-blue-800 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
                 #{game.name.toLowerCase().replace(/\s+/g, "")}
               </span>
             )}
             {game.platform && (
-              <span className="inline-block bg-indigo-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+              <span className="inline-block bg-blue-800  rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
                 #{game.platform.toLowerCase().replace(/\s+/g, "")}
+              </span>
+            )}
+             )}
+            {game.genero && (
+              <span className="inline-block bg-blue-800  rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
+                #{game.genero.toLowerCase().replace(/\s+/g, "")}
               </span>
             )}
 

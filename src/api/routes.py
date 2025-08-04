@@ -2,7 +2,6 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask_cors import CORS
 from flask import Blueprint
 from .user import user_bp
 from .events import events_bp

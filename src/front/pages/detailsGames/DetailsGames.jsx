@@ -1,13 +1,13 @@
-export const DetailsGames = () =>{
-    return(
+export const DetailsGames = () => {
+  return (
 
 
- <div className="min-h-screen bg-gradient-to-br from-teal-900 via-teal-800 to-teal-700 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-teal-900 via-teal-800 to-teal-700 relative overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
         style={{
-          backgroundImage: "url()",
+          backgroundImage: "url(https://plusgaming.es/wp-content/uploads/2024/09/nuevo-fifa-2025.png)",
         }}
       />
 
@@ -24,23 +24,23 @@ export const DetailsGames = () =>{
 
             {/* Platform Tags */}
             <div className="flex gap-2 mb-6">
-              <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">PS5</span>
-              <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">
+              <span className="bg-blue-900 text-white px-3 py-1 rounded text-xs font-medium">PS5</span>
+              <span className="bg-blue-900 text-white px-3 py-1 rounded text-xs font-medium">
                 MEJORADO PARA PS5 PRO
               </span>
             </div>
 
             {/* Rating */}
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-white text-lg font-medium">3.76</span>
+              <span className="text-white text-lg font-bold">3.76</span>
               <div className="flex">
-                <span className="text-yellow-400 text-lg">★</span>
-                <span className="text-yellow-400 text-lg">★</span>
-                <span className="text-yellow-400 text-lg">★</span>
-                <span className="text-yellow-400 text-lg">★</span>
-                <span className="text-gray-400 text-lg">☆</span>
+                <span className="text-yellow-300 font-extrabold text-lg">★</span>
+                <span className="text-yellow-300 font-extrabold text-lg">★</span>
+                <span className="text-yellow-300 font-extrabold text-lg">★</span>
+                <span className="text-yellow-300 font-extrabold text-lg">★</span>
+                <span className="text-yellow-300 font-extrabold text-lg">☆</span>
               </div>
-              <span className="text-gray-300 text-sm">12 mil calificaciones</span>
+              <span className="text-white text-sm">12 mil calificaciones</span>
             </div>
 
             {/* Price */}
@@ -50,17 +50,17 @@ export const DetailsGames = () =>{
             </div>
 
             {/* Discount Info */}
-            <p className="text-gray-300 text-sm mb-6">
-              <span className="text-orange-400 font-medium">Ahorra un 20%</span> La oferta finaliza el 14/8/2025 00:59
+            <p className="text-white text-sm mb-6">
+              <span className="text-yellow-300 font-extrabold">Ahorra un 20%</span> La oferta finaliza el 14/8/2025 00:59
               CEST
             </p>
 
             {/* Buttons */}
             <div className="flex gap-3">
-              <button className="bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-8 rounded-lg flex-1 transition-colors">
+              <button className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-lg flex-1 transition-colors">
                 Añadir al carrito
               </button>
-              <button className="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg transition-colors">
+              <button className="bg-red-900 hover:bg-red-700 text-white p-3 rounded-lg transition-colors">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
@@ -70,8 +70,15 @@ export const DetailsGames = () =>{
         </div>
 
         {/* Right Panel - Game Features */}
-        <div className="w-1/2 p-8 flex items-center justify-end">
-          <div className="max-w-md space-y-6">
+        <div
+          className="w-1/2 p-8 flex items-center justify-end relative bg-cover bg-center"
+          style={{ backgroundImage: "url('/tu-imagen.jpg')" }} // Cambia esto por la ruta de tu imagen
+        >
+          {/* Capa oscura para mejorar contraste */}
+          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+          {/* Contenido visible por encima del fondo */}
+          <div className="max-w-md space-y-6 relative z-10">
             {/* PS Plus Requirement */}
             <div className="flex items-start gap-3">
               <div className="bg-blue-600 p-2 rounded">
@@ -134,9 +141,5 @@ export const DetailsGames = () =>{
         </div>
       </div>
     </div>
-
-
-
-
-    )
+  )
 }

@@ -13,14 +13,14 @@ export const Login = () => {
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const handleSubmit = async e => {
     e.preventDefault();
     setMessage(null);
     setError(null);
     setSending(true);
 
-    const resp = await fetch("https://animated-pancake-x5pjxq9vv4gj2ppgx-3001.app.github.dev/api/user/login", {
+    const resp = await fetch(`${backendUrl}api/user/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)

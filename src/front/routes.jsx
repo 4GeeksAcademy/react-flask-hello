@@ -10,6 +10,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Login } from "./pages/Login";
 import { Registro } from "./pages/Registro";
+import { BusquedaOfertas } from "./pages/BusquedaOfertas";
+import { OfertaId } from "./pages/OfertaId";
 
 
 export const router = createBrowserRouter(
@@ -20,6 +22,8 @@ export const router = createBrowserRouter(
             <Route path="/demo" element={<Demo />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
+            <Route path="/busqueda" element={<BusquedaOfertas />} />
+            <Route path="/oferta/:id" element={<OfertaId />} />
         </Route>
     )
 );

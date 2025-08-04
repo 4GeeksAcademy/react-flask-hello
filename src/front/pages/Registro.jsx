@@ -92,7 +92,7 @@ export const Registro = () => {
   // Función que se ejecuta al enviar el formulario
   const handleSubmit = async (e) => { // <-- Asegúrate de que esta función sea 'async'
     e.preventDefault(); // Previene la recarga de la página
-
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   
 
     const nuevoUser = {
@@ -112,7 +112,7 @@ export const Registro = () => {
 
     try {
       // Realiza la petición POST al backend
-      const response = await fetch("https://animated-pancake-x5pjxq9vv4gj2ppgx-3001.app.github.dev/api/user/register", {
+      const response = await fetch(`${backendUrl}api/user/register`, {
         method: "POST",
         body: JSON.stringify(nuevoUser), // Usa 'nuevoUser' aquí
         headers: { "Content-Type": "application/json" }

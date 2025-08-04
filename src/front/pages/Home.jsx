@@ -1,4 +1,3 @@
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { supabase } from '../../api/supabaseClient.js';
 import { useEffect, useState } from 'react';

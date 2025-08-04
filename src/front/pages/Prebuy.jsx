@@ -161,7 +161,7 @@ export const Prebuy = () => {
         return (
             <div className="text-center mt-5">
                 <p>Inicia sesión para ver y gestionar los artículos de tu carrito.</p>
-                <Link to="/login" className="btn btn-primary">Ir a Iniciar Sesión</Link>
+                <Link to="/login" className="btn btn-primary mb-5">Ir a Iniciar Sesión</Link>
             </div>
         );
     }

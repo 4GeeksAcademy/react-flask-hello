@@ -20,6 +20,13 @@ def get_all_games():
    all_games = list(map(lambda x: x.serialize(),all_games))
    return jsonify({"all_games" : all_games}),200
 
+@api.route("/detailsgames/<id>",methods = ["GET"])
+def get_game(id):
+   game = db.session.get(Games,id)
+   if game is None:
+      return jsonify("Error, no se ha encontrado el juego"),400
+
+   return jsonify({"game":game.serialize()}),200
 
 # CREAR UN NUEVO JUEGO
 @api.route('/addgame', methods=["POST"])
@@ -27,7 +34,7 @@ def add_game():
 
     body = request.get_json()
 
-    if "img" and "name" and "platform" and "description" and "price" not in body:
+    if "img" and "name" and "platform" and "description" and "price" and "distribuidora" and "genero" and "online" and "offline" and "gamemode" not in body:
         return jsonify("Error, debes introducir los campos obligatorios"), 404
 
     new_game = Games()
@@ -36,6 +43,11 @@ def add_game():
     new_game.platform = body["platform"]
     new_game.description =body["description"]
     new_game.price = body["price"]
+    new_game.distribuidora = body["distribuidora"]
+    new_game.genero = body["genero"]
+    new_game.online = body["online"]
+    new_game.offline = body["offline"]
+    new_game.gamemode = body["gamemode"]
     print(new_game)
 
     db.session.add(new_game)

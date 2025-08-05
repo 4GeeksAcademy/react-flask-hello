@@ -34,39 +34,38 @@ export default function Navbar() {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <Link to="/">
-                <img src= {Logo} alt="logo" className="h-16 w-auto mix-blend-darken logoempresa" />
+                <img src={Logo} alt="logo" className="h-16 w-auto mix-blend-darken logoempresa" />
               </Link>
+               <h1 href="#" className="rounded-md px-3 py-2 text-2xl font-bold text-gray-300">Game Store</h1>
             </div>
-            
             <div className="hidden sm:ml-6 sm:flex items-center space-x-4">
               <div className="flex space-x-4">
 
-                 <div className="relative">
+                <div className="relative">
                   <button
                     type="button"
                     onClick={() => setJuegosDropdown(!juegosDropdown)}
                     className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white"
                   >
-                    Juegos 
+                    Juegos
                   </button>
 
                   {juegosDropdown && (
                     <div className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
-                      <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Juegos de Mesa</a>
                       <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Play Station</a>
                       <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo</a>
                       <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">XboX</a>
                     </div>
                   )}
                 </div>
-				<Link to= "/register">
-                <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
-              </Link> 
-               
-              <Link to= "/addgame">
-                <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
-              </Link>
-                 <a href="/Soporte" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
+                <Link to="/register">
+                  <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
+                </Link>
+
+                <Link to="/addgame">
+                  <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
+                </Link>
+                <a href="/Soporte" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -85,15 +84,15 @@ export default function Navbar() {
             </button>
 
             <div className="relative ml-3">
-             
-                <div>
-                  <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" className="relative flex rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
-                    <span className="absolute -inset-1.5"></span>
-                    <span className="sr-only">Menu de usuario</span>
-                    <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" className="size-8 w-12 rounded-full" />
-                  </button>
-                </div>
-              
+
+              <div>
+                <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" className="relative flex rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
+                  <span className="absolute -inset-1.5"></span>
+                  <span className="sr-only">Menu de usuario</span>
+                  <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" className="size-8 w-12 rounded-full" />
+                </button>
+              </div>
+
               <div role="menu" tabindex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" class="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white text-black shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                 {
                   view && (

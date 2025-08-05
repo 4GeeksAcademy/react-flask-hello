@@ -1,3 +1,4 @@
+import { number } from "prop-types"
 import { useState } from "react"
 
 
@@ -10,6 +11,11 @@ export const Addgame = () => {
     const [platform, setPlatform] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
+    const [distribuidora, setDistribuidora] = useState("")
+    const [genero, setGenero] = useState("")
+    const [online, setOnline] = useState("")
+    const [offline, setOffline] = useState("")
+    const [gamemode, setGamemode] = useState("")
 
     const handleSubmit = async (e) => {
         try {
@@ -21,6 +27,11 @@ export const Addgame = () => {
                 "platform": platform,
                 "description": description,
                 "price": price,
+                "distribuidora":distribuidora,
+                "genero": genero,
+                "offline": offline,
+                "online": online,
+                "gamemode":gamemode
             }
             await fetch(`${backendUrl}api/games/addgame`, {
                 method: "POST",
@@ -28,8 +39,8 @@ export const Addgame = () => {
                 headers: { "Content-type": "application/json" }
             })
             alert("Juego añadido correctamente")
-        } catch (error){
-            console.log ("error al añadir juego")
+        } catch (error) {
+            console.log("error al añadir juego")
         }
     };
 
@@ -60,13 +71,62 @@ export const Addgame = () => {
                     </label>
                     <select value={platform} onChange={(e) => setPlatform(e.target.value)} class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataform">
                         <option>None</option>
-                        <option>PlayStation</option>
-                        <option>Xbox</option>
-                        <option>Nintendo</option>
-                        <option>Juegos de Mesa</option>
+                        <option>PS4</option>
+                        <option>PS5</option>
+                        <option>Xbox Serie S/X</option>
+                        <option>Xbox One</option>
+                        <option>Nintendo Switch</option>
+                        <option>Nintendo Switch2</option>
+                        <option>PC</option>
                     </select>
                 </div>
 
+                <div>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-platform">
+                        Modo de Juego
+                    </label>
+                    <select value={gamemode} onChange={(e) => setGamemode(e.target.value)} class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataform">
+                        <option>None</option>
+                        <option>Juego Online</option>
+                        <option>Juego Offline</option>
+                        <option>Juego Online opcional</option>
+                        <option>Juego Online obligatorio</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-platform">
+                        Género de Juego
+                    </label>
+                    <select value={genero} onChange={(e) => setGenero(e.target.value)} class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="grid-plataform">
+                        <option>Acción</option>
+                        <option>Aventura</option>
+                        <option>Deportes</option>
+                        <option>Estrategia</option>
+                        <option>Rol (RPG)</option>
+                        <option>Simulación</option>
+                        <option>Puzzles</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="jugadores Offline">
+                        Nº Jugadores Offline
+                    </label>
+                    <input type="number" min={1} max={10} value={offline} onChange={(e) => setOffline(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" placeholder="num jugadores"></input>
+                </div>
+                <div>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="jugadores Online">
+                        Nº Jugadores Online
+                    </label>
+                    <input type="number" min={1} max={64} value={online} onChange={(e) => setOnline(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" placeholder="num jugadores"></input>
+                </div>
+                <div>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
+                        Distribuidora
+                    </label>
+                    <input value={distribuidora} onChange={(e) => setDistribuidora(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+
+                </div>
+                
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-description">
                         Description

@@ -125,21 +125,9 @@ class Product(db.Model):
 
 
     def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "photo": self.photo,
-            "coste": self.coste,
-            "pet_type": self.pet_type.name if self.pet_type else None,
-            "price": self.price,
-            "categories": [pc.category.name for pc in self.list_product_category ],
-            "stock": self.stock,
-            # "url": self.url
-            # do not serialize the password, its a security breach
-        }
-        categories = []  # Por defecto lista vacía
-        pet_type = None  # Por defecto None
+       
+        categories = [] 
+        pet_type = None 
     
         if self.categories:
             categories = [category.serialize_category_bis() for category in self.categories]

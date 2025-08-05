@@ -3,26 +3,47 @@ import ConsejoModal from "../components/ConsejoModal";
 import { Productos } from "../components/Prouductos";
 
 export function Perros() {
-  const apiUrl = import.meta.env.VARIABLE_RENDER + "/api/product";
-  console.log(apiUrl)
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const [showModal, setShowModal] = useState(true);
-  const [productos, setProductos] = useState([]);
+  const [productos, setProductos] = useState({
+    comida: [],
+    juguetes: [],
+    accesorios: [],
+    cuidados: [],
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://sample-service-name-w6uw.onrender.com/api/product")
+    fetch(`${apiUrl}/product`)
       .then((res) => {
-        console.log(res)
         if (!res.ok) throw new Error("Error al obtener productos");
         return res.json();
       })
-
       .then((data) => {
-        console.log(data)
         const productosPerro = data.products.filter(
           (producto) => producto.pet_type?.id === 1
         );
-        setProductos(productosPerro);
+
+        const comida = productosPerro.filter((p) =>
+          p.categories?.some((cat) => cat.name.toLowerCase() === "comida")
+        );
+        const juguetes = productosPerro.filter((p) =>
+          p.categories?.some((cat) => cat.name.toLowerCase() === "juguetes")
+        );
+        const accesorios = productosPerro.filter((p) =>
+          p.categories?.some((cat) => cat.name.toLowerCase() === "accesorios")
+        );
+        const cuidados = productosPerro.filter((p) =>
+          p.categories?.some((cat) => cat.name.toLowerCase() === "cuidados")
+        );
+
+        setProductos({
+          comida,
+          juguetes,
+          accesorios,
+          cuidados,
+        });
+
         setLoading(false);
       })
       .catch((err) => {
@@ -30,10 +51,6 @@ export function Perros() {
         setLoading(false);
       });
   }, []);
-
-
-  const getProductosPorCategoria = (categoria) =>
-    productos.filter((producto) => producto.category === categoria);
 
   return (
     <div className="container mt-4 mb-2">
@@ -48,20 +65,18 @@ export function Perros() {
       ) : (
         <>
           <h2 className="text-primary text-decoration-underline">Comida</h2>
-          <Productos productos={getProductosPorCategoria("comida")} />
+          <Productos productos={productos.comida} />
 
           <h2 className="text-warning text-decoration-underline mt-3">Juguetes</h2>
-          <Productos productos={getProductosPorCategoria("juguetes")} />
+          <Productos productos={productos.juguetes} />
 
           <h2 className="text-danger text-decoration-underline mt-3">Accesorios</h2>
-          <Productos productos={getProductosPorCategoria("accesorios")} />
+          <Productos productos={productos.accesorios} />
 
           <h2 className="text-success text-decoration-underline mt-3">Cuidados</h2>
-          <Productos productos={getProductosPorCategoria("cuidados")} />
+          <Productos productos={productos.cuidados} />
         </>
       )}
     </div>
   );
 }
-
-

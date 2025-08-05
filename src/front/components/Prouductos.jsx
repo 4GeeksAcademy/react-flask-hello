@@ -12,15 +12,15 @@ export const Productos = ({ productos }) => {
           <div key={producto.id} className="col-6 col-sm-4 col-md-3 col-lg-custom">
             <div className="card h-100">
               <img
-                src={producto.imagen || "https://via.placeholder.com/150"}
+                src={producto.photo || "https://via.placeholder.com/150"}
                 className="card-img-top"
                 alt={producto.nombre}
               />
               <div className="card-body">
-                <h5 className="card-title">{producto.nombre}</h5>
-                <p className="card-text">{producto.descripcion}</p>
+                <h5 className="card-title">{producto.name}</h5>
+                <p className="card-text">{producto.description}</p>
                 <p className="card-text">
-                  <small className="text-muted">${producto.precio}</small>
+                  <small className="text-muted">${producto.price}</small>
                 </p>
                 <Link to={`/vistaproducto/${producto.id}`} className="btn btn-primary">
                   Ver Detalles

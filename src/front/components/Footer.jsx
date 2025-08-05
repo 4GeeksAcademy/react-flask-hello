@@ -9,7 +9,7 @@ export const Footer = () => (
 				<a href="https://www.instagram.com/patitasclubpetshop/" target="_blank" rel="noopener noreferrer">
 					<i style={{ color: "#3c6ca8" }} className="fa-brands fa-instagram fa-2x"></i>
 				</a>
-				<a href="mailto:petshoppatitasclub@gmail.com" target="_blank" rel="noopener noreferrer">
+				<a href="mailto:petshoppatitasclub@gmail.com">
 					<i style={{ color: "#3c6ca8" }} className="fa-solid fa-envelope fa-2x"></i>
 				</a>
 			</div>

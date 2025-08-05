@@ -71,9 +71,15 @@ class Category(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description,
-            # do not serialize the password, its a security breach
+            "description": self.description
         } 
+
+
+    def serialize_category_bis(self):
+        return {
+        "id": self.id,
+        "name": self.name
+    }
     
 class PetType(db.Model):
     id: Mapped[int] = mapped_column(primary_key= True) 
@@ -85,9 +91,16 @@ class PetType(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "name": self.name
         }
-
+    
+    def serialize_pet_type(self):
+        return {
+        "id": self.id,
+        "name": self.name
+    }
+    
+    
 class Product(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
@@ -95,10 +108,9 @@ class Product(db.Model):
     photo: Mapped[str] = mapped_column(String(), nullable=False) 
     coste: Mapped[float] = mapped_column(Float(), nullable=False)
     price: Mapped[float] = mapped_column(Float(), nullable=False)
-    # category: Mapped[int] = mapped_column(ForeignKey("category"))
     pet_type_id: Mapped[int] = mapped_column(ForeignKey("pet_type.id"))
     stock: Mapped[int] = mapped_column(Integer(), nullable=True)
-    # url: Mapped[str] = mapped_column(String(), nullable=False)
+    
 
     pet_type: Mapped["PetType"] = relationship(
         back_populates="products")
@@ -126,6 +138,32 @@ class Product(db.Model):
             # "url": self.url
             # do not serialize the password, its a security breach
         }
+        categories = []  # Por defecto lista vacía
+        pet_type = None  # Por defecto None
+    
+        if self.categories:
+            categories = [category.serialize_category_bis() for category in self.categories]
+        if self.pet_type:
+            pet_type = self.pet_type.serialize_pet_type()
+        
+        return {
+        "id": self.id,
+        "name": self.name,
+        "description": self.description,
+        "photo": self.photo,
+        "coste": self.coste,
+        "pet_type": pet_type,
+        "price": self.price,
+        "categories": categories,
+        "stock": self.stock
+    }
+
+    
+    def serialize_category_bis(self):
+        return {
+        "id": self.id,
+        "name": self.name
+    }
     
 class ProductCategory(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -157,6 +195,7 @@ class OrderItem(db.Model):
     order: Mapped ["Order"] = relationship(
         back_populates= "order_item"
     )
+    
     product: Mapped["Product"]= relationship(
         back_populates= "order_items"
     )
@@ -166,6 +205,5 @@ class OrderItem(db.Model):
             "id": self.id,
             "order_id": self.order_id,
             "product_id": self.product_id,
-            "cant": self.cant,
-            # do not serialize the password, its a security breach
-        }
+            "cant": self.cant
+            }

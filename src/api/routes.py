@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint, make_response
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import User, db, Product, Status, Order, OrderItem, Category, ProductCategory
+from api.models import User, db, Product, Status, Order, OrderItem, Category, ProductCategory, PetType
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
@@ -120,8 +120,8 @@ def new_product():
 
     # inicio de la validacion
 
-    required_Add = ['name', 'description', 'photo',
-                    'coste', 'price', 'pet_type_id', 'stock', 'category_ids']
+    required_Add = ['name', 'description', 'photo', 'coste',
+                    'price', 'pet_type_id', 'stock', 'categories']
     error = {}
 
     for Add in required_Add:
@@ -137,7 +137,7 @@ def new_product():
         coste = data_request.get('coste')
         price = data_request.get('price')
         pet_type_id = data_request.get('pet_type_id')
-        category_ids = data_request.get('category_ids')
+        categories = data_request.get('categories')
         stock = data_request.get('stock')
 
         product_new = Product(
@@ -150,28 +150,30 @@ def new_product():
             stock=stock
         )
 
-        db.session.add(product_new)
-        db.session.flush()  
-        # Asociar categorías
-        category_ids = data_request['category_ids']
-        for cat_id in category_ids:
-            # Validar existencia de la categoría
+        categories = data_request['categories']
+        for cat_id in categories:
             category = Category.query.get(cat_id)
+
             if not category:
                 return make_response(jsonify({"error": f"Categoría con ID {cat_id} no existe"}), 404)
-            
             product_category = ProductCategory(
                 product_id=product_new.id,
                 category_id=cat_id
             )
             db.session.add(product_category)
 
+            product_new.categories.append(
+                Category.query.get(cat_id)
+            )
+
+        db.session.add(product_new)
+        db.session.flush()
         db.session.commit()
         return make_response(jsonify({"msg": "¡Producto creado exitosamente!"}), 201)
 
     except Exception as e:
+        print(f"Error: {e}")
         db.session.rollback()
-        print("Error al crear producto:", e)
         return make_response(jsonify({"error": "Error interno del servidor"}), 500)
 
 
@@ -217,22 +219,14 @@ def delete_product(id):
     db.session.commit()
 
 
-# enpoind para la barra de busqueda
-
-@api.route('/search/<termino>', methods= ['GET']) 
+@api.route('/search/<termino>', methods=['GET'])
 def search_product(termino):
     products = Product.query.filter(db.or_(
         Product.name.ilike(f"%{termino}%"),
         Product.description.ilike(f"%{termino}%")
     )).all()
 
-    return make_response(jsonify({"products": [Product.serialize() for Product in products]}))
-    
-
-    return make_response(jsonify({"msg": "Se ha eliminado exitosamente"}), 200)
-
-# Cart
-# Carrito
+    return make_response(jsonify({"products": [Product.serialize() for Product in products]}), 200)
 
 
 @api.route('/cart', methods=['GET'])
@@ -296,6 +290,12 @@ def delete_to_cart(id):
     return jsonify({"message": "Producto eliminado"}), 200
 
 
+@api.route('/pettypes', methods=['GET'])
+def get_pettypes():
+    pettypes = PetType.query.all()
+    return jsonify([pt.serialize_pet_type() for pt in pettypes]), 200
+
+
 @api.route('/cart/checkout', methods=['POST'])
 @jwt_required()
 def checkout():
@@ -307,6 +307,5 @@ def checkout():
 
     order.status = Status.PAID
     db.session.commit()
-
 
     return jsonify({"message": "Compra finalizada", "order_id": order.id}), 200

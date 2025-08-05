@@ -1,9 +1,10 @@
 import { useState } from "react"
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
 
 export const Login = () => {
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
+const navigate = useNavigate();
      
     
 
@@ -15,7 +16,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
       const login_user = async (e) => {
         e.preventDefault()
 
-       const body = await fetch(`https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/user/login`, { 
+       const body = await fetch(`${backendUrl}api/user/login`, { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }) 
@@ -38,11 +39,11 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
        return data
   }
 
-//  const cerrarSesion = ()=>{
-//      localStorage.removeItem("jwt-token", data.token)
-//      alert("Sesion finalizada")
-//      navigate("/Login")
-//  }
+  const cerrarSesion = ()=>{
+      localStorage.removeItem("jwt-token", data.token)
+      alert("Sesion finalizada")
+      navigate("/Login")
+  }
 
 
 

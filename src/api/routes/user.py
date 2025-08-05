@@ -34,7 +34,7 @@ def register_user():
     new_user.email = body["email"]
     new_user.password = new_password.decode()
     new_user.is_active = True
-    new_user.rol = body["rol"]
+    new_user.is_admin = body["is_admin"]
     db.session.add(new_user)
     db.session.commit()
 

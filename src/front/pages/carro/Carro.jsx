@@ -43,10 +43,10 @@ export const Carro = () => {
     historial.push(nuevaCompra);
     localStorage.setItem("historialCompras", JSON.stringify(historial));
 
-    dispatch({ type: "clearCarro" });
-    localStorage.removeItem("carro");
-    setTimeout(() => setPaymentSuccess(false), 3000);
-  };
+        dispatch({ type: "clearCarro" });
+            localStorage.removeItem("carro");
+                setTimeout(() => setPaymentSuccess(false), 3000);
+                  };
 
   return (
     <div className="carro-container p-6">

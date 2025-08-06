@@ -9,7 +9,7 @@ import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { LoginPage } from "./pages/LoginPage";
-import { VistaHome } from "./components/VistaHome";
+import { VistaHome } from "./pages/VistaHome";
 import { Formulario } from "./pages/Formulario";
 import { Evento } from "./pages/Evento";
 import { Usuario } from "./pages/Usuario";

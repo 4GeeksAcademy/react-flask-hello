@@ -2,10 +2,10 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { supabase } from '../../api/supabaseClient.js';
 import { useEffect, useState } from 'react';
 import { Login } from "../components/Login.jsx";
-import { VistaHome } from "../components/VistaHome.jsx";
 import { GlassLogin } from "../components/GlassLogin.jsx";
 import { LoginPage } from "./LoginPage.jsx";
 import { Navigate } from "react-router-dom";
+import { VistaHome } from "./VistaHome.jsx";
 
 export const Home = () => {
     const { store, dispatch } = useGlobalReducer();

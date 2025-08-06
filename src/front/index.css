@@ -1,1 +1,92 @@
 @import "tailwindcss";
+
+
+.gradient-container {
+  @apply min-h-screen flex flex-col items-center justify-start;
+  background: linear-gradient(135deg, #1e1e2f, #3e2a59, #ee7752);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.second-gradient {
+  @apply absolute inset-0 z-0;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+
+button {
+  @apply transition-all duration-300 ease-in-out px-4 py-2 rounded-full font-semibold shadow-md;
+  background: linear-gradient(to right, #7c3aed, #3b82f6);
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background: linear-gradient(to right, #6d28d9, #2563eb);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+
+h1 {
+  @apply text-5xl font-extrabold text-yellow-300 mb-4 drop-shadow-md;
+}
+
+
+p {
+  @apply text-lg md:text-xl text-gray-200 text-center max-w-3xl;
+}
+
+a {
+  @apply text-blue-400 hover:underline hover:text-blue-300;
+}
+
+
+.slick-slide img {
+  @apply rounded-lg shadow-xl border-4 border-indigo-400;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+
+.slick-slide p {
+  @apply text-white mt-4 text-lg;
+}
+
+
+@media (max-width: 768px) {
+  .gradient-container {
+    padding: 1rem;
+  }
+
+  button {
+    @apply text-sm px-3 py-2;
+  }
+}
+
+
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.btn-gradient {
+  @apply bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-4 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl;
+}
+
+
+.btn-google {
+  @apply bg-white text-blue-600 font-bold py-2 px-6 rounded-full shadow-md transition-all duration-300 ease-in-out hover:bg-blue-100 hover:scale-105;
+}
+
+
+.knect-title {
+  @apply text-yellow-300 mb-4 text-5xl font-extrabold leading-tight tracking-wide drop-shadow-xl;
+}

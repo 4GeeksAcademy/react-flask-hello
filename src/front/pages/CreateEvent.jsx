@@ -108,7 +108,7 @@ export function CreateEvent() {
       .getPublicUrl(filePath);
     const publicUrl = data.publicUrl;
 
-    // Obtener el id del usuario creador (usuario en en sesión)
+    // Obtener el id del usuario creador (usuario en en sesion)
     const user = supabase.auth.user(); // metodo para obtener usuario actual
     if (!user) {
       alert("Usuario no autenticado");
@@ -123,8 +123,7 @@ export function CreateEvent() {
         definicion: formData.description,
         fecha: formData.date,
         portada: publicUrl,
-        creador_evento: user.id, // o user.id_usuario, según tu estructura de usuario
-        precio: 0, // ajusta si tienes campo precio en formData
+        creador_evento: user.id, // o user.id_usuario, segun tu estructura de usuario
         categoria: JSON.stringify(formData.categories), // guardamos como JSON
         max_asist:
           formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),

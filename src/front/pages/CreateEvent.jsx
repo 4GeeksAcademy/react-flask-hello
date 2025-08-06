@@ -34,11 +34,11 @@ export function CreateEvent() {
   };
 
   const isValidTag = (tag) => {
-    const validPattern = /^[\w-]{1,12}$/; // Esto solo permite letras, números y guiones, con un máximo de 12 caracteres
+    const validPattern = /^[\w-]{1,12}$/; // Esto solo permite letras, numeros y guiones y un máximo de 12 caracteres
     return validPattern.test(tag);
   };
 
-  const handleCategoryInput = (e) => { // Maneja la entrada de categoría
+  const handleCategoryInput = (e) => { // Maneja la entrada de categoria
     setCategoryInput(e.target.value);
   };
 
@@ -64,7 +64,7 @@ export function CreateEvent() {
     }
   };
 
-  const handleRemoveCategory = (tag) => { // Logiaca que limina la categoria
+  const handleRemoveCategory = (tag) => { // Logiaca que elimina la categoria
     setFormData((prev) => ({
       ...prev,
       categories: prev.categories.filter((t) => t !== tag)
@@ -74,7 +74,7 @@ export function CreateEvent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Formulario enviado", formData, imageFile);
-    // Aquí va la lógica para enviar a Supabase
+    // Aqui va la logica para enviar a Supabase
   };
 
   const navigate = useNavigate();

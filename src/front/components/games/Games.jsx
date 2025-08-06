@@ -29,7 +29,7 @@ export const Games = () => {
       });
     } catch (error) {
       console.log(error);
-    }z
+    } z
   };
 
   return (
@@ -69,12 +69,14 @@ export const Games = () => {
           </div>
 
           {/* ---- boton para añadir al carro ---- */}
-        <button
-          className="add-to-carro-btn"
-          onClick={() => dispatch({ type: "Agregar al Carro", payload: game })}
-        >
-          Agregar al carro
-        </button>
+          <div className="px-6 pb-4">
+            <button
+              className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
+              onClick={() => dispatch({ type: "Agregar al Carro", payload: game })}
+            >
+              Agregar al carro
+            </button>
+          </div>
         </div>
       ))}
     </div>

@@ -51,25 +51,44 @@ export const DetailsGames = () => {
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-black bg-opacity-50 flex flex-col md:flex-row"> {/* Efecto traslúcido */}
         {/* Left Panel - Game Info */}
         <div className="w-1/2 p-8 flex flex-col justify-center">
-          <h1 className="text-3xl font-extrabold text-white mb-4">{detailsGame.name}</h1>
-          <p className="text-gray-300 text-sm font-medium mb-4">{detailsGame.distribuidora}</p>
-          <div className="flex gap-2 mb-6">
-            <span className="bg-blue-900 text-white px-3 py-1 rounded text-xs font-medium">{detailsGame.platform}</span>
+          <div className="flex flex-col md:flex-row gap-6 items-start">
+            {/* Columna izquierda: texto */}
+            <div className="flex-1">
+              <h1 className="text-3xl font-extrabold text-white mb-4">{detailsGame.name}</h1>
+              <p className="text-gray-300 text-sm font-medium mb-4">{detailsGame.distribuidora}</p>
+              <div className="flex gap-2 mb-6">
+                <span className="bg-blue-900 text-white px-3 py-1 rounded text-xs font-medium">{detailsGame.platform}</span>
+              </div>
+              <div className="mb-2">
+                <span className="text-white text-2xl font-bold">Precio: {detailsGame.price} €</span>
+              </div>
+              <div className="flex gap-3">
+                <button className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex-2">
+                  Añadir al carrito
+                </button>
+                <button className="bg-red-900 hover:bg-red-700 text-white p-3 rounded-lg transition-colors">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <Heart />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Columna derecha: video */}
+            <div className="flex-shrink-0">
+              <iframe
+                width="300"
+                height="215"
+                src="https://www.youtube.com/embed/TXSFuUXPtP4?si=CRPVEgwpGIBGZ7sc"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="rounded-lg shadow-lg"
+              ></iframe>
+            </div>
           </div>
-          <div className="mb-2">
-            <span className="text-white text-2xl font-bold">Precio: {detailsGame.price} €</span>
-          </div>
-          <div className="flex gap-3">
-            <button className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex-2">
-              Añadir al carrito
-            </button>
-            <button className="bg-red-900 hover:bg-red-700 text-white p-3 rounded-lg transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <Heart />
-              </svg>
-            </button>
-          </div>
-        
         </div>
         {/* Right Panel - Game Features */}
         <div

@@ -68,8 +68,8 @@ export function Navbar() {
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">Open user menu</span>
                 <img
-                  alt=""
-                  src="https://media.licdn.com/dms/image/v2/D4E0BAQEcO3fgdcSiEg/company-logo_200_200/company-logo_200_200/0/1688681342958/4geeksacademyes_logo?e=2147483647&v=beta&t=kGELw1vfpMAZy4w_xBhs1Hz5SYKBO35m7NI9bo3E2Sg"
+                  alt={item.name}
+                  src={item.img}
                   className="size-3 rounded-full"
                 />
               </MenuButton>

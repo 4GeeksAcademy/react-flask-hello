@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { VistaHome } from "../components/VistaHome";
+import { VistaHome } from "./VistaHome";
 
 export const Evento = () => {
 

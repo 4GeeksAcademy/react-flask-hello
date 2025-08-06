@@ -1,12 +1,12 @@
-import { Login } from "./Login.jsx";
+import { Login } from "../components/Login.jsx";
 import { Link } from "react-router-dom";
-import { AjustesUsuario } from "../pages/AjustesUsuario.jsx";
-import { Evento } from "../pages/Evento.jsx";
-import { Formulario } from "../pages/Formulario.jsx";
-import { NotFound } from "../pages/NotFound.jsx";
-import { Usuario } from "../pages/Usuario.jsx";
-import { CreateEvent } from "../pages/CreateEvent";
-import { LoginPage } from "../pages/LoginPage";
+import { AjustesUsuario } from "./AjustesUsuario.jsx";
+import { Evento } from "./Evento.jsx";
+import { Formulario } from "./Formulario.jsx";
+import { NotFound } from "./NotFound.jsx";
+import { Usuario } from "./Usuario.jsx";
+import { CreateEvent } from "./CreateEvent.jsx";
+import { LoginPage } from "./LoginPage.jsx";
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -47,7 +47,7 @@ export const VistaHome = () => {
   const rutaFormulario = () => {
     navigate("/Formulario");
   };
- const rutaCrearEvento = () => {
+  const rutaCrearEvento = () => {
     navigate("/crear-evento");
   };
   const rutaLoginPage = () => {

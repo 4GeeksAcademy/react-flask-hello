@@ -1,3 +1,12 @@
+.register-bg {
+    background-image: url('https://i.redd.it/gaming-wallpapers-3840-x-2160-uhd-v0-fr4m7cy20whd1.jpg?width=5120&format=pjpg&auto=webp&s=6caf6275b910167617eada9bf7340ef7257259cd');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+
 body{
 	margin:0;
 	color:#6a6f8c;

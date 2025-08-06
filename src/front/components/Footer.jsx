@@ -1,4 +1,4 @@
-import { VistaHome } from "../components/VistaHome";
+import { VistaHome } from "../pages/VistaHome";
 import { useNavigate } from "react-router-dom";
 
 

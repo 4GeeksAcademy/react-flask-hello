@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { supabase } from '../../api/supabaseClient.js';
 import { FaGoogle, FaGithub, FaFacebookF, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { Navbar } from './Navbar.jsx';
 
 export const GlassLogin = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +20,7 @@ export const GlassLogin = () => {
     if (error) alert('Error al iniciar sesión: ' + error.message);
   };
 
+
   return (
     <div
       className="min-h-screen bg-cover bg-center flex items-center justify-center"
@@ -28,6 +31,7 @@ export const GlassLogin = () => {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8 w-full max-w-md text-white"
       >
+
         <h2 className="text-3xl font-bold text-center mb-6">Bienvenido a Knect</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">

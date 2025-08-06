@@ -1,6 +1,6 @@
 import './Navbar.css'
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState,useEffect } from "react"
+import { Link,useNavigate } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
 import { CircleUser } from 'lucide-react';
@@ -8,10 +8,66 @@ import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Navbar() {
+  const {store, dispatch } = useGlobalReducer()
+  const { user } = store;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const navigate = useNavigate()
+  const token_user = localStorage.getItem('jwt-token');
   const [view, setview] = useState(false)
   const [juegosDropdown, setJuegosDropdown] = useState(false)
 
-  const { store } = useGlobalReducer();
+  const [myUser, setMyUser] = useState(null)
+
+  const cerrarSesion = () => {
+    localStorage.removeItem("jwt-token")
+    dispatch({
+      type: 'setUser',
+      payload: null
+    })
+    console.log("Sin sesion")
+    alert("Sesion finalizada")
+    navigate("/")
+  }
+
+
+
+  const getMyUser = async () => {
+    // Recupera el token desde la localStorage
+
+    console.log("hola")
+
+
+
+    const responsive = await fetch(`${backendUrl}api/user`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + token_user // ⬅⬅⬅ authorization token
+      }
+    });
+
+
+    if (!responsive.ok) {
+      throw Error("There was a problem in the login request")
+    }
+    if (responsive.status === 403) {
+      throw Error("Missing or invalid token");
+    }
+    const data = await responsive.json();
+    dispatch({
+      type: "setUser",
+      payload: data.User
+    });
+    setMyUser(data.User)
+  }
+
+
+  useEffect(() => {
+    setMyUser(user)
+  }, [user]);
+  useEffect(() => {
+    getMyUser();
+  }, []);
 
   return (
     <nav className="bg-gray-900">
@@ -92,22 +148,26 @@ export default function Navbar() {
               </svg>
             </button>
             <div className="relative ml-3">
-              <div>
-                <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true" className="relative flex rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
-                  <span className="absolute -inset-1.5"></span>
-                  <span className="sr-only">Menu de usuario</span>
-                  <img onClick={() => setview(!view)} src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" className="size-8 w-12 rounded-full" />
-                </button>
-              </div>
-              <div role="menu" tabIndex="-1" aria-labelledby="user-menu-button" aria-orientation="vertical" className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white text-black shadow-lg ring-1 ring-black/5 focus:outline-hidden">
-                {view && (
-                  <>
-                    <a id="user-menu-item-0" role="menuitem" href="/login" tabIndex="-1" className="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Login</a>
-                    <a id="user-menu-item-1" role="menuitem" href="#" tabIndex="-1" className="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Ajustes</a>
-                    <a id="user-menu-item-2" role="menuitem" href="#" tabIndex="-1" className="block px-4 py-2 text-sm text-purple-900 hover:bg-orange-200">Cerrar sesión</a>
-                  </>
-                )}
-              </div>
+              {
+                token_user ? (
+                  <button onClick={() => cerrarSesion()} class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <LogOut />
+                  </button>
+                ) : (
+                  <div className="relative ml-3 flex justify-between border-white">
+                    <Link to="/Login">
+                      <button class="bg-gray-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <LogIn />
+                      </button>
+                    </Link>
+
+
+                  </div>
+                )
+
+              }
+
+
             </div>
           </div>
         </div>

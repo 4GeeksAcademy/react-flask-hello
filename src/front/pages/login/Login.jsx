@@ -36,14 +36,11 @@ const navigate = useNavigate();
        // También deberías almacenar el usuario en la store utilizando la función setItem
        localStorage.setItem("jwt-token", data.token);
        alert("Sesion iniciada correctamente");
+       navigate("/")
        return data
   }
 
-  const cerrarSesion = ()=>{
-      localStorage.removeItem("jwt-token", data.token)
-      alert("Sesion finalizada")
-      navigate("/Login")
-  }
+ 
 
 
 

@@ -16,6 +16,8 @@ import { Privacidad } from "./pages/soporte/Privacidad.jsx";
 import { Login } from "./pages/login/Login.jsx";
 import { Addgame } from "./pages/addgame/Addgame.jsx";
 import { DetailsGames } from "./pages/detailsGames/DetailsGames.jsx";
+import { Carro } from "./pages/carro/Carro.jsx";
+import { Historial } from "./pages/historial/Historial.jsx";
 
 
 
@@ -41,6 +43,8 @@ export const router = createBrowserRouter(
         <Route path="/privacidad" element={<Privacidad />} /> {/* PAGINA Soporte STORE*/}
         <Route path="/addgame" element={<Addgame />} /> {/* PAGINA Soporte STORE*/}
         <Route path="/detailsgames/:id" element={<DetailsGames />} /> {/* PAGINA DETALLES GAMES*/}
+        <Route path="/carro" element={<Carro />} /> {/* PAGINA Carrito*/}
+        <Route path="/historial" element={<Historial />} />
 
 
 

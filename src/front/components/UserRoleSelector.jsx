@@ -1,59 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../../api/supabaseClient.js';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const UserRoleSelector = () => {
-  const [selectedRole, setSelectedRole] = useState('');
-  const [userId, setUserId] = useState(null);
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
-  // Obtengo el usuario actual al cargar el componente
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error al obtener el usuario:', error.message);
-      } else {
-        setUserId(user.id);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  // Con esto obtengo el id del usuario para actualizar el rol que pondrán las personas
-  const handleRoleChange = async (e) => {
-    const newRole = e.target.value;
-    setSelectedRole(newRole);
-
-    if (!userId) {
-      alert('Usuario no encontrado');
-      return;
-    }
-
-    const { error } = await supabase
-      .from('profiles') // En supabase debo poner que mi tabla se llama "profiles"
-      .update({ role: newRole })
-      .eq('id', userId);
-
-    if (error) {
-      console.error('Error al actualizar el rol:', error.message);
-      alert('No se pudo actualizar el rol');
-    } else {
-      alert(`Rol actualizado a: ${newRole}`);
+  const handleNavigate = () => {
+    if (role) {
+      navigate("/vistahome");
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto mt-10">
-      <h2 className="text-lg font-bold mb-4 text-gray-800">Selecciona tu rol:</h2>
-      <select
-        value={selectedRole}
-        onChange={handleRoleChange}
-        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="">-- Elige que rol serás --</option>
-        <option value="usuario">Usuario</option>
-        <option value="organizador">Organizador</option>
-        <option value="admin">Admin</option>
-      </select>
+    <div
+      className="h-screen w-full bg-cover bg-center flex items-center justify-center"
+      style={{
+        backgroundImage: "url('/bg-concierto.jpg')", // asegúrate de que esté en public/
+      }}
+    >
+      <div className="bg-black/70 p-10 rounded-xl shadow-2xl w-full max-w-md text-center text-white">
+        <h1 className="text-3xl font-bold mb-6 leading-tight">
+          Bienvenido al <br />
+          <span className="text-yellow-400">Panel de Usuario</span>
+        </h1>
+
+        <label htmlFor="role" className="block mb-2 text-lg">
+          Selecciona tu rol:
+        </label>
+
+        <select
+          id="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="w-full p-2 rounded-md text-black focus:outline-none"
+        >
+          <option value="">-- Elige qué rol serás --</option>
+          <option value="admin">Administrador/a</option>
+          <option value="organizer">Organizador/a</option>
+          <option value="user">Usuario/a</option>
+        </select>
+
+        <button
+          onClick={handleNavigate}
+          className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-5 py-2 rounded-md transition duration-300 ease-in-out"
+        >
+          Ir a VistaHome
+        </button>
+      </div>
     </div>
   );
 };

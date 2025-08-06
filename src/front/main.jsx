@@ -9,11 +9,27 @@ import useGlobalReducer from './hooks/useGlobalReducer';
 import { BackendURL } from './components/BackendURL';
 
 const RootApp = () => {
-    const { store } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
 
     useEffect(() => {
+        // Inicializa el tema
         document.body.className = store.theme === 'dark' ? 'dark-theme' : '';
-    }, [store.theme]);
+
+        // Intenta cargar el estado de login desde localStorage al montar el componente
+        const storedToken = localStorage.getItem("jwt_token");
+        if (storedToken) {
+            // Opcional: podrías verificar la validez del token con una llamada al backend aquí
+            // para una autenticación más robusta al recargar.
+            dispatch({
+                type: "set_login_status",
+                payload: {
+                    isLoggedIn: true,
+                    user_id: null, // Si tu token no contiene el user_id, puedes dejarlo null o decodificarlo
+                    token: storedToken
+                }
+            });
+        }
+    }, [store.theme, dispatch]);
 
     if (!import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL == "") {
         return (

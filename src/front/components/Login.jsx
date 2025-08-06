@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../api/supabaseClient.js';
+import useGlobalReducer from '../hooks/useGlobalReducer.jsx';
 
 export const Login = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { dispatch } = useGlobalReducer();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user || null);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+      if(currentUser) dispatch({type: "set_user", payload: currentUser})
       setIsLoading(false);
     });
-
+  
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+      if (currentUser){
+       dispatch({type: "set_user", payload: currentUser})
+       navigate("/vistahome");
+      }
     });
-
+  
     return () => {
       listener.subscription.unsubscribe();
     };
   }, []);
-
+  
   // Login de Google
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-    if (error) console.error('Error al iniciar sesión con Google:', error.message);
+    if (error){
+     console.error('Error al iniciar sesión con Google:', error.message);
+    }else{
   };
 
   // Login de GitHub
@@ -36,6 +48,7 @@ export const Login = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    dispatch({type: "set_user", payload: currentUser})
   };
 
   if (isLoading) return <p>Cargando...</p>; // condicion para mostrar un mensaje de carga
@@ -62,4 +75,5 @@ export const Login = () => {
       )}
     </div>
   );
+}
 };

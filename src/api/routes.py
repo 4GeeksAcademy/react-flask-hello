@@ -61,8 +61,6 @@ def signup():
     })
 
     usuario_data = {
-        
-        'supabase_id': auth_response.user.id,
         'email': email,
         'nombre': data.get('nombre', ''),
         'apellido': data.get('apellido', ''),

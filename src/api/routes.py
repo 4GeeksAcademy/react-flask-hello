@@ -5,6 +5,10 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from .supabase_client import supabase
+from datetime import datetime, timedelta
+import jwt
+import os
+
 
 api = Blueprint('api', __name__)
 
@@ -17,9 +21,33 @@ CORS(api)
 @api.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
+
+    # Validaciones basicas de los campos
+    required_fields = ['email', 'password', 'nickname', 'nombre', 'apellido', 'telefono']
+    missing_fields = [field for field in required_fields if field not in data or not data[field]]
+
+    if missing_fields:
+        return jsonify({
+            "error": f"Faltan campos obligatorios: {', '.join(missing_fields)}"
+        }), 400
+
+    # Validacion simple de email
+    if '@' not in data['email'] or '.' not in data['email']:
+        return jsonify({"error": "Email no válido"}), 400
+
+    #  Valida longitud mínima contraseña
+    if len(data['password']) < 6:
+        return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
+
+    # Valida el telefono (solo dígitos y longitud mínima)
+    if not data['telefono'].isdigit() or len(data['telefono']) < 7:
+        return jsonify({"error": "Teléfono no válido"}), 400
+
+
     email = data['email']
     password = data['password']
-    user = supabase.auth.sign_up({
+
+    auth_response = supabase.auth.sign_up({
         "email": email,
         "password": password,
         "options": {
@@ -31,7 +59,23 @@ def signup():
             }
         }
     })
-    print(user)
+
+    usuario_data = {
+        
+        'supabase_id': auth_response.user.id,
+        'email': email,
+        'nombre': data.get('nombre', ''),
+        'apellido': data.get('apellido', ''),
+        'nickname': data.get('nickname', ''),
+        'telefono': data.get('telefono', ''),
+        'avatar': data.get('avatar', ''),
+        'rol': data.get('rol', 'user')
+    }
+
+    insert_response = supabase.table('Usuario').insert(usuario_data).execute()
+
+    print("Insert response: ", insert_response)
+
     return jsonify("Todo bien")
 
 # Login
@@ -55,6 +99,8 @@ def signin():
             "password": password
         })
 
+
+
         if response.user and response.session:
             # Generar JWT token personalizado
             token = generate_token(response.user.id, response.user.email)
@@ -75,3 +121,12 @@ def signin():
     except Exception as e:
         print(f"Signin error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
+
+
+def generate_token(user_id, email):
+    payload = {
+        'user_id': user_id,
+        'email': email,
+        'exp': datetime.utcnow() + timedelta(hours=24)
+    }
+    return jwt.encode(payload, "TEST", algorithm='HS256')

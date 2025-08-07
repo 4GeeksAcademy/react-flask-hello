@@ -9,8 +9,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     username: Mapped[str] = mapped_column(String(120), nullable=False)
-    is_admin: Mapped[bool] = mapped_column(String(10), nullable = False)
-    
+    is_admin: Mapped[bool] = mapped_column(Boolean(), nullable=False)
   
 
 
@@ -19,7 +18,7 @@ class User(db.Model):
            "id": self.id,
             "email": self.email,
             "username" :self.username,
-            "is_admin":False
+            "is_admin":self.is_admin
             
            
            

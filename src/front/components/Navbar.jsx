@@ -1,6 +1,6 @@
 import './Navbar.css'
-import { useState,useEffect } from "react"
-import { Link,useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
 import { CircleUser } from 'lucide-react';
@@ -8,13 +8,14 @@ import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Navbar() {
-  const {store, dispatch } = useGlobalReducer()
+  const { store, dispatch } = useGlobalReducer()
   const { user } = store;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const [view, setview] = useState(false)
   const [juegosDropdown, setJuegosDropdown] = useState(false)
+  const esAdmin = user && user.is_admin === true;
 
   const [myUser, setMyUser] = useState(null)
 
@@ -33,8 +34,6 @@ export default function Navbar() {
 
   const getMyUser = async () => {
     // Recupera el token desde la localStorage
-
-    console.log("hola")
 
 
 
@@ -58,13 +57,14 @@ export default function Navbar() {
       type: "setUser",
       payload: data.User
     });
-    setMyUser(data.User)
+
+
   }
+ 
+  console.log(user)
 
 
-  useEffect(() => {
-    setMyUser(user)
-  }, [user]);
+ 
   useEffect(() => {
     getMyUser();
   }, []);
@@ -90,7 +90,7 @@ export default function Navbar() {
               <Link to="/">
                 <img src={Logo} alt="logo" className="h-16 w-auto mix-blend-darken logoempresa" />
               </Link>
-              <h1 href="#" className="rounded-md px-3 py-2 text-2xl font-bold text-gray-300">Game Store</h1>
+
             </div>
             <div className="hidden sm:ml-6 sm:flex items-center space-x-4">
               <div className="flex space-x-4">
@@ -110,12 +110,20 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
+
                 <Link to="/register">
                   <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
                 </Link>
-                <Link to="/addgame">
-                  <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
-                </Link>
+
+
+                {
+                 
+                  esAdmin && (
+                    <Link to="/addgame">
+                      <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
+                    </Link>
+                  )}
+
                 <a href="/Soporte" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
                 <input
                   type="text"

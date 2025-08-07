@@ -9,18 +9,15 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Navbar() {
   const { store, dispatch } = useGlobalReducer()
-  const { user } = store;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
-  const [view, setview] = useState(false)
+  const user = localStorage.getItem('user');
   const [juegosDropdown, setJuegosDropdown] = useState(false)
-  const esAdmin = user && user.is_admin === true;
-
-  const [myUser, setMyUser] = useState(null)
+  const [view, setview] = useState(false)
 
   const cerrarSesion = () => {
     localStorage.removeItem("jwt-token")
+    localStorage.removeItem("user")
     dispatch({
       type: 'setUser',
       payload: null
@@ -30,44 +27,18 @@ export default function Navbar() {
     navigate("/")
   }
 
-
-
-  const getMyUser = async () => {
-    // Recupera el token desde la localStorage
-
-
-
-    const responsive = await fetch(`${backendUrl}api/user`, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer ' + token_user // ⬅⬅⬅ authorization token
-      }
-    });
-
-
-    if (!responsive.ok) {
-      throw Error("There was a problem in the login request")
-    }
-    if (responsive.status === 403) {
-      throw Error("Missing or invalid token");
-    }
-    const data = await responsive.json();
-    dispatch({
-      type: "setUser",
-      payload: data.User
-    });
-
-
-  }
- 
-  console.log(user)
-
-
- 
   useEffect(() => {
-    getMyUser();
-  }, []);
+    if (user) {
+      let parseUser = JSON.parse(user)
+      if (parseUser.is_admin) {
+        setview(true)
+      }
+    } else {
+      setview(false)
+    }
+    console.log("hola", user, "Asdasd")
+  }, [token_user]);
+
 
   return (
     <nav className="bg-gray-900">
@@ -117,8 +88,8 @@ export default function Navbar() {
 
 
                 {
-                 
-                  esAdmin && (
+
+                  view && (
                     <Link to="/addgame">
                       <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
                     </Link>
@@ -134,18 +105,29 @@ export default function Navbar() {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            
             {/* ---- carrito ---- */}
             <Link to="/Carro" className="relative mr-4">
-              <span className="text-white text-2xl">🛒</span>
+             {
+
+                  token_user && (
+                   <span className="text-white text-2xl">🛒</span>
+                  )}
+              
               {store.carro && store.carro.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1">
                   {store.carro.length}
                 </span>
               )}
             </Link>
-            <Link to="/historial" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">
+            {
+
+                  token_user && (
+                  <Link to="/historial" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">
               Historial
             </Link>
+                  )}
+            
 
 
             <button type="button" className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">

@@ -30,7 +30,7 @@ export const Prebuy = () => {
             return;
         }
         try {
-            const response = await fetch(`${backendUrl}/api/cart/${store.user_id}`, {
+            const response = await fetch(`${backendUrl}api/cart/${store.user_id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

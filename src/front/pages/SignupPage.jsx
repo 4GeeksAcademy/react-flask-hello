@@ -17,14 +17,15 @@ export const SignupPage = () => {
         }
 
         const username = email;
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
         try {
-            const createUserResponse = await fetch(`https://playground.4geeks.com/todo/users/${username}`, {
+            const createUserResponse = await fetch(`${backendUrl}api/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify([])
+                body: JSON.stringify({email, password})
             });
 
             if (!createUserResponse.ok && createUserResponse.status !== 400) {
@@ -32,7 +33,7 @@ export const SignupPage = () => {
             }
 
             const initialPost = { label: `Bienvenido a Festquila, ${username}!`, done: false };
-            const addPostResponse = await fetch(`https://playground.4geeks.com/todo/users/${username}/todos`, {
+            const addPostResponse = await fetch(`${backendUrl}api/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -21,7 +21,7 @@ export const Home = () => {
             return;
         }
         try {
-            const response = await fetch(`${backendUrl}/api/hello`, {
+            const response = await fetch(`${backendUrl}api/hello`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });

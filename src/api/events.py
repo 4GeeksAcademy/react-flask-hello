@@ -2,8 +2,10 @@ from flask import Blueprint, request, jsonify
 from api.models import db, Event
 from api.utils import geocode_address
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_cors import CORS
 
 events_bp = Blueprint('events', __name__,)
+CORS(events_bp)
 
 
 @events_bp.route('/events', methods=['GET'])
@@ -30,7 +32,7 @@ def delete_event(id):
 
 
 
-@events_bp.route('/events', methods=['POST']) #endpoin google maps
+@events_bp.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
     current_user = get_jwt_identity()

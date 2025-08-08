@@ -2,14 +2,15 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, redirect, render_template
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.database.db import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from supabase import create_client, Client
 
 # from models import Person
 
@@ -18,6 +19,7 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -28,8 +30,15 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+
+supabase: Client = create_client(
+    os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
+
 
 # add the admin
 setup_admin(app)
@@ -50,13 +59,31 @@ def handle_invalid_usage(error):
 # generate sitemap with all your endpoints
 
 
-@app.route('/')
-def sitemap():
-    if ENV == "development":
-        return generate_sitemap(app)
-    return send_from_directory(static_file_dir, 'index.html')
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    user = supabase.auth.sign_up({
+        "email": email,
+        "password": password,
+        "options": {
+            "data": {
+                "nickname": data.get('nickname', ''),
+                "nombre": data.get('nombre', ''),
+                "apellido": data.get('apellido', ''),
+                "telefono": data.get('telefono', '')
+            }
+        }
+    })
+    print(user)
+
+    return jsonify("Todo bien")
+
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):

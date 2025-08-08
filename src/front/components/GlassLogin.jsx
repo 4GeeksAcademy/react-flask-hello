@@ -1,25 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { supabase } from '../../api/supabaseClient.js';
-import { FaGoogle, FaGithub, FaFacebookF, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
+import { FaGoogle, FaGithub } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar.jsx';
 
 export const GlassLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({ provider });
     if (error) console.error('OAuth login error:', error.message);
   };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) alert('Error al iniciar sesión: ' + error.message);
-  };
-
 
   return (
     <div
@@ -29,77 +19,32 @@ export const GlassLogin = () => {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8 w-full max-w-md text-white"
+        className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8 w-full max-w-md text-white text-center"
       >
+        <h2 className="text-3xl font-bold mb-6">
+          Bienvenido a <span className="text-yellow-300">Knect</span>
+        </h2>
 
-        <h2 className="text-3xl font-bold text-center mb-6">Bienvenido a Knect</h2>
+        <p className="text-white/80 mb-6">Conéctate con tu red favorita:</p>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            className="w-full px-4 py-2 rounded-md bg-white/20 placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            className="w-full px-4 py-2 rounded-md bg-white/20 placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="w-full bg-white text-black font-semibold py-2 rounded-md hover:bg-gray-200 transition"
-          >
-            Iniciar sesión
-          </button>
-        </form>
-
-        <div className="my-6 text-center text-white/70">— o conéctate a través de —</div>
-
-        <div className="flex justify-center gap-4 mb-4">
+        <div className="flex justify-center gap-6">
           <button
             onClick={() => handleOAuthLogin('google')}
-            className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition"
+            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
             aria-label="Google"
           >
             <FaGoogle />
           </button>
           <button
             onClick={() => handleOAuthLogin('github')}
-            className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition"
+            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
             aria-label="GitHub"
           >
             <FaGithub />
           </button>
-          <button
-            onClick={() => handleOAuthLogin('facebook')}
-            className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition"
-            aria-label="Facebook"
-          >
-            <FaFacebookF />
-          </button>
-          <button
-            onClick={() => handleOAuthLogin('linkedin')}
-            className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition"
-            aria-label="LinkedIn"
-          >
-            <FaLinkedinIn />
-          </button>
-          <button
-            onClick={() => handleOAuthLogin('twitter')}
-            className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition"
-            aria-label="X"
-          >
-            <FaXTwitter />
-          </button>
         </div>
 
-        <p className="text-center text-sm text-white/70 mt-4">
+        <p className="text-center text-sm text-white/70 mt-8">
           ¿No tienes cuenta?{' '}
           <a href="/register" className="text-white underline hover:text-blue-300">
             Regístrate

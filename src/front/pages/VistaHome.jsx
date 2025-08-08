@@ -55,13 +55,18 @@ export const VistaHome = () => {
   };
 
   return (
-    <div>
-      <Login />
+    <div className="gradient-container">
+      <div className="relative overflow-hidden">
+        <div className="second-gradient"></div>
+        <div className="relative z-10">
+          <Login />
+        </div>
+      </div>
       <br />
       <br />
       <div className="flex justify-center">
         {/*botones a rutas*/}
-        <button className="text-black bg-yellow-700 m-5 p-1" onClick={rutaLoginPage}>Login</button>
+        <button className="text-black bg-yellow-700 m-5" onClick={rutaLogin}>Login</button>
         <button className="text-black bg-yellow-700 m-5" onClick={rutaUsuario}>Usuario</button>
         <button className="text-black bg-yellow-700 m-5" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
         <button className="text-black bg-yellow-700 m-5" onClick={rutaEvento}>Evento</button>

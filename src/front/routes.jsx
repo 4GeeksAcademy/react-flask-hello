@@ -17,6 +17,8 @@ import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
 import { Login } from "./components/Login.jsx";
+import { RegistroUsuario } from "./pages/RegistroUsuario.jsx";
+
 
 
 export const router = createBrowserRouter(
@@ -29,6 +31,8 @@ export const router = createBrowserRouter(
     <>
     // Root Route: All navigation will start from here.
     <Route path="/loginpage" element={<LoginPage />} />
+      <Route path="/registrousuario" element={<RegistroUsuario />} />
+
     <Route path="login" element={<Login />} />
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
@@ -44,6 +48,7 @@ export const router = createBrowserRouter(
       <Route path="ajustesusuario" element={<AjustesUsuario />} />
       <Route path="notfound" element={<NotFound />} />
       <Route path="crear-evento" element={<CreateEvent />} />
+
 
     </Route>
     </>

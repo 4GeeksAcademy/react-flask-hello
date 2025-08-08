@@ -7,6 +7,8 @@ import { NotFound } from "./NotFound.jsx";
 import { Usuario } from "./Usuario.jsx";
 import { CreateEvent } from "./CreateEvent.jsx";
 import { LoginPage } from "./LoginPage.jsx";
+import { RegistroUsuario } from "./RegistroUsuario.jsx";
+
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -52,6 +54,9 @@ export const VistaHome = () => {
   };
   const rutaLoginPage = () => {
     navigate("/LoginPage");
+  };
+  const rutaRegistro= () => {
+    navigate("/registrousuario");
   };
 
   return (

@@ -76,6 +76,13 @@ export default function storeReducer(store, action = {}) {
         ),
       };
 
+    // 🔹 Nuevo: cargar carrito desde localStorage sin duplicar
+    case "loadCarro":
+      return {
+        ...store,
+        carro: action.payload || [],
+      };
+
     default:
       throw Error("Unknown action.");
   }

@@ -14,7 +14,10 @@ export const initialStore = () => {
       }
     ],
     language: 'es',
-    theme: 'light'
+    theme: 'light',
+    isLoggedIn: false, // Nuevo: estado de autenticación
+    user_id: null,     // Nuevo: ID del usuario logeado
+    token: null        // Nuevo: token JWT del usuario
   };
 };
 
@@ -43,6 +46,14 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         theme: store.theme === 'light' ? 'dark' : 'light'
+      };
+
+    case 'set_login_status': // Nuevo: Acción para actualizar el estado de login
+      return {
+        ...store,
+        isLoggedIn: action.payload.isLoggedIn,
+        user_id: action.payload.user_id,
+        token: action.payload.token
       };
 
     default:

@@ -21,6 +21,7 @@ export const Footer = () => (
         <ul className="footer-nav">
           <li><a href="/AboutUs">Equipo</a></li>
           <li><a href="/privacidad">Política de privacidad</a></li>
+          <li><a href="/Soporte" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a></li>         
           <li><Contacto /></li>
         </ul>
       </div>

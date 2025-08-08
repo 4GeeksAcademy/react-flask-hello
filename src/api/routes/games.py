@@ -34,11 +34,12 @@ def add_game():
 
     body = request.get_json()
 
-    if "img" and "name" and "platform" and "description" and "price" and "distribuidora" and "genero" and "online" and "offline" and "gamemode" not in body:
+    if "img" and "video" and "name" and "platform" and "description" and "price" and "distribuidora" and "genero" and "online" and "offline" and "gamemode" not in body:
         return jsonify("Error, debes introducir los campos obligatorios"), 404
 
     new_game = Games()
     new_game.img = body["img"]
+    new_game.video = body["video"]
     new_game.name = body["name"]
     new_game.platform = body["platform"]
     new_game.description =body["description"]

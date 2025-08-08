@@ -23,7 +23,7 @@ def signup():
     data = request.get_json()
 
     # Validaciones basicas de los campos
-    required_fields = ['email', 'password', 'nickname', 'nombre', 'apellido', 'telefono']
+    required_fields = ['email', 'password']
     missing_fields = [field for field in required_fields if field not in data or not data[field]]
 
     if missing_fields:
@@ -128,3 +128,28 @@ def generate_token(user_id, email):
         'exp': datetime.utcnow() + timedelta(hours=24)
     }
     return jwt.encode(payload, "TEST", algorithm='HS256')
+
+#Recuperar contraseña
+
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email')
+
+    print("Solicitud de recuperación recibida para:", email)
+
+    if not email:
+        print("Error: email no proporcionado.")
+        return jsonify({"error": "El email es requerido"}), 400
+
+    try:
+        response = supabase.auth.reset_password_email(email)
+        print(" Email enviado correctamente:", response)
+        return jsonify({
+            "message": f"Se ha enviado un correo a {email} para restablecer la contraseña",
+            "supabase_response": str(response)
+        }), 200
+
+    except Exception as e:
+        print("❌ Error al enviar email de recuperación:", str(e))
+        return jsonify({"error": "No se pudo enviar el email de recuperación", "details": str(e)}), 500

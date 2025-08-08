@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { supabase } from '../../api/supabaseClient.js';
 import { FaGoogle, FaGithub } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from './Navbar.jsx';
 
 export const GlassLogin = () => {
+  const navigate = useNavigate();
+
+  // Redireccion automatica si ya hay sesion iniciada a vistahome
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate('/vistahome');
+    });
+    // cambios de sesion (por si el login es externo)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) navigate('/vistahome');
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({ provider });
     if (error) console.error('OAuth login error:', error.message);

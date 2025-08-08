@@ -17,10 +17,3 @@ api.register_blueprint(events_bp)
 api.register_blueprint(cart_bp)
 api.register_blueprint(purchase_bp)
 api.register_blueprint(maps_bp)
-
-
-
-
-
-
-

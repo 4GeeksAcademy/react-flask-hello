@@ -19,7 +19,7 @@ export const Login = () => {
                 return;
             }
 
-            const response = await fetch(`${backendUrl}/api/login`, {
+            const response = await fetch(`${backendUrl}api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -35,19 +35,32 @@ export const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const { email, password } = datosLogin;
-
+    if (!email || !password) {
+      alert("Por favor ingresa tu correo y contraseña");
+      return;
+    }
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
-    if (!email || !password) {
-        alert("Por favor ingresa tu correo y contraseña");
+    try {
+      const res = await fetch("********URL****", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      });
+      const result = await res.json();
+
+    if (!res.ok) {
+      alert(result.error || "Error en el backend");
       return;
-    }  if (error) {
-    alert(error.message || "Error al iniciar sesión");
-    } else {
-      navigate("/vistahome");
     }
+      localStorage.setItem("token", result.token);
+      navigate("/vistahome");
+  } catch (err) {
+      console.error("Error", err);
+      alert("No se pudo conectar con el servidor");
+  }
 };
 
   return (

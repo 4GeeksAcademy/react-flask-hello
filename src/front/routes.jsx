@@ -9,7 +9,7 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import { LoginPage } from "./pages/LoginPage";
+import { LoginPage } from "./pages/Login.jsx";
 import { VistaHome } from "./pages/VistaHome";
 import { Formulario } from "./pages/Formulario";
 import { Evento } from "./pages/Evento";
@@ -17,7 +17,6 @@ import { Usuario } from "./pages/Usuario";
 import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
-import { Login } from "./components/Login.jsx";
 import { RegistroUsuario } from "./pages/RegistroUsuario.jsx";
 
 
@@ -26,10 +25,10 @@ export const router = createBrowserRouter(
     <>
 
     // Root Route: All navigation will start from here.
-    <Route path="/loginpage" element={<LoginPage />} />
-      <Route path="/registrousuario" element={<RegistroUsuario />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-    <Route path="login" element={<Login />} />
+    
 
       {/* Rutas con layout */}
       <Route path="/" element={<Layout />} errorElement={<NotFound />}>

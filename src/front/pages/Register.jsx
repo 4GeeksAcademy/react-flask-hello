@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { AjustesUsuario } from './AjustesUsuario.jsx';
 
-export const RegistroUsuario = () => {
+export const Register = () => {
   const navigate = useNavigate();
   const [datosRegistro, setDatosRegistro] = useState({
     email: "", 

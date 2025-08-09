@@ -60,7 +60,7 @@ export const Login = () => {
         className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8 w-full max-w-md text-white text-center"
       >
         <h2 className="text-3xl font-bold mb-6">
-          REGISTRO EN <span className="text-yellow-300">KNECT</span>
+          LOGIN EN <span className="text-yellow-300">KNECT</span>
         </h2>
         
           <form onSubmit={handleRegister}>

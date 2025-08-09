@@ -9,7 +9,7 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
-import { LoginPage } from "./pages/Login.jsx";
+import { Login } from "./pages/Login.jsx";
 import { VistaHome } from "./pages/VistaHome";
 import { Formulario } from "./pages/Formulario";
 import { Evento } from "./pages/Evento";
@@ -17,7 +17,7 @@ import { Usuario } from "./pages/Usuario";
 import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
-import { RegistroUsuario } from "./pages/RegistroUsuario.jsx";
+import { Register } from "./pages/RegistroUsuario.jsx";
 
 
 export const router = createBrowserRouter(

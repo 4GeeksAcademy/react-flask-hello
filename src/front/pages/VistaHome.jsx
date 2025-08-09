@@ -1,146 +1,199 @@
+// src/front/pages/VistaHome.jsx
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import { Login } from "../components/Login.jsx";
-import { Link } from "react-router-dom";
-import { AjustesUsuario } from "./AjustesUsuario.jsx";
-import { Evento } from "./Evento.jsx";
-import { Formulario } from "./Formulario.jsx";
-import { NotFound } from "./NotFound.jsx";
-import { Usuario } from "./Usuario.jsx";
-import { CreateEvent } from "./CreateEvent.jsx";
-import { LoginPage } from "./LoginPage.jsx";
-
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 export const VistaHome = () => {
-  //carrusel fotos 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  //rutas
+  // carrusel
+  const settings = { dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 };
 
+  // rutas (tal cual la tenía)
   const navigate = useNavigate();
+  const rutaLogin = () => navigate("/login");
+  const rutaUsuario = () => navigate("/usuario");
+  const rutaAjustesUsuario = () => navigate("/AjustesUsuario");
+  const rutaEvento = () => navigate("/evento");
+  const rutaNotFound = () => navigate("/NotFound");
+  const rutaFormulario = () => navigate("/Formulario");
+  const rutaCrearEvento = () => navigate("/crear-evento");
+  const rutaLoginPage = () => navigate("/LoginPage");
 
-  const rutaLogin = () => {
-    navigate("/login");
+  // ---- HERO COLLAGE (imagen Hori): imágenes desde /public/img
+  const heroCollage = {
+    lg: "/img/hero-zapatos.jpg",     // (Los zapatos)
+    a:  "/img/hero-cine.jpg",        // (El puñetero proyector)
+    b:  "/img/hero-festival.jpg",    // (El festival)
+    c:  "/img/mexico.jpg",           // (Morelia)
   };
-  const rutaUsuario = () => {
-    navigate("/usuario");
-  };
-  const rutaAjustesUsuario = () => {
-    navigate("/AjustesUsuario");
-  };
-  const rutaEvento = () => {
-    navigate("/evento");
-  };
-  const rutaNotFound = () => {
-    navigate("/NotFound");
-  };
-  const rutaFormulario = () => {
-    navigate("/Formulario");
-  };
-  const rutaCrearEvento = () => {
-    navigate("/crear-evento");
-  };
-  const rutaLoginPage = () => {
-    navigate("/LoginPage");
-  };
+
+  // ---- DESTINOS PRINCIPALES (4 tarjetas)
+  const destinosPrincipales = [
+    { titulo: "Morelia, Michoacán",      pais: "México",   img: "/img/mexico.jpg"    },
+    { titulo: "Cita a ciegas con el cine", pais: "Cultura", img: "/img/cine.jpg"      },
+    { titulo: "Noche de fútbol",         pais: "Deportes", img: "/img/futbol.jpg"     },
+    { titulo: "Festival al aire libre",  pais: "Música",   img: "/img/festival.jpg"   },
+  ];
 
   return (
     <div className="gradient-container">
-      <div className="relative overflow-hidden">
-        <div className="second-gradient"></div>
-        <div className="relative z-10">
-          <Login />
-        </div>
-      </div>
-      <br />
-      <br />
-      <div className="flex justify-center">
-        {/*botones a rutas*/}
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaLogin}>Login</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaUsuario}>Usuario</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaEvento}>Evento</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaNotFound}>Not found</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaFormulario}>Formulario</button>
-        <button className="text-black bg-yellow-700 m-5" onClick={rutaCrearEvento}>Crear Evento</button>
-
-      </div>
-      <br />
-      <br />
-      {/*titulo y encabezado*/}
-      <div>
-        <div className="flex justify-center">
-          <h1 className="text-red-600 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Knect</h1>
-        </div>
-        <div className="flex justify-center">
-          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Nace la nueva forma de organizarte a ti y a tu grupo de personas</p>
-          <br />
-        </div>
-        <div className="flex justify-center">
-          <p>Con Knect, no te perderas los eventos que mas te gustan, crearlos e incuso encontrar nuevas experiencias</p>
-        </div>
-        <div className="flex justify-center">
-          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Leer mas</a>
-
-        </div>
-      </div>
-      <br />
-      <br />
-
-      {/*carrusel de fotos*/}
-      <Slider {...settings}>
-        <div className="">
-          <div className="flex justify-center flex-col md:flex-row items-center">
-            <img
-              src="https://images.pexels.com/photos/5386754/pexels-photo-5386754.jpeg"
-              className="w-1/3 h-auto border-4 border-double border-blue-500"
-              alt="Imagen 1" />
-            <div className="">
-              <p className="m-8">podras guardar todos los eventos en tu calendario, <br />  conocer todas las novedades y asistentes al evento</p>
-            </div>
+      <div className="page">
+        {/* Login arriba */}
+        <div style={{ position: "relative" }}>
+          <div className="second-gradient" />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <Login />
           </div>
         </div>
 
-        <div>
-          <div className="flex justify-center flex-col md:flex-row items-center m-4">
-            <img
-              src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg"
-              className="w-1/3 h-auto border-4 border-double border-blue-500"
-              alt="Imagen 1" />
+        {/* HERO: texto + collage */}
+        <section className="hero">
+          {/* Columna izquierda */}
+          <div>
+            <h1 className="knect-title">Knect</h1>
+            <p className="copy">Nace la nueva forma de organizarte a ti y a tu grupo de personas</p>
+            <p className="copy">
+              Con Knect, no te perderás los eventos que más te gustan, crearlos e incluso encontrar nuevas
+              experiencias
+            </p>
+
+            <div className="actions">
+              <button className="btn" onClick={rutaLogin}>Login</button>
+              <button className="btn" onClick={rutaUsuario}>Usuario</button>
+              <button className="btn" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
+              <button className="btn" onClick={rutaEvento}>Evento</button>
+              <button className="btn" onClick={rutaNotFound}>Not found</button>
+              <button className="btn" onClick={rutaFormulario}>Formulario</button>
+              <button className="btn" onClick={rutaCrearEvento}>Crear Evento</button>
+            </div>
+
+            <div style={{ marginTop: 14 }}>
+              <Link to="/crear-evento" className="btn btn-chip">Planifica tu evento</Link>
+            </div>
+          </div>
+
+          {/* Columna derecha: collage (1 cuadrado grande + 3 pequeñas) */}
+          <div className="hero-collage">
+            <div className="card lg">
+              <img src={heroCollage.lg} alt="Hero grande" className="collage-img" />
+            </div>
+            <div className="card sm a">
+              <img src={heroCollage.a} alt="Hero A" className="collage-img" />
+            </div>
+            <div className="card sm b">
+              <img src={heroCollage.b} alt="Hero B" className="collage-img" />
+            </div>
+            <div className="card sm c">
+              <img src={heroCollage.c} alt="Hero C" className="collage-img" />
+            </div>
+          </div>
+        </section>
+
+        {/* Destinos principales */}
+        <section className="section">
+          <div className="section-head">
+            <h2>Destinos principales</h2>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button className="pill active">Los más populares</button>
+              <button className="pill">Nuevos eventos</button>
+              <button className="pill">Cerca de ti</button>
+              <Link to="/evento" className="pill">Explorar todo</Link>
+            </div>
+          </div>
+
+          <div className="grid-cards">
+            {destinosPrincipales.map((d, idx) => (
+              <article key={idx} className="dest-card">
+                <div className="thumb">
+                  <img src={d.img} alt={d.titulo} className="thumb-img" />
+                </div>
+                <div className="meta">
+                  <h3 className="title">{d.titulo}</h3>
+                  <p className="country">{d.pais}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Últimas historias (sin cambios) */}
+        <section className="section">
+          <div className="section-head">
+            <h2>Anteriormente en Knect</h2>
+            <Link to="/demo" className="pill">Leer más</Link>
+          </div>
+
+          <div className="stories">
+            <article className="story main">
+              <div className="thumb" />
+              <h3 className="title">Guía express para Yucatán</h3>
+              <p className="country">Tips, presupuesto y mejores meses…</p>
+            </article>
+
+            <div className="story-stack">
+              {[1, 2, 3].map((i) => (
+                <article key={i} className="story mini">
+                  <div className="thumb" />
+                  <div>
+                    <h4 className="title">City breaks alrededor del mundo</h4>
+                    <p className="country">2 min read</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Carrusel (Mi contenido) */}
+        <section className="section">
+          <Slider {...settings}>
             <div>
-              <p className="m-8"> estaras en todos los eventos, <br /> podras comunicarte con tus amigos a traves de la aplicacion</p>
+              <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+                <img
+                  src="/img/mexico.jpg"
+                  alt="Imagen 1"
+                  style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
+                />
+                <p className="copy">
+                  Guarda todos los eventos en tu calendario y
+                  mantente al tanto de las novedades para asistir al evento.
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-center flex-col md:flex-row items-center m-4">
-            <img
-              src="https://images.pexels.com/photos/2859169/pexels-photo-2859169.jpeg"
-              className="w-1/3 h-auto border-4 border-double border-blue-500"
-              alt="Imagen 1" />
             <div>
-              <p className="m-8"> puedes añadir la direccion del evento <br /> y abrilo en un instante</p>
+              <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+                <img
+                  src="/img/cine.jpg"
+                  alt="Imagen 2"
+                  style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
+                />
+                <p className="copy">
+                  Estarás en todos los eventos y podrás comunicarte con tus amigos a través de la aplicación.
+                </p>
+              </div>
             </div>
-            <br />
-            <br />
-            <br />
-          </div>
-        </div>
-      </Slider>
-      <br />
-      <br />
-      <br />
+
+            <div>
+              <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+                <img
+                  src="/img/festival.jpg"
+                  alt="Imagen 3"
+                  style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
+                />
+                <p className="copy">
+                  Podrás añadir la dirección del evento y abrirlo en un instante.
+                </p>
+              </div>
+            </div>
+          </Slider>
+        </section>
+      </div>
+
+      <div style={{ height: 40 }} />
     </div>
   );
 };

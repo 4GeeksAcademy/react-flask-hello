@@ -5,6 +5,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Login } from "../components/Login.jsx";
+import heroZapatos from "../assets/img/hero-zapatos.jpg"
+import heroFestival from "../assets/img/hero-festival.jpg"
+import heroCine from "../assets/img/hero-cine.jpg"
+import mexico from "../assets/img/mexico.jpg"
+import { Card } from "../components/Card.jsx";
+
 
 export const Home = () => {
   // carrusel
@@ -80,16 +86,16 @@ export const Home = () => {
           {/* Columna derecha: collage (1 cuadrado grande + 3 pequeñas) */}
           <div className="hero-collage">
             <div className="card lg">
-              <img src={heroCollage.lg} alt="Hero grande" className="collage-img" />
+              <img src={heroZapatos} alt="Hero grande" className="collage-img" />
             </div>
             <div className="card sm a">
-              <img src={heroCollage.a} alt="Hero A" className="collage-img" />
+              <img src={heroFestival} alt="Hero A" className="collage-img" />
             </div>
             <div className="card sm b">
-              <img src={heroCollage.b} alt="Hero B" className="collage-img" />
+              <img src={heroCine} alt="Hero B" className="collage-img" />
             </div>
             <div className="card sm c">
-              <img src={heroCollage.c} alt="Hero C" className="collage-img" />
+              <img src={mexico} alt="Hero C" className="collage-img" />
             </div>
           </div>
         </section>
@@ -99,53 +105,14 @@ export const Home = () => {
           <div className="section-head">
             <h2>Destinos principales</h2>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button className="pill active">Los más populares</button>
-              <button className="pill">Nuevos eventos</button>
-              <button className="pill">Cerca de ti</button>
               <Link to="/evento" className="pill">Explorar todo</Link>
             </div>
           </div>
 
           <div className="grid-cards">
             {destinosPrincipales.map((d, idx) => (
-              <article key={idx} className="dest-card">
-                <div className="thumb">
-                  <img src={d.img} alt={d.titulo} className="thumb-img" />
-                </div>
-                <div className="meta">
-                  <h3 className="title">{d.titulo}</h3>
-                  <p className="country">{d.pais}</p>
-                </div>
-              </article>
+              <Card key={idx} d={d} />
             ))}
-          </div>
-        </section>
-
-        {/* Últimas historias (sin cambios) */}
-        <section className="section">
-          <div className="section-head">
-            <h2>Anteriormente en Knect</h2>
-            <Link to="/demo" className="pill">Leer más</Link>
-          </div>
-
-          <div className="stories">
-            <article className="story main">
-              <div className="thumb" />
-              <h3 className="title">Guía express para Yucatán</h3>
-              <p className="country">Tips, presupuesto y mejores meses…</p>
-            </article>
-
-            <div className="story-stack">
-              {[1, 2, 3].map((i) => (
-                <article key={i} className="story mini">
-                  <div className="thumb" />
-                  <div>
-                    <h4 className="title">City breaks alrededor del mundo</h4>
-                    <p className="country">2 min read</p>
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -155,7 +122,7 @@ export const Home = () => {
             <div>
               <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
                 <img
-                  src="/img/mexico.jpg"
+                  src={mexico}
                   alt="Imagen 1"
                   style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
                 />
@@ -169,7 +136,7 @@ export const Home = () => {
             <div>
               <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
                 <img
-                  src="/img/cine.jpg"
+                  src={heroCine}
                   alt="Imagen 2"
                   style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
                 />
@@ -182,7 +149,7 @@ export const Home = () => {
             <div>
               <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
                 <img
-                  src="/img/festival.jpg"
+                  src={heroFestival}
                   alt="Imagen 3"
                   style={{ width: "100%", borderRadius: 12, border: "3px solid rgba(99,102,241,.8)" }}
                 />

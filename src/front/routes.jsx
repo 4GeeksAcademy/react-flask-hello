@@ -8,7 +8,6 @@ import {
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login.jsx";
-import { Evento } from "./pages/Evento";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
 import { Register } from "./pages/Register.jsx";
@@ -33,7 +32,6 @@ export const router = createBrowserRouter(
         <Route path="home" element={<Home />} />
 
         {/* Rutas adicionales */}
-        <Route path="evento" element={<Evento />} />
         <Route path="crear-evento" element={<CreateEvent />} />
 
         {/* Catch-all */}

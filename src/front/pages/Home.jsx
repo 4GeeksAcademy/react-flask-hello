@@ -18,26 +18,8 @@ export const Home = () => {
 
   // rutas (tal cual la tenía)
   const navigate = useNavigate();
-  const rutaLogin = () => navigate("/login");
-  const rutaUsuario = () => navigate("/usuario");
-  const rutaAjustesUsuario = () => navigate("/AjustesUsuario");
-  const rutaEvento = () => navigate("/evento");
-  const rutaNotFound = () => navigate("/NotFound");
-  const rutaFormulario = () => navigate("/Formulario");
-  const rutaCrearEvento = () => navigate("/crear-evento");
-  const rutaLoginPage = () => navigate("/LoginPage");
 
-  // ---- HERO COLLAGE (imagen Hori): imágenes desde /public/img
-  const heroCollage = {
-    lg: "/img/hero-zapatos.jpg",     // (Los zapatos)
-    a:  "/img/hero-cine.jpg",        // (El puñetero proyector)
-    b:  "/img/hero-festival.jpg",    // (El festival)
-    c:  "/img/mexico.jpg",           // (Morelia)
-  };
-  const rutaRegistro= () => {
-    navigate("/registrousuario");
-  };
-
+  
   // ---- DESTINOS PRINCIPALES (4 tarjetas)
   const destinosPrincipales = [
     { titulo: "Morelia, Michoacán",      pais: "México",   img: "/img/mexico.jpg"    },
@@ -68,15 +50,6 @@ export const Home = () => {
               experiencias
             </p>
 
-            <div className="actions">
-              <button className="btn" onClick={rutaLogin}>Login</button>
-              <button className="btn" onClick={rutaUsuario}>Usuario</button>
-              <button className="btn" onClick={rutaAjustesUsuario}>Ajustes Usuario</button>
-              <button className="btn" onClick={rutaEvento}>Evento</button>
-              <button className="btn" onClick={rutaNotFound}>Not found</button>
-              <button className="btn" onClick={rutaFormulario}>Formulario</button>
-              <button className="btn" onClick={rutaCrearEvento}>Crear Evento</button>
-            </div>
 
             <div style={{ marginTop: 14 }}>
               <Link to="/crear-evento" className="btn btn-chip">Planifica tu evento</Link>

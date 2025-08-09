@@ -411,8 +411,6 @@ body {
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.26);
   padding: 8px;
-  opacity: 0;
-  visibility: hidden;
   transform: scale(0.95);
   transition: all 0.2 ease;
   z-index: 60;
@@ -430,7 +428,6 @@ body {
   border-radius: 12px;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.904);
   text-decoration: none;
   font-size: 14px;
   cursor: crosshair;

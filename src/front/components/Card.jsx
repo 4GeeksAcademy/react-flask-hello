@@ -1,6 +1,6 @@
 export const Card = ({d}) => {
   return (
-    <article key={idx} className="dest-card">
+    <article className="dest-card">
                 <div className="thumb">
                   <img src={d.img} alt={d.titulo} className="thumb-img" />
                 </div>

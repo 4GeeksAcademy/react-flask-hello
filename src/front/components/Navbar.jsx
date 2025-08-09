@@ -2,10 +2,8 @@ import { useState, useEffect, useRef } from "react"
 import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline"
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Mis eventos", href: "#", current: false },
-  { name: "Eventos públicos", href: "#", current: false },
-  { name: "Calendario", href: "#", current: false },
+  { name: "Home", href: "#", current: true },
+  { name: "eventos", href: "#", current: false },
 ];
 
 export function Navbar() {
@@ -78,10 +76,7 @@ export function Navbar() {
           </div>
 
           <div className="navbar-actions">
-            <button className="notification-btn" type="button">
-              <BellIcon />
-              <span className="notification-badge">3</span>
-            </button>
+          
 
             <div className="profile-menu" ref={profileMenuRef}>
               <button

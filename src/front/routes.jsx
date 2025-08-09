@@ -19,13 +19,14 @@ export const router = createBrowserRouter(
     <>
 
     // Root Route: All navigation will start from here.
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      
 
     
 
       {/* Rutas con layout */}
       <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
         {/* Home (index) */}
         <Route index element={<Home />} />
         {/* Alternativa: /home */}

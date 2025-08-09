@@ -1,4 +1,6 @@
 from flask import jsonify, url_for
+from datetime import datetime, timedelta
+import jwt
 
 class APIException(Exception):
     status_code = 400
@@ -29,6 +31,14 @@ def generate_sitemap(app):
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             if "/admin/" not in url:
                 links.append(url)
+
+def generate_token(user_id, email):
+    payload = {
+        'user_id': user_id,
+        'email': email,
+        'exp': datetime.utcnow() + timedelta(hours=24)
+    }
+    return jwt.encode(payload, "TEST", algorithm='HS256')                
 
     links_html = "".join(["<li><a href='" + y + "'>" + y + "</a></li>" for y in links])
     return """

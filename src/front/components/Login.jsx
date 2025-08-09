@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient.js";
+import { useNavigate } from 'react-router-dom';
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
 export const Login = () => {

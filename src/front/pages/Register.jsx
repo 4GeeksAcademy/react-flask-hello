@@ -3,7 +3,6 @@ import { supabase } from '../../api/supabaseClient.js';
 import { FaGoogle, FaGithub } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { AjustesUsuario } from './AjustesUsuario.jsx';
 
 export const Register = () => {
   const navigate = useNavigate();

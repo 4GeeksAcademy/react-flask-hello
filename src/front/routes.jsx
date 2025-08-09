@@ -10,14 +10,12 @@ import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Login } from "./pages/Login.jsx";
-import { VistaHome } from "./pages/VistaHome";
 import { Formulario } from "./pages/Formulario";
 import { Evento } from "./pages/Evento";
 import { Usuario } from "./pages/Usuario";
-import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
-import { Register } from "./pages/RegistroUsuario.jsx";
+import { Register } from "./pages/Register.jsx";
 
 
 export const router = createBrowserRouter(
@@ -40,7 +38,6 @@ export const router = createBrowserRouter(
         {/* Rutas adicionales */}
         <Route path="single/:theId" element={<Single />} />
         <Route path="demo" element={<Demo />} />
-        <Route path="vistahome" element={<VistaHome />} />
         <Route path="formulario" element={<Formulario />} />
         <Route path="evento" element={<Evento />} />
         <Route path="usuario" element={<Usuario />} />

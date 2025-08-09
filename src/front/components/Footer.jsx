@@ -1,4 +1,3 @@
-import { VistaHome } from "../pages/VistaHome";
 import { useNavigate } from "react-router-dom";
 
 

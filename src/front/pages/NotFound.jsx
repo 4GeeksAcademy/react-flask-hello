@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { VistaHome } from "./VistaHome";
-import { div } from "framer-motion/client";
 
 export const NotFound = () => {
 

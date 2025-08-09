@@ -1,131 +1,145 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState, useEffect, useRef } from "react"
+import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline"
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'My events', href: '#', current: false },
-  { name: 'Public events', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+  { name: "Dashboard", href: "#", current: true },
+  { name: "Mis eventos", href: "#", current: false },
+  { name: "Eventos públicos", href: "#", current: false },
+  { name: "Calendario", href: "#", current: false },
+];
 
 export function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const profileMenuRef = useRef(null)
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setIsProfileMenuOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+  }
+
   return (
-    <Disclosure as="nav" className="bg-gray-800">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            {/* Mobile menu button*/}
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
-              <span className="absolute -inset-0.5" />
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="block size-6 group-data-open:hidden" />
-              <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
-            </DisclosureButton>
-          </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="flex shrink-0 items-center">
-              <img
-                alt="Knect logo"
-                src= "/Knect-logo.png"
-                className="h-10 w-[150px]"
-              />
+    <nav className="knect-navbar">
+      <div className="navbar-bg"></div>
+      <div className="navbar-container">
+        <div className="navbar-content">
+          <button
+            className="mobile-menu-btn"
+            onClick={toggleMobileMenu}
+            type="button"
+          >
+            {isMobileMenuOpen ? (
+              <XMarkIcon />
+            ) : (
+              <Bars3Icon />
+            )}
+          </button>
+
+          <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
+            <div className="navbar-logo">
+              <img src="/Knect-logo.png" alt="Knect logo" />
             </div>
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
+
+            <nav className="navbar-nav">
+              <ul className="navbar-nav-list">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium',
-                    )}
-                  >
-                    {item.name}
-                  </a>
+                  <li key={item.name}>
+                    <a
+                      href={item.href}
+                      className={`navbar-link ${item.current ? "active" : ""}`}
+                    >
+                      {item.name}
+                    </a>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            </nav>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-            >
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">View notifications</span>
-              <BellIcon aria-hidden="true" className="size-6" />
+
+          <div className="navbar-actions">
+            <button className="notification-btn" type="button">
+              <BellIcon />
+              <span className="notification-badge">3</span>
             </button>
 
-            {/* Profile dropdown */}
-            <Menu as="div" className="relative ml-3">
-              <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">Open user menu</span>
-                <img
-                  alt="User profile"
-                  src="/user-profile.png"
-                  className="size-3 rounded-full"
-                />
-              </MenuButton>
-
-              <MenuItems
-                transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+            <div className="profile-menu" ref={profileMenuRef}>
+              <button
+                className="profile-btn"
+                onClick={toggleProfileMenu}
+                type="button"
               >
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    Your Profile
+                <div className="profile-avatar">
+                  <UserIcon />
+                </div>
+              </button>
+
+
+              {isProfileMenuOpen && (
+                <div className="profile-dropdown active">
+                  <a href="#" className="dropdown-item">
+                    <UserIcon />
+                    Tu perfil
                   </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    Settings
+                  <a href="#" className="dropdown-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Configuración
                   </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    Sign out
+                  <div className="dropdown-divider"></div>
+                  <a href="#" className="dropdown-item logout">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                    </svg>
+                    Cerrar sesión
                   </a>
-                </MenuItem>
-              </MenuItems>
-            </Menu>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pt-2 pb-3">
-          {navigation.map((item) => (
-            <DisclosureButton
-              key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={item.current ? 'page' : undefined}
-              className={classNames(
-                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
-              )}
-            >
-              {item.name}
-            </DisclosureButton>
-          ))}
+
+      {isMobileMenuOpen && (
+        <div className="mobile-panel active">
+          <ul className="mobile-nav-list">
+            {navigation.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className={`mobile-nav-link ${item.current ? "active" : ""}`}
+                  onClick={closeMobileMenu}
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </DisclosurePanel>
-    </Disclosure>
+      )}
+    </nav>
   )
 }

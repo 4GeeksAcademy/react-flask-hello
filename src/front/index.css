@@ -1,1 +1,627 @@
-@import "tailwindcss";
+
+/* ---------- Reset suave ---------- */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #0c0c0f;
+  color: #e9edf2;
+  font-family: Inter, system-ui, Arial, sans-serif;
+}
+
+/* ---------- Contenedor general ---------- */
+.gradient-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2f, #3e2a59, #ee7752);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+}
+.page {
+  width: 100%;
+  max-width: 1200px;
+  padding: 32px 16px;
+}
+
+/* ----------  (texto + collage) ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  align-items: center;
+  margin: 16px 0 40px;
+}
+.knect-title {
+  font-size: 48px;
+  line-height: 1.1;
+  margin: 0 0 10px;
+  font-weight: 900;
+  color: #ffd166;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+}
+.copy {
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 640px;
+  margin: 8px 0;
+  font-size: 18px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Collage (1 grande + 3 pequeños) */
+.hero-collage {
+  display: grid;
+  gap: 12px;
+  grid-template-areas:
+    "lg a"
+    "lg b"
+    "lg c";
+  grid-template-columns: 1fr 160px;
+  grid-auto-rows: 130px;
+}
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+}
+.card.lg {
+  grid-area: lg;
+  min-height: 400px;
+}
+.card.sm.a {
+  grid-area: a;
+}
+.card.sm.b {
+  grid-area: b;
+}
+.card.sm.c {
+  grid-area: c;
+}
+
+/* ---------- Botones (Mis botones azules del Tailwind CSS) ---------- */
+.btn {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  background: linear-gradient(90deg, #7c3aed, #3b82f6);
+  color: #fff;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+/* pastilla/filtrito guapo */
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+}
+.pill.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* ---------- Secciones ---------- */
+.section {
+  margin: 30px 0;
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.section h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* Mi estructura visual (4 en desktop, 1–2 en móvil) */
+.grid-cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.dest-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.dest-card .thumb {
+  height: 150px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+}
+.dest-card .meta {
+  padding: 10px;
+}
+.dest-card .title {
+  margin: 6px 0 3px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.country {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Historias (1 cuadrado grande + columna de 3 cuadrado) */
+.stories {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+.story.main {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 12px;
+}
+.story.main .thumb {
+  height: 190px;
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+}
+.story-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.story.mini {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 8px;
+}
+.story.mini .thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+}
+
+/* ---------- Carrusel (slick youtube) ---------- */
+.slick-slide img {
+  border-radius: 12px;
+  border: 3px solid rgba(99, 102, 241, 0.8);
+  max-height: 300px;
+  width: 100%;
+  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.slick-slide p {
+  margin-top: 14px;
+  color: #fff;
+  font-size: 18px;
+}
+
+/* ---------- Diseñito ---------- */
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-collage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "lg lg"
+      "a  b"
+      "c  c";
+    grid-auto-rows: 120px;
+  }
+  .card.lg {
+    min-height: 280px;
+  }
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stories {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .knect-title {
+    font-size: 34px;
+  }
+  .grid-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.knect.navbar {
+  position: relative;
+  z-index: 50;
+  height: 100px;
+}
+.navbar-bg {
+  position: absolute;
+  inset: 0;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.505);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.101);
+}
+.navbar-container {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.navbar-content {
+  display: flex;
+  height: 80px;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.navbar-logo img {
+  height: 48px;
+  width: auto;
+  filter: brightness(1.1);
+}
+.navbar-nav {
+  display: none;
+  margin-left: 32px;
+}
+.navbar-nav-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar-link {
+  display: block;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  backdrop-filter: blur(4px);
+  background: linear-gradient(90deg, #895af5, #3b82f6);
+  color:white
+
+
+  
+}
+.navbar-link:hover {
+  background: rgba(255, 255, 255, 0.108);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.108);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.notification-btn {
+  position: relative;
+  padding: 12px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: crosshair;
+  transition: all 0, 2s ease;
+}
+.notification-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.101);
+}
+.notification-btn svg {
+  width: 24px;
+  height: 24px;
+}
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(90deg, #ec4899, #ef4444);
+  border-radius: 50%;
+  font-size: 11px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+.profile-menu {
+  position: relative;
+}
+.profile-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.725);
+  cursor: crosshair;
+  transition: all 0.2s ease;
+}
+.profile-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.101);
+}
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #895af5, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-avatar svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 12px;
+  width: 224px;
+  background: white;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.226);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.26);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition: all 0.2 ease;
+  z-index: 60;
+}
+.profile.dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.904);
+  text-decoration: none;
+  font-size: 14px;
+  cursor: crosshair;
+  transition: all 0.2s ease;
+}
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.123);
+  color: white;
+}
+.dropdown-item.logout{
+  color: #fca5a5;
+}
+
+.dropdown-item.logout:hover{
+  background: rgba(238, 61, 61, 0.171);
+  color: #fecaca;
+}
+.dropdown-item svg{
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+}
+.dropdown-divider{
+  margin: 8px 0;
+  border-top:1px solid rgba(0, 0, 0, 0.226) 
+}
+/* ---------- Botón móvil ---------- */
+.mobile-menu-btn {
+  display: block;
+  padding: 12px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- Panel móvil ---------- */
+.mobile-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  display: none;
+}
+
+.mobile-panel.active {
+  display: block;
+}
+
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.mobile-nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-nav-link:not(.active) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mobile-nav-link:not(.active):hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 640px) {
+  .navbar-nav {
+    display: block;
+  }
+  
+  .mobile-menu-btn {
+    display: none;
+  }
+  
+  .navbar-container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-container {
+    padding: 0 32px;
+  }
+}
+
+/* === Botonaso sexi Google === */
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  color: #3c4043;               /* gris Google */
+  font-weight: 700;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn-google:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  background: #fafafa;
+}
+.btn-google:active {
+  transform: translateY(0);
+}
+.btn-google:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66,133,244,.35); /* foco azul Google */
+}
+.btn-google svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* === Botón CTA Planifica tu evento === */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #fff;
+  background: linear-gradient(90deg, #7c3aed, #3b82f6);
+  box-shadow: 0 8px 24px rgba(60,64,67,.25);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 30px rgba(60,64,67,.35);
+}
+.btn-cta:active { transform: translateY(0); }
+.btn-cta .icon {
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* Para hacerlo pequeño */
+.btn-sm { padding: 8px 12px; font-size: 14px; }
+
+/* El mismo estilo que los demás botones */
+.btn-chip {
+  padding: 8px 12px;      
+  font-size: 14px;
+  border-radius: 999px;
+}
+
+.collage-img,
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+}
+
+

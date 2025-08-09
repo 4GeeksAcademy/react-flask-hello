@@ -44,7 +44,9 @@ export const RegistroUsuario = () => {
         });
         const data = await respuesta.json();
         if (respuesta.ok){
+            window.alert("usuario registrado exitosamente");
             navigate("/ajustesusuario");
+            
         }else {
             alert(data.error || "Error al registrar, revisa tu email")
         }
@@ -83,37 +85,18 @@ export const RegistroUsuario = () => {
              />
 
               </div>
+              <div>
+                <br />
+                <button
+                  type="submit"
+                  className="bg-yellow-300 text-black">
+                    confirmar registro
+                </button>
+              </div>
+
              </form>
-            <div>
-              <button>
-                confirmar registro
-              </button>
-            </div>
 
 
-        <div className="flex justify-center gap-6">
-          <button
-            onClick={() => handleOAuthLogin('google')}
-            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
-            aria-label="Google"
-          >
-            <FaGoogle />
-          </button>
-          <button
-            onClick={() => handleOAuthLogin('github')}
-            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
-            aria-label="GitHub"
-          >
-            <FaGithub />
-          </button>
-        </div>
-
-        <p className="text-center text-sm text-white/70 mt-8">
-          ¿No tienes cuenta?{' '}
-          <a href="/register" className="text-white underline hover:text-blue-300">
-            Regístrate
-          </a>
-        </p>
       </motion.div>
     </div>
   );

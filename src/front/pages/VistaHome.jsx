@@ -4,7 +4,6 @@ import { useNavigate, Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import { Login } from "../components/Login.jsx";
 
 export const VistaHome = () => {
@@ -28,6 +27,9 @@ export const VistaHome = () => {
     a:  "/img/hero-cine.jpg",        // (El puñetero proyector)
     b:  "/img/hero-festival.jpg",    // (El festival)
     c:  "/img/mexico.jpg",           // (Morelia)
+  };
+  const rutaRegistro= () => {
+    navigate("/registrousuario");
   };
 
   // ---- DESTINOS PRINCIPALES (4 tarjetas)

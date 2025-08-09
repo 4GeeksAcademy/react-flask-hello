@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient.js";
 
+
 export const Login = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { dispatch } = useGlobalReducer();
+  const { navigate } = useNavigate();
+
 
   useEffect(() => {
     let mounted = true;
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+
       if (!mounted) return;
       setUser(session?.user || null);
       setIsLoading(false);
@@ -19,37 +24,37 @@ export const Login = () => {
       setUser(session?.user || null);
     });
 
+
     return () => {
       mounted = false;
       listener?.subscription?.unsubscribe?.();
     };
   }, []);
 
+  
+  // Login de Google
   const handleGoogleLogin = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          // redirectTo: window.location.origin, // descomenta si quieres forzar redirect
-        },
-      });
-      if (error) throw error;
-    } catch (err) {
-      console.error("Error al iniciar sesión con Google:", err?.message || err);
-      alert("No se pudo iniciar sesión con Google. Intenta nuevamente.");
-    }
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error){
+     console.error('Error al iniciar sesión con Google:', error.message);
+    }else{
   };
 
+  // Login de GitHub
+  const handleGitHubLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
+    if (error) console.error('Error al iniciar sesión con GitHub:', error.message);
+  };
+
+  // Logica del logout
   const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      setUser(null);
-    } catch (err) {
-      console.error("Error al cerrar sesión:", err?.message || err);
-    }
+    await supabase.auth.signOut();
+    setUser(null);
+    dispatch({type: "set_user", payload: currentUser})
   };
 
-  if (isLoading) return <p style={{ opacity: 0.8 }}>Cargando…</p>;
+  if (isLoading) return <p>Cargando...</p>; // condicion para mostrar un mensaje de carga
+
 
   return (
     <div style={{ textAlign: "center", marginTop: "12px" }}>
@@ -80,7 +85,9 @@ export const Login = () => {
   Iniciar sesión con Google
 </button>
 
+
       )}
     </div>
   );
+}
 };

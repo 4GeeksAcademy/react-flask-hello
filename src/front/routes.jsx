@@ -18,13 +18,18 @@ import { AjustesUsuario } from "./pages/AjustesUsuario";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
 import { Login } from "./components/Login.jsx";
+import { RegistroUsuario } from "./pages/RegistroUsuario.jsx";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {/* Rutas públicas fuera del layout */}
-      <Route path="/loginpage" element={<LoginPage />} />
-      <Route path="/login" element={<Login />} />
+
+    // Root Route: All navigation will start from here.
+    <Route path="/loginpage" element={<LoginPage />} />
+      <Route path="/registrousuario" element={<RegistroUsuario />} />
+
+    <Route path="login" element={<Login />} />
 
       {/* Rutas con layout */}
       <Route path="/" element={<Layout />} errorElement={<NotFound />}>
@@ -46,6 +51,7 @@ export const router = createBrowserRouter(
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />
       </Route>
+
     </>
   )
 );

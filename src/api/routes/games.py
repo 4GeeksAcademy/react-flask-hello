@@ -58,7 +58,7 @@ def add_game():
     
 
     # ELIMINAR JUEGOS
-@api.route("games/<int:game_id>",methods = ["DELETE"])
+@api.route("/<int:game_id>",methods = ["DELETE"])
 def delete_game(game_id):
     all_game = db.session.get(Games,game_id)
     if all_game is None:

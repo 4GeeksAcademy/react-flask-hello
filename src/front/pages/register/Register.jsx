@@ -1,5 +1,6 @@
 import './register.css'
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -8,6 +9,7 @@ export const Register = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [is_admin, setIs_admin] = useState("")
+     const navigate = useNavigate();
 
     const registerUser = async (e) => {
 
@@ -27,6 +29,7 @@ export const Register = () => {
                 headers: { "Content-type": "application/json" }
             })
             alert("Usuario registrado correctamente")
+            navigate("/Login")
         }
         catch (error) {
             console.log(error)

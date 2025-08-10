@@ -35,14 +35,15 @@ def signup():
     if '@' not in data['email'] or '.' not in data['email']:
         return jsonify({"error": "Email no válido"}), 400
 
-    #  Valida longitud mínima contraseña
+    # Valida longitud mínima contraseña
     if len(data['password']) < 6:
         return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
 
-    # Valida el telefono (solo dígitos y longitud mínima)
-    if not data['telefono'].isdigit() or len(data['telefono']) < 7:
-        return jsonify({"error": "Teléfono no válido"}), 400
-
+    # Validar telefono opcional
+    telefono = data.get('telefono')
+    if telefono:
+        if not telefono.isdigit() or len(telefono) < 7:
+            return jsonify({"error": "Teléfono no válido"}), 400
 
     email = data['email']
     password = data['password']
@@ -55,7 +56,7 @@ def signup():
                 "nickname": data.get('nickname', ''),
                 "nombre": data.get('nombre', ''),
                 "apellido": data.get('apellido', ''),
-                "telefono": data.get('telefono', '')
+                "telefono": telefono or ''
             }
         }
     })
@@ -65,7 +66,7 @@ def signup():
         'nombre': data.get('nombre', ''),
         'apellido': data.get('apellido', ''),
         'nickname': data.get('nickname', ''),
-        'telefono': data.get('telefono', ''),
+        'telefono': telefono or '',
         'avatar': data.get('avatar', ''),
         'rol': data.get('rol', 'user')
     }

@@ -43,7 +43,7 @@ export const DetailsGames = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat backdrop-blur-lg bg-opacity-75"
         style={{
           // MIRAR ESTO POR QUE DEBE SALIR LA IMAGEN DEL JUEGO QUE PASAMOS. OTRA OPCION ES AÑADIR OTRA IMAGEN PARA EL DETALLE DEL JUEGO EN EL REGISTRO DEL JUEGO
-          backgroundImage: "url(https://images4.alphacoders.com/137/thumb-1920-1371791.jpeg)",
+          backgroundImage: `url(${detailsGame.img})`,
         }}
       />
 
@@ -79,7 +79,7 @@ export const DetailsGames = () => {
               <iframe
                 width="300"
                 height="215"
-                src="https://www.youtube.com/embed/TXSFuUXPtP4?si=CRPVEgwpGIBGZ7sc"
+                src="https://www.youtube.com/embed/jb0LtQBNqhY?si=LjX-yzsXRClkxGln"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

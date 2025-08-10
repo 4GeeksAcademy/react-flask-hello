@@ -77,6 +77,19 @@ export const Games = () => {
               Agregar al carro
             </button>
           </div>
+          <div className="px-6 pb-4 flex justify-around">
+            <div>
+              <button>
+                Editar
+              </button>
+
+            </div>
+            <div>
+              <button>
+                Eliminar
+              </button>
+            </div>
+          </div>
         </div>
       ))}
     </div>

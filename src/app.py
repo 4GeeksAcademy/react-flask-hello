@@ -7,10 +7,13 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.database.db import db
-from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from supabase import create_client, Client
+
+import api.routes.event as api_events
+import api.routes.user as api_user
+
 
 # from models import Person
 
@@ -47,7 +50,8 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api_events.api, url_prefix='/events')
+app.register_blueprint(api_user.api, url_prefix='/user')
 
 # Handle/serialize errors like a JSON object
 
@@ -58,27 +62,6 @@ def handle_invalid_usage(error):
 
 # generate sitemap with all your endpoints
 
-
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    user = supabase.auth.sign_up({
-        "email": email,
-        "password": password,
-        "options": {
-            "data": {
-                "nickname": data.get('nickname', ''),
-                "nombre": data.get('nombre', ''),
-                "apellido": data.get('apellido', ''),
-                "telefono": data.get('telefono', '')
-            }
-        }
-    })
-    print(user)
-
-    return jsonify("Todo bien")
 
 
 # any other endpoint will try to serve it like a static file

@@ -71,36 +71,33 @@ export const Home = () => {
         fetchEvents();
     }, [backendUrl, dispatch]);
 
+
+    const [selectedCard, setSelectedCard] = useState(null);
     const cards = [
         {
-            title: 'Card 1',
-            text: 'Imagen de fondo #1',
-            image: 'https://images.pexels.com/photos/1694908/pexels-photo-1694908.jpeg',
-            link: '#',
+            title: "DJ PEDRO",
+            text: "Entrada desde: € 50",
+            image: "https://images.pexels.com/photos/1694908/pexels-photo-1694908.jpeg",
         },
         {
-            title: 'Card 2',
-            text: 'Imagen de fondo #2',
-            image: 'https://images.pexels.com/photos/1649691/pexels-photo-1649691.jpeg',
-            link: '#',
+            title: "DJPIBAS",
+            text: "Entrada desde: € 50",
+            image: "https://images.pexels.com/photos/1649691/pexels-photo-1649691.jpeg",
         },
         {
-            title: 'Card 3',
-            text: 'Imagen de fondo #3',
-            image: 'https://images.pexels.com/photos/743715/pexels-photo-743715.jpeg',
-            link: '#',
+            title: "DJ JOSE",
+            text: "Entrada desde: € 50",
+            image: "https://images.pexels.com/photos/743715/pexels-photo-743715.jpeg",
         },
         {
-            title: 'Card 4',
-            text: 'Imagen de fondo #4',
-            image: 'https://images.pexels.com/photos/2240763/pexels-photo-2240763.jpeg',
-            link: '#',
+            title: "DJ PEPITA",
+            text: "Entrada desde: € 50",
+            image: "https://images.pexels.com/photos/2240763/pexels-photo-2240763.jpeg",
         },
         {
-            title: 'Card 5',
-            text: 'Imagen de fondo #5',
-            image: 'https://images.pexels.com/photos/3682820/pexels-photo-3682820.jpeg',
-            link: '#',
+            title: "DJ MARTA",
+            text: "Entrada desde: € 50",
+            image: "https://images.pexels.com/photos/3682820/pexels-photo-3682820.jpeg",
         },
 
     ];
@@ -109,25 +106,21 @@ export const Home = () => {
         {
             title: 'Dj Paco',
             text: 'Entrada desde: € 50',
-            link: '#',
             image: 'https://images.pexels.com/photos/668278/pexels-photo-668278.jpeg',
         },
         {
             title: 'Conciertos',
             text: 'Entrada desde: 70€',
-            link: '#',
             image: 'https://images.pexels.com/photos/849/people-festival-party-dancing.jpg',
         },
         {
             title: 'Rock',
             text: 'Entrada desde: 70€',
-            link: '#',
             image: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg',
         },
         {
             title: 'Reggaeton Fest',
             text: 'Entrada desde: 70€',
-            link: '#',
             image: 'https://images.pexels.com/photos/1179581/pexels-photo-1179581.jpeg',
         },
     ];
@@ -143,20 +136,27 @@ export const Home = () => {
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mt-1">
                     {cards.map((card, index) => (
                         <div className="col" key={`static-${index}`}>
-                            <a href={card.link} className="text-decoration-none">
-                                <div
-                                    className="card h-100 card-link card-bg"
-                                    style={{ backgroundImage: `url(${card.image})` }}
-                                >
-                                    <div className="card-body">
+                            <button type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}>
+                                <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden">
+                                    <div
+                                        className="bg-img position-absolute w-100 h-100"
+                                        style={{
+                                            backgroundImage: `url(${card.image})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                        }}
+                                    ></div>
+                                    <div className="card-gradient position-absolute w-100 h-100"></div>
+                                    <div className="card-body d-flex flex-column justify-content-end position-relative">
                                         <h5 className="card-title">{card.title}</h5>
                                         <p className="card-text">{card.text}</p>
                                     </div>
                                 </div>
-                            </a>
+                            </button>
                         </div>
                     ))}
                 </div>
+
                 <div id="carouselExampleFade" className="carousel slide carousel-fade py-4" data-bs-ride="carousel">
                     <h2 className="titulos display-4 text-center fw-bold mb-4">Experiencia</h2>
                     <div className="carousel-inner carouselB">
@@ -188,9 +188,8 @@ export const Home = () => {
                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-1">
                         {cards2.map((card, index) => (
                             <div className="col" key={index}>
-                                <a
-                                    href={card.link}
-                                    className="text-decoration-none text-white"
+                                <button
+                                    type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}
                                 >
                                     <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden">
                                         <div
@@ -207,13 +206,73 @@ export const Home = () => {
                                             <p className="card-text">{card.text}</p>
                                         </div>
                                     </div>
-                                </a>
+                                </button>
                             </div>
                         ))}
                     </div>
                 </div>
-
             </div>
+            {/* MODAL DE LAS CARDS */}
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                    <div className="modal-content position-relative overflow-hidden">
+                        {selectedCard && (
+                            <>
+                                <div
+                                    className="position-absolute w-100 h-100"
+                                    style={{
+                                        backgroundImage: `url(${selectedCard.image})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        opacity: 0.4,
+                                        zIndex: 0
+                                    }}
+                                ></div>
+                                <div
+                                    className="position-absolute w-100 h-100"
+                                    style={{
+                                        backgroundColor: "black",
+                                        opacity: 0.6,
+                                        zIndex: 1
+                                    }}
+                                ></div>
+                            </>
+                        )}
+
+                        {/* CONTENIDO DE LA MODAL */}
+                        <div className="modal-header position-relative" style={{ zIndex: 2 }}>
+                            <h1 className="modal-title text-center w-100 title-modal" id="staticBackdropLabel">
+                                {selectedCard ? selectedCard.title : "TITULO DE LAS CARDS"}
+                            </h1>
+                        </div>
+                        <div className="modal-body position-relative text-white" style={{ zIndex: 2 }}>
+                            <ul>
+                                <li>AQUI</li>
+                                <li>ESTARA</li>
+                                <li>TODA</li>
+                                <li>LA</li>
+                                <li>INFORMACION</li>
+                                <li>DEL</li>
+                                <li>EVENTO</li>
+                                <li>COMO</li>
+                                <li>PRECIOS</li>
+                                <li>LUGAR</li>
+                                <li>PARA COMPRAR</li>
+                                <li>ENTRE OTRAS COSAS</li>
+                            </ul>
+                        </div>
+                        <div className="modal-footer position-relative" style={{ zIndex: 2 }}>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                                Understood
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* FIN DE MODAL DE LAS CARDS */}
         </div>
     );
 };

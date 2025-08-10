@@ -1,120 +1,137 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../api/supabaseClient.js';
-import { FaGoogle, FaGithub } from 'react-icons/fa6';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-
+import { supabase } from '../../api/supabaseClient.js';
 
 export const Login = () => {
   const navigate = useNavigate();
-  const [datosRegistro, setDatosRegistro] = useState({
-    email: "", 
-    password:""
-  })
+  const [datosLogin, setDatosLogin] = useState({
+    email: '',
+    password: ''
+  });
 
-  
-  // Redireccion automatica si ya hay sesion iniciada a vistahome
+  const handleChange = (e) => {
+    setDatosLogin({
+      ...datosLogin,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  // Redirección automática si ya hay sesión iniciada a /vistahome
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('/vistahome');
+      if (session) navigate('/home');
     });
-    // cambios de sesion (por si el login es externo)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) navigate('/vistahome');
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) navigate('/home');
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const handleOAuthLogin = async (provider) => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider });
-    if (error) console.error('OAuth login error:', error.message);
-  };
-  const handleChange =(e) => {
-    setDatosRegistro({
-        ...datosRegistro,
-        [e.target.name]:e.target.value
-    });
-  };
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-        const respuesta = await fetch ("********URL****", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(datosRegistro)
-        });
-        const data = await respuesta.json();
-        if (respuesta.ok){
-            navigate("/ajustesusuario");
-        }else {
-            alert(data.error || "Error al registrar, revisa tu email")
-        }
+    try {
+      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/api/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosLogin)
+      });
+      const data = await respuesta.json();
+      if (respuesta.ok) {
+        navigate('/home');
+      } else {
+        alert(data.error || 'Error en el inicio de sesión, revisa tus datos');
+      }
+    } catch (error) {
+      console.error('Error en fetch:', error);
+      alert('Error de red o servidor');
     }
+  };
+
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center"
-      style={{ backgroundImage: "url('/fondo_login.jpg')" }}
+      style={{
+        minHeight: '100vh',
+        backgroundImage: "url('/fondo_login.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8 w-full max-w-md text-white text-center"
+      <div
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          boxShadow: '0 4px 30px rgba(0,0,0,0.1)',
+          padding: '2rem',
+          maxWidth: '400px',
+          width: '100%',
+          color: 'white',
+          textAlign: 'center'
+        }}
       >
-        <h2 className="text-3xl font-bold mb-6">
-          LOGIN EN <span className="text-yellow-300">KNECT</span>
+        <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem', fontWeight: 'bold' }}>
+          LOGIN EN <span style={{ color: '#facc15' }}>KNECT</span>
         </h2>
-        
-          <form onSubmit={handleRegister}>
-            <div>
-              <input 
-                type="email"
-                name="email"
-                value={datosRegistro.email}
-                onChange={handleChange}
-             />
-            </div>
-              <br />
 
-            <div>
-             <input 
-                type="password"
-                name="password"
-                value={datosRegistro.password}
-                onChange={handleChange}
-             />
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            name="email"
+            value={datosLogin.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              marginBottom: '1rem',
+              borderRadius: '8px',
+              border: 'none',
+              fontSize: '1rem'
+            }}
+          />
 
-              </div>
-             </form>
-            <div>
-              <button>
-                confirmar registro
-              </button>
-            </div>
+          <input
+            type="password"
+            name="password"
+            value={datosLogin.password}
+            onChange={handleChange}
+            placeholder="Contraseña"
+            required
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              marginBottom: '1.5rem',
+              borderRadius: '8px',
+              border: 'none',
+              fontSize: '1rem'
+            }}
+          />
 
-
-        <div className="flex justify-center gap-6">
           <button
-            onClick={() => handleOAuthLogin('google')}
-            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
-            aria-label="Google"
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: '#facc15',
+              color: '#000',
+              fontWeight: 'bold',
+              fontSize: '1.1rem',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease'
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#eab308')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#facc15')}
           >
-            <FaGoogle />
+            Iniciar sesión
           </button>
-          <button
-            onClick={() => handleOAuthLogin('github')}
-            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition text-xl"
-            aria-label="GitHub"
-          >
-            <FaGithub />
-          </button>
-        </div>
-
-        <p className="text-center text-sm text-white/70 mt-8">
-          ¿No tienes cuenta?{' '}
-          <a href="/register" className="text-white underline hover:text-blue-300">
-            Regístrate
-          </a>
-        </p>
-      </motion.div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -24,15 +24,18 @@ export const router = createBrowserRouter(
 
       {/* Rutas con layout */}
       <Route path="/" element={<Layout />} errorElement={<NotFound />}>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      
         {/* Home (index) */}
         <Route index element={<Home />} />
         {/* Alternativa: /home */}
-        <Route path="home" element={<Home />} />
+        <Route path="/home" element={<Home />} />
 
         {/* Rutas adicionales */}
-        <Route path="crear-evento" element={<CreateEvent />} />
+        <Route path="/crear-evento" element={<CreateEvent />} />
+        
+        
 
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />

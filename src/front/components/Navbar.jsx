@@ -82,20 +82,13 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <Link to="/register">
-                  <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Regístrate</p>
-                </Link>
-
-
-                {
-
+               {
                   view && (
                     <Link to="/addgame">
                       <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
                     </Link>
                   )}
 
-                <a href="/Soporte" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Soporte</a>
                 <input
                   type="text"
                   placeholder="Buscar..."

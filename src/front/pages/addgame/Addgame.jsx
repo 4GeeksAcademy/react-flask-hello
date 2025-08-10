@@ -7,6 +7,7 @@ export const Addgame = () => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
     const [img, setImg] = useState("")
+    const [video, setVideo] = useState("")
     const [name, setName] = useState("")
     const [platform, setPlatform] = useState("")
     const [description, setDescription] = useState("")
@@ -23,15 +24,16 @@ export const Addgame = () => {
 
             const newgame = {
                 "img": img,
+                "video": video,
                 "name": name,
                 "platform": platform,
                 "description": description,
                 "price": price,
-                "distribuidora":distribuidora,
+                "distribuidora": distribuidora,
                 "genero": genero,
                 "offline": offline,
                 "online": online,
-                "gamemode":gamemode
+                "gamemode": gamemode
             }
             await fetch(`${backendUrl}api/games/addgame`, {
                 method: "POST",
@@ -55,6 +57,12 @@ export const Addgame = () => {
             </div>
             <div>
                 <img src={img}></img>
+            </div>
+            <div>
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
+                    Video
+                </label>
+                <input value={video} onChange={(e) => setVideo(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
             </div>
 
             <div class="flex flex-col space-y-4 mt-6">
@@ -126,7 +134,7 @@ export const Addgame = () => {
                     <input value={distribuidora} onChange={(e) => setDistribuidora(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
 
                 </div>
-                
+
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-description">
                         Description

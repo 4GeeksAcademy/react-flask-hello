@@ -1,42 +1,42 @@
-
-
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Heart } from 'lucide-react';
-
+import useGlobalReducer from "../../hooks/useGlobalReducer"; // <-- añadido
 
 export const DetailsGames = () => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL
   const [detailsGame, setDetailsGame] = useState([]);
   const { id } = useParams();
-
-
+  const { dispatch } = useGlobalReducer(); // <-- añadido
 
   const getDetailsGame = async () => {
     const responsive = await fetch(`${backendUrl}api/games/detailsgames/${id}`)
     const data = await responsive.json();
-
-
     setDetailsGame(data.game)
-
-
-
   }
+
   useEffect(() => {
     getDetailsGame()
   }, [])
 
-
-
-
-
-
+  // handler para añadir al carro
+  const handleAddToCarro = () => {
+    if (!detailsGame) return;
+    dispatch({
+      type: "addToCarro",
+      payload: {
+        id: detailsGame.id,
+        name: detailsGame.name || detailsGame.title,
+        title: detailsGame.title,
+        price: detailsGame.price,
+        img: detailsGame.img || detailsGame.image,
+        platform: detailsGame.platform,
+      },
+    });
+  };
 
   return (
-
-
     <div className="min-h-screen bg-gradient-to-br from-teal-900 via-teal-800 to-teal-700 relative overflow-hidden">
       {/* Background Image */}
       <div
@@ -63,7 +63,10 @@ export const DetailsGames = () => {
                 <span className="text-white text-2xl font-bold">Precio: {detailsGame.price} €</span>
               </div>
               <div className="flex gap-3">
-                <button className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex-2">
+                <button
+                  className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex-2"
+                  onClick={handleAddToCarro} // <-- añadido
+                >
                   Añadir al carrito
                 </button>
                 <button className="bg-red-900 hover:bg-red-700 text-white p-3 rounded-lg transition-colors">
@@ -76,17 +79,7 @@ export const DetailsGames = () => {
 
             {/* Columna derecha: video */}
             <div className="flex-shrink-0">
-              <iframe
-                width="300"
-                height="215"
-                src="https://www.youtube.com/embed/jb0LtQBNqhY?si=LjX-yzsXRClkxGln"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="rounded-lg shadow-lg"
-              ></iframe>
+              <iframe width="350" height="215" src={detailsGame.video} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
           </div>
         </div>

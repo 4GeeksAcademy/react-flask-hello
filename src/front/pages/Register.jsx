@@ -18,7 +18,7 @@ export const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/api/signup', {
+      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/user/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosRegistro)

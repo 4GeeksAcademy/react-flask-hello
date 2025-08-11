@@ -30,7 +30,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/api/signin', {
+      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/user/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosLogin)

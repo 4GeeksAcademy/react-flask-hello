@@ -4,6 +4,7 @@ export const initialStore = () => {
     user: null,
     all_games: [],
     carro: [], // <- añadido
+    
   };
 };
 
@@ -24,6 +25,7 @@ export default function storeReducer(store, action = {}) {
           todo.id === id ? { ...todo, background: color } : todo
         ),
       };
+      
 
     case "setGames":
       return {

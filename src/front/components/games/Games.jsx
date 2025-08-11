@@ -32,7 +32,7 @@ export const Games = () => {
       });
     } catch (error) {
       console.log(error);
-    } z
+    } 
   };
 
 

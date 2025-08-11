@@ -14,6 +14,7 @@ export const EventForm = () => {
         price: 0,
         image_url: ""
     });
+    console.log(formData)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -39,7 +40,7 @@ export const EventForm = () => {
                 return;
             }
 
-            const response = await fetch(`${backendUrl}/api/events`, {
+            const response = await fetch(`${backendUrl}api/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

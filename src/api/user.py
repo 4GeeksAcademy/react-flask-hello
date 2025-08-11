@@ -4,9 +4,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 
 user_bp = Blueprint('user', __name__,)
 bcrypt = Bcrypt()
+CORS(user_bp)
 
 
 @user_bp.route('/register', methods=['POST'])

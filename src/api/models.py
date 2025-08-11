@@ -4,7 +4,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List, Optional
 from datetime import datetime
 from flask_bcrypt import Bcrypt
-from sqlalchemy import Numeric
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -31,7 +30,7 @@ class User(db.Model):
 class Artist(db.Model):
     __tablename__ = "artist"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False, unique=True)
     genere: Mapped[Optional[str]] = mapped_column(String(120))
     social_link: Mapped[Optional[str]] = mapped_column(String(255))
 
@@ -44,7 +43,6 @@ class Artist(db.Model):
             "genere": self.genere,
             "social_link": self.social_link,
             "events": [event.serialize() for event in self.events]
-
         }
 
 
@@ -59,14 +57,12 @@ class Event(db.Model):
     lng: Mapped[Optional[float]] = mapped_column(Float)
     artist_id: Mapped[Optional[int]] = mapped_column(ForeignKey("artist.id"))
 
-
-    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False, default=0) #precio de entrada
     artist = relationship("Artist", back_populates="events")
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="event")
 
     def serialize(self):
         return {
-            "id":  self.id,
+            "id": self.id,
             "title": self.title,
             "date": self.date,
             "description": self.description,
@@ -74,8 +70,7 @@ class Event(db.Model):
             "lat": self.lat,
             "lng": self.lng,
             "artist_id": self.artist_id,
-            "price": float(self.price)
-              if self.price is not None else None
+            "artist_name": self.artist.name if self.artist else None
         }
 
 
@@ -100,11 +95,10 @@ class Purchase(db.Model):
             "event_id": self.event_id,
             "quantity": self.quantity,
             "timestamp": self.timestamp
-
         }
 
 
-class CartItem (db.Model):
+class CartItem(db.Model):
     __tablename__ = "cart_item"
 
     id: Mapped[int] = mapped_column(primary_key=True)

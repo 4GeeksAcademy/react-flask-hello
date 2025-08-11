@@ -11,9 +11,8 @@ export const EventForm = () => {
         date: "",
         description: "",
         location: "",
-        lat: "",
-        lng: "",
-        artist_name: ""
+        price: 0,
+        image_url: ""
     });
 
     const handleChange = (e) => {
@@ -106,6 +105,29 @@ export const EventForm = () => {
                                 ></textarea>
                             </div>
                             <div className="mb-3">
+                                <label htmlFor="price" className="form-label">Precio</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="price"
+                                    name="price"
+                                    value={formData.price}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="image_url" className="form-label">URL de la Imagen</label>
+                                <input
+                                    type="url"
+                                    className="form-control"
+                                    id="image_url"
+                                    name="image_url"
+                                    value={formData.image_url}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
                                 <label htmlFor="location" className="form-label">Ubicación</label>
                                 <input
                                     type="text"
@@ -116,43 +138,6 @@ export const EventForm = () => {
                                     onChange={handleChange}
                                     required
                                 />
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="artist_name" className="form-label">Nombre del Artista/Banda</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="artist_name"
-                                    name="artist_name"
-                                    value={formData.artist_name}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
-                                    <label htmlFor="lat" className="form-label">Latitud (Opcional)</label>
-                                    <input
-                                        type="number"
-                                        step="any"
-                                        className="form-control"
-                                        id="lat"
-                                        name="lat"
-                                        value={formData.lat}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <label htmlFor="lng" className="form-label">Longitud (Opcional)</label>
-                                    <input
-                                        type="number"
-                                        step="any"
-                                        className="form-control"
-                                        id="lng"
-                                        name="lng"
-                                        value={formData.lng}
-                                        onChange={handleChange}
-                                    />
-                                </div>
                             </div>
                             <div className="d-grid gap-2">
                                 <button type="submit" className="btn btn-primary btn-lg">

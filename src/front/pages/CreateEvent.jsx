@@ -36,11 +36,11 @@ export function CreateEvent() {
   };
 
   const isValidTag = (tag) => {
-    const validPattern = /^[\w-]{1,12}$/; // Esto solo permite letras, numeros y guiones y un máximo de 12 caracteres
+    const validPattern = /^[\w-]{1,12}$/;
     return validPattern.test(tag);
   };
 
-  const handleCategoryInput = (e) => { // Maneja la entrada de categoria
+  const handleCategoryInput = (e) => {
     setCategoryInput(e.target.value);
   };
 
@@ -53,10 +53,7 @@ export function CreateEvent() {
       e.preventDefault();
       const newTag = categoryInput.trim();
 
-      if (
-        isValidTag(newTag) &&
-        !formData.categories.includes(newTag)
-      ) {
+      if (isValidTag(newTag) && !formData.categories.includes(newTag)) {
         setFormData((prev) => ({
           ...prev,
           categories: [...prev.categories, newTag]
@@ -76,71 +73,76 @@ export function CreateEvent() {
   const navigate = useNavigate();
 
   const rutaVistaHome = () => {
-    navigate("/vistahome");
+    navigate("/home"); // <- antes /vistahome
   };
 
-  const handleSubmit = async (e) => { // Funcion con la logica para crear un evento y subir imagenes del evento
-  e.preventDefault();
-  setIsLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  try {
-    if (!imageFile) {
-      alert("Selecciona una imagen para el evento");
+    try {
+      if (!imageFile) {
+        alert("Selecciona una imagen para el evento");
+        setIsLoading(false);
+        return;
+      }
+
+      // 1) Subir imagen a Supabase Storage
+      const fileExt = imageFile.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `events/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("images.event")
+        .upload(filePath, imageFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from("images.event")
+        .getPublicUrl(filePath);
+      const publicUrl = data.publicUrl;
+
+      // 2) Usuario actual (v1). Si usáis supabase-js v2, usa getUser()
+      const user = supabase.auth.user();
+      if (!user) {
+        alert("Usuario no autenticado");
+        setIsLoading(false);
+        return;
+      }
+
+      // 3) Insertar en la tabla con hora y ubicación, y pedir id devuelto
+      const { data: inserted, error: insertError } = await supabase
+        .from("Evento")
+        .insert([
+          {
+            titulo: formData.title,
+            definicion: formData.description,
+            fecha: formData.date,
+            hora: formData.time,             // <--- añadido
+            ubicacion: formData.location,    // <--- añadido (cambia a 'location' si la columna se llamara así)
+            portada: publicUrl,
+            creador_evento: user.id,
+            categoria: JSON.stringify(formData.categories),
+            max_asist:
+              formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),
+          },
+        ])
+        .select("id")   // <--- pedimos volver con el id creado
+        .single();
+
+      if (insertError) throw insertError;
+
+      alert("Evento creado con éxito");
+      // 4) Redirigir a la lista y pasar el id recién creado (opcional para resaltar)
+      navigate("/eventos", { state: { newEventId: inserted.id } });
+    } catch (error) {
+      console.error("Error al crear evento:", error.message);
+      alert("Error al crear evento, revisa la consola.");
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    // Genera un nombre unico para la imagen
-    const fileExt = imageFile.name.split(".").pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `events/${fileName}`;
-
-    // Subir imagen
-    const { error: uploadError } = await supabase.storage
-      .from("images.event")
-      .upload(filePath, imageFile);
-
-    if (uploadError) throw uploadError;
-
-    // Obtener URL publica
-    const { data } = supabase.storage
-      .from("images.event")
-      .getPublicUrl(filePath);
-    const publicUrl = data.publicUrl;
-
-    // Obtener el id del usuario creador (usuario en en sesion)
-    const user = supabase.auth.user(); // metodo para obtener usuario actual
-    if (!user) {
-      alert("Usuario no autenticado");
-      setIsLoading(false);
-      return;
-    }
-
-    // Insertar en tabla Evento
-    const { error: insertError } = await supabase.from("Evento").insert([
-      {
-        titulo: formData.title,
-        definicion: formData.description,
-        fecha: formData.date,
-        portada: publicUrl,
-        creador_evento: user.id, // o user.id_usuario, segun tu estructura de usuario
-        categoria: JSON.stringify(formData.categories), // guardamos como JSON
-        max_asist:
-          formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),
-      },
-    ]);
-
-    if (insertError) throw insertError;
-
-    alert("Evento creado con éxito");
-    navigate("/vistahome");
-  } catch (error) {
-    console.error("Error al crear evento:", error.message);
-    alert("Error al crear evento, revisa la consola.");
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -179,6 +181,8 @@ export function CreateEvent() {
                 Completa el siguiente formulario.
               </p>
             </div>
+
+            {/* Imagen */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Imagen principal del evento
@@ -189,12 +193,12 @@ export function CreateEvent() {
                 onChange={handleImageChange}
                 disabled={isLoading}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-blue-50 file:text-blue-700
-                  hover:file:bg-blue-100"
+                  file:rounded-md file:border-0 file:text-sm file:font-semibold
+                  file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
             </div>
+
+            {/* Título */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Nombre del evento
@@ -209,6 +213,8 @@ export function CreateEvent() {
                 required
               />
             </div>
+
+            {/* Descripción */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Descripción
@@ -223,6 +229,8 @@ export function CreateEvent() {
                 required
               ></textarea>
             </div>
+
+            {/* Categorías (chips) */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Categoría por etiquetas <span className="text-red-500">*</span>
@@ -266,6 +274,8 @@ export function CreateEvent() {
                 ))}
               </div>
             </div>
+
+            {/* Fecha */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Fecha
@@ -280,6 +290,8 @@ export function CreateEvent() {
                 required
               />
             </div>
+
+            {/* Hora */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Hora
@@ -295,6 +307,8 @@ export function CreateEvent() {
                 required
               />
             </div>
+
+            {/* Ubicación */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Ubicación o enlace
@@ -309,6 +323,8 @@ export function CreateEvent() {
                 required
               />
             </div>
+
+            {/* Visibilidad */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Visibilidad
@@ -324,6 +340,8 @@ export function CreateEvent() {
                 <option value="private">Privado</option>
               </select>
             </div>
+
+            {/* Máximo asistentes */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Máximo de asistentes (opcional)
@@ -344,13 +362,14 @@ export function CreateEvent() {
                 disabled={isLoading}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
               />
-
               {formData.maxGuests !== "" && formData.maxGuests <= 0 && (
                 <p className="text-sm text-red-500 mt-1">
                   El número debe ser mayor que 0 o dejarse vacío.
                 </p>
               )}
             </div>
+
+            {/* Acciones */}
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
@@ -360,7 +379,7 @@ export function CreateEvent() {
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                 }`}
-                onClick={() => navigate("/vistahome")}
+                onClick={() => navigate("/eventos")}  // <- ahora vuelve a la lista
               >
                 Cancelar
               </button>

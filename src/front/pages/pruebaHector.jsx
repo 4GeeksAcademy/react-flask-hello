@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useRevalidator } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -29,15 +29,9 @@ export const CreateEvent = () => {
     const handleForm = async (e) => {
         e.preventDefault();
         try {
-            const userId = localStorage.getItem("userId");
-            const token = localStorage.getItem("token");
-
-            const respuestaFormulario = await fetch(`https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/event/${userId}`, {
+            const respuestaFormulario = await fetch('******URL******', {
                 method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosFormulario)
             });
 

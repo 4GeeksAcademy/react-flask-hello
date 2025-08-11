@@ -15,6 +15,10 @@ export const Games = () => {
     navigate(`/DetailsGames/${id}`);
   };
 
+const modgame = (id) => {
+  navigate (`/EditGames/${id}`)
+}
+
   useEffect(() => {
     getGames();
   }, []);
@@ -77,10 +81,10 @@ export const Games = () => {
               Agregar al carro
             </button>
           </div>
-          <div className="px-6 pb-4 flex justify-around">
+          <div className="px-6 pb-4 flex justify-around text-white">
             <div>
-              <button>
-                Editar
+              <button onClick={()=> modgame (game.id)}>
+                Modificar
               </button>
 
             </div>

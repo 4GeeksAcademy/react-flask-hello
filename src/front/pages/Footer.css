@@ -1,0 +1,101 @@
+:root{
+  --footer-from:#2b1e59;
+  --footer-to:#e07a5f;
+  --footer-text:#ffffff;
+  --footer-muted:rgba(255,255,255,.75);
+  --ring:rgba(255,255,255,.35);
+}
+
+.site-footer{
+  color:var(--footer-text);
+  background:linear-gradient(135deg, var(--footer-from), var(--footer-to));
+  border-top:1px solid rgba(255,255,255,.12);
+}
+
+.footer__inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:2rem 1rem;
+}
+
+.footer__top{
+  display:flex;
+  flex-direction:column;
+  gap:1.25rem;
+  align-items:flex-start;
+}
+
+.footer__bottom{
+  display:flex;
+  flex-direction:column-reverse;
+  gap:1rem;
+  align-items:center;
+  justify-content:space-between;
+  border-top:1px solid rgba(255,255,255,.12);
+  padding-top:1rem;
+  margin-top:1.5rem;
+  font-size:.85rem;
+  color:var(--footer-muted);
+}
+
+@media (min-width:768px){
+  .footer__top{ flex-direction:row; align-items:center; justify-content:space-between; }
+  .footer__bottom{ flex-direction:row; }
+}
+
+/* Brand (youtubeShorts. 7º Video) */
+.footer__brand{ display:flex; align-items:center; gap:.75rem; }
+.brand__logo{
+  height:40px; width:40px; display:grid; place-items:center;
+  background:rgba(255,255,255,.12); border-radius:14px;
+}
+.brand__icon{ height:22px; width:22px; fill:currentColor; }
+.brand__title{ font-weight:700; letter-spacing:.4px; margin:0; }
+.brand__tag{ margin:0; font-size:.8rem; color:var(--footer-muted); }
+
+/* Nav */
+.footer__nav{ display:flex; flex-wrap:wrap; gap:.75rem 1rem; }
+
+/* Botones que tienen links estilo pill (Youtube Shorts) */
+.btn{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  padding:.55rem .9rem;
+  border-radius:999px;
+  font-size:.9rem;
+  cursor:pointer;
+  transition:background .2s, transform .05s, box-shadow .2s;
+}
+.btn:hover{ background:rgba(255,255,255,.16); }
+.btn:active{ transform:translateY(1px); }
+.btn:focus-visible{ outline:0; box-shadow:0 0 0 3px var(--ring); }
+
+.btn--link{
+  border:none;
+  background:transparent;
+  color:var(--footer-muted);
+  padding:0;
+  border-radius:6px;
+  text-decoration:none;
+}
+.btn--link:hover{ color:#fff; }
+
+.footer__badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.5rem .75rem;
+  border-radius:12px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,.18);
+}
+.footer__badge:hover{ background:rgba(255,255,255,.16); }
+.footer__badge:focus-visible{ outline:0; box-shadow:0 0 0 3px var(--ring); }
+
+.footer__actions{ display:flex; gap:.5rem; }
+
+.heart{ width:16px; height:16px; fill:currentColor; opacity:.9; }

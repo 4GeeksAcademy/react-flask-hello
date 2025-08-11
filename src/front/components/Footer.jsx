@@ -1,28 +1,59 @@
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import "../pages/Footer.css"
 
 export const Footer = () => {
-    const navigate = useNavigate();
-  
-    const rutaVistaHome = () => {
-      navigate("/vistahome");
-    };
+  const navigate = useNavigate();
+  const year = new Date().getFullYear();
+
+  const rutaVistaHome = () => navigate("/");
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <div>
-      <button className="m-10 text-black bg-yellow-700" onClick={rutaVistaHome}>Home</button>
-    <footer className="footer mt-10 py-3 text-center">
-        <p>
-      <span className="flex items-center justify-center gap-2">
-        Made with
-        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M11.782 5.72a4.773 4.773 0 0 0-4.8 4.173 3.43 3.43 0 0 1 2.741-1.687c1.689 0 2.974 1.972 3.758 2.587a5.733 5.733 0 0 0 5.382.935c2-.638 2.934-2.865 3.137-3.921-.969 1.379-2.44 2.207-4.259 1.231-1.253-.673-2.19-3.438-5.959-3.318ZM6.8 11.979A4.772 4.772 0 0 0 2 16.151a3.431 3.431 0 0 1 2.745-1.687c1.689 0 2.974 1.972 3.758 2.587a5.733 5.733 0 0 0 5.382.935c2-.638 2.933-2.865 3.137-3.921-.97 1.379-2.44 2.208-4.259 1.231-1.253-.673-2.19-3.443-5.963-3.317Z"/>
-        </svg>
-        by <a href="http://www.4geeksacademy.com">Hector, Ismain, Sergio</a>
-      
-      </span>
-    </p>
+    <footer className="site-footer" role="contentinfo">
+      <div className="footer__inner">
+        {/* Fila superior */}
+        <div className="footer__top">
+          {/* Marca */}
+          <div className="footer__brand">
+            <div className="brand__logo" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="brand__icon">
+                <path d="M7 4h10a2 2 0 0 1 2 2v10l-4 4H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm9 11V6H8v12h6l2-3Z"/>
+              </svg>
+            </div>
+            <div>
+              <p className="brand__title">Knect</p>
+              <p className="brand__tag">Tu red de planes reales</p>
+            </div>
+          </div>
+
+          {/* Navegación */}
+          <nav className="footer__nav" aria-label="Enlaces del sitio">
+            <button className="btn btn--link" onClick={rutaVistaHome}>Home</button>
+            <Link className="btn btn--link" to="/createevent">Crear evento</Link>
+            <Link className="btn btn--link" to="/login">Login</Link>
+            <Link className="btn btn--link" to="/register">Register</Link>
+          </nav>
+
+          {/* Autores (Youtube Shorts 9º video) */}
+          <a
+           
+          >
+            Hecho por Héctor, Sergio e Ismaín.
+            <svg className="heart" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.534-7-10A5 5 0 0 1 12 6a5 5 0 0 1 7 5c0 5.466-7 10-7 10Z"/>
+            </svg>
+          </a>
+        </div>
+
+        {/* Fila inferior. Tik tok Codeximg */}
+        <div className="footer__bottom">
+          <p>© {year} Knect. Todos los derechos reservados.</p>
+          <div className="footer__actions">
+            <button className="btn" onClick={rutaVistaHome} aria-label="Ir a inicio">Home</button>
+            <button className="btn" onClick={scrollTop} aria-label="Volver arriba">↑ Arriba</button>
+          </div>
+        </div>
+      </div>
     </footer>
-    </div>
-  )
-}
+  );
+};

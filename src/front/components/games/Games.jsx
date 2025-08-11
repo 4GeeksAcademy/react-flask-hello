@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { Context } from "../../store/appContext";
 import "./games.css";
 import { Trash } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 export const Games = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -100,7 +101,7 @@ const modgame = (id) => {
           <div className="px-6 pb-4 flex justify-around text-white">
             <div>
               <button onClick={()=> modgame (game.id)}>
-                Modificar
+                <Pencil size={24} color="#ffffff" strokeWidth={1.75}/>
               </button>
 
             </div>

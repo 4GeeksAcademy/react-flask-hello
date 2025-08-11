@@ -55,6 +55,11 @@ def add_game():
     db.session.commit()
 
     return jsonify("Juego añadido correctamente"),200
+
+    # MODIFICAR JUEGOS
+
+
+
     
 
     # ELIMINAR JUEGOS

@@ -5,6 +5,7 @@ import bcrypt # type: ignore
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity # type: ignore
 
 
+
 api = Blueprint("api/user", __name__)
 
 #  MOSTRAR TODOS LOS USUARIOS

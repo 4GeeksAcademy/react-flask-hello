@@ -18,6 +18,7 @@ import { Addgame } from "./pages/addgame/Addgame.jsx";
 import { DetailsGames } from "./pages/detailsGames/DetailsGames.jsx";
 import { Carro } from "./pages/carro/Carro.jsx";
 import { Historial } from "./pages/historial/Historial.jsx";
+import { EditGames } from "./pages/editgames/EditGames.jsx";
 
 
 
@@ -45,6 +46,7 @@ export const router = createBrowserRouter(
         <Route path="/detailsgames/:id" element={<DetailsGames />} /> {/* PAGINA DETALLES GAMES*/}
         <Route path="/carro" element={<Carro />} /> {/* PAGINA Carrito*/}
         <Route path="/historial" element={<Historial />} />
+        <Route path="/editgames/:id" element={<EditGames />} /> {/* PAGINA DETALLES GAMES*/}
 
 
 

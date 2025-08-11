@@ -19,15 +19,20 @@ export const Historial = () => {
     alert("Productos añadidos nuevamente al carro ✅");
   };
 
+  const norm = (s) =>
+    (s ?? "")
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const getTitle = (p) => p?.title || p?.name || "";
+
   const historialFiltrado = historial.filter((compra) => {
-    const coincideFecha = filtroFecha
-      ? compra.fecha.includes(filtroFecha)
-      : true;
+    const coincideFecha = filtroFecha ? norm(compra.fecha).includes(norm(filtroFecha)) : true;
 
     const coincideTexto = filtroTexto
-      ? compra.productos.some((prod) =>
-          prod.title.toLowerCase().includes(filtroTexto.toLowerCase())
-        )
+      ? compra.productos.some((prod) => norm(getTitle(prod)).includes(norm(filtroTexto)))
       : true;
 
     return coincideFecha && coincideTexto;
@@ -37,6 +42,7 @@ export const Historial = () => {
     <div className="p-6 text-black">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Historial de Compras</h1>
 
+      {/* Filtros */}
       <div className="flex flex-wrap gap-4 mb-6">
         <input
           type="text"
@@ -73,7 +79,7 @@ export const Historial = () => {
                 <ul className="list-disc list-inside text-sm text-gray-600 mb-4">
                   {compra.productos.map((prod, i) => (
                     <li key={i}>
-                      {prod.title} - ${prod.price} x {prod.quantity}
+                      {getTitle(prod)} - ${prod.price} x {prod.quantity}
                     </li>
                   ))}
                 </ul>

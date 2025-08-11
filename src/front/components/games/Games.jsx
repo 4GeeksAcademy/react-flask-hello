@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../../store/appContext";
 import "./games.css";
+import { Trash } from 'lucide-react';
 
 export const Games = () => {
   const { store, dispatch } = useGlobalReducer();
   const { all_games } = store;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
+
+
 
   const moreInfoGame = (id) => {
     navigate(`/DetailsGames/${id}`);
@@ -36,6 +39,19 @@ const modgame = (id) => {
     } z
   };
 
+
+  const deleteGame = async (id) => {
+    try {
+      await fetch(`${backendUrl}/api/games/${id}`, {
+        method: "DELETE"
+      })
+      getGames();
+      alert("Juego eliminado correctamente")
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="flex flex-wrap justify-center gap-6">
       {all_games.map((game, index) => (
@@ -75,7 +91,7 @@ const modgame = (id) => {
           {/* ---- boton para añadir al carro ---- */}
           <div className="px-6 pb-4">
             <button
-              className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
+              className=" w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
               onClick={() => dispatch({ type: "addToCarro", payload: game })}
             >
               Agregar al carro
@@ -89,8 +105,8 @@ const modgame = (id) => {
 
             </div>
             <div>
-              <button>
-                Eliminar
+              <button  onClick={() => deleteGame(game.id)} >
+                <Trash size={24} color="#ffffff" strokeWidth={1.75} />
               </button>
             </div>
           </div>
@@ -98,4 +114,5 @@ const modgame = (id) => {
       ))}
     </div>
   );
-};
+}
+

@@ -20,6 +20,4 @@ class User(db.Model):
             "username" :self.username,
             "is_admin":self.is_admin
             
-           
-           
         }

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import useGlobalReducer from "../../hooks/useGlobalReducer"; 
+import React, { useEffect, useState, useRef } from "react";
+import useGlobalReducer from "../../hooks/useGlobalReducer";
 import "./Carro.css";
 
 export const Carro = () => {
   const { store, dispatch } = useGlobalReducer();
   const [showModal, setShowModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const didInit = useRef(false);
 
   const handleRemove = (id) => dispatch({ type: "removeFromCarro", payload: id });
   const handleClear = () => dispatch({ type: "clearCarro" });
@@ -17,18 +18,21 @@ export const Carro = () => {
   const getIVA = () => getSubtotal() * 0.21;
   const getTotal = () => getSubtotal() + getIVA();
 
-  useEffect(() => {
-    localStorage.setItem("carro", JSON.stringify(store.carro));
-  }, [store.carro]);
-
+  // Cargar del localStorage una vez
   useEffect(() => {
     const savedCarro = JSON.parse(localStorage.getItem("carro"));
-    if (savedCarro && savedCarro.length > 0) {
-      savedCarro.forEach((item) =>
-        dispatch({ type: "addToCarro", payload: { ...item, quantity: item.quantity } })
-      );
+    if (Array.isArray(savedCarro) && savedCarro.length > 0) {
+      dispatch({ type: "loadCarro", payload: savedCarro });
     }
-  }, []);
+    didInit.current = true;
+  }, [dispatch]);
+
+  // Guardar cuando cambie (no en el primer render)
+  useEffect(() => {
+    if (didInit.current) {
+      localStorage.setItem("carro", JSON.stringify(store.carro));
+    }
+  }, [store.carro]);
 
   const handlePayment = () => {
     setShowModal(false);
@@ -43,10 +47,15 @@ export const Carro = () => {
     historial.push(nuevaCompra);
     localStorage.setItem("historialCompras", JSON.stringify(historial));
 
-        dispatch({ type: "clearCarro" });
-            localStorage.removeItem("carro");
-                setTimeout(() => setPaymentSuccess(false), 3000);
-                  };
+    dispatch({ type: "clearCarro" });
+    localStorage.removeItem("carro");
+
+    setTimeout(() => setPaymentSuccess(false), 3000);
+  };
+
+  // Helpers para compatibilidad de claves
+  const getTitle = (it) => it.title || it.name || "Juego";
+  const getImg = (it) => it.img || it.image || "https://via.placeholder.com/100";
 
   return (
     <div className="carro-container p-6">
@@ -64,13 +73,18 @@ export const Carro = () => {
               >
                 <div className="flex items-center space-x-4">
                   <img
-                    src={item.img || "https://via.placeholder.com/100"}
-                    alt={item.title}
+                    src={getImg(item)}
+                    alt={getTitle(item)}
                     className="w-20 h-20 object-cover rounded"
                   />
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-800">{item.title}</h2>
-                    <p className="text-gray-600">${item.price}</p>
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {getTitle(item)}
+                    </h2>
+                    <p className="text-gray-600">
+                      ${item.price}
+                      {item.platform ? ` · ${item.platform}` : ""}
+                    </p>
                     <div className="mt-2 flex items-center space-x-2">
                       <input
                         type="number"

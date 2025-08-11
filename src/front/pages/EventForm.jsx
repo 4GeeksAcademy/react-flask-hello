@@ -1,67 +1,158 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // <-- añade useParams
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const EventForm = () => {
-    const { store } = useGlobalReducer();
-    const navigate = useNavigate();
+  const { store } = useGlobalReducer();
+  const navigate = useNavigate();
+  const { id } = useParams(); // <-- define id desde la URL
 
-    const [formData, setFormData] = useState({
-        title: "",
-        date: "",
-        description: "",
-        location: "",
-        lat: "",
-        lng: "",
+  const [formData, setFormData] = useState({
+    title: "",
+    date: "",
+    description: "",
+    location: "",
+    lat: "",
+    lng: "",
+  });
+  console.log(formData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-    console.log(formData)
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+  // PUT (actualizar)
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    if (!store.token) {
+      alert("Debes iniciar sesión para actualizar un evento.");
+      navigate("/login");
+      return;
+    }
+    if (!id) {
+      alert("No hay id de evento en la URL.");
+      return;
+    }
 
-        if (!store.token) {
-            alert("Debes iniciar sesión para crear un evento.");
-            navigate("/login");
-            return;
-        }
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      if (!backendUrl) {
+        alert("Error: La URL del backend no está configurada.");
+        return;
+      }
 
-        try {
-            const backendUrl = import.meta.env.VITE_BACKEND_URL;
-            if (!backendUrl) {
-                alert("Error: La URL del backend no está configurada.");
-                return;
-            }
+      const response = await fetch(`${backendUrl}api/events/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${store.token}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-            const response = await fetch(`${backendUrl}api/events`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${store.token}`
-                },
-                body: JSON.stringify(formData),
-            });
+      const data = await response.json();
 
-            const data = await response.json();
+      if (response.ok) {
+        alert(data.message || "Evento actualizado correctamente.");
+        navigate("/home");
+      } else {
+        alert(`Error al actualizar el evento: ${data.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error de conexión al actualizar evento:", error);
+      alert("Hubo un problema al conectar con el servidor. Asegúrate de que el backend esté funcionando.");
+    }
+  };
 
-            if (response.ok) {
-                alert(data.message);
-                navigate("/home");
-            } else {
-                alert(`Error al crear el evento: ${data.message || response.statusText}`);
-            }
-        } catch (error) {
-            console.error("Error de conexión al crear evento:", error);
-            alert("Hubo un problema al conectar con el servidor. Asegúrate de que el backend esté funcionando.");
-        }
-    };
+  // DELETE 
+  const handleDelete = async () => {
+    if (!store.token) {
+      alert("Debes iniciar sesión para eliminar un evento.");
+      navigate("/login");
+      return;
+    }
+    if (!id) {
+      alert("No hay id de evento en la URL.");
+      return;
+    }
+    if (!confirm("¿Seguro que quieres eliminar este evento?")) return;
+
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      if (!backendUrl) {
+        alert("Error: La URL del backend no está configurada.");
+        return;
+      }
+
+      const response = await fetch(`${backendUrl}api/events/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${store.token}`,
+        },
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (_) {}
+
+      if (response.ok) {
+        alert(data.message || "Evento eliminado correctamente.");
+        navigate("/home");
+      } else {
+        alert(`Error al eliminar el evento: ${data.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error de conexión al eliminar evento:", error);
+      alert("Hubo un problema al conectar con el servidor. Asegúrate de que el backend esté funcionando.");
+    }
+  };
+
+  // POST (crear)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!store.token) {
+      alert("Debes iniciar sesión para crear un evento.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      if (!backendUrl) {
+        alert("Error: La URL del backend no está configurada.");
+        return;
+      }
+
+      const response = await fetch(`${backendUrl}api/events`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${store.token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || "Evento creado correctamente.");
+        navigate("/home");
+      } else {
+        alert(`Error al crear el evento: ${data.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error de conexión al crear evento:", error);
+      alert("Hubo un problema al conectar con el servidor. Asegúrate de que el backend esté funcionando.");
+    }
+  };
+
 
     return (
         <div className="container mt-5">

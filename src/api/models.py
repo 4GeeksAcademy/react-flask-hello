@@ -4,6 +4,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List, Optional
 from datetime import datetime
 from flask_bcrypt import Bcrypt
+from sqlalchemy import Numeric
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -58,6 +59,8 @@ class Event(db.Model):
     lng: Mapped[Optional[float]] = mapped_column(Float)
     artist_id: Mapped[Optional[int]] = mapped_column(ForeignKey("artist.id"))
 
+
+    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False, default=0) #precio de entrada
     artist = relationship("Artist", back_populates="events")
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="event")
 
@@ -70,7 +73,9 @@ class Event(db.Model):
             "location": self.location,
             "lat": self.lat,
             "lng": self.lng,
-            "artist_id": self.artist_id
+            "artist_id": self.artist_id,
+            "price": float(self.price)
+              if self.price is not None else None
         }
 
 

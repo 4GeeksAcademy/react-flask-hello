@@ -58,3 +58,59 @@ def get_events():
         }), 201
     else:
         return jsonify({"error": "Error al obtener el evento"}), 500
+    
+  # Borrar evento
+
+@api.route('/<int:event_id>', methods=['DELETE'])
+def delete_event(event_id):
+    try:
+        # Eliminar evento por ID
+        response = (
+            supabase.table('Evento')
+            .delete()
+            .eq('id', event_id)
+            # .eq('creador_evento', current_user_id)  # Verifica que el usuario sea el creador (borrar # para implementar)
+            .execute()
+        )
+
+        # Si no existe ese evento
+        
+        if not response.data:
+            return jsonify({"error": "Evento no encontrado"}), 404 
+        
+        return jsonify({"message": "Evento eliminado correctamente"}), 200
+
+    except Exception as e:
+        print(f"Error al eliminar evento: {e}")
+        return jsonify({"error": "Error al eliminar el evento"}), 500
+    
+#Actualizar evento
+
+@api.route('/<int:event_id>', methods=['PUT'])
+def update_event(event_id):
+    try:
+        data = request.get_json()
+
+        #  Validar que data no esté vacío (borrar # para implementar)
+#        if not data:
+#            return jsonify({"error": "No se enviaron datos para actualizar"}), 400
+
+        # Actualizar el evento
+        response = (
+            supabase.table('Evento')
+            .update(data)
+            .eq('id', event_id)
+            # .eq('creador_evento', current_user_id)  # Verificar que el usuario sea el creador (borrar # para implementar)
+            .execute()
+        )
+
+        if not response.data:
+            return jsonify({"error": "Evento no encontrado"}), 404
+
+        return jsonify({
+            "message": "Evento actualizado correctamente",
+            "data": response.data
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

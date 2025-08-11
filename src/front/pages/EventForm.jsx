@@ -13,8 +13,8 @@ export const EventForm = () => {
         location: "",
         lat: "",
         lng: "",
+        artist_name: ""
     });
-    console.log(formData)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,9 +53,9 @@ export const EventForm = () => {
 
             if (response.ok) {
                 alert(data.message);
-                navigate("/home");
+                navigate("/events");
             } else {
-                alert(`Error al crear el evento: ${data.message || response.statusText}`);
+                alert(`Error al crear el evento: ${data.error || data.message || response.statusText}`);
             }
         } catch (error) {
             console.error("Error de conexión al crear evento:", error);

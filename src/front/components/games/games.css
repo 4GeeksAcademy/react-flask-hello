@@ -1,5 +1,14 @@
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 20rem;
+  & .container-img {
+    height: 20rem;
+
+    & img {
+      height: 100%;
+      width: 100%;
+    }
+  }
 }
 
 .card:hover {

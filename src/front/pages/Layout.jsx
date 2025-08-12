@@ -1,21 +1,18 @@
 import { Outlet } from "react-router-dom/dist"
 import ScrollToTop from "../components/ScrollToTop"
-import  Navbar  from "../components/Navbar"
+import Navbar from "../components/Navbar"
 import { Footer } from "../components/footer/Footer"
+import { useState } from "react"
 
-
-
-
-
-
-
-// Base component that maintains the navbar and footer throughout the page and the scroll to top functionality.
 export const Layout = () => {
+    const [showDrowpdown, setShowDrowpdown] = useState(false)
     return (
         <ScrollToTop>
-            <Navbar />
+            <Navbar showDrowpdown={showDrowpdown} setShowDrowpdown={setShowDrowpdown} />
+            <div onClick={() => setShowDrowpdown(false)}>
             
-                <Outlet />
+               <Outlet />
+            </div>   
             <Footer />
         </ScrollToTop>
     )

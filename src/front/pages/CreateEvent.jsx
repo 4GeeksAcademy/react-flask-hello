@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useRevalidator } from "react-router-dom"
+import { backendUrl } from '../Config';
 
 
 
@@ -32,7 +33,7 @@ export const CreateEvent = () => {
             const userId = localStorage.getItem("userId");
             const token = localStorage.getItem("token");
 
-            const respuestaFormulario = await fetch(`https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/event/${userId}`, {
+            const respuestaFormulario = await fetch(backendUrl + `event/${userId}`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

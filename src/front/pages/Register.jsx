@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { backendUrl } from '../Config';
+
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ export const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/user/signup', {
+      const respuesta = await fetch( backendUrl + "user/signup", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosRegistro)
@@ -34,6 +36,9 @@ export const Register = () => {
         alert(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
+
+      alert('Error de red o servidor');
+
       console.error('Error en fetch:', error);
     }
   };

@@ -17,7 +17,7 @@ api = Blueprint("api/user", __name__)
 
 # ENVIAR EMAIL RESET PASSWORD
 @api.route("/resetPassword", methods=["POST"])
-def forget_password(user):
+def forget_password():
     body = request.get_json()
     user = User.query.filter_by(email=body["email"]).first()
 
@@ -27,16 +27,15 @@ def forget_password(user):
     
    
     token = secrets.token_urlsafe(75)
-    user.reset_token = token
-    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=30) 
-    reset_url_password = f"https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/user/reset-password?token={token}"
-    db.session.commit()
+   
+    reset_url_password = f"https://jubilant-spork-7v5jg5r9r9p73xpqq-3000.app.github.dev/resetPassword/{token}"
+    
 
 
     msg = Message(
             'Prueba de email',
             html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",
-            recipients=["adrianbeneroso@hotmail.com"]
+            recipients=[body["email"]]
         )
     mail.send(msg)
     return "email enviado", 200

@@ -1,8 +1,23 @@
+import { useParams } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { useState } from "react";
 
 
 
 export const RecPassword = () =>{
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+  const [email, setEmail] = useState("")
+
+  const restaurarPassword =async (e)=>{
+    e.preventDefault()
+    const responsive = await fetch(`${backendUrl}api/user/resetPassword`,{
+                method: "POST",
+                body: JSON.stringify(email),
+                headers: { "Content-type": "application/json" }
+            })
+            alert("Mensaje enviado al correo electronico")
+    
+  }
    
    
 
@@ -24,7 +39,7 @@ export const RecPassword = () =>{
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6"  onSubmit={restaurarPassword}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Correo electrónico
@@ -34,7 +49,9 @@ export const RecPassword = () =>{
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
                   autoComplete="email"
+                  onChange={(e)=>setEmail(e.target.value)}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="tu@email.com"

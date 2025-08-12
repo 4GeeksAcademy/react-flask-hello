@@ -49,7 +49,7 @@ export const router = createBrowserRouter(
         <Route path="/carro" element={<Carro />} /> {/* PAGINA Carrito*/}
         <Route path="/historial" element={<Historial />} />
         <Route path="/recPassword" element={<RecPassword />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
 
         
 

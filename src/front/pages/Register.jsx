@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { backendUrl } from '../Config';
+import { backendUrl } from '../utils/Config';
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
 
 export const Register = () => {
@@ -31,14 +32,19 @@ export const Register = () => {
 
       if (respuesta.ok) {
         // Registro correcto, redirigir
+        notifySuccess("Registro exitoso! Se ha enviado un email de confirmacion.")
         navigate('/home');
       } else {
         alert(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
+<<<<<<< HEAD
+      notifyError('Error de red o servidor');
+=======
 
       alert('Error de red o servidor');
 
+>>>>>>> a8f75862151a1697001dc47ad2bdfa4146b2de65
       console.error('Error en fetch:', error);
     }
   };

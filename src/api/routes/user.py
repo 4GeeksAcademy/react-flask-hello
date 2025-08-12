@@ -6,10 +6,8 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from datetime import datetime, timedelta
 
 import secrets;
-
-
-
-
+from extension import mail
+from flask_mail import Message
 
 
 api = Blueprint("api/user", __name__)
@@ -35,9 +33,14 @@ def forget_password(user):
     db.session.commit()
 
 
-   
-    return jsonify("¡Correo electrónico enviado exitosamente!")
-
+    msg = Message(
+            'Prueba de email',
+            html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",
+            recipients=["adrianbeneroso@hotmail.com"]
+        )
+    mail.send(msg)
+    return "email enviado", 200
+        
     
 
 

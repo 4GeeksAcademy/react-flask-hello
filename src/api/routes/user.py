@@ -118,7 +118,7 @@ def signin():
 
     #Recuperar contraseña
 
-@api.route('/forgot-password', methods=['POST'])
+@api.route('/forgot', methods=['POST'])
 def forgot_password():
     data = request.get_json()
     email = data.get('email')
@@ -143,7 +143,7 @@ def forgot_password():
 
 # Restablecer contraseña
 
-@api.route('/reset-password', methods=['POST'])
+@api.route('/reset', methods=['POST'])
 def reset_password():
     data = request.get_json()
     new_password = data.get('new_password')

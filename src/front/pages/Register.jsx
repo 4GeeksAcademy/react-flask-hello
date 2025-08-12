@@ -35,7 +35,6 @@ export const Register = () => {
       }
     } catch (error) {
       console.error('Error en fetch:', error);
-      alert('Error de red o servidor');
     }
   };
 

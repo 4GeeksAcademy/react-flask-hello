@@ -44,7 +44,7 @@ def crear_evento(current_user_id):
     else:
         return jsonify({"error": "Error al crear el evento"}), 500
     
-# Obtener eventos
+# Obtener todos los eventos
 
 @api.route('/', methods=['GET'])
 def get_events():

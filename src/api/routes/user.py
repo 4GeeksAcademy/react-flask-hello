@@ -1,23 +1,50 @@
-from flask import Flask, request, jsonify, url_for, Blueprint # type: ignore
+from flask import Flask, request, jsonify, url_for, Blueprint  # type: ignore
 from api.models.User import User
 from api.database.db import db
-import bcrypt # type: ignore
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity # type: ignore
+import bcrypt  # type: ignore
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity  # type: ignore
+from datetime import datetime, timedelta
+
+import secrets;
+
+
+
+
 
 
 
 api = Blueprint("api/user", __name__)
 
-#  MOSTRAR TODOS LOS USUARIOS
-# @api.route("/users", methods = ["GET"])
-# def get_all_users():
-#     users = User.query.all()
-#     if users is None:
-#         return jsonify("Error, no hemos encontrado ningun usuario"),404
-#     users = list(map(lambda x : x.serialize(),users))
-#     return jsonify({"all_users": users}),200
+
+
+
+# ENVIAR EMAIL RESET PASSWORD
+@api.route("/resetPassword", methods=["POST"])
+def forget_password(user):
+    body = request.get_json()
+    user = User.query.filter_by(email=body["email"]).first()
+
+    if user is None:
+        return jsonify("La cuenta no existe"), 404
+    
+    
+   
+    token = secrets.token_urlsafe(75)
+    user.reset_token = token
+    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=30) 
+    reset_url_password = f"https://jubilant-spork-7v5jg5r9r9p73xpqq-3001.app.github.dev/api/user/reset-password?token={token}"
+    db.session.commit()
+
+
+   
+    return jsonify("¡Correo electrónico enviado exitosamente!")
+
+    
+
 
 # REGISTRO DE UN NUEVO USER
+
+
 @api.route('/register', methods=["POST"])
 def register_user():
     body = request.get_json()
@@ -30,7 +57,7 @@ def register_user():
         return jsonify("Error, debes introducir los campos obligatorios"), 404
 
     new_user = User()
-   
+
     new_user.username = body["username"]
     new_user.email = body["email"]
     new_user.password = new_password.decode()
@@ -39,9 +66,11 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify("Usuario creado"),200
+    return jsonify("Usuario creado"), 200
 
 # REALIZAR UN LOGIN DE UN USUARIO
+
+
 @api.route("/login", methods=["POST"])
 def user_login():
     body = request.get_json()
@@ -59,15 +88,16 @@ def user_login():
 
     return jsonify("contraseña no valida"), 400
 
-@api.route("/", methods = ["GET"])
+
+@api.route("/", methods=["GET"])
 @jwt_required()
 def get_user():
     current_user = get_jwt_identity()
 
     user = User.query.get(current_user)
     if user is None:
-        return jsonify("El usuario no valido"),404
-    
+        return jsonify("El usuario no valido"), 404
+
     return jsonify({"User": user.serialize()})
 
 
@@ -82,6 +112,3 @@ def get_user():
 #     db.session.commit()
 
 #     return jsonify("El usuario ha sido eliminado correctamente"),200
-
-
-

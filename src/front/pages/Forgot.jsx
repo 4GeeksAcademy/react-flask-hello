@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { backendUrl } from '../Config';
 
 export const Forgot = () => {
   const [email, setEmail] = useState('');
@@ -8,7 +9,7 @@ export const Forgot = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/user/forgot', {
+      const res = await fetch( backendUrl + "user/forgot", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

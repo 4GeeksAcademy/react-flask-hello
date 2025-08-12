@@ -38,13 +38,7 @@ export const Register = () => {
         alert(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
-<<<<<<< HEAD
       notifyError('Error de red o servidor');
-=======
-
-      alert('Error de red o servidor');
-
->>>>>>> a8f75862151a1697001dc47ad2bdfa4146b2de65
       console.error('Error en fetch:', error);
     }
   };

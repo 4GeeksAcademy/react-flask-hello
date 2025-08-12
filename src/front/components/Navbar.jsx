@@ -7,12 +7,11 @@ import { CircleUser } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export default function Navbar() {
+export default function Navbar({showDrowpdown, setShowDrowpdown}) {
   const { store, dispatch } = useGlobalReducer()
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const user = localStorage.getItem('user');
-  const [juegosDropdown, setJuegosDropdown] = useState(false)
   const [view, setview] = useState(false)
 
   const cerrarSesion = () => {
@@ -68,12 +67,12 @@ export default function Navbar() {
                 <div className="relative">
                   <button
                     type="button"
-                    onClick={() => setJuegosDropdown(!juegosDropdown)}
+                    onClick={() => setShowDrowpdown(!showDrowpdown)}
                     className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white"
                   >
                     Juegos
                   </button>
-                  {juegosDropdown && (
+                  {showDrowpdown && (
                     <div className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
                       <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Play Station</a>
                       <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo</a>

@@ -19,9 +19,9 @@ export const Games = () => {
     navigate(`/DetailsGames/${id}`);
   };
 
-const modgame = (id) => {
-  navigate (`/EditGames/${id}`)
-}
+  const modgame = (id) => {
+    navigate(`/EditGames/${id}`)
+  }
 
   useEffect(() => {
     getGames();
@@ -37,7 +37,7 @@ const modgame = (id) => {
       });
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
 
 
@@ -58,14 +58,17 @@ const modgame = (id) => {
       {all_games.map((game, index) => (
         <div
           key={index}
-          className="card w-1/4 pb-2 rounded overflow-hidden shadow-lg bg-gray-800"
+          className="card  pb-2 rounded overflow-hidden shadow-lg bg-gray-800"
         >
-          <img
-            onClick={() => moreInfoGame(game.id)}
-            className="w-full h-64 object-cover object-center"
-            src={game.img}
-            alt={game.name}
-          />
+          <div className="w-full container-img ">
+            <img
+              onClick={() => moreInfoGame(game.id)}
+              className="w-full h-64 object-cover"
+              src={game.img}
+              alt={game.name}
+            />
+          </div>
+
           <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2 text-white">{game.name}</div>
             <p className="text-white text-base">Plataforma: {game.platform}</p>
@@ -100,13 +103,13 @@ const modgame = (id) => {
           </div>
           <div className="px-6 pb-4 flex justify-around text-white">
             <div>
-              <button onClick={()=> modgame (game.id)}>
-                <Pencil size={24} color="#ffffff" strokeWidth={1.75}/>
+              <button onClick={() => modgame(game.id)}>
+                <Pencil size={24} color="#ffffff" strokeWidth={1.75} />
               </button>
 
             </div>
             <div>
-              <button  onClick={() => deleteGame(game.id)} >
+              <button onClick={() => deleteGame(game.id)} >
                 <Trash size={24} color="#ffffff" strokeWidth={1.75} />
               </button>
             </div>

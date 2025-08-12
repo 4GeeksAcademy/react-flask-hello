@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { backendUrl } from '../utils/Config';
+=======
+
+import { backendUrl } from '../Config';
+>>>>>>> a8f75862151a1697001dc47ad2bdfa4146b2de65
+
 
 export const Forgot = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +16,8 @@ export const Forgot = () => {
 
     try {
       const res = await fetch( backendUrl + "user/forgot", {
+
+     
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

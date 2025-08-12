@@ -61,24 +61,27 @@ def add_game():
 
     # MODIFICAR JUEGOS
 
-
 @api.route('/EditGames/<int:game_id>', methods=["PUT"])
 def edit_game(game_id):
     game = Games.query.get(game_id)
+    body = request.get_json()
     if game is None:
         return jsonify({"error": "Juego no encontrado"}), 404
+    
+    if "img" and "video" and "name" and "platform" and "description" and "price" and "distribuidora" and "genero" and "online" and "offline" and "gamemode" not in body:
+        return jsonify("Error, debes introducir los campos obligatorios"), 404
 
-    game.img = request.json.get("img", game.img)
-    game.video = request.json.get("video", game.video)
-    game.name = request.json.get("name", game.name)
-    game.platform = request.json.get("platform", game.platform)
-    game.description = request.json.get("description", game.description)
-    game.price = request.json.get("price", game.price)
-    game.distribuidora = request.json.get("distribuidora", game.distribuidora)
-    game.genero = request.json.get("genero", game.genero)
-    game.online = request.json.get("online", game.online)
-    game.offline = request.json.get("offline", game.offline)
-    game.gamemode = request.json.get("gamemode", game.gamemode)
+    game.img = body["img"]
+    game.video = body["video"]
+    game.name = body["name"]
+    game.platform = body["platform"]
+    game.description = body["description"]
+    game.price = body["price"]
+    game.distribuidora = body["distribuidora"]
+    game.genero = body["genero"]
+    game.online = body["online"]
+    game.offline = body["offline"]
+    game.gamemode = body["gamemode"]
 
     db.session.commit()
     return jsonify({"mensaje": "Juego modificado correctamente"}), 200

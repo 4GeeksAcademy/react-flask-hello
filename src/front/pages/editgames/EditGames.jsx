@@ -5,6 +5,9 @@ import { useEffect, useState } from "react"
 
 
 export const EditGames = () => {
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
+
     const { store, dispatch } = useGlobalReducer()
     const { id } = useParams()
     const { all_games } = store
@@ -44,9 +47,37 @@ export const EditGames = () => {
 
     }, [gamefind])
 
+    const updateGame = async (e) =>{
+        try {
+            e.preventDefault();
+
+            const newgame = {
+                "img": img,
+                "video": video,
+                "name": name,
+                "platform": platform,
+                "description": description,
+                "price": price,
+                "distribuidora": distribuidora,
+                "genero": genero,
+                "offline": offline,
+                "online": online,
+                "gamemode": gamemode
+            }
+            await fetch(`${backendUrl}api/games/EditGames/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(newgame),
+                headers: { "Content-type": "application/json" }
+            })
+            alert("Juego editado correctamente")
+        } catch (error) {
+            console.log("error al editar juego")
+        }
+    }
+
     return (
 
-        <form class="w-full max-w-lg mx-auto" >
+        <form class="w-full max-w-lg mx-auto" onSubmit={(e) => updateGame(e)}>
 
             <h1> Editar Juegos </h1>
             <div>
@@ -154,7 +185,7 @@ export const EditGames = () => {
                 type="submit"
                 className="mt-6 px-4 py-2 bg-blue-600 text-white rounded"
             >
-                Agregar juego
+                Editar juego
             </button>
         </form>
     )

@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { Context } from "../../store/appContext";
 import "./games.css";
 import { Trash } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 export const Games = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -17,6 +18,10 @@ export const Games = () => {
   const moreInfoGame = (id) => {
     navigate(`/DetailsGames/${id}`);
   };
+
+const modgame = (id) => {
+  navigate (`/EditGames/${id}`)
+}
 
   useEffect(() => {
     getGames();
@@ -95,8 +100,8 @@ export const Games = () => {
           </div>
           <div className="px-6 pb-4 flex justify-around text-white">
             <div>
-              <button >
-                Editar
+              <button onClick={()=> modgame (game.id)}>
+                <Pencil size={24} color="#ffffff" strokeWidth={1.75}/>
               </button>
 
             </div>

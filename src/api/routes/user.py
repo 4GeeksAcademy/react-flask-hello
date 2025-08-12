@@ -12,6 +12,7 @@ import secrets;
 
 
 
+
 api = Blueprint("api/user", __name__)
 
 

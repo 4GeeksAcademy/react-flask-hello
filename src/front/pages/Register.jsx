@@ -36,7 +36,9 @@ export const Register = () => {
         alert(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
+
       alert('Error de red o servidor');
+
       console.error('Error en fetch:', error);
     }
   };

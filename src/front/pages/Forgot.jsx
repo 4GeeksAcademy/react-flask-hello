@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { backendUrl } from '../Config';
+import { backendUrl } from '../utils/Config';
 
 export const Forgot = () => {
   const [email, setEmail] = useState('');

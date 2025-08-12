@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { backendUrl } from '../Config';
+import { backendUrl } from '../utils/Config';
 
 export const Reset = () => {
   const [searchParams] = useSearchParams();

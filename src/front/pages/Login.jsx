@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient.js';
-import { backendUrl } from '../Config';
+import { backendUrl } from '../utils/Config';
 
 export const Login = () => {
   const navigate = useNavigate();

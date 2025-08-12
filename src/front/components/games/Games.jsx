@@ -37,7 +37,7 @@ const modgame = (id) => {
       });
     } catch (error) {
       console.log(error);
-    } z
+    } 
   };
 
 

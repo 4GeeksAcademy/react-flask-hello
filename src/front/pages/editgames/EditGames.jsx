@@ -1,10 +1,14 @@
 import { useParams } from "react-router-dom"
 import useGlobalReducer from "../../hooks/useGlobalReducer"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
 
 export const EditGames = () => {
+    const { store, dispatch } = useGlobalReducer()
+    const { id } = useParams()
+    const { all_games } = store
+
     const [img, setImg] = useState("")
     const [video, setVideo] = useState("")
     const [name, setName] = useState("")
@@ -17,10 +21,10 @@ export const EditGames = () => {
     const [offline, setOffline] = useState("")
     const [gamemode, setGamemode] = useState("")
 
-    const { store, dispatch } = useGlobalReducer()
-    const { id } = useParams()
-    const { all_games } = store
+
     const gamefind = all_games.find(game => game.id === parseInt(id))
+    console.log(gamefind)
+    console.log ("prueba juego")
 
     useEffect(() => {
         if (gamefind) {
@@ -49,7 +53,7 @@ export const EditGames = () => {
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
                     Img
                 </label>
-                <input value={img} onChange={(e) => setImg(e.target.value)}class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+                <input value={img} onChange={(e) => setImg(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
 
             </div>
             <div>
@@ -59,7 +63,7 @@ export const EditGames = () => {
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
                     Video
                 </label>
-                <input value={video} onChange={(e) => setVideo(e.target.value)}class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+                <input value={video} onChange={(e) => setVideo(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
             </div>
 
             <div class="flex flex-col space-y-4 mt-6">
@@ -122,13 +126,13 @@ export const EditGames = () => {
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="jugadores Online">
                         Nº Jugadores Online
                     </label>
-                    <input type="number" min={1} max={10} value={online} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" placeholder="num jugadores"></input>
+                    <input type="number" min={1} max={10} value={online} onChange={(e) => setOnline(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" placeholder="num jugadores"></input>
                 </div>
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-img">
                         Distribuidora
                     </label>
-                    <input value={distribuidora} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
+                    <input value={distribuidora} onChange={(e) => setDistribuidora(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-name" type="text" placeholder=""></input>
 
                 </div>
 
@@ -136,14 +140,14 @@ export const EditGames = () => {
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-description">
                         Description
                     </label>
-                    <textarea value={description} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 h-32 resize-none focus:outline-none focus:bg-white focus:border-gray-500" id="grid-description" placeholder=""></textarea>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 h-32 resize-none focus:outline-none focus:bg-white focus:border-gray-500" id="grid-description" placeholder=""></textarea>
                 </div>
 
                 <div>
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-price">
                         Price
                     </label>
-                    <input value={price} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" type="text" placeholder="€"></input>
+                    <input value={price} onChange={(e) => setPrice(e.target.value)} class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" type="text" placeholder="€"></input>
                 </div>
             </div>
             <button

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, Blueprint # type: ignore
+from flask import Flask, request, jsonify, url_for, Blueprint  # type: ignore
 from api.models.Games import Games
 from api.database.db import db
 # from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -12,23 +12,26 @@ api = Blueprint("api/games", __name__)
 
 
 # MOSTRAR TODOS LOS JUEGOS
-@api.route("/", methods = ["GET"])
+@api.route("/", methods=["GET"])
 def get_all_games():
    all_games = Games.query.all()
    if all_games is None:
-      return jsonify("Error, no se han encontrado los juegos"),404
-   all_games = list(map(lambda x: x.serialize(),all_games))
-   return jsonify({"all_games" : all_games}),200
+      return jsonify("Error, no se han encontrado los juegos"), 404
+   all_games = list(map(lambda x: x.serialize(), all_games))
+   return jsonify({"all_games": all_games}), 200
 
-@api.route("/detailsgames/<id>",methods = ["GET"])
+
+@api.route("/detailsgames/<id>", methods=["GET"])
 def get_game(id):
-   game = db.session.get(Games,id)
+   game = db.session.get(Games, id)
    if game is None:
-      return jsonify("Error, no se ha encontrado el juego"),400
+      return jsonify("Error, no se ha encontrado el juego"), 400
 
-   return jsonify({"game":game.serialize()}),200
+   return jsonify({"game": game.serialize()}), 200
 
 # CREAR UN NUEVO JUEGO
+
+
 @api.route('/addgame', methods=["POST"])
 def add_game():
 
@@ -42,7 +45,7 @@ def add_game():
     new_game.video = body["video"]
     new_game.name = body["name"]
     new_game.platform = body["platform"]
-    new_game.description =body["description"]
+    new_game.description = body["description"]
     new_game.price = body["price"]
     new_game.distribuidora = body["distribuidora"]
     new_game.genero = body["genero"]
@@ -54,13 +57,31 @@ def add_game():
     db.session.add(new_game)
     db.session.commit()
 
-    return jsonify("Juego añadido correctamente"),200
+    return jsonify("Juego añadido correctamente"), 200
 
     # MODIFICAR JUEGOS
 
 
+@api.route('/EditGames/<int:game_id>', methods=["PUT"])
+def edit_game(game_id):
+    game = Games.query.get(game_id)
+    if game is None:
+        return jsonify({"error": "Juego no encontrado"}), 404
 
-    
+    game.img = request.json.get("img", game.img)
+    game.video = request.json.get("video", game.video)
+    game.name = request.json.get("name", game.name)
+    game.platform = request.json.get("platform", game.platform)
+    game.description = request.json.get("description", game.description)
+    game.price = request.json.get("price", game.price)
+    game.distribuidora = request.json.get("distribuidora", game.distribuidora)
+    game.genero = request.json.get("genero", game.genero)
+    game.online = request.json.get("online", game.online)
+    game.offline = request.json.get("offline", game.offline)
+    game.gamemode = request.json.get("gamemode", game.gamemode)
+
+    db.session.commit()
+    return jsonify({"mensaje": "Juego modificado correctamente"}), 200
 
     # ELIMINAR JUEGOS
 @api.route("/<int:game_id>",methods = ["DELETE"])

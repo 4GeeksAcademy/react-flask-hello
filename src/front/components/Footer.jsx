@@ -29,7 +29,7 @@ export const Footer = () => {
           {/* Navegación */}
           <nav className="footer__nav" aria-label="Enlaces del sitio">
             <button className="btn btn--link" onClick={rutaVistaHome}>Home</button>
-            <Link className="btn btn--link" to="/createevent">Crear evento</Link>
+            <Link className="btn btn--link" to="/crear-evento">Crear evento</Link>
             <Link className="btn btn--link" to="/login">Login</Link>
             <Link className="btn btn--link" to="/register">Register</Link>
           </nav>

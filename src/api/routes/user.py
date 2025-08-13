@@ -16,32 +16,26 @@ CORS(api)
 def signup():
     data = request.get_json()
 
-    # Validaciones basicas de los campos
+    # Validaciones básicas
     required_fields = ['email', 'password']
     missing_fields = [field for field in required_fields if field not in data or not data[field]]
-
     if missing_fields:
-        return jsonify({
-            "error": f"Faltan campos obligatorios: {', '.join(missing_fields)}"
-        }), 400
+        return jsonify({"error": f"Faltan campos obligatorios: {', '.join(missing_fields)}"}), 400
 
-    # Validacion simple de email
     if '@' not in data['email'] or '.' not in data['email']:
         return jsonify({"error": "Email no válido"}), 400
 
-    # Valida longitud mínima contraseña
     if len(data['password']) < 6:
         return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
 
-    # Validar telefono opcional
     telefono = data.get('telefono')
-    if telefono:
-        if not telefono.isdigit() or len(telefono) < 7:
-            return jsonify({"error": "Teléfono no válido"}), 400
+    if telefono and (not telefono.isdigit() or len(telefono) < 7):
+        return jsonify({"error": "Teléfono no válido"}), 400
 
     email = data['email']
     password = data['password']
 
+    # Crear usuario en Supabase Auth
     auth_response = supabase.auth.sign_up({
         "email": email,
         "password": password,
@@ -55,7 +49,12 @@ def signup():
         }
     })
 
+    if auth_response.user is None:
+        return jsonify({"error": "No se pudo registrar el usuario"}), 400
+
+    # Insertar en la tabla Usuario usando el UUID de Supabase
     usuario_data = {
+        'id': auth_response.user.id,  # UUID de Supabase
         'email': email,
         'nombre': data.get('nombre', ''),
         'apellido': data.get('apellido', ''),
@@ -66,10 +65,17 @@ def signup():
     }
 
     insert_response = supabase.table('Usuario').insert(usuario_data).execute()
-
     print("Insert response: ", insert_response)
 
-    return jsonify("Todo bien")
+    return jsonify({
+        "message": "Usuario registrado correctamente",
+        "user": {
+            "id": auth_response.user.id,
+            "email": email
+        }
+    }), 200
+
+
 
 
 # Login
@@ -118,7 +124,7 @@ def signin():
 
     #Recuperar contraseña
 
-@api.route('/forgot-password', methods=['POST'])
+@api.route('/forgot', methods=['POST'])
 def forgot_password():
     data = request.get_json()
     email = data.get('email')
@@ -143,7 +149,7 @@ def forgot_password():
 
 # Restablecer contraseña
 
-@api.route('/reset-password', methods=['POST'])
+@api.route('/reset', methods=['POST'])
 def reset_password():
     data = request.get_json()
     new_password = data.get('new_password')

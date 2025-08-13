@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { backendUrl } from '../utils/Config';
+import { notifyError, notifySuccess } from '../utils/Notifications';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -7,6 +10,7 @@ export const Register = () => {
     email: '',
     password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setDatosRegistro({
@@ -18,7 +22,7 @@ export const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/api/signup', {
+      const respuesta = await fetch(backendUrl + "user/signup", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosRegistro)
@@ -28,14 +32,14 @@ export const Register = () => {
       console.log('Respuesta backend:', data);
 
       if (respuesta.ok) {
-        // Registro correcto, redirigir
+        notifySuccess("Registro exitoso! Se ha enviado un email de confirmacion.");
         navigate('/home');
       } else {
         alert(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
+      notifyError('Error de red o servidor');
       console.error('Error en fetch:', error);
-      alert('Error de red o servidor');
     }
   };
 
@@ -86,22 +90,46 @@ export const Register = () => {
             }}
           />
 
-          <input
-            type="password"
-            name="password"
-            value={datosRegistro.password}
-            onChange={handleChange}
-            placeholder="Contraseña"
-            required
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              marginBottom: '1.5rem',
-              borderRadius: '8px',
-              border: 'none',
-              fontSize: '1rem'
-            }}
-          />
+          <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={datosRegistro.password}
+              onChange={handleChange}
+              placeholder="Contraseña"
+              required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem'
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              onMouseDown={e => e.preventDefault()} // evita que el botón robe focus
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                color: '#000',
+              }}
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {showPassword ? (
+                <EyeSlashIcon style={{ width: 20, height: 20 }} />
+              ) : (
+                <EyeIcon style={{ width: 20, height: 20 }} />
+              )}
+            </button>
+          </div>
 
           <button
             type="submit"

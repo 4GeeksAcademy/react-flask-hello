@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient.js';
+import { backendUrl } from '../utils/Config';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -8,6 +10,7 @@ export const Login = () => {
     email: '',
     password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setDatosLogin({
@@ -16,7 +19,7 @@ export const Login = () => {
     });
   };
 
-  // Redirección automática si ya hay sesión iniciada a /vistahome
+  // Redirección automática si ya hay sesión iniciada a /home
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate('/home');
@@ -30,7 +33,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3001.app.github.dev/api/signin', {
+      const respuesta = await fetch(backendUrl + "user/signin", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosLogin)
@@ -94,22 +97,46 @@ export const Login = () => {
             }}
           />
 
-          <input
-            type="password"
-            name="password"
-            value={datosLogin.password}
-            onChange={handleChange}
-            placeholder="Contraseña"
-            required
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              marginBottom: '1.5rem',
-              borderRadius: '8px',
-              border: 'none',
-              fontSize: '1rem'
-            }}
-          />
+          <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={datosLogin.password}
+              onChange={handleChange}
+              placeholder="Contraseña"
+              required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem'
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              onMouseDown={e => e.preventDefault()}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                color: '#000'
+              }}
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {showPassword ? (
+                <EyeSlashIcon style={{ width: 20, height: 20 }} />
+              ) : (
+                <EyeIcon style={{ width: 20, height: 20 }} />
+              )}
+            </button>
+          </div>
 
           <button
             type="submit"

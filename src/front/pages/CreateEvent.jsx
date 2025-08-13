@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useRevalidator } from "react-router-dom"
 import { backendUrl } from '../utils/Config';
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
 
 
@@ -16,8 +17,11 @@ export const CreateEvent = () => {
         visibility: "public",
         maxGuests: "",
         reminder: false,
-        categories: []
+        categories: [],
+        price: 0,
+        portada: ""
     });
+
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -33,28 +37,45 @@ export const CreateEvent = () => {
             const userId = localStorage.getItem("userId");
             const token = localStorage.getItem("token");
 
-            const respuestaFormulario = await fetch( backendUrl + `event/${userId}`, {
+            if (!userId) {
+                notifyError("Usuario no autenticado. Inicia sesión primero.");
+                return;
+            }
+
+
+            // Mapeo de campos para que coincidan con el backend
+            const payload = {
+                titulo: datosFormulario.title,
+                definicion: datosFormulario.description,
+                fecha: datosFormulario.date,
+                categoria: datosFormulario.categories.join(", "), // si son varias
+                precio: datosFormulario.price || 0, // añade price en el front si lo quieres
+                max_asist: datosFormulario.maxGuests || null,
+                portada: datosFormulario.portada || "", // si tienes imagen
+            };
+
+            const respuestaFormulario = await fetch(backendUrl + `events/${userId}`, {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
                 },
-                body: JSON.stringify(datosFormulario)
+                body: JSON.stringify(payload)
             });
 
             const data = await respuestaFormulario.json();
             console.log('Respuesta backend:', data);
 
             if (respuestaFormulario.ok) {
-                // Registro correcto, redirigir
-                alert("Evento creado correctamente")
+                notifySuccess("Evento creado exitosamente!");
                 navigate('/home');
             } else {
                 alert(data.error || 'Error al crear evento, vuelve a intentarlo');
             }
         } catch (error) {
+            notifyError('Error de red o servidor');
             console.error('Error en fetch:', error);
-            alert('Error de red o servidor');
+
         }
     };
 

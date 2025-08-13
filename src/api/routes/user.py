@@ -29,6 +29,9 @@ def forget_password():
     }
     token = secrets.token_urlsafe(75)
     
+
+    reset_url_password = f"https://refactored-couscous-x5p76ppwgq5v3xxr-3000.app.github.dev/resetPassword/{token}"
+
     reset_url_password = f"{url_front}resetPassword/{token}"
 
     msg = Message(

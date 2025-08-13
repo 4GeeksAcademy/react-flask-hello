@@ -5,14 +5,12 @@ import bcrypt  # type: ignore
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity  # type: ignore
 from datetime import datetime, timedelta
 
-import secrets;
+import secrets
 from extension import mail
 from flask_mail import Message
 
 
 api = Blueprint("api/user", __name__)
-
-
 
 
 # ENVIAR EMAIL RESET PASSWORD
@@ -23,24 +21,29 @@ def forget_password():
 
     if user is None:
         return jsonify("La cuenta no existe"), 404
-    
-    
-   
-    token = secrets.token_urlsafe(75)
-   
-    reset_url_password = f"https://jubilant-spork-7v5jg5r9r9p73xpqq-3000.app.github.dev/resetPassword/{token}"
-    
 
+    payload = {
+        "email": body["email"]
+    }
+    token = secrets.token_urlsafe(75)
+    
+    reset_url_password = f"https://solid-telegram-6x94qv5jvw62q54-3000.app.github.dev/resetPassword/{token}"
 
     msg = Message(
-            'Prueba de email',
-            html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",
-            recipients=[body["email"]]
-        )
+        'Prueba de email',
+        html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",
+        recipients=[body["email"]]
+    )
     mail.send(msg)
     return "email enviado", 200
-        
-    
+
+
+@api.route("/newPassword", methods=["POST"])
+def new_password():
+    body = request.get_json()
+
+    print(body)
+    return "email enviado", 200
 
 
 # REGISTRO DE UN NUEVO USER

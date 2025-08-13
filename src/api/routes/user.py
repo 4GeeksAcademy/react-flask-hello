@@ -28,7 +28,7 @@ def forget_password():
     }
     token = secrets.token_urlsafe(75)
     
-    reset_url_password = f"https://solid-telegram-6x94qv5jvw62q54-3000.app.github.dev/resetPassword/{token}"
+    reset_url_password = f"https://refactored-couscous-x5p76ppwgq5v3xxr-3000.app.github.dev/resetPassword/{token}"
 
     msg = Message(
         'Prueba de email',

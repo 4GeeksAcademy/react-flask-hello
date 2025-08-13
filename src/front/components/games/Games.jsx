@@ -73,7 +73,7 @@ export const Games = () => {
       {all_games.map((game, index) => (
         <div
           key={index}
-          className="card  pb-2 rounded overflow-hidden shadow-lg bg-gray-800"
+          className="card sm:w-1/2 lg:w-1/4pb-2 rounded overflow-hidden shadow-lg bg-gray-800"
         >
           <div className="w-full container-img ">
             <img

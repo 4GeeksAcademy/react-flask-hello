@@ -49,13 +49,15 @@ export const Home = () => {
   };
   return (
 
-    <div className="w-full relative bg-gray-900">
+    <div className="w-full max-w-screen-2xl mx-auto relative bg-gray-900">
       <Carousel
         responsive={responsive}
         infinite={true}
-        autoPlaySpeed={1000}
+        autoPlay={true}
+        autoPlaySpeed={3000}
         customTransition="all .5"
         transitionDuration={500}
+        className="rounded-lg overflow-hidden"
       >
         {
           images.map((i, index) => {
@@ -72,7 +74,7 @@ export const Home = () => {
         <h2 class="text-2xl font-bold mb-2 text-center sm:text-xl md:text-3xl">¡Oferta de Bienvenida!</h2>
         <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
       </div>
-     
+
       <div>
         <Games />
       </div>

@@ -1,10 +1,15 @@
 .register-bg {
-    background-image: url('https://i.redd.it/gaming-wallpapers-3840-x-2160-uhd-v0-fr4m7cy20whd1.jpg?width=5120&format=pjpg&auto=webp&s=6caf6275b910167617eada9bf7340ef7257259cd');
+    background-image: url("https://images8.alphacoders.com/864/864351.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+.transparent-form {
+  background-color: rgba(255, 255, 255, 0.6); /* blanco con 60% de opacidad */
+  border-radius: 0.375rem; /* igual a rounded-md */
+  padding: 1.5rem;
+}
 
 
 body{

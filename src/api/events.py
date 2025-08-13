@@ -1,157 +1,333 @@
 from flask import Blueprint, request, jsonify
-from api.models import db, Event
-from api.utils import geocode_address
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from api.models import db, Event, Artist
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask_cors import CORS
 
-events_bp = Blueprint('events', __name__,)
+events_bp = Blueprint('events', __name__)
 CORS(events_bp)
 
-# Listar los eventos
+
 @events_bp.route('/events', methods=['GET'])
 def get_events():
-    events = Event.query.all()
-    return jsonify([e.serialize() for e in events]), 200
-
-#obtener eveno por id
-@events_bp.route('/events/<int:id>', methods=['GET'])
-def get_event(id):
-    event = Event.query.get(id)
-    if not event:
-        return jsonify({"msg": "Evento no encontrado"}), 404
-    return jsonify(event.serialize()), 200
+    """Obtener todos los eventos"""
+    try:
+        events = Event.query.all()
+        return jsonify([event.serialize() for event in events]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
-# eliminar evento
-@events_bp.route('/events/<int:id>', methods=['DELETE'])
-def delete_event(id):
-    event = Event.query.get(id)
-    if not event:
-        return jsonify({"msg": "Evento no encontrado"}), 404
-
-    db.session.delete(event)
-    db.session.commit()
-    return jsonify({"msg": "Evento eliminado correctamente"}), 200
+@events_bp.route('/events/<int:event_id>', methods=['GET'])
+def get_event(event_id):
+    """Obtener un evento específico por ID"""
+    try:
+        event = Event.query.get_or_404(event_id)
+        return jsonify(event.serialize()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
-#crear evento incluye price 
 @events_bp.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
-    current_user = get_jwt_identity()  # lo mantengo sin modificar tu lógica de token
-    if not isinstance(current_user, dict) or current_user.get('role') not in ['admin', 'artista']:
-        return jsonify({"msg": "No autorizado para crear eventos"}), 403
-
-    data = request.get_json() or {}
-
-    # Requeridos
-    required = ['title', 'date']
-    for field in required:
-        if field not in data:
-            return jsonify({"msg": f"El campo '{field}' es obligatorio"}), 400
-
-    # price
-    if "price" not in data:
-        return jsonify({"msg": "El campo 'price' es obligatorio"}), 400
+    """Crear un nuevo evento"""
     try:
-        price = float(data["price"])
-    except (TypeError, ValueError):
-        return jsonify({"msg": "El 'price' debe ser numérico"}), 400
-    if price < 0:
-        return jsonify({"msg": "El 'price' no puede ser negativo"}), 400
+        user_id = get_jwt_identity()
+        data = request.get_json()
 
-    try:
-        lat = data.get("lat")
-        lng = data.get("lng")
-        location = data.get("location")
+        # Validar datos requeridos
+        required_fields = ['title', 'date', 'location', 'price']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({"error": f"El campo '{field}' es requerido"}), 400
 
-        # borrar si se tiene que borrar lng y latitud
-        if (lat is None or lng is None) and location:
-            lat, lng = geocode_address(location)
-            if lat is None or lng is None:
-                return jsonify({"msg": "No se pudo geocodificar la dirección"}), 400
+        # Validar precio
+        try:
+            price = float(data['price'])
+            if price < 0:
+                return jsonify({"error": "El precio no puede ser negativo"}), 400
+        except (ValueError, TypeError):
+            return jsonify({"error": "El precio debe ser un número válido"}), 400
 
+        # Validar coordenadas si están presentes
+        lat = None
+        lng = None
+        if data.get('lat') and data.get('lng'):
+            try:
+                lat = float(data['lat'])
+                lng = float(data['lng'])
+                # Validar rango de coordenadas
+                if not (-90 <= lat <= 90) or not (-180 <= lng <= 180):
+                    return jsonify({"error": "Coordenadas inválidas"}), 400
+            except (ValueError, TypeError):
+                return jsonify({"error": "Las coordenadas deben ser números válidos"}), 400
+
+        # Manejar artista
+        artist_id = None
+        if 'artist_name' in data and data['artist_name']:
+            artist = Artist.query.filter_by(name=data['artist_name']).first()
+            if not artist:
+                artist = Artist(name=data['artist_name'])
+                db.session.add(artist)
+                db.session.flush()
+            artist_id = artist.id
+
+        # Crear evento
         new_event = Event(
-            title=data["title"],
-            date=data["date"],
-            description=data.get("description"),
-            location=location,
+            title=data['title'],
+            date=data['date'],
+            description=data.get('description', ''),
+            location=data['location'],
             lat=lat,
             lng=lng,
-            artist_id=data.get("artist_id"),
+            artist_id=artist_id,
             price=price
         )
 
         db.session.add(new_event)
         db.session.commit()
-        return jsonify(new_event.serialize()), 201
+
+        return jsonify({
+            "message": "Evento creado exitosamente",
+            "event": new_event.serialize()
+        }), 201
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"msg": "Error al crear evento", "error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 
-#ACTUALIZAR EVENTO COMPLETO (PUT) INCLUYE PRECIO
-@events_bp.route('/events/<int:id>', methods=['PUT'])
+@events_bp.route('/events/<int:event_id>', methods=['PUT'])
 @jwt_required()
-def update_event(id):
-    current_user = get_jwt_identity()  # mantengo tu lógica
-    if not isinstance(current_user, dict) or current_user.get('role') not in ['admin', 'artista']:
-        return jsonify({"msg": "No autorizado"}), 403
-
-    data = request.get_json() or {}
-
-    event = Event.query.get(id)
-    if not event:
-        return jsonify({"msg": "Evento no encontrado"}), 404
-
-    # Validaciones simples
-    if 'title' in data and not data['title']:
-        return jsonify({"msg": "'title' no puede estar vacío"}), 400
-    if 'date' in data and not data['date']:
-        return jsonify({"msg": "'date' no puede estar vacío"}), 400
-
-    # price (si viene)
-    if 'price' in data:
-        try:
-            price_val = float(data['price'])
-        except (TypeError, ValueError):
-            return jsonify({"msg": "El 'price' debe ser numérico"}), 400
-        if price_val < 0:
-            return jsonify({"msg": "El 'price' no puede ser negativo"}), 400
-        event.price = price_val
-
-    # Campos editables
-    for field in ['title', 'date', 'description', 'location', 'artist_id']:
-        if field in data:
-            setattr(event, field, data[field])
-
-    # lat/lng si se proveen; si no, intenta geocodificar cuando cambie location
-    lat = data.get('lat', event.lat)
-    lng = data.get('lng', event.lng)
-    if 'location' in data and (data.get('lat') is None or data.get('lng') is None) and data['location']:
-        g_lat, g_lng = geocode_address(data['location'])
-        if g_lat is None or g_lng is None:
-            return jsonify({"msg": "No se pudo geocodificar la nueva dirección"}), 400
-        lat, lng = g_lat, g_lng
-    event.lat = lat
-    event.lng = lng
-
+def update_event(event_id):
+    """Actualizar un evento existente"""
     try:
+        user_id = get_jwt_identity()
+        event = Event.query.get_or_404(event_id)
+        data = request.get_json()
+
+        # Validar datos requeridos
+        required_fields = ['title', 'date', 'location', 'price']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({"error": f"El campo '{field}' es requerido"}), 400
+
+        # Validar precio
+        try:
+            price = float(data['price'])
+            if price < 0:
+                return jsonify({"error": "El precio no puede ser negativo"}), 400
+        except (ValueError, TypeError):
+            return jsonify({"error": "El precio debe ser un número válido"}), 400
+
+        # Validar coordenadas si están presentes
+        lat = None
+        lng = None
+        if data.get('lat') and data.get('lng'):
+            try:
+                lat = float(data['lat'])
+                lng = float(data['lng'])
+                # Validar rango de coordenadas
+                if not (-90 <= lat <= 90) or not (-180 <= lng <= 180):
+                    return jsonify({"error": "Coordenadas inválidas"}), 400
+            except (ValueError, TypeError):
+                return jsonify({"error": "Las coordenadas deben ser números válidos"}), 400
+
+        # Manejar artista
+        artist_id = None
+        if 'artist_name' in data and data['artist_name']:
+            artist = Artist.query.filter_by(name=data['artist_name']).first()
+            if not artist:
+                artist = Artist(name=data['artist_name'])
+                db.session.add(artist)
+                db.session.flush()
+            artist_id = artist.id
+
+        # Actualizar campos del evento
+        event.title = data['title']
+        event.date = data['date']
+        event.description = data.get('description', '')
+        event.location = data['location']
+        event.lat = lat
+        event.lng = lng
+        event.artist_id = artist_id
+        event.price = price
+
         db.session.commit()
-        return jsonify(event.serialize()), 200
+
+        return jsonify({
+            "message": "Evento actualizado exitosamente",
+            "event": event.serialize()
+        }), 200
+
     except Exception as e:
         db.session.rollback()
-        return jsonify({"msg": "Error al actualizar evento", "error": str(e)}), 500
-    
-
-# RUTAS DE PRECIO (consultar/actualizar solo el precio)
-
-@events_bp.route('/events/<int:id>/price', methods=['GET'])
-def get_event_price(id):
-    event = Event.query.get(id)
-    if not event:
-        return jsonify({"msg": "Evento no encontrado"}), 404
-    return jsonify({"id": event.id, "price": float(event.price) if event.price is not None else None}), 200    
+        return jsonify({"error": str(e)}), 500
 
 
+@events_bp.route('/events/<int:event_id>', methods=['DELETE'])
+@jwt_required()
+def delete_event(event_id):
+    """Eliminar un evento"""
+    try:
+        user_id = get_jwt_identity()
+        event = Event.query.get_or_404(event_id)
+
+        # Verificar si el evento tiene compras asociadas
+        if event.purchases:
+            return jsonify({
+                "error": "No se puede eliminar el evento porque tiene compras asociadas"
+            }), 400
+
+        db.session.delete(event)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Evento eliminado exitosamente"
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@events_bp.route('/events/search', methods=['GET'])
+def search_events():
+    """Buscar eventos por diferentes criterios"""
+    try:
+        # Obtener parámetros de búsqueda
+        title = request.args.get('title', '')
+        location = request.args.get('location', '')
+        artist_name = request.args.get('artist', '')
+        date_from = request.args.get('date_from', '')
+        date_to = request.args.get('date_to', '')
+        min_price = request.args.get('min_price', '')
+        max_price = request.args.get('max_price', '')
+
+        # Construir query
+        query = Event.query
+
+        if title:
+            query = query.filter(Event.title.ilike(f'%{title}%'))
+
+        if location:
+            query = query.filter(Event.location.ilike(f'%{location}%'))
+
+        if artist_name:
+            query = query.join(Artist).filter(
+                Artist.name.ilike(f'%{artist_name}%'))
+
+        if date_from:
+            query = query.filter(Event.date >= date_from)
+
+        if date_to:
+            query = query.filter(Event.date <= date_to)
+
+        if min_price:
+            try:
+                query = query.filter(Event.price >= float(min_price))
+            except ValueError:
+                return jsonify({"error": "min_price debe ser un número válido"}), 400
+
+        if max_price:
+            try:
+                query = query.filter(Event.price <= float(max_price))
+            except ValueError:
+                return jsonify({"error": "max_price debe ser un número válido"}), 400
+
+        events = query.all()
+        return jsonify([event.serialize() for event in events]), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@events_bp.route('/events/stats', methods=['GET'])
+def get_events_stats():
+    """Obtener estadísticas básicas de eventos"""
+    try:
+        total_events = Event.query.count()
+
+        # Precio promedio
+        avg_price_result = db.session.query(db.func.avg(Event.price)).scalar()
+        avg_price = float(avg_price_result) if avg_price_result else 0
+
+        # Eventos por artista
+        events_by_artist = db.session.query(
+            Artist.name,
+            db.func.count(Event.id).label('count')
+        ).join(Event).group_by(Artist.name).all()
+
+        # Próximos eventos (eventos futuros)
+        from datetime import date
+        upcoming_events = Event.query.filter(
+            Event.date >= str(date.today())).count()
+
+        return jsonify({
+            "total_events": total_events,
+            "average_price": round(avg_price, 2),
+            "upcoming_events": upcoming_events,
+            "events_by_artist": [{"artist": artist, "count": count} for artist, count in events_by_artist]
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@events_bp.route('/events/nearby', methods=['GET'])
+def get_nearby_events():
+    """Obtener eventos cercanos a una ubicación"""
+    try:
+        lat = request.args.get('lat', type=float)
+        lng = request.args.get('lng', type=float)
+        radius = request.args.get(
+            'radius', default=10, type=float)  # Radio en km
+
+        if not lat or not lng:
+            return jsonify({"error": "Se requieren parámetros 'lat' y 'lng'"}), 400
+
+        # Fórmula básica para calcular distancia (aproximada)
+        # Para una implementación más precisa, usar PostGIS o similar
+        events = Event.query.filter(
+            Event.lat.isnot(None),
+            Event.lng.isnot(None)
+        ).all()
+
+        nearby_events = []
+        for event in events:
+            # Cálculo simplificado de distancia (no exacto pero funcional)
+            lat_diff = abs(lat - event.lat)
+            lng_diff = abs(lng - event.lng)
+
+            # Aproximación: 1 grado ≈ 111 km
+            distance = ((lat_diff ** 2 + lng_diff ** 2) ** 0.5) * 111
+
+            if distance <= radius:
+                event_data = event.serialize()
+                event_data['distance'] = round(distance, 2)
+                nearby_events.append(event_data)
+
+        # Ordenar por distancia
+        nearby_events.sort(key=lambda x: x['distance'])
+
+        return jsonify(nearby_events), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@events_bp.route('/events/upcoming', methods=['GET'])
+def get_upcoming_events():
+    """Obtener eventos próximos (futuros)"""
+    try:
+        from datetime import date
+        limit = request.args.get('limit', default=10, type=int)
+
+        events = Event.query.filter(
+            Event.date >= str(date.today())
+        ).order_by(Event.date.asc()).limit(limit).all()
+
+        return jsonify([event.serialize() for event in events]), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

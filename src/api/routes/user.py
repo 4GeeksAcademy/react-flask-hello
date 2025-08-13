@@ -10,6 +10,7 @@ from extension import mail
 from flask_mail import Message
 
 
+
 api = Blueprint("api/user", __name__)
 
 

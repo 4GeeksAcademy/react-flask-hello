@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
@@ -7,11 +7,15 @@ import "./games.css";
 import { Trash } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 
+
 export const Games = () => {
   const { store, dispatch } = useGlobalReducer();
   const { all_games } = store;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
+  const token_user = localStorage.getItem('jwt-token');
+  const user = localStorage.getItem('user');
+  const [view, setview] = useState(false)
 
 
 
@@ -22,6 +26,17 @@ export const Games = () => {
   const modgame = (id) => {
     navigate(`/EditGames/${id}`)
   }
+  useEffect(() => {
+    if (user) {
+      let parseUser = JSON.parse(user)
+      if (parseUser.is_admin) {
+        setview(true)
+      }
+    } else {
+      setview(false)
+    }
+    console.log("hola", user, "Asdasd")
+  }, [token_user]);
 
   useEffect(() => {
     getGames();
@@ -101,19 +116,23 @@ export const Games = () => {
               Agregar al carro
             </button>
           </div>
-          <div className="px-6 pb-4 flex justify-around text-white">
-            <div>
-              <button onClick={() => modgame(game.id)}>
-                <Pencil size={24} color="#ffffff" strokeWidth={1.75} />
-              </button>
+          {
+            view && (
+              <div className="px-6 pb-4 flex justify-around text-white">
+                <div>
+                  <button onClick={() => modgame(game.id)}>
+                    <Pencil size={24} color="#ffffff" strokeWidth={1.75} />
+                  </button>
 
-            </div>
-            <div>
-              <button onClick={() => deleteGame(game.id)} >
-                <Trash size={24} color="#ffffff" strokeWidth={1.75} />
-              </button>
-            </div>
-          </div>
+                </div>
+                <div>
+                  <button onClick={() => deleteGame(game.id)} >
+                    <Trash size={24} color="#ffffff" strokeWidth={1.75} />
+                  </button>
+                </div>
+              </div>
+            )}
+
         </div>
       ))}
     </div>

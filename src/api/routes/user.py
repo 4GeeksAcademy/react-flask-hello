@@ -4,13 +4,14 @@ from api.database.db import db
 import bcrypt  # type: ignore
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity  # type: ignore
 from datetime import datetime, timedelta
-
+import os
 import secrets
 from extension import mail
 from flask_mail import Message
 
 
-url_front = "https://solid-telegram-6x94qv5jvw62q54-3000.app.github.dev/"
+url_front =os.getenv('VITE_FRONT_URL')
+
 
 api = Blueprint("api/user", __name__)
 

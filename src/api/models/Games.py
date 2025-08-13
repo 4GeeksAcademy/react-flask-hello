@@ -18,8 +18,6 @@ class Games(db.Model):
 
 
   
-    
-
 
     def serialize(self):
         return{

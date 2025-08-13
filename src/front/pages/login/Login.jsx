@@ -95,11 +95,16 @@ export const Login = () => {
                     <div className="text-center">
 
                         <Link to="/Register">
-                            <p className="text-sm text-gray-600">¿No tienes cuenta? Registrate ya
+                            <p className="text-sm text-gray-600  hover:text-blue-500">¿No tienes cuenta? Registrate ya
 
 
 
                             </p>
+
+                        </Link>
+                        <Link to ="/RecPassword">
+                            <p className="text-sm text-gray-600 hover:text-blue-500">Has olvidado tu contraseña?Pincha aqui</p>
+
 
                         </Link>
 

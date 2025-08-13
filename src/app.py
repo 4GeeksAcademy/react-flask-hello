@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
+from extension import mail
 
 from api.database.db import db
 
@@ -23,6 +24,16 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 CORS(app)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = os.getenv('EMAIL')
+app.config['MAIL_PASSWORD'] = os.getenv('PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL')
+
+
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -37,6 +48,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JWT_SECRET_KEY"] = os.getenv("TOKEN_KEY")
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+mail.init_app(app)
 
 jwt = JWTManager(app)
 

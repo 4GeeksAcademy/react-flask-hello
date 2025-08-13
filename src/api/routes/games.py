@@ -67,3 +67,9 @@ def delete_game(game_id):
     db.session.commit()
 
     return jsonify("Juego eliminado correctamente"),200
+
+@api.route("/platform/<string:platform>", methods=["GET"])
+def get_games_by_platform(platform):
+    # JUEGOS SEGUN PLATAFORMAS --BETO
+    games = Games.query.filter(Games.platform.ilike(platform)).all()
+    return jsonify({"games": [g.serialize() for g in games]}), 200

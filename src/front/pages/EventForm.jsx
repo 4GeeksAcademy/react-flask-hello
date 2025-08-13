@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // <-- añade useParams
+import { useNavigate, useParams } from "react-router-dom"; 
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const EventForm = () => {

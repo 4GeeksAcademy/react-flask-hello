@@ -5,7 +5,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export const EventForm = () => {
   const { store } = useGlobalReducer();
   const navigate = useNavigate();
-  const { id } = useParams(); // <-- define id desde la URL
+  const { id } = useParams(); // 
 
   const [formData, setFormData] = useState({
     title: "",

@@ -69,85 +69,208 @@ export const CreateEvent = () => {
                 value={datosFormulario.title}
                 onChange={handleChange}
                 required
-            />
+              />
+           
 
-            <label>Descripción:</label>
-            <textarea
+            {/* Descripción */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Descripción
+              </label>
+              <textarea
                 name="description"
                 value={datosFormulario.description}
                 onChange={handleChange}
-            />
+                disabled={isLoading}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                rows={3}
+                required
+              ></textarea>
+            </div>
 
-            <label>Fecha:</label>
-            <input
+            {/* Categorías (chips) */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Categoría por etiquetas <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={categoryInput}
+                onChange={handleCategoryInput}
+                onKeyDown={handleCategoryKeyDown}
+                placeholder={
+                  formData.categories.length >= 4
+                    ? "Máximo 4 etiquetas"
+                    : "Añade una etiqueta y pulsa Enter"
+                }
+                maxLength={12}
+                disabled={formData.categories.length >= 4 || isLoading}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                required={formData.categories.length === 0}
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y guiones
+              </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {formData.categories.map((tag) => (
+                  <span
+                    key={tag}
+                    className="flex items-center bg-gray-100 text-gray-500 text-sm px-3 py-1 rounded-full"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveCategory(tag)}
+                      disabled={isLoading}
+                      className="ml-2 text-gray-400 hover:text-red-400 focus:outline-none"
+                      style={{ fontSize: "1rem", lineHeight: "1" }}
+                      aria-label={`Eliminar ${tag}`}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Fecha */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Fecha
+              </label>
+              <input
                 type="date"
                 name="date"
                 value={datosFormulario.date}
                 onChange={handleChange}
                 required
-            />
+              />
+            </div>
 
-            <label>Hora:</label>
-            <input
+            {/* Hora */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Hora
+              </label>
+              <input
                 type="time"
                 name="time"
                 value={datosFormulario.time}
                 onChange={handleChange}
-            />
+                disabled={isLoading}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                required
+              />
+            </div>
 
-            <label>Ubicación:</label>
-            <input
+            {/* Ubicación */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Ubicación o enlace
+              </label>
+              <input
                 type="text"
                 name="location"
                 value={datosFormulario.location}
                 onChange={handleChange}
-            />
+                disabled={isLoading}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                required
+              />
+            </div>
 
-            <label>Visibilidad:</label>
-            <select
+            {/* Visibilidad */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Visibilidad
+              </label>
+              <select
                 name="visibility"
                 value={datosFormulario.visibility}
                 onChange={handleChange}
             >
                 <option value="public">Público</option>
                 <option value="private">Privado</option>
-            </select>
+              </select>
+            </div>
 
-            <label>Máximo de invitados:</label>
-            <input
-                type="number"
-                name="maxGuests"
-                value={datosFormulario.maxGuests}
-                onChange={handleChange}
-            />
-
-            <label>
-                <input
-                    type="checkbox"
-                    name="reminder"
-                    checked={datosFormulario.reminder}
-                    onChange={handleChange}
-                />
-                ¿Enviar recordatorio?
-            </label>
-
-            {/* Puedes añadir categorías como un input de texto o un selector múltiple */}
-            <label>Categorías (separadas por comas):</label>
-            <input
+            {/* Máximo asistentes */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Máximo de asistentes (opcional)
+              </label>
+              <input
                 type="text"
-                name="categories"
-                value={datosFormulario.categories.join(", ")}
-                onChange={(e) =>
-                    setDatosFormulario((prev) => ({
-                        ...prev,
-                        categories: e.target.value.split(",").map((cat) => cat.trim())
-                    }))
-                }
-            />
+                name="maxGuests"
+                value={formData.maxGuests}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || /^[1-9]\d*$/.test(value)) {
+                    setFormData((prev) => ({ ...prev, maxGuests: value }));
+                  }
+                }}
+                placeholder="Mantener vacío para ilimitado"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                disabled={isLoading}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              />
+              {formData.maxGuests !== "" && formData.maxGuests <= 0 && (
+                <p className="text-sm text-red-500 mt-1">
+                  El número debe ser mayor que 0 o dejarse vacío.
+                </p>
+              )}
+            </div>
 
-            <button type="submit" style={{ marginTop: "20px" }}>
-                Crear evento
-            </button>
-        </form>
-    );
-};
+            {/* Acciones */}
+            <div className="flex justify-end space-x-4">
+              <button
+                type="button"
+                disabled={isLoading}
+                className={`px-4 py-2 rounded-md ${
+                  isLoading
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+                onClick={() => navigate("/eventos")}  // <- ahora vuelve a la lista
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`px-4 py-2 rounded-md text-white ${
+                  isLoading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {isLoading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 mx-auto text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Crear evento"
+                )}
+              </button>
+            </div>
+          </form>
+         );
+}

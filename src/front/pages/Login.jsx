@@ -31,24 +31,28 @@ export const Login = () => {
   }, [navigate]);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const respuesta = await fetch(backendUrl + "user/signin", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datosLogin)
-      });
-      const data = await respuesta.json();
-      if (respuesta.ok) {
-        navigate('/home');
-      } else {
-        alert(data.error || 'Error en el inicio de sesión, revisa tus datos');
-      }
-    } catch (error) {
-      console.error('Error en fetch:', error);
-      alert('Error de red o servidor');
+  e.preventDefault();
+  try {
+    const respuesta = await fetch(backendUrl + "user/signin", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datosLogin)
+    });
+    const data = await respuesta.json();
+    if (respuesta.ok) {
+      // Guardar userId y token en localStorage
+      localStorage.setItem("userId", data.user.id);
+      localStorage.setItem("token", data.token || "");
+      navigate('/home');
+    } else {
+      alert(data.error || 'Error en el inicio de sesión, revisa tus datos');
     }
-  };
+  } catch (error) {
+    console.error('Error en fetch:', error);
+    alert('Error de red o servidor');
+  }
+};
+
 
   return (
     <div

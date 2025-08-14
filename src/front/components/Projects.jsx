@@ -2,31 +2,39 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { projectsContent } from "../utils/projectsContent";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export const Projects = ({ limit = 0 }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
-    const [selectedImage, setSelectedImage] = useState("");
+    const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-    const handleImageClick = (imageSrc) => {
+    const imagesToDisplay = limit > 0
+        ? projectsContent.slice(0, limit).map(project => project.images[0])
+        : projectsContent.flatMap(project => project.images);
+
+    const handleImageClick = (index) => {
         setShowModal(true);
-        setSelectedImage(imageSrc);
+        setSelectedImageIndex(index);
     }
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setSelectedImage("");
+        setSelectedImageIndex(null);
     }
 
-    let imagesToDisplay = [];
-
-    if (limit > 0) {
-        const projectsToDisplay = projectsContent.slice(0, limit);
-        imagesToDisplay = projectsToDisplay.map(project => project.images[0])
-    } else {
-        imagesToDisplay = projectsContent.flatMap(project => project.images)
+    const handlePrev = (e) => {
+        e.stopPropagation();
+        setSelectedImageIndex(prevIndex => (prevIndex === 0 ? imagesToDisplay.length - 1 : prevIndex - 1));
     }
 
+    const handleNext = (e) => {
+        e.stopPropagation();
+        setSelectedImageIndex(prevIndex => (prevIndex === imagesToDisplay.length - 1 ? 0 : prevIndex + 1));
+    }
+
+    const currentImage = selectedImageIndex !== null ? imagesToDisplay[selectedImageIndex] : null;
 
     const column1Projects = imagesToDisplay.slice(0, Math.ceil(imagesToDisplay.length / 2));
     const column2Projects = imagesToDisplay.slice(Math.ceil(imagesToDisplay.length / 2), imagesToDisplay.length);
@@ -47,7 +55,7 @@ export const Projects = ({ limit = 0 }) => {
                                     src={image.src}
                                     className="mb-3 rounded-5 object-fit-cover flex-grow-1"
                                     alt={image.alt}
-                                    onClick={() => handleImageClick(image.src)}
+                                    onClick={() => handleImageClick(index)}
                                     style={{ cursor: "pointer" }}
                                 />
                             ))}
@@ -61,7 +69,7 @@ export const Projects = ({ limit = 0 }) => {
                                     src={image.src}
                                     className="mb-3 rounded-5 object-fit-cover"
                                     alt={image.alt}
-                                    onClick={() => handleImageClick(image.src)}
+                                    onClick={() => handleImageClick(index)}
                                     style={{ cursor: "pointer" }}
                                 />
                             ))}
@@ -87,7 +95,7 @@ export const Projects = ({ limit = 0 }) => {
                 )}
             </div>
 
-            {showModal && (
+            {showModal && selectedImageIndex !== null && (
                 <>
                     <div className="modal-backdrop fade show"></div>
                     <div
@@ -108,8 +116,14 @@ export const Projects = ({ limit = 0 }) => {
                                         onClick={handleCloseModal}
                                     ></button>
                                 </div>
-                                <div className="modal-body text-center pt-0">
-                                    <img src={selectedImage} className="img-fluid rounded-4" alt="portafolio CloudTech detalle" />
+                                <div className="modal-body text-center pt-0 position-relative">
+                                    <button onClick={handlePrev} className="btn text-white bg-dark opacity-75 position-absolute top-50 start-0 translate-middle-y ms-2 rounded-pill d-flex align-items-center justify-content-center">
+                                        <FontAwesomeIcon icon={faChevronLeft} />
+                                    </button>
+                                    <img src={currentImage.src} className="img-fluid rounded-4" alt="portafolio CloudTech detalle" />
+                                    <button onClick={handleNext} className="btn text-white bg-dark opacity-75 position-absolute top-50 end-0 translate-middle-y me-2 rounded-pill d-flex align-items-center justify-content-center">
+                                        <FontAwesomeIcon icon={faChevronRight} />
+                                    </button>
                                 </div>
                             </div>
                         </div>

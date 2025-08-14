@@ -10,11 +10,13 @@ CORS(events_bp)
 @events_bp.route('/events', methods=['GET'])
 def get_events():
     """Obtener todos los eventos"""
+
     try:
         events = Event.query.all()
         return jsonify([event.serialize() for event in events]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @events_bp.route('/events/<int:event_id>', methods=['GET'])
@@ -27,9 +29,11 @@ def get_event(event_id):
         return jsonify({"error": str(e)}), 500
 
 
+
 @events_bp.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
+
     """Crear un nuevo evento"""
     try:
         user_id = get_jwt_identity()
@@ -63,6 +67,7 @@ def create_event():
                 return jsonify({"error": "Las coordenadas deben ser números válidos"}), 400
 
         # Manejar artista
+
         artist_id = None
         if 'artist_name' in data and data['artist_name']:
             artist = Artist.query.filter_by(name=data['artist_name']).first()
@@ -77,15 +82,18 @@ def create_event():
             title=data['title'],
             date=data['date'],
             description=data.get('description', ''),
+
             location=data['location'],
             lat=lat,
             lng=lng,
             artist_id=artist_id,
             price=price
+
         )
 
         db.session.add(new_event)
         db.session.commit()
+
 
         return jsonify({
             "message": "Evento creado exitosamente",
@@ -186,9 +194,11 @@ def delete_event(event_id):
             "message": "Evento eliminado exitosamente"
         }), 200
 
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 
 @events_bp.route('/events/search', methods=['GET'])
@@ -216,6 +226,7 @@ def search_events():
         if artist_name:
             query = query.join(Artist).filter(
                 Artist.name.ilike(f'%{artist_name}%'))
+
 
         if date_from:
             query = query.filter(Event.date >= date_from)

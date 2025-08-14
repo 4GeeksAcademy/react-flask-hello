@@ -247,6 +247,7 @@ export const EventForm = () => {
         }
     };
 
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -290,6 +291,7 @@ export const EventForm = () => {
 
             if (response.ok) {
                 alert(data.message);
+
                 resetForm();
                 fetchEvents();
             } else {
@@ -342,6 +344,7 @@ export const EventForm = () => {
                 fetchEvents();
             } else {
                 alert(`Error al eliminar: ${data.error || data.message}`);
+
             }
         } catch (error) {
             console.error("Error al eliminar evento:", error);

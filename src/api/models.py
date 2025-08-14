@@ -74,6 +74,7 @@ class Event(db.Model):
             "artist_id": self.artist_id,
             "artist_name": self.artist.name if self.artist else None,
             "price": float(self.price) if self.price is not None else 0.0
+
         }
 
 

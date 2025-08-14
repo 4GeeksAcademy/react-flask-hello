@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from api.models import db, User
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from flask_bcrypt import Bcrypt
@@ -42,10 +42,7 @@ def login():
     if not user or not bcrypt.check_password_hash(user.password, data['password']):
         return jsonify({"msg": "Credenciales incorrectas"}), 401
 
-    token = create_access_token(identity={
-        "id": user.id,
-        "email": user.email,
-        "role": user.role
-    })
+    token = create_access_token(identity=str(user.id),
+                                additional_claims={"role": user.role, "email": user.email})
 
     return jsonify(access_token=token), 200

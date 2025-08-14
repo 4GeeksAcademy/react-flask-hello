@@ -10,6 +10,7 @@ from extension import mail
 from flask_mail import Message
 
 
+url_front = "https://solid-telegram-6x94qv5jvw62q54-3000.app.github.dev/"
 
 api = Blueprint("api/user", __name__)
 
@@ -19,7 +20,7 @@ api = Blueprint("api/user", __name__)
 def forget_password():
     body = request.get_json()
     user = User.query.filter_by(email=body["email"]).first()
-
+    
     if user is None:
         return jsonify("La cuenta no existe"), 404
 
@@ -28,7 +29,10 @@ def forget_password():
     }
     token = secrets.token_urlsafe(75)
     
-    reset_url_password = f"https://solid-telegram-6x94qv5jvw62q54-3000.app.github.dev/resetPassword/{token}"
+
+    reset_url_password = f"https://refactored-couscous-x5p76ppwgq5v3xxr-3000.app.github.dev/resetPassword/{token}"
+
+    reset_url_password = f"{url_front}resetPassword/{token}"
 
     msg = Message(
         'Prueba de email',

@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
-import { CircleUser } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
@@ -19,7 +18,7 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
     localStorage.removeItem("user")
     dispatch({
       type: 'setUser',
-      payload: null
+      payload: nullm
     })
     console.log("Sin sesion")
     alert("Sesion finalizada")

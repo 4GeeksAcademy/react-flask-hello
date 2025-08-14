@@ -39,17 +39,17 @@ export const Register = () => {
     return (
        <div className="register-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             
-            <div className="max-w-md w-full space-y-8 bg-gray-200 p-6 rounded-md">
+            <div className="max-w-md w-full transparent-form space-y-8 bg-gray-200 p-6 rounded-md">
                 
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Crear cuenta</h2>
-                    <p className="mt-2 text-center text-sm text-gray-700">Completa los campos para registrarte</p>
+                    <p className="mt-2 text-center text-sm font-bold text-gray-800">Completa los campos para registrarte</p>
                 </div>
                 <form className="mt-8 space-y-6 " onSubmit={registerUser}>
                     <div className="space-y-4">
                        
                         <div>
-                            <label htmlFor="name" className="block text-sm font-bold text-gray-700">
+                            <label htmlFor="name" className="block text-sm font-bold text-gray-900">
                                 Nombre completo
                             </label>
                             <input
@@ -64,7 +64,7 @@ export const Register = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-bold text-gray-700">
+                            <label htmlFor="email" className="block text-sm font-bold text-gray-900">
                                 Email
                             </label>
                             <input
@@ -79,7 +79,7 @@ export const Register = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-bold text-gray-700">
+                            <label htmlFor="password" className="block text-sm font-bold text-gray-900">
                                 Contraseña
                             </label>
                             <input
@@ -106,7 +106,7 @@ export const Register = () => {
                     <div className="text-center">
                         <p className="text-bold text-gray-800">
                             ¿Ya tienes cuenta?{" "}
-                            <a href="#" className="font-bold text-blue-800 hover:text-blue-500">
+                            <a href="#" className="font-bold text-blue-800 hover:text-white">
                                 Inicia sesión
                             </a>
                         </p>

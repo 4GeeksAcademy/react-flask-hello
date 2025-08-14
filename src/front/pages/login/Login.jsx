@@ -1,5 +1,7 @@
+import './Login.css'
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+
 
 export const Login = () => {
 
@@ -40,8 +42,8 @@ export const Login = () => {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-6 rounded-md">
+        <div className="login-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full transparent-form space-y-8 bg-gray-300 p-6 rounded-md">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar sesión</h2>
 
@@ -50,7 +52,7 @@ export const Login = () => {
                     <div className="space-y-4">
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="email" className="block text-sm font-bold text-gray-900">
                                 Email
                             </label>
                             <input
@@ -67,7 +69,7 @@ export const Login = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="password" className="block text-sm font-bold text-gray-900">
                                 Contraseña
                             </label>
                             <input
@@ -87,7 +89,7 @@ export const Login = () => {
                     <div>
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                         >
                             Inicia sesión
                         </button>
@@ -95,7 +97,7 @@ export const Login = () => {
                     <div className="text-center">
 
                         <Link to="/Register">
-                            <p className="text-sm text-gray-600  hover:text-blue-500">¿No tienes cuenta? Registrate ya
+                            <p className="text-sm text-gray-800  hover:text-white">¿No tienes cuenta? Registrate ya
 
 
 
@@ -103,7 +105,7 @@ export const Login = () => {
 
                         </Link>
                         <Link to ="/RecPassword">
-                            <p className="text-sm text-gray-600 hover:text-blue-500">Has olvidado tu contraseña?Pincha aqui</p>
+                            <p className="text-sm text-gray-800 hover:text-white">¿Has olvidado tu contraseña? Pincha aquí</p>
 
 
                         </Link>

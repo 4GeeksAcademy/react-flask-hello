@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';
@@ -269,17 +268,18 @@ export const BusquedaOfertas = () => {
     }));
   };
 
- // const updatePriceRange = (type, value) => {
-   // setSearchFilters(prev => ({
-     // ...prev,
-     // priceRange: {
-       // ...prev.priceRange,
-       // [type]: value
-      //}
-    //}));
-  //};
+  // FUNCIÓN CORREGIDA para actualizar rango de precios
+  const updatePriceRange = (type, value) => {
+    setSearchFilters(prev => ({
+      ...prev,
+      priceRange: {
+        ...prev.priceRange,
+        [type]: value
+      }
+    }));
+  };
 
-  // Función para limpiar filtros
+
   const clearFilters = () => {
     setSearchFilters(prev => ({
       ...prev,
@@ -291,16 +291,24 @@ export const BusquedaOfertas = () => {
     }));
   };
 
-  const handleClick = (offer) =>{
-    if(store.ofertas.some(ofertas => ofertas.id === offer.id)===true){
-      navigate(`/oferta/${offer.id}`)
-    }
-    dispatch({
-      type:"add_oferta",
-      payload:offer.offer_serialize
-    })
-    navigate(`/oferta/${offer.id}`)
-  }
+
+  const handleClick = (offer) => {
+    return (e) => {
+      e.preventDefault();
+      
+
+      const existeOferta = store.ofertas && store.ofertas.some(oferta => oferta.id === offer.id);
+      
+      if (!existeOferta) {
+        dispatch({
+          type: "add_oferta",
+          payload: offer 
+        });
+      }
+      
+      navigate(`/oferta/${offer.id}`);
+    };
+  };
 
   return (
     <>
@@ -544,7 +552,11 @@ export const BusquedaOfertas = () => {
                           </div>
                         )}
 
-                        <div className="oferta-contenido"  >
+                        <div 
+                          className="oferta-contenido" 
+                          onClick={handleClick(offer)}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <h5 className="oferta-titulo">
                             {getCropIcon(offer.titulo)}
                             {offer.titulo}
@@ -580,5 +592,3 @@ export const BusquedaOfertas = () => {
     </>
   );
 };
-
-//onClick={handleClick(offer)}

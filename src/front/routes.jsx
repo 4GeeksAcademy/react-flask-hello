@@ -12,6 +12,7 @@ import { Login } from "./pages/Login";
 import { Registro } from "./pages/Registro";
 import { BusquedaOfertas } from "./pages/BusquedaOfertas";
 import { OfertaId } from "./pages/OfertaId";
+import { ResetPassword } from "./pages/ResetPassword";
 
 
 export const router = createBrowserRouter(
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
             <Route path="/registro" element={<Registro />} />
             <Route path="/busqueda" element={<BusquedaOfertas />} />
             <Route path="/oferta/:id" element={<OfertaId />} />
+            <Route path="/resetPassword/:id" element={<ResetPassword/>} />
         </Route>
     )
 );

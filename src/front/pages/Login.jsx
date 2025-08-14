@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 
 export const Login = () => {
-  const { store,dispatch } = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export const Login = () => {
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const handleSubmit = async e => {
     e.preventDefault();
     setMessage(null);
@@ -30,20 +30,20 @@ export const Login = () => {
     console.log(data)
     localStorage.setItem("jwt_token", data[0].token);
     dispatch({
-      type:"add_user",
-      payload:data.user_serialize
+      type: "add_user",
+      payload: data.user_serialize
     })
 
     if (resp.ok) {
       setMessage("¡Ingreso al campo exitoso!");
-      
+
       setTimeout(() => navigate("/"), 2000); // o la ruta a tu "granja" principal
 
     } else {
       setError(data.msg || "¡Terreno resbaladizo! Error al iniciar sesión.");
       dispatch({
-      type:"eliminar_user",
-    })
+        type: "eliminar_user",
+      })
       localStorage.removeItem('jwt_token');
     }
 
@@ -75,6 +75,14 @@ export const Login = () => {
           {sending ? "Arando..." : "¡Cosecha tu Acceso!"}
         </button>
       </form>
+
+      <Link to=""><button
+        type="button"
+        
+        style={styles.button}
+      >
+        Has olvidado tus herramientas?
+      </button></Link>
 
       <p style={styles.registerText}>
         ¿No tienes tu parcela?{" "}

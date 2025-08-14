@@ -21,13 +21,11 @@ export default function storeReducer(store, action = {}) {
         message: action.payload
       };
 
-    case 'add_oferta':
-      const nuevaOferta = action.payload
-      
-      return{
-      ...store,
-        ofertas: [...store.ofertas, nuevaOferta]
-      };
+case "add_oferta":
+  return {
+    ...store,
+    ofertas: store.ofertas ? [...store.ofertas, action.payload] : [action.payload]
+  };
 
     case 'add_usuario':
       const nuevoUsuario = action.payload

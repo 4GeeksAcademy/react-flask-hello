@@ -11,9 +11,12 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from flask import Flask
+from flask_mail import Mail
+from api import routes
 
 # from models import Person
-
+mail = Mail()
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
@@ -47,6 +50,16 @@ setup_commands(app)
 app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'tu-email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'tu-contraseña-de-aplicacion'
+app.config['MAIL_DEFAULT_SENDER'] = 'tu-email@gmail.com'
+    
+    # Inicializar extensiones
+mail.init_app(app)
 
 
 @app.errorhandler(APIException)

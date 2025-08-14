@@ -5,6 +5,9 @@ services:
       context: . # El contexto es la raíz, donde están todos los archivos
       dockerfile: Dockerfile.backend # Especifica qué Dockerfile usar
     restart: always
+    volumes:
+      - ./src:/app
+      - ./migrations:/app/migrations
     env_file: ./.env
     networks:
       - app-network

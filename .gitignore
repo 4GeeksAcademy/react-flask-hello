@@ -98,3 +98,7 @@ yarn-error.log*
 # Archivos de sistema operativo
 .DS_Store
 Thumbs.db
+
+# Ignorar la carpeta de certificados SSL
+nginx-proxy/certs/
+

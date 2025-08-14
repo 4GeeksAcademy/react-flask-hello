@@ -32,10 +32,10 @@ export const Register = () => {
       console.log('Respuesta backend:', data);
 
       if (respuesta.ok) {
-        notifySuccess("Registro exitoso! Se ha enviado un email de confirmacion.");
-        navigate('/home');
+        notifySuccess("Registro exitoso! Por favor revisa tu email para confirmar la cuenta.");
+        navigate('/login'); // Llevarlo al login, no al home
       } else {
-        alert(data.error || 'Error al registrar, revisa tu email');
+        notifyError(data.error || 'Error al registrar, revisa tu email');
       }
     } catch (error) {
       notifyError('Error de red o servidor');

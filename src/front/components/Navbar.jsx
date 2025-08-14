@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
+import { notifyError, notifySuccess } from '../utils/Notifications';
+import { LogoutButton } from '../utils/Logout.jsx'
 
 const navigation = [
   { name: "Home", to: "/home" },           // o "/" 
@@ -33,10 +35,22 @@ export function Navbar() {
     setIsProfileMenuOpen(false);
   }, [location.pathname]);
 
+  // Logica cierre de sesion
+
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
-  };
+  try {
+    await supabase.auth.signOut(); // Cierra sesión en Supabase
+  } catch (error) {
+    notifyError("Error cerrando sesión");
+    console.error("Error cerrando sesión en Supabase:", error);
+  }
+
+  localStorage.removeItem("userId"); // Elimina datos locales
+  localStorage.removeItem("token");
+
+  navigate("/login"); // Redirige
+};
+
 
   return (
     <nav className="knect-navbar">
@@ -84,9 +98,7 @@ export function Navbar() {
             <NavLink to="/login" className="navbar-link">Login</NavLink>
             <NavLink to="/register" className="navbar-link">Register</NavLink>
 
-            <button className="btn-danger" onClick={handleLogout} type="button">
-              Logout
-            </button>
+            <LogoutButton />
 
             <div className="profile-menu" ref={profileMenuRef}>
               <button

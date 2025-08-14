@@ -25,9 +25,9 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-# =======================
+
 # Habilitar CORS global
-# =======================
+
 CORS(app, resources={r"/*": {"origins": "*"}})  # permitir todos los orígenes  # permite cualquier origen (útil para desarrollo)
 # Para producción puedes restringir:
 # CORS(app, origins=["https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3000.app.github.dev"])

@@ -31,12 +31,12 @@ def get_event(event_id):
 
 
 @events_bp.route('/events', methods=['POST'])
-@jwt_required()
+
 def create_event():
 
     """Crear un nuevo evento"""
     try:
-        user_id = get_jwt_identity()
+        
         data = request.get_json()
 
         # Validar datos requeridos

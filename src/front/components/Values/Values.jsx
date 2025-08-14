@@ -15,7 +15,7 @@ export const Values = () => {
 
                 <div className="row g-5">
                     {valuesContent.map(value => (
-                        <div key={value.id} className="col-12 col-md-6 col-lg-3">
+                        <div key={value.id} className="col-12 col-md-6 col-lg-4">
                             <Card
                                 title={t(value.title)}
                                 description={t(value.description)}

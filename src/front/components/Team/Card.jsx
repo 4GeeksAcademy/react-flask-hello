@@ -20,9 +20,9 @@ export const Card = ({ name, position, description, image, catImage, mailLink, l
                 <h5 className="mt-0 mb-3">{position}</h5>
                 <p className="card-text px-3">{description}</p>
                 <div className="d-flex justify-content-center fs-1 gap-3">
-                    <Link to={mailLink} className="text-white"><FontAwesomeIcon icon={faEnvelope} /></Link>
-                    <Link to={linkedinLink} className="text-white"><FontAwesomeIcon icon={faLinkedin} /></Link>
-                    <Link to={githubLink} className="text-white"><FontAwesomeIcon icon={faGithubSquare} /> </Link>
+                    <a href={`mailto:${mailLink}`} className="text-white"><FontAwesomeIcon icon={faEnvelope} /></a>
+                    <a href={linkedinLink} target="_blank" className="text-white"><FontAwesomeIcon icon={faLinkedin} /></a>
+                    <a href={githubLink} target="_blank" className="text-white"><FontAwesomeIcon icon={faGithubSquare} /> </a>
                 </div>
             </div>
         </div>

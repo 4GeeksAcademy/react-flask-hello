@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Text, Float, ForeignKey, DateTime
+from sqlalchemy import String, Boolean, Text, Float, ForeignKey, DateTime,  Numeric
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List, Optional
 from datetime import datetime
@@ -14,7 +14,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean(), nullable=True)
     role: Mapped[str] = mapped_column(String(20), default="usuario")
 
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="user")
@@ -56,6 +56,8 @@ class Event(db.Model):
     lat: Mapped[Optional[float]] = mapped_column(Float)
     lng: Mapped[Optional[float]] = mapped_column(Float)
     artist_id: Mapped[Optional[int]] = mapped_column(ForeignKey("artist.id"))
+    price: Mapped[float] = mapped_column(
+        Numeric(10, 2), nullable=False, default=0)
 
     artist = relationship("Artist", back_populates="events")
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="event")
@@ -67,10 +69,12 @@ class Event(db.Model):
             "date": self.date,
             "description": self.description,
             "location": self.location,
-            "lat": self.lat,
-            "lng": self.lng,
+            "lat": float(self.lat) if self.lat is not None else None,
+            "lng": float(self.lng) if self.lng is not None else None,
             "artist_id": self.artist_id,
-            "artist_name": self.artist.name if self.artist else None
+            "artist_name": self.artist.name if self.artist else None,
+            "price": float(self.price) if self.price is not None else 0.0
+
         }
 
 

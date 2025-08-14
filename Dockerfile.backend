@@ -1,0 +1,18 @@
+FROM python:3.11-slim-bookworm
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+build-essential \
+libpq-dev
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ .
+
+COPY migrations/ /app/migrations/
+
+EXPOSE 8000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]

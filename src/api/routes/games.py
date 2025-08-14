@@ -34,17 +34,40 @@ def get_game(id):
 
 @api.route('/addgame', methods=["POST"])
 def add_game():
-
     body = request.get_json()
 
-    if "img" and "video" and "name" and "platform" and "description" and "price" and "distribuidora" and "genero" and "online" and "offline" and "gamemode" not in body:
-        return jsonify("Error, debes introducir los campos obligatorios"), 404
+    # Validación correcta de campos obligatorios
+    required = [
+        "img", "video", "name", "platform", "description",
+        "price", "distribuidora", "genero", "online", "offline", "gamemode"
+    ]
+    missing = [field for field in required if field not in body or body[field] in [None, ""]]
+    if missing:
+        return jsonify({
+            "error": "Faltan campos obligatorios",
+            "missing": missing
+        }), 400
 
+    # Normalizar la plataforma
+    ALIASES = {
+        "ps5": "PS5", "playstation5": "PS5", "playstation 5": "PS5",
+        "ps4": "PS4", "playstation4": "PS4", "playstation 4": "PS4",
+        "nintendo": "Nintendo",
+        "xbox one": "Xbox One",
+        "xbox series s": "Xbox Series S/X", "xbox series x": "Xbox Series S/X",
+        "nintendo switch": "Nintendo Switch",
+        "nintendo switch 2": "Nintendo Switch 2",
+        "pc": "PC"
+    }
+    raw_platform = body["platform"].strip().lower()
+    normalized_platform = ALIASES.get(raw_platform, body["platform"])
+
+    # Crear nuevo juego
     new_game = Games()
     new_game.img = body["img"]
     new_game.video = body["video"]
     new_game.name = body["name"]
-    new_game.platform = body["platform"]
+    new_game.platform = normalized_platform
     new_game.description = body["description"]
     new_game.price = body["price"]
     new_game.distribuidora = body["distribuidora"]
@@ -52,7 +75,6 @@ def add_game():
     new_game.online = body["online"]
     new_game.offline = body["offline"]
     new_game.gamemode = body["gamemode"]
-    print(new_game)
 
     db.session.add(new_game)
     db.session.commit()
@@ -96,9 +118,20 @@ def delete_game(game_id):
     db.session.commit()
 
     return jsonify("Juego eliminado correctamente"),200
-
+    # FILTRO DE JUEGOS BETO
 @api.route("/platform/<string:platform>", methods=["GET"])
 def get_games_by_platform(platform):
-    # JUEGOS SEGUN PLATAFORMAS --BETO
-    games = Games.query.filter(Games.platform.ilike(platform)).all()
-    return jsonify({"games": [g.serialize() for g in games]}), 200
+    needle = platform.strip().lower().replace(" ", "")  # "Play Station" -> "playstation"
+
+    normalized = db.func.replace(db.func.lower(Games.platform), " ", "")
+    q = Games.query.filter(normalized.ilike(f"%{needle}%"))
+
+    games = [g.serialize() for g in q.all()]
+    return jsonify({"games": games}), 200
+
+    # FILTRO DE JUEGOS BETO
+@api.route("/platforms", methods=["GET"])
+def list_platforms():
+    rows = db.session.query(Games.platform).distinct().all()
+    return jsonify({"platforms": [r[0] for r in rows]}), 200
+

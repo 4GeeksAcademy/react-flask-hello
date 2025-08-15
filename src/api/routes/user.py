@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, Blueprint  # type: ignore
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app  # type: ignore
 from api.models.User import User
 from api.database.db import db
 import bcrypt  # type: ignore
@@ -8,9 +8,11 @@ import os
 import secrets
 from extension import mail
 from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
+from urllib.parse import quote
+import re
 
-
-url_front =os.getenv('VITE_FRONT_URL')
+url_front = os.getenv('VITE_FRONT_URL')
 
 
 api = Blueprint("api/user", __name__)
@@ -21,16 +23,17 @@ api = Blueprint("api/user", __name__)
 def forget_password():
     body = request.get_json()
     user = User.query.filter_by(email=body["email"]).first()
-    
+
     if user is None:
         return jsonify("La cuenta no existe"), 404
 
-    payload = {
-        "email": body["email"]
-    }
-    token = secrets.token_urlsafe(75)
-    
-    reset_url_password = f"{url_front}resetPassword/{token}"
+    serializer = URLSafeTimedSerializer(os.getenv('TOKEN_KEY'))
+    token = serializer.dumps(body["email"], salt="password-reset")
+    print(type(token))
+    nuevo_caracter = "_"
+
+    cadena_modificada = re.sub(r"\.", nuevo_caracter, token)
+    reset_url_password = f"{url_front}resetPassword/{cadena_modificada}"
 
     msg = Message(
         'Prueba de email',
@@ -45,8 +48,19 @@ def forget_password():
 def new_password():
     body = request.get_json()
 
-    print(body)
-    return "email enviado", 200
+    token = re.sub(r'_', r'.', body["token"])
+    serializer = URLSafeTimedSerializer(os.getenv('TOKEN_KEY'))
+    email = serializer.loads(
+        token, salt="password-reset", max_age=3600
+    )
+
+    user = User.query.filter_by(email=email).first()
+    new_password = bcrypt.hashpw(
+        body['password'].encode(), bcrypt.gensalt())
+    user.password = new_password
+    db.session.commit()
+
+    return "password actualizado", 200
 
 
 # REGISTRO DE UN NUEVO USER
@@ -108,14 +122,3 @@ def get_user():
     return jsonify({"User": user.serialize()})
 
 
-# ELIMINAR USUARIO
-
-# @api.router("/user/<int:user_id>",methods =["DELETE"])
-# def delete_user(user_id):
-#     user = db.session.get(User,user_id)
-#     if user is None:
-#         return jsonify("Error, no se ha podido eliminar por que el usuario no existe",404)
-#     db.session.delete(user)
-#     db.session.commit()
-
-#     return jsonify("El usuario ha sido eliminado correctamente"),200

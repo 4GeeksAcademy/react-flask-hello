@@ -4,9 +4,11 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
+
 const navigation = [
   { name: "Home", to: "/home" },           // o "/"
   { name: "Eventos", to: "/crear-evento" }
+
 ];
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,6 +17,7 @@ export function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token")
+
   // Cerrar menú de perfil al cliquear fuera (Grabación del sábado con Hori)
   useEffect(() => {
     function handleClickOutside(event) {
@@ -146,6 +149,7 @@ export function Navbar() {
                   </NavLink>
                 </li>
               ))}
+
               {
                 !token ? (
                   <>

@@ -23,10 +23,11 @@ export const Home = () => {
 
   // ---- DESTINOS PRINCIPALES (4 tarjetas)
   const destinosPrincipales = [
-    { titulo: "Morelia, Michoacán", pais: "México", img: "/img/mexico.jpg" },
-    { titulo: "Cita a ciegas con el cine", pais: "Cultura", img: "/img/cine.jpg" },
-    { titulo: "Noche de fútbol", pais: "Deportes", img: "/img/futbol.jpg" },
-    { titulo: "Festival al aire libre", pais: "Música", img: "/img/festival.jpg" },
+
+    { titulo: "Morelia, Michoacán",      pais: "México",   img: "/src/front/assets/img/Morelia-turistica.jpg"    },
+    { titulo: "Cita a ciegas con el cine", pais: "Cultura", img: "src/front/assets/img/cita-ciegas.jpg"      },
+    { titulo: "Noche de fútbol",         pais: "Deportes", img: "src/front/assets/img/Chiringuito de jugones.jpg"     },
+    { titulo: "Festival al aire libre",  pais: "Música",   img: "src/front/assets/img/Andalucia-starlite.jpg"   },
   ];
 
   useEffect(() => {

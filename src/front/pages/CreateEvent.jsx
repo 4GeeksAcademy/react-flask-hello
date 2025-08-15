@@ -1,174 +1,384 @@
 import { useState } from "react";
+import { supabase } from '../../api/supabaseClient.js';
 import { useNavigate, useRevalidator } from "react-router-dom"
 import { backendUrl } from '../utils/Config';
 import { notifyError, notifySuccess } from '../utils/Notifications';
 
+export function CreateEvent() {
+  const [imagePreview, setImagePreview] = useState("/Knect-logo.png");
+  const [imageFile, setImageFile] = useState(null);
+  const [imgError, setImgError] = useState(false); // 
 
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: "",
+    visibility: "public",
+    maxGuests: "",
+    reminder: false,
+    categories: []
+  });
+  const [categoryInput, setCategoryInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+  };
 
-export const CreateEvent = () => {
-    const navigate = useNavigate();
-    const [datosFormulario, setDatosFormulario] = useState({
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-        location: "",
-        visibility: "public",
-        maxGuests: "",
-        reminder: false,
-        categories: [],
-        price: 0,
-        portada: ""
-    });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+      setImgError(false); // por si falla (Código de IA)
+    }
+  };
 
+  const isValidTag = (tag) => {
+    const validPattern = /^[\w-]{1,12}$/;
+    return validPattern.test(tag);
+  };
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setDatosFormulario((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value
+  const handleCategoryInput = (e) => {
+    setCategoryInput(e.target.value);
+  };
+
+  const handleCategoryKeyDown = (e) => {
+    if (
+      (e.key === "Enter" || e.key === ",") &&
+      categoryInput.trim() !== "" &&
+      formData.categories.length < 4
+    ) {
+      e.preventDefault();
+      const newTag = categoryInput.trim();
+
+      if (isValidTag(newTag) && !formData.categories.includes(newTag)) {
+        setFormData((prev) => ({
+          ...prev,
+          categories: [...prev.categories, newTag]
         }));
-    };
+        setCategoryInput("");
+      }
+    }
+  };
 
-    const handleForm = async (e) => {
-        e.preventDefault();
-        try {
-            const userId = localStorage.getItem("userId");
-            const token = localStorage.getItem("token");
+  const handleRemoveCategory = (tag) => {
+    setFormData((prev) => ({
+      ...prev,
+      categories: prev.categories.filter((t) => t !== tag)
+    }));
+  };
 
-            if (!userId) {
-                notifyError("Usuario no autenticado. Inicia sesión primero.");
-                return;
-            }
+  const navigate = useNavigate();
 
+  const rutaVistaHome = () => {
+    navigate("/home");
+  };
 
-            // Mapeo de campos para que coincidan con el backend
-            const payload = {
-                titulo: datosFormulario.title,
-                definicion: datosFormulario.description,
-                fecha: datosFormulario.date,
-                categoria: datosFormulario.categories.join(", "), // si son varias
-                precio: datosFormulario.price || 0, // añade price en el front si lo quieres
-                max_asist: datosFormulario.maxGuests || null,
-                portada: datosFormulario.portada || "", // si tienes imagen
-            };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-            const respuestaFormulario = await fetch(backendUrl + `events/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
-                },
-                body: JSON.stringify(payload)
-            });
+    try {
+      if (!imageFile) {
+        alert("Selecciona una imagen para el evento");
+        setIsLoading(false);
+        return;
+      }
 
-            const data = await respuestaFormulario.json();
-            console.log('Respuesta backend:', data);
+      // 1) Subimos imagen a Supabase
+      const fileExt = imageFile.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `events/${fileName}`;
 
-            if (respuestaFormulario.ok) {
-                notifySuccess("Evento creado exitosamente!");
-                navigate('/home');
-            } else {
-                alert(data.error || 'Error al crear evento, vuelve a intentarlo');
-            }
-        } catch (error) {
-            notifyError('Error de red o servidor');
-            console.error('Error en fetch:', error);
+      const { error: uploadError } = await supabase.storage
+        .from("images.event")
+        .upload(filePath, imageFile);
 
-        }
-    };
+      if (uploadError) throw uploadError;
 
-    return (
-        <form onSubmit={handleForm} style={{ maxWidth: "600px", margin: "auto" }}>
-            <h2>Crear nuevo evento</h2>
+      const { data } = supabase.storage
+        .from("images.event")
+        .getPublicUrl(filePath);
+      const publicUrl = data.publicUrl;
 
-            <label>Título:</label>
-            <input
-                type="text"
-                name="title"
-                value={datosFormulario.title}
-                onChange={handleChange}
-                required
+      // 2) Usuario actual
+      const user = supabase.auth.user();
+      if (!user) {
+        alert("Usuario no autenticado");
+        setIsLoading(false);
+        return;
+      }
+
+      // 3) Insertar en tabla
+      const { data: inserted, error: insertError } = await supabase
+        .from("Evento")
+        .insert([
+          {
+            titulo: formData.title,
+            definicion: formData.description,
+            fecha: formData.date,
+            hora: formData.time,
+            location: formData.location, // <-- BD en inglés
+            portada: publicUrl,
+            creador_evento: user.id,
+            categoria: JSON.stringify(formData.categories),
+            max_asist:
+              formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),
+          },
+        ])
+        .select("id")
+        .single();
+
+      if (insertError) throw insertError;
+
+      alert("Evento creado con éxito");
+      navigate("/eventos", { state: { newEventId: inserted.id } });
+    } catch (error) {
+      console.error("Error al crear evento:", error.message);
+      alert("Error al crear evento, revisa la consola.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="create-event">
+      <section className="create-event__card">
+
+        <div className="create-event__topbar">
+          <button
+            onClick={rutaVistaHome}
+            disabled={isLoading}
+            className="btn btn-ghost"
+            type="button"
+          >
+            ← Volver a home
+          </button>
+        </div>
+
+        <h1 className="create-event__title">Crear un evento</h1>
+        <p className="create-event__subtitle">Completa el formulario</p>
+
+        {/* Preview circular */}
+        <div className="thumb">
+          {!imgError ? (
+            <img
+              src={imagePreview}
+              alt=""
+              onError={() => setImgError(true)}
+              className="thumb__img"
             />
+          ) : (
+            <span className="thumb__placeholder">Imagen del evento</span>
+          )}
+        </div>
 
-            <label>Descripción:</label>
+        <form onSubmit={handleSubmit} className="create-event__form">
+          {/* Imagen */}
+          <div className="form-row">
+            <label htmlFor="image">Imagen principal del evento</label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              disabled={isLoading}
+            />
+          </div>
+
+          {/* Título */}
+          <div className="form-row">
+            <label htmlFor="title">Nombre del evento</label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
+
+          {/* Descripción */}
+          <div className="form-row">
+            <label htmlFor="description">Descripción</label>
             <textarea
-                name="description"
-                value={datosFormulario.description}
-                onChange={handleChange}
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              disabled={isLoading}
+              rows={3}
+              required
             />
+          </div>
 
-            <label>Fecha:</label>
-            <input
-                type="date"
-                name="date"
-                value={datosFormulario.date}
-                onChange={handleChange}
-                required
-            />
-
-            <label>Hora:</label>
-            <input
-                type="time"
-                name="time"
-                value={datosFormulario.time}
-                onChange={handleChange}
-            />
-
-            <label>Ubicación:</label>
-            <input
-                type="text"
-                name="location"
-                value={datosFormulario.location}
-                onChange={handleChange}
-            />
-
-            <label>Visibilidad:</label>
-            <select
-                name="visibility"
-                value={datosFormulario.visibility}
-                onChange={handleChange}
-            >
-                <option value="public">Público</option>
-                <option value="private">Privado</option>
-            </select>
-
-            <label>Máximo de invitados:</label>
-            <input
-                type="number"
-                name="maxGuests"
-                value={datosFormulario.maxGuests}
-                onChange={handleChange}
-            />
-
-            <label>
-                <input
-                    type="checkbox"
-                    name="reminder"
-                    checked={datosFormulario.reminder}
-                    onChange={handleChange}
-                />
-                ¿Enviar recordatorio?
+          {/* Categorías (chips) */}
+          <div className="form-row">
+            <label htmlFor="tags">
+              Categoría por etiquetas <span aria-hidden="true">*</span>
             </label>
-
-            {/* Puedes añadir categorías como un input de texto o un selector múltiple */}
-            <label>Categorías (separadas por comas):</label>
             <input
-                type="text"
-                name="categories"
-                value={datosFormulario.categories.join(", ")}
-                onChange={(e) =>
-                    setDatosFormulario((prev) => ({
-                        ...prev,
-                        categories: e.target.value.split(",").map((cat) => cat.trim())
-                    }))
-                }
+              id="tags"
+              type="text"
+              value={categoryInput}
+              onChange={handleCategoryInput}
+              onKeyDown={handleCategoryKeyDown}
+              placeholder={
+                formData.categories.length >= 4
+                  ? "Máximo 4 etiquetas"
+                  : "Añade una etiqueta y pulsa Enter"
+              }
+              maxLength={12}
+              disabled={formData.categories.length >= 4 || isLoading}
+              required={formData.categories.length === 0}
             />
+            <small className="help">
+              Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y guiones
+            </small>
 
-            <button type="submit" style={{ marginTop: "20px" }}>
-                Crear evento
+            <div className="chips">
+              {formData.categories.map((tag) => (
+                <span key={tag} className="chip">
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCategory(tag)}
+                    disabled={isLoading}
+                    className="chip__close"
+                    aria-label={`Eliminar ${tag}`}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Fecha y Hora */}
+          <div className="form-row form-row--half">
+            <label htmlFor="date">Fecha</label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
+
+          <div className="form-row form-row--half">
+            <label htmlFor="time">Hora</label>
+            <input
+              id="time"
+              type="time"
+              name="time"
+              step="300"
+              value={formData.time}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
+
+          {/* Ubicación */}
+          <div className="form-row">
+            <label htmlFor="location">Ubicación o enlace</label>
+            <input
+              id="location"
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              disabled={isLoading}
+              placeholder="C/ Ejemplo 12 · o https://meet…"
+              required
+            />
+          </div>
+
+          {/* Visibilidad */}
+          <div className="form-row form-row--half">
+            <label htmlFor="visibility">Visibilidad</label>
+            <select
+              id="visibility"
+              name="visibility"
+              value={formData.visibility}
+              onChange={handleChange}
+              disabled={isLoading}
+            >
+              <option value="public">Público</option>
+              <option value="private">Privado</option>
+            </select>
+          </div>
+
+          {/* Máximo asistentes */}
+          <div className="form-row form-row--half">
+            <label htmlFor="maxGuests">Máximo de asistentes (opcional)</label>
+            <input
+              id="maxGuests"
+              type="number"
+              name="maxGuests"
+              value={formData.maxGuests}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, maxGuests: e.target.value }))
+              }
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+              }}
+              min="1"
+              step="1"
+              inputMode="numeric"
+              placeholder="Mantener vacío para ilimitado"
+              disabled={isLoading}
+            />
+            {formData.maxGuests !== "" && Number(formData.maxGuests) < 1 && (
+              <small className="help is-error">
+                El número debe ser mayor que 0 o dejarse vacío.
+              </small>
+            )}
+          </div>
+
+          {/* Recordatorio  */}
+          <div className="form-row">
+            <label className="create-event__checkbox">
+              <input
+                type="checkbox"
+                name="reminder"
+                checked={formData.reminder}
+                onChange={handleChange}
+                disabled={isLoading}
+              />
+              ¿Enviar recordatorio?
+            </label>
+          </div>
+
+          {/* Acciones */}
+          <div className="form-actions">
+            <button
+              type="button"
+              disabled={isLoading}
+              className="btn btn-ghost"
+              onClick={rutaVistaHome}
+            >
+              Cancelar
             </button>
+
+            <button type="submit" disabled={isLoading} className="btn btn-primary">
+              {isLoading ? "Creando…" : "Crear evento"}
+            </button>
+          </div>
         </form>
-    );
-};
+      </section>
+    </main>
+  );
+}

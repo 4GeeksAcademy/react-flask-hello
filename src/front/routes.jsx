@@ -14,6 +14,7 @@ import { Register } from "./pages/Register.jsx";
 import { Forgot } from './pages/Forgot.jsx';
 import { Reset } from './pages/Reset.jsx';
 
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route path="forgot" element={<Forgot />} />
       <Route path="reset" element={<Reset />} />
+
       
         {/* Home (index) */}
         <Route index element={<Home />} />

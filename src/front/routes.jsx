@@ -9,6 +9,7 @@ import { Events } from "./pages/Events.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Forgot } from './pages/Forgot.jsx';
 import { Reset } from './pages/Reset.jsx';
+import { MisEventos } from "./pages/MisEventos.jsx";
 
 
 
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
 
       {/* Eventos */}
       <Route path="eventos" element={<Events />} />
+      <Route path="mis-eventos" element={<MisEventos />} />
       
 
       {/* Catch-all */}

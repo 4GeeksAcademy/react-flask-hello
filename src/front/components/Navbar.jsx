@@ -115,8 +115,8 @@ export function Navbar() {
                       <Link to={"/crear-evento"}>
                         <button className="dropdown-item" type="button">Crear evento</button>
                       </Link>
-                      <Link to={"/eventos"}>
-                        <button className="dropdown-item" type="button">Mis evento</button>
+                      <Link to={"/mis-eventos"}>
+                        <button className="dropdown-item" type="button">Mis eventos</button>
                       </Link>
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item logout" onClick={handleLogout} type="button">

@@ -22,6 +22,8 @@ export function CreateEvent() {
   });
   const [categoryInput, setCategoryInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -86,63 +88,35 @@ export function CreateEvent() {
     setIsLoading(true);
 
     try {
-      if (!imageFile) {
-        alert("Selecciona una imagen para el evento");
-        setIsLoading(false);
-        return;
-      }
 
-      // 1) Subimos imagen a Supabase
-      const fileExt = imageFile.name.split(".").pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `events/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("images.event")
-        .upload(filePath, imageFile);
+      const payload = {
+        titulo: formData.title,
+        definicion: formData.description,
+        fecha: formData.date,
+        categoria: formData.categories.join(", "),
+        precio: formData.price || 0,
+        max_asist: formData.maxGuests || null,
+        portada: formData.portada || "",
+      };
 
-      if (uploadError) throw uploadError;
+      const respuestaFormulario = await fetch(backendUrl + `events/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
+        },
+        body: JSON.stringify(payload)
+      });
 
-      const { data } = supabase.storage
-        .from("images.event")
-        .getPublicUrl(filePath);
-      const publicUrl = data.publicUrl;
+      const data = await respuestaFormulario.json();
 
-      // 2) Usuario actual
-      const user = supabase.auth.user();
-      if (!user) {
-        alert("Usuario no autenticado");
-        setIsLoading(false);
-        return;
-      }
 
-      // 3) Insertar en tabla
-      const { data: inserted, error: insertError } = await supabase
-        .from("Evento")
-        .insert([
-          {
-            titulo: formData.title,
-            definicion: formData.description,
-            fecha: formData.date,
-            hora: formData.time,
-            location: formData.location, // <-- BD en inglés
-            portada: publicUrl,
-            creador_evento: user.id,
-            categoria: JSON.stringify(formData.categories),
-            max_asist:
-              formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),
-          },
-        ])
-        .select("id")
-        .single();
-
-      if (insertError) throw insertError;
-
-      alert("Evento creado con éxito");
-      navigate("/eventos", { state: { newEventId: inserted.id } });
+      notifySuccess("Evento creado exitosamente!");
+      navigate('/home');
     } catch (error) {
-      console.error("Error al crear evento:", error.message);
-      alert("Error al crear evento, revisa la consola.");
+      notifyError('Error de red o servidor');
+      console.error('Error en fetch:', error);
     } finally {
       setIsLoading(false);
     }
@@ -346,6 +320,27 @@ export function CreateEvent() {
                 El número debe ser mayor que 0 o dejarse vacío.
               </small>
             )}
+          </div>
+
+          <div className="form-row form-row--half">
+            <label htmlFor="price">Precio</label>
+            <input
+              id="price"
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, price: e.target.value }))
+              }
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+              }}
+              min="1"
+              step="1"
+              inputMode="numeric"
+              placeholder="Precio del evento"
+              disabled={isLoading}
+            />
           </div>
 
           {/* Recordatorio  */}

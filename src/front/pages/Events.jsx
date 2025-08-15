@@ -4,9 +4,9 @@ import { supabase } from "../../api/supabaseClient.js";
 import { Card } from "../components/Card";
 
 export function Events() {
-  const [events, setEvents]   = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let alive = true;
@@ -42,7 +42,7 @@ export function Events() {
   }, []);
 
   if (loading) return <div className="page"><p>Cargando eventos…</p></div>;
-  if (error)   return <div className="page"><p>⚠️ {error}</p></div>;
+  if (error) return <div className="page"><p>⚠️ {error}</p></div>;
 
   return (
     <div className="page">

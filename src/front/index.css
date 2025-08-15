@@ -540,3 +540,231 @@ body {
   display: block;
   border-radius: inherit;
 }
+
+/* === Crear evento – theme base === */
+:root{
+  --bg:#0b1020;
+  --card:rgba(255,255,255,.10);
+  --card-2:rgba(255,255,255,.06);
+  --text:#f7f8fc;
+  --muted:#b9c0d4;
+  --line:rgba(255,255,255,.16);
+  --primary:#7c3aed;      /* violeta */
+  --accent:#06b6d4;       /* cian */
+  --ring:rgba(124,58,237,.35);
+  --danger:#ef4444;
+  --success:#16a34a;
+}
+
+/* Fondo y centrado */
+.create-event{
+  min-height:100dvh;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px 16px;
+  color:var(--text);
+  background:
+    radial-gradient(1100px 520px at 10% -10%, rgba(124,58,237,.35) 0%, transparent 60%),
+    radial-gradient(800px 400px at 90% 0%, rgba(6,182,212,.35) 0%, transparent 60%),
+    var(--bg);
+}
+
+/* Tarjeta de vidrio */
+.create-event__card{
+  width:min(880px,100%);
+  background:linear-gradient(180deg,var(--card),var(--card-2));
+  border:1px solid var(--line);
+  border-radius:24px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+  padding:clamp(16px,4vw,32px);
+}
+
+/* Títulos */
+.create-event__title{
+  margin:0 0 6px;
+  text-align:center;
+  font-size:clamp(22px,3.2vw,30px);
+  letter-spacing:.2px;
+}
+.create-event__subtitle{
+  margin:0 0 22px;
+  text-align:center;
+  color:var(--muted);
+  font-size:clamp(13px,2.4vw,15px);
+}
+
+/* Grid del formulario */
+.create-event__form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px 18px;
+}
+@media (max-width:780px){
+  .create-event__form{ grid-template-columns:1fr; }
+}
+
+/* Fila completa o media */
+.form-row{ grid-column:span 2; display:flex; flex-direction:column; gap:6px; }
+.form-row--half{ grid-column:span 1; }
+
+/* Labels */
+.create-event__form label{
+  font-weight:600;
+  color:var(--muted);
+  font-size:.96rem;
+}
+
+/* Controles */
+.create-event__form input,
+.create-event__form select,
+.create-event__form textarea{
+  width:100%;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  padding:14px 14px;
+  outline:none;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.06);
+  transition:border .2s, box-shadow .2s, transform .06s, background .2s;
+}
+.create-event__form textarea{ min-height:110px; resize:vertical; }
+.create-event__form input::placeholder,
+.create-event__form textarea::placeholder{ color:#cbd3ea; opacity:.8; }
+
+.create-event__form input:focus,
+.create-event__form select:focus,
+.create-event__form textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px var(--ring);
+  background:rgba(255,255,255,.10);
+}
+
+/* Select flechita */
+.create-event__form select{
+  appearance:none;
+  padding-right:38px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  background-size:18px;
+}
+
+/* Inputs date/time icon visibles en dark */
+.create-event__form input[type="date"]::-webkit-calendar-picker-indicator,
+.create-event__form input[type="time"]::-webkit-calendar-picker-indicator{
+  filter:invert(1) opacity(.85);
+}
+
+/* File input vistoso  */
+.create-event__form input[type="file"]{
+  border-style:dashed;
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  padding:12px;
+}
+
+/* Checkbox */
+.create-event__checkbox{
+  display:flex; align-items:center; gap:10px; color:var(--muted);
+}
+.create-event__checkbox input[type="checkbox"]{ width:18px; height:18px; accent-color:var(--primary); }
+
+/* Ayudas bajo campos */
+.help{ font-size:.85rem; color:var(--muted); }
+
+/* Acciones */
+.form-actions{
+  grid-column:span 2;
+  display:flex; gap:12px; justify-content:flex-end; margin-top:8px;
+}
+.btn{
+  border:1px solid transparent;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .05s, box-shadow .2s, filter .2s, background .2s;
+}
+.btn:active{ transform:translateY(1px); }
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  box-shadow:0 10px 24px rgba(124,58,237,.35);
+}
+.btn-primary:hover{ filter:brightness(1.06); }
+.btn-ghost{
+  color:var(--text);
+  background:transparent;
+  border-color:var(--line);
+}
+.btn-ghost:hover{ background:rgba(255,255,255,.08); }
+
+/* Estados opcionales. Utilizo el comando de important de la mentoría con Sergio */
+.is-error{ border-color:var(--danger)!important; box-shadow:0 0 0 4px rgba(239,68,68,.25)!important; }
+.is-success{ border-color:var(--success)!important; box-shadow:0 0 0 4px rgba(22,163,74,.25)!important; }
+
+/* Botones deshabilitados */
+.btn[disabled]{
+  opacity:.6;
+  cursor:not-allowed;
+  filter:grayscale(.1);
+}
+
+/* Topbar dentro de la card */
+.create-event__topbar{
+  display:flex;
+  justify-content:flex-start;
+  margin-bottom:8px;
+}
+
+/* Preview circular de la imagen */
+.thumb{
+  width:120px; height:120px;
+  margin: 0 auto 12px auto;
+  border-radius:999px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:center;
+}
+.thumb img{ width:100%; height:100%; object-fit:cover; }
+
+/* Chips de puñeterísima categoría */
+.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.chip{
+  display:inline-flex; align-items:center;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.12);
+  color:var(--text);
+  font-size:.9rem;
+}
+.chip__close{
+  margin-left:8px;
+  border:none; background:transparent;
+  color:var(--muted); cursor:pointer; line-height:1;
+}
+.chip__close:hover{ color:var(--danger); }
+
+/* Fuerza a los controles nativos a renderizarse en oscuro (incluye el popup del select) */
+.create-event,
+.create-event__form select{
+  color-scheme: dark;
+}
+
+.thumb{
+  width:120px; height:120px; margin:0 auto 12px;
+  border-radius:999px; overflow:hidden;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+}
+.thumb__img{ width:100%; height:100%; object-fit:cover; display:block; }
+.thumb__placeholder{
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:8px;
+  color:var(--muted); font-weight:600; line-height:1.2;
+}

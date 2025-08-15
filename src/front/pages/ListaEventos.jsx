@@ -1,4 +1,3 @@
-import { FcPieChart } from "react-icons/fc";
 import { notifyError } from "../utils/Notifications";
 import React, { useEffect, useState } from 'react';
 
@@ -46,7 +45,7 @@ export const ListaEventos = () => {
                         <p><strong>Categoría:</strong> {evento.categoria}</p>
                         <p><strong>Precio:</strong> {evento.precio}€</p>
                         {evento.definicion && <p><em>{evento.definicion}</em></p>}
-                        <hr />
+                        <br />
                     </div>
                 ))}
             </section>

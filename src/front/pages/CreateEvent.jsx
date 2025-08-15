@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from '../../api/supabaseClient.js';
+import { useNavigate, useRevalidator } from "react-router-dom"
+import { backendUrl } from '../utils/Config';
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
 export function CreateEvent() {
   const [imagePreview, setImagePreview] = useState("/Knect-logo.png");

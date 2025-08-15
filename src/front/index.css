@@ -541,6 +541,7 @@ body {
   border-radius: inherit;
 }
 
+
 /* === Crear evento – theme base === */
 :root{
   --bg:#0b1020;
@@ -768,3 +769,4 @@ body {
   text-align:center; padding:8px;
   color:var(--muted); font-weight:600; line-height:1.2;
 }
+

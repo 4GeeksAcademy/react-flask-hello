@@ -112,8 +112,12 @@ export function Navbar() {
                       <button className="dropdown-item" type="button">
                         <UserIcon className="icon-sm" /> Tu perfil
                       </button>
+                      <link to={"/crear-evento"}>
                       <button className="dropdown-item" type="button">Crear evento</button>
+                      </link>
+                      <link to={"/"}>
                       <button className="dropdown-item" type="button">Mis evento</button>
+                      </link>
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item logout" onClick={handleLogout} type="button">
                         Cerrar sesión

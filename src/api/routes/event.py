@@ -69,6 +69,33 @@ def get_events():
     else:
         return jsonify({"error": "Error al obtener el evento"}), 500
     
+
+# Obtener evento por ID del creador
+
+@api.route('/mis-eventos/<user_id>', methods=['GET'])
+def get_user_events(user_id):
+    try:
+        response = supabase.table('Evento') \
+            .select('*') \
+            .eq('id_creador_evento', user_id) \
+            .execute()
+
+        if response.data:
+            return jsonify({
+                "message": "Eventos del usuario obtenidos exitosamente",
+                "response": response.data
+            }), 200
+        else:
+            return jsonify({
+                "message": "No se encontraron eventos para este usuario",
+                "response": []
+            }), 200
+
+    except Exception as e:
+        print("Error obteniendo eventos:", e)
+        return jsonify({"error": "Error al obtener eventos"}), 500
+
+    
   # Borrar evento
 
 @api.route('/<event_id>', methods=['DELETE'])

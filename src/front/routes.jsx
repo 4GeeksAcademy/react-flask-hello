@@ -3,7 +3,6 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login.jsx";
-import { Register } from "./pages/Register.jsx";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
 import { Events } from "./pages/Events.jsx";
@@ -19,7 +18,8 @@ export const router = createBrowserRouter(
       {/* Home (index) */}
       <Route index element={<Home />} />
       {/* Alternativa a lo de antes: /home */}
-      <Route path="home" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <route path="/home/:token" element={<Home />} />
 
       {/* Auth */}
       <Route path="login" element={<Login />} />
@@ -28,10 +28,6 @@ export const router = createBrowserRouter(
       <Route path="reset" element={<Reset />} />
 
       
-        {/* Home (index) */}
-        <Route index element={<Home />} />
-        {/* Alternativa: /home */}
-        <Route path="/home" element={<Home />} />
 
         {/* Rutas adicionales */}
         <Route path="/crear-evento" element={<CreateEvent />} />
@@ -48,4 +44,3 @@ export const router = createBrowserRouter(
   )
 );
 
-export default router;

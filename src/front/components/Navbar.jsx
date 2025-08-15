@@ -75,9 +75,7 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
                   <ul className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
                     <li><Link to="/games/platform/PS5"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS5</Link></li>
                     <li><Link to="/games/platform/PS4"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS4</Link></li>
-                    <li><Link to="/games/platform/Nintendo"            className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo</Link></li>
                     <li><Link to="/games/platform/Xbox One"            className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox One</Link></li>
-                    <li><Link to="/games/platform/Xbox Series S/X"     className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox Series S/X</Link></li>
                     <li><Link to="/games/platform/Nintendo Switch"     className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch</Link></li>
                     <li><Link to="/games/platform/Nintendo Switch 2"   className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch 2</Link></li>
                     <li><Link to="/games/platform/PC"                  className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PC</Link></li>

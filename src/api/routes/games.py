@@ -118,20 +118,14 @@ def delete_game(game_id):
     db.session.commit()
 
     return jsonify("Juego eliminado correctamente"),200
+
     # FILTRO DE JUEGOS BETO
 @api.route("/platform/<string:platform>", methods=["GET"])
 def get_games_by_platform(platform):
-    needle = platform.strip().lower().replace(" ", "")  # "Play Station" -> "playstation"
+    needle = platform.strip().lower().replace(" ", "")  # simplifica la busqueda eliminando mayusculas y espacios de la bd
 
     normalized = db.func.replace(db.func.lower(Games.platform), " ", "")
     q = Games.query.filter(normalized.ilike(f"%{needle}%"))
 
-    games = [g.serialize() for g in q.all()]
+    games = [g.serialize() for g in q.all()] #devuelve todos los juegos encontrados
     return jsonify({"games": games}), 200
-
-    # FILTRO DE JUEGOS BETO
-@api.route("/platforms", methods=["GET"])
-def list_platforms():
-    rows = db.session.query(Games.platform).distinct().all()
-    return jsonify({"platforms": [r[0] for r in rows]}), 200
-

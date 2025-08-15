@@ -19,7 +19,7 @@ export const router = createBrowserRouter(
       <Route index element={<Home />} />
       {/* Alternativa a lo de antes: /home */}
         <Route path="/home" element={<Home />} />
-        <route path="/home/:token" element={<Home />} />
+        <Route path="/home/:token" element={<Home />} />
 
       {/* Auth */}
       <Route path="login" element={<Login />} />

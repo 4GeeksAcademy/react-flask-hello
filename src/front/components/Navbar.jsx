@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
-import { CircleUser } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
@@ -19,7 +18,7 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
     localStorage.removeItem("user")
     dispatch({
       type: 'setUser',
-      payload: null
+      payload: nullm
     })
     console.log("Sin sesion")
     alert("Sesion finalizada")
@@ -73,11 +72,14 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
                     Juegos
                   </button>
                   {showDrowpdown && (
-                    <div className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
-                      <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Play Station</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">XboX</a>
-                    </div>
+                  <ul className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                    <li><Link to="/games/platform/PS5"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS5</Link></li>
+                    <li><Link to="/games/platform/PS4"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS4</Link></li>
+                    <li><Link to="/games/platform/Xbox One"            className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox One</Link></li>
+                    <li><Link to="/games/platform/Nintendo Switch"     className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch</Link></li>
+                    <li><Link to="/games/platform/Nintendo Switch 2"   className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch 2</Link></li>
+                    <li><Link to="/games/platform/PC"                  className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PC</Link></li>
+                  </ul>
                   )}
                 </div>
 

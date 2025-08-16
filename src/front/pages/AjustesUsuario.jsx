@@ -80,7 +80,7 @@ export const AjustesUsuario = () => {
   return (
     <div>
       <h1>Ajustes de Usuario</h1>
-      <form onSubmit={(e) => { e.preventDefault(); actualizarDatos(); }}>
+      <form onSubmit={(e) => { e.preventDefault(); actualizarDatosUsuario(); }}>
         <label>Nombre:</label>
         <input name="nombre" value={usuario.nombre} onChange={handleChange} />
 

@@ -62,7 +62,7 @@ export const Home = () => {
         {
           images.map((i, index) => {
             return (
-              <div key={index} className="h-64  bg-indigo-500">
+              <div key={index} className="custom-carousel-height bg-indigo-500">
                 <img src={i.src} alt="img" className="w-full h-full object-cover" />
               </div>
             )
@@ -70,11 +70,10 @@ export const Home = () => {
         }
       </Carousel>
 
-      <div class="h-22 bg-gray-900 text-white px-6 py-4 w-full mx-auto ease-in-out ">
-        <h2 class="text-2xl font-bold mb-2 text-center sm:text-xl md:text-3xl">¡Oferta de Bienvenida!</h2>
-        <p class="text-lg text-center sm:text-base md:text-xl">20% de descuento en juegos por registrarte</p>
+      <div className="bg-white/10 backdrop-blur-md text-white px-6 py-6 rounded-lg shadow-lg mx-auto mt-6 max-w-3xl text-center">
+        <h2 className="text-3xl font-semibold mb-2 tracking-wide">🎮 ¡Bienvenida Gamer!</h2>
+        <p className="text-lg text-gray-200">Regístrate y obtén <span className="font-bold text-indigo-300">20% de descuento</span> en tu primera compra</p>
       </div>
-
       <div>
         <Games />
       </div>

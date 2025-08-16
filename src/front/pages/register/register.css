@@ -1,13 +1,13 @@
 .register-bg {
-    background-image: url("https://images8.alphacoders.com/864/864351.png");
+    background-image: url("https://images2.alphacoders.com/105/thumb-1920-1052293.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .transparent-form {
-  background-color: rgba(255, 255, 255, 0.6); /* blanco con 60% de opacidad */
-  border-radius: 0.375rem; /* igual a rounded-md */
+  background-color: rgba(255, 255, 255, 0.6); 
+  border-radius: 0.375rem;
   padding: 1.5rem;
 }
 

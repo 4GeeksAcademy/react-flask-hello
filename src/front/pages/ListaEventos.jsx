@@ -1,5 +1,7 @@
 import { notifyError } from "../utils/Notifications";
 import React, { useEffect, useState } from 'react';
+import { backendUrl } from '../utils/Config';
+
 
 
 export const ListaEventos = () => {
@@ -8,7 +10,7 @@ export const ListaEventos = () => {
     useEffect(() => {
         const listadoEventos = async () => {
             try {
-                const respuesta = await fetch('....URL.....');
+                const respuesta = await fetch(backendUrl + `events/listado-eventos`,);
                 const data = await respuesta.json();
                 setEventos(data);
 

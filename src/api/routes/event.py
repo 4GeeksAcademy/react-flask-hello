@@ -2,11 +2,21 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_token
 from flask_cors import CORS
 from ..supabase_client import supabase
+import re
 
 api = Blueprint('event', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+# Validacion de UUID valido
+
+def is_valid_uuid(uuid_to_test):
+    regex = re.compile(
+        r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-'
+        r'[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+    )
+    return bool(regex.match(uuid_to_test))
 
 # Crear evento
 
@@ -30,7 +40,7 @@ def crear_evento(current_user_id):
         'fecha': data['fecha'],
         'categoria': data['categoria'].strip(),
         'precio': data['precio'],
-        'creador_evento': current_user_id,
+        'id_creador_evento': current_user_id,
         'definicion': data.get('definicion', '').strip(),
         'portada': data.get('portada', '').strip(),
     }
@@ -59,9 +69,36 @@ def get_events():
     else:
         return jsonify({"error": "Error al obtener el evento"}), 500
     
+
+# Obtener evento por ID del creador
+
+@api.route('/mis-eventos/<user_id>', methods=['GET'])
+def get_user_events(user_id):
+    try:
+        response = supabase.table('Evento') \
+            .select('*') \
+            .eq('id_creador_evento', user_id) \
+            .execute()
+
+        if response.data:
+            return jsonify({
+                "message": "Eventos del usuario obtenidos exitosamente",
+                "response": response.data
+            }), 200
+        else:
+            return jsonify({
+                "message": "No se encontraron eventos para este usuario",
+                "response": []
+            }), 200
+
+    except Exception as e:
+        print("Error obteniendo eventos:", e)
+        return jsonify({"error": "Error al obtener eventos"}), 500
+
+    
   # Borrar evento
 
-@api.route('/<int:event_id>', methods=['DELETE'])
+@api.route('/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
     try:
         # Eliminar evento por ID
@@ -86,7 +123,7 @@ def delete_event(event_id):
     
 #Actualizar evento
 
-@api.route('/<int:event_id>', methods=['PUT'])
+@api.route('/<event_id>', methods=['PUT'])
 def update_event(event_id):
     try:
         data = request.get_json()

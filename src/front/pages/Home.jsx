@@ -1,5 +1,5 @@
 // src/front/pages/VistaHome.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -10,23 +10,36 @@ import heroFestival from "../assets/img/hero-festival.jpg"
 import heroCine from "../assets/img/hero-cine.jpg"
 import mexico from "../assets/img/mexico.jpg"
 import { Card } from "../components/Card.jsx";
+import { useParams } from 'react-router-dom';
+import { supabase } from "../../api/supabaseClient";
 
 
 export const Home = () => {
   // carrusel
   const settings = { dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 };
-
+  let { token } = useParams();
   // rutas (tal cual la tenía)
   const navigate = useNavigate();
 
-  
   // ---- DESTINOS PRINCIPALES (4 tarjetas)
   const destinosPrincipales = [
-    { titulo: "Morelia, Michoacán",      pais: "México",   img: "/img/mexico.jpg"    },
-    { titulo: "Cita a ciegas con el cine", pais: "Cultura", img: "/img/cine.jpg"      },
-    { titulo: "Noche de fútbol",         pais: "Deportes", img: "/img/futbol.jpg"     },
-    { titulo: "Festival al aire libre",  pais: "Música",   img: "/img/festival.jpg"   },
+
+    { titulo: "Morelia, Michoacán",      pais: "México",   img: "/src/front/assets/img/Morelia-turistica.jpg"    },
+    { titulo: "Cita a ciegas con el cine", pais: "Cultura", img: "src/front/assets/img/cita-ciegas.jpg"      },
+    { titulo: "Noche de fútbol",         pais: "Deportes", img: "src/front/assets/img/Chiringuito de jugones.jpg"     },
+    { titulo: "Festival al aire libre",  pais: "Música",   img: "src/front/assets/img/Andalucia-starlite.jpg"   },
   ];
+
+  useEffect(() => {
+    if (token) {
+      moveUser()
+    }
+  }, [])
+
+  const moveUser = async () => {
+    const { error } = await supabase.auth.signOut();
+    navigate("/login")
+  }
 
   return (
     <div className="gradient-container">

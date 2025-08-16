@@ -1,276 +1,379 @@
 import { useState } from "react";
+import { supabase } from '../../api/supabaseClient.js';
 import { useNavigate, useRevalidator } from "react-router-dom"
 import { backendUrl } from '../utils/Config';
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
+export function CreateEvent() {
+  const [imagePreview, setImagePreview] = useState("/Knect-logo.png");
+  const [imageFile, setImageFile] = useState(null);
+  const [imgError, setImgError] = useState(false); // 
 
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: "",
+    visibility: "public",
+    maxGuests: "",
+    reminder: false,
+    categories: []
+  });
+  const [categoryInput, setCategoryInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+  };
 
-export const CreateEvent = () => {
-    const navigate = useNavigate();
-    const [datosFormulario, setDatosFormulario] = useState({
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-        location: "",
-        visibility: "public",
-        maxGuests: "",
-        reminder: false,
-        categories: []
-    });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+      setImgError(false); // por si falla (Código de IA)
+    }
+  };
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setDatosFormulario((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value
+  const isValidTag = (tag) => {
+    const validPattern = /^[\w-]{1,12}$/;
+    return validPattern.test(tag);
+  };
+
+  const handleCategoryInput = (e) => {
+    setCategoryInput(e.target.value);
+  };
+
+  const handleCategoryKeyDown = (e) => {
+    if (
+      (e.key === "Enter" || e.key === ",") &&
+      categoryInput.trim() !== "" &&
+      formData.categories.length < 4
+    ) {
+      e.preventDefault();
+      const newTag = categoryInput.trim();
+
+      if (isValidTag(newTag) && !formData.categories.includes(newTag)) {
+        setFormData((prev) => ({
+          ...prev,
+          categories: [...prev.categories, newTag]
         }));
-    };
+        setCategoryInput("");
+      }
+    }
+  };
 
-    const handleForm = async (e) => {
-        e.preventDefault();
-        try {
-            const userId = localStorage.getItem("userId");
-            const token = localStorage.getItem("token");
+  const handleRemoveCategory = (tag) => {
+    setFormData((prev) => ({
+      ...prev,
+      categories: prev.categories.filter((t) => t !== tag)
+    }));
+  };
 
-            const respuestaFormulario = await fetch( backendUrl + `event/${userId}`, {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
-                },
-                body: JSON.stringify(datosFormulario)
-            });
+  const navigate = useNavigate();
 
-            const data = await respuestaFormulario.json();
-            console.log('Respuesta backend:', data);
+  const rutaVistaHome = () => {
+    navigate("/home");
+  };
 
-            if (respuestaFormulario.ok) {
-                // Registro correcto, redirigir
-                alert("Evento creado correctamente")
-                navigate('/home');
-            } else {
-                alert(data.error || 'Error al crear evento, vuelve a intentarlo');
-            }
-        } catch (error) {
-            console.error('Error en fetch:', error);
-            alert('Error de red o servidor');
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    return (
-        <form onSubmit={handleForm} style={{ maxWidth: "600px", margin: "auto" }}>
-            <h2>Crear nuevo evento</h2>
+    try {
 
-            <label>Título:</label>
+
+      const payload = {
+        titulo: formData.title,
+        definicion: formData.description,
+        fecha: formData.date,
+        categoria: formData.categories.join(", "),
+        precio: formData.price || 0,
+        max_asist: formData.maxGuests || null,
+        portada: formData.portada || "",
+      };
+
+      const respuestaFormulario = await fetch(backendUrl + `events/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await respuestaFormulario.json();
+
+
+      notifySuccess("Evento creado exitosamente!");
+      navigate('/home');
+    } catch (error) {
+      notifyError('Error de red o servidor');
+      console.error('Error en fetch:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="create-event">
+      <section className="create-event__card">
+
+        <div className="create-event__topbar">
+          <button
+            onClick={rutaVistaHome}
+            disabled={isLoading}
+            className="btn btn-ghost"
+            type="button"
+          >
+            ← Volver a home
+          </button>
+        </div>
+
+        <h1 className="create-event__title">Crear un evento</h1>
+        <p className="create-event__subtitle">Completa el formulario</p>
+
+        {/* Preview circular */}
+        <div className="thumb">
+          {!imgError ? (
+            <img
+              src={imagePreview}
+              alt=""
+              onError={() => setImgError(true)}
+              className="thumb__img"
+            />
+          ) : (
+            <span className="thumb__placeholder">Imagen del evento</span>
+          )}
+        </div>
+
+        <form onSubmit={handleSubmit} className="create-event__form">
+          {/* Imagen */}
+          <div className="form-row">
+            <label htmlFor="image">Imagen principal del evento</label>
             <input
-                type="text"
-                name="title"
-                value={datosFormulario.title}
-                onChange={handleChange}
-                required
-              />
-           
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              disabled={isLoading}
+            />
+          </div>
 
-            {/* Descripción */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Descripción
-              </label>
-              <textarea
-                name="description"
-                value={datosFormulario.description}
-                onChange={handleChange}
-                disabled={isLoading}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                rows={3}
-                required
-              ></textarea>
-            </div>
+          {/* Título */}
+          <div className="form-row">
+            <label htmlFor="title">Nombre del evento</label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
 
-            {/* Categorías (chips) */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Categoría por etiquetas <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={categoryInput}
-                onChange={handleCategoryInput}
-                onKeyDown={handleCategoryKeyDown}
-                placeholder={
-                  formData.categories.length >= 4
-                    ? "Máximo 4 etiquetas"
-                    : "Añade una etiqueta y pulsa Enter"
-                }
-                maxLength={12}
-                disabled={formData.categories.length >= 4 || isLoading}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required={formData.categories.length === 0}
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y guiones
-              </p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {formData.categories.map((tag) => (
-                  <span
-                    key={tag}
-                    className="flex items-center bg-gray-100 text-gray-500 text-sm px-3 py-1 rounded-full"
+          {/* Descripción */}
+          <div className="form-row">
+            <label htmlFor="description">Descripción</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              disabled={isLoading}
+              rows={3}
+              required
+            />
+          </div>
+
+          {/* Categorías (chips) */}
+          <div className="form-row">
+            <label htmlFor="tags">
+              Categoría por etiquetas <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id="tags"
+              type="text"
+              value={categoryInput}
+              onChange={handleCategoryInput}
+              onKeyDown={handleCategoryKeyDown}
+              placeholder={
+                formData.categories.length >= 4
+                  ? "Máximo 4 etiquetas"
+                  : "Añade una etiqueta y pulsa Enter"
+              }
+              maxLength={12}
+              disabled={formData.categories.length >= 4 || isLoading}
+              required={formData.categories.length === 0}
+            />
+            <small className="help">
+              Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y guiones
+            </small>
+
+            <div className="chips">
+              {formData.categories.map((tag) => (
+                <span key={tag} className="chip">
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCategory(tag)}
+                    disabled={isLoading}
+                    className="chip__close"
+                    aria-label={`Eliminar ${tag}`}
                   >
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveCategory(tag)}
-                      disabled={isLoading}
-                      className="ml-2 text-gray-400 hover:text-red-400 focus:outline-none"
-                      style={{ fontSize: "1rem", lineHeight: "1" }}
-                      aria-label={`Eliminar ${tag}`}
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
+                    ×
+                  </button>
+                </span>
+              ))}
             </div>
+          </div>
 
-            {/* Fecha */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Fecha
-              </label>
-              <input
-                type="date"
-                name="date"
-                value={datosFormulario.date}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          {/* Fecha y Hora */}
+          <div className="form-row form-row--half">
+            <label htmlFor="date">Fecha</label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
 
-            {/* Hora */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Hora
-              </label>
-              <input
-                type="time"
-                name="time"
-                value={datosFormulario.time}
-                onChange={handleChange}
-                disabled={isLoading}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required
-              />
-            </div>
+          <div className="form-row form-row--half">
+            <label htmlFor="time">Hora</label>
+            <input
+              id="time"
+              type="time"
+              name="time"
+              step="300"
+              value={formData.time}
+              onChange={handleChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
 
-            {/* Ubicación */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Ubicación o enlace
-              </label>
-              <input
-                type="text"
-                name="location"
-                value={datosFormulario.location}
-                onChange={handleChange}
-                disabled={isLoading}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required
-              />
-            </div>
+          {/* Ubicación */}
+          <div className="form-row">
+            <label htmlFor="location">Ubicación o enlace</label>
+            <input
+              id="location"
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              disabled={isLoading}
+              placeholder="C/ Ejemplo 12 · o https://meet…"
+              required
+            />
+          </div>
 
-            {/* Visibilidad */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Visibilidad
-              </label>
-              <select
-                name="visibility"
-                value={datosFormulario.visibility}
-                onChange={handleChange}
+          {/* Visibilidad */}
+          <div className="form-row form-row--half">
+            <label htmlFor="visibility">Visibilidad</label>
+            <select
+              id="visibility"
+              name="visibility"
+              value={formData.visibility}
+              onChange={handleChange}
+              disabled={isLoading}
             >
-                <option value="public">Público</option>
-                <option value="private">Privado</option>
-              </select>
-            </div>
+              <option value="public">Público</option>
+              <option value="private">Privado</option>
+            </select>
+          </div>
 
-            {/* Máximo asistentes */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Máximo de asistentes (opcional)
-              </label>
+          {/* Máximo asistentes */}
+          <div className="form-row form-row--half">
+            <label htmlFor="maxGuests">Máximo de asistentes (opcional)</label>
+            <input
+              id="maxGuests"
+              type="number"
+              name="maxGuests"
+              value={formData.maxGuests}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, maxGuests: e.target.value }))
+              }
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+              }}
+              min="1"
+              step="1"
+              inputMode="numeric"
+              placeholder="Mantener vacío para ilimitado"
+              disabled={isLoading}
+            />
+            {formData.maxGuests !== "" && Number(formData.maxGuests) < 1 && (
+              <small className="help is-error">
+                El número debe ser mayor que 0 o dejarse vacío.
+              </small>
+            )}
+          </div>
+
+          <div className="form-row form-row--half">
+            <label htmlFor="price">Precio</label>
+            <input
+              id="price"
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, price: e.target.value }))
+              }
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+              }}
+              min="1"
+              step="1"
+              inputMode="numeric"
+              placeholder="Precio del evento"
+              disabled={isLoading}
+            />
+          </div>
+
+          {/* Recordatorio  */}
+          <div className="form-row">
+            <label className="create-event__checkbox">
               <input
-                type="text"
-                name="maxGuests"
-                value={formData.maxGuests}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || /^[1-9]\d*$/.test(value)) {
-                    setFormData((prev) => ({ ...prev, maxGuests: value }));
-                  }
-                }}
-                placeholder="Mantener vacío para ilimitado"
-                inputMode="numeric"
-                pattern="[0-9]*"
+                type="checkbox"
+                name="reminder"
+                checked={formData.reminder}
+                onChange={handleChange}
                 disabled={isLoading}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
               />
-              {formData.maxGuests !== "" && formData.maxGuests <= 0 && (
-                <p className="text-sm text-red-500 mt-1">
-                  El número debe ser mayor que 0 o dejarse vacío.
-                </p>
-              )}
-            </div>
+              ¿Enviar recordatorio?
+            </label>
+          </div>
 
-            {/* Acciones */}
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                disabled={isLoading}
-                className={`px-4 py-2 rounded-md ${
-                  isLoading
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                }`}
-                onClick={() => navigate("/eventos")}  // <- ahora vuelve a la lista
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`px-4 py-2 rounded-md text-white ${
-                  isLoading
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
-                }`}
-              >
-                {isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 mx-auto text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    ></path>
-                  </svg>
-                ) : (
-                  "Crear evento"
-                )}
-              </button>
-            </div>
-          </form>
-         );
+          {/* Acciones */}
+          <div className="form-actions">
+            <button
+              type="button"
+              disabled={isLoading}
+              className="btn btn-ghost"
+              onClick={rutaVistaHome}
+            >
+              Cancelar
+            </button>
+
+            <button type="submit" disabled={isLoading} className="btn btn-primary">
+              {isLoading ? "Creando…" : "Crear evento"}
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+  );
 }

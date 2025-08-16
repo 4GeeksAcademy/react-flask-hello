@@ -3,19 +3,18 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
-
+import { notifyError, notifySuccess } from '../utils/Notifications';
 const navigation = [
-  { name: "Home", to: "/home" },           // o "/" 
-  { name: "Eventos", to: "/crear-evento" } 
+  { name: "Home", to: "/home" },           // o "/"
+  { name: "Eventos", to: "/eventos" }
 ];
-
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const token = localStorage.getItem("token")
   // Cerrar menú de perfil al cliquear fuera (Grabación del sábado con Hori)
   useEffect(() => {
     function handleClickOutside(event) {
@@ -26,18 +25,29 @@ export function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   // Cerrar menús al navegar
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsProfileMenuOpen(false);
   }, [location.pathname]);
-
+  // Logica cierre de sesion
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        notifyError("Error cerrando sesión en Supabase");
+        console.error("Error cerrando sesión:", error);
+        return;
+      }
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      notifySuccess("Sesión cerrada, ¡hasta pronto!");
+      navigate("/login");
+    } catch (err) {
+      notifyError("Error inesperado al cerrar sesión");
+      console.error("Error inesperado:", err);
+    }
   };
-
   return (
     <nav className="knect-navbar">
       <div className="navbar-bg"></div>
@@ -53,14 +63,12 @@ export function Navbar() {
           >
             {isMobileMenuOpen ? <XMarkIcon className="icon" /> : <Bars3Icon className="icon" />}
           </button>
-
           {/* Marca + navegación */}
           <div className="brand-and-nav" style={{ flex: 1 }}>
             <Link to="/" className="navbar-logo" aria-label="Knect - Inicio">
               <img src="src/front/assets/img/Knect-logo.png" alt="Knect logo" />
               <span>Knect</span>
             </Link>
-
             <nav className="navbar-nav" aria-label="Navegación principal">
               <ul className="navbar-nav-list">
                 {navigation.map((item) => (
@@ -78,45 +86,49 @@ export function Navbar() {
               </ul>
             </nav>
           </div>
-
           {/* Acciones derecha */}
           <div className="navbar-actions">
-            <NavLink to="/login" className="navbar-link">Login</NavLink>
-            <NavLink to="/register" className="navbar-link">Register</NavLink>
-
-            <button className="btn-danger" onClick={handleLogout} type="button">
-              Logout
-            </button>
-
-            <div className="profile-menu" ref={profileMenuRef}>
-              <button
-                className="profile-btn"
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                type="button"
-                aria-label="Abrir menú de perfil"
-                aria-expanded={isProfileMenuOpen}
-              >
-                <div className="profile-avatar">
-                  <UserIcon className="icon" />
-                </div>
-              </button>
-
-              {isProfileMenuOpen && (
-                <div className="profile-dropdown">
-                  <button className="dropdown-item" type="button">
-                    <UserIcon className="icon-sm" /> Tu perfil
+            {
+              !token ? (
+                <>
+                  <NavLink to="/login" className="navbar-link">Login</NavLink>
+                  <NavLink to="/register" className="navbar-link">Register</NavLink>
+                </>
+              ) : (
+                <div className="profile-menu" ref={profileMenuRef}>
+                  <button
+                    className="profile-btn"
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    type="button"
+                    aria-label="Abrir menú de perfil"
+                    aria-expanded={isProfileMenuOpen}
+                  >
+                    <div className="profile-avatar">
+                      <UserIcon className="icon" />
+                    </div>
                   </button>
-                  <button className="dropdown-item" type="button">Configuración</button>
-                  <div className="dropdown-divider"></div>
-                  <button className="dropdown-item logout" onClick={handleLogout} type="button">
-                    Cerrar sesión
-                  </button>
+                  {isProfileMenuOpen && (
+                    <div className="profile-dropdown">
+                      <button className="dropdown-item" type="button">
+                        <UserIcon className="icon-sm" /> Tu perfil
+                      </button>
+                      <Link to={"/crear-evento"}>
+                        <button className="dropdown-item" type="button">Crear evento</button>
+                      </Link>
+                      <Link to={"/mis-eventos"}>
+                        <button className="dropdown-item" type="button">Mis eventos</button>
+                      </Link>
+                      <div className="dropdown-divider"></div>
+                      <button className="dropdown-item logout" onClick={handleLogout} type="button">
+                        Cerrar sesión
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              )
+            }
           </div>
         </div>
-
         {/* Panel móvil */}
         {isMobileMenuOpen && (
           <div className="mobile-panel active">
@@ -134,33 +146,40 @@ export function Navbar() {
                   </NavLink>
                 </li>
               ))}
-              <li>
-                <NavLink
-                  to="/login"
-                  className="mobile-nav-link"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/register"
-                  className="mobile-nav-link"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Register
-                </NavLink>
-              </li>
-              <li>
-                <button
-                  className="mobile-nav-link danger"
-                  onClick={handleLogout}
-                  type="button"
-                >
-                  Logout
-                </button>
-              </li>
+              {
+                !token ? (
+                  <>
+                    <li>
+                      <NavLink
+                        to="/login"
+                        className="mobile-nav-link"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Login
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/register"
+                        className="mobile-nav-link"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Register
+                      </NavLink>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <button
+                      className="mobile-nav-link danger"
+                      onClick={handleLogout}
+                      type="button"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                )
+              }
             </ul>
           </div>
         )}

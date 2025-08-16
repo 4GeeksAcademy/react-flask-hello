@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient.js';
 import { backendUrl } from '../utils/Config';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -19,14 +20,24 @@ export const Login = () => {
     });
   };
 
-  // Redirección automática si ya hay sesión iniciada a /home
+  // Redirección automática si ya hay sesión iniciada o token guardado
   useEffect(() => {
+    // Caso 1: Token de tu backend en localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home");
+      return;
+    }
+
+    // Caso 2: Sesión activa en Supabase
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate('/home');
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) navigate('/home');
     });
+
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -39,14 +50,20 @@ export const Login = () => {
         body: JSON.stringify(datosLogin)
       });
       const data = await respuesta.json();
+
       if (respuesta.ok) {
+        // Guardar userId y token en localStorage
+        localStorage.setItem("userId", data.user.id);
+        localStorage.setItem("token", data.token || "");
+
+        notifySuccess("Bienvenido de nuevo!");
         navigate('/home');
       } else {
-        alert(data.error || 'Error en el inicio de sesión, revisa tus datos');
+        notifyError(data.error || 'Error en el inicio de sesión, revisa tus datos');
       }
     } catch (error) {
+      notifyError('Error de red o servidor');
       console.error('Error en fetch:', error);
-      alert('Error de red o servidor');
     }
   };
 

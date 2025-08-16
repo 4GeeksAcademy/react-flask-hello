@@ -2,15 +2,6 @@ import React, { useEffect, useState } from "react";
 import { backendUrl } from "../utils/Config";
 import { notifyError, notifySuccess } from "../utils/Notifications";
 
-type Evento = {
-  titulo: string;
-  fecha: string;
-  categoria: string;
-  precio: number;
-  definicion?: string;
-  portada?: string;
-};
-
 export const VerEvento = () => {
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [nombreFiltro, setNombreFiltro] = useState("");
@@ -19,7 +10,7 @@ export const VerEvento = () => {
     const verEvento = async () => {
       try {
         const respuesta = await fetch(`${backendUrl}events/listado-eventos`);
-        const data: evento[] = await respuesta.json();
+        const data = await respuesta.json();
         setEventos(data);
 
         if (respuesta.ok && data.length > 0) {

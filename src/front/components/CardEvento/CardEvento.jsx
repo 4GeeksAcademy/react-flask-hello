@@ -1,7 +1,10 @@
 import { notifyError, notifySuccess } from "../../utils/Notifications";
 import { backendUrl } from '../../utils/Config';
+import useGlobalReducer from "../../hooks/useGlobalReducer";
 
 export const CardEvento = ({ item, isUser }) => {
+
+  const { dispatch } = useGlobalReducer()
 
 
   const deleteEvent = async (event) => {
@@ -16,8 +19,14 @@ export const CardEvento = ({ item, isUser }) => {
 
       const data = await respuesta.json();
 
+      
       if (respuesta.ok) {
         notifySuccess(data.message);
+
+        dispatch({
+        type: "deleteEvent",
+        payload: event
+      })
 
       } else {
         notifyError(data.message || "No tienes eventos disponibles");

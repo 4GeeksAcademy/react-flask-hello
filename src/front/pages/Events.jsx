@@ -28,7 +28,7 @@ export function Events() {
           d: {
             img: e.portada,             // así el CreateEvent guarda la URL pública
             titulo: e.titulo,
-            pais: e.ubicacion || ""     // con esto según el vídeo usamos 'ubicacion' como subtítulo
+            pais: e.ubicacion || ""  // con esto según el vídeo usamos 'ubicacion' como subtítulo
           }
         }));
         setEvents(mapped);

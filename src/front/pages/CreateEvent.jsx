@@ -111,21 +111,34 @@ export function CreateEvent() {
         max_asist: formData.maxGuests || null,
         portada: formData.portada || "",
       };
+      if (eventId) {
+        await fetch(backendUrl + `events/${eventId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await fetch(backendUrl + `events/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
+          },
+          body: JSON.stringify(payload)
+        });
+      }
 
-      const respuestaFormulario = await fetch(backendUrl + `events/${userId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await respuestaFormulario.json();
+      if (eventId) {
+        notifySuccess("Actualizado exitosamente!");
+        navigate('/mis-eventos');
+      } else {
+        notifySuccess("Evento creado exitosamente!");
+        navigate('/home');
+      }
 
 
-      notifySuccess("Evento creado exitosamente!");
-      navigate('/home');
     } catch (error) {
       notifyError('Error de red o servidor');
       console.error('Error en fetch:', error);
@@ -149,7 +162,11 @@ export function CreateEvent() {
           </button>
         </div>
 
-        <h1 className="create-event__title">Crear un evento</h1>
+        <h1 className="create-event__title">
+          {
+            eventId ? "Actualizar evento" : "Crear evento"
+          }
+        </h1>
         <p className="create-event__subtitle">Completa el formulario</p>
 
         {/* Preview circular */}
@@ -328,7 +345,9 @@ export function CreateEvent() {
             </button>
 
             <button type="submit" disabled={isLoading} className="btn btn-primary">
-              {isLoading ? "Creando…" : "Crear evento"}
+              {
+                eventId ? "Actualizar evento" : "Crear evento"
+              }
             </button>
           </div>
         </form>

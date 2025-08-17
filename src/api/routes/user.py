@@ -56,9 +56,10 @@ def new_password():
 
     user = User.query.filter_by(email=email).first()
     new_password = bcrypt.hashpw(
-        body['password'].encode(), bcrypt.gensalt())
-    user.password = new_password
+    body['password'].encode(), bcrypt.gensalt())
+    user.password = new_password.decode()
     db.session.commit()
+    
 
     return "password actualizado", 200
 

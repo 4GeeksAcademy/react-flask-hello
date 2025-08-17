@@ -31,6 +31,7 @@ export const router = createBrowserRouter(
 
         {/* Rutas adicionales */}
         <Route path="/crear-evento" element={<CreateEvent />} />
+        <Route path="/crear-evento/:eventId" element={<CreateEvent />} />
         
         
 

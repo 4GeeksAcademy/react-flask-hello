@@ -1,28 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from '../../api/supabaseClient.js';
-import { useNavigate, useRevalidator } from "react-router-dom"
+import { useNavigate, useParams, useRevalidator } from "react-router-dom"
 import { backendUrl } from '../utils/Config';
 import { notifyError, notifySuccess } from '../utils/Notifications';
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export function CreateEvent() {
-  const [imagePreview, setImagePreview] = useState("/Knect-logo.png");
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
-    time: "",
-    location: "",
-    visibility: "public",
     maxGuests: "",
-    reminder: false,
     categories: [],
-    portada: ""
+    portada: "",
+    price: 0
   });
   const [categoryInput, setCategoryInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
+  let { eventId } = useParams();
+  const { dispatch, store } = useGlobalReducer()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (eventId) {
+      let findEvent = store.misEventos.find(e => e.id == eventId)
+      console.log(findEvent)
+
+      if (!findEvent) navigate("/mis-eventos")
+      let categories = findEvent.categoria.split(",");
+
+      let newFormat = {
+        title: findEvent.titulo,
+        description: findEvent.definicion,
+        date: findEvent.fecha,
+        maxGuests: findEvent.max_asist,
+        categories: categories,
+        portada: findEvent.portada,
+        price: findEvent.precio
+      }
+
+      setFormData(newFormat)
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -68,7 +90,6 @@ export function CreateEvent() {
     }));
   };
 
-  const navigate = useNavigate();
 
   const rutaVistaHome = () => {
     navigate("/home");
@@ -244,49 +265,6 @@ export function CreateEvent() {
             />
           </div>
 
-          <div className="form-row form-row--half">
-            <label htmlFor="time">Hora</label>
-            <input
-              id="time"
-              type="time"
-              name="time"
-              step="300"
-              value={formData.time}
-              onChange={handleChange}
-              disabled={isLoading}
-              required
-            />
-          </div>
-
-          {/* Ubicación */}
-          <div className="form-row">
-            <label htmlFor="location">Ubicación o enlace</label>
-            <input
-              id="location"
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              disabled={isLoading}
-              placeholder="C/ Ejemplo 12 · o https://meet…"
-              required
-            />
-          </div>
-
-          {/* Visibilidad */}
-          <div className="form-row form-row--half">
-            <label htmlFor="visibility">Visibilidad</label>
-            <select
-              id="visibility"
-              name="visibility"
-              value={formData.visibility}
-              onChange={handleChange}
-              disabled={isLoading}
-            >
-              <option value="public">Público</option>
-              <option value="private">Privado</option>
-            </select>
-          </div>
 
           {/* Máximo asistentes */}
           <div className="form-row form-row--half">
@@ -336,19 +314,7 @@ export function CreateEvent() {
             />
           </div>
 
-          {/* Recordatorio  */}
-          <div className="form-row">
-            <label className="create-event__checkbox">
-              <input
-                type="checkbox"
-                name="reminder"
-                checked={formData.reminder}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-              ¿Enviar recordatorio?
-            </label>
-          </div>
+
 
           {/* Acciones */}
           <div className="form-actions">

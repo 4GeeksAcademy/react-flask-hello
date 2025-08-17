@@ -67,7 +67,6 @@ export function Navbar() {
           <div className="brand-and-nav" style={{ flex: 1 }}>
             <Link to="/" className="navbar-logo" aria-label="Knect - Inicio">
               <img src="src/front/assets/img/Knect-logo.png" alt="Knect logo" />
-              <span>Knect</span>
             </Link>
             <nav className="navbar-nav" aria-label="Navegación principal">
               <ul className="navbar-nav-list">

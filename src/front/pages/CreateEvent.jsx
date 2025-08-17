@@ -6,8 +6,6 @@ import { notifyError, notifySuccess } from '../utils/Notifications';
 
 export function CreateEvent() {
   const [imagePreview, setImagePreview] = useState("/Knect-logo.png");
-  const [imageFile, setImageFile] = useState(null);
-  const [imgError, setImgError] = useState(false); // 
 
   const [formData, setFormData] = useState({
     title: "",
@@ -18,7 +16,8 @@ export function CreateEvent() {
     visibility: "public",
     maxGuests: "",
     reminder: false,
-    categories: []
+    categories: [],
+    portada: ""
   });
   const [categoryInput, setCategoryInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,14 +32,6 @@ export function CreateEvent() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-      setImgError(false); // por si falla (Código de IA)
-    }
-  };
 
   const isValidTag = (tag) => {
     const validPattern = /^[\w-]{1,12}$/;
@@ -142,9 +133,9 @@ export function CreateEvent() {
 
         {/* Preview circular */}
         <div className="thumb">
-          {!imgError ? (
+          {formData.portada ? (
             <img
-              src={imagePreview}
+              src={formData.portada}
               alt=""
               onError={() => setImgError(true)}
               className="thumb__img"
@@ -159,11 +150,13 @@ export function CreateEvent() {
           <div className="form-row">
             <label htmlFor="image">Imagen principal del evento</label>
             <input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
+              id="portada"
+              type="text"
+              name="portada"
+              value={formData.portada}
+              onChange={handleChange}
               disabled={isLoading}
+              required
             />
           </div>
 

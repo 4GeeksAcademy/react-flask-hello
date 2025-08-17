@@ -1,6 +1,7 @@
 import { notifyError, notifySuccess } from "../../utils/Notifications";
 import { backendUrl } from '../../utils/Config';
 import useGlobalReducer from "../../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 
 export const CardEvento = ({ item, isUser }) => {
 
@@ -58,7 +59,9 @@ export const CardEvento = ({ item, isUser }) => {
       {
         isUser && (
           <div className="container-btns">
-            <button>Actualizar</button>
+            <Link to={`/crear-evento/${item.id}`}>
+              <button>Actualizar</button>
+            </Link>
             <button onClick={() => deleteEvent(item)}>Eliminar</button>
           </div>
         )

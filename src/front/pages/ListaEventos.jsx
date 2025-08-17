@@ -34,7 +34,7 @@ export const ListaEventos = () => {
                      <p>No tienes eventos creados aún.</p>
                    ) : (
                      eventos.map((evento, index) => (
-                       <CardEvento key={index} item={evento} />
+                       <CardEvento key={index} item={evento} isUser={false} />
                      ))
                    )}
                    </section>

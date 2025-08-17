@@ -2,15 +2,16 @@ import { notifyError, notifySuccess } from "../utils/Notifications";
 import React, { useEffect, useState } from 'react';
 import { backendUrl } from '../utils/Config';
 import { CardEvento } from "../components/CardEvento/CardEvento";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const MisEventos = () => {
-  const [eventos, setEventos] = useState([]);
+
+  const { dispatch, store } = useGlobalReducer()
 
   useEffect(() => {
     const eventoUsuarioLogin = async () => {
       const tokenUsuario = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId"); // lo guardas al iniciar sesión
-
+      const userId = localStorage.getItem("userId");
       try {
         const respuesta = await fetch(backendUrl + `events/mis-eventos/${userId}`, {
           method: 'GET',
@@ -23,10 +24,12 @@ export const MisEventos = () => {
         const data = await respuesta.json();
 
         if (respuesta.ok) {
-          setEventos(data.response || []);
+          dispatch({
+            type: "setMyEvents",
+            payload: data.response
+          })
           notifySuccess("Aquí está tu listado de eventos");
         } else {
-          setEventos([]);
           notifyError(data.message || "No tienes eventos disponibles");
         }
       } catch (error) {
@@ -37,16 +40,15 @@ export const MisEventos = () => {
     eventoUsuarioLogin();
   }, []);
 
-  console.log(eventos)
 
   return (
     <div>
       <h1>Mis eventos</h1>
       <section className="grid-cards ">
-        {eventos.length === 0 ? (
+        {store.misEventos.length === 0 ? (
           <p>No tienes eventos creados aún.</p>
         ) : (
-          eventos.map((evento, index) => (
+          store.misEventos.map((evento, index) => (
             <CardEvento key={index} item={evento} isUser={true} />
           ))
         )}

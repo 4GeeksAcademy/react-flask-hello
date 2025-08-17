@@ -5,12 +5,11 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login.jsx";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
-import { Events } from "./pages/Events.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Forgot } from './pages/Forgot.jsx';
 import { Reset } from './pages/Reset.jsx';
 import { MisEventos } from "./pages/MisEventos.jsx";
-
+import { ListaEventos } from "./pages/ListaEventos.jsx";
 
 
 export const router = createBrowserRouter(
@@ -32,11 +31,12 @@ export const router = createBrowserRouter(
 
         {/* Rutas adicionales */}
         <Route path="/crear-evento" element={<CreateEvent />} />
+        <Route path="/crear-evento/:eventId" element={<CreateEvent />} />
         
         
 
       {/* Eventos */}
-      <Route path="eventos" element={<Events />} />
+      <Route path="eventos" element={<ListaEventos />} />
       <Route path="mis-eventos" element={<MisEventos />} />
       
 

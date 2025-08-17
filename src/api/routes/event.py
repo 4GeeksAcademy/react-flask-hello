@@ -26,7 +26,7 @@ def crear_evento(current_user_id):
     # Validaciones básicas de los campos obligatorios
     required_fields = ['titulo', 'fecha', 'categoria', 'precio']
     missing_fields = [
-        field for field in required_fields if field not in data or data[field] is None
+        field for field in required_fields if field not in data or data[field] is None 
     ]
     if missing_fields:
         return jsonify({

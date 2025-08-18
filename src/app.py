@@ -14,14 +14,16 @@ from flask_jwt_extended import JWTManager
 from flask import Flask
 from flask_mail import Mail
 from api import routes
-
+from extension import mail
 # from models import Person
-mail = Mail()
+
+
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+mail.init_app(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -54,9 +56,9 @@ app.register_blueprint(api, url_prefix='/api')
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'tu-email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'tu-contraseña-de-aplicacion'
-app.config['MAIL_DEFAULT_SENDER'] = 'tu-email@gmail.com'
+app.config['MAIL_USERNAME'] = 'u7384442007@gmail.com'
+app.config['MAIL_PASSWORD'] = 'kilj rrzk ipsz nkis'
+app.config['MAIL_DEFAULT_SENDER'] = 'u7384442007@gmail.com'
     
     # Inicializar extensiones
 mail.init_app(app)

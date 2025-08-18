@@ -10,6 +10,10 @@ import bcrypt
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_mail import Message
+from extension import mail
+
+
+
 
 api = Blueprint('api', __name__)
 
@@ -188,13 +192,18 @@ def comprar_oferta(oferta_id):
 def resetPassword():
     data = request.get_json()
     user_email = data.get('email')
-    user_serialize = user.serialize() 
     user = User.query.filter_by(email=data["email"]).first()
-    token = create_access_token(identity = str(user_serialize["id"]))
+    user_serialize = user.serialize()
+    token = create_access_token(identity=str(user_serialize["id"]))
 
+    reset_url_password = f"https://animated-pancake-x5pjxq9vv4gj2ppgx-3000.app.github.dev/api/resetPassword/{token}"
     msg = Message(
-        subject=({"token":token}),
-        sender="from@example.com",
+        "Email",
+        html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",
+        sender="u7384442007@gmail.com",
         recipients=[user_email],
     )
-    return jsonify(msg)
+
+    mail.send(msg)
+
+    return jsonify("Enviado co"),200

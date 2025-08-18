@@ -25,7 +25,7 @@ export const router = createBrowserRouter(
             <Route path="/registro" element={<Registro />} />
             <Route path="/busqueda" element={<BusquedaOfertas />} />
             <Route path="/oferta/:id" element={<OfertaId />} />
-            <Route path="/resetPassword/:id" element={<ResetPassword/>} />
+            <Route path="/resetPassword/:token" element={<ResetPassword/>} />
         </Route>
     )
 );

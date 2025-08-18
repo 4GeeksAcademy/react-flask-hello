@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { beautifulStyles } from "../styles/beautifulStyles";
 
@@ -8,7 +8,9 @@ export const ResetPassword = () => {
     const [form, setForm] = useState({ email: "" });
     const [newPassword, setNewPassword] = useState({ nuevaContraseña: "", checkNuevaContraseña: "" })
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const { token } = useParams();
     const isLoggedIn = localStorage.getItem('jwtToken') ? true : false;
+    const isPassChanged = !!token;
 
     const handleChangeEmail = e => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,7 +23,7 @@ export const ResetPassword = () => {
         e.preventDefault();
         if (!isLoggedIn) {
             const resp = await fetch(`${backendUrl}api/resetPassword`, {
-                method: "PUT",
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             });
@@ -30,10 +32,11 @@ export const ResetPassword = () => {
             console.log(data)
             localStorage.setItem("jwt_token", data.msj.Message.subject.token);
 
-        } else {
+        } 
+        if(isPassChanged && token){
             if (newPassword.nuevaContraseña === newPassword.checkNuevaContraseña) {
                 const resp = await fetch(`${backendUrl}api/user/resetPassword`, {
-                    method: "POST",
+                    method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(newPassword)
                 });

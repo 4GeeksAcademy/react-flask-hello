@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import imagenBack from "../assets/fondo-orquesta.jpg";
+import imagenBack from "../assets/fondo-Rock.jpg";
 
 export const EventForm = () => {
     const { store } = useGlobalReducer();
@@ -279,7 +279,7 @@ export const EventForm = () => {
 
             const method = editingEvent ? "PUT" : "POST";
 
-            const response = await fetch(url, {
+            const response = await fetch(url,{
                 method: method,
                 headers: {
                     "Content-Type": "application/json",

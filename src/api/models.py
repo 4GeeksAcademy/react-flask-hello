@@ -1,10 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Text, Float, ForeignKey, DateTime
+from sqlalchemy import String, Boolean, Text, Float, ForeignKey, DateTime,  Numeric
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List, Optional
 from datetime import datetime
 from flask_bcrypt import Bcrypt
-from sqlalchemy import Numeric
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -15,7 +14,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean(), nullable=True)
     role: Mapped[str] = mapped_column(String(20), default="usuario")
 
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="user")
@@ -31,7 +30,7 @@ class User(db.Model):
 class Artist(db.Model):
     __tablename__ = "artist"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False, unique=True)
     genere: Mapped[Optional[str]] = mapped_column(String(120))
     social_link: Mapped[Optional[str]] = mapped_column(String(255))
 
@@ -44,7 +43,6 @@ class Artist(db.Model):
             "genere": self.genere,
             "social_link": self.social_link,
             "events": [event.serialize() for event in self.events]
-
         }
 
 
@@ -58,24 +56,25 @@ class Event(db.Model):
     lat: Mapped[Optional[float]] = mapped_column(Float)
     lng: Mapped[Optional[float]] = mapped_column(Float)
     artist_id: Mapped[Optional[int]] = mapped_column(ForeignKey("artist.id"))
+    price: Mapped[float] = mapped_column(
+        Numeric(10, 2), nullable=False, default=0)
 
-
-    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False, default=0) #precio de entrada
     artist = relationship("Artist", back_populates="events")
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="event")
 
     def serialize(self):
         return {
-            "id":  self.id,
+            "id": self.id,
             "title": self.title,
             "date": self.date,
             "description": self.description,
             "location": self.location,
-            "lat": self.lat,
-            "lng": self.lng,
+            "lat": float(self.lat) if self.lat is not None else None,
+            "lng": float(self.lng) if self.lng is not None else None,
             "artist_id": self.artist_id,
-            "price": float(self.price)
-              if self.price is not None else None
+            "artist_name": self.artist.name if self.artist else None,
+            "price": float(self.price) if self.price is not None else 0.0
+
         }
 
 
@@ -100,11 +99,10 @@ class Purchase(db.Model):
             "event_id": self.event_id,
             "quantity": self.quantity,
             "timestamp": self.timestamp
-
         }
 
 
-class CartItem (db.Model):
+class CartItem(db.Model):
     __tablename__ = "cart_item"
 
     id: Mapped[int] = mapped_column(primary_key=True)

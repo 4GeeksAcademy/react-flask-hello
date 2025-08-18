@@ -13,6 +13,7 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.jsx";
 import { EventForm } from "./pages/EventForm.jsx";
 import { Prebuy } from "./pages/Prebuy.jsx";
 import { Events } from "./pages/Events.jsx"; 
+import {EventsMapView} from "./components/EventsMapView"
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,6 +26,7 @@ export const router = createBrowserRouter(
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/create-event" element={<EventForm />} />
+            <Route path="/events-map" element={<EventsMapView />} />
             <Route path="/prebuy" element={<Prebuy />} />
             <Route path="*" element={<h1>Page Not Found!</h1>} />
         </Route>

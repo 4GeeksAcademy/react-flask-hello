@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import imagenBack from "../assets/fondo-Rock.jpg";
+import imagenBack from "../assets/fondo-orquesta.jpg";
 
 export const EventForm = () => {
     const { store } = useGlobalReducer();

@@ -82,6 +82,10 @@
   width: 100%;
   box-shadow: 1px 1px 20px black;
 }
+.form-evet{
+  box-shadow: 1px 1px 20px black;
+  border-radius: 0.75rem;
+}
 
 .login-form-card a {
   color: #007bff;
@@ -122,6 +126,16 @@ body.dark-theme .btn-dark {
   color: #f8f9fa;
   border-color: #f8f9fa;
 }
+body.dark-theme .form-evet {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+body.dark-theme .form-evet {
+  background-color: #212529;
+  color: #f8f9fa;
+  border-color: #212529;
+}
+
 
 .festquila-footer {
   background-color: #1a1a1a;
@@ -226,18 +240,16 @@ body.dark-theme .btn-dark {
 
 .card-body {
   z-index: 3;
-  background: transparent;
-  color: white;
-  
+  background: transparent;  
 }
 
 .card-overlay:hover .bg-img {
   transform: scale(1.1);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 20px black;
 }
 
 .card-overlay:hover{
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 20px black;
 }
 
 .carouselB{

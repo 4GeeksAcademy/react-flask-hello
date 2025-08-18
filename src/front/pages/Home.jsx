@@ -137,7 +137,7 @@ export const Home = () => {
                     {cards.map((card, index) => (
                         <div className="col" key={`static-${index}`}>
                             <button type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}>
-                                <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden">
+                                <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden card-home">
                                     <div
                                         className="bg-img position-absolute w-100 h-100"
                                         style={{
@@ -191,7 +191,7 @@ export const Home = () => {
                                 <button
                                     type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}
                                 >
-                                    <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden">
+                                    <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden card-home">
                                         <div
                                             className="bg-img position-absolute w-100 h-100"
                                             style={{

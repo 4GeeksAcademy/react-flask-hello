@@ -108,6 +108,7 @@ body.dark-theme {
 body.dark-theme .login-form-card {
   background-color: rgba(51, 51, 51, 0.9);
   color: #f8f9fa;
+  box-shadow: 1px 1px 20px rgb(255, 255, 255)
 }
 
 body.dark-theme .login-form-card a {
@@ -126,14 +127,16 @@ body.dark-theme .btn-dark {
   color: #f8f9fa;
   border-color: #f8f9fa;
 }
-body.dark-theme .form-evet {
-  background-color: #f8f9fa;
-  color: #212529;
-}
+
 body.dark-theme .form-evet {
   background-color: #212529;
   color: #f8f9fa;
   border-color: #212529;
+  box-shadow: 1px 1px 20px rgb(255, 255, 255)
+}
+
+body.dark-theme .card-home:hover{
+  box-shadow: 1px 1px 20px rgb(255, 255, 255) 
 }
 
 

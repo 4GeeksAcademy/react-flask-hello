@@ -12,12 +12,14 @@ import { SignupPage } from "./pages/SignupPage.jsx";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.jsx";
 import { EventForm } from "./pages/EventForm.jsx";
 import { Prebuy } from "./pages/Prebuy.jsx";
+import { Events } from "./pages/Events.jsx"; 
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
             <Route index element={<Login />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/events" element={<Events />} /> 
             <Route path="/single/:theId" element={<Single />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />

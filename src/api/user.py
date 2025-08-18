@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from api.models import db, User
-from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from flask_bcrypt import Bcrypt
@@ -21,7 +21,7 @@ def register_user():
             email=data['email'],
             password=hashed_password,
             is_active=True,
-            role=data.get('role', 'usuario')  # usuario pro defecto
+            role=data.get('role', 'usuario')
         )
 
         db.session.add(new_user)

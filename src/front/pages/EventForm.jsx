@@ -29,7 +29,7 @@ export const EventForm = () => {
 
         if (!store.token) {
             alert("Debes iniciar sesión para crear un evento.");
-            navigate("/login");
+            navigate("");
             return;
         }
 

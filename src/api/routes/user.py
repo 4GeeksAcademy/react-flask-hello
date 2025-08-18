@@ -136,16 +136,13 @@ def forgot_password():
         return jsonify({"error": "El email es requerido"}), 400
 
     try:
-        response = supabase.auth.reset_password_email(email)
-        print(" Email enviado correctamente:", response)
-        return jsonify({
-            "message": f"Se ha enviado un correo a {email} para restablecer la contraseña",
-            "supabase_response": str(response)
-        }), 200
+        supabase.auth.reset_password_for_email(email)
+        return jsonify("Enviado"), 200
 
     except Exception as e:
         print(" Error al enviar email de recuperación:", str(e))
         return jsonify({"error": "No se pudo enviar el email de recuperación", "details": str(e)}), 500
+
 
 # Restablecer contraseña
 

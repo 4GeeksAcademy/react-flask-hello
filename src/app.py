@@ -6,10 +6,16 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
+from extension import mail
+
+from api.database.db import db
+
+import api.routes.user as api_user
+import api.routes.games as api_games
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 # from models import Person
 
@@ -17,6 +23,17 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+CORS(app)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = os.getenv('EMAIL')
+app.config['MAIL_PASSWORD'] = os.getenv('PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL')
+
+
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -28,8 +45,15 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["JWT_SECRET_KEY"] = os.getenv("TOKEN_KEY")
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+mail.init_app(app)
+
+jwt = JWTManager(app)
+
+# ROUTES API
+
 
 # add the admin
 setup_admin(app)
@@ -38,7 +62,9 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api_user.api, url_prefix='/api/user')
+app.register_blueprint(api_games.api, url_prefix='/api/games')
+
 
 # Handle/serialize errors like a JSON object
 

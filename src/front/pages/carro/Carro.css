@@ -1,0 +1,87 @@
+.carro-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.carro-title {
+  font-size: 1.875rem; 
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.carro-empty {
+  font-size: 1.125rem; 
+  color: #6b7280; 
+}
+
+.carro-box {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1),
+              0 1px 2px rgba(0,0,0,0.06);
+}
+
+.carro-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb; 
+  padding: 1rem 0;
+}
+
+.carro-item-title {
+  font-size: 1.25rem; 
+  font-weight: 600;
+}
+
+.carro-item-price {
+  color: #4b5563; 
+}
+
+.carro-input {
+  width: 4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.carro-remove-btn {
+  color: #ef4444;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.carro-remove-btn:hover {
+  color: #b91c1c;
+}
+
+.carro-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.carro-clear-btn {
+  margin-top: 1.5rem;
+  background-color: #ef4444;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+.carro-clear-btn:hover {
+  background-color: #dc2626;
+}
+
+.carro-summary {
+  max-width: 400px;
+  margin-left: auto;
+}

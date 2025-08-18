@@ -1,38 +1,91 @@
-export const initialStore=()=>{
-  return{
-    message: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
-  }
-}
+// Estado inicial
+export const initialStore = () => {
+  return {
+    user: null,
+    all_games: [],
+    carro: [], // <- añadido
+    
+  };
+};
 
+// Reducer
 export default function storeReducer(store, action = {}) {
-  switch(action.type){
-    case 'set_hello':
+  switch (action.type) {
+    case "set_hello":
       return {
         ...store,
-        message: action.payload
+        message: action.payload,
+      };
+
+    case "add_task":
+      const { id, color } = action.payload;
+      return {
+        ...store,
+        todos: store.todos.map((todo) =>
+          todo.id === id ? { ...todo, background: color } : todo
+        ),
       };
       
-    case 'add_task':
 
-      const { id,  color } = action.payload
-
+    case "setGames":
       return {
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        all_games: action.payload,
       };
+    case "setUser":
+      return {
+        ...store,
+        user: action.payload,
+      };
+
+    // ---- carrito ----
+    case "addToCarro": {
+      const game = action.payload;
+      const exists = store.carro.find((item) => item.id === game.id);
+      let updated;
+      if (exists) {
+        updated = store.carro.map((item) =>
+          item.id === game.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        updated = [...store.carro, { ...game, quantity: 1 }];
+      }
+      return {
+        ...store,
+        carro: updated,
+      };
+    }
+
+    case "removeFromCarro":
+      return {
+        ...store,
+        carro: store.carro.filter((item) => item.id !== action.payload),
+      };
+
+    case "clearCarro":
+      return {
+        ...store,
+        carro: [],
+      };
+
+    case "updateQuantity":
+      return {
+        ...store,
+        carro: store.carro.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      };
+
+    // 🔹 Nuevo: cargar carrito desde localStorage sin duplicar
+    case "loadCarro":
+      return {
+        ...store,
+        carro: action.payload || [],
+      };
+
     default:
-      throw Error('Unknown action.');
-  }    
+      throw Error("Unknown action.");
+  }
 }

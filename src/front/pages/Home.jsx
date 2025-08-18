@@ -180,14 +180,14 @@ export const Home = () => {
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
                         <span className="visually-hidden">Siguiente</span>
                     </button>
-                    <p className="titulos text-center py-2 text-white">MIRA LAS EXPERIENCIAS VIVIDAS EN NUESTROS EVENTOS</p>
+                    <p className="titulos text-center py-2">MIRA LAS EXPERIENCIAS VIVIDAS EN NUESTROS EVENTOS</p>
                 </div>
 
                 <div className="container">
                     <h2 className="titulos display-4 text-center fw-bold">Proximos Eventos 2026</h2>
                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-1">
                         {cards2.map((card, index) => (
-                            <div className="col" key={index}>
+                            <div className="d-flex justify-content-center" key={index}>
                                 <button
                                     type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}
                                 >
@@ -263,10 +263,10 @@ export const Home = () => {
                         </div>
                         <div className="modal-footer position-relative" style={{ zIndex: 2 }}>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                                Close
+                                Cerrar
                             </button>
                             <button type="button" className="btn btn-primary">
-                                Understood
+                                Comprar
                             </button>
                         </div>
                     </div>

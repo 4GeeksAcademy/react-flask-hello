@@ -2,7 +2,7 @@ export const Card = ({ name, position, review, profilePicture, logo }) => {
     return (
         <div className="d-flex flex-column card bg-transparent border-0 px-4 py-3 h-100">
             <div className="card-body ct-reviews mb-4 flex-grow-1">
-                <p className="card-text px-5 text-center text-white">{review}</p>
+                <p className="card-text px-3 px-md-5 text-center text-white">{review}</p>
             </div>
             <div className="container mt-auto flex-shrink-1">
                 <div className="row d-flex align-items-center gap-3">

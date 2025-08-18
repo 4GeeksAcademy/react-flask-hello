@@ -7,7 +7,7 @@ export const HeaderProjects = () => {
 
     return (
 
-        <section className="w-100 h-100 mb-5 position-relative">
+        <section className="w-100 h-100 position-relative">
             <img src={HomeProjects} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block" />
             <div className="position-absolute w-100 h-100 bg-dark bg-opacity-75 mx-auto"></div>
             <div className="container w-100 h-100 py-5 py-lg-2">

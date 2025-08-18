@@ -41,7 +41,7 @@ export const HeaderHome = () => {
 
             {/* Header para movil */}
             <div className="d-lg-none">
-                <section className="w-100 h-100 d-flex mb-5 position-relative">
+                <section className="w-100 h-100 d-flex position-relative">
                     <div className="position-absolute w-100 h-100 bg-dark bg-opacity-50 mx-auto"></div>
                     <img src={HomeOne} alt="CloudTech background image" className="z-n1 mx-auto position-absolute w-100 h-100 object-fit-cover d-sm-block"/>
                     <div className="container w-100 h-100 z-1 py-5">

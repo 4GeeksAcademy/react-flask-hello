@@ -136,16 +136,13 @@ def forgot_password():
         return jsonify({"error": "El email es requerido"}), 400
 
     try:
-        response = supabase.auth.reset_password_email(email)
-        print(" Email enviado correctamente:", response)
-        return jsonify({
-            "message": f"Se ha enviado un correo a {email} para restablecer la contraseña",
-            "supabase_response": str(response)
-        }), 200
+        supabase.auth.reset_password_for_email(email)
+        return jsonify("Enviado"), 200
 
     except Exception as e:
         print(" Error al enviar email de recuperación:", str(e))
         return jsonify({"error": "No se pudo enviar el email de recuperación", "details": str(e)}), 500
+
 
 # Restablecer contraseña
 
@@ -178,3 +175,30 @@ def reset_password():
             "error": "No se pudo restablecer la contraseña",
             "details": str(e)
         }), 500
+    
+
+@api.route('/user/<user_id>', methods=['GET'])
+def get_user_data(user_id):
+    try:
+        resp = supabase.table('Usuario') \
+            .select('id, email, nombre, apellido, nickname, telefono, avatar, rol') \
+            .eq('id', user_id) \
+            .single() \
+            .execute()
+        
+        if resp.data:
+            return jsonify({
+                "message": "Datos usuario obtenidos exitosamente",
+                "resp": resp.data
+            }), 200
+        else:
+            return jsonify({
+                "message": "No se encontraron datos de este usuario",
+                "resp": []
+            }), 200
+        
+    except Exception as e:
+        print("Error obteniendo datos usuario:", e)
+        return jsonify({"error": "Error al obtener datos usuario"}), 500
+
+    

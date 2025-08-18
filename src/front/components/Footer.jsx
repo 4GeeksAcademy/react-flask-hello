@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/Footer.css"
 
+
 export const Footer = () => {
   const navigate = useNavigate();
   const year = new Date().getFullYear();
@@ -16,9 +17,7 @@ export const Footer = () => {
           {/* Marca */}
           <div className="footer__brand">
             <div className="brand__logo" aria-hidden="true">
-              <svg viewBox="0 0 24 24" className="brand__icon">
-                <path d="M7 4h10a2 2 0 0 1 2 2v10l-4 4H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm9 11V6H8v12h6l2-3Z"/>
-              </svg>
+                <img src="src/front/assets/img/logoFooter.png" alt="Logo Knect" className="brand__icon" style={{ width: 20, height: 40 }} />
             </div>
             <div>
               <p className="brand__title">Knect</p>

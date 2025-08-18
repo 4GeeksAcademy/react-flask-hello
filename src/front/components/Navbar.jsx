@@ -4,11 +4,9 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
-
 const navigation = [
   { name: "Home", to: "/home" },           // o "/"
-  { name: "Eventos", to: "/crear-evento" }
-
+  { name: "Eventos", to: "/eventos" }
 ];
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,7 +15,6 @@ export function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token")
-
   // Cerrar menú de perfil al cliquear fuera (Grabación del sábado con Hori)
   useEffect(() => {
     function handleClickOutside(event) {
@@ -70,7 +67,6 @@ export function Navbar() {
           <div className="brand-and-nav" style={{ flex: 1 }}>
             <Link to="/" className="navbar-logo" aria-label="Knect - Inicio">
               <img src="src/front/assets/img/Knect-logo.png" alt="Knect logo" />
-              <span>Knect</span>
             </Link>
             <nav className="navbar-nav" aria-label="Navegación principal">
               <ul className="navbar-nav-list">
@@ -115,12 +111,12 @@ export function Navbar() {
                       <button className="dropdown-item" type="button">
                         <UserIcon className="icon-sm" /> Tu perfil
                       </button>
-                      <link to={"/crear-evento"}>
-                      <button className="dropdown-item" type="button">Crear evento</button>
-                      </link>
-                      <link to={"/"}>
-                      <button className="dropdown-item" type="button">Mis evento</button>
-                      </link>
+                      <Link to={"/crear-evento"}>
+                        <button className="dropdown-item" type="button">Crear evento</button>
+                      </Link>
+                      <Link to={"/mis-eventos"}>
+                        <button className="dropdown-item" type="button">Mis eventos</button>
+                      </Link>
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item logout" onClick={handleLogout} type="button">
                         Cerrar sesión
@@ -149,7 +145,6 @@ export function Navbar() {
                   </NavLink>
                 </li>
               ))}
-
               {
                 !token ? (
                   <>

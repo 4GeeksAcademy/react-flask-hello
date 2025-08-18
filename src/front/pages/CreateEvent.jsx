@@ -1,27 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from '../../api/supabaseClient.js';
-import { useNavigate, useRevalidator } from "react-router-dom"
+import { useNavigate, useParams, useRevalidator } from "react-router-dom"
 import { backendUrl } from '../utils/Config';
 import { notifyError, notifySuccess } from '../utils/Notifications';
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export function CreateEvent() {
-  const [imagePreview, setImagePreview] = useState("/Knect-logo.png");
-  const [imageFile, setImageFile] = useState(null);
-  const [imgError, setImgError] = useState(false); // 
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
-    time: "",
-    location: "",
-    visibility: "public",
     maxGuests: "",
-    reminder: false,
-    categories: []
+    categories: [],
+    portada: "",
+    price: 0
   });
   const [categoryInput, setCategoryInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  let { eventId } = useParams();
+  const { dispatch, store } = useGlobalReducer()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (eventId) {
+      let findEvent = store.misEventos.find(e => e.id == eventId)
+      console.log(findEvent)
+
+      if (!findEvent) navigate("/mis-eventos")
+      let categories = findEvent.categoria.split(",");
+
+      let newFormat = {
+        title: findEvent.titulo,
+        description: findEvent.definicion,
+        date: findEvent.fecha,
+        maxGuests: findEvent.max_asist,
+        categories: categories,
+        portada: findEvent.portada,
+        price: findEvent.precio
+      }
+
+      setFormData(newFormat)
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -31,14 +54,6 @@ export function CreateEvent() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-      setImgError(false); // por si falla (Código de IA)
-    }
-  };
 
   const isValidTag = (tag) => {
     const validPattern = /^[\w-]{1,12}$/;
@@ -75,7 +90,6 @@ export function CreateEvent() {
     }));
   };
 
-  const navigate = useNavigate();
 
   const rutaVistaHome = () => {
     navigate("/home");
@@ -86,63 +100,48 @@ export function CreateEvent() {
     setIsLoading(true);
 
     try {
-      if (!imageFile) {
-        alert("Selecciona una imagen para el evento");
-        setIsLoading(false);
-        return;
-      }
 
-      // 1) Subimos imagen a Supabase
-      const fileExt = imageFile.name.split(".").pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `events/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("images.event")
-        .upload(filePath, imageFile);
-
-      if (uploadError) throw uploadError;
-
-      const { data } = supabase.storage
-        .from("images.event")
-        .getPublicUrl(filePath);
-      const publicUrl = data.publicUrl;
-
-      // 2) Usuario actual
-      const user = supabase.auth.user();
-      if (!user) {
-        alert("Usuario no autenticado");
-        setIsLoading(false);
-        return;
-      }
-
-      // 3) Insertar en tabla
-      const { data: inserted, error: insertError } = await supabase
-        .from("Evento")
-        .insert([
-          {
-            titulo: formData.title,
-            definicion: formData.description,
-            fecha: formData.date,
-            hora: formData.time,
-            location: formData.location, // <-- BD en inglés
-            portada: publicUrl,
-            creador_evento: user.id,
-            categoria: JSON.stringify(formData.categories),
-            max_asist:
-              formData.maxGuests === "" ? null : parseInt(formData.maxGuests, 10),
+      const payload = {
+        titulo: formData.title,
+        definicion: formData.description,
+        fecha: formData.date,
+        categoria: formData.categories.join(", "),
+        precio: formData.price || 0,
+        max_asist: formData.maxGuests || null,
+        portada: formData.portada || "",
+      };
+      if (eventId) {
+        await fetch(backendUrl + `events/${eventId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        ])
-        .select("id")
-        .single();
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await fetch(backendUrl + `events/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
+          },
+          body: JSON.stringify(payload)
+        });
+      }
 
-      if (insertError) throw insertError;
+      if (eventId) {
+        notifySuccess("Actualizado exitosamente!");
+        navigate('/mis-eventos');
+      } else {
+        notifySuccess("Evento creado exitosamente!");
+        navigate('/home');
+      }
 
-      alert("Evento creado con éxito");
-      navigate("/eventos", { state: { newEventId: inserted.id } });
+
     } catch (error) {
-      console.error("Error al crear evento:", error.message);
-      alert("Error al crear evento, revisa la consola.");
+      notifyError('Error de red o servidor');
+      console.error('Error en fetch:', error);
     } finally {
       setIsLoading(false);
     }
@@ -163,14 +162,18 @@ export function CreateEvent() {
           </button>
         </div>
 
-        <h1 className="create-event__title">Crear un evento</h1>
+        <h1 className="create-event__title">
+          {
+            eventId ? "Actualizar evento" : "Crear evento"
+          }
+        </h1>
         <p className="create-event__subtitle">Completa el formulario</p>
 
         {/* Preview circular */}
         <div className="thumb">
-          {!imgError ? (
+          {formData.portada ? (
             <img
-              src={imagePreview}
+              src={formData.portada}
               alt=""
               onError={() => setImgError(true)}
               className="thumb__img"
@@ -185,11 +188,13 @@ export function CreateEvent() {
           <div className="form-row">
             <label htmlFor="image">Imagen principal del evento</label>
             <input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
+              id="portada"
+              type="text"
+              name="portada"
+              value={formData.portada}
+              onChange={handleChange}
               disabled={isLoading}
+              required
             />
           </div>
 
@@ -277,49 +282,6 @@ export function CreateEvent() {
             />
           </div>
 
-          <div className="form-row form-row--half">
-            <label htmlFor="time">Hora</label>
-            <input
-              id="time"
-              type="time"
-              name="time"
-              step="300"
-              value={formData.time}
-              onChange={handleChange}
-              disabled={isLoading}
-              required
-            />
-          </div>
-
-          {/* Ubicación */}
-          <div className="form-row">
-            <label htmlFor="location">Ubicación o enlace</label>
-            <input
-              id="location"
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              disabled={isLoading}
-              placeholder="C/ Ejemplo 12 · o https://meet…"
-              required
-            />
-          </div>
-
-          {/* Visibilidad */}
-          <div className="form-row form-row--half">
-            <label htmlFor="visibility">Visibilidad</label>
-            <select
-              id="visibility"
-              name="visibility"
-              value={formData.visibility}
-              onChange={handleChange}
-              disabled={isLoading}
-            >
-              <option value="public">Público</option>
-              <option value="private">Privado</option>
-            </select>
-          </div>
 
           {/* Máximo asistentes */}
           <div className="form-row form-row--half">
@@ -348,19 +310,28 @@ export function CreateEvent() {
             )}
           </div>
 
-          {/* Recordatorio  */}
-          <div className="form-row">
-            <label className="create-event__checkbox">
-              <input
-                type="checkbox"
-                name="reminder"
-                checked={formData.reminder}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-              ¿Enviar recordatorio?
-            </label>
+          <div className="form-row form-row--half">
+            <label htmlFor="price">Precio</label>
+            <input
+              id="price"
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, price: e.target.value }))
+              }
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+              }}
+              min="1"
+              step="1"
+              inputMode="numeric"
+              placeholder="Precio del evento"
+              disabled={isLoading}
+            />
           </div>
+
+
 
           {/* Acciones */}
           <div className="form-actions">
@@ -374,7 +345,9 @@ export function CreateEvent() {
             </button>
 
             <button type="submit" disabled={isLoading} className="btn btn-primary">
-              {isLoading ? "Creando…" : "Crear evento"}
+              {
+                eventId ? "Actualizar evento" : "Crear evento"
+              }
             </button>
           </div>
         </form>

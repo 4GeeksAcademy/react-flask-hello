@@ -1,57 +1,58 @@
 import { notifyError, notifySuccess } from "../utils/Notifications";
 import React, { useEffect, useState } from 'react';
-
+import { backendUrl } from '../utils/Config';
+import { CardEvento } from "../components/CardEvento/CardEvento";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const MisEventos = () => {
-    const [eventos, setEventos] = useState([]);
 
-    useEffect(() => {
-        const eventoUsuarioLogin = async () => {
-            const tokenUsuario = localStorage.getItem("token");
-            try {
-                const respuesta = await fetch('.....URL.....', {
-                    method: 'GET',
-                    headers: {
-                    'Authorization': `Bearer ${tokenUsuario}`,
-                    'Content-Type': 'application/json'
-                    }
-                });
+  const { dispatch, store } = useGlobalReducer()
 
-                const data = await respuesta.json();
-                setEventos(data.eventos || []);
+  useEffect(() => {
+    const eventoUsuarioLogin = async () => {
+      const tokenUsuario = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      try {
+        const respuesta = await fetch(backendUrl + `events/mis-eventos/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${tokenUsuario}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
-                if (respuesta.ok) {
-                    notifySuccess("Aqui esta tu listado de eventos");
-                } else {
-                    notifyError("No tienes eventos disponible");
-                }
-            } catch (error) {
-                notifyError("Error al cargar los eventos");
-            }
-        };
-        eventoUsuarioLogin();
-    }, []);
-  
+        const data = await respuesta.json();
 
-    return (
-            <div>
-                <h1>Mis eventos</h1>
-                <section>
-                    {eventos.length === 0 ? (
-                    <p>No tienes eventos creados aún.</p>
-                    ) : (
-                    eventos.map((evento, index) => (
-                        <div key={index}>
-                        <h3>{evento.titulo}</h3>
-                        <p><strong>Fecha:</strong> {evento.fecha}</p>
-                        <p><strong>Categoría:</strong> {evento.categoria}</p>
-                        <p><strong>Precio:</strong> {evento.precio}€</p>
-                        {evento.definicion && <p><em>{evento.definicion}</em></p>}
-                        <br />
-                        </div>
-                        ))
-                    )}
-                </section>
-            </div>
-    );
+        if (respuesta.ok) {
+          dispatch({
+            type: "setMyEvents",
+            payload: data.response
+          })
+          notifySuccess("Aquí está tu listado de eventos");
+        } else {
+          notifyError(data.message || "No tienes eventos disponibles");
+        }
+      } catch (error) {
+        notifyError("Error al cargar los eventos");
+      }
+    };
+
+    eventoUsuarioLogin();
+  }, []);
+
+
+  return (
+    <div>
+      <h1>Mis eventos</h1>
+      <section className="grid-cards ">
+        {store.misEventos.length === 0 ? (
+          <p>No tienes eventos creados aún.</p>
+        ) : (
+          store.misEventos.map((evento, index) => (
+            <CardEvento key={index} item={evento} isUser={true} />
+          ))
+        )}
+      </section>
+    </div>
+  );
 };

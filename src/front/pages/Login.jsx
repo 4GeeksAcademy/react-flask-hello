@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../api/supabaseClient.js';
 import { backendUrl } from '../utils/Config';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
@@ -169,13 +169,20 @@ export const Login = () => {
               cursor: 'pointer',
               transition: 'background-color 0.3s ease'
             }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#eab308')}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#097a1cff')}
             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#facc15')}
           >
             Iniciar sesión
           </button>
+
+          <div style={{ marginTop: '1rem' }}>
+            <Link to="/forgot" style={{ color: '#fa3715ff', textDecoration: 'underline' }}>
+              ¿Olvidaste tu contraseña? Pincha aqui!
+            </Link>
+          </div>
         </form>
       </div>
     </div>
   );
 };
+

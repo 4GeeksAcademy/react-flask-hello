@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import imagenBack from "../assets/fondo-orquesta.jpg";
+
 
 export const Prebuy = () => {
     const { store } = useGlobalReducer();
@@ -156,7 +158,7 @@ export const Prebuy = () => {
 
     if (loading) return <div className="text-center mt-5">Cargando carrito...</div>;
     if (error) return <div className="alert alert-danger text-center mt-5">{error}</div>;
-    
+
     if (!store.isLoggedIn) {
         return (
             <div className="text-center mt-5">
@@ -168,61 +170,71 @@ export const Prebuy = () => {
 
     if (cartItems.length === 0) {
         return (
-            <div className="text-center mt-5">
-                <p>Tu carrito está vacío.</p>
-                <Link to="/home" className="btn btn-secondary">Explorar Eventos</Link>
+            <div className="home-page-container">
+                <div className="imagen-background">
+                    <img src={imagenBack} alt="imagen fondo" />
+                </div>
+                <div className="text-center py-5">
+                    <p>Tu carrito está vacío.</p>
+                    <Link to="/home" className="btn btn-secondary">Explorar Eventos</Link>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center mb-4">Tu Carrito de Compras</h2>
-            <div className="row justify-content-center">
-                <div className="col-md-9">
-                    {cartItems.map((item) => (
-                        <div key={item.id} className="card mb-3 p-3 shadow-sm">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5>Artículo ID: {item.event_id}</h5>
-                                    <p>Cantidad: {item.quantity}</p>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <button
-                                        className="btn btn-sm btn-outline-secondary me-2"
-                                        onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                                        disabled={item.quantity <= 1}
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        type="number"
-                                        value={item.quantity}
-                                        onChange={(e) => handleUpdateQuantity(item.id, parseInt(e.target.value))}
-                                        className="form-control text-center me-2"
-                                        style={{ width: '70px' }}
-                                        min="1"
-                                    />
-                                    <button
-                                        className="btn btn-sm btn-outline-secondary me-3"
-                                        onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                                    >
-                                        +
-                                    </button>
-                                    <button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => handleDeleteItem(item.id)}
-                                    >
-                                        Eliminar
-                                    </button>
+        <div className="home-page-container">
+            <div className="imagen-background">
+                <img src={imagenBack} alt="imagen fondo" />
+            </div>
+            <div className="container mt-5">
+                <h2 className="text-center mb-4">Tu Carrito de Compras</h2>
+                <div className="row justify-content-center">
+                    <div className="col-md-9">
+                        {cartItems.map((item) => (
+                            <div key={item.id} className="card mb-3 p-3 shadow-sm">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5>Artículo ID: {item.event_id}</h5>
+                                        <p>Cantidad: {item.quantity}</p>
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <button
+                                            className="btn btn-sm btn-outline-secondary me-2"
+                                            onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            value={item.quantity}
+                                            onChange={(e) => handleUpdateQuantity(item.id, parseInt(e.target.value))}
+                                            className="form-control text-center me-2"
+                                            style={{ width: '70px' }}
+                                            min="1"
+                                        />
+                                        <button
+                                            className="btn btn-sm btn-outline-secondary me-3"
+                                            onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                                        >
+                                            +
+                                        </button>
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => handleDeleteItem(item.id)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                        ))}
+                        <div className="text-center mt-4">
+                            <button className="btn btn-success btn-lg" onClick={handleCheckout}>
+                                Finalizar Compra
+                            </button>
                         </div>
-                    ))}
-                    <div className="text-center mt-4">
-                        <button className="btn btn-success btn-lg" onClick={handleCheckout}>
-                            Finalizar Compra
-                        </button>
                     </div>
                 </div>
             </div>

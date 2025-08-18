@@ -51,7 +51,7 @@ def new_password():
     token = re.sub(r'_', r'.', body["token"])
     serializer = URLSafeTimedSerializer(os.getenv('TOKEN_KEY'))
     email = serializer.loads(
-        token, salt="password-reset", max_age=3600
+        token, salt="password-reset", max_age=60 #caduca el token el tiempo si no no deja cambairla
     )
 
     user = User.query.filter_by(email=email).first()

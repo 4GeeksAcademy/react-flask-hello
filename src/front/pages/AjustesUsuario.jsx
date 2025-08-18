@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { notifyError, notifySuccess } from "../utils/Notifications";
+import { backendUrl } from '../utils/Config';
+
 
 
 export const AjustesUsuario = () => {
@@ -19,7 +21,7 @@ export const AjustesUsuario = () => {
                 const idUsuario = localStorage.getItem("userId");
 
                 try{
-                  const respuesta = await fetch(`.......URL......`, {
+                  const respuesta = await fetch(backendUrl + "user/ajustes", {
                     method: 'GET',
                     headers: {
                       'Authorization': `Bearer ${tokenUsuario}`,
@@ -28,6 +30,7 @@ export const AjustesUsuario = () => {
                   }); 
 
                   const data = await respuesta.json();
+                  console.log("Datos recibidos del backend:", data);
 
                   if(respuesta.ok) {
                     setUsuario(data);
@@ -49,7 +52,7 @@ export const AjustesUsuario = () => {
               const idUsuario = localStorage.getItem("userId");
 
               try {
-                const respuesta = await fetch(`.......URL......`, {
+                const respuesta = await fetch(backendUrl + "user/ajustes", {
                   method: 'PUT',
                   headers: {
                     'Authorization': `Bearer ${tokenUsuario}`,
@@ -78,32 +81,57 @@ export const AjustesUsuario = () => {
 
 
   return (
-    <div>
-      <h1>Ajustes de Usuario</h1>
-      <form onSubmit={(e) => { e.preventDefault(); actualizarDatosUsuario(); }}>
-        <label>Nombre:</label>
-        <input name="nombre" value={usuario.nombre} onChange={handleChange} />
+        <div
+      style={{
+        minHeight: '100vh',
+        backgroundImage: "url('/fondo_login.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+          <h1>Ajustes de Usuario</h1>
 
-        <label>Apellido:</label>
-        <input name="apellido" value={usuario.apellido} onChange={handleChange} />
+          <form onSubmit={(e) => { e.preventDefault(); actualizarDatosUsuario(); }}>
+            <label>Nombre:</label>
+            <input
+            type="Text"
+            name="nombre"
+            value={usuario.nombre}
+            onChange={handleChange}
+            placeholder={usuario.nombre}
+            required
+            style={{
+                width: '100%',
+                padding: '0.75rem',
+                marginBottom: '1rem',
+                marginRight:'1rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem',
+              }}
+            />
 
-        <label>Nickname:</label>
-        <input name="nickname" value={usuario.nickname} onChange={handleChange} />
+            <label>Apellido:</label>
+            <input name="apellido" value={usuario.apellido} onChange={handleChange} />
 
-        <label>Teléfono:</label>
-        <input name="telefono" value={usuario.telefono} onChange={handleChange} />
+            <label>Nickname:</label>
+            <input name="nickname" value={usuario.nickname} onChange={handleChange} />
 
-        <label>Avatar (URL):</label>
-        <input name="avatar" value={usuario.avatar} onChange={handleChange} />
+            <label>Teléfono:</label>
+            <input name="telefono" value={usuario.telefono} onChange={handleChange} />
 
-        <label>Email:</label>
-        <input value={usuario.email} disabled />
+            <label>Avatar (URL):</label>
+            <input name="avatar" value={usuario.avatar} onChange={handleChange} />
 
-        <label>Rol:</label>
-        <input value={usuario.rol} disabled />
+            <label>Email:</label>
+            <input value={usuario.email} disabled />
 
-        <button type="submit">Guardar cambios</button>
-      </form>
-    </div>
+            <label>Rol:</label>
+            <input value={usuario.rol} disabled />
+
+            <button type="submit">Guardar cambios</button>
+          </form>
+      </div>
   );
 };

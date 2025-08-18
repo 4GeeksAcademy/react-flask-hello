@@ -3,7 +3,7 @@ import { backendUrl } from "../utils/Config";
 import { notifyError, notifySuccess } from "../utils/Notifications";
 
 export const VerEvento = () => {
-  const [eventos, setEventos] = useState<Evento[]>([]);
+  const [eventos, setEventos] = useState([]);
   const [nombreFiltro, setNombreFiltro] = useState("");
 
   useEffect(() => {

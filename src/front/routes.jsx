@@ -7,7 +7,6 @@ import { Register } from "./pages/Register.jsx";
 import { NotFound } from "./pages/NotFound";
 import { CreateEvent } from "./pages/CreateEvent";
 import { Events } from "./pages/Events.jsx";
-import { Register } from "./pages/Register.jsx";
 import { Forgot } from './pages/Forgot.jsx';
 import { Reset } from './pages/Reset.jsx';
 

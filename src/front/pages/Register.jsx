@@ -8,8 +8,15 @@ export const Register = () => {
   const navigate = useNavigate();
   const [datosRegistro, setDatosRegistro] = useState({
     email: '',
-    password: ''
+    password: '',
+    nombre:'',
+    apellido:'',
+    nickname:'',
+    telefono:'',
+    avatar:'https://w7.pngwing.com/pngs/154/803/png-transparent-computer-icons-user-profile-avatar-blue-heroes-window.png',
+    rol:'user'
   });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -89,23 +96,59 @@ export const Register = () => {
               fontSize: '1rem'
             }}
           />
-
-          <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
+          <div style={{display: 'flex' }}>
             <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={datosRegistro.password}
+              type="nombre"
+              name="nombre"
+              value={datosRegistro.nombre}
               onChange={handleChange}
-              placeholder="Contraseña"
+              placeholder="Nombre"
               required
               style={{
                 width: '100%',
                 padding: '0.75rem',
+                marginBottom: '1rem',
+                marginRight:'1rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem',
+              }}
+            />
+            <input
+              type="apellido"
+              name="apellido"
+              value={datosRegistro.apellido}
+              onChange={handleChange}
+              placeholder="Apellido"
+              required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                marginBottom: '1rem',
                 borderRadius: '8px',
                 border: 'none',
                 fontSize: '1rem'
               }}
             />
+          </div>
+          
+            <div style={{ position: 'relative', marginBottom: '1rem' }}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={datosRegistro.password}
+                onChange={handleChange}
+                placeholder="Contraseña"
+                required
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '1rem'
+                }}
+              />
+         
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -130,6 +173,43 @@ export const Register = () => {
               )}
             </button>
           </div>
+          <div style={{display: 'flex' }}>
+            <input
+              type="nickname"
+              name="nickname"
+              value={datosRegistro.nickname}
+              onChange={handleChange}
+              placeholder="Nombre de usuario"
+              required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                marginBottom: '1rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem',
+              }}
+            />
+          </div>
+                    <div style={{display: 'flex' }}>
+            <input
+              type="telefono"
+              name="telefono"
+              value={datosRegistro.telefono}
+              onChange={handleChange}
+              placeholder="telefono"
+              required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                marginBottom: '1rem',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '1rem',
+              }}
+            />
+          </div>
+          
 
           <button
             type="submit"

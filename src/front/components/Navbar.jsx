@@ -5,7 +5,7 @@ import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
 const navigation = [
-  { name: "Home", to: "/home" },           // o "/"
+  { name: "Home", to: "/" },           // o "/"
   { name: "Eventos", to: "/eventos" }
 ];
 export function Navbar() {

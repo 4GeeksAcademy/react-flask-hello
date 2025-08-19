@@ -24,7 +24,8 @@ sqlalchemy = "*"
 flask-sqlalchemy = "*"
 stripe = "*"
 tomli = "*"
-
+pyyaml = "*"
+cython = "*"
 
 [requires]
 python_version = "3.13"

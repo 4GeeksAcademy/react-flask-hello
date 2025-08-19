@@ -21,7 +21,7 @@ export const DetailsGames = () => {
 
   useEffect(() => {
     getDetailsGame()
-  }, [])
+  }, [id])
 
    useEffect(() => {
     if (user) {

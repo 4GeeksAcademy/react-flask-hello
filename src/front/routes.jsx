@@ -61,9 +61,7 @@ export const router = createBrowserRouter(
         <Route path="/recPassword" element={<RecPassword />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/editgames/:id" element={<EditGames />} />
-        <Route path="/games/platform/:platform" element={<GamesByPlatform />} />
-
-        
+        <Route path="/games/platform/:platform" element={<GamesByPlatform />} />       
       </Route>
     )
 );

@@ -11,13 +11,14 @@ export const RecPassword = () => {
 
   const restaurarPassword = async (e) => {
     e.preventDefault()
-    await fetch(`${backendUrl}api/user/resetPassword`, {
-      method: "POST",
-      body: JSON.stringify({ "email": email }),
-      headers: { "Content-type": "application/json" }
-    })
-    alert("Mensaje enviado al correo electronico")
 
+     await fetch(`${backendUrl}api/user/resetPassword`,{
+                method: "POST",
+                body: JSON.stringify({"email": email}),
+                headers: { "Content-type": "application/json" }
+            })
+            alert("Mensaje enviado al correo electronico")
+    
   }
 
 

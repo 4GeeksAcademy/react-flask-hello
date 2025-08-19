@@ -9,12 +9,13 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
   const { store, dispatch } = useGlobalReducer()
   const { all_games } = store;
-  console.log(all_games)
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const user = localStorage.getItem('user');
   const [view, setview] = useState(false);
   const [searchGame, setSearchGame] = useState()  /* Barra de buscar funcional*/
+  const [gamesFilter, setGamesFilter] = useState([])  /* Barra de buscar funcional*/
+
 
 
   const handleSearch = () => {
@@ -29,7 +30,7 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
     localStorage.removeItem("user")
     dispatch({
       type: 'setUser',
-      payload: nullm
+      payload: null
     })
     console.log("Sin sesion")
     alert("Sesion finalizada")
@@ -45,21 +46,27 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
     } else {
       setview(false)
     }
-    console.log("hola", user, "Asdasd")
   }, [token_user]);
 
 
   const search = () => {
-
     const game = all_games.find(game => game.name === searchGame)
-    console.log(game)
-    console.log(game.id)
-    navigate(`/DetailsGames/${game.id}`)
-
-    if (!game.name == searchGame)
+    if (!game) {
       alert("Juego no encontrado")
-
+    } else {
+      navigate(`/DetailsGames/${game.id}`)
+    }
   }
+
+  const filter = (text) => {
+    let filterGames = all_games.filter((g) => {
+      return g.name.toLowerCase().includes(text.toLowerCase())
+    })
+    setGamesFilter(filterGames)
+  }
+
+  console.log(gamesFilter)
+
 
 
   return (
@@ -115,17 +122,39 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
                   )}
 
                 {/* Barra de buscar funcional*/}
+                <div className='searchBar'>
+                  <div className='bar'>
+                    <input
+                      type="text"
+                      value={searchGame}
+                      onChange={(e) => { setSearchGame(e.target.value), filter(e.target.value) }}
+                      placeholder="Buscar..."
+                      className="px-1 py-1 border rounded-md focus:outline-none inputhori focus:ring focus:border-gray-900"
+                    />
+                    <button onClick={search}>
+                      Buscar
+                    </button>
+                  </div>
+                  {
+                    (gamesFilter.length > 0 && searchGame.length > 0) && (
+                      <div className='results bg-gray-900'>
 
-                <input
-                  type="text"
-                  value={searchGame}
-                  onChange={(e) => setSearchGame(e.target.value)}
-                  placeholder="Buscar..."
-                  className="px-1 py-1 border rounded-md focus:outline-none focus:ring focus:border-gray-900"
-                />
-                <button onClick={search}>
-                  Buscar
-                </button>
+                        {
+                          gamesFilter.map((g) => {
+                            return (
+                              <Link to={`/detailsgames/${g.id}`}>
+                                <span>{g.name}</span>
+                              </Link>
+                            )
+                          })
+                        }
+                      </div>
+                    )
+                  }
+
+
+
+                </div>
 
               </div>
             </div>

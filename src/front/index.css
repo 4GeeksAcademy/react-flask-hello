@@ -784,3 +784,55 @@ body {
   color:var(--muted); font-weight:600; line-height:1.2;
 }
 
+/* ===== Perfil (CSS puro) ===== */
+.profile{
+  min-height: 100dvh;
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+.profile__card{
+  width: min(1000px, 100%);
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: clamp(16px, 4vw, 28px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.profile__topbar{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+}
+.profile__header{
+  display:flex; align-items:center; gap:16px; margin:14px 0 8px;
+}
+.profile__avatar{
+  --size:84px; width:var(--size); height:var(--size);
+  border-radius:50%; overflow:hidden;
+  border:1px solid var(--line); background:rgba(255,255,255,.06);
+}
+.profile__avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+.profile__title{ margin:0; font-size:clamp(22px,3vw,28px); }
+.profile__subtitle{ margin:2px 0 0; color:var(--muted); }
+.profile__block{ margin-top:14px; }
+.profile__actions{ margin-top:16px; display:flex; justify-content:flex-end; }
+
+/* Helpers mínimos (por si no los tienes ya) */
+.skeleton{ background:linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.02), rgba(255,255,255,.08));
+  animation: sk 1.2s infinite; }
+@keyframes sk{ 0%{background-position:-200px 0} 100%{background-position:calc(200px + 100%) 0} }
+.help.is-error{ color:#f87171; }
+
+/* Las tarjetas de eventos del perfil reutilizan tus estilos:
+   .grid-cards, .destinos__card, .destinos__thumb, .destinos__info, .destinos__name, .destinos__meta
+   (si no las tuvieras aún, dímelo y te las pego completas) */
+
+   .create-event__bg-video {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}

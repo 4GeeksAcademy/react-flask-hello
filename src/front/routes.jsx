@@ -19,8 +19,9 @@ export const router = createBrowserRouter(
       {/* Home (index) */}
       <Route index element={<Home />} />
       {/* Alternativa a lo de antes: /home */}
+      <Route path="/home" element={<Home />} />
       <Route path="/home/:token" element={<Home />} />
-      <Route path="/home/:token/reset/:resetPassword" element={<Reset />} />
+      <Route path="/home/:token/:resetPassword/:email/reset" element={<Reset />} />
 
       {/* Auth */}
       <Route path="login" element={<Login />} />

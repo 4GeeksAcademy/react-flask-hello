@@ -29,7 +29,7 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
     localStorage.removeItem("user")
     dispatch({
       type: 'setUser',
-      payload: nullm
+      payload: null
     })
     console.log("Sin sesion")
     alert("Sesion finalizada")

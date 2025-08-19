@@ -106,9 +106,9 @@ export const Games = () => {
               </span>
             )}
           </div>
-
-          {/* ---- boton para añadir al carro ---- */}
-          <div className="px-6 pb-4">
+          {
+token_user && (
+                  <div className="px-6 pb-4">
             <button
               className=" w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
               onClick={() => dispatch({ type: "addToCarro", payload: game })}
@@ -116,6 +116,9 @@ export const Games = () => {
               Agregar al carro
             </button>
           </div>
+                  )}
+          {/* ---- boton para añadir al carro ---- */}
+          
           {
             view && (
               <div className="px-6 pb-4 flex justify-around text-white">

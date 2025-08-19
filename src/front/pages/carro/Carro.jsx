@@ -131,12 +131,11 @@ export const Carro = () => {
                 <span>${getTotal().toFixed(2)}</span>
               </p>
             </div>
-            <button
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-6 w-full"
-              onClick={() => setShowModal(true)}
-            >
-              Finalizar compra
-            </button>
+            <form action="/checkout/result" method="POST">
+              <button type="submit">
+                Checkout
+              </button>
+            </form>
           </div>
         </div>
       )}
@@ -172,3 +171,33 @@ export const Carro = () => {
     </div>
   );
 };
+const Message = ({ message }) => (
+  <section>
+    <p>{message}</p>
+  </section>
+);
+
+export default function App() {
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      setMessage("Order placed! You will receive an email confirmation.");
+    }
+
+    if (query.get("canceled")) {
+      setMessage(
+        "Order canceled -- continue to shop around and checkout when you're ready."
+      );
+    }
+  }, []);
+
+  return message ? (
+    <Message message={message} />
+  ) : (
+    <ProductDisplay />
+  );
+}

@@ -27,7 +27,7 @@ export default function SearchResults() {
           ))}
         </ul>
       ) : (
-        <p>No se encontraron resultados.</p>
+        <p> No se encontraron resultados </p>
       )}
     </div>
   );

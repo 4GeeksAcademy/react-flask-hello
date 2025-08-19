@@ -1,6 +1,6 @@
 import './Navbar.css'
 import { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
@@ -8,11 +8,14 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
   const { store, dispatch } = useGlobalReducer()
+  const { all_games } = store;
+  console.log(all_games)
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const user = localStorage.getItem('user');
   const [view, setview] = useState(false);
   const [searchGame, setSearchGame] = useState()  /* Barra de buscar funcional*/
+
 
   const handleSearch = () => {
     if (searchGame.trim()) {
@@ -44,6 +47,19 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
     }
     console.log("hola", user, "Asdasd")
   }, [token_user]);
+
+
+  const search = () => {
+
+    const game = all_games.find(game => game.name === searchGame)
+    console.log(game)
+    console.log(game.id)
+    navigate(`/DetailsGames/${game.id}`)
+
+    if (!game.name == searchGame)
+      alert("Juego no encontrado")
+
+  }
 
 
   return (
@@ -104,14 +120,13 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
                   type="text"
                   value={searchGame}
                   onChange={(e) => setSearchGame(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch();
-                    }
-                  }}
                   placeholder="Buscar..."
                   className="px-1 py-1 border rounded-md focus:outline-none focus:ring focus:border-gray-900"
                 />
+                <button onClick={search}>
+                  Buscar
+                </button>
+
               </div>
             </div>
           </div>

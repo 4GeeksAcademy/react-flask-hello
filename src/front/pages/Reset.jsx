@@ -6,7 +6,7 @@ import { backendUrl } from '../utils/Config';
 export const Reset = () => {
   const [newPassword, setNewPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
-  let { resetPassword } = useParams();
+  let { resetPassword, email } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ export const Reset = () => {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token: resetPassword, new_password: newPassword }),
+        body: JSON.stringify({ access_token: resetPassword, new_password: newPassword, email: email }),
       });
       const data = await res.json();
 

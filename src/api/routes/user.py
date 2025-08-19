@@ -4,7 +4,6 @@ from flask_cors import CORS
 from ..supabase_client import supabase
 
 
-
 api = Blueprint('user', __name__)
 
 # Allow CORS requests to this API
@@ -12,13 +11,15 @@ CORS(api)
 
 # Registrar
 
+
 @api.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
 
     # Validaciones básicas
     required_fields = ['email', 'password']
-    missing_fields = [field for field in required_fields if field not in data or not data[field]]
+    missing_fields = [
+        field for field in required_fields if field not in data or not data[field]]
     if missing_fields:
         return jsonify({"error": f"Faltan campos obligatorios: {', '.join(missing_fields)}"}), 400
 
@@ -76,8 +77,6 @@ def signup():
     }), 200
 
 
-
-
 # Login
 
 @api.route('/signin', methods=['POST'])
@@ -97,8 +96,6 @@ def signin():
             "email": email,
             "password": password
         })
-
-
 
         if response.user and response.session:
             # Generar JWT token personalizado
@@ -120,9 +117,9 @@ def signin():
     except Exception as e:
         print(f"Signin error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
-    
 
-    #Recuperar contraseña
+    # Recuperar contraseña
+
 
 @api.route('/forgot', methods=['POST'])
 def forgot_password():
@@ -150,8 +147,9 @@ def forgot_password():
 def reset_password():
     data = request.get_json()
     new_password = data.get('new_password')
-    access_token = data.get('access_token')  # token que viene del email de Supabase
-
+    # token que viene del email de Supabase
+    access_token = data.get('access_token')
+    email = data.get('email')
     if not new_password or not access_token:
         return jsonify({"error": "Faltan campos obligatorios"}), 400
 
@@ -159,11 +157,18 @@ def reset_password():
         return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
 
     try:
+        print(type(access_token))
         # Usar el access_token para autenticar temporalmente al usuario
-        supabase.auth.set_session(access_token, access_token)  
+        user_response = supabase.auth.verify_otp({
+            "email": email,
+            "token": access_token,
+            "type": "recovery"
+        })
 
         # Actualizar la contraseña
         response = supabase.auth.update_user({"password": new_password})
+
+        supabase.auth.sign_out()
 
         return jsonify({
             "message": "Contraseña actualizada correctamente",
@@ -175,7 +180,7 @@ def reset_password():
             "error": "No se pudo restablecer la contraseña",
             "details": str(e)
         }), 500
-    
+
 
 @api.route('/user/<user_id>', methods=['GET'])
 def get_user_data(user_id):
@@ -185,7 +190,7 @@ def get_user_data(user_id):
             .eq('id', user_id) \
             .single() \
             .execute()
-        
+
         if resp.data:
             return jsonify({
                 "message": "Datos usuario obtenidos exitosamente",
@@ -196,9 +201,7 @@ def get_user_data(user_id):
                 "message": "No se encontraron datos de este usuario",
                 "resp": []
             }), 200
-        
+
     except Exception as e:
         print("Error obteniendo datos usuario:", e)
         return jsonify({"error": "Error al obtener datos usuario"}), 500
-
-    

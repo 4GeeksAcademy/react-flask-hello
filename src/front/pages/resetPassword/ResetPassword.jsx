@@ -1,8 +1,9 @@
+
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 export const ResetPassword = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL
- 
+
   const [password, setpassword] = useState("")
   const { token } = useParams()
   const restaurarPassword = async (e) => {
@@ -15,6 +16,10 @@ export const ResetPassword = () => {
     alert("Mensaje enviado al correo electronico")
   }
   return (
+     <div
+      className="min-h-screen bg-[url('https://images2.alphacoders.com/105/thumb-1920-1052293.jpg')] bg-cover bg-center flex items-center justify-center"
+    >
+  
     <div class="max-w-md mx-auto p-4 md:p-6 mt-20 mb-20 bg-white rounded shadow-md">
       <h2 class="text-2xl font-bold mb-4">Nueva contraseña</h2>
       <form onSubmit={restaurarPassword}>
@@ -41,5 +46,6 @@ export const ResetPassword = () => {
         </div>
       </form>
     </div>
+  </div >  
   )
 }

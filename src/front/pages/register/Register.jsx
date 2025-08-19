@@ -43,13 +43,13 @@ export const Register = () => {
                 
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Crear cuenta</h2>
-                    <p className="mt-2 text-center text-sm font-bold text-gray-800">Completa los campos para registrarte</p>
+                    <p className="mt-2 text-center text-sm font-extrabold text-gray-900">Completa los campos para registrarte</p>
                 </div>
                 <form className="mt-8 space-y-6 " onSubmit={registerUser}>
                     <div className="space-y-4">
                        
                         <div>
-                            <label htmlFor="name" className="block text-sm font-bold text-gray-900">
+                            <label htmlFor="name" className="block text-sm font-extrabold text-gray-900">
                                 Nombre completo
                             </label>
                             <input
@@ -64,7 +64,7 @@ export const Register = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-bold text-gray-900">
+                            <label htmlFor="email" className="block text-sm font-extrabold text-gray-900">
                                 Email
                             </label>
                             <input
@@ -79,7 +79,7 @@ export const Register = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-bold text-gray-900">
+                            <label htmlFor="password" className="block text-sm font-extrabold text-gray-900">
                                 Contraseña
                             </label>
                             <input

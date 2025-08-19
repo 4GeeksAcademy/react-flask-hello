@@ -75,6 +75,11 @@ def register_user():
         body['password'].encode(), bcrypt.gensalt())  # encriptar password
     print(new_password)
 
+    admin_list = [e.strip() for e in os.getenv(
+        "ADMIN_EMAILS", "").split(",") if e.strip()]
+    
+    is_admin = body["email"] in admin_list
+
     if "username" and "email" and "password" not in body:
         return jsonify("Error, debes introducir los campos obligatorios"), 404
 
@@ -84,7 +89,7 @@ def register_user():
     new_user.email = body["email"]
     new_user.password = new_password.decode()
     new_user.is_active = True
-    new_user.is_admin = False
+    new_user.is_admin = is_admin
     db.session.add(new_user)
     db.session.commit()
 

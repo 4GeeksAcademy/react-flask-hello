@@ -9,6 +9,9 @@ export const DetailsGames = () => {
   const [detailsGame, setDetailsGame] = useState([]);
   const { id } = useParams();
   const { dispatch } = useGlobalReducer(); // <-- añadido
+  const token_user = localStorage.getItem('jwt-token');
+  const user = localStorage.getItem('user');
+  const [view, setview] = useState(false)
 
   const getDetailsGame = async () => {
     const responsive = await fetch(`${backendUrl}api/games/detailsgames/${id}`)
@@ -18,7 +21,19 @@ export const DetailsGames = () => {
 
   useEffect(() => {
     getDetailsGame()
-  }, [])
+  }, [id])
+
+   useEffect(() => {
+    if (user) {
+      let parseUser = JSON.parse(user)
+      if (parseUser.is_admin) {
+        setview(true)
+      }
+    } else {
+      setview(false)
+    }
+    console.log("hola", user, "Asdasd")
+  }, [token_user]);
 
   // handler para añadir al carro
   const handleAddToCarro = () => {
@@ -62,7 +77,9 @@ export const DetailsGames = () => {
               <div className="mb-2">
                 <span className="text-white text-2xl font-bold">Precio: {detailsGame.price} €</span>
               </div>
-              <div className="flex gap-3">
+              {
+              token_user && (
+                   <div className="flex gap-3">
                 <button
                   className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg flex-2"
                   onClick={handleAddToCarro} // <-- añadido
@@ -75,6 +92,9 @@ export const DetailsGames = () => {
                   </svg>
                 </button>
               </div>
+                  )}
+
+              
             </div>
 
             {/* Columna derecha: video */}

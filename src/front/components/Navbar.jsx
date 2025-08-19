@@ -1,17 +1,28 @@
 import './Navbar.css'
 import { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { LogOut } from 'lucide-react';
 import { LogIn } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export default function Navbar({showDrowpdown, setShowDrowpdown}) {
+export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
   const { store, dispatch } = useGlobalReducer()
+  const { all_games } = store;
+  console.log(all_games)
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const user = localStorage.getItem('user');
-  const [view, setview] = useState(false)
+  const [view, setview] = useState(false);
+  const [searchGame, setSearchGame] = useState()  /* Barra de buscar funcional*/
+
+
+  const handleSearch = () => {
+    if (searchGame.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchGame)}`);
+    }
+
+  };
 
   const cerrarSesion = () => {
     localStorage.removeItem("jwt-token")
@@ -36,6 +47,19 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
     }
     console.log("hola", user, "Asdasd")
   }, [token_user]);
+
+
+  const search = () => {
+
+    const game = all_games.find(game => game.name === searchGame)
+    console.log(game)
+    console.log(game.id)
+    navigate(`/DetailsGames/${game.id}`)
+
+    if (!game.name == searchGame)
+      alert("Juego no encontrado")
+
+  }
 
 
   return (
@@ -72,42 +96,50 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
                     Juegos
                   </button>
                   {showDrowpdown && (
-                  <ul className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
-                    <li><Link to="/games/platform/PS5"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS5</Link></li>
-                    <li><Link to="/games/platform/PS4"                 className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS4</Link></li>
-                    <li><Link to="/games/platform/Xbox One"            className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox One</Link></li>
-                    <li><Link to="/games/platform/Nintendo Switch"     className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch</Link></li>
-                    <li><Link to="/games/platform/Nintendo Switch 2"   className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch 2</Link></li>
-                    <li><Link to="/games/platform/PC"                  className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PC</Link></li>
-                  </ul>
+                    <ul className="absolute z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                      <li><Link to="/games/platform/PS5" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS5</Link></li>
+                      <li><Link to="/games/platform/PS4" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PS4</Link></li>
+                      <li><Link to="/games/platform/Xbox One" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Xbox One</Link></li>
+                      <li><Link to="/games/platform/Nintendo Switch" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch</Link></li>
+                      <li><Link to="/games/platform/Nintendo Switch 2" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">Nintendo Switch 2</Link></li>
+                      <li><Link to="/games/platform/PC" className="block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-200">PC</Link></li>
+                    </ul>
                   )}
                 </div>
 
-               {
+                {
                   view && (
                     <Link to="/addgame">
                       <p href="#" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">Añadir Juego</p>
                     </Link>
                   )}
 
+                {/* Barra de buscar funcional*/}
+
                 <input
                   type="text"
+                  value={searchGame}
+                  onChange={(e) => setSearchGame(e.target.value)}
                   placeholder="Buscar..."
-                  className="px-1 py-1 border rounded-md focus:outline-none focus:ring focus:border-indigo-900"
+                  className="px-1 py-1 border rounded-md focus:outline-none focus:ring focus:border-gray-900"
                 />
+                <button onClick={search}>
+                  Buscar
+                </button>
+
               </div>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            
+
             {/* ---- carrito ---- */}
             <Link to="/Carro" className="relative mr-4">
-             {
+              {
 
-                  token_user && (
-                   <span className="text-white text-2xl">🛒</span>
-                  )}
-              
+                token_user && (
+                  <span className="text-white text-2xl">🛒</span>
+                )}
+
               {store.carro && store.carro.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1">
                   {store.carro.length}
@@ -116,12 +148,12 @@ export default function Navbar({showDrowpdown, setShowDrowpdown}) {
             </Link>
             {
 
-                  token_user && (
-                  <Link to="/historial" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">
-              Historial
-            </Link>
-                  )}
-            
+              token_user && (
+                <Link to="/historial" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">
+                  Historial
+                </Link>
+              )}
+
 
 
             <button type="button" className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">

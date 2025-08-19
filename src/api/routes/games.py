@@ -129,3 +129,20 @@ def get_games_by_platform(platform):
 
     games = [g.serialize() for g in q.all()] #devuelve todos los juegos encontrados
     return jsonify({"games": games}), 200
+
+    # BUSCAR JUEGOS NAVBAR
+#@api.route('/SearchGames/<int:game_id>', methods=["GET"])
+#def get_games_by_search():
+    #query = request.args.get("query")
+
+    #if not query:
+        #return jsonify({"error": "Falta el parámetro 'query'"}), 400
+
+    #try:
+        #results = Games.query.filter(Games.name.ilike(f"%{query}%")).all()
+        #games_list = [{"id": game.id, "name": game.name} for game in results]
+        #return jsonify(games_list)
+    #except Exception as e:
+        #print("Error en la búsqueda:", e)
+        #return jsonify({"error": "Juego no encontrado"}), 500
+    

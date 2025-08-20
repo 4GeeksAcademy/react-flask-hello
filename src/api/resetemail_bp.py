@@ -1,30 +1,34 @@
 import jwt
 from flask import Blueprint, request, jsonify, current_app, url_for
 from api.models import db, User
-from app import bcrypt, mail
+from extension import mail,bcrypt
 from flask_mail import Message
 from datetime import datetime, timedelta
+import os
+from flask_cors import CORS
 
 resetemail_bp = Blueprint('resetemail', __name__,)
+CORS(resetemail_bp)
 
 @resetemail_bp.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    email = request.json.get('email', None)
-    user = User.query.filter_by(email=email).first()
-
-    if user:
-        reset_token = user.get_reset_token()
-        msg = Message('Restablecer tu contraseña', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
-        reset_url = url_for('resetemail.reset_password', token=reset_token, _external=True)
-        msg.body = f"Para restablecer tu contraseña, haz clic en el siguiente enlace: {reset_url}"
-        try:
-            mail.send(msg)
-            return jsonify({"msg": "Correo de restablecimiento enviado"}), 200
-        except Exception as e:
-            print(f"Error al enviar correo: {e}")
-            return jsonify({"msg": "Error al enviar correo de restablecimiento"}), 500
     
-    return jsonify({"msg": "Si el usuario existe, se ha enviado un correo"}), 200
+    email = request.json.get('email', None)
+    try:
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            reset_token = user.get_reset_token()
+            msg = Message('Restablecer tu contraseña', sender=os.environ.get('MAIL_USERNAME'), recipients=[user.email])
+            reset_url = url_for('resetemail.reset_password', token=reset_token, _external=True)
+            msg.body = f"Para restablecer tu contraseña, haz clic en el siguiente enlace: "
+            mail.send(msg)
+        
+        return jsonify({"msg": "Si existe un usuario con ese email, se ha enviado un enlace de recuperación."}), 200
+
+    except Exception as e:
+        print(f"Error al enviar correo: {e}")
+        return jsonify({"msg": "Error del servidor. Inténtalo de nuevo más tarde."}), 500
 
 @resetemail_bp.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):
@@ -36,7 +40,7 @@ def reset_password(token):
 
     if not password:
         return jsonify({"msg": "Falta la contraseña"}), 400
-
+    
     try:
         user.set_password(password)
         db.session.commit()

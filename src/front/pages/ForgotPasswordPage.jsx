@@ -1,39 +1,44 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";
 import imagenBack from "../assets/fondo-concierto.jpg";
 
 export const ForgotPasswordPage = () => {
     const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const { store } = useGlobalReducer();
 
     const handleSendResetLink = async (e) => {
         e.preventDefault();
+        setMessage("");
+        setError("");
+        setIsLoading(true);
+
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
             if (!backendUrl) {
-                alert("Error: La URL del backend no está configurada.");
+                setError("Error: La URL del backend no está configurada.");
+                setIsLoading(false);
                 return;
             }
-            const response = await fetch(`${backendUrl}/api/users/forgot-password`, {
+            const response = await fetch(`${backendUrl}api/forgot-password`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email })
             });
 
             const data = await response.json();
             if (response.ok) {
-                alert(data.msg);
-                navigate("/");
+                setMessage(data.msg);
             } else {
-                alert(`Error: ${data.msg || response.statusText}`);
+                setError(data.msg || "Algo salió mal. Inténtalo de nuevo.");
             }
-        } catch (error) {
-            console.error("Error en la solicitud:", error);
-            alert("Hubo un problema al conectar con el servidor.");
+        } catch (err) {
+            console.error("Error en la solicitud:", err);
+            setError("Hubo un problema al conectar con el servidor.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -61,9 +66,11 @@ export const ForgotPasswordPage = () => {
                                 required
                             />
                         </div>
+                        {message && <div className="alert alert-success mt-3">{message}</div>}
+                        {error && <div className="alert alert-danger mt-3">{error}</div>}
                         <div className="d-grid gap-2 mb-3">
-                            <button type="submit" className="btn btn-primary btn-lg">
-                                Enviar enlace
+                            <button type="submit" className="btn btn-primary btn-lg" disabled={isLoading}>
+                                {isLoading ? "Enviando..." : "Enviar enlace"}
                             </button>
                         </div>
                         <div className="text-center">

@@ -91,7 +91,7 @@ export const Home = () => {
           <div className="section-head">
             <h2>Destinos principales</h2>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <Link to="/evento" className="pill">Explorar todo</Link>
+              <Link to="/eventos" className="pill">Explorar todo</Link>
             </div>
           </div>
 

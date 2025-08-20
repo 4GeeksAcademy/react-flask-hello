@@ -11,7 +11,7 @@ export const ListaEventos = () => {
     useEffect(() => {
         const listadoEventos = async () => {
             try {
-                const respuesta = await fetch(backendUrl + `events`,);
+                const respuesta = await fetch(backendUrl + `eventos`,);
                 const data = await respuesta.json();
                 setEventos(data.response);
 
@@ -31,7 +31,7 @@ export const ListaEventos = () => {
             <h1>Lista de Eventos</h1>
            <section className="grid-cards ">
                    {eventos.length === 0 ? (
-                     <p>No tienes eventos creados aún.</p>
+                     <p>No hay eventos creados aún.</p>
                    ) : (
                      eventos.map((evento, index) => (
                        <CardEvento key={index} item={evento} isUser={false} />

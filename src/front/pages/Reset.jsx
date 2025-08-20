@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { backendUrl } from '../utils/Config';
+import { notifySuccess } from '../utils/Notifications';
 
 
 export const Reset = () => {
   const [newPassword, setNewPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
   let { resetPassword, email } = useParams();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +28,8 @@ export const Reset = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMensaje('Contraseña actualizada correctamente. Puedes iniciar sesión.');
+        notifySuccess('Contraseña actualizada correctamente. Puedes iniciar sesión.');
+        navigate('/login')
       } else {
         setMensaje(data.error || 'Error al restablecer la contraseña.');
       }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Contacto.css";
+import { Maps } from "../../components/maps/Maps";
 
 const Contacto = () => {
   const [open, setOpen] = useState(false);
@@ -30,6 +31,11 @@ const Contacto = () => {
               <li>Teléfono: +34 600 123 456</li>
               <li>Horario: Lunes–Viernes, 9:00–18:00</li>
             </ul>
+            <div className="mt-10" style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <div style={{ height: 100, width: 600}}>
+                    <Maps />
+                  </div>
+           </div>
           </div>
         </div>
       )}

@@ -5,7 +5,6 @@ import { Games } from "../../components/games/Games";
 
 
 
-
 export const Home = () => {
   const images = [
     {

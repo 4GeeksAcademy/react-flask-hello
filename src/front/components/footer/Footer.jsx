@@ -25,14 +25,12 @@ export const Footer = () => (
           <li><Contacto /></li>
         </ul>
       </div>
-
       <div className="footer-social">
         <FaFacebookF />
         <FaTwitter />
         <FaInstagram />
         <FaLinkedinIn />
       </div>
-
       <hr className="footer-divider" />
 
       <div className="footer-bottom">

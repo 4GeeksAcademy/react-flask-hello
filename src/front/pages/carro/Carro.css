@@ -1,50 +1,110 @@
 .carro-container {
-  max-width: 1200px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
+.carro-page{
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;    
+  padding-bottom: 70px;  
+}
+
+
+.carro-bg{
+  position: fixed;
+  inset: 0; 
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1; 
+}
+
+.carro-summary p,
+.carro-summary span {
+  color: #f9fafb !important;
+}
+.carro-summary p span:last-child {
+  font-weight: 600;
+  color: #93c5fd !important;
+}
+
 .carro-title {
-  font-size: 1.875rem; 
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  color: #ffffff; 
 }
 
 .carro-empty {
-  font-size: 1.125rem; 
-  color: #6b7280; 
+  text-align: center;
+  font-size: 1.2rem;
+  color: #9ca3af;
+  margin: 3rem 0;
+}
+.carro-empty::before {
+  content: "🛒";
+  display: block;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.carro-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
 }
 
 .carro-box {
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1),
-              0 1px 2px rgba(0,0,0,0.06);
+  background: #1f2937; /* gris oscuro */
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.carro-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
 }
 
 .carro-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb; 
+  border-bottom: 1px solid #374151;
   padding: 1rem 0;
+}
+.carro-item:last-child {
+  border-bottom: none;
 }
 
 .carro-item-title {
-  font-size: 1.25rem; 
+  font-size: 1.1rem;
   font-weight: 600;
+  color: #f9fafb;
 }
 
 .carro-item-price {
-  color: #4b5563; 
+  color: #60a5fa; 
+  font-weight: 600;
 }
 
 .carro-input {
   width: 4rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  border: 1px solid #4b5563;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+}
+.carro-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
 }
 
 .carro-remove-btn {
@@ -54,9 +114,8 @@
   border: none;
   cursor: pointer;
 }
-
 .carro-remove-btn:hover {
-  color: #b91c1c;
+  color: #f87171;
 }
 
 .carro-total {
@@ -65,23 +124,27 @@
   margin-top: 1.5rem;
   font-size: 1.125rem;
   font-weight: 700;
+  color: #f9fafb;
 }
 
 .carro-clear-btn {
   margin-top: 1.5rem;
-  background-color: #ef4444;
+  background: #ef4444;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
+  font-weight: 600;
 }
-
 .carro-clear-btn:hover {
-  background-color: #dc2626;
+  background: #dc2626;
 }
 
 .carro-summary {
-  max-width: 400px;
-  margin-left: auto;
+  background: #1f2937;
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: #f3f4f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }

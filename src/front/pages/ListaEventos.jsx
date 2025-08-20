@@ -9,21 +9,24 @@ export const ListaEventos = () => {
     const [eventos, setEventos] = useState([]);
 
     useEffect(() => {
-        const listadoEventos = async () => {
-            try {
-                const respuesta = await fetch(backendUrl + `eventos`,);
-                const data = await respuesta.json();
-                setEventos(data.response);
+    const listadoEventos = async () => {
+        try {
+            const respuesta = await fetch(backendUrl + `events`);
+            const data = await respuesta.json();
 
-                if (!respuesta.ok && data.length > 0) {
-                    notifyError("No hay eventos disponibles");
-                }
-            } catch (error) {
+            if (!respuesta.ok) {
                 notifyError("Error al cargar los eventos");
+                return;
             }
-        };
-        listadoEventos();
-    }, []);
+
+            setEventos(data.response);
+
+        } catch (error) {
+            notifyError("Error al cargar los eventos");
+        }
+    };
+    listadoEventos();
+}, []);
 
 
     return (

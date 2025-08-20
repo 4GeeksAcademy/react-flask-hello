@@ -10,6 +10,7 @@ import { Forgot } from './pages/Forgot.jsx';
 import { Reset } from './pages/Reset.jsx';
 import { MisEventos } from "./pages/MisEventos.jsx";
 import { ListaEventos } from "./pages/ListaEventos.jsx";
+import { PerfilUsuario } from "./pages/PerfilUsuario.jsx";
 
 
 export const router = createBrowserRouter(
@@ -18,27 +19,31 @@ export const router = createBrowserRouter(
       {/* Home (index) */}
       <Route index element={<Home />} />
       {/* Alternativa a lo de antes: /home */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/home/:token" element={<Home />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/home/:token" element={<Home />} />
+      <Route path="/home/:token/:resetPassword/:email/reset" element={<Reset />} />
 
       {/* Auth */}
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="forgot" element={<Forgot />} />
-      <Route path="reset" element={<Reset />} />
 
-      
 
-        {/* Rutas adicionales */}
-        <Route path="/crear-evento" element={<CreateEvent />} />
-        <Route path="/crear-evento/:eventId" element={<CreateEvent />} />
-        
-        
+
+
+      {/* Rutas adicionales */}
+      <Route path="/crear-evento" element={<CreateEvent />} />
+      <Route path="/crear-evento/:eventId" element={<CreateEvent />} />
+
+
 
       {/* Eventos */}
       <Route path="eventos" element={<ListaEventos />} />
       <Route path="mis-eventos" element={<MisEventos />} />
       
+      {/* Usuario */}
+      <Route path="user/perfil" element={<PerfilUsuario />} />
+
 
       {/* Catch-all */}
       <Route path="*" element={<NotFound />} />

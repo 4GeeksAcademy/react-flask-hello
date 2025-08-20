@@ -4,8 +4,9 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
+
 const navigation = [
-  { name: "Home", to: "/home" },           // o "/"
+  { name: "Home", to: "/" },           // o "/"
   { name: "Eventos", to: "/eventos" }
 ];
 export function Navbar() {
@@ -108,9 +109,11 @@ export function Navbar() {
                   </button>
                   {isProfileMenuOpen && (
                     <div className="profile-dropdown">
-                      <button className="dropdown-item" type="button">
-                        <UserIcon className="icon-sm" /> Tu perfil
-                      </button>
+                      <Link to={"/user/perfil"}>
+                        <button className="dropdown-item" type="button">
+                         <UserIcon className="icon-sm" /> Tu perfil
+                         </button>
+                      </Link>
                       <Link to={"/crear-evento"}>
                         <button className="dropdown-item" type="button">Crear evento</button>
                       </Link>

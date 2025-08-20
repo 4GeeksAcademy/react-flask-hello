@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { backendUrl } from '../utils/Config';
 
 
 export const Reset = () => {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('access_token') || ''; // token que viene en la URL
   const [newPassword, setNewPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
+  let { resetPassword, email } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,11 +16,11 @@ export const Reset = () => {
     }
     try {
 
-      const res = await fetch( backendUrl + "user/reset", {
+      const res = await fetch(backendUrl + "user/reset", {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token: token, new_password: newPassword }),
+        body: JSON.stringify({ access_token: resetPassword, new_password: newPassword, email: email }),
       });
       const data = await res.json();
 
@@ -36,17 +35,17 @@ export const Reset = () => {
   };
 
   useEffect(() => {
-    if (!token) setMensaje('Token no válido o no proporcionado en la URL.');
-  }, [token]);
+    if (!resetPassword) setMensaje('Token no válido o no proporcionado en la URL.');
+  }, [resetPassword]);
 
   return (
     <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
       <h2>Restablecer Contraseña</h2>
       {mensaje && <p>{mensaje}</p>}
-      {token && (
+      {resetPassword && (
         <form onSubmit={handleSubmit}>
           <input
-            type="password"
+            type="text"
             placeholder="Nueva contraseña"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}

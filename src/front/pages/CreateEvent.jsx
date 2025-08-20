@@ -1,12 +1,12 @@
+// src/front/pages/CreateEvent.jsx
 import { useEffect, useState } from "react";
-import { supabase } from '../../api/supabaseClient.js';
-import { useNavigate, useParams, useRevalidator } from "react-router-dom"
-import { backendUrl } from '../utils/Config';
-import { notifyError, notifySuccess } from '../utils/Notifications';
+import { supabase } from "../../api/supabaseClient.js";
+import { useNavigate, useParams } from "react-router-dom";
+import { backendUrl } from "../utils/Config";
+import { notifyError, notifySuccess } from "../utils/Notifications";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export function CreateEvent() {
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -14,51 +14,62 @@ export function CreateEvent() {
     maxGuests: "",
     categories: [],
     portada: "",
-    price: 0
+    price: 0,
   });
+
   const [categoryInput, setCategoryInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  let { eventId } = useParams();
-  const { dispatch, store } = useGlobalReducer()
+
+  const { eventId } = useParams();
+  const { store } = useGlobalReducer();
   const navigate = useNavigate();
+
+  // Si cambia la URL de la portada, reseteamos el estado de error de imagen
+  useEffect(() => {
+    setImgError(false);
+  }, [formData.portada]);
 
   useEffect(() => {
     if (eventId) {
-      let findEvent = store.misEventos.find(e => e.id == eventId)
-      console.log(findEvent)
+      const findEvent = store.misEventos.find((e) => e.id == eventId);
 
-      if (!findEvent) navigate("/mis-eventos")
-      let categories = findEvent.categoria.split(",");
-
-      let newFormat = {
-        title: findEvent.titulo,
-        description: findEvent.definicion,
-        date: findEvent.fecha,
-        maxGuests: findEvent.max_asist,
-        categories: categories,
-        portada: findEvent.portada,
-        price: findEvent.precio
+      if (!findEvent) {
+        navigate("/mis-eventos");
+        return;
       }
 
-      setFormData(newFormat)
+      const categories = findEvent.categoria
+        ? findEvent.categoria.split(",").map((s) => s.trim()).filter(Boolean)
+        : [];
+
+      const newFormat = {
+        title: findEvent.titulo || "",
+        description: findEvent.definicion || "",
+        date: findEvent.fecha || "",
+        maxGuests: findEvent.max_asist ?? "",
+        categories,
+        portada: findEvent.portada || "",
+        price: findEvent.precio ?? 0,
+      };
+
+      setFormData(newFormat);
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-
-  const isValidTag = (tag) => {
-    const validPattern = /^[\w-]{1,12}$/;
-    return validPattern.test(tag);
-  };
+  const isValidTag = (tag) => /^[\w-]{1,12}$/.test(tag);
 
   const handleCategoryInput = (e) => {
     setCategoryInput(e.target.value);
@@ -76,7 +87,7 @@ export function CreateEvent() {
       if (isValidTag(newTag) && !formData.categories.includes(newTag)) {
         setFormData((prev) => ({
           ...prev,
-          categories: [...prev.categories, newTag]
+          categories: [...prev.categories, newTag],
         }));
         setCategoryInput("");
       }
@@ -86,22 +97,17 @@ export function CreateEvent() {
   const handleRemoveCategory = (tag) => {
     setFormData((prev) => ({
       ...prev,
-      categories: prev.categories.filter((t) => t !== tag)
+      categories: prev.categories.filter((t) => t !== tag),
     }));
   };
 
-
-  const rutaVistaHome = () => {
-    navigate("/home");
-  };
+  const rutaVistaHome = () => navigate("/home");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-
-
       const payload = {
         titulo: formData.title,
         definicion: formData.description,
@@ -111,37 +117,32 @@ export function CreateEvent() {
         max_asist: formData.maxGuests || null,
         portada: formData.portada || "",
       };
+
       if (eventId) {
+        // ACTUALIZAR
         await fetch(backendUrl + `events/${eventId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload)
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         });
-      } else {
-        await fetch(backendUrl + `events/${userId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // opcional si el backend lo requiere
-          },
-          body: JSON.stringify(payload)
-        });
-      }
-
-      if (eventId) {
         notifySuccess("Actualizado exitosamente!");
-        navigate('/mis-eventos');
+        navigate("/mis-eventos");
       } else {
+        // CREAR
+        await fetch(backendUrl + `events/${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // si el backend lo requiere
+          },
+          body: JSON.stringify(payload),
+        });
         notifySuccess("Evento creado exitosamente!");
-        navigate('/home');
+        navigate("/home");
       }
-
-
     } catch (error) {
-      notifyError('Error de red o servidor');
-      console.error('Error en fetch:', error);
+      notifyError("Error de red o servidor");
+      console.error("Error en fetch:", error);
     } finally {
       setIsLoading(false);
     }
@@ -149,8 +150,25 @@ export function CreateEvent() {
 
   return (
     <main className="create-event">
-      <section className="create-event__card">
+      {/* Video de fondo */}
+      <video
+        className="create-event__bg-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+      >
+        {/* CEl video */}
+        <source src="https://cdn.pixabay.com/video/2022/07/29/125976-735666724_large.mp4" type="video/mp4" />
+        {/* <source src="https://cdn.pixabay.com/video/2023/08/29/1775498_large.mp4" type="video/mp4" /> */}
+      </video>
 
+      {/* Capa oscura */}
+      <div className="create-event__bg-overlay" />
+
+      {/* TARJETA / FORMULARIO */}
+      <section className="create-event__card">
         <div className="create-event__topbar">
           <button
             onClick={rutaVistaHome}
@@ -163,20 +181,18 @@ export function CreateEvent() {
         </div>
 
         <h1 className="create-event__title">
-          {
-            eventId ? "Actualizar evento" : "Crear evento"
-          }
+          {eventId ? "Actualizar evento" : "Crear evento"}
         </h1>
         <p className="create-event__subtitle">Completa el formulario</p>
 
         {/* Preview circular */}
         <div className="thumb">
-          {formData.portada ? (
+          {formData.portada && !imgError ? (
             <img
               src={formData.portada}
-              alt=""
-              onError={() => setImgError(true)}
+              alt="Portada del evento"
               className="thumb__img"
+              onError={() => setImgError(true)}
             />
           ) : (
             <span className="thumb__placeholder">Imagen del evento</span>
@@ -186,7 +202,7 @@ export function CreateEvent() {
         <form onSubmit={handleSubmit} className="create-event__form">
           {/* Imagen */}
           <div className="form-row">
-            <label htmlFor="image">Imagen principal del evento</label>
+            <label htmlFor="portada">Imagen principal del evento</label>
             <input
               id="portada"
               type="text"
@@ -196,6 +212,9 @@ export function CreateEvent() {
               disabled={isLoading}
               required
             />
+            <small className="help">
+              Puedes pegar una URL de imagen (por ejemplo, de Unsplash).
+            </small>
           </div>
 
           {/* Título */}
@@ -247,7 +266,8 @@ export function CreateEvent() {
               required={formData.categories.length === 0}
             />
             <small className="help">
-              Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y guiones
+              Máximo 4 etiquetas · 12 caracteres máx. · Solo letras, números y
+              guiones
             </small>
 
             <div className="chips">
@@ -268,7 +288,7 @@ export function CreateEvent() {
             </div>
           </div>
 
-          {/* Fecha y Hora */}
+          {/* Fecha */}
           <div className="form-row form-row--half">
             <label htmlFor="date">Fecha</label>
             <input
@@ -282,7 +302,6 @@ export function CreateEvent() {
             />
           </div>
 
-
           {/* Máximo asistentes */}
           <div className="form-row form-row--half">
             <label htmlFor="maxGuests">Máximo de asistentes (opcional)</label>
@@ -295,7 +314,8 @@ export function CreateEvent() {
                 setFormData((prev) => ({ ...prev, maxGuests: e.target.value }))
               }
               onKeyDown={(e) => {
-                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+                if (["e", "E", "+", "-", ".", ","].includes(e.key))
+                  e.preventDefault();
               }}
               min="1"
               step="1"
@@ -310,6 +330,7 @@ export function CreateEvent() {
             )}
           </div>
 
+          {/* Precio */}
           <div className="form-row form-row--half">
             <label htmlFor="price">Precio</label>
             <input
@@ -321,7 +342,8 @@ export function CreateEvent() {
                 setFormData((prev) => ({ ...prev, price: e.target.value }))
               }
               onKeyDown={(e) => {
-                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+                if (["e", "E", "+", "-", ".", ","].includes(e.key))
+                  e.preventDefault();
               }}
               min="1"
               step="1"
@@ -330,8 +352,6 @@ export function CreateEvent() {
               disabled={isLoading}
             />
           </div>
-
-
 
           {/* Acciones */}
           <div className="form-actions">
@@ -345,9 +365,7 @@ export function CreateEvent() {
             </button>
 
             <button type="submit" disabled={isLoading} className="btn btn-primary">
-              {
-                eventId ? "Actualizar evento" : "Crear evento"
-              }
+              {eventId ? "Actualizar evento" : "Crear evento"}
             </button>
           </div>
         </form>

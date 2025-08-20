@@ -4,7 +4,6 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
-import { AjustesUsuario } from "../pages/AjustesUsuario.jsx";
 
 const navigation = [
   { name: "Home", to: "/home" },           // o "/"
@@ -110,20 +109,16 @@ export function Navbar() {
                   </button>
                   {isProfileMenuOpen && (
                     <div className="profile-dropdown">
-                      <button className="dropdown-item" type="button">
-                        <UserIcon className="icon-sm" /> Tu perfil
-                      </button>
                       <Link to={"/user/perfil"}>
-                        <button className="dropdown-item" type="button">Ir a tu perfil</button>
+                        <button className="dropdown-item" type="button">
+                         <UserIcon className="icon-sm" /> Tu perfil
+                         </button>
                       </Link>
                       <Link to={"/crear-evento"}>
                         <button className="dropdown-item" type="button">Crear evento</button>
                       </Link>
                       <Link to={"/mis-eventos"}>
                         <button className="dropdown-item" type="button">Mis eventos</button>
-                      </Link>
-                      <Link to={"/user/ajustes"}>
-                        <button className="dropdown-item" type="button">Ajustes</button>
                       </Link>
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item logout" onClick={handleLogout} type="button">

@@ -2,7 +2,6 @@ import "./home.css"
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Games } from "../../components/games/Games";
-import { Maps } from "../../components/maps/Maps";
 
 
 
@@ -76,9 +75,6 @@ export const Home = () => {
       </div>
       <div>
         <Games />
-      </div>
-      <div className="mt-10" style={{ height: 500 }}>
-        <Maps />
       </div>
     </div>
   );

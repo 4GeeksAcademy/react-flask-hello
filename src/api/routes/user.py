@@ -180,7 +180,7 @@ def reset_password():
         }), 500
     
 
-@api.route('/user/<user_id>', methods=['GET'])
+@api.route('/<user_id>', methods=['GET'])
 def get_user_data(user_id):
     try:
         resp = supabase.table('Usuario') \

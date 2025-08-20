@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
-import { notifyError, notifySuccess } from "../utils/Notifications";
+import { notifyError, notifySuccess } from '../utils/Notifications';
 
 const navigation = [
   { name: "Home", to: "/" },           // o "/"
@@ -94,64 +94,47 @@ export function Navbar() {
 
           {/* Acciones derecha */}
           <div className="navbar-actions">
-            {!token ? (
-              <>
-                <NavLink to="/login" className="navbar-link">
-                  Login
-                </NavLink>
-                <NavLink to="/register" className="navbar-link">
-                  Register
-                </NavLink>
-              </>
-            ) : (
-              <div className="profile-menu" ref={profileMenuRef}>
-                <button
-                  className="profile-btn"
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  type="button"
-                  aria-label="Abrir menú de perfil"
-                  aria-expanded={isProfileMenuOpen}
-                >
-                  <div className="profile-avatar">
-                    <UserIcon className="icon" />
-                  </div>
-                </button>
-
-                {isProfileMenuOpen && (
-                  <div className="profile-dropdown">
-                    <Link
-                      to="/perfil"
-                      className="dropdown-item"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      <UserIcon className="icon-sm" /> Tu perfil
-                    </Link>
-
-                    <Link
-                      to="/crear-evento"
-                      className="dropdown-item"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Crear evento
-                    </Link>
-
-                    <Link
-                      to="/mis-eventos"
-                      className="dropdown-item"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Mis eventos
-                    </Link>
-
-                    <div className="dropdown-divider"></div>
-
-                    <button className="dropdown-item logout" onClick={handleLogout} type="button">
-                      Cerrar sesión
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            {
+              !token ? (
+                <>
+                  <NavLink to="/login" className="navbar-link">Login</NavLink>
+                  <NavLink to="/register" className="navbar-link">Register</NavLink>
+                </>
+              ) : (
+                <div className="profile-menu" ref={profileMenuRef}>
+                  <button
+                    className="profile-btn"
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    type="button"
+                    aria-label="Abrir menú de perfil"
+                    aria-expanded={isProfileMenuOpen}
+                  >
+                    <div className="profile-avatar">
+                      <UserIcon className="icon" />
+                    </div>
+                  </button>
+                  {isProfileMenuOpen && (
+                    <div className="profile-dropdown">
+                      <Link to={"/user/perfil"}>
+                        <button className="dropdown-item" type="button">
+                         <UserIcon className="icon-sm" /> Tu perfil
+                         </button>
+                      </Link>
+                      <Link to={"/crear-evento"}>
+                        <button className="dropdown-item" type="button">Crear evento</button>
+                      </Link>
+                      <Link to={"/mis-eventos"}>
+                        <button className="dropdown-item" type="button">Mis eventos</button>
+                      </Link>
+                      <div className="dropdown-divider"></div>
+                      <button className="dropdown-item logout" onClick={handleLogout} type="button">
+                        Cerrar sesión
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )
+            }
           </div>
         </div>
 

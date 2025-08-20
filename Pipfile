@@ -23,6 +23,8 @@ flask-migrate = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
 stripe = "*"
+tomli = "*"
+
 
 [requires]
 python_version = "3.13"

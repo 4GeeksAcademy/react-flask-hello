@@ -21,7 +21,16 @@ export const ResetPassword = () => {
     };
     const handleSubmit = async e => {
         e.preventDefault();
-        if (!isLoggedIn) {
+        if (token) {
+            if (newPassword.nuevaContraseña === newPassword.checkNuevaContraseña) {
+                const resp = await fetch(`${backendUrl}api/user/resetPassword`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({"password" : newPassword,"token": token})
+                });
+            }
+
+        }else{
             const resp = await fetch(`${backendUrl}api/resetPassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -29,32 +38,22 @@ export const ResetPassword = () => {
             });
 
             const data = await resp.json();
-            console.log(data)
-            localStorage.setItem("jwt_token", data.msj.Message.subject.token);
 
-        } 
-        if(isPassChanged && token){
-            if (newPassword.nuevaContraseña === newPassword.checkNuevaContraseña) {
-                const resp = await fetch(`${backendUrl}api/user/resetPassword`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(newPassword)
-                });
-            }
+            
         }
     }
     return (
-        <div style={styles.container}>
-            <h2 style={styles.title}>Siembra tu Acceso al Cereal</h2>
-            <form onSubmit={handleSubmit} style={styles.form}>
-                {!localStorage.getItem('jwt_Token') ? (
+        <div style={beautifulStyles.container}>
+            <h2 style={beautifulStyles.title}>Siembra tu Acceso al Cereal</h2>
+            <form onSubmit={handleSubmit} style={beautifulStyles.form}>
+                {!token ? (
                 <input
                     name="email"
                     type="email"
                     placeholder="Correo del sembrador"
                     onChange={handleChangeEmail}
                     required
-                    style={styles.input}
+                    style={beautifulStyles.input}
                 />
                 ) : (<>
                 <input
@@ -63,7 +62,7 @@ export const ResetPassword = () => {
                     placeholder="Nueva Contraseña"
                     onChange={handleChangeNewPassword}
                     required
-                    style={styles.input}
+                    style={beautifulStyles.input}
                 />
                 <input
                     name="checkNuevaContraseña"
@@ -71,13 +70,13 @@ export const ResetPassword = () => {
                     placeholder="Vuelva a escribir la misma contraseña"
                     onChange={handleChangeNewPassword}
                     required
-                    style={styles.input}
+                    style={beautifulStyles.input}
                 /></>
                 )}
                 
                 
-                <button type="submit" style={styles.button} disabled={sending}>
-                    {sending ? "Arando..." : "¡Se cambio la clave correctamente!"}
+                <button type="submit" style={beautifulStyles.button} >
+                    Confirmar
                 </button>
             </form>
         </div>

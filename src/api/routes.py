@@ -11,6 +11,8 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_mail import Message
 from extension import mail
+import os
+import re
 
 
 
@@ -19,6 +21,8 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
 
 
 @api.route('/', methods=['POST', 'GET'])
@@ -53,13 +57,13 @@ def user_register():
 
 
 @api.route('/user/resetPassword', methods=['PUT'])
-@jwt_required()
 def user_resetPassWord():
-    current_user = get_jwt_identity()
+    body = request.get_json()
+    current_user = body["token"]
     user = User.query.get(current_user)
 
-    body = request.get_json()
-    new_pass=bcrypt.hashpw(body["nuevaContraseña"].encode(), bcrypt.gensalt())
+    
+    new_pass=bcrypt.hashpw(body["password"].encode(), bcrypt.gensalt())
 
     user.password = new_pass.decode()
 
@@ -195,8 +199,9 @@ def resetPassword():
     user = User.query.filter_by(email=data["email"]).first()
     user_serialize = user.serialize()
     token = create_access_token(identity=str(user_serialize["id"]))
-
-    reset_url_password = f"https://animated-pancake-x5pjxq9vv4gj2ppgx-3000.app.github.dev/api/resetPassword/{token}"
+    cadena_modificada = re.sub(r"\.", "_", token)
+    reset_url_password = f"{os.getenv("VITE_FRONTEND_URL")}resetPassword/{cadena_modificada}"
+    
     msg = Message(
         "Email",
         html=f"<p>para restablecer la contraseña, da click <a href={reset_url_password}>aqui</a> </p>",

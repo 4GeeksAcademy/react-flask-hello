@@ -76,7 +76,7 @@ export const Login = () => {
         </button>
       </form>
 
-      <Link to=""><button
+      <Link to="/resetPassword/"><button
         type="button"
         
         style={styles.button}

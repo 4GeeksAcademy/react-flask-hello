@@ -82,7 +82,7 @@ def create_event():
             title=data['title'],
             date=data['date'],
             description=data.get('description', ''),
-
+            # image=data['image'],
             location=data['location'],
             lat=lat,
             lng=lng,

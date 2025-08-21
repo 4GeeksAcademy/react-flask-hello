@@ -58,6 +58,7 @@ class Event(db.Model):
     artist_id: Mapped[Optional[int]] = mapped_column(ForeignKey("artist.id"))
     price: Mapped[float] = mapped_column(
         Numeric(10, 2), nullable=False, default=0)
+    # image: Mapped[str] = mapped_column(String(120), nullable=True)
 
     artist = relationship("Artist", back_populates="events")
     purchases: Mapped[List["Purchase"]] = relationship(back_populates="event")
@@ -73,8 +74,8 @@ class Event(db.Model):
             "lng": float(self.lng) if self.lng is not None else None,
             "artist_id": self.artist_id,
             "artist_name": self.artist.name if self.artist else None,
-            "price": float(self.price) if self.price is not None else 0.0
-
+            "price": float(self.price) if self.price is not None else 0.0,
+            # "image": self.image,
         }
 
 

@@ -7,37 +7,8 @@ export const Home = () => {
     const [events, setEvents] = useState([]);
     const [loadingEvents, setLoadingEvents] = useState(true);
     const [errorEvents, setErrorEvents] = useState(null);
-    const [loadingMessage, setLoadingMessage] = useState(true);
-    const [errorMessage, setErrorMessage] = useState(null);
-
+    const [selectedCard, setSelectedCard] = useState(null);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-    const loadMessage = async () => {
-        setLoadingMessage(true);
-        setErrorMessage(null);
-        if (!backendUrl) {
-            setErrorMessage("Error: La URL del backend no está configurada.");
-            setLoadingMessage(false);
-            return;
-        }
-        try {
-            const response = await fetch(`${backendUrl}api/hello`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                dispatch({ type: "set_hello", payload: data.message });
-            } else {
-                setErrorMessage(`Error al cargar el mensaje: ${data.message || response.statusText}`);
-            }
-        } catch (error) {
-            console.error("Error de conexión al cargar mensaje:", error);
-            setErrorMessage("Hubo un problema al conectar con el backend para el mensaje.");
-        } finally {
-            setLoadingMessage(false);
-        }
-    };
 
     const fetchEvents = async () => {
         setLoadingEvents(true);
@@ -67,40 +38,9 @@ export const Home = () => {
     };
 
     useEffect(() => {
-        loadMessage();
         fetchEvents();
     }, [backendUrl, dispatch]);
 
-
-    const [selectedCard, setSelectedCard] = useState(null);
-    const cards = [
-        {
-            title: "DJ PEDRO",
-            text: "Entrada desde: € 50",
-            image: "https://images.pexels.com/photos/1694908/pexels-photo-1694908.jpeg",
-        },
-        {
-            title: "DJPIBAS",
-            text: "Entrada desde: € 50",
-            image: "https://images.pexels.com/photos/1649691/pexels-photo-1649691.jpeg",
-        },
-        {
-            title: "DJ JOSE",
-            text: "Entrada desde: € 50",
-            image: "https://images.pexels.com/photos/743715/pexels-photo-743715.jpeg",
-        },
-        {
-            title: "DJ PEPITA",
-            text: "Entrada desde: € 50",
-            image: "https://images.pexels.com/photos/2240763/pexels-photo-2240763.jpeg",
-        },
-        {
-            title: "DJ MARTA",
-            text: "Entrada desde: € 50",
-            image: "https://images.pexels.com/photos/3682820/pexels-photo-3682820.jpeg",
-        },
-
-    ];
 
     const cards2 = [
         {
@@ -134,7 +74,7 @@ export const Home = () => {
             <div className="container py-5 p-1">
                 <h2 className="titulos display-4 text-center fw-bold">Top trending</h2>
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mt-1">
-                    {cards.map((card, index) => (
+                    {events.map((card, index) => (
                         <div className="col" key={`static-${index}`}>
                             <button type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}>
                                 <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden card-home">
@@ -149,7 +89,7 @@ export const Home = () => {
                                     <div className="card-gradient position-absolute w-100 h-100"></div>
                                     <div className="card-body d-flex flex-column justify-content-end position-relative">
                                         <h5 className="card-title">{card.title}</h5>
-                                        <p className="card-text">{card.text}</p>
+                                        <p className="card-text">{card.description}</p>
                                     </div>
                                 </div>
                             </button>
@@ -240,35 +180,33 @@ export const Home = () => {
                         )}
 
                         {/* CONTENIDO DE LA MODAL */}
-                        <div className="modal-header position-relative" style={{ zIndex: 2 }}>
-                            <h1 className="modal-title text-center w-100 title-modal" id="staticBackdropLabel">
-                                {selectedCard ? selectedCard.title : "TITULO DE LAS CARDS"}
-                            </h1>
-                        </div>
-                        <div className="modal-body position-relative text-white" style={{ zIndex: 2 }}>
-                            <ul>
-                                <li>AQUI</li>
-                                <li>ESTARA</li>
-                                <li>TODA</li>
-                                <li>LA</li>
-                                <li>INFORMACION</li>
-                                <li>DEL</li>
-                                <li>EVENTO</li>
-                                <li>COMO</li>
-                                <li>PRECIOS</li>
-                                <li>LUGAR</li>
-                                <li>PARA COMPRAR</li>
-                                <li>ENTRE OTRAS COSAS</li>
-                            </ul>
-                        </div>
-                        <div className="modal-footer position-relative" style={{ zIndex: 2 }}>
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                                Cerrar
-                            </button>
-                            <button type="button" className="btn btn-primary">
-                                Comprar
-                            </button>
-                        </div>
+
+                        {
+                            selectedCard && (
+                                <>
+                                    <div className="modal-header position-relative" style={{ zIndex: 2 }}>
+                                        <h1 className="modal-title text-center w-100 title-modal" id="staticBackdropLabel">
+                                            {selectedCard ? selectedCard.title : "TITULO DE LAS CARDS"}
+                                        </h1>
+                                    </div>
+                                    <div className="modal-body position-relative text-white" style={{ zIndex: 2 }}>
+                                        <ul>
+                                            <li>{selectedCard.price}</li>
+                                            <li>{selectedCard.location}</li>
+                                            <li>{selectedCard.description}</li>
+                                        </ul>
+                                    </div>
+                                    <div className="modal-footer position-relative" style={{ zIndex: 2 }}>
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                            Cerrar
+                                        </button>
+                                        <button type="button" className="btn btn-primary">
+                                            Comprar
+                                        </button>
+                                    </div>
+                                </>
+                            )
+                        }
                     </div>
                 </div>
             </div>

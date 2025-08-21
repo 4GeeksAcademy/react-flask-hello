@@ -13,7 +13,8 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.jsx";
 import { EventForm } from "./pages/EventForm.jsx";
 import { Prebuy } from "./pages/Prebuy.jsx";
 import { Events } from "./pages/Events.jsx"; 
-import {EventsMapView} from "./components/EventsMapView"
+import {EventsMapView} from "./components/EventsMapView";
+import { ResetPasswordPage } from "./pages/Resetpassword.jsx";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,6 +23,7 @@ export const router = createBrowserRouter(
             <Route path="/home" element={<Home />} />
             <Route path="/events" element={<Events />} /> 
             <Route path="/single/:theId" element={<Single />} />
+            <Route path="/resetpassword" element={<ResetPasswordPage />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />

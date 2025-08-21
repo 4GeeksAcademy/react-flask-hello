@@ -6,6 +6,7 @@ from flask_mail import Message
 from datetime import datetime, timedelta
 import os
 from flask_cors import CORS
+from itsdangerous import URLSafeTimedSerializer
 
 resetemail_bp = Blueprint('resetemail', __name__,)
 CORS(resetemail_bp)
@@ -18,10 +19,17 @@ def forgot_password():
         user = User.query.filter_by(email=email).first()
 
         if user:
-            reset_token = user.get_reset_token()
-            msg = Message('Restablecer tu contraseña', sender=os.environ.get('MAIL_USERNAME'), recipients=[user.email])
-            reset_url = url_for('resetemail.reset_password', token=reset_token, _external=True)
-            msg.body = f"Para restablecer tu contraseña, haz clic en el siguiente enlace: "
+            
+            serializer = URLSafeTimedSerializer(os.getenv('TOKEN_KEY'))
+            token = serializer.dumps(email,salt="passwordreset")
+            url=f"https://potential-space-tribble-q7455v6v5qjw346w9-3000.app.github.dev/resetpassword/{token}/success"
+            print (url)
+            msg = Message(
+        'Prueba de email',
+        sender=os.environ.get('MAIL_USERNAME'),
+        html=f"<p>para restablecer la contraseña, da click <a href={url}>aqui</a> </p>",
+        recipients=[email]
+    )
             mail.send(msg)
         
         return jsonify({"msg": "Si existe un usuario con ese email, se ha enviado un enlace de recuperación."}), 200

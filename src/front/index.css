@@ -82,12 +82,12 @@
   width: 100%;
   box-shadow: 
   0 2px 4px rgb(255, 255, 255),
-  0 8px 16px rgb(0, 0, 0);
+  0 4px 10px rgb(0, 0, 0);
 }
 .form-evet{
   box-shadow: 
   0 2px 4px rgb(255, 255, 255),
-  0 8px 16px rgb(0, 0, 0);
+  0 4px 10px rgb(0, 0, 0);
   border-radius: 0.75rem;
 }
 
@@ -114,7 +114,7 @@ body.dark-theme .login-form-card {
   color: #f8f9fa;
   box-shadow: 
   0 2px 4px rgb(0, 0, 0),
-  0 8px 16px rgb(255, 255, 255);
+  0 4px 10px rgb(255, 255, 255);
 }
 
 body.dark-theme .login-form-card a {
@@ -140,13 +140,13 @@ body.dark-theme .form-evet {
   border-color: #212529;
   box-shadow: 
   0 2px 4px rgb(0, 0, 0),
-  0 8px 16px rgb(255, 255, 255);
+  0 4px 10px rgb(255, 255, 255);
 }
 
 body.dark-theme .card-home:hover{
   box-shadow: 
   0 2px 4px rgb(0, 0, 0),
-  0 8px 16px rgb(255, 255, 255);
+  0 4px 10px rgb(255, 255, 255);
 }
 
 
@@ -206,7 +206,7 @@ body.dark-theme .card-home:hover{
   transform: translateY(-5px);
   box-shadow: 
   0 2px 4px rgb(255, 255, 255),
-  0 8px 16px rgb(0, 0, 0);
+  0 4px 10px rgb(0, 0, 0);
 }
 
 .card-bg {
@@ -266,7 +266,7 @@ body.dark-theme .card-home:hover{
 .card-overlay:hover{
   box-shadow: 
   0 2px 4px rgb(255, 255, 255),
-  0 8px 16px rgb(0, 0, 0);
+  0 4px 10px rgb(0, 0, 0);
 }
 
 .carouselB{

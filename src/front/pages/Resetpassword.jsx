@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 
 export const ResetPasswordPage = () => {
     const [password, setPassword] = useState("");
+
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const { token } = useParams();
+    console.log(token)
 
     const handleResetPassword = async (e) => {
         e.preventDefault();
@@ -15,7 +17,6 @@ export const ResetPasswordPage = () => {
             return;
         }
 
-        const token = searchParams.get("token");
         if (!token) {
             alert("Token de restablecimiento no encontrado.");
             return;
@@ -28,8 +29,8 @@ export const ResetPasswordPage = () => {
                 return;
             }
 
-            const response = await fetch(`${backendUrl}/resetpassword/${token}`, {
-                method: "PUT",
+            const response = await fetch(`${backendUrl}api/reset-password/${token}`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },

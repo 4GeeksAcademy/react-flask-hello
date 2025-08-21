@@ -23,7 +23,7 @@ export const router = createBrowserRouter(
             <Route path="/home" element={<Home />} />
             <Route path="/events" element={<Events />} /> 
             <Route path="/single/:theId" element={<Single />} />
-            <Route path="/resetpassword" element={<ResetPasswordPage />} />
+            <Route path="/resetpassword/:token/success" element={<ResetPasswordPage />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />

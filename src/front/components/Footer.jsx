@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/Footer.css"
+import logoFooter from "../assets/img/logoFooter.png";
 
 
 export const Footer = () => {
@@ -17,7 +18,7 @@ export const Footer = () => {
           {/* Marca */}
           <div className="footer__brand">
             <div className="brand__logo" aria-hidden="true">
-                <img src="src/front/assets/img/logoFooter.png" alt="Logo Knect" className="brand__icon" style={{ width: 20, height: 40 }} />
+                <img src={logoFooter} alt="Logo Knect" className="brand__icon" style={{ width: 20, height: 40 }} />
             </div>
             <div>
               <p className="brand__title">Knect</p>

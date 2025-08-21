@@ -4,6 +4,7 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
+import  Knect_logo from "../assets/img/Knect_logo.png";
 
 const navigation = [
   { name: "Home", to: "/" },           // o "/"
@@ -73,7 +74,7 @@ export function Navbar() {
           {/* Marca + navegación */}
           <div className="brand-and-nav" style={{ flex: 1 }}>
             <Link to="/" className="navbar-logo" aria-label="Knect - Inicio">
-              <img src="src/front/assets/img/Knect-logo.png" alt="Knect logo" />
+              <img src={Knect_logo} alt="Logo" className="collage-img" />
             </Link>
 
             <nav className="navbar-nav" aria-label="Navegación principal">

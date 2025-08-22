@@ -47,21 +47,25 @@ export const Home = () => {
             title: 'Dj Paco',
             text: 'Entrada desde: € 50',
             image: 'https://images.pexels.com/photos/668278/pexels-photo-668278.jpeg',
+            description: 'https://images.pexels.com/photos/668278/pexels-photo-668278.jpeg',
         },
         {
             title: 'Conciertos',
             text: 'Entrada desde: 70€',
             image: 'https://images.pexels.com/photos/849/people-festival-party-dancing.jpg',
+            description: 'https://images.pexels.com/photos/849/people-festival-party-dancing.jpg'
         },
         {
             title: 'Rock',
             text: 'Entrada desde: 70€',
             image: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg',
+            description: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg'
         },
         {
             title: 'Reggaeton Fest',
             text: 'Entrada desde: 70€',
             image: 'https://images.pexels.com/photos/1179581/pexels-photo-1179581.jpeg',
+            description: 'https://images.pexels.com/photos/1179581/pexels-photo-1179581.jpeg'
         },
     ];
 
@@ -72,11 +76,11 @@ export const Home = () => {
                 <img src={imagenBack} alt="imagen fondo" />
             </div>
             <div className="container py-5 p-1">
-                <h2 className="titulos display-4 text-center fw-bold">Top trending</h2>
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mt-1">
+                <h2 className="titulos display-4 text-center fw-bold">Proximos Eventos</h2>
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mt-1 justify-content-center align-items-center">
                     {events.map((card, index) => (
                         <div className="col" key={`static-${index}`}>
-                            <button type="button" className="btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}>
+                            <button type="button" className="btn border-0 bg-transparent w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setSelectedCard(card)}>
                                 <div className="card text-white card-overlay h-100 border-0 position-relative overflow-hidden card-home">
                                     <div
                                         className="bg-img position-absolute w-100 h-100"
@@ -189,12 +193,13 @@ export const Home = () => {
                                             {selectedCard ? selectedCard.title : "TITULO DE LAS CARDS"}
                                         </h1>
                                     </div>
-                                    <div className="modal-body position-relative text-white" style={{ zIndex: 2 }}>
-                                        <ul>
-                                            <li>{selectedCard.price}</li>
-                                            <li>{selectedCard.location}</li>
-                                            {/* <li>{selectedCard.description}</li> */}
-                                        </ul>
+                                    <div className="modal-body d-flex justify-content-center align-items-center text-white vh-100" style={{ zIndex: 2 }}>
+                                        <div className="text-center">
+                                            <h1>{selectedCard.artist_name}</h1>
+                                            <h3>Entrada desde: {selectedCard.price}€</h3>
+                                            <h4>direccion: {selectedCard.location}</h4>
+                                            <h4>Fecha: {selectedCard.date}</h4> 
+                                        </div>
                                     </div>
                                     <div className="modal-footer position-relative" style={{ zIndex: 2 }}>
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">

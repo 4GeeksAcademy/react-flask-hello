@@ -12,6 +12,8 @@ from api.database.db import db
 
 import api.routes.user as api_user
 import api.routes.games as api_games
+from api.routes.payment import payment_api as payment_api
+
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
@@ -64,6 +66,8 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api_user.api, url_prefix='/api/user')
 app.register_blueprint(api_games.api, url_prefix='/api/games')
+app.register_blueprint(payment_api, url_prefix="/api/payment")
+
 
 
 # Handle/serialize errors like a JSON object

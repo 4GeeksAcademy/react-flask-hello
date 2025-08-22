@@ -10,6 +10,7 @@ export const VerEvento = () => {
     const verEvento = async () => {
       try {
         const respuesta = await fetch(`${backendUrl}events/listado-eventos`);
+        
         const data = await respuesta.json();
         setEventos(data);
 

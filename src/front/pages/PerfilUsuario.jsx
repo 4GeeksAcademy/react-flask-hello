@@ -52,11 +52,11 @@ export const PerfilUsuario = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('/fondo_login.jpg')",
+        backgroundImage: "url('https://picsum.photos/id/1015/1200/800')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
-        color: "#fff",
+        color: "#ffffffff",
       }}
     >
       <h1>Perfil de {usuario.nombre}</h1>
@@ -65,11 +65,22 @@ export const PerfilUsuario = () => {
         style={{
           maxWidth: "600px",
           margin: "0 auto",
-          background: "rgba(0,0,0,0.5)",
+          background: "rgba(66, 66, 66, 0.7)",
           padding: "2rem",
           borderRadius: "12px",
         }}
       >
+          <div style={{ marginTop: "2rem", textAlign: "center" }}>
+          <img
+              src={usuario.avatar}
+              alt="Avatar"
+              style={{
+                width: "120px",
+                borderRadius: "50%",
+                border: "2px solid #fff",
+              }}
+            />
+        </div>
         <div style={{ marginBottom: "1rem" }}>
           <strong>Nombre:</strong> {usuario.nombre}
         </div>
@@ -84,24 +95,9 @@ export const PerfilUsuario = () => {
         </div>
         <div style={{ marginBottom: "1rem" }}>
           <strong>Email:</strong> {usuario.email}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Rol:</strong> {usuario.rol}
-        </div>
-        {usuario.avatar && (
-          <div style={{ marginTop: "2rem", textAlign: "center" }}>
-            <img
-              src={usuario.avatar}
-              alt="Avatar"
-              style={{
-                width: "120px",
-                borderRadius: "50%",
-                border: "2px solid #fff",
-              }}
-            />
-          </div>
-        )}
       </div>
     </div>
+  </div>
+
   );
 }

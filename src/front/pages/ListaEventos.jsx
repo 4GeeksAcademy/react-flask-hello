@@ -11,7 +11,7 @@ export const ListaEventos = () => {
     useEffect(() => {
         const listadoEventos = async () => {
             try {
-                const respuesta = await fetch(backendUrl + `eventos`,);
+                const respuesta = await fetch(backendUrl + `events`,);
                 const data = await respuesta.json();
                 setEventos(data.response);
 

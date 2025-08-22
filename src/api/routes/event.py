@@ -151,3 +151,6 @@ def update_event(event_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+    # ver el evento por su id

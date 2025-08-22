@@ -12,7 +12,7 @@ import mexico from "../assets/img/mexico.jpg"
 import { Card } from "../components/Card.jsx";
 import { useParams } from 'react-router-dom';
 import { supabase } from "../../api/supabaseClient";
-
+import { ListaEventos } from "./ListaEventos.jsx";
 
 export const Home = () => {
   // carrusel
@@ -94,12 +94,9 @@ export const Home = () => {
               <Link to="/eventos" className="pill">Explorar todo</Link>
             </div>
           </div>
-
-          <div className="grid-cards">
-            {destinosPrincipales.map((d, idx) => (
-              <Card key={idx} d={d} />
-            ))}
-          </div>
+            <div style={{ margin: "40px 0" }}>
+              <ListaEventos></ListaEventos>
+            </div>
         </section>
 
         {/* Carrusel (Mi contenido) */}
@@ -131,7 +128,7 @@ export const Home = () => {
                 </p>
               </div>
             </div>
-
+   
             <div>
               <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
                 <img

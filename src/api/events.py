@@ -81,8 +81,8 @@ def create_event():
         new_event = Event(
             title=data['title'],
             date=data['date'],
-            description=data.get('description', ''),
-
+            description=data.get('image', ''),
+            # image=data['image'],
             location=data['location'],
             lat=lat,
             lng=lng,
@@ -155,6 +155,7 @@ def update_event(event_id):
         event.title = data['title']
         event.date = data['date']
         event.description = data.get('description', '')
+        # event.image = data('image')
         event.location = data['location']
         event.lat = lat
         event.lng = lng

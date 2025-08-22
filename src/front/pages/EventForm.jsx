@@ -24,7 +24,8 @@ export const EventForm = () => {
         lat: "",
         lng: "",
         artist_name: "",
-        price: ""
+        price: "",
+        image: "",
     });
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -76,6 +77,8 @@ export const EventForm = () => {
             setLoading(false);
         }
     };
+
+    console.log(formData)
 
     const initializeMap = () => {
         if (!window.google || !mapRef.current) return;
@@ -279,7 +282,7 @@ export const EventForm = () => {
 
             const method = editingEvent ? "PUT" : "POST";
 
-            const response = await fetch(url,{
+            const response = await fetch(url, {
                 method: method,
                 headers: {
                     "Content-Type": "application/json",
@@ -464,20 +467,21 @@ export const EventForm = () => {
                                                     required
                                                 />
                                             </div>
-                                        </div>
 
+                                        </div>
                                         <div className="mb-3">
-                                            <label htmlFor="description" className="form-label label-event">Descripción</label>
-                                            <textarea
+                                            <label htmlFor="image" className="form-label label-event">Imagen del Evento (URL)</label>
+                                            <input
+                                                type="url"
                                                 className="form-control"
-                                                id="description"
-                                                name="description"
-                                                rows="3"
-                                                value={formData.description}
+                                                id="image"
+                                                name="image"
+                                                value={formData.image || ""}
                                                 onChange={handleChange}
-                                            ></textarea>
+                                                placeholder="Ej: https://example.com/imagen.jpg"
+                                            />
                                         </div>
-
+                        
                                         {/* Sección de localización */}
                                         <div className="mb-3">
                                             <label htmlFor="location" className="form-label label-event">

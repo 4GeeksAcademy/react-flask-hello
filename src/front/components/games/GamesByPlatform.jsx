@@ -15,7 +15,15 @@ export default function GamesByPlatform() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [view, setView] = useState(false); // admin view como en Games
+  const [view, setView] = useState(false);
+
+  const norm = (s) =>
+    (s ?? "")
+      .toString()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "") 
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -40,7 +48,11 @@ export default function GamesByPlatform() {
           throw new Error(`HTTP ${res.status} - ${text || "Error al cargar juegos"}`);
         }
         const data = await res.json();
-        if (alive) setGames(Array.isArray(data.games) ? data.games : []);
+
+        const list = Array.isArray(data.games) ? data.games : [];
+        const filtered = list.filter((g) => norm(g.platform) === norm(platform));
+
+        if (alive) setGames(filtered);
       } catch (e) {
         console.error(e);
         if (alive) {
@@ -64,7 +76,9 @@ export default function GamesByPlatform() {
     try {
       const res = await fetch(`${backendUrl}api/games/platform/${encodeURIComponent(platform)}`);
       const data = await res.json();
-      setGames(Array.isArray(data.games) ? data.games : []);
+      const list = Array.isArray(data.games) ? data.games : [];
+      const filtered = list.filter((g) => norm(g.platform) === norm(platform));
+      setGames(filtered);
     } catch (e) {
       console.error(e);
     }
@@ -89,7 +103,7 @@ export default function GamesByPlatform() {
         backgroundSize: "400% 400%",
         minHeight: "100vh",
         padding: "1.5rem",
-        animation: "gradientShift 15s ease infinite"
+        animation: "gradientShift 15s ease infinite",
       }}
     >
       <style>

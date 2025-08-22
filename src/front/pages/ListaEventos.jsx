@@ -15,15 +15,19 @@ export const ListaEventos = () => {
                 const data = await respuesta.json();
                 setEventos(data.response);
 
-                if (!respuesta.ok && data.length > 0) {
-                    notifyError("No hay eventos disponibles");
-                }
-            } catch (error) {
+            if (!respuesta.ok) {
                 notifyError("Error al cargar los eventos");
+                return;
             }
-        };
-        listadoEventos();
-    }, []);
+
+            setEventos(data.response);
+
+        } catch (error) {
+            notifyError("Error al cargar los eventos");
+        }
+    };
+    listadoEventos();
+}, []);
 
 
     return (

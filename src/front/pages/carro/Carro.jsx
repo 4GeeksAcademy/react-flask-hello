@@ -49,6 +49,7 @@ export const Carro = () => {
 
     setPaymentLoading(true);
     
+    
     try {
       const currentUser = getCurrentUser();
       const userId = currentUser ? currentUser.id : null;

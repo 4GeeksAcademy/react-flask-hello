@@ -6,10 +6,6 @@ from decimal import Decimal
 
 db = SQLAlchemy()
 
-
-db = SQLAlchemy()
-
-
 # Tabla que relaciona user con rol
 UserRole = db.Table(
     'user_rol',
@@ -24,8 +20,10 @@ UserRole = db.Table(
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[String] = mapped_column(String(120), unique=True, nullable=False)
-    username: Mapped[String] = mapped_column(String(80), unique=True, nullable=False)
+    email: Mapped[String] = mapped_column(
+        String(120), unique=True, nullable=False)
+    username: Mapped[String] = mapped_column(
+        String(80), unique=True, nullable=False)
     password: Mapped[String] = mapped_column(String(200), nullable=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
@@ -45,7 +43,8 @@ class User(db.Model):
 class Rol(db.Model):
     __tablename__ = 'rol'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type: Mapped[String] = mapped_column(String(50), unique=True, nullable=False)
+    type: Mapped[String] = mapped_column(
+        String(50), unique=True, nullable=False)
     user: Mapped[list['User']] = relationship('User', secondary='user_rol')
 
     def serialize(self):
@@ -57,7 +56,8 @@ class Rol(db.Model):
 
 class Profile(db.Model):
     __tablename__ = 'profile'
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('user.id'), primary_key=True)
     name: Mapped[String] = mapped_column(String(100), nullable=False)
     last_name: Mapped[String] = mapped_column(String(100), nullable=False)
     avatar: Mapped[String] = mapped_column(String(100), nullable=True)
@@ -87,11 +87,14 @@ class Profile(db.Model):
 
 class AccountSettings(db.Model):
     __tablename__ = 'account_settings'
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('user.id'), primary_key=True)
     phone: Mapped[String | None] = mapped_column(String(20), nullable=True)
-    billing_info: Mapped[String | None] = mapped_column(String(250), nullable=True)
+    billing_info: Mapped[String | None] = mapped_column(
+        String(250), nullable=True)
     language: Mapped[String | None] = mapped_column(String(50), nullable=True)
-    marketing_emails: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    marketing_emails: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True)
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
 
@@ -102,7 +105,7 @@ class AccountSettings(db.Model):
             "billing_info": self.billing_info,
             "language": self.language,
             "marketing_emails": self.marketing_emails,
-            "created_at": self.crated_at,
+            "created_at": self.created_at,
             "modified_at": self.modified_at,
         }
 
@@ -118,7 +121,7 @@ task_categories = db.Table(
 
 
 class Task(db.Model):
-    __tablename__ = "tasks"
+    __tablename__ = "task"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str | None] = mapped_column(String(120), nullable=True)
@@ -336,9 +339,9 @@ class Message(db.Model):
     dealed_id: Mapped[int] = mapped_column(ForeignKey(
         'task_dealed.id'), unique=True, nullable=False)
     sender_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=False)
+        ForeignKey('user.id'), nullable=False)
     user = db.relationship(
-        'User', secondary=users_messages, back_populates="messages")
+        'user', secondary=users_messages, back_populates="messages") #REVISAR!
 
     def serialize(self):
         return {
@@ -361,9 +364,9 @@ class Dispute(db.Model):
     dealed_id: Mapped[int] = mapped_column(ForeignKey(
         'task_dealed.id'), unique=True, nullable=False)
     raised_by: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=False)
+        ForeignKey('user.id'), nullable=False)
     resolved_by_admin_user: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=True)
+        ForeignKey('user.id'), nullable=True)
 
     def serialize(self):
         return {
@@ -385,7 +388,7 @@ class Admin_action(db.Model):
     action: Mapped[str] = mapped_column(String(60), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     dispute_id: Mapped[int] = mapped_column(
-        ForeignKey('dispute.id'), unique=True, nullable=False)
+        ForeignKey('dispute.id'), nullable=False)
     admin_user: Mapped[int] = mapped_column(
         ForeignKey('user.id'), unique=True, nullable=False)
 

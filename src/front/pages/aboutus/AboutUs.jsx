@@ -1,4 +1,3 @@
-// AboutUs.jsx
 import "./aboutus.css";
 import SilviaImg from "./img/Silvia.png";
 import AlbertoImg from "./img/Alberto.jpg";
@@ -8,8 +7,7 @@ import { Instagram, Facebook, Mail, Twitter } from "lucide-react";
 
 export const AboutUs = () => {
   return (
-    <section className="about">
-      {/* HERO */}
+    <section className="about" id="about">
       <header className="about__hero" aria-label="Presentación de la compañía">
         <div className="about__hero-bg" />
         <div className="about__hero-inner container">
@@ -24,7 +22,6 @@ export const AboutUs = () => {
         <div className="about__scroll" aria-hidden="true">▼</div>
       </header>
 
-      {/* STORY BLURBS */}
       <section className="about__story container">
         <article className="story story--left">
           <div className="story__media">
@@ -65,9 +62,8 @@ export const AboutUs = () => {
         </article>
       </section>
 
-      {/* TEAM */}
       <section className="about__team container" aria-label="Nuestro equipo">
-        <h2 className="team__title">TEAM</h2>
+        <div><h2 className="team__title">Equipo</h2></div>
 
         <div className="team__grid">
           {/* Silvia */}
@@ -80,10 +76,10 @@ export const AboutUs = () => {
               <h3 className="team-card__name">Silvia</h3>
               <p className="team-card__role">Front-End</p>
               <nav className="team-card__social" aria-label="Redes sociales de Silvia">
-                <a href="#" aria-label="Instagram de Silvia"><Instagram size={18} /></a>
-                <a href="#" aria-label="Facebook de Silvia"><Facebook size={18} /></a>
-                <a href="mailto:hi@example.com" aria-label="Email de Silvia"><Mail size={18} /></a>
-                <a href="#" aria-label="Twitter de Silvia"><Twitter size={18} /></a>
+                <a href="#"><Instagram size={18} /></a>
+                <a href="#"><Facebook size={18} /></a>
+                <a href="mailto:hi@example.com"><Mail size={18} /></a>
+                <a href="#"><Twitter size={18} /></a>
               </nav>
             </div>
           </article>
@@ -98,10 +94,10 @@ export const AboutUs = () => {
               <h3 className="team-card__name">Alberto</h3>
               <p className="team-card__role">Back-End</p>
               <nav className="team-card__social" aria-label="Redes sociales de Alberto">
-                <a href="#" aria-label="Instagram de Alberto"><Instagram size={18} /></a>
-                <a href="#" aria-label="Facebook de Alberto"><Facebook size={18} /></a>
-                <a href="mailto:hi@example.com" aria-label="Email de Alberto"><Mail size={18} /></a>
-                <a href="#" aria-label="Twitter de Alberto"><Twitter size={18} /></a>
+                <a href="#"><Instagram size={18} /></a>
+                <a href="#"><Facebook size={18} /></a>
+                <a href="mailto:hi@example.com"><Mail size={18} /></a>
+                <a href="#"><Twitter size={18} /></a>
               </nav>
             </div>
           </article>
@@ -116,10 +112,10 @@ export const AboutUs = () => {
               <h3 className="team-card__name">Adrián Beneroso</h3>
               <p className="team-card__role">Full-Stack</p>
               <nav className="team-card__social" aria-label="Redes sociales de Adrián">
-                <a href="#" aria-label="Instagram de Adrián"><Instagram size={18} /></a>
-                <a href="#" aria-label="Facebook de Adrián"><Facebook size={18} /></a>
-                <a href="mailto:hi@example.com" aria-label="Email de Adrián"><Mail size={18} /></a>
-                <a href="#" aria-label="Twitter de Adrián"><Twitter size={18} /></a>
+                <a href="#"><Instagram size={18} /></a>
+                <a href="#"><Facebook size={18} /></a>
+                <a href="mailto:hi@example.com"><Mail size={18} /></a>
+                <a href="#"><Twitter size={18} /></a>
               </nav>
             </div>
           </article>

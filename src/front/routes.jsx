@@ -17,16 +17,13 @@ import { Login } from "./pages/login/Login.jsx";
 import { Addgame } from "./pages/addgame/Addgame.jsx";
 import { DetailsGames } from "./pages/detailsGames/DetailsGames.jsx";
 import { Carro } from "./pages/carro/Carro.jsx";
-
-
+import { Success } from "./pages/Success.jsx";
+import { Cancel } from "./pages/cancelPayment/Cancel.jsx";
 
 import { Historial } from "./pages/historial/Historial.jsx";
 import { RecPassword } from "./pages/recPassword/RecPassword.jsx";
 import { ResetPassword } from "./pages/resetPassword/ResetPassword.jsx";
 import GamesByPlatform from "./components/games/GamesByPlatform.jsx";
-
-
-
 import { EditGames } from "./pages/editgames/EditGames.jsx";
 
 
@@ -61,7 +58,10 @@ export const router = createBrowserRouter(
         <Route path="/recPassword" element={<RecPassword />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/editgames/:id" element={<EditGames />} />
-        <Route path="/games/platform/:platform" element={<GamesByPlatform />} />       
+        <Route path="/games/platform/:platform" element={<GamesByPlatform />} />     
+       <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} /> 
+
       </Route>
     )
 );

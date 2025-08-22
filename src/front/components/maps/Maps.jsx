@@ -9,12 +9,11 @@ function MapInner() {
   return (
     <Map
       style={{ width: "100%", height: "100%" }}
-      defaultCenter={position}
-      defaultZoom={13}
+      defaultCenter={{ lat: 22.54992, lng: 0 }}
+      defaultZoom={3}
       gestureHandling="greedy"
       disableDefaultUI={false}
-    ><Marker position={position}></Marker>
-    </Map>
+    />
   );
 }
 

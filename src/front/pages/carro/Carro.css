@@ -13,7 +13,6 @@
   padding-bottom: 70px;  
 }
 
-
 .carro-bg{
   position: fixed;
   inset: 0; 
@@ -56,10 +55,11 @@
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 2rem;
+  align-items: start; 
 }
 
 .carro-box {
-  background: #1f2937; /* gris oscuro */
+  background: #1f2937; 
   border-radius: 10px;
   padding: 1.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -142,9 +142,23 @@
 }
 
 .carro-summary {
+  align-self: start; 
   background: #1f2937;
   border-radius: 10px;
   padding: 1.5rem;
   color: #f3f4f6;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  position: sticky;  
+  top: 90px;        
+}
+
+@media (max-width: 900px) {
+  .carro-grid {
+    grid-template-columns: 1fr;
+  }
+  .carro-summary {
+    position: static;
+    top: auto;
+  }
 }

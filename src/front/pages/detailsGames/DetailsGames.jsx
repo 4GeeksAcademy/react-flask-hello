@@ -57,7 +57,7 @@ export const DetailsGames = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat backdrop-blur-lg bg-opacity-75"
         style={{
-          // MIRAR ESTO POR QUE DEBE SALIR LA IMAGEN DEL JUEGO QUE PASAMOS. OTRA OPCION ES AÑADIR OTRA IMAGEN PARA EL DETALLE DEL JUEGO EN EL REGISTRO DEL JUEGO
+         
           backgroundImage: `url(${detailsGame.img})`,
         }}
       />
@@ -86,11 +86,7 @@ export const DetailsGames = () => {
                 >
                   Añadir al carrito
                 </button>
-                <button className="bg-red-900 hover:bg-red-700 text-white p-3 rounded-lg transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <Heart />
-                  </svg>
-                </button>
+                
               </div>
                   )}
 
@@ -161,15 +157,7 @@ export const DetailsGames = () => {
             </div>
 
             {/* Age Rating */}
-            <div className="flex items-start gap-3">
-              {/* AQUI PONDREMOS LA EDAD COMO PARAMETRO DE JUEGO */}
-              <div className="bg-red-600 p-2 rounded font-bold text-white text-lg min-w-[40px] text-center">18</div>
-              <div>
-                {/* AQUI PONDREMOS LAS OPCIONES DEL PEGY */}
-                <p className="text-white font-medium">Lenguaje fuerte, Violencia fuerte,</p>
-                <p className="text-gray-300 text-sm">Compras dentro del juego, Los usuarios interactúan</p>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import imagenBack from "../assets/fondo-concierto.jpg"
 
-const Contact = () => {
+export const Contact = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -88,5 +88,3 @@ const Contact = () => {
     </div>
   );
 };
-
-export default Contact;

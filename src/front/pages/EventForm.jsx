@@ -279,7 +279,7 @@ export const EventForm = () => {
 
             const method = editingEvent ? "PUT" : "POST";
 
-            const response = await fetch(url, {
+            const response = await fetch(url,{
                 method: method,
                 headers: {
                     "Content-Type": "application/json",

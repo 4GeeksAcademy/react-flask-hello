@@ -31,7 +31,7 @@ export const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand d-flex align-items-center">
+                <Link to="/home" className="navbar-brand d-flex align-items-center">
                     <i className="fa-solid fa-compact-disc me-2"></i>
                     <span className="h4 mb-0 text-white">Festquila</span>
                 </Link>

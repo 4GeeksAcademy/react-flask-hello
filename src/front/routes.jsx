@@ -30,7 +30,10 @@ export const router = createBrowserRouter(
             <Route path="/create-event" element={<EventForm />} />
             <Route path="/events-map" element={<EventsMapView />} />
             <Route path="/prebuy" element={<Prebuy />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<h1>Page Not Found!</h1>} />
+
         </Route>
     )
 );

@@ -13,6 +13,8 @@ from flask_mail import Message
 from extension import mail
 import os
 import re
+from flask_jwt_extended import decode_token
+import jwt
 
 
 
@@ -56,21 +58,35 @@ def user_register():
     return jsonify("new_user"), 200
 
 
+
 @api.route('/user/resetPassword', methods=['PUT'])
 def user_resetPassWord():
     body = request.get_json()
-    current_user = body["token"]
-    user = User.query.get(current_user)
-
-    
-    new_pass=bcrypt.hashpw(body["password"].encode(), bcrypt.gensalt())
-
-    user.password = new_pass.decode()
-
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify("Cambio de contraseña exitoso"), 200
+    token = body.get("token")
+    if not token:
+        return jsonify({"error": "No tengo ni Token ni mierda en las tripas"}), 401
+    try:
+        decoded_token = decode_token(token)
+        user_id = decoded_token["sub"]
+        user = User.query.filter_by(id=int(user_id)).first
+        if not user:
+            return jsonify({"error": "Usuario no valido esto es una verga"}), 400
+        password_data = body.get("password")
+        if password_data:
+            new_password = password_data.get("nuevaContraseña")
+        else:
+            new_password = body.get("password")
+        if not new_password:
+            return jsonify({"error": "Nueva contraseña media chota"}), 400
+        hashed_password = bcrypt.hashpw(
+            new_password.encode(), bcrypt.gensalt())
+        user.password = hashed_password.decode()
+        db.session.commit()
+        return jsonify({"msg": "Contaseña se ha actualizado ya no es la vieja es la nueva weon"})
+    except Exception as e:
+        db.session.rollback()
+        print(f"error: {e}")
+        return jsonify({"error": "Error al actualizar la contraseña checkea la movie del codigo"})
 
 # Post para logear un usuario
 @api.route("/user/login", methods=["POST"])

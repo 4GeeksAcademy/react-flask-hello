@@ -22,9 +22,8 @@ flask-mail = "*"
 flask-migrate = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
-stripe = "*"
 tomli = "*"
-
+stripe = "*"
 
 [requires]
 python_version = "3.13"

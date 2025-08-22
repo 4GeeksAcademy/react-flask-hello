@@ -21,7 +21,7 @@ def register_user():
             email=data['email'],
             password=hashed_password,
             is_active=True,
-            role=data.get('role', 'usuario')  # usuario pro defecto
+            role=data.get('role', 'usuario')
         )
 
         db.session.add(new_user)

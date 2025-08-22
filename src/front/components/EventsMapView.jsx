@@ -68,7 +68,7 @@ export const EventsMapView = () => {
     const initializeMap = () => {
         if (!window.google || !mapRef.current || events.length === 0) return;
 
-        // Calcular centro del mapa basado en los eventos
+        
         const bounds = new window.google.maps.LatLngBounds();
         events.forEach(event => {
             if (event.lat && event.lng) {
@@ -89,7 +89,7 @@ export const EventsMapView = () => {
             ]
         });
 
-        // Ajustar mapa para mostrar todos los marcadores
+        
         map.fitBounds(bounds);
 
         // Crear ventana de información

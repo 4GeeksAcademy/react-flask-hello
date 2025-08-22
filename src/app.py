@@ -2,10 +2,9 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
-from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
-
+from extension import mail,bcrypt
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
@@ -27,6 +26,12 @@ app = Flask(__name__) # Inicializa Flask primero
 app.url_map.strict_slashes = False
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "super-secret-default-key") # Carga clave JWT y configuración DB
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = os.environ.get("GMAIL_USER")
+app.config["MAIL_PASSWORD"] = os.environ.get("GMAIL_PASS")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("GMAIL_USER") 
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
@@ -36,8 +41,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 jwt = JWTManager(app) # Inicializa extensiones
-bcrypt = Bcrypt(app)
+bcrypt.init_app(app)
 db.init_app(app)
+mail.init_app(app)
 MIGRATE = Migrate(app, db, compare_type=True)
 
 setup_admin(app)
@@ -69,3 +75,11 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+class Config:
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get("GMAIL_USER")
+    MAIL_PASSWORD = os.environ.get("GMAIL_PASS")
+    MAIL_DEFAULT_SENDER = ('Tu App', MAIL_USERNAME)

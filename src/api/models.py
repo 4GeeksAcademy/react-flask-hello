@@ -1,19 +1,16 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Integer, ForeignKey, Date, Text, Numeric, DateTime, func, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import date, datetime
 from decimal import Decimal
 
-
 db = SQLAlchemy()
 
 
 db = SQLAlchemy()
 
 
-#Tabla que relaciona user con rol
+# Tabla que relaciona user con rol
 UserRole = db.Table(
     'user_rol',
     db.Model.metadata,
@@ -26,13 +23,13 @@ UserRole = db.Table(
 
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    modified_at = db.Column(db.DateTime, nullable=False)
-    roles = db.relationship('Rol', secondary=UserRole,)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[String] = mapped_column(String(120), unique=True, nullable=False)
+    username: Mapped[String] = mapped_column(String(80), unique=True, nullable=False)
+    password: Mapped[String] = mapped_column(String(200), nullable=False)
+    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    roles: Mapped[list['Rol']] = relationship('Rol', secondary='user_rol',)
 
     def serialize(self):
         return {
@@ -47,9 +44,9 @@ class User(db.Model):
 
 class Rol(db.Model):
     __tablename__ = 'rol'
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(50), unique=True, nullable=False)
-    user = db.relationship('User', secondary=UserRole)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    type: Mapped[String] = mapped_column(String(50), unique=True, nullable=False)
+    user: Mapped[list['User']] = relationship('User', secondary='user_rol')
 
     def serialize(self):
         return {
@@ -60,17 +57,17 @@ class Rol(db.Model):
 
 class Profile(db.Model):
     __tablename__ = 'profile'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    avatar = db.Column(db.String(100), nullable=True)
-    city = db.Column(db.String(50), nullable=False)
-    birth_date = db.Column(db.Date, nullable=True)
-    bio = db.Column(db.String(250), nullable=True)
-    skills = db.Column(db.String(250), nullable=True)
-    rating_avg = db.Column(db.Float, nullable=True)
-    created_at = db.Column(db.DateTime, nullable=False)
-    modified_at = db.Column(db.DateTime, nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), primary_key=True)
+    name: Mapped[String] = mapped_column(String(100), nullable=False)
+    last_name: Mapped[String] = mapped_column(String(100), nullable=False)
+    avatar: Mapped[String] = mapped_column(String(100), nullable=True)
+    city: Mapped[String] = mapped_column(String(50), nullable=False)
+    birth_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    bio: Mapped[String | None] = mapped_column(String(250), nullable=True)
+    skills: Mapped[String | None] = mapped_column(String(250), nullable=True)
+    rating_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
 
     def serialize(self):
         return {
@@ -90,13 +87,13 @@ class Profile(db.Model):
 
 class AccountSettings(db.Model):
     __tablename__ = 'account_settings'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    phone = db.Column(db.String(20), nullable=True)
-    billing_info = db.Column(db.String(250), nullable=True)
-    language = db.Column(db.String(50), nullable=True)
-    marketing_emails = db.Column(db.Boolean, nullable=True)
-    crated_at = db.Column(db.DateTime, nullable=False)
-    modified_at = db.Column(db.DateTime, nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), primary_key=True)
+    phone: Mapped[String | None] = mapped_column(String(20), nullable=True)
+    billing_info: Mapped[String | None] = mapped_column(String(250), nullable=True)
+    language: Mapped[String | None] = mapped_column(String(50), nullable=True)
+    marketing_emails: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
 
     def serialize(self):
         return {
@@ -145,7 +142,7 @@ class Task(db.Model):
 
     # FK + relationship (1 User -> many Tasks)
     publisher_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True)
+        ForeignKey("user.id"), nullable=False, index=True)
     publisher: Mapped["User"] = relationship(backref="tasks")
 
     # relationship categories
@@ -212,7 +209,7 @@ class TaskOffered(db.Model):
     task_id: Mapped[int] = mapped_column(
         ForeignKey("tasks.id"), nullable=False, index=True)
     tasker_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True)
+        ForeignKey("user.id"), nullable=False, index=True)
 
     # one offer per (task, tasker) in pair
     __table_args__ = (
@@ -254,10 +251,10 @@ class TaskDealed(db.Model):
         ForeignKey("tasks_offered.id"), nullable=False, index=True
     )
     client_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
+        ForeignKey("user.id"), nullable=False, index=True
     )
     tasker_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
+        ForeignKey("user.id"), nullable=False, index=True
     )
 
     def serialize(self):

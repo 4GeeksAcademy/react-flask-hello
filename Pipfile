@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 flask = "*"
-flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
 psycopg2-binary = "*"
@@ -19,6 +18,7 @@ flask-admin = "*"
 typing-extensions = "*"
 flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
+flask-sqlalchemy = "*"
 sqlalchemy = "*"
 
 [requires]

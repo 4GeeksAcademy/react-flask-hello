@@ -155,6 +155,7 @@ def update_event(event_id):
         event.title = data['title']
         event.date = data['date']
         event.description = data.get('description', '')
+        # event.image = data('image')
         event.location = data['location']
         event.lat = lat
         event.lng = lng

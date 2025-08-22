@@ -211,11 +211,12 @@ class Review(db.Model):
     rate: Mapped[int] = mapped_column(Integer, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     publisher_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=False)
+        ForeignKey('user.id'), nullable=False)
     worker_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=False)
-    task_id: Mapped[int] = mapped_column(
-        ForeignKey('task.id'), unique=True, nullable=False)
+        ForeignKey('user.id'), nullable=False)
+    task_dealed_id: Mapped[int] = mapped_column(
+        ForeignKey('task_dealed.id'), unique=True, nullable=False)
+    
 
     def serialize(self):
         return {
@@ -236,7 +237,7 @@ class Message(db.Model):
         'task_dealed.id'), unique=True, nullable=False)
     sender_id: Mapped[int] = mapped_column(
         ForeignKey('user.id'), unique=True, nullable=False)
-
+    user = db.relationship('User', secondary=users_messages, back_populates="messages")
     def serialize(self):
         return {
             "id": self.id,

@@ -143,7 +143,15 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
                           gamesFilter.map((g) => {
                             return (
                               <Link to={`/detailsgames/${g.id}`}>
-                                <span>{g.name},{g.price}</span>
+                                <div class="bg-gray-900 rounded-lg text-white shadow-md overflow-hidden flex items-center p-4 w-full max-w-sm hover:bg-gray-800">
+
+                                  <img src={g.img} class="w-16 h-16 rounded-full mr-4 object-cover" />
+
+
+                                  <div class="flex-grow">
+                                    <h3 class="font-bold text-xl ">{g.name}</h3>
+                                  </div>
+                                </div>
                               </Link>
                             )
                           })

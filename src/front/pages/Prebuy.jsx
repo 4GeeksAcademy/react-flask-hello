@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import imagenBack from "../assets/fondo-orquesta.jpg";
+import imagenBack from "../assets/fondo-Rock.jpg";
 
 
 export const Prebuy = () => {
@@ -174,9 +174,11 @@ export const Prebuy = () => {
                 <div className="imagen-background">
                     <img src={imagenBack} alt="imagen fondo" />
                 </div>
-                <div className="text-center py-5">
+                <div className="vh-100">
+                <div className="text-center py-5 mt-5">
                     <p>Tu carrito está vacío.</p>
                     <Link to="/home" className="btn btn-secondary">Explorar Eventos</Link>
+                </div>
                 </div>
             </div>
         );

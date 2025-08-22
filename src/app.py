@@ -10,14 +10,20 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-
+from flask_jwt_extended import JWTManager
+from flask import Flask
+from flask_mail import Mail
+from api import routes
+from extension import mail
 # from models import Person
+
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+mail.init_app(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -28,8 +34,13 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config["JWT_SECRET_KEY"] = os.getenv("TOKEN_KEY")
+
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+jwt = JWTManager(app)
 
 # add the admin
 setup_admin(app)
@@ -41,6 +52,16 @@ setup_commands(app)
 app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'u7384442007@gmail.com'
+app.config['MAIL_PASSWORD'] = 'kilj rrzk ipsz nkis'
+app.config['MAIL_DEFAULT_SENDER'] = 'u7384442007@gmail.com'
+    
+    # Inicializar extensiones
+mail.init_app(app)
 
 
 @app.errorhandler(APIException)

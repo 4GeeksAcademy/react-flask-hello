@@ -1,18 +1,15 @@
 export const initialStore=()=>{
   return{
     message: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
+    ofertas: [
+
+    ],
+    usuarios: [
+
+    ],
+    lastSelectedCoordinates:[
+
+    ],user:null
   }
 }
 
@@ -23,16 +20,47 @@ export default function storeReducer(store, action = {}) {
         ...store,
         message: action.payload
       };
+
+case "add_oferta":
+  return {
+    ...store,
+    ofertas: store.ofertas ? [...store.ofertas, action.payload] : [action.payload]
+  };
+
+    case 'add_usuario':
+      const nuevoUsuario = action.payload
       
-    case 'add_task':
-
-      const { id,  color } = action.payload
-
-      return {
+      return{
+      ...store,
+        usuarios: [...store.usuarios, nuevoUsuario]
+      }
+    case 'add_coordenates':
+      const nuevaCordenate = action.payload
+      
+      return{
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        lastSelectedCoordinates:[nuevaCordenate.latitude,nuevaCordenate.longitude]
+      };
+
+    case "eliminar_usuario":
+      return{
+        ...store,
+        usuarios:null
+      };
+      case 'add_user':
+      const add_user = action.payload
+      
+      return{
+      ...store,
+        user: [add_user]
+      }
+      case "eliminar_user":
+      return{
+        ...store,
+        user:null
       };
     default:
       throw Error('Unknown action.');
+
   }    
 }

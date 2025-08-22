@@ -18,6 +18,10 @@ import jwt
 
 
 
+url_front = os.getenv('VITE_FRONT_URL')
+
+
+
 
 api = Blueprint('api', __name__)
 
@@ -216,7 +220,7 @@ def resetPassword():
     user_serialize = user.serialize()
     token = create_access_token(identity=str(user_serialize["id"]))
     cadena_modificada = re.sub(r"\.", "_", token)
-    reset_url_password = f"{os.getenv("VITE_FRONTEND_URL")}resetPassword/{cadena_modificada}"
+    reset_url_password = f"{url_front}resetPassword/{cadena_modificada}"
     
     msg = Message(
         "Email",

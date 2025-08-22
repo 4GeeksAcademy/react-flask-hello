@@ -8,7 +8,7 @@ import { Games } from "../../components/games/Games";
 export const Home = () => {
   const images = [
     {
-      src: "https://www.xtrafondos.com/wallpapers/god-of-war-ragnarok-11256.jpg",
+      src: "https://cdn1.epicgames.com/offer/24b9b5e323bc40eea252a10cdd3b2f10/EGS_LeagueofLegends_RiotGames_S1_2560x1440-47eb328eac5ddd63ebd096ded7d0d5ab",
     },
     {
       src: "https://4kwallpapers.com/images/wallpapers/the-super-mario-2880x1800-10955.jpg",

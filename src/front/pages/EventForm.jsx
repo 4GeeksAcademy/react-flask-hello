@@ -481,18 +481,7 @@ export const EventForm = () => {
                                                 placeholder="Ej: https://example.com/imagen.jpg"
                                             />
                                         </div>
-                                        <div className="mb-3">
-                                            <label htmlFor="description" className="form-label label-event">Descripción</label>
-                                            <textarea
-                                                className="form-control"
-                                                id="description"
-                                                name="description"
-                                                rows="3"
-                                                value={formData.description}
-                                                onChange={handleChange}
-                                            ></textarea>
-                                        </div>
-
+                        
                                         {/* Sección de localización */}
                                         <div className="mb-3">
                                             <label htmlFor="location" className="form-label label-event">

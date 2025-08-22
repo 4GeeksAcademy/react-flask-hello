@@ -81,7 +81,7 @@ export const Home = () => {
                                     <div
                                         className="bg-img position-absolute w-100 h-100"
                                         style={{
-                                            backgroundImage: `url(${card.image})`,
+                                            backgroundImage: `url(${card.description})`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
@@ -89,7 +89,7 @@ export const Home = () => {
                                     <div className="card-gradient position-absolute w-100 h-100"></div>
                                     <div className="card-body d-flex flex-column justify-content-end position-relative">
                                         <h5 className="card-title">{card.title}</h5>
-                                        <p className="card-text">{card.description}</p>
+                                        {/* <p className="card-text">{card.description}</p> */}
                                     </div>
                                 </div>
                             </button>
@@ -161,7 +161,7 @@ export const Home = () => {
                                 <div
                                     className="position-absolute w-100 h-100"
                                     style={{
-                                        backgroundImage: `url(${selectedCard.image})`,
+                                        backgroundImage: `url(${selectedCard.description})`,
                                         backgroundSize: "cover",
                                         backgroundPosition: "center",
                                         opacity: 0.4,
@@ -193,7 +193,7 @@ export const Home = () => {
                                         <ul>
                                             <li>{selectedCard.price}</li>
                                             <li>{selectedCard.location}</li>
-                                            <li>{selectedCard.description}</li>
+                                            {/* <li>{selectedCard.description}</li> */}
                                         </ul>
                                     </div>
                                     <div className="modal-footer position-relative" style={{ zIndex: 2 }}>

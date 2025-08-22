@@ -81,7 +81,7 @@ def create_event():
         new_event = Event(
             title=data['title'],
             date=data['date'],
-            description=data.get('description', ''),
+            description=data.get('image', ''),
             # image=data['image'],
             location=data['location'],
             lat=lat,

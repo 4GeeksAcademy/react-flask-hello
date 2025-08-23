@@ -57,7 +57,7 @@ export const CardEvento = ({ item, isUser }) => {
 
       <div className="meta">
         <h3 className="title">{item.titulo}</h3>
-        <p className="country">{item.precio}</p>
+       {/* <p className="country">{item.precio}</p>*/}
       </div>
 
       {

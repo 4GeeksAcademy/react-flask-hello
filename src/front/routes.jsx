@@ -11,6 +11,7 @@ import { Reset } from './pages/Reset.jsx';
 import { MisEventos } from "./pages/MisEventos.jsx";
 import { ListaEventos } from "./pages/ListaEventos.jsx";
 import { PerfilUsuario } from "./pages/PerfilUsuario.jsx";
+import { ID_Evento } from "./pages/ID_Evento.jsx";
 
 
 export const router = createBrowserRouter(
@@ -40,6 +41,7 @@ export const router = createBrowserRouter(
       {/* Eventos */}
       <Route path="eventos" element={<ListaEventos />} />
       <Route path="mis-eventos" element={<MisEventos />} />
+      <Route path="/evento/:event_id" element={<ID_Evento />} />
       
       {/* Usuario */}
       <Route path="user/perfil" element={<PerfilUsuario />} />

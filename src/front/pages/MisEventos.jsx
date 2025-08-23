@@ -1,12 +1,12 @@
 import { notifyError, notifySuccess } from "../utils/Notifications";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { backendUrl } from '../utils/Config';
 import { CardEvento } from "../components/CardEvento/CardEvento";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { Link } from "react-router-dom"; // <-- añadido
 
 export const MisEventos = () => {
-
-  const { dispatch, store } = useGlobalReducer()
+  const { dispatch, store } = useGlobalReducer();
 
   useEffect(() => {
     const eventoUsuarioLogin = async () => {
@@ -27,7 +27,7 @@ export const MisEventos = () => {
           dispatch({
             type: "setMyEvents",
             payload: data.response
-          })
+          });
           notifySuccess("Aquí está tu listado de eventos");
         } else {
           notifyError(data.message || "No tienes eventos disponibles");
@@ -38,18 +38,19 @@ export const MisEventos = () => {
     };
 
     eventoUsuarioLogin();
-  }, []);
-
+  }, [dispatch]);
 
   return (
     <div>
       <h1>Mis eventos</h1>
-      <section className="grid-cards ">
+      <section className="grid-cards">
         {store.misEventos.length === 0 ? (
           <p>No tienes eventos creados aún.</p>
         ) : (
-          store.misEventos.map((evento, index) => (
-            <CardEvento key={index} item={evento} isUser={true} />
+          store.misEventos.map((evento) => (
+            <Link key={evento.id} to={`/evento/${evento.id}`} className="card-link">
+              <CardEvento item={evento} isUser={true} />
+            </Link>
           ))
         )}
       </section>

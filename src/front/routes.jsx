@@ -15,6 +15,8 @@ import { Prebuy } from "./pages/Prebuy.jsx";
 import { Events } from "./pages/Events.jsx"; 
 import {EventsMapView} from "./components/EventsMapView";
 import { ResetPasswordPage } from "./pages/Resetpassword.jsx";
+import { Contact } from "./pages/Contact.jsx";
+import { About } from "./pages/About.jsx"
 
 export const router = createBrowserRouter(
     createRoutesFromElements(

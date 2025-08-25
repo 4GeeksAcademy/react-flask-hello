@@ -183,13 +183,7 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
                 </span>
               )}
             </Link>
-            {
-
-              token_user && (
-                <Link to="/historial" className="rounded-md px-3 py-2 text-lg font-bold text-gray-300 hover:text-white">
-                  Historial
-                </Link>
-              )}
+            
 
 
 

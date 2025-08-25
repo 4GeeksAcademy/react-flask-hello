@@ -1,5 +1,5 @@
 import './recpassword.css'
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import { useState } from "react";
 
@@ -8,17 +8,19 @@ import { useState } from "react";
 export const RecPassword = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL
   const [email, setEmail] = useState("")
+  const navigate = useNavigate()
 
   const restaurarPassword = async (e) => {
     e.preventDefault()
 
-     await fetch(`${backendUrl}api/user/resetPassword`,{
-                method: "POST",
-                body: JSON.stringify({"email": email}),
-                headers: { "Content-type": "application/json" }
-            })
-            alert("Mensaje enviado al correo electronico")
-    
+    await fetch(`${backendUrl}api/user/resetPassword`, {
+      method: "POST",
+      body: JSON.stringify({ "email": email }),
+      headers: { "Content-type": "application/json" }
+    })
+    alert("Contraseña modificada correctamente")
+    navigate("/Login")
+
   }
 
 
@@ -63,7 +65,7 @@ export const RecPassword = () => {
             </div>
 
             <div className="text-center">
-              <a href="#" className="text-sm font-bold text-blue-900 hover:text-blue-700 transition-colors duration-200">
+              <a href="/Login" className="text-sm font-bold text-blue-900 hover:text-blue-700 transition-colors duration-200">
                 ← Volver al inicio de sesión
               </a>
             </div>

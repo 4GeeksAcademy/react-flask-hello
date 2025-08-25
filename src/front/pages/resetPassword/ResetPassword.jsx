@@ -6,6 +6,7 @@ export const ResetPassword = () => {
 
   const [password, setpassword] = useState("")
   const { token } = useParams()
+ 
   const restaurarPassword = async (e) => {
     e.preventDefault()
     await fetch(`${backendUrl}api/user/newPassword`, {
@@ -13,7 +14,10 @@ export const ResetPassword = () => {
       body: JSON.stringify({ "password": password, "token": token }),
       headers: { "Content-type": "application/json" }
     })
+
     alert("Mensaje enviado al correo electronico")
+  
+   
   }
   return (
      <div

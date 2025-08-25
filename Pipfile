@@ -22,10 +22,13 @@ flask-mail = "*"
 flask-migrate = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
-stripe = "*"
 tomli = "*"
+
+stripe = "*"
+
 pyyaml = "*"
 cython = "*"
+
 
 [requires]
 python_version = "3.12"

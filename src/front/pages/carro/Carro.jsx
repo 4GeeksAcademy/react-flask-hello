@@ -21,11 +21,10 @@ export const Carro = () => {
   const handleClear = () => dispatch({ type: "clearCarro" });
   const handleQuantityChange = (id, quantity) =>
     dispatch({ type: "updateQuantity", payload: { id, quantity: parseInt(quantity) } });
+  const getIVA = () =>store.carro.reduce((total, item) => total + item.price * item.quantity  *0.21, 0);
+  const getTotal = () =>store.carro.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const getSubtotal = () =>
-    store.carro.reduce((total, item) => total + item.price * item.quantity, 0);
-  const getIVA = () => getSubtotal() * 0.21;
-  const getTotal = () => getSubtotal() + getIVA();
+  const getSubtotal = () => getTotal() - getIVA();
 
   useEffect(() => {
     const savedCarro = JSON.parse(localStorage.getItem("carro"));
@@ -49,6 +48,7 @@ export const Carro = () => {
     }
 
     setPaymentLoading(true);
+    
     
     try {
       const currentUser = getCurrentUser();

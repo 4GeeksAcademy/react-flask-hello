@@ -1,7 +1,7 @@
 import "./aboutus.css";
 import SilviaImg from "./img/Silvia.png";
 import AlbertoImg from "./img/Alberto.jpg";
-import AdrianImg from "./img/Adrian.png";
+import AdrianImg from "./img/ADRIAN.jpg";
 
 import { Instagram, Facebook, Mail, Twitter } from "lucide-react";
 

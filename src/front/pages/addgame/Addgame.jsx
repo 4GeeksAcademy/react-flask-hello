@@ -81,10 +81,9 @@ export const Addgame = () => {
                         <option>None</option>
                         <option>PS4</option>
                         <option>PS5</option>
-                        <option>Xbox Serie S/X</option>
                         <option>Xbox One</option>
                         <option>Nintendo Switch</option>
-                        <option>Nintendo Switch2</option>
+                        <option>Nintendo Switch 2</option>
                         <option>PC</option>
                     </select>
                 </div>

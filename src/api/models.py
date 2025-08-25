@@ -272,7 +272,6 @@ class TaskDealed(db.Model):
             "accepted_at": self.accepted_at.isoformat() if self.accepted_at else None,
             "delivered_at": self.delivered_at.isoformat() if self.delivered_at else None,
             "cancelled_at": self.cancelled_at.isoformat() if self.cancelled_at else None
-            # do not serialize the password, its a security breach
         }
 
 
@@ -340,8 +339,8 @@ class Message(db.Model):
         'task_dealed.id'), unique=True, nullable=False)
     sender_id: Mapped[int] = mapped_column(
         ForeignKey('user.id'), nullable=False)
-    user = db.relationship(
-        'user', secondary=users_messages, back_populates="messages") #REVISAR!
+    user: Mapped['User'] = mapped_column(
+        ForeignKey('user.id'), nullable=False)
 
     def serialize(self):
         return {

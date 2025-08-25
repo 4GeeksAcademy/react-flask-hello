@@ -9,6 +9,9 @@ export const CardEvento = ({ item, isUser }) => {
 
 
   const deleteEvent = async (event) => {
+    //quitar esto si no queremos confirmacion de
+    const confirmarEliminar = window.confirm("¿estas seguro de eliminar?")
+    if(!confirmarEliminar) return;
 
     try {
       const respuesta = await fetch(backendUrl + `events/${event.id}`, {
@@ -22,6 +25,7 @@ export const CardEvento = ({ item, isUser }) => {
 
       
       if (respuesta.ok) {
+
         notifySuccess(data.message);
 
         dispatch({
@@ -38,7 +42,7 @@ export const CardEvento = ({ item, isUser }) => {
   };
 
   return (
-    <article className="dest-card">
+    <article className="dest-card mb 1rem">
       {
         item.portada ? (
           <div className="img-container">
@@ -53,20 +57,20 @@ export const CardEvento = ({ item, isUser }) => {
 
       <div className="meta">
         <h3 className="title">{item.titulo}</h3>
-        <p className="country">{item.precio}</p>
+       {/* <p className="country">{item.precio}</p>*/}
       </div>
 
       {
         isUser && (
           <div className="container-btns">
             <Link to={`/crear-evento/${item.id}`}>
-              <button>Actualizar</button>
+              <button className="btn btn-chip ml-[1px]">Actualizar</button>
             </Link>
-            <button onClick={() => deleteEvent(item)}>Eliminar</button>
+            <button onClick={() => deleteEvent(item)} className="btn btn-chip ">Eliminar</button>
           </div>
         )
       }
-
+      <br />
     </article>
   );
 }

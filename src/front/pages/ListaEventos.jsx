@@ -8,11 +8,11 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export const ListaEventos = () => {
   const { dispatch, store } = useGlobalReducer();
 
-  useEffect(() => {
-    const listadoEventos = async () => {
-      try {
-        const respuesta = await fetch(backendUrl + `events`);
-        const data = await respuesta.json();
+    useEffect(() => {
+        const listadoEventos = async () => {
+            try {
+                const respuesta = await fetch(backendUrl + `events`,);
+                const data = await respuesta.json();
 
         if (!respuesta.ok) {
           notifyError("Error al cargar los eventos");

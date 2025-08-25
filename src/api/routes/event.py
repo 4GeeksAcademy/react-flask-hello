@@ -153,20 +153,4 @@ def update_event(event_id):
         return jsonify({"error": str(e)}), 500
 
 
-# Obtener evento por ID del evento
-@api.route('events/<event_id>', methods=['GET'])
-def get_event_by_id(event_id):
-    try:
-        response = supabase.table('Evento').select('*').eq('id', event_id).execute()
-
-        if response.data:
-            return jsonify({
-                "message": "Evento obtenido exitosamente",
-                "response": response.data
-            }), 200
-        else:
-            return jsonify({"error": "Evento no encontrado"}), 404
-
-    except Exception as e:
-        print("Error obteniendo evento:", e)
-        return jsonify({"error": "Error al obtener evento"}), 500
+    # ver el evento por su id

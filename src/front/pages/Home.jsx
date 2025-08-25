@@ -12,6 +12,8 @@ import mexico from "../assets/img/mexico.jpg"
 import { Card } from "../components/Card.jsx";
 import { useParams } from 'react-router-dom';
 import { supabase } from "../../api/supabaseClient";
+import { ListaEventos } from "./ListaEventos.jsx";
+import { EventosHome } from "../components/EventosHome.jsx";
 
 
 export const Home = () => {
@@ -72,37 +74,22 @@ export const Home = () => {
           {/* Columna derecha: collage (1 cuadrado grande + 3 pequeñas) */}
           <div className="hero-collage">
             <div className="card lg">
-              <img src={heroZapatos} alt="Hero grande" className="collage-img" />
+              <img src="https://images.pexels.com/photos/380283/pexels-photo-380283.jpeg" alt="Hero grande" className="collage-img" />
+
             </div>
             <div className="card sm a">
-              <img src={heroFestival} alt="Hero A" className="collage-img" />
+              <img src="https://images.pexels.com/photos/154147/pexels-photo-154147.jpeg" alt="Hero A" className="collage-img" />
             </div>
             <div className="card sm b">
-              <img src={heroCine} alt="Hero B" className="collage-img" />
+              <img src="https://cdn.pixabay.com/photo/2024/06/23/20/54/ai-generated-8848753_960_720.jpg" alt="Hero B" className="collage-img" />
             </div>
             <div className="card sm c">
-              <img src={mexico} alt="Hero C" className="collage-img" />
+              <img src="https://cdn.pixabay.com/photo/2017/09/17/11/54/dresden-2758277_960_720.jpg" alt="Hero C" className="collage-img" />
             </div>
           </div>
         </section>
 
-        {/* Destinos principales */}
-        <section className="section">
-          <div className="section-head">
-            <h2>Destinos principales</h2>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <Link to="/eventos" className="pill">Explorar todo</Link>
-            </div>
-          </div>
-
-          <div className="grid-cards">
-            {destinosPrincipales.map((d, idx) => (
-              <Card key={idx} d={d} />
-            ))}
-          </div>
-        </section>
-
-        {/* Carrusel (Mi contenido) */}
+      {/* Carrusel (Mi contenido) */}
         <section className="section">
           <Slider {...settings}>
             <div>
@@ -131,7 +118,7 @@ export const Home = () => {
                 </p>
               </div>
             </div>
-
+   
             <div>
               <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
                 <img
@@ -145,6 +132,18 @@ export const Home = () => {
               </div>
             </div>
           </Slider>
+        </section>
+
+        {/* Destinos principales */}
+        <section className="section">
+          <div className="section-head">
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <Link to="/eventos" className="pill">Explorar todos los eventos</Link>
+            </div>
+          </div>
+            <div style={{ margin: "40px 0" }}>
+              <EventosHome />
+            </div>
         </section>
       </div>
 

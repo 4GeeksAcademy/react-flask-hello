@@ -28,7 +28,8 @@ app.url_map.strict_slashes = False
 
 # Habilitar CORS global
 
-CORS(app, resources={r"/*": {"origins": "*"}})  # permitir todos los orígenes  # permite cualquier origen (útil para desarrollo)
+# permitir todos los orígenes  # permite cualquier origen (útil para desarrollo)
+CORS(app, resources={r"/*": {"origins": "*"}})
 # Para producción puedes restringir:
 # CORS(app, origins=["https://bookish-space-pancake-wrx9v5w7wv49c9vxw-3000.app.github.dev"])
 
@@ -58,14 +59,24 @@ setup_commands(app)
 app.register_blueprint(api_events.api, url_prefix='/events')
 app.register_blueprint(api_user.api, url_prefix='/user')
 
+
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
+
+@app.route('/')
+def sitemap():
+    if ENV == "development":
+        return generate_sitemap(app)
+    return send_from_directory(static_file_dir, 'index.html')
+
 # generate sitemap with all your endpoints
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
@@ -73,6 +84,7 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

@@ -24,7 +24,20 @@ export const NewTask = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="exampleInputPassword1" className="form-label">¿Dónde?</label>
-                    <input type="password" className="form-control" id="exampleInputPassword1" />
+                    <div className="row ">
+                        <div className="col-5">
+                            <label for="inputPassword2" class="visually-hidden">Ciudad</label>
+                            <input type="password" class="form-control" id="inputPassword2" placeholder="Ciudad"/>
+                        </div>
+                        <div className="col-3">
+                            <label for="inputPassword2" class="visually-hidden">Código Postal</label>
+                            <input type="password" class="form-control" id="inputPassword2" placeholder="CP"/>
+                        </div>
+                        <div className="col-4">
+                            <label for="inputPassword2" class="visually-hidden">País</label>
+                            <input type="password" class="form-control" id="inputPassword2" placeholder="País"/>
+                        </div>
+                    </div>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="budget" className="form-label">¿Cuál es tu presupuesto?</label>
@@ -59,7 +72,7 @@ export const NewTask = () => {
                             <input type="checkbox" className="form-check-input" id="furniture-cat" />
                             <label className="form-check-label mx-2" htmlFor="furniture-cat">Muebles</label>
                         </li>
-                        
+
                     </ul>
                 </div>
                 <div className="my-3">

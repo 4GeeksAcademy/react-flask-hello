@@ -23,10 +23,15 @@ flask-migrate = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
 tomli = "*"
+
 stripe = "*"
 
+pyyaml = "*"
+cython = "*"
+
+
 [requires]
-python_version = "3.13"
+python_version = "3.12"
 
 [scripts]
 start="flask run -p 3001 -h 0.0.0.0"

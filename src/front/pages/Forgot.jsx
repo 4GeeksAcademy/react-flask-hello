@@ -30,8 +30,37 @@ export const Forgot = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
-      <h2>Recuperar Contraseña</h2>
+    <div
+     style={{
+        minHeight: '100vh',
+        backgroundImage: "url('/fondo_login.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+       }}>
+      <div
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          boxShadow: '0 4px 30px rgba(0,0,0,0.1)',
+          padding: '2rem',
+          maxWidth: '400px',
+          width: '100%',
+          color: 'white',
+          textAlign: 'center'
+        }}
+      >
+      <h2
+      style={{
+      fontSize: '1.5rem', marginBottom: '1.5rem', fontWeight: 'bold' 
+      }}>
+      Recupera tu contraseña
+      </h2>
+
+
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -39,13 +68,37 @@ export const Forgot = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{ width: '100%', padding: '8px', marginBottom: '12px' }}
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            borderRadius: '8px',
+            border: 'none',
+            fontSize: '1rem',
+            marginBottom: '1rem',
+
+          }}
         />
-        <button type="submit" style={{ padding: '8px 16px' }}>
+        <button
+         type="submit"
+         style={{ 
+            padding: '8px 16px',
+            width: '100%',
+            padding: '0.75rem',
+            borderRadius: '8px',
+            border: 'none',
+            backgroundColor: '#facc15',
+            color: '#000',
+            fontWeight: 'bold',
+            fontSize: '1.1rem',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease' 
+
+         }}>
           Enviar email
         </button>
       </form>
       {mensaje && <p>{mensaje}</p>}
+    </div>
     </div>
   );
 };

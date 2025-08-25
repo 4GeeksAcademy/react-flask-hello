@@ -90,10 +90,10 @@ export const Home = () => {
         </section>
 
       {/* Carrusel (Mi contenido) */}
-        <section className="section">
+        <section className="section"style={{marginTop: "5rem", marginBottom: "8rem", }} >
           <Slider {...settings}>
             <div>
-              <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+              <div style={{ display: "grid", gap: 24, alignItems: "center", gridTemplateColumns: "1fr 1fr"}}>
                 <img
                   src={mexico}
                   alt="Imagen 1"

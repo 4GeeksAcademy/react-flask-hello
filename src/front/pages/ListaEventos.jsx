@@ -30,9 +30,9 @@ export const ListaEventos = () => {
 
 
     return (
-        <div>
+        <div >
             <h1>Lista de Eventos</h1>
-           <section className="grid-cards ">
+           <section className="grid-cards " style={{margin: "3rem"}}>
                    {eventos.length === 0 ? (
                      <p>No hay eventos creados aún.</p>
                    ) : (

@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Integer, ForeignKey, Date, Text, Numeric, DateTime, func, UniqueConstraint
+from sqlalchemy import String, Boolean, Integer, ForeignKey, Date, Text, Numeric, DateTime, func, UniqueConstraint, Float
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import date, datetime
 from decimal import Decimal
@@ -19,15 +19,14 @@ UserRole = db.Table(
 
 class User(db.Model):
     __tablename__ = 'user'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[String] = mapped_column(
-        String(120), unique=True, nullable=False)
-    username: Mapped[String] = mapped_column(
-        String(80), unique=True, nullable=False)
-    password: Mapped[String] = mapped_column(String(200), nullable=False)
-    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    roles: Mapped[list['Rol']] = relationship('Rol', secondary='user_rol',)
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    modified_at = db.Column(db.DateTime, nullable=False)
+    roles = db.relationship('Rol', secondary='user_rol',)
+    messages = db.relationship('Message', back_populates='user')
 
     def serialize(self):
         return {
@@ -42,10 +41,9 @@ class User(db.Model):
 
 class Rol(db.Model):
     __tablename__ = 'rol'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type: Mapped[String] = mapped_column(
-        String(50), unique=True, nullable=False)
-    user: Mapped[list['User']] = relationship('User', secondary='user_rol')
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(50), unique=True, nullable=False)
+    user = db.relationship('User', secondary='user_rol')
 
     def serialize(self):
         return {
@@ -56,18 +54,17 @@ class Rol(db.Model):
 
 class Profile(db.Model):
     __tablename__ = 'profile'
-    user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('user.id'), primary_key=True)
-    name: Mapped[String] = mapped_column(String(100), nullable=False)
-    last_name: Mapped[String] = mapped_column(String(100), nullable=False)
-    avatar: Mapped[String] = mapped_column(String(100), nullable=True)
-    city: Mapped[String] = mapped_column(String(50), nullable=False)
-    birth_date: Mapped[date | None] = mapped_column(Date, nullable=True)
-    bio: Mapped[String | None] = mapped_column(String(250), nullable=True)
-    skills: Mapped[String | None] = mapped_column(String(250), nullable=True)
-    rating_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
-    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    avatar = db.Column(db.String(100), nullable=True)
+    city = db.Column(db.String(50), nullable=False)
+    birth_date = db.Column(db.Date, nullable=True)
+    bio = db.Column(db.String(250), nullable=True)
+    skills = db.Column(db.String(250), nullable=True)
+    rating_avg = db.Column(db.Float, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+    modified_at = db.Column(db.DateTime, nullable=False)
 
     def serialize(self):
         return {
@@ -87,16 +84,13 @@ class Profile(db.Model):
 
 class AccountSettings(db.Model):
     __tablename__ = 'account_settings'
-    user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('user.id'), primary_key=True)
-    phone: Mapped[String | None] = mapped_column(String(20), nullable=True)
-    billing_info: Mapped[String | None] = mapped_column(
-        String(250), nullable=True)
-    language: Mapped[String | None] = mapped_column(String(50), nullable=True)
-    marketing_emails: Mapped[bool | None] = mapped_column(
-        Boolean, nullable=True)
-    created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
-    modified_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), primary_key=True)
+    phone = db.Column(db.String(20), nullable=True)
+    billing_info = db.Column(db.String(250), nullable=True)
+    language = db.Column(db.String(50), nullable=True)
+    marketing_emails = db.Column(db.Boolean, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+    modified_at = db.Column(db.DateTime, nullable=False)
 
     def serialize(self):
         return {
@@ -114,7 +108,7 @@ class AccountSettings(db.Model):
 task_categories = db.Table(
     "task_categories",
     db.Column("task_id", Integer, db.ForeignKey(
-        "tasks.id", ondelete="CASCADE"), primary_key=True),
+        "task.id", ondelete="CASCADE"), primary_key=True),
     db.Column("category_id", Integer, db.ForeignKey(
         "categories.id", ondelete="CASCADE"), primary_key=True),
 )
@@ -123,33 +117,30 @@ task_categories = db.Table(
 class Task(db.Model):
     __tablename__ = "task"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    title: Mapped[str | None] = mapped_column(String(120), nullable=True)
-    description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    location: Mapped[str | None] = mapped_column(String(120), nullable=True)
-    price: Mapped[Decimal | None] = mapped_column(
-        Numeric(10, 2), nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    location = db.Column(db.String(120), nullable=True)
+    price = db.Column(db.Numeric(10, 2), nullable=True)
 
     # dates
-    due_at: Mapped[datetime | None] = mapped_column(
-        DateTime, nullable=True)   # timestamp
+    due_at = db.Column(db.DateTime, nullable=True)   # timestamp
     # DB fills posted_at automatically with current_date()
-    posted_at: Mapped[date] = mapped_column(
-        Date, nullable=False, server_default=func.current_date())
-    assigned_at: Mapped[date | None] = mapped_column(Date, nullable=True)
-    completed_at: Mapped[date | None] = mapped_column(Date, nullable=True)
+    posted_at = db.Column(db.Date, nullable=False,
+                          server_default=func.current_date())
+    assigned_at = db.Column(db.Date, nullable=True)
+    completed_at = db.Column(db.Date, nullable=True)
 
     # business-defined value (app.py)
-    status: Mapped[str] = mapped_column(
-        String(30), nullable=False, server_default="pending")
+    status = db.Column(db.String(30), nullable=False, server_default="pending")
 
     # FK + relationship (1 User -> many Tasks)
-    publisher_id: Mapped[int] = mapped_column(
-        ForeignKey("user.id"), nullable=False, index=True)
-    publisher: Mapped["User"] = relationship(backref="tasks")
+    publisher_id = db.Column(db.Integer, ForeignKey(
+        "user.id"), nullable=False, index=True)
+    publisher = db.relationship("User", backref="tasks")
 
     # relationship categories
-    categories: Mapped[list["Category"]] = relationship(
+    categories = db.relationship(
         "Category", secondary=task_categories, back_populates="tasks")
 
     def serialize(self):
@@ -177,12 +168,11 @@ class Task(db.Model):
 class Category(db.Model):
     __tablename__ = "categories"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(
-        String(50), nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
 
     # relationship
-    tasks: Mapped[list["Task"]] = relationship(
+    tasks = db.relationship(
         "Task", secondary=task_categories, back_populates="categories")
     # return type
 
@@ -196,23 +186,22 @@ class Category(db.Model):
 class TaskOffered(db.Model):
     __tablename__ = "tasks_offered"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     # the values will be defined in the business layer(app.py)
-    status: Mapped[Decimal | None] = mapped_column(
-        Numeric(10, 2), nullable=True)
+    status = db.Column(db.Numeric(10, 2), nullable=True)
     # dates
-    created_at: Mapped[date] = mapped_column(
-        Date, nullable=False, server_default=func.current_date())
-    updated_at: Mapped[date] = mapped_column(
-        Date, nullable=False,
+    created_at = db.Column(
+        db.Date, nullable=False, server_default=func.current_date())
+    updated_at = db.Column(
+        db.Date, nullable=False,
         server_default=func.current_date(),
         server_onupdate=func.current_date()
     )
     # FK
-    task_id: Mapped[int] = mapped_column(
-        ForeignKey("tasks.id"), nullable=False, index=True)
-    tasker_id: Mapped[int] = mapped_column(
-        ForeignKey("user.id"), nullable=False, index=True)
+    task_id = db.Column(db.Integer, ForeignKey(
+        "task.id"), nullable=False, index=True)
+    tasker_id = db.Column(db.Integer, ForeignKey(
+        "user.id"), nullable=False, index=True)
 
     # one offer per (task, tasker) in pair
     __table_args__ = (
@@ -234,31 +223,27 @@ class TaskOffered(db.Model):
 
 
 class TaskDealed(db.Model):
-    __tablename__ = "tasks_dealed"
+    __tablename__ = "task_dealed"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    fixed_price: Mapped[Decimal | None] = mapped_column(
-        Numeric(10, 2), nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    fixed_price = db.Column(db.Numeric(10, 2), nullable=True)
 
     # the values will be defined in the business layer(app.py)
-    status: Mapped[str] = mapped_column(String(30), nullable=False)
+    status = db.Column(db.String(30), nullable=False)
     # dates
-    accepted_at: Mapped[date | None] = mapped_column(Date, nullable=True)
-    delivered_at: Mapped[date | None] = mapped_column(Date, nullable=True)
-    cancelled_at: Mapped[date | None] = mapped_column(Date, nullable=True)
+    accepted_at = db.Column(db.Date, nullable=True)
+    delivered_at = db.Column(db.Date, nullable=True)
+    cancelled_at = db.Column(db.Date, nullable=True)
     # FK
-    task_id: Mapped[int] = mapped_column(
-        ForeignKey("tasks.id"), nullable=False, index=True
+    task_id = db.Column(
+        db.Integer, ForeignKey("task.id"), nullable=False, index=True
     )
-    offer_id: Mapped[int] = mapped_column(
-        ForeignKey("tasks_offered.id"), nullable=False, index=True
-    )
-    client_id: Mapped[int] = mapped_column(
-        ForeignKey("user.id"), nullable=False, index=True
-    )
-    tasker_id: Mapped[int] = mapped_column(
-        ForeignKey("user.id"), nullable=False, index=True
-    )
+    offer_id = db.Column(db.Integer, ForeignKey(
+        "tasks_offered.id"), nullable=False, index=True)
+    client_id = db.Column(db.Integer, ForeignKey(
+        "user.id"), nullable=False, index=True)
+    tasker_id = db.Column(db.Integer, ForeignKey(
+        "user.id"), nullable=False, index=True)
 
     def serialize(self):
         return {
@@ -278,24 +263,23 @@ class TaskDealed(db.Model):
 class Payment(db.Model):
     __tablename__ = "payments"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Numeric(10, 2), nullable=False)
     # the values will be defined in the business layer(app.py)
-    status: Mapped[str] = mapped_column(String(20), nullable=False)
+    status = db.Column(db.String(20), nullable=False)
     # dates
-    created_at: Mapped[date] = mapped_column(
-        Date, nullable=False, server_default=func.current_date()
+    created_at = db.Column(
+        db.Date, nullable=False, server_default=func.current_date()
     )
-    updated_at: Mapped[date] = mapped_column(
-        Date, nullable=False,
+    updated_at = db.Column(
+        db.Date, nullable=False,
         server_default=func.current_date(),
         server_onupdate=func.current_date()
     )
 
     # FK
-    dealed_id: Mapped[int] = mapped_column(
-        ForeignKey("tasks_dealed.id", ondelete="CASCADE"), unique=True, nullable=False, index=True
-    )
+    dealed_id = db.Column(db.Integer, ForeignKey(
+        "task_dealed.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
 
     def serialize(self):
         return {
@@ -309,16 +293,17 @@ class Payment(db.Model):
 
 
 class Review(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    review: Mapped[str] = mapped_column(String(10000), nullable=True)
-    rate: Mapped[int] = mapped_column(Integer, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    publisher_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), nullable=False)
-    worker_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), nullable=False)
-    task_dealed_id: Mapped[int] = mapped_column(
-        ForeignKey('task_dealed.id'), unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    review = db.Column(db.String(10000), nullable=True)
+    rate = db.Column(db.Numeric(3, 2), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True))
+    publisher_id = db.Column(
+        db.Integer, ForeignKey('user.id'), nullable=False)
+    worker_id = db.Column(
+        db.Integer, ForeignKey('user.id'), nullable=False)
+    task_dealed_id = db.Column(
+        db.Integer, ForeignKey('task_dealed.id'), unique=True, nullable=False)
+    task_id = db.Column(db.Integer, ForeignKey('task.id'), nullable=False)
 
     def serialize(self):
         return {
@@ -332,40 +317,37 @@ class Review(db.Model):
 
 
 class Message(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    body: Mapped[str] = mapped_column(String(100000), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    dealed_id: Mapped[int] = mapped_column(ForeignKey(
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), nullable=True)
+    created_at = db.Column(db.DateTime(timezone=True))
+    dealer_id = db.Column(db.Integer, ForeignKey(
         'task_dealed.id'), unique=True, nullable=False)
-    sender_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), nullable=False)
-    user: Mapped['User'] = mapped_column(
-        ForeignKey('user.id'), nullable=False)
+    sender_id = db.Column(db.Integer, ForeignKey(
+        'user.id'), nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
             "body": self.body,
             "created_at": self.created_at,
-            "dealed_id": self.dealed_id,
+            "dealer_id": self.dealer_id,
             "sender_id": self.sender_id,
         }
 
 
 class Dispute(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    reason: Mapped[str] = mapped_column(String(120), nullable=False)
-    details: Mapped[str] = mapped_column(String(1000), nullable=False)
-    status: Mapped[str] = mapped_column(String(30), nullable=False)
-    resolution: Mapped[str] = mapped_column(String(1000), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    dealed_id: Mapped[int] = mapped_column(ForeignKey(
+    id = db.Column(db.Integer, primary_key=True)
+    reason = db.Column(db.String(120), nullable=False)
+    details = db.Column(db.String(1000), nullable=False)
+    status = db.Column(db.String(30), nullable=False)
+    resolution = db.Column(db.String(1000), nullable=True)
+    created_at = db.Column(db.DateTime(timezone=True))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    dealed_id = db.Column(db.Integer, ForeignKey(
         'task_dealed.id'), unique=True, nullable=False)
-    raised_by: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), nullable=False)
-    resolved_by_admin_user: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), nullable=True)
+    raised_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    resolved_by_admin_user = db.Column(
+        db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     def serialize(self):
         return {
@@ -383,13 +365,13 @@ class Dispute(db.Model):
 
 
 class Admin_action(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    action: Mapped[str] = mapped_column(String(60), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    dispute_id: Mapped[int] = mapped_column(
-        ForeignKey('dispute.id'), nullable=False)
-    admin_user: Mapped[int] = mapped_column(
-        ForeignKey('user.id'), unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(60), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True))
+    dispute_id = db.Column(
+        db.Integer, ForeignKey('dispute.id'), nullable=False)
+    admin_user = db.Column(
+        db.Integer, ForeignKey('user.id'), unique=True, nullable=False)
 
     def serialize(self):
         return {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
+import imagenBack from "../assets/fondo-concierto.jpg";
 
 export const ResetPasswordPage = () => {
     const [password, setPassword] = useState("");
@@ -52,8 +52,11 @@ export const ResetPasswordPage = () => {
 
     return (
         <div className="signup-page-container">
+            <div className="imagen-background">
+                <img src={imagenBack} alt="imagen fondo" />
+            </div>
             <div className="login-content-wrapper">
-                <div className="login-form-card p-4 shadow-lg rounded">
+                <div className="login-form-card p-4 form-evet rounded">
                     <h2 className="text-center mb-4">Establecer Nueva Contraseña</h2>
                     <form onSubmit={handleResetPassword}>
                         <div className="mb-3">

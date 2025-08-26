@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../utils/Config";
+import { ActualizarUsuario } from "../components/ActualizarUsuario";
 
 export const PerfilUsuario = () => {
   const [usuario, setUsuario] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  
     const cargarDatosUsuario = async () => {
       const tokenUsuario = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -36,8 +37,8 @@ export const PerfilUsuario = () => {
         setError("No se pudieron cargar los datos del usuario.");
       }
     };
-
-    cargarDatosUsuario();
+    useEffect(() => {
+      cargarDatosUsuario();
   }, []);
 
   if (error) {
@@ -95,7 +96,15 @@ export const PerfilUsuario = () => {
         </div>
         <div style={{ marginBottom: "1rem" }}>
           <strong>Email:</strong> {usuario.email}
-      </div>
+        </div>
+        <div>
+          <button onClick={() => setMostrarFormulario(!mostrarFormulario)}>
+            {mostrarFormulario ? "Cancelar edición" : "Editar perfil"}
+          </button>
+          {mostrarFormulario && (
+            <ActualizarUsuario userId={userId} onUpdate={cargarDatosUsuario} />
+          )}
+        </div>
     </div>
   </div>
 

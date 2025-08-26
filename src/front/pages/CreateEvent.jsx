@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { backendUrl } from "../utils/Config";
 import { notifyError, notifySuccess } from "../utils/Notifications";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { APIProvider, Map } from '@vis.gl/react-google-maps';
 
 export function CreateEvent() {
   const [formData, setFormData] = useState({
@@ -351,6 +352,18 @@ export function CreateEvent() {
               placeholder="Precio del evento"
               disabled={isLoading}
             />
+          </div>
+
+          <div className="form-row">
+            <APIProvider apiKey={"AIzaSyCoJsSGhT-BPVXTLnKfTNinzi4opIn0CVU"}>
+              <Map
+                style={{ width: '100%', height: '50vh' }}
+                defaultCenter={{ lat: 22.54992, lng: 0 }}
+                defaultZoom={3}
+                gestureHandling={'greedy'}
+                disableDefaultUI={true}
+              />
+            </APIProvider>
           </div>
 
           {/* Acciones */}

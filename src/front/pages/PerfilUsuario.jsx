@@ -11,7 +11,7 @@ export const PerfilUsuario = () => {
       const userId = localStorage.getItem("userId");
 
       try {
-        const respuesta = await fetch(backendUrl+`user/${userId}`, {
+        const respuesta = await fetch(backendUrl + `user/${userId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${tokenUsuario}`,
@@ -70,16 +70,16 @@ export const PerfilUsuario = () => {
           borderRadius: "12px",
         }}
       >
-          <div style={{ marginTop: "2rem", textAlign: "center" }}>
+        <div style={{ marginTop: "2rem", textAlign: "center" }}>
           <img
-              src={usuario.avatar}
-              alt="Avatar"
-              style={{
-                width: "120px",
-                borderRadius: "50%",
-                border: "2px solid #fff",
-              }}
-            />
+            src={usuario.avatar}
+            alt="Avatar"
+            style={{
+              width: "120px",
+              borderRadius: "50%",
+              border: "2px solid #fff",
+            }}
+          />
         </div>
         <div style={{ marginBottom: "1rem" }}>
           <strong>Nombre:</strong> {usuario.nombre}
@@ -95,9 +95,9 @@ export const PerfilUsuario = () => {
         </div>
         <div style={{ marginBottom: "1rem" }}>
           <strong>Email:</strong> {usuario.email}
+        </div>
       </div>
     </div>
-  </div>
 
   );
 }

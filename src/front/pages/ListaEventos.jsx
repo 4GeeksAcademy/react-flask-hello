@@ -31,19 +31,20 @@ export const ListaEventos = () => {
     listadoEventos();
   }, []);
 
-
-    return (
-        <div >
-            <h1>Lista de Eventos</h1>
-           <section className="grid-cards " style={{margin: "3rem"}}>
-                   {eventos.length === 0 ? (
-                     <p>No hay eventos creados aún.</p>
-                   ) : (
-                     eventos.map((evento, index) => (
-                       <CardEvento key={index} item={evento} isUser={false} />
-                     ))
-                   )}
-                   </section>
-        </div>
-    );
-};
+  return (
+    <div>
+      <h1>Lista de Eventos</h1>
+      <section className="grid-cards">
+        {store.eventos.length === 0 ? (
+          <p>No hay eventos creados aún.</p>
+        ) : (
+          store.eventos.map((evento) => (
+            <Link key={evento.id} to={`/evento/${evento.id}`} className="card-link">
+              <CardEvento item={evento} isUser={false} />
+            </Link>
+          ))
+        )}
+      </section>
+    </div>
+  );
+}

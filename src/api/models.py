@@ -23,8 +23,10 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    modified_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False,
+                           server_default=func.current_timestamp())
+    modified_at = db.Column(db.DateTime, nullable=False, server_default=func.current_timestamp(
+    ), server_onupdate=func.current_timestamp())
     roles = db.relationship('Rol', secondary='user_rol',)
     messages = db.relationship('Message', back_populates='user')
 
@@ -110,7 +112,7 @@ task_categories = db.Table(
     db.Column("task_id", Integer, db.ForeignKey(
         "task.id", ondelete="CASCADE"), primary_key=True),
     db.Column("category_id", Integer, db.ForeignKey(
-        "categories.id", ondelete="CASCADE"), primary_key=True),
+        "category.id", ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -162,11 +164,12 @@ class Task(db.Model):
             "assigned_at": self.assigned_at.isoformat() if self.assigned_at else None,
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
             "publisher_id": self.publisher_id,
+            "categories": [categories.serialize() for categories in self.categories] if self.categories else [],
         }
 
 
 class Category(db.Model):
-    __tablename__ = "categories"
+    __tablename__ = "category"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
@@ -319,11 +322,13 @@ class Review(db.Model):
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(10000), nullable=True)
-    created_at = db.Column(db.DateTime(timezone=True))
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.current_timestamp())
     dealer_id = db.Column(db.Integer, ForeignKey(
         'task_dealed.id'), unique=True, nullable=False)
     sender_id = db.Column(db.Integer, ForeignKey(
         'user.id'), nullable=False)
+    user = db.relationship('User', back_populates='messages')
 
     def serialize(self):
         return {

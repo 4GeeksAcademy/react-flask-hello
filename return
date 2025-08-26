@@ -1,0 +1,21 @@
+             List of relations
+ Schema |       Name       | Type  | Owner  
+--------+------------------+-------+--------
+ public | account_settings | table | gitpod
+ public | admin_action     | table | gitpod
+ public | alembic_version  | table | gitpod
+ public | categories       | table | gitpod
+ public | dispute          | table | gitpod
+ public | message          | table | gitpod
+ public | payments         | table | gitpod
+ public | profile          | table | gitpod
+ public | review           | table | gitpod
+ public | rol              | table | gitpod
+ public | task             | table | gitpod
+ public | task_categories  | table | gitpod
+ public | task_dealed      | table | gitpod
+ public | tasks_offered    | table | gitpod
+ public | user             | table | gitpod
+ public | user_rol         | table | gitpod
+(16 rows)
+

@@ -77,7 +77,7 @@ export const NewTask = () => {
                 </div>
                 <div className="my-3">
                     <label className="form-check-label my-2" htmlFor="fotos">Sube algunas fotos que ayuden a entender la tarea</label>
-                    <input type="file" className="" id="fotos" multiple />
+                    <input type="file" className="form-control" id="fotos" multiple />
                 </div>
                 <button type="submit" className="btn btn-primary my-2">Submit</button>
             </form>

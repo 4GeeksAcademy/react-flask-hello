@@ -7,8 +7,8 @@ export const Admin = () => {
   const { store, dispatch } = useGlobalReducer()
 
   const filterList = ["Todo", "Pendientes", "Abiertas", "Cerradas"]
-  const tableHeader= ["ID","Título","Usuario", "Estado","Prioridad","Categoría","Fecha creación"]
-  const apiVars= ["id","title", "user","status","priority","category","created_at"]
+  const tableHeader = ["ID", "Título", "Usuario", "Estado", "Prioridad", "Categoría", "Fecha creación"]
+  const apiVars = ["id", "title", "user", "status", "priority", "category", "created_at"]
 
   return (
     <div className="container">
@@ -30,7 +30,7 @@ export const Admin = () => {
           <thead>
             <tr>
               {tableHeader.map((header, index) =>
-              <th key={index} scope="col">{header}</th>)}
+                <th key={index} scope="col">{header}</th>)}
               <th scope="col">Acciones</th>
             </tr>
           </thead>
@@ -38,9 +38,14 @@ export const Admin = () => {
           <tbody>
             <tr>
               {apiVars.map((fet, index) =>
-              <td key={index} >{fet}</td>
-            )}
-              <td>Otto</td>
+                <td key={index} >{fet}</td>
+              )}
+              <td>
+                <div className="btn-group rounded-pill bg-secondary p-1" role="group" aria-label="Basic outlined example">
+                  <button type="button" className="btn text-white rounded-pill "><small>Enviar Caso</small></button>
+                  <button type="button" className="btn text-white rounded-pill bg-dark "><small>Cerrar caso</small></button>
+                </div>
+              </td>
             </tr>
           </tbody>
 

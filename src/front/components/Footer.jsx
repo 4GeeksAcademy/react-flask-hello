@@ -11,7 +11,7 @@ export const Footer = () => {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="site-footer" role="contentinfo">
+    <footer className="site-footer"  role="contentinfo">
       <div className="footer__inner">
         {/* Fila superior */}
         <div className="footer__top">
@@ -27,12 +27,12 @@ export const Footer = () => {
           </div>
 
           {/* Navegación */}
-          <nav className="footer__nav" aria-label="Enlaces del sitio">
+         {/* <nav className="footer__nav" aria-label="Enlaces del sitio">
             <button className="btn btn--link" onClick={rutaVistaHome}>Home</button>
             <Link className="btn btn--link" to="/crear-evento">Crear evento</Link>
             <Link className="btn btn--link" to="/login">Login</Link>
             <Link className="btn btn--link" to="/register">Register</Link>
-          </nav>
+          </nav>*/}
 
           {/* Autores (Youtube Shorts 9º video) */}
           <a

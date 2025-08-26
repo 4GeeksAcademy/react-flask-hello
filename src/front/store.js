@@ -1,18 +1,26 @@
 export function initialStore() {
   const raw = localStorage.getItem("tasky_user");
+  if (raw) return { user: JSON.parse(raw) };
+
   return {
-    user: raw ? JSON.parse(raw) : null,
+    user: {
+      id: 1,
+      username: "demo",
+      email: "prueba1@gmail.com",
+      roles: ["client"],
+      bio: "Electricista con 5 años de experiencia.",
+      location: "CDMX, México",
+      created_at: new Date().toISOString(),
+      avatar_url: "",
+      tagline: "Mini bio (opcional)",
+    },
   };
 }
 
 export default function storeReducer(state, action) {
   switch (action.type) {
     case "LOGIN": {
-      const u = action.payload || {};
-      const username =
-        u.username ||
-        (u.name ? u.name : (u.email || "")).split("@")[0];
-      const user = { ...u, username };
+      const user = action.payload;
       localStorage.setItem("tasky_user", JSON.stringify(user));
       return { ...state, user };
     }
@@ -20,11 +28,10 @@ export default function storeReducer(state, action) {
       localStorage.removeItem("tasky_user");
       return { ...state, user: null };
     }
-    case "UPDATE_ROLE": {
-      const role = action.payload;
-      const updated = { ...state.user, role };
-      localStorage.setItem("tasky_user", JSON.stringify(updated));
-      return { ...state, user: updated };
+    case "UPDATE_PROFILE": {
+      const user = { ...state.user, ...action.payload };
+      localStorage.setItem("tasky_user", JSON.stringify(user));
+      return { ...state, user };
     }
     default:
       return state;

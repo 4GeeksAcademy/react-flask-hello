@@ -1,9 +1,14 @@
-export function BackendURL() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h2>Configura tu VITE_BACKEND_URL</h2>
-      <p>Agrega en tu .env (front):</p>
-      <pre>VITE_BACKEND_URL=https://…tu-backend…-3001.app.github.dev</pre>
-    </div>
-  );
+// src/front/components/BackendURL.jsx
+export function getBackendURL() {
+  const url = import.meta.env.VITE_BACKEND_URL || ""
+  // quita slash al final (opcional)
+  return url.replace(/\/$/, "")
 }
+
+export function BackendURL() {
+  // ... tu UI que ayuda a setear VITE_BACKEND_URL
+  return <div>Configura VITE_BACKEND_URL…</div>
+}
+
+// 👇 con esto, podrás hacer import default getBackendURL ...
+export default getBackendURL

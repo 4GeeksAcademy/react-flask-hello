@@ -1,75 +1,35 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { apiLogin } from "../api/auth";
-import { useStore } from "../hooks/useGlobalReducer";
-import AuthCard from "../components/AuthCard.jsx";
-import SocialButton from "../components/SocialButton.jsx";
+const BASE = import.meta.env.VITE_BACKEND_URL;
 
-export default function Login() {
-  const nav = useNavigate();
-  const { actions } = useStore();
+export default function Login(){
+  const [email,setEmail]=useState(""); 
+  const [password,setPassword]=useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [formError, setFormError] = useState("");
+  const googleLogin = () => {
+    window.location.href = `${BASE}/api/auth/google/login`;
+  };
+  const facebookLogin = () => {
+    window.location.href = `${BASE}/api/auth/facebook/login`;
+  };
 
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    setFormError("");
-    if (!/\S+@\S+\.\S+/.test(email)) return setFormError("Email inválido");
-    if (password.length < 6) return setFormError("Password mínimo 6 caracteres");
-    const user = await apiLogin({ email, password });
-    actions.login(user);
-    nav("/"); // Home; desde nav podrá ir a Post a task / Browse / My tasks
+    // tu login "tradicional" si lo tienes; por ahora omitimos
   };
 
   return (
-    <AuthCard title="Login to your account">
-      <form onSubmit={submit} className="auth-form">
-        <label className="auth-label">Email*</label>
-        <input
-          type="email"
-          className="auth-input"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+    <form onSubmit={submit} className="card p-3" style={{maxWidth:480, margin:"2rem auto"}}>
+      <h2>Iniciar sesión</h2>
+      <input placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} />
+      <input placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
 
-        <label className="auth-label">Password*</label>
-        <input
-          type="password"
-          className="auth-input"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      {/* reCAPTCHA va aquí si lo usas en login tradicional */}
 
-        <div className="captcha-mock">
-          <div className="checkbox" />
-          <span>I'm not a robot (placeholder)</span>
-        </div>
+      <button type="submit">Entrar</button>
 
-        {formError && <div className="auth-error" style={{ marginTop: 4 }}>{formError}</div>}
-
-        <button type="submit" className="auth-btn-primary">Continue</button>
-
-        <p className="auth-muted">
-          Don’t have an account? <Link to="/register">Sign up</Link>
-        </p>
-
-        <div className="auth-or">OR</div>
-
-        <SocialButton
-          icon="🟡"
-          label="Login with Google"
-          onClick={() => alert("Mock Google Sign-in")}
-        />
-        <SocialButton
-          icon="⚫"
-          label="Login with Facebook"
-          onClick={() => alert("Mock Facebook Login")}
-        />
-      </form>
-    </AuthCard>
+      <hr />
+      <button type="button" onClick={googleLogin} style={{marginTop:8}}>Continuar con Google</button>
+      <button type="button" onClick={facebookLogin} style={{marginTop:8}}>Continuar con Facebook</button>
+    </form>
   );
 }

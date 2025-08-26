@@ -1,98 +1,135 @@
 import { useEffect, useState } from "react";
-import { useStore } from "../hooks/useGlobalReducer";
+import { useParams, Link } from "react-router-dom";
+import { getUserByUsername } from "../mock/users";
 
-const ALL_SKILLS = ["Plumbing","Carpentry","Electricity","Painting","Cleaning"];
-
-export default function Profile(){
-  const { store, actions } = useStore();
-  const user = store.user;
-  const [form, setForm] = useState({ name:"", email:"", city:"", bio:"", skills:[], role:"client" });
-  const [saving, setSaving] = useState(false);
+export default function ProfilePublic() {
+  const { username } = useParams();
+  const [user, setUser] = useState(null);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
-    // con backend real, harías GET /api/me
-    setForm({
-      name: user.name ?? "",
-      email: user.email ?? "",
-      city: user.city ?? "",
-      bio: user.bio ?? "",
-      skills: user.skills ?? [],
-      role: user.role ?? "client"
-    });
-  }, [user]);
+    setErr("");
+    setLoading(true);
+    getUserByUsername(username)
+      .then(setUser)
+      .catch(e => setErr(e.message || "Error cargando perfil"))
+      .finally(() => setLoading(false));
+  }, [username]);
 
-  if(!user) return null;
-
-  const toggleSkill = (s) => {
-    setForm(f => f.skills.includes(s) ? {...f, skills:f.skills.filter(x=>x!==s)} : {...f, skills:[...f.skills, s]});
-  };
-
-  const save = async () => {
-    setSaving(true);
-    try {
-      // con backend real: const updated = await apiUpdateMe(form);
-      const updated = { ...user, ...form };
-      actions.login(updated); // refresca store/localStorage
-      alert("Perfil guardado ✅");
-    } finally {
-      setSaving(false);
-    }
-  };
+  if (loading) return <div className="container py-5">Cargando perfil…</div>;
+  if (err) return (
+    <div className="container py-5">
+      <p style={{ color: "#b91c1c" }}>Error: {err}</p>
+      <Link to="/">Volver</Link>
+    </div>
+  );
+  if (!user) return null;
 
   return (
-    <div className="card p-3" style={{maxWidth:720}}>
-      <h2>Mi perfil</h2>
-
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr", gap:16}}>
-        <div>
-          <label>Nombre</label>
-          <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/>
-        </div>
-        <div>
-          <label>Email</label>
-          <input value={form.email} disabled />
-        </div>
-        <div>
-          <label>Ciudad</label>
-          <input value={form.city} onChange={e=>setForm({...form,city:e.target.value})}/>
-        </div>
-        <div>
-          <label>Rol</label>
-          <select value={form.role} onChange={e=>{ setForm({...form,role:e.target.value}); actions.updateRole(e.target.value); }}>
-            <option value="client">Cliente</option>
-            <option value="tasker">Proveedor</option>
-          </select>
-        </div>
-        <div style={{gridColumn:"1 / span 2"}}>
-          <label>Bio</label>
-          <textarea rows={3} value={form.bio} onChange={e=>setForm({...form,bio:e.target.value})}/>
-        </div>
-      </div>
-
-      {form.role==="tasker" && (
-        <div style={{marginTop:12}}>
-          <label>Skills</label>
-          <div style={{display:"flex",flexWrap:"wrap", gap:8, marginTop:6}}>
-            {ALL_SKILLS.map(s=>(
-              <button type="button" key={s}
-                onClick={()=>toggleSkill(s)}
-                style={{
-                  padding:"6px 10px", borderRadius:16, border:"1px solid #cbd5e1",
-                  background: form.skills.includes(s) ? "#2563eb" : "#fff",
-                  color: form.skills.includes(s) ? "#fff" : "#334155"
-                }}>
-                {s}
-              </button>
-            ))}
+    <div className="container py-4" style={{ maxWidth: 960 }}>
+      <div
+        className="card"
+        style={{
+          borderRadius: 16,
+          padding: "1.5rem",
+          boxShadow: "0 8px 24px rgba(0,0,0,.06)",
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+          <div
+            style={{
+              width: 96,
+              height: 96,
+              borderRadius: "50%",
+              background: "#eef2ff",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 28,
+              color: "#4338ca",
+              flexShrink: 0,
+            }}
+          >
+            {user.username?.[0]?.toUpperCase() || "U"}
+          </div>
+          <div>
+            <h1 style={{ margin: 0 }}>
+              {user.username}
+              {" "}
+              <span style={{ fontSize: 14, color: "#6b7280", fontWeight: 400 }}>
+                @{user.username}
+              </span>
+            </h1>
+            <div style={{ color: "#6b7280", marginTop: 4 }}>
+              {user.location || "Sin ubicación"}
+            </div>
+            {!!user.roles?.length && (
+              <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {user.roles.map(r => (
+                  <span
+                    key={r}
+                    style={{
+                      background: "#eef2ff",
+                      color: "#4338ca",
+                      padding: "2px 10px",
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {r}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      )}
 
-      <div style={{marginTop:16, display:"flex", gap:8}}>
-        <button onClick={save} disabled={saving}>{saving ? "Guardando..." : "Guardar"}</button>
-        <button type="button" onClick={actions.logout} style={{background:"#64748b"}}>Cerrar sesión</button>
+        {/* Stats */}
+        <div style={{ marginTop: 16, display: "flex", gap: 16, flexWrap: "wrap" }}>
+          <Stat label="Reviews" value={user.stats?.reviews ?? 0} />
+          <Stat label="Rating" value={user.stats?.rating ?? 0} />
+          <Stat label="Tareas completadas" value={user.stats?.tasks_done ?? 0} />
+        </div>
+
+        {/* Bio */}
+        {(user.tagline || user.bio) && (
+          <div style={{ marginTop: 20 }}>
+            {user.tagline && (
+              <p style={{ margin: 0, fontWeight: 600 }}>{user.tagline}</p>
+            )}
+            {user.bio && (
+              <p style={{ margin: "6px 0 0 0", color: "#4b5563", lineHeight: 1.6 }}>
+                {user.bio}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Placeholder: tareas / portafolio */}
+        <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid #eee" }}>
+          <h3 style={{ margin: 0, fontSize: 18 }}>Actividad reciente</h3>
+          <p style={{ color: "#6b7280" }}>Aún sin mostrar tareas/portafolio (MVP).</p>
+        </div>
       </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }) {
+  return (
+    <div
+      style={{
+        background: "#f9fafb",
+        border: "1px solid #f3f4f6",
+        borderRadius: 12,
+        padding: "10px 14px",
+        minWidth: 140,
+      }}
+    >
+      <div style={{ fontSize: 12, color: "#6b7280" }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 700 }}>{value}</div>
     </div>
   );
 }

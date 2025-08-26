@@ -1,72 +1,49 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
-from flask_migrate import Migrate
-from flask_swagger import swagger
-from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
-from api.admin import setup_admin
-from api.commands import setup_commands
+from flask import Flask, redirect, url_for, jsonify, request
+from flask_cors import CORS
+from authlib.integrations.flask_client import OAuth
 
-# from models import Person
-
-ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-static_file_dir = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
-app.url_map.strict_slashes = False
+app.secret_key = os.getenv("FLASK_APP_KEY", "dev")
 
-# database condiguration
-db_url = os.getenv("DATABASE_URL")
-if db_url is not None:
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
-        "postgres://", "postgresql://")
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+BACKEND_URL  = os.getenv("BACKEND_URL", "http://localhost:3001")
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-MIGRATE = Migrate(app, db, compare_type=True)
-db.init_app(app)
+# CORS: habilita el front para hacer fetch al back
+CORS(app, origins=[FRONTEND_URL], supports_credentials=True)
 
-# add the admin
-setup_admin(app)
+# --- OAuth (Google) ---
+oauth = OAuth(app)
+google = oauth.register(
+    name="google",
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+    access_token_url="https://oauth2.googleapis.com/token",
+    authorize_url="https://accounts.google.com/o/oauth2/v2/auth",
+    api_base_url="https://www.googleapis.com/oauth2/v2/",
+    client_kwargs={
+        "scope": "openid email profile",
+        "prompt": "consent",
+    },
+)
 
-# add the admin
-setup_commands(app)
+@app.route("/auth/google/login")
+def google_login():
+    redirect_uri = f"{BACKEND_URL}/auth/google/callback"
+    return oauth.google.authorize_redirect(redirect_uri)
 
-# Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+@app.route("/auth/google/callback")
+def google_callback():
+    # Si usas OpenID: parsea el ID Token
+    token = oauth.google.authorize_access_token()
+    # user_info = oauth.google.parse_id_token(token)  # si has pedido 'openid'
+    # o:
+    user_info = oauth.google.get("userinfo").json()
 
-# Handle/serialize errors like a JSON object
-
-
-@app.errorhandler(APIException)
-def handle_invalid_usage(error):
-    return jsonify(error.to_dict()), error.status_code
-
-# generate sitemap with all your endpoints
-
-
-@app.route('/')
-def sitemap():
-    if ENV == "development":
-        return generate_sitemap(app)
-    return send_from_directory(static_file_dir, 'index.html')
-
-# any other endpoint will try to serve it like a static file
-@app.route('/<path:path>', methods=['GET'])
-def serve_any_other_file(path):
-    if not os.path.isfile(os.path.join(static_file_dir, path)):
-        path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
-    return response
-
-
-# this only runs if `$ python src/main.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    # TODO: buscar/crear usuario en tu DB y emitir tu token (JWT o session)
+    # Ejemplo (mock): devolver datos para que el front termine login
+    return jsonify({
+        "ok": True,
+        "provider": "google",
+        "profile": user_info,
+    })

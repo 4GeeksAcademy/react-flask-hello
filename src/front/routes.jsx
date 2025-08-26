@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ProfilePrivate from "./pages/ProfilePrivate";
 import ProfilePublic from "./pages/ProfilePublic";
-
+import AuthCallback from "./pages/AuthCallback";
 
 const DashboardClient = () => <div>Mis tareas (Cliente)</div>;
 const DashboardTasker = () => <div>Mis ofertas (Proveedor)</div>;
@@ -25,22 +25,13 @@ function Protected({ role }) {
 
 export const router = createBrowserRouter([
   {
-
     element: <Layout />,
     children: [
-      {
-        element: <Protected />,                   
-        children: [{ path: "/account", element: <ProfilePrivate /> }],
-      },
-      { path: "/u/:username", element: <ProfilePublic /> },
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-
-      { element: <Protected />, children: [{ path: "/profile", element: <Profile /> }] },
-      { element: <Protected role="client" />, children: [{ path: "/client", element: <DashboardClient /> }] },
-      { element: <Protected role="tasker" />, children: [{ path: "/tasker", element: <DashboardTasker /> }] },
-
+      { path: "/auth/callback", element: <AuthCallback /> },   // <--- AÑADIDO
+      // ... tus rutas protegidas
       { path: "*", element: <Navigate to="/" replace /> }
     ]
   }

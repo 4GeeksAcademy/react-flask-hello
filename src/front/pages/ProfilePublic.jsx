@@ -1,49 +1,42 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useStore } from "../hooks/useGlobalReducer";
+// Usa una de las dos opciones:
+import { getUserByUsername } from "../api/users";
+// import { getPublicProfile } from "../api/users";
 
 export default function ProfilePublic() {
   const { username } = useParams();
-  const { store } = useStore();
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
 
-  // Para demo: si no hay user en store, render de ejemplo
-  const user = store.user || {
-    name: username,
-    city: "Ciudad, País",
-    tagline: "Nuevo en Tasky 🚀 listo para ayudarte.",
-    bio: "Ofrezco servicios con enfoque en calidad y tiempos claros. ¡Hablemos!",
-    skills: ["Limpieza", "Plomería", "Pintura"],
-  };
+  useEffect(() => {
+    let live = true;
+    (async () => {
+      try {
+        setError("");
+        setUser(null);
+        // Opción A:
+        const data = await getUserByUsername(username);
+        // Opción B:
+        // const data = await getPublicProfile(username);
+        if (live) setUser(data);
+      } catch (e) {
+        if (live) setError(e.message || "Error cargando perfil");
+      }
+    })();
+    return () => { live = false; };
+  }, [username]);
+
+  if (error) return <div className="container py-4">Error: {error}</div>;
+  if (!user) return <div className="container py-4">Cargando perfil…</div>;
 
   return (
-    <div className="pub-wrap">
-      <div className="pub-card">
-        <div className="pub-header">
-          <div className="pub-avatar" />
-          <div className="pub-id">
-            <h1>{user.name}</h1>
-            <p className="muted">@{username}</p>
-            <p>{user.city}</p>
-          </div>
-        </div>
-
-        <div className="pub-body">
-          {user.tagline && <p className="tagline">{user.tagline}</p>}
-          {user.bio && <p className="bio">{user.bio}</p>}
-
-          {user.skills?.length > 0 && (
-            <div className="skills">
-              {user.skills.map((s, i) => (
-                <span key={i} className="chip">{s}</span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="pub-actions">
-          <button className="btn-primary">Hire me</button>
-          <button className="btn-outline">Message</button>
-        </div>
-      </div>
+    <div className="container py-4">
+      <h1>{user.first_name} {user.last_name}</h1>
+      <p>@{user.username}</p>
+      <p>{user.tagline}</p>
+      <p>{user.location}</p>
+      <p>{user.description}</p>
     </div>
   );
 }

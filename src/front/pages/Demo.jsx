@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { useStore } from "../hooks/useGlobalReducer";
 
+
 export const Demo = () => {
   const { store /*, actions*/ } = useStore();
 

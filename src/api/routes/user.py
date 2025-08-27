@@ -221,7 +221,6 @@ def put_user_data(user_id):
         resp = supabase.table('Usuario')  \
             .update(datos_actualizar)\
             .eq('id', user_id) \
-            .single() \
             .execute()
         
         if resp.data:
@@ -237,4 +236,4 @@ def put_user_data(user_id):
 
     except Exception as e:
         print("Error al actualizar datos usuario:", e)
-        return jsonify({"error": "Error al actializar datos usuario"}), 500
+        return jsonify({"error": str(e)}), 500

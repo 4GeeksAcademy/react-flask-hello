@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../utils/Config";
-import { ActualizarUsuario } from "../components/ActualizarUsuario";
+import { useNavigate } from "react-router-dom";
+import { ActualizarUsuario } from "./ActualizarUsuario";
 
 export const PerfilUsuario = () => {
   const [usuario, setUsuario] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();  
 
-  
     const cargarDatosUsuario = async () => {
       const tokenUsuario = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -76,7 +77,8 @@ export const PerfilUsuario = () => {
               src={usuario.avatar}
               alt="Avatar"
               style={{
-                width: "120px",
+                width: "150px",
+                height: "150px",
                 borderRadius: "50%",
                 border: "2px solid #fff",
               }}
@@ -98,12 +100,9 @@ export const PerfilUsuario = () => {
           <strong>Email:</strong> {usuario.email}
         </div>
         <div>
-          <button onClick={() => setMostrarFormulario(!mostrarFormulario)}>
-            {mostrarFormulario ? "Cancelar edición" : "Editar perfil"}
+          <button className="btn btn-chip ml-[1px]" style={{marginBottom: '1rem',}} onClick={() => navigate(`/user/actualizar-perfil/${usuario.id}`)}>
+            editar 
           </button>
-          {mostrarFormulario && (
-            <ActualizarUsuario userId={userId} onUpdate={cargarDatosUsuario} />
-          )}
         </div>
     </div>
   </div>

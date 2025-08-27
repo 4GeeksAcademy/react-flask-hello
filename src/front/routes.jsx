@@ -11,6 +11,8 @@ import { Reset } from './pages/Reset.jsx';
 import { MisEventos } from "./pages/MisEventos.jsx";
 import { ListaEventos } from "./pages/ListaEventos.jsx";
 import { PerfilUsuario } from "./pages/PerfilUsuario.jsx";
+import { ActualizarUsuario } from "./pages/ActualizarUsuario";
+
 
 
 export const router = createBrowserRouter(
@@ -43,6 +45,8 @@ export const router = createBrowserRouter(
       
       {/* Usuario */}
       <Route path="user/perfil" element={<PerfilUsuario />} />
+      <Route path="user/actualizar-perfil/:userId" element={<ActualizarUsuario />} />
+
 
       {/* Catch-all */}
       <Route path="*" element={<NotFound />} />

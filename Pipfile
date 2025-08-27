@@ -6,9 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask = "*"
-flask-sqlalchemy = "*"
-flask-migrate = "*"
 flask-swagger = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
@@ -17,12 +14,15 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 typing-extensions = "*"
-flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
+flask-jwt-extended = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
 sqlalchemy = "*"
+flask = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.13"
 
 [scripts]
 start="flask run -p 3001 -h 0.0.0.0"

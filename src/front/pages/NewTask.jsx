@@ -44,6 +44,23 @@ export const NewTask = () => {
         console.log("Categorías seleccionadas:", checkedCategories);
         setCategories(checkedCategories)
     };
+
+    const addTask = async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      try {
+        const postTask = await fetch("https://sturdy-adventure-q79vjr6rwwgp2jxp-5000.app.github.dev/api/tasks", {
+          method: 'POST',
+          body: JSON.stringify(task),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        console.log(postTask)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
     return (
         <div className="container">
             <Link to="/">
@@ -52,7 +69,7 @@ export const NewTask = () => {
             <div className="text-center">
                 <h1>Publica una nueva tarea</h1>
             </div>
-            <form className="border rounded-5 bg-light col-12 p-5">
+            <form className="border rounded-5 bg-light col-12 p-5" onSubmit={(e) => addTask()}>
 
                 <div className="mb-3">
                     <label htmlFor="task-title" className="form-label">¿Qué necesita hacerse?</label>

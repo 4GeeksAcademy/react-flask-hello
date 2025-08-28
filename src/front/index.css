@@ -902,3 +902,109 @@ body {
 .create-event__form .form-row { margin-bottom: 14px; }
 
 
+/*CSS ID_Evento */
+
+/* Contenedor centrado */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+/* Spacing general */
+.detalle-ev { padding: 10px 0 28px; }
+
+/* HERO */
+.detalle-ev__hero {
+  position: relative;
+  height: clamp(260px, 36vw, 480px);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #2a2b31;
+  background: #0f1115;
+}
+.detalle-ev__hero img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+  object-position: center 35%;         /* Así ajusto el encuadre vertical 7º Mentoría con Sergio (Video) */
+  filter: saturate(1.05);
+}
+/* Vignette/gradiente para que pueda leer bien el puñetero título */
+.detalle-ev__hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.75) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.85) 100%);
+}
+
+.detalle-ev__hero .chip {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  background: #312e81; color: #e5e7eb; font-size: 12px;
+  padding: 6px 10px; border-radius: 999px; border: 1px solid #3f3d9b;
+}
+
+.detalle-ev__hero-content {
+  position: absolute; left: 22px; right: 22px; bottom: 18px; z-index: 2;
+  display: grid; gap: 10px;
+}
+.detalle-ev__hero-content h1 {
+  margin: 0;
+  color: #fff; font-size: clamp(22px, 3vw, 34px); font-weight: 800;
+  text-shadow: 0 2px 14px rgba(0,0,0,.6);
+}
+
+.badges {
+  display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0;
+  list-style: none;
+}
+.badges li {
+  font-size: 13px; color: #e5e7eb;
+  background: #22232b; border: 1px solid #2f3038;
+  padding: 6px 10px; border-radius: 999px;
+}
+
+.cta-row { display: flex; gap: 10px; }
+
+/* Botones */
+.btn {
+  background: #7c3aed; color: #fff; text-decoration: none;
+  border: none; border-radius: 10px; padding: 9px 14px; font-weight: 700;
+  box-shadow: 0 6px 18px rgba(124,58,237,.25);
+}
+.btn:hover { filter: brightness(1.07); }
+.btn--ghost {
+  background: transparent; color: #e5e7eb; border: 1px solid #3b3c44;
+  border-radius: 10px; padding: 8px 13px; font-weight: 600;
+}
+
+/* GRID del contenido (IA) */
+.detalle-ev__grid {
+  margin-top: 18px;
+  display: grid; gap: 16px; grid-template-columns: 1fr;
+}
+@media (min-width: 960px) {
+  .detalle-ev__grid { grid-template-columns: 1.3fr 1fr; }
+}
+
+.panel {
+  background: #17181d; border: 1px solid #292a31; border-radius: 16px; padding: 16px;
+}
+.panel h2 { margin: 0 0 12px; color: #f3f4f6; }
+
+.info-list { list-style: none; margin: 0; padding: 0; line-height: 1.9; color: #e5e7eb; }
+.info-list a { color: #9aa9ff; text-decoration: underline; }
+
+html, body, #root { height: 100%; }
+body {
+  background:
+    radial-gradient(850px 520px at 10% -10%, rgba(124,58,237,.18), transparent 60%),
+    radial-gradient(900px 560px at 90% 0%, rgba(59,130,246,.14), transparent 60%),
+    radial-gradient(800px 500px at 50% 120%, rgba(236,72,153,.10), transparent 60%),
+    #0b0d12;
+  background-attachment: fixed;
+}
+
+body::before{
+  content:""; position: fixed; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 3px 3px; opacity: .18; mix-blend-mode: overlay;
+}
+
+

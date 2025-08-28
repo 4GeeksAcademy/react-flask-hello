@@ -1,30 +1,74 @@
-// Import necessary components and functions from react-router-dom.
+// src/front/routes.jsx
+import React from "react";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { useStore } from "./hooks/useGlobalReducer";
 
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-} from "react-router-dom";
-import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import ProfilePrivate from "./pages/ProfilePrivate";
+import ProfilePublic from "./pages/ProfilePublic";
+import AuthCallback from "./pages/AuthCallback";
+import Browse from "./pages/Browse";
+import PostTask from "./pages/PostTask";
 
-export const router = createBrowserRouter(
-    createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+// Páginas que ya traía el repo
+import Single from "./pages/Single";
+import Demo from "./pages/Demo";
+import NewTask from "./pages/NewTask";
+import Admin from "./pages/Admin";
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+const DashboardClient = () => <div>Mis tareas (Cliente)</div>;
+const DashboardTasker = () => <div>Mis ofertas (Proveedor)</div>;
 
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
-      </Route>
-    )
-);
+function Protected({ role }) {
+  const { store } = useStore();
+  const user = store.user;
+
+  if (!user) return <Navigate to="/login" replace />;
+
+  if (role && user.role !== role) {
+    return <Navigate to={user.role === "client" ? "/client" : "/tasker"} replace />;
+  }
+  return <Outlet />;
+}
+
+export const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      // Públicas
+      { path: "/", element: <Home /> },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
+      { path: "/auth/callback", element: <AuthCallback /> },
+      { path: "/u/:username", element: <ProfilePublic /> }, // <- perfil público
+      { path: "/browse", element: <Browse /> },
+      { path: "/post", element: <PostTask /> },
+
+      // Páginas del template
+      { path: "/single/:theId", element: <Single /> },
+      { path: "/demo", element: <Demo /> },
+      { path: "/newtask", element: <NewTask /> },
+      { path: "/admin", element: <Admin /> },
+
+      // Privadas (requiere sesión)
+      {
+        element: <Protected />,
+        children: [
+          { path: "/account", element: <ProfilePrivate /> },
+          { path: "/profile", element: <Profile /> },
+        ],
+      },
+
+      // Privadas por rol
+      { element: <Protected role="client" />, children: [{ path: "/client", element: <DashboardClient /> }] },
+      { element: <Protected role="tasker" />, children: [{ path: "/tasker", element: <DashboardTasker /> }] },
+
+      // Fallback
+      { path: "*", element: <Navigate to="/" replace /> },
+    ],
+  },
+]);

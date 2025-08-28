@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f9fafc;
+  color: #0f172a;
+}
+
+/* ---------------------------------------------------
+   1) VARIABLES
+--------------------------------------------------- */
+:root{
+  --primary:       #2563eb;
+  --primary-dark:  #1d4ed8;
+  --ink:           #0f172a;
+  --muted:         #64748b;
+  --border:        #e2e8f0;
+  --bg:            #f8fafc;
+  --chip-bg:       #eef2ff;
+  --chip-ink:      #1e40af;
+  --danger:        #ef4444;
+}
+
+/* ---------------------------------------------------
+   2) UTILIDADES BÁSICAS
+--------------------------------------------------- */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+.muted { color: var(--muted); }
+.soft  { background: #eef4ff; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ---------------------------------------------------
+   3) COMPONENTES GENERALES
+--------------------------------------------------- */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.04);
+}
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--chip-ink);
+  border: 1px solid #cbd5e1;
+  font-weight: 600;
+}
+.chip-on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+button, .btn {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:hover, .btn:hover { background: var(--primary-dark); }
+
+.btn-outline {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  outline: none;
+}
+input:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
+/* ---------------------------------------------------
+   4) NAVBAR + NAVLINK ACTIVO
+--------------------------------------------------- */
+.navbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 2rem; background: #fff; border-bottom: 1px solid #eee;
+}
+.nav-left, .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+
+/* enlaces del navbar (NavLink) */
+.navlink {
+  text-decoration: none;
+  font-weight: 600;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  color: #94a3b8;             /* gris azulado por defecto */
+  background: transparent;
+  transition: all .2s ease;
+}
+.navlink:hover { color: var(--primary); }
+.navlink.active {
+  color: #fff;
+  background: var(--primary);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
+}
+
+/* Botón CTA del navbar (si lo usas como <Link class="btn-primary">) */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+
+/* Login/Signup del navbar (si los usas) */
+.btn-login { color: var(--primary); font-weight: 600; text-decoration: none; }
+.btn-signup {
+  background: var(--primary);
+  color: #fff;
+  padding: .4rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.user-link { font-weight: 600; color: #333; text-decoration: none; }
+
+/* ---------------------------------------------------
+   5) HOME (tarjeta de diagnóstico actual)
+--------------------------------------------------- */
+.home-card { max-width: 720px; margin: 24px auto; }
+
+/* ---------------------------------------------------
+   6) AUTH (login / register)
+--------------------------------------------------- */
+.auth-wrap{
+  min-height: calc(100vh - 120px);
+  display:flex; align-items:flex-start; justify-content:center;
+  background: var(--bg); padding: 40px 16px;
+}
+.auth-card{
+  width: 100%; max-width: 520px; background:#fff;
+  border-radius: 14px; padding: 28px; box-shadow: 0 8px 30px rgba(15,23,42,.06);
+}
+.auth-title{ font-size: 28px; margin: 0 0 8px; color: var(--ink); }
+.auth-subtitle{ color: var(--muted); margin: 0 0 16px; }
+
+.auth-form{ display:flex; flex-direction:column; gap: 10px; }
+.auth-label{ font-weight:600; color:var(--ink); margin-top:6px; }
+.auth-input{
+  width:100%; padding:14px 14px; border:1px solid var(--border);
+  border-radius: 12px; font-size:16px; outline:none; background:#f6f7fb;
+}
+.auth-input:focus{ border-color: var(--primary); background:#fff; }
+.has-error{ border-color:#b91c1c; }
+.auth-error{ color:#b91c1c; font-size: 13px; }
+
+.captcha-mock{
+  margin-top: 4px; display:flex; align-items:center; gap:10px;
+  border:1px solid var(--border); border-radius:12px; padding:12px;
+  background:#fff;
+}
+.captcha-mock .checkbox{
+  width:22px; height:22px; border:2px solid var(--border); border-radius:4px;
+  background:#fff;
+}
+
+.auth-btn-primary{
+  width:100%; margin-top:10px; padding:14px 16px; border:0; cursor:pointer;
+  border-radius: 24px; font-weight:700; color:#fff; background: var(--primary);
+}
+.auth-btn-primary:hover{ background: var(--primary-dark); }
+.auth-muted{ color: var(--muted); margin: 8px 0 0; }
+
+.auth-or{
+  text-align:center; color:var(--muted); font-size:12px; margin: 14px 0;
+  position:relative;
+}
+.auth-or::before, .auth-or::after{
+  content:""; height:1px; background: var(--border); position:absolute; top:50%;
+  width:38%;
+}
+.auth-or::before{ left:0; } .auth-or::after{ right:0; }
+
+.social-btn{
+  width:100%; display:flex; align-items:center; gap:12px; justify-content:center;
+  padding:12px 14px; border-radius:999px; border:1px solid var(--border);
+  background:#fff; font-weight:600; color: var(--ink);
+}
+.social-btn:hover{ background:#f9fafc; }
+.social-icon{ font-size:18px; }
+
+/* ---------------------------------------------------
+   7) ACCOUNT (perfil privado)
+--------------------------------------------------- */
+.acc-wrap{ background:#f8fafc; padding:20px; }
+.acc-container{
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:260px 1fr; gap:20px;
+}
+.acc-sidebar{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px; }
+.acc-avatar{ width:120px; height:120px; border-radius:999px; background:#e2e8f0; margin:8px auto; }
+.acc-name{ text-align:center; font-weight:700; color:var(--ink); margin:6px 0 10px; }
+.acc-nav{ display:flex; flex-direction:column; gap:6px; }
+.acc-main{ min-height:480px; }
+.acc-header{
+  background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px;
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;
+}
+.acc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.acc-field{ display:flex; flex-direction:column; gap:6px; }
+.acc-2c{ grid-column:1 / span 2; }
+.chip-list{ display:flex; gap:8px; flex-wrap:wrap; }
+.check{ display:block; color:#334155; margin-top:6px; }
+.acc-actions{ margin-top:16px; display:flex; gap:10px; }
+
+/* ---------------------------------------------------
+   8) PUBLIC PROFILE
+--------------------------------------------------- */
+.pub-wrap{ background:#f8fafc; padding:20px; }
+.pub-container{
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:360px 1fr; gap:20px;
+}
+.pub-left .pub-avatar{
+  width:140px; height:140px; border-radius:999px; background:#e2e8f0; margin:6px 0 10px;
+}
+.pub-name{ font-size:28px; margin:6px 0; color:var(--ink); }
+.pub-row{ display:flex; align-items:center; gap:8px; }
+.dot{ width:10px; height:10px; border-radius:999px; background:#cbd5e1; }
+.dot.on{ background:#16a34a; }
+
+.pub-card{ background:#fff; border:1px solid #eee; border-radius:14px; padding:1.5rem; }
+.pub-header{ display:flex; gap:1rem; align-items:center; margin-bottom:1rem; }
+.pub-avatar{ width:84px; height:84px; border-radius:999px; background:#e8eefc; }
+.pub-id h1{ margin:.1rem 0; }
+.tagline{ font-weight:600; }
+.bio{ margin:.5rem 0 1rem; }
+.skills{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.pub-actions{ display:flex; gap:.75rem; margin-top:.5rem; }
+
+/* ---------------------------------------------------
+   9) USER MENU (dropdown avatar)
+--------------------------------------------------- */
+.user-menu { position: relative; }
+.user-trigger {
+  display: flex; align-items: center; gap:.5rem;
+  background:#fff; border:1px solid #e5e7eb; border-radius:999px;
+  padding:.25rem .6rem; cursor:pointer; font-weight:600;
+}
+.user-trigger:hover { background:#f9fafb; }
+.user-name { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.avatar { width:28px;height:28px;border-radius:999px;background:#e8eefc; display:block; }
+.chev { transition: transform .15s ease; opacity:.8; }
+.chev.rot { transform: rotate(180deg); }
+
+.menu-popper {
+  position:absolute; right:0; top:calc(100% + .5rem);
+  width:300px; background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08); padding:.5rem; z-index:50;
+}
+.menu-head { padding:.5rem .75rem .25rem; }
+.menu-title { font-weight:700; line-height:1.2; }
+.menu-sub { font-size:.85rem; color:#6b7280; margin-top:.1rem; }
+
+.menu-item {
+  display:block; width:100%; text-align:left; text-decoration:none;
+  padding:.6rem .75rem; border-radius:8px; color:#111827; background:transparent; border:none; font-weight:600;
+}
+.menu-item:hover { background:#f3f4f6; }
+.menu-item.danger { color:#b91c1c; }
+.menu-divider { height:1px; background:#e5e7eb; margin:.35rem 0; }

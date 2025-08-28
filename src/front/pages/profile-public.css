@@ -1,0 +1,140 @@
+/* Layout container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Main card */
+.profile-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(16,24,40,.08);
+  overflow: hidden;
+}
+
+/* Top cover */
+.cover {
+  height: 160px;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+
+/* Header block */
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: end;
+  padding: 0 20px 20px;
+  position: relative;
+}
+
+/* Avatar smaller, overlapping cover */
+.avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  border: 4px solid #fff;
+  object-fit: cover;
+  position: relative;
+  top: -40px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  background: #f3f4f6;
+}
+
+/* Title + meta */
+.title { margin-top: -20px; }
+.title h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+.meta {
+  color: #6b7280;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.meta .dot { opacity: .5; }
+
+/* Rating */
+.rating {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stars { color: #f59e0b; letter-spacing: 2px; font-size: 18px; }
+.rating-n { color: #6b7280; font-size: 14px; }
+
+/* Actions */
+.actions { align-self: center; }
+.btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
+}
+.btn:hover { filter: brightness(.95); }
+.btn.btn-outline {
+  background: #fff;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  box-shadow: none;
+}
+
+/* Content grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  padding: 20px;
+}
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .actions { display: none; }
+}
+
+/* Sections */
+.section h2 {
+  font-size: 18px;
+  margin: 8px 0 8px;
+}
+.about { margin: 0 0 16px; line-height: 1.6; }
+.muted { color: #9ca3af; }
+
+/* Chips for skills */
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+/* Right sidebar small cards */
+.sidebar .card {
+  background: #f9fafb;
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.sidebar h3 { margin: 0 0 10px; font-size: 16px; }
+.checks { margin: 0; padding-left: 18px; color: #374151; }
+
+/* Utilities */
+.error { color: #ef4444; font-weight: 600; }
+.back {
+  display: inline-block;
+  margin-top: 12px;
+  color: #2563eb;
+  text-decoration: none;
+}
+

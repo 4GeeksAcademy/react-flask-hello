@@ -131,6 +131,8 @@ export function CreateEvent() {
         precio: formData.price || 0,
         max_asist: formData.maxGuests || null,
         portada: formData.portada || "",
+        latitud: coordenadas.latitude,
+        longitud: coordenadas.longitude,
       };
 
       if (eventId) {

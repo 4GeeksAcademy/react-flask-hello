@@ -54,12 +54,12 @@ export const PerfilUsuario = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('https://picsum.photos/id/1015/1200/800')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
         color: "#ffffffff",
       }}
+      className="fondo_perfil"
     >
       <h1>Perfil de {usuario.nombre}</h1>
 
@@ -106,6 +106,7 @@ export const PerfilUsuario = () => {
             editar 
           </button>
         </div>
+    </div>
     </div>
 
   );

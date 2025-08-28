@@ -107,12 +107,12 @@ export const ActualizarUsuario = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('https://picsum.photos/id/1015/1200/800')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
         color: "#ffffffff",
-      }}>
+      }}
+      className="fondo_perfil">
       <h3>Actualizar perfil</h3>
       <div
         style={{

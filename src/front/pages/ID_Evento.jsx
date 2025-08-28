@@ -12,7 +12,7 @@ export const ID_Evento = () => {
         const findEvent = store.eventos.find(event => event.id == event_id)
 
         useEffect(() => {
-                if (!findEvent){
+                if (!findEvent) {
                         console.log("Evento no encontrado");
                         getEvent()
                 }

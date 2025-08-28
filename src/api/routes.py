@@ -54,6 +54,15 @@ def protected():
 
     return jsonify({"id": user.id, "username": user.username }), 200
 
+@api.route("/preview", methods=["GET", "POST"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    return jsonify({"id": user.id, "username": user.username }), 200
+
 @api.route('/login', methods=["POST", "GET"])
 def login():
     email = request.json.get("email", None)

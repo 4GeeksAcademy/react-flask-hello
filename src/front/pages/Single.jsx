@@ -1,10 +1,9 @@
 // src/front/pages/Single.jsx
 import { Link, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
-import rigoImageUrl from "../assets/img/rigo-baby.jpg"; // (no usado)
 import { useStore } from "../hooks/useGlobalReducer";
 
-export const Single = props => {
+export default function Single(props) {
   const { store } = useStore();
   const { theId } = useParams();
   const singleTodo = store.todos?.find(todo => todo.id === parseInt(theId));
@@ -16,7 +15,7 @@ export const Single = props => {
       <Link to="/"><span className="btn btn-primary btn-lg">Back home</span></Link>
     </div>
   );
-};
+}
 
 Single.propTypes = {
   match: PropTypes.object

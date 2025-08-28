@@ -1,8 +1,8 @@
+// src/front/routes.jsx
 import React from "react";
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { useStore } from "./hooks/useGlobalReducer";
 
-// Páginas para Autenticación y perfil
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,16 +10,15 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ProfilePrivate from "./pages/ProfilePrivate";
 import ProfilePublic from "./pages/ProfilePublic";
-<<<<<<< HEAD
 import AuthCallback from "./pages/AuthCallback";
-=======
+import Browse from "./pages/Browse";
+import PostTask from "./pages/PostTask";
 
-// Páginas que venían en main by Jaqueline
+// Páginas que ya traía el repo
 import Single from "./pages/Single";
 import Demo from "./pages/Demo";
 import NewTask from "./pages/NewTask";
 import Admin from "./pages/Admin";
->>>>>>> main
 
 const DashboardClient = () => <div>Mis tareas (Cliente)</div>;
 const DashboardTasker = () => <div>Mis ofertas (Proveedor)</div>;
@@ -40,24 +39,16 @@ export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-<<<<<<< HEAD
-      { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/auth/callback", element: <AuthCallback /> },   // <--- AÑADIDO
-      // ... tus rutas protegidas
-      { path: "*", element: <Navigate to="/" replace /> }
-    ]
-  }
-]);
-=======
       // Públicas
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/u/:username", element: <ProfilePublic /> },
+      { path: "/auth/callback", element: <AuthCallback /> },
+      { path: "/u/:username", element: <ProfilePublic /> }, // <- perfil público
+      { path: "/browse", element: <Browse /> },
+      { path: "/post", element: <PostTask /> },
 
-      // Rutas que venían en main
+      // Páginas del template
       { path: "/single/:theId", element: <Single /> },
       { path: "/demo", element: <Demo /> },
       { path: "/newtask", element: <NewTask /> },
@@ -76,9 +67,8 @@ export const router = createBrowserRouter([
       { element: <Protected role="client" />, children: [{ path: "/client", element: <DashboardClient /> }] },
       { element: <Protected role="tasker" />, children: [{ path: "/tasker", element: <DashboardTasker /> }] },
 
-      // Catch-all
+      // Fallback
       { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 ]);
->>>>>>> main

@@ -1,8 +1,8 @@
-"""empty message
+"""init
 
-Revision ID: 3bb1f1f3f9b9
+Revision ID: d93ef08ef900
 Revises: 
-Create Date: 2025-08-25 21:49:48.718476
+Create Date: 2025-08-28 15:53:18.648875
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3bb1f1f3f9b9'
+revision = 'd93ef08ef900'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,8 +35,8 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('username', sa.String(length=80), nullable=False),
     sa.Column('password', sa.String(length=200), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
-    sa.Column('modified_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('modified_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
@@ -74,7 +74,7 @@ def upgrade():
     sa.Column('location', sa.String(length=120), nullable=True),
     sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.Column('due_at', sa.DateTime(), nullable=True),
-    sa.Column('posted_at', sa.Date(), server_default=sa.text('CURRENT_DATE'), nullable=False),
+    sa.Column('posted_at', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=False),
     sa.Column('assigned_at', sa.Date(), nullable=True),
     sa.Column('completed_at', sa.Date(), nullable=True),
     sa.Column('status', sa.String(length=30), server_default='pending', nullable=False),
@@ -102,8 +102,8 @@ def upgrade():
     op.create_table('tasks_offered',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('status', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('created_at', sa.Date(), server_default=sa.text('CURRENT_DATE'), nullable=False),
-    sa.Column('updated_at', sa.Date(), server_default=sa.text('CURRENT_DATE'), nullable=False),
+    sa.Column('created_at', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=False),
+    sa.Column('updated_at', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=False),
     sa.Column('task_id', sa.Integer(), nullable=False),
     sa.Column('tasker_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['task_id'], ['task.id'], ),
@@ -158,7 +158,7 @@ def upgrade():
     op.create_table('message',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('body', sa.String(length=10000), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('dealer_id', sa.Integer(), nullable=False),
     sa.Column('sender_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['dealer_id'], ['task_dealed.id'], ),
@@ -170,8 +170,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('status', sa.String(length=20), nullable=False),
-    sa.Column('created_at', sa.Date(), server_default=sa.text('CURRENT_DATE'), nullable=False),
-    sa.Column('updated_at', sa.Date(), server_default=sa.text('CURRENT_DATE'), nullable=False),
+    sa.Column('created_at', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=False),
+    sa.Column('updated_at', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=False),
     sa.Column('dealed_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['dealed_id'], ['task_dealed.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

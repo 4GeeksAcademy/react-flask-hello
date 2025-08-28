@@ -1,7 +1,6 @@
-// src/front/api/auth.js
 import { getBackendURL } from "../components/BackendURL";
 
-const USE_MOCK = true; // ponlo en false cuando integres backend real
+const USE_MOCK = true;
 const BASE = getBackendURL?.() || import.meta.env.VITE_BACKEND_URL || "";
 
 export async function apiRegister({ name, email, password, role }) {
@@ -26,7 +25,7 @@ export async function apiLogin({ email, password }) {
   return res.json();
 }
 
-// 👇 NUEVO: stubs de Social Login
+
 export async function apiGoogleLogin(idToken) {
   if (USE_MOCK) {
     return {

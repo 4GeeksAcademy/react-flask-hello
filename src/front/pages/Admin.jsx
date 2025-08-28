@@ -1,11 +1,11 @@
 // Import necessary components from react-router-dom and other parts of the application.
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
 import { AdminCard } from "../components/AdminCard"
 export const Admin = () => {
   // Access the global state and dispatch function using the useGlobalReducer hook.
   const { store, dispatch } = useGlobalReducer()
-
+  const {id} = useParams()
   const filterList = ["Todo", "Pendientes", "Abiertas", "Cerradas"]
   const tableHeader = ["ID", "Título", "Usuario", "Estado", "Prioridad", "Categoría", "Fecha creación"]
   const apiVars = ["id", "title", "user", "status", "priority", "category", "created_at"]
@@ -13,7 +13,7 @@ export const Admin = () => {
   return (
     <div className="container">
       <h2>Panel de Administrador</h2>
-      <AdminCard />
+      <AdminCard id={id} />
       <div className="border-top">
         <div className="fs-4">Gestión de disputas</div>
         <p>Administra y resuelve las disputas de los usuarios</p>

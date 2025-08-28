@@ -11,12 +11,11 @@ export const NewTask = () => {
         "description": "",
         "location": "",
         "price": "",
-        "due_at": "",
-        "status": "open",
-        "posted_at": "",
+        "status": "pending",
         "assigned_at": "",
         "completed_at": "",
-        "categories": ""
+        "categories": "",
+        "publisher_id": 1
     })
 
     const [categories, setCategories] = useState("Selecciona la categoría de tu tarea")

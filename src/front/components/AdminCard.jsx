@@ -1,4 +1,27 @@
-export const AdminCard = () => (
+export const AdminCard = () => {
+    const [vehicle, setVehicle] = useState(null);
+    const [des, setDes] = useState(null)
+    
+    const getVehicle = async () => {
+        try {
+          const response = await fetch(`https://www.swapi.tech/api/vehicles/${id}`)
+    
+          const data = await response.json()
+          
+          setVehicle(data.result.properties)
+          setDes(data.result)
+          console.log(data.result.properties)
+          console.log(data.result)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    
+      useEffect(() => {
+        getVehicle()
+      }, [])
+   
+    return(
     <div className="card mb-3">
         <div className="row g-0">
             <div className="col-3">
@@ -17,4 +40,4 @@ export const AdminCard = () => (
             </div>
         </div>
     </div>
-);
+);}

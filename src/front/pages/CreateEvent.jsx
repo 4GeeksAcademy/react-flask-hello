@@ -369,6 +369,7 @@ export function CreateEvent() {
             />
           </div>
 
+          {/* Mapa */}
           <div className="form-row">
             <APIProvider apiKey={"AIzaSyCoJsSGhT-BPVXTLnKfTNinzi4opIn0CVU"}>
               <Map defaultZoom={5}

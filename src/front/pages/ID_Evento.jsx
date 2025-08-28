@@ -9,9 +9,7 @@ export const ID_Evento = () => {
         const { event_id } = useParams();
         const { dispatch, store } = useGlobalReducer();
         const [evento, setEvento] = useState(null);
-
         const findEvent = store.eventos.find(event => event.id == event_id)
-        console.log(findEvent)
 
         useEffect(() => {
                 if (!findEvent){
@@ -19,6 +17,14 @@ export const ID_Evento = () => {
                         getEvent()
                 }
         }, []);
+
+        const getEvent = async () => {
+                let res = await fetch(backendUrl + `events/${event_id}`,);
+                let data = await res.json()
+                setEvento(data)
+                console.log(data)
+
+        }
 
         if (!findEvent) {
                 return (

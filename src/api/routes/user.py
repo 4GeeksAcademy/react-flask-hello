@@ -205,3 +205,35 @@ def get_user_data(user_id):
     except Exception as e:
         print("Error obteniendo datos usuario:", e)
         return jsonify({"error": "Error al obtener datos usuario"}), 500
+    
+
+@api.route('/<user_id>', methods=['PUT'])
+def put_user_data(user_id):
+    try:
+        datosUsuario = request.get_json()
+
+        actualizar = ['nickname', 'telefono', 'avatar']
+        datos_actualizar = {k: v for k, v in datosUsuario.items() if k in actualizar}
+
+        if not datos_actualizar:
+            return jsonify ({'error': 'imposoble actualizar vuelve a intentarlo despues'})
+        
+        resp = supabase.table('Usuario')  \
+            .update(datos_actualizar)\
+            .eq('id', user_id) \
+            .execute()
+        
+        if resp.data:
+            return jsonify({
+                "message": "Datos usuario actualizados exitosamente",
+                "resp": resp.data
+            }), 200
+        else:
+            return jsonify({
+                "message": "No se actualizaron datos de este usuario",
+                "resp": []
+            }), 400
+
+    except Exception as e:
+        print("Error al actualizar datos usuario:", e)
+        return jsonify({"error": str(e)}), 500

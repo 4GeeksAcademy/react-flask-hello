@@ -1,6 +1,7 @@
 export const initialStore = () => {
   return {
     misEventos: [],
+    eventos: [],
   };
 };
 
@@ -10,6 +11,12 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         misEventos: action.payload,
+      };
+
+    case "setEvents":
+      return {
+        ...store,
+        eventos: action.payload,
       };
 
     case "deleteEvent":

@@ -140,6 +140,7 @@ def update_event(event_id):
             # .eq('creador_evento', current_user_id)  # Verificar que el usuario sea el creador (borrar # para implementar)
             .execute()
         )
+        print(response.data)
 
         if not response.data:
             return jsonify({"error": "Evento no encontrado"}), 404
@@ -154,3 +155,33 @@ def update_event(event_id):
 
 
     # ver el evento por su id
+
+
+@api.route('/<event_id>', methods=['GET'])
+def get_event(event_id):
+    try:
+
+
+        #  Validar que data no esté vacío (borrar # para implementar)
+#        if not data:
+#            return jsonify({"error": "No se enviaron datos para actualizar"}), 400
+        print(event_id)
+        # Actualizar el evento
+        response = (
+            supabase.table('Evento')
+            .select('*') 
+            .eq('id', event_id) 
+            .single() 
+            .execute()
+        )
+
+        if not response.data:
+            return jsonify({"error": "Evento no encontrado"}), 404
+
+        return jsonify({
+            "message": "Evento obtenido correctamente",
+            "data": response.data
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

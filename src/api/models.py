@@ -16,7 +16,6 @@ UserRole = db.Table(
         'rol.id'), primary_key=True)
 )
 
-
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)

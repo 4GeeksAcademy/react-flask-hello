@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../utils/Config";
+import { useNavigate } from "react-router-dom";
+import { ActualizarUsuario } from "./ActualizarUsuario";
 
 export const PerfilUsuario = () => {
   const [usuario, setUsuario] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();  
 
-  useEffect(() => {
     const cargarDatosUsuario = async () => {
       const tokenUsuario = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -34,8 +36,8 @@ export const PerfilUsuario = () => {
         setError("No se pudieron cargar los datos del usuario.");
       }
     };
-
-    cargarDatosUsuario();
+    useEffect(() => {
+      cargarDatosUsuario();
   }, []);
 
   if (error) {

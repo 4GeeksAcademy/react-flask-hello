@@ -24,7 +24,11 @@ export const ID_Evento = () => {
         const findEvent = store.eventos.find((e) => e.id == event_id);
 
         useEffect(() => {
-                setEvento(findEvent || null);
+                if (!findEvent) {
+                        console.log("Evento no encontrado");
+                        getEvent()
+                }
+
         }, []);
 
         useEffect(() => {

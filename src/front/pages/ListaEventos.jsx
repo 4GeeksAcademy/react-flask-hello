@@ -8,11 +8,11 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export const ListaEventos = () => {
   const { dispatch, store } = useGlobalReducer();
 
-    useEffect(() => {
-        const listadoEventos = async () => {
-            try {
-                const respuesta = await fetch(backendUrl + `events`,);
-                const data = await respuesta.json();
+  useEffect(() => {
+    const listadoEventos = async () => {
+      try {
+        const respuesta = await fetch(backendUrl + `events`,);
+        const data = await respuesta.json();
 
         if (!respuesta.ok) {
           notifyError("Error al cargar los eventos");
@@ -36,7 +36,9 @@ export const ListaEventos = () => {
       <h1>Lista de Eventos</h1>
       <section className="grid-cards">
         {store.eventos.length === 0 ? (
-          <p>No hay eventos creados aún.</p>
+          <div className="loadingContainer">
+            <span class="loader"></span>
+          </div>
         ) : (
           store.eventos.map((evento) => (
             <Link key={evento.id} to={`/evento/${evento.id}`} className="card-link">

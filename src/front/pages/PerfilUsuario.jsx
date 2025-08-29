@@ -21,9 +21,7 @@ export const PerfilUsuario = () => {
           },
         });
 
-        if (!respuesta.ok) {
-          throw new Error(`Error HTTP: ${respuesta.status}`);
-        }
+        if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
 
         const data = await respuesta.json();
         const datosUsuario = data.resp;
@@ -50,64 +48,64 @@ export const PerfilUsuario = () => {
     return <p style={{ padding: "2rem" }}>Cargando perfil del usuario...</p>;
   }
 
+  const VIDEO_URL =
+    "https://cdn.pixabay.com/video/2018/11/16/19368-301525727_large.mp4";
+  const FALLBACK_POSTER =
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop";
+
+  const avatar =
+    usuario.avatar ||
+    "https://cdn-icons-png.flaticon.com/512/9131/9131529.png";
+
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: "2rem",
-        color: "#ffffffff",
-      }}
-      className="fondo_perfil"
-    >
-      <h1>Perfil de {usuario.nombre}</h1>
+    <div className="perfil">
+      {/* Background sexiiiiiii del video */}
+      <div className="perfil-bg">
+        <video
+          className="perfil-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={FALLBACK_POSTER}
+        >
+          <source src={VIDEO_URL} type="video/mp4" />
+        </video>
+        <div className="perfil-overlay" />
+      </div>
 
-      <div
-        style={{
-          maxWidth: "600px",
-          margin: "0 auto",
-          background: "rgba(66, 66, 66, 0.7)",
-          padding: "2rem",
-          borderRadius: "12px",
-        }}
-      >
-        <div style={{ marginTop: "2rem", textAlign: "center" }}>
-          <img
+      <div className="perfil-container">
+        <h1 className="perfil-title">Perfil de {usuario.nombre}</h1>
 
-            src={usuario.avatar}
-            alt="Avatar"
-            style={{
-              width: "120px",
-              borderRadius: "50%",
-              border: "2px solid #fff",
-            }}
-          />
+        <section className="perfil-card glass">
+          <div className="perfil-avatar">
+            <img src={avatar} alt="Avatar" />
+          </div>
 
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Nombre:</strong> {usuario.nombre}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Apellido:</strong> {usuario.apellido}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Nickname:</strong> {usuario.nickname}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Teléfono:</strong> {usuario.telefono}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <strong>Email:</strong> {usuario.email}
-        </div>
-
-        <div>
-          <button className="btn btn-chip ml-[1px]" style={{marginBottom: '1rem',}} onClick={() => navigate(`/user/actualizar-perfil/${usuario.id}`)}>
-            editar 
-          </button>
-        </div>
+          <ul className="perfil-info">
+            <li>
+              <span className="label">Nombre</span>
+              <span className="value">{usuario.nombre}</span>
+            </li>
+            <li>
+              <span className="label">Apellido</span>
+              <span className="value">{usuario.apellido}</span>
+            </li>
+            <li>
+              <span className="label">Nickname</span>
+              <span className="value value--chip">{usuario.nickname}</span>
+            </li>
+            <li>
+              <span className="label">Teléfono</span>
+              <span className="value">{usuario.telefono}</span>
+            </li>
+            <li className="perfil-info--full">
+              <span className="label">Email</span>
+              <span className="value">{usuario.email}</span>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
-    </div>
-
   );
-}
+};

@@ -43,6 +43,8 @@ def crear_evento(current_user_id):
         'id_creador_evento': current_user_id,
         'definicion': data.get('definicion', '').strip(),
         'portada': data.get('portada', '').strip(),
+        'latitud': data.get('latitud', ''),
+        'longitud': data.get('longitud', ''),
     }
     # Agregar max_asist solo si se proporciona
     if max_asist is not None:

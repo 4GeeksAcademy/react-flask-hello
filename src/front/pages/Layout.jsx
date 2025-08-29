@@ -9,7 +9,9 @@ export const Layout = () => {
     return (
         <ScrollToTop>
             <Navbar />
+            <div className="container_layout">
                 <Outlet />
+                </div>
             <Footer />
             <ToastContainer />
         </ScrollToTop>

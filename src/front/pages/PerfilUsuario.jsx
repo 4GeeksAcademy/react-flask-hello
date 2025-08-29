@@ -1,43 +1,43 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../utils/Config";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ActualizarUsuario } from "./ActualizarUsuario";
 
 export const PerfilUsuario = () => {
   const [usuario, setUsuario] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
-    const cargarDatosUsuario = async () => {
-      const tokenUsuario = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId");
+  const cargarDatosUsuario = async () => {
+    const tokenUsuario = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
-      try {
-        const respuesta = await fetch(backendUrl + `user/${userId}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${tokenUsuario}`,
-            "Content-Type": "application/json",
-          },
-        });
+    try {
+      const respuesta = await fetch(backendUrl + `user/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenUsuario}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-        if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
+      if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
 
-        const data = await respuesta.json();
-        const datosUsuario = data.resp;
+      const data = await respuesta.json();
+      const datosUsuario = data.resp;
 
-        if (datosUsuario && Object.keys(datosUsuario).length > 0) {
-          setUsuario(datosUsuario);
-        } else {
-          setError("No se encontraron datos del usuario.");
-        }
-      } catch (error) {
-        console.error("Error al cargar datos del usuario:", error);
-        setError("No se pudieron cargar los datos del usuario.");
+      if (datosUsuario && Object.keys(datosUsuario).length > 0) {
+        setUsuario(datosUsuario);
+      } else {
+        setError("No se encontraron datos del usuario.");
       }
-    };
-    useEffect(() => {
-      cargarDatosUsuario();
+    } catch (error) {
+      console.error("Error al cargar datos del usuario:", error);
+      setError("No se pudieron cargar los datos del usuario.");
+    }
+  };
+  useEffect(() => {
+    cargarDatosUsuario();
   }, []);
 
   if (error) {
@@ -104,6 +104,13 @@ export const PerfilUsuario = () => {
               <span className="value">{usuario.email}</span>
             </li>
           </ul>
+          <Link to={`/user/actualizar-perfil/${usuario.id}`}>
+            <div className="form-actions">
+              <button className="btn btn-primary">
+                Editar informacion
+              </button>
+            </div>
+          </Link>
         </section>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { notifyError } from "../utils/Notifications";
 import React, { useEffect, useState } from 'react';
 import { backendUrl } from '../utils/Config';
 import { CardEvento } from "../components/CardEvento/CardEvento";
-
+import { Link } from "react-router-dom";
 
 
 export const EventosHome = () => {
@@ -25,7 +25,7 @@ export const EventosHome = () => {
                     [lista[i], lista[j]] = [lista[j], lista[i]];
                 }
 
-                setEventos(lista.slice(0, 4));
+                setEventos(lista.slice(0, 3));
 
         } catch (error) {
             notifyError("Error al cargar los eventos");
@@ -43,7 +43,9 @@ export const EventosHome = () => {
                      <p>No hay eventos creados aún.</p>
                    ) : (
                         eventos.map((evento, index) => (
-                        <CardEvento key={evento.id ?? index} item={evento} isUser={false} />
+                        <Link key={evento.id} to={`/evento/${evento.id}`} className="card-link">
+                            <CardEvento key={evento.id ?? index} item={evento} isUser={false} />
+                        </Link>
                      ))
                    )}
                    </section>

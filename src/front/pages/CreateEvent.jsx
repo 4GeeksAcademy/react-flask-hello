@@ -6,6 +6,7 @@ import { backendUrl } from "../utils/Config";
 import { notifyError, notifySuccess } from "../utils/Notifications";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { APIProvider, Map, AdvancedMarker } from '@vis.gl/react-google-maps';
+import { MapPin } from "lucide-react";
 
 const MADRID_LOCATION = { lat: 40.4168, lng: -3.7038 };
 
@@ -373,11 +374,11 @@ export function CreateEvent() {
 
           {/* Mapa */}
           <div className="form-row">
-            <APIProvider apiKey={"AIzaSyCoJsSGhT-BPVXTLnKfTNinzi4opIn0CVU"}>
+            <APIProvider apiKey={import.meta.env.VITE_MAP_GOOGLE}>
               <Map defaultZoom={5}
         style={{ width: '100%', height: '50vh' }}
         defaultCenter={MADRID_LOCATION}
-        mapId={"634c4b5f230a457be551c94f"}
+        mapId={import.meta.env.VITE_MAP_ID}
         mapTypeControl={false}
         disableDefaultUI={true}
         clickableIcons={false}
@@ -391,9 +392,7 @@ export function CreateEvent() {
           setCoordenadas(newCoordenates)
         }} >
         <AdvancedMarker position={{ lat: coordenadas.latitude, lng: coordenadas.longitude }}>
-          <svg style={logoSvgStyles} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width={32} height={32} >
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2zm-3-4h2v4H8zm0 6h2v2H8zm6-6h2v4h-2zm0 6h2v2h-2z"/>   
-          </svg>        
+          <MapPin style={{ color: "black" }} />
         </AdvancedMarker>
       </Map>
             </APIProvider>

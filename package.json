@@ -54,11 +54,12 @@
 		]
 	},
 	"dependencies": {
-		"@vis.gl/react-google-maps": "^1.5.5",
 		"@headlessui/react": "^2.2.6",
 		"@heroicons/react": "^2.2.0",
 		"@supabase/supabase-js": "^2.52.0",
+		"@vis.gl/react-google-maps": "^1.5.5",
 		"framer-motion": "^12.23.12",
+		"lucide-react": "^0.542.0",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

@@ -22,6 +22,10 @@ body {
   min-height: 100vh;
 }
 
+.gradiant_listaEventos {
+  background: linear-gradient(135deg, #1e1e2f, #3e2a59, #ee7752);
+}
+
 /* ---------- Contenedor general ---------- */
 .gradient-container {
   min-height: 100vh;

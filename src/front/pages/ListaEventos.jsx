@@ -32,7 +32,7 @@ export const ListaEventos = () => {
   }, []);
 
   return (
-    <div className="gradient-container">"
+    <div className="gradiant_listaEventos">"
       <h1>Lista de Eventos</h1>
       <section className="grid-cards">
         {store.eventos.length === 0 ? (

@@ -114,8 +114,8 @@ def login():
         login_attempts[identifier] = attempts
         return jsonify(msg="Invalid credentials"), 401
 
-    if not user.is_verified:
-        return jsonify(msg="Email not verified"), 403
+    # if not user.is_verified:
+    #     return jsonify(msg="Email not verified"), 403
 
     login_attempts[identifier] = {"count": 0, "last": now}
     access_token = create_access_token(identity=user.id)

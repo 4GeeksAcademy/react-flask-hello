@@ -8,6 +8,7 @@ from api.models import db
 from api.routes import api, jwt_blacklist  # Import from routes.py
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 # from models import Person
 
@@ -15,6 +16,7 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+CORS(app, origins="https://friendly-computing-machine-pxw4p4r46rq2r7gp-3000.app.github.dev", supports_credentials=True)
 app.url_map.strict_slashes = False
 
 # database condiguration

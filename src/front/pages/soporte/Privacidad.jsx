@@ -51,7 +51,7 @@ export const Privacidad = () => (
         <p>
           Puedes acceder, corregir o eliminar tus datos, así como oponerte a su uso.
           Escríbenos a{" "}
-          <a href="mailto:privacidad@gamestore.com">privacidad@gamestore.com</a>.
+          <a href="mailto:privacidad@gamestore.com">privacidad@gamestore.es</a>.
         </p>
 
         <h3>Cookies</h3>

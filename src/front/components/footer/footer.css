@@ -1,0 +1,113 @@
+.site-footer {
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1a202c;
+  color: #d1d5db;
+  padding: 2rem 1rem;
+  z-index: 100;
+
+}
+
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-brand img {
+  height: 2rem;
+}
+
+.footer-brand span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-nav a,
+.footer-nav button {
+  color: #fff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-nav a:hover,
+.footer-nav button:hover {
+  color: #fff;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.footer-social svg {
+  color: #fff;
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.footer-social svg:hover {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.footer-divider {
+  border: none;
+  border-top: 1px solid #fff;
+  margin: 1.5rem 0;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.footer-bottom a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-bottom a:hover {
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .footer-top {
+    flex-wrap: nowrap;
+  }
+}

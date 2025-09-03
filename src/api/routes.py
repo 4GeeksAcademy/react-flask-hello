@@ -1,6 +1,9 @@
 from flask import request, jsonify, Blueprint
 from api.models import db, User, Favorite, Event, FavoriteMember, RSVP
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_identity,
+    get_jwt, unset_jwt_cookies
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import time
@@ -8,33 +11,90 @@ import time
 api = Blueprint('api', __name__)
 
 login_attempts = {}
+jwt_blacklist = set()
 
-# Signup
-@api.route('/signup', methods=['POST'])
-def signup():
+# Logout Endpoint
+
+
+@api.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    jwt_blacklist.add(jti)
+    response = jsonify(msg="Logout successful")
+    unset_jwt_cookies(response)
+    return response, 200
+
+# JWT blacklist check (add to your JWT setup in app.py)
+# from flask_jwt_extended import JWTManager
+# jwt = JWTManager(app)
+# @jwt.token_in_blocklist_loader
+# def check_if_token_revoked(jwt_header, jwt_payload):
+#     return jwt_payload["jti"] in jwt_blacklist
+
+# User Profile Endpoint
+
+
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify(msg="User not found"), 404
+    return jsonify({
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name
+    }), 200
+
+
+@api.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    data = request.get_json()
+    user.first_name = data.get("first_name", user.first_name)
+    user.last_name = data.get("last_name", user.last_name)
+    db.session.commit()
+    return jsonify(msg="Profile updated"), 200
+
+# Password Reset (request and reset)
+
+
+@api.route('/password-reset/request', methods=['POST'])
+def request_password_reset():
     data = request.get_json()
     email = data.get("email")
-    password = data.get("password")
-    first_name = data.get("first_name")
-    last_name = data.get("last_name")
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify(msg="User not found"), 404
+    # Generate token and send email (pseudo-code)
+    reset_token = create_access_token(identity=user.id, expires_delta=False)
+    # send_email(user.email, reset_token)  # Implement this
+    return jsonify(msg="Password reset email sent"), 200
 
-    if not email or not password:
-        return jsonify({"error": "Missing fields"}), 400
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return jsonify({"error": "Invalid email format"}), 400
-    if User.query.filter_by(email=email).first():
-        return jsonify({"error": "Email already exists"}), 400
-    if len(password) < 8 or not any(c.isdigit() for c in password) or not any(c.isupper() for c in password):
-        return jsonify({"error": "Password must be at least 8 characters, include a number and an uppercase letter."}), 400
 
-    hashed_pw = generate_password_hash(password)
-    user = User(email=email, password=hashed_pw, first_name=first_name, last_name=last_name)
-    db.session.add(user)
-    db.session.commit()
-    access_token = create_access_token(identity=user.id)
-    return jsonify({"msg": "User created", "token": access_token}), 201
+@api.route('/password-reset/confirm', methods=['POST'])
+def confirm_password_reset():
+    data = request.get_json()
+    token = data.get("token")
+    new_password = data.get("new_password")
+    # Decode token and reset password
+    from flask_jwt_extended import decode_token
+    try:
+        identity = decode_token(token)["sub"]
+        user = User.query.get(identity)
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
+        return jsonify(msg="Password updated"), 200
+    except Exception:
+        return jsonify(msg="Invalid token"), 400
 
-# Login
+# Login Attempt Limiting (complete logic)
+
+
 @api.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -45,20 +105,71 @@ def login():
     attempts = login_attempts.get(identifier, {"count": 0, "last": now})
 
     if attempts["count"] >= 5 and now - attempts["last"] < 300:
-        return jsonify({"error": "Too many login attempts. Try again in 5 minutes."}), 429
+        return jsonify(msg="Too many login attempts. Try again later."), 429
 
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
         attempts["count"] += 1
         attempts["last"] = now
         login_attempts[identifier] = attempts
-        return jsonify({"error": "Invalid credentials"}), 401
+        return jsonify(msg="Invalid credentials"), 401
+
+    if not user.is_verified:
+        return jsonify(msg="Email not verified"), 403
 
     login_attempts[identifier] = {"count": 0, "last": now}
     access_token = create_access_token(identity=user.id)
-    return jsonify({"msg": "Login successful", "token": access_token}), 200
+    return jsonify(access_token=access_token), 200
+
+# Email Verification (pseudo-code)
+
+
+@api.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+
+    if not email or not password:
+        return jsonify(msg="Email and password required"), 400
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return jsonify(msg="Invalid email format"), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify(msg="Email already registered"), 409
+    if len(password) < 8 or not any(c.isdigit() for c in password) or not any(c.isupper() for c in password):
+        return jsonify(msg="Password must be at least 8 chars, include a digit and uppercase"), 400
+
+    hashed_pw = generate_password_hash(password)
+    user = User(email=email, password=hashed_pw,
+                first_name=first_name, last_name=last_name)
+    db.session.add(user)
+    db.session.commit()
+    # Generate verification token and send email (pseudo-code)
+    verification_token = create_access_token(
+        identity=user.id, expires_delta=False)
+    # send_verification_email(user.email, verification_token)  # Implement this
+    return jsonify(msg="Signup successful, verification email sent"), 201
+
+
+@api.route('/verify-email', methods=['POST'])
+def verify_email():
+    data = request.get_json()
+    token = data.get("token")
+    from flask_jwt_extended import decode_token
+    try:
+        identity = decode_token(token)["sub"]
+        user = User.query.get(identity)
+        user.is_verified = True  # <-- Set verified
+        db.session.commit()
+        return jsonify(msg="Email verified"), 200
+    except Exception:
+        return jsonify(msg="Invalid token"), 400
 
 # Event CRUD
+
+
 @api.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
@@ -70,15 +181,18 @@ def create_event():
     time_ = data.get('time')
     if not title or not location or not date or not time_:
         return jsonify({"error": "Missing fields"}), 400
-    event = Event(title=title, description=description, location=location, date=date, time=time_)
+    event = Event(title=title, description=description,
+                  location=location, date=date, time=time_)
     db.session.add(event)
     db.session.commit()
     return jsonify(event.serialize()), 201
+
 
 @api.route('/events', methods=['GET'])
 def list_events():
     events = Event.query.all()
     return jsonify([event.serialize() for event in events]), 200
+
 
 @api.route('/events/<int:event_id>', methods=['GET'])
 def get_event(event_id):
@@ -86,6 +200,7 @@ def get_event(event_id):
     if not event:
         return jsonify({"error": "Event not found"}), 404
     return jsonify(event.serialize()), 200
+
 
 @api.route('/events/<int:event_id>', methods=['PUT'])
 @jwt_required()
@@ -102,6 +217,7 @@ def update_event(event_id):
     db.session.commit()
     return jsonify(event.serialize()), 200
 
+
 @api.route('/events/<int:event_id>', methods=['DELETE'])
 @jwt_required()
 def delete_event(event_id):
@@ -113,6 +229,8 @@ def delete_event(event_id):
     return jsonify({"msg": "Event deleted"}), 200
 
 # RSVP
+
+
 @api.route('/events/<int:event_id>/rsvp', methods=['POST'])
 @jwt_required()
 def rsvp_event(event_id):
@@ -132,6 +250,7 @@ def rsvp_event(event_id):
     db.session.commit()
     return jsonify(rsvp.serialize()), 200
 
+
 @api.route('/events/<int:event_id>/rsvp', methods=['GET'])
 @jwt_required()
 def get_event_rsvps(event_id):
@@ -139,6 +258,8 @@ def get_event_rsvps(event_id):
     return jsonify([rsvp.serialize() for rsvp in rsvps]), 200
 
 # Favorites
+
+
 @api.route('/favorites', methods=['POST'])
 @jwt_required()
 def add_favorite():
@@ -153,6 +274,7 @@ def add_favorite():
     db.session.commit()
     return jsonify({"msg": "Event favorited", "favorite": favorite.serialize()}), 201
 
+
 @api.route('/favorites', methods=['GET'])
 @jwt_required()
 def list_favorites():
@@ -160,11 +282,13 @@ def list_favorites():
     favorites = Favorite.query.filter_by(user_id=user_id).all()
     return jsonify([fav.serialize() for fav in favorites]), 200
 
+
 @api.route('/favorites/<int:event_id>', methods=['DELETE'])
 @jwt_required()
 def remove_favorite(event_id):
     user_id = get_jwt_identity()
-    favorite = Favorite.query.filter_by(user_id=user_id, event_id=event_id).first()
+    favorite = Favorite.query.filter_by(
+        user_id=user_id, event_id=event_id).first()
     if not favorite:
         return jsonify({"error": "Favorite not found"}), 404
     db.session.delete(favorite)
@@ -172,6 +296,8 @@ def remove_favorite(event_id):
     return jsonify({"msg": "Favorite removed"}), 200
 
 # Favorite Members
+
+
 @api.route('/favorite-members', methods=['POST'])
 @jwt_required()
 def add_favorite_member():
@@ -186,6 +312,7 @@ def add_favorite_member():
     db.session.commit()
     return jsonify({"msg": "Member favorited", "favorite": favorite.serialize()}), 201
 
+
 @api.route('/favorite-members', methods=['GET'])
 @jwt_required()
 def list_favorite_members():
@@ -193,13 +320,23 @@ def list_favorite_members():
     favorites = FavoriteMember.query.filter_by(user_id=user_id).all()
     return jsonify([fav.serialize() for fav in favorites]), 200
 
+
 @api.route('/favorite-members/<int:member_id>', methods=['DELETE'])
 @jwt_required()
 def remove_favorite_member(member_id):
     user_id = get_jwt_identity()
-    favorite = FavoriteMember.query.filter_by(user_id=user_id, member_id=member_id).first()
+    favorite = FavoriteMember.query.filter_by(
+        user_id=user_id, member_id=member_id).first()
     if not favorite:
         return jsonify({"error": "Favorite not found"}), 404
     db.session.delete(favorite)
     db.session.commit()
     return jsonify({"msg": "Favorite removed"}), 200
+
+
+def send_email(recipient, token):
+    print(f"Send password reset email to {recipient} with token: {token}")
+
+
+def send_verification_email(recipient, token):
+    print(f"Send verification email to {recipient} with token: {token}")

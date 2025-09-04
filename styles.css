@@ -88,8 +88,14 @@ body {
   animation: fadeInDown 1s;
 }
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-40px);}
-  to { opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-overlay p {
   font-size: 1.5rem;
@@ -99,8 +105,14 @@ body {
   animation: fadeInUp 1.2s;
 }
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px);}
-  to { opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .cta-buttons {
   margin-top: 2.5rem;
@@ -186,7 +198,9 @@ body {
   animation: bounce 1.2s infinite alternate;
 }
 @keyframes bounce {
-  to { transform: translateY(-8px);}
+  to {
+    transform: translateY(-8px);
+  }
 }
 
 .events {
@@ -200,50 +214,32 @@ body {
   color: #ff7c2d;
   text-shadow: 0 2px 16px #ff7c2d88;
 }
-.carousel-wrapper {
+.events-list {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: center;
-  gap: 2rem;
-}
-.carousel-arrow {
-  background: #23234a;
-  color: #ff2d75;
-  border: none;
-  font-size: 2.2rem;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  cursor: pointer;
-  box-shadow: 0 0 12px #ff2d7588;
-  transition: background 0.2s, color 0.2s;
-}
-.carousel-arrow:hover {
-  background: #ff2d75;
-  color: #fff;
+  margin-top: 2rem;
 }
 .event-card {
-  background: rgba(34, 34, 58, 0.92);
-  border-radius: 18px;
-  box-shadow: 0 0 24px #ff2d7522;
-  padding: 1.6rem;
-  min-width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #e3e6ee;
+  padding: 1.5rem 1.2rem;
   text-align: center;
+  width: 220px;
   transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-  border: 1px solid #ff2d75;
-  backdrop-filter: blur(2px);
+  border: 1px solid #e3e6ee;
 }
 .event-card:hover {
-  box-shadow: 0 0 40px #ff2d7588;
-  transform: scale(1.09);
-  background: rgba(34, 34, 58, 0.98);
+  box-shadow: 0 0 24px #2d5cff22;
+  transform: translateY(-4px) scale(1.03);
+  background: #e3e6ee;
 }
 .event-icon {
-  font-size: 2.5rem;
+  font-size: 2rem;
   display: block;
   margin-bottom: 0.7rem;
-  text-shadow: 0 0 16px #ff2d7588;
-  animation: bounce 1.2s infinite alternate;
 }
 
 .why {
@@ -335,18 +331,145 @@ body {
 .footer-social img:hover {
   filter: brightness(2) drop-shadow(0 0 16px #ff2d75cc);
 }
+
+/* Mobile responsiveness improvements */
 @media (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+  .logo {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+  .nav-links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .nav-links a,
+  .signup {
+    margin: 0.5rem 0;
+    padding: 0.8rem 1.2rem;
+    font-size: 1.1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .hero {
+    height: 300px;
+    padding: 0;
+  }
+  .hero-overlay h1 {
+    font-size: 1.5rem;
+  }
+  .hero-overlay p {
+    font-size: 1rem;
+  }
+  .cta-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .btn,
+  .cta-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    padding: 1rem 0.5rem;
+  }
   .features-grid,
   .why-panels,
   .carousel-wrapper {
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
   }
-  .navbar {
+  .feature-card,
+  .why-panel,
+  .event-card {
+    width: 90vw;
+    min-width: unset;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  .events {
+    padding: 1rem 0.5rem;
+  }
+  .footer-links {
     flex-direction: column;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+  .footer-links a {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+  .footer {
     padding: 1rem;
+    font-size: 0.95rem;
   }
-  .logo {
-    margin-bottom: 0.5rem;
-  }
+}
+
+/* Make buttons and links easier to tap on all screens */
+.btn,
+.cta-btn,
+.nav-links a,
+.signup,
+.footer-links a {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+.carousel3d {
+  perspective: 1000px;
+  width: 320px;
+  margin: 2rem auto;
+  position: relative;
+}
+.carousel3d-inner {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+.carousel3d-item {
+  position: absolute;
+  width: 240px;
+  height: 160px;
+  left: 40px;
+  top: 20px;
+  background: #2d5cff;
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 160px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px #2d5cff44;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.carousel3d button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #2d5cff22;
+}
+.carousel3d button:first-of-type {
+  left: -40px;
+}
+.carousel3d button:last-of-type {
+  right: -40px;
 }

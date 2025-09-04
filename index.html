@@ -68,19 +68,52 @@
       </div>
     </section>
 
-    <!-- Upcoming Events Carousel -->
+    <!-- Upcoming Events Section (cards only, no carousel) -->
     <section class="events" id="events">
       <h2>Upcoming Events</h2>
-      <div class="carousel-wrapper">
-        <button class="carousel-arrow" id="carousel-prev">&lt;</button>
-        <div class="event-card" id="carousel-card">
-          <span class="event-icon">🎵</span>
-          <h4>Concert Night</h4>
-          <p>Sep 10, 2025 • 42 RSVPs</p>
-        </div>
-        <button class="carousel-arrow" id="carousel-next">&gt;</button>
+      <div class="events-list" id="events-list">
+        <!-- Event cards will be injected here by JS -->
       </div>
     </section>
+
+    <script>
+      const apiUrl = "http://localhost:3001/api/events";
+
+      function createEventCard(event) {
+        return `
+          <div class="event-card">
+            <span class="event-icon">${event.icon || "🎉"}</span>
+            <h4>${event.title}</h4>
+            <p>${event.date} • ${event.rsvp || "?"} RSVPs</p>
+            ${
+              event.location
+                ? `<p><span class="event-location">📍 ${event.location}</span></p>`
+                : ""
+            }
+          </div>
+        `;
+      }
+
+      function fetchCustomEvents() {
+        return fetch(apiUrl)
+          .then((res) => res.json())
+          .catch(() => []);
+      }
+
+      function renderEvents(allEvents) {
+        const list = document.getElementById("events-list");
+        if (!allEvents.length) {
+          list.innerHTML = "<div class='event-card'>No events found.</div>";
+          return;
+        }
+        list.innerHTML = allEvents.map(createEventCard).join("");
+      }
+
+      function loadEvents() {
+        fetchCustomEvents().then(renderEvents);
+      }
+      loadEvents();
+    </script>
 
     <!-- Why E-Venture Section -->
     <section class="why" id="why">
@@ -125,18 +158,9 @@
       id="bg-music"
       src="background-music.mp3"
       autoplay
+      loop
       style="display: none"
     ></audio>
     <script src="carousel.js"></script>
-    <script>
-      const audio = document.getElementById("bg-music");
-      audio.volume = 1;
-
-      // When the song ends, replay it from the beginning
-      audio.addEventListener("ended", () => {
-        audio.currentTime = 0;
-        audio.play();
-      });
-    </script>
   </body>
 </html>

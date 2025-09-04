@@ -1,9 +1,13 @@
 import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { useGeoLocation } from "../hooks/GeoLocation.jsx";
 
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
+	// this is the useGeoLocation hook and how to use it 
+	// put this on the account page when jose is done with it
+	// const location = useGeoLocation(); ^^^ This is valid!
 
 	const loadMessage = async () => {
 		try {
@@ -34,9 +38,6 @@ export const Home = () => {
 	return (
 		<div className="text-center mt-5">
 			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
 			<div className="alert alert-info">
 				{store.message ? (
 					<span>{store.message}</span>

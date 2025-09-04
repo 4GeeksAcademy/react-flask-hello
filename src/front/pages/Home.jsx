@@ -1,51 +1,29 @@
-import React, { useEffect } from "react"
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import React from "react";
+import { Link } from "react-router-dom";
 
-export const Home = () => {
-
-	const { store, dispatch } = useGlobalReducer()
-
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
-
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
-
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
-
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-	useEffect(() => {
-		loadMessage()
-	}, [])
+function Home() {
+	const heroUrl = "https://via.placeholder.com/1200x400.png?text=Welcome";
 
 	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
+		<div className="container py-5">
+			<div className="text-center">
+				<img
+					src={heroUrl}
+					alt="Hero"
+					className="img-fluid rounded mb-4"
+					style={{ maxHeight: 320, objectFit: "cover" }}
+				/>
+				<h1 className="h3 mb-3">Welcome to YourApp</h1>
+				<p className="text-muted mb-4">
+					This is the home page. Use the button below to visit your Account.
+				</p>
+				<Link to="/account" className="btn btn-primary">
+					Go to Account
+				</Link>
 			</div>
 		</div>
 	);
-}; 
+}
+
+export { Home };
+export default Home;

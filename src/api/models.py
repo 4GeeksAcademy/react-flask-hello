@@ -5,7 +5,13 @@ from typing import List, Optional
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (
-    String, Boolean, LargeBinary, ForeignKey, Date, CheckConstraint
+    String,
+    Boolean,
+    LargeBinary,
+    ForeignKey,
+    Date,
+    CheckConstraint,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -16,9 +22,13 @@ class User(db.Model):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
-    security_question: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, nullable=False)
+    security_question: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True)
     # Store raw JPEG bytes (nullable). If you prefer a URL/path, change to String(...)
     jpeg: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
 
@@ -36,7 +46,6 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "security_question": self.security_question,
-            # Do not include password or jpeg in API output
         }
 
 
@@ -51,14 +60,16 @@ class Listing(db.Model):
         nullable=False
     )
 
-    # Optional pointer to a “current” booking (kept nullable to avoid cycles during creation)
+    # Optional pointer to a “current” booking (nullable)
     booking_id: Mapped[Optional[int]] = mapped_column(
-        ForeignKey("bookings.id", use_alter=True, name="fk_listings_current_booking"),
+        ForeignKey("bookings.id", use_alter=True,
+                   name="fk_listings_current_booking"),
         nullable=True
     )
 
     airbnb_address: Mapped[str] = mapped_column(String(255), nullable=False)
-    airbnb_zipcode: Mapped[Optional[str]] = mapped_column(String(15), nullable=True)
+    airbnb_zipcode: Mapped[Optional[str]] = mapped_column(
+        String(15), nullable=True)
 
     # relationships
     owner: Mapped["User"] = relationship(back_populates="listings")
@@ -96,8 +107,9 @@ class Booking(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # A calendar event identifier (e.g., from Google Calendar)
-    google_calendar_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    # A calendar event identifier (UID from Google/ICS)
+    google_calendar_id: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True, index=True)
 
     # FK to Listing (standard one-to-many: a Listing can have many Bookings)
     listing_id: Mapped[int] = mapped_column(
@@ -105,23 +117,45 @@ class Booking(db.Model):
         nullable=False
     )
 
-    airbnb_guest_first_name: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    # Guest info (you'll punch these in from Airbnb)
+    airbnb_guest_first_name: Mapped[Optional[str]
+                                    ] = mapped_column(String(120), nullable=True)
+    airbnb_guest_last_name:  Mapped[Optional[str]
+                                    ] = mapped_column(String(120), nullable=True)
+
     airbnb_checkin: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    airbnb_checkout: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    airbnb_checkout: Mapped[Optional[date]
+                            ] = mapped_column(Date, nullable=True)
 
-    # Raw JPEG bytes for guest picture (nullable). Swap to String(...) if storing a URL/path.
-    airbnb_guestpic: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
+    # If you copy the Airbnb profile image URL instead of raw bytes:
+    airbnb_guestpic_url: Mapped[Optional[str]
+                                ] = mapped_column(String(500), nullable=True)
 
-    # Ensure checkout is not before checkin (only enforced when both present)
+    # Raw JPEG bytes for guest picture (nullable). Keep if you later upload bytes.
+    airbnb_guestpic: Mapped[Optional[bytes]] = mapped_column(
+        LargeBinary, nullable=True)
+
+    # Extras we can parse from ICS description now
+    reservation_url: Mapped[Optional[str]] = mapped_column(
+        String(500), nullable=True)
+    phone_last4:     Mapped[Optional[str]] = mapped_column(
+        String(4), nullable=True)
+
+    # Flag to show which rows still need manual guest details
+    needs_manual_details: Mapped[bool] = mapped_column(
+        Boolean, default=True, nullable=False)
+
+    # relationships
+    listing: Mapped["Listing"] = relationship(back_populates="bookings")
+
     __table_args__ = (
         CheckConstraint(
             "(airbnb_checkin IS NULL OR airbnb_checkout IS NULL) OR (airbnb_checkout >= airbnb_checkin)",
             name="ck_booking_checkout_after_checkin",
         ),
+        UniqueConstraint("listing_id", "google_calendar_id",
+                         name="uq_booking_listing_googleid"),
     )
-
-    # relationships
-    listing: Mapped["Listing"] = relationship(back_populates="bookings")
 
     def __repr__(self) -> str:
         return f"<Booking id={self.id} listing_id={self.listing_id}>"
@@ -132,7 +166,11 @@ class Booking(db.Model):
             "google_calendar_id": self.google_calendar_id,
             "listing_id": self.listing_id,
             "airbnb_guest_first_name": self.airbnb_guest_first_name,
+            "airbnb_guest_last_name": self.airbnb_guest_last_name,
             "airbnb_checkin": self.airbnb_checkin.isoformat() if self.airbnb_checkin else None,
             "airbnb_checkout": self.airbnb_checkout.isoformat() if self.airbnb_checkout else None,
-            # Do not include airbnb_guestpic bytes in API output
+            "reservation_url": self.reservation_url,
+            "phone_last4": self.phone_last4,
+            "airbnb_guestpic_url": self.airbnb_guestpic_url,
+            "needs_manual_details": self.needs_manual_details,
         }

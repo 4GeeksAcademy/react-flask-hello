@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Home() {
+export const Home = () => {
 	const heroUrl = "https://via.placeholder.com/1200x400.png?text=Welcome";
 
 	return (
 		<div className="container py-5">
-			<div className="text-center">
+			{/* <div className="text-center">
 				<img
 					src={heroUrl}
 					alt="Hero"
@@ -20,10 +20,10 @@ function Home() {
 				<Link to="/account" className="btn btn-primary">
 					Go to Account
 				</Link>
-			</div>
+			</div> */}
+			<h1> HOME PAGE </h1>
+
+
 		</div>
 	);
 }
-
-export { Home };
-export default Home;

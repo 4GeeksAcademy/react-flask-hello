@@ -1,46 +1,39 @@
-// /src/front/pages/Login.jsx
+
 import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { login as apiLogin } from "../api.js";
-
-export default function Login() {
+import useGlobalReducer from "../hooks/useGlobalReducer";
+export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { dispatch } = useGlobalReducer();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   // If you redirected here after signup, show a friendly notice
   const justSignedUp = location.state?.justSignedUp;
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErr("");
-    setBusy(true);
-    try {
-      // Expecting: { token, user }
-      const data = await apiLogin({ email, password });
-      const jwt = data?.token || "";
-
-      // Keep existing reducer contract from your prior Login.jsx
-      // so Account.jsx (which reads store.session.token) will work.
-      dispatch({ type: "set_jwt", payload: { jwt, user: data?.user } });
-
-      // Prefer redirect target if provided, else go to account
-      const dest = location.state?.from ?? "/account";
-      navigate(dest, { replace: true });
-    } catch (error) {
-      setErr(error?.message || "Unable to sign in. Please try again.");
-    } finally {
-      setBusy(false);
-    }
+    // e.preventDefault();
+    // setErr("");
+    // setBusy(true);
+    // try {
+    //   // Expecting: { token, user }
+    //   const data = await apiLogin({ email, password });
+    //   const jwt = data?.token || "";
+    //   // Keep existing reducer contract from your prior Login.jsx
+    //   // so Account.jsx (which reads store.session.token) will work.
+    //   dispatch({ type: "set_jwt", payload: { jwt, user: data?.user } });
+    //   // Prefer redirect target if provided, else go to account
+    //   const dest = location.state?.from ?? "/account";
+    //   navigate(dest, { replace: true });
+    // } catch (error) {
+    //   setErr(error?.message || "Unable to sign in. Please try again.");
+    // } finally {
+    //   setBusy(false);
+    // }
+    console.log("clicked")
   };
-
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       {/* Navbar to mirror Account.jsx */}
@@ -74,7 +67,6 @@ export default function Login() {
           </div>
         </div>
       </nav>
-
       {/* Main */}
       <main className="container flex-grow-1 py-5">
         <div className="row justify-content-center">
@@ -90,7 +82,6 @@ export default function Login() {
                     style={{ minHeight: 280 }}
                   />
                 </div>
-
                 {/* Right: form */}
                 <div className="col-md-7">
                   <div className="card-body">
@@ -98,7 +89,6 @@ export default function Login() {
                     <p className="text-muted mb-3">
                       Access your listings, messages, and settings.
                     </p>
-
                     {justSignedUp && (
                       <div className="alert alert-success" role="alert">
                         Account created. Please log in.
@@ -109,7 +99,6 @@ export default function Login() {
                         {err}
                       </div>
                     )}
-
                     <form onSubmit={handleSubmit} noValidate>
                       <div className="mb-3">
                         <label htmlFor="loginEmail" className="form-label">
@@ -126,7 +115,6 @@ export default function Login() {
                           placeholder="you@example.com"
                         />
                       </div>
-
                       <div className="mb-2">
                         <label htmlFor="loginPassword" className="form-label">
                           Password
@@ -152,7 +140,6 @@ export default function Login() {
                           </button>
                         </div>
                       </div>
-
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="form-check">
                           <input
@@ -168,7 +155,6 @@ export default function Login() {
                           Forgot password?
                         </Link>
                       </div>
-
                       <button
                         className="btn btn-primary w-100"
                         type="submit"
@@ -177,9 +163,7 @@ export default function Login() {
                         {busy ? "Signing in..." : "Log in"}
                       </button>
                     </form>
-
                     <hr className="my-4" />
-
                     <div className="text-center">
                       New here? <Link to="/signup">Create an account</Link>
                     </div>

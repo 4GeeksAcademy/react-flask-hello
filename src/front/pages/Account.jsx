@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-function Account() {
+export const Account = () => {
     const { store } =
         (typeof useGlobalReducer === "function" ? useGlobalReducer() : { store: {} }) ||
         { store: {} };
@@ -143,6 +143,3 @@ function Account() {
         </div>
     );
 }
-
-export { Account };
-export default Account;

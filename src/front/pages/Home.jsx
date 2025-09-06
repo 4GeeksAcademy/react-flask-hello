@@ -3,6 +3,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useGeoLocation } from "../hooks/GeoLocation.jsx";
 
 export const Home = () => {
+	const heroUrl = "https://via.placeholder.com/1200x400.png?text=Welcome";
 
 	const { store, dispatch } = useGlobalReducer()
 	// this is the useGeoLocation hook and how to use it 
@@ -31,10 +32,6 @@ export const Home = () => {
 
 	}
 
-	useEffect(() => {
-		loadMessage()
-	}, [])
-
 	return (
 		<div className="text-center mt-5">
 			<h1 className="display-4">Hello Rigo!!</h1>
@@ -49,4 +46,4 @@ export const Home = () => {
 			</div>
 		</div>
 	);
-}; 
+}

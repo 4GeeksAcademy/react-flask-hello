@@ -2,23 +2,22 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-function Account() {
-    const { store } = (typeof useGlobalReducer === "function"
-        ? useGlobalReducer()
-        : { store: {} }) || { store: {} };
+export const Account = () => {
+    const { store } =
+        (typeof useGlobalReducer === "function" ? useGlobalReducer() : { store: {} }) ||
+        { store: {} };
 
     const token = store?.session?.token ?? null;
     const firstName = store?.user?.first_name ?? "Guest";
 
     // Placeholder listing (replace with API/store data when available)
     const listing = store?.listing ?? {
-        image_url:
-            "https://picsum.photos/id/237/200/300", // ✅ placeholder
+        image_url: "https://picsum.photos/id/237/800/600",
         name: "Sample Property Listing",
         street: "123 Example Street",
         city: "Miami",
         state: "FL",
-        guest_name: "John Doe"
+        guest_name: "John Doe",
     };
 
     const [welcomeMsg, setWelcomeMsg] = useState("");
@@ -100,9 +99,7 @@ function Account() {
                                         <p className="card-text mb-1">
                                             {listing.city}, {listing.state}
                                         </p>
-                                        <p className="card-text text-muted">
-                                            Guest: {listing.guest_name}
-                                        </p>
+                                        <p className="card-text text-muted">Guest: {listing.guest_name}</p>
 
                                         {/* Welcome message */}
                                         <div className="mb-2">
@@ -146,6 +143,3 @@ function Account() {
         </div>
     );
 }
-
-export { Account };
-export default Account;

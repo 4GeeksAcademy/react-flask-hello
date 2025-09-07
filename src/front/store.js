@@ -4,7 +4,7 @@ export const initialStore = () => {
     user: null,
     all_games: [],
     carro: [], // <- añadido
-    
+    favorites: [],
   };
 };
 
@@ -25,7 +25,6 @@ export default function storeReducer(store, action = {}) {
           todo.id === id ? { ...todo, background: color } : todo
         ),
       };
-      
 
     case "setGames":
       return {
@@ -75,6 +74,19 @@ export default function storeReducer(store, action = {}) {
           item.id === action.payload.id
             ? { ...item, quantity: action.payload.quantity }
             : item
+        ),
+      };
+    case "setFavorites":
+      return {
+        ...store,
+        favorites: [...store.favorites, action.payload],
+      };
+
+    case "deleteFavorites":
+      return {
+        ...store,
+        favorites: store.favorites.filter(
+          (favorite) => favorite.id != action.payload
         ),
       };
 

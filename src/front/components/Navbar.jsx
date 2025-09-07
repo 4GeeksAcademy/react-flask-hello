@@ -1,14 +1,15 @@
 import './Navbar.css'
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { LogOut } from 'lucide-react';
+import { LogOut, Heart } from 'lucide-react';
 import { LogIn } from 'lucide-react';
 import Logo from "../assets/img/logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
   const { store, dispatch } = useGlobalReducer()
-  const { all_games } = store;
+  const { all_games, favorites } = store;
+  console.log(favorites)
   const navigate = useNavigate()
   const token_user = localStorage.getItem('jwt-token');
   const user = localStorage.getItem('user');
@@ -18,12 +19,7 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
 
 
 
-  const handleSearch = () => {
-    if (searchGame.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchGame)}`);
-    }
-
-  };
+  
 
   const cerrarSesion = () => {
     localStorage.removeItem("jwt-token")
@@ -167,6 +163,14 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
               </div>
             </div>
           </div>
+          <div>
+            <Link to="/favorites">
+              <button onClick={() => deleteGame(game.id)} >
+                <Heart size={24} color="#ffffffff" strokeWidth={1.75} />
+              </button>
+            </Link>
+
+          </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
             {/* ---- carrito ---- */}
@@ -183,7 +187,7 @@ export default function Navbar({ showDrowpdown, setShowDrowpdown }) {
                 </span>
               )}
             </Link>
-            
+
 
 
 

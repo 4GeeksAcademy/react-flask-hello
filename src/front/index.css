@@ -1,0 +1,99 @@
+.logo{
+margin-top: 4rem;
+margin-left: 20px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-container {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+/* Style for the Cocktail container */
+.Cocktail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    min-height: 100vh;
+}
+
+/* Style for each drink card */
+.drink {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.drink:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title of each drink */
+.drink h2 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Drink thumbnail image */
+.drink img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Drink details */
+.drink p {
+    margin: 10px 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Ingredients list */
+.drink ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 20px;
+    text-align: left;
+}
+
+.drink ul li {
+    font-size: 0.9rem;
+    color: #555;
+    padding: 2px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .Cocktail {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .drink {
+        width: 90%;
+    }
+}

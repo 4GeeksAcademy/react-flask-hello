@@ -1,0 +1,178 @@
+/* Estilos base */
+.plot-form-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Tarjeta blanca encima del fondo */
+.plot-form-card {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Título principal */
+.plot-form-title {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Título de secciones */
+.section-title {
+  color: #2c3e50;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: inline-block;
+  background: white;
+  padding: 0 0.5rem;
+}
+
+/* Formulario */
+.plot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-section {
+  border: 1px solid #e1e4e8;
+  padding: 1.25rem;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.form-input {
+  padding: 0.65rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+}
+
+/* Botones y mensajes */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.submit-button:hover {
+  background-color: #2c5282;
+}
+
+.request-report-button {
+  background-color: #4682b4;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.request-report-button:hover {
+  background-color: #376996;
+  transform: scale(1.02);
+}
+
+.error-message {
+  color: #e53e3e;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .plot-form-container {
+    padding: 1rem;
+  }
+  
+  .plot-form-card {
+    padding: 1.25rem;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+input[type="number"].form-input {
+  width: 100%; /* fuerza que use el mismo ancho que el select */
+  -moz-appearance: textfield; /* quita estilo nativo en Firefox */
+}
+
+input[type="number"].form-input::-webkit-outer-spin-button,
+input[type="number"].form-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Forzar altura y aspecto uniforme en input y select */
+input[type="number"].form-input,
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 42px; /* ajusta según tu diseño */
+  line-height: 1.2;
+  padding: 0.65rem;
+  font-size: 0.95rem;
+}

@@ -1,0 +1,73 @@
+/* 👇 ❇️ Riki for the group success 👊 12 Abril */
+
+
+/* Estilos para la página de login */
+.login-background {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Eliminamos las propiedades de background-image que ahora están en Layout.css */
+}
+
+/* Contenedor del formulario */
+.login-container {
+  max-width: 400px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.login-title {
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4682B4; /* Azul (como otros h1) o #198754 para cohesión con botones */
+  font-weight: 700;
+}
+
+.login-error {
+  margin-bottom: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-button {
+  padding: 10px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #157347;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link {
+  color: #198754;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

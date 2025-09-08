@@ -1,0 +1,384 @@
+/* ✨ Estilo para página de presupuesto - versión final fusionada */
+
+/* Contenedor principal */
+.quote-editor-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+/* Título de la página */
+.editor-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #198754;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Tarjetas o secciones */
+.editor-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Títulos de sección */
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #4682B4;
+}
+
+/* Información del cliente */
+.quote-info {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid #16a34a;
+}
+
+.quote-info p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.quote-info strong {
+  font-weight: 600;
+  color: #444;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-input:focus {
+  border-color: #198754;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+}
+
+/* Resultados del presupuesto */
+.quote-result {
+  background-color: #f0f9f4;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 20px 0;
+  border-left: 4px solid #16a34a;
+}
+
+.quote-result p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.total-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #198754;
+}
+
+/* Botones de acción */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.action-button,
+.button {
+  flex: 1;
+  height: 45px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.button-icon {
+  margin-right: 0.5rem;
+}
+
+.green-button {
+  background-color: #198754;
+}
+
+.green-button:hover {
+  background-color: #146c43;
+}
+
+.blue-button {
+  background-color: #0d6efd;
+}
+
+.blue-button:hover {
+  background-color: #0a58ca;
+}
+
+.orange-button {
+  background-color: #fd7e14;
+}
+
+.orange-button:hover {
+  background-color: #d76b11;
+}
+
+.save-button {
+  background-color: #f59e0b;
+}
+
+.save-button:hover {
+  background-color: #d97706;
+}
+
+.preview-button {
+  background-color: #3b82f6;
+}
+
+.preview-button:hover {
+  background-color: #2563eb;
+}
+
+.download-button {
+  background-color: #16a34a;
+}
+
+.download-button:hover {
+  background-color: #15803d;
+}
+
+/* Sección de email */
+.email-section,
+.email-container {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.email-section h3,
+.email-title {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.email-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.email-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.email-input:focus {
+  border-color: #198754;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+}
+
+.email-button {
+  background-color: #6f42c1;
+  color: white;
+}
+
+.email-button:hover:not(:disabled) {
+  background-color: #5a32a3;
+}
+
+.disabled-button {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+.success-message {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Vista previa del presupuesto */
+.quote-preview-container,
+.preview-container {
+  margin-top: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.quote-preview-title {
+  font-size: 1.4rem;
+  color: #198754;
+  margin-bottom: 20px;
+}
+
+.quote-preview {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 30px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #333;
+  background-color: white;
+}
+
+.quote-preview-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #198754;
+  padding-bottom: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo-container h1,
+.quote-preview-title {
+  font-size: 1.5rem;
+  color: #4682B4;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.quote-preview-date {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.quote-preview-date p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+.quote-preview-section {
+  margin-bottom: 30px;
+}
+
+.quote-preview-section h3 {
+  font-size: 1.3rem;
+  color: #198754;
+  margin-bottom: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.quote-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.quote-preview-table td {
+  padding: 10px 0;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.quote-preview-table td:first-child {
+  width: 40%;
+  padding-right: 20px;
+}
+
+.quote-preview-total td {
+  padding-top: 20px;
+  font-size: 1.2rem;
+  color: #198754;
+}
+
+.quote-preview-footer {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #666;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.quote-preview-footer p {
+  margin: 8px 0;
+}
+
+/* Estado de carga */
+.quote-loading {
+  text-align: center;
+  padding: 30px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+  }
+
+  .email-form {
+    flex-direction: column;
+  }
+
+  .quote-preview-header {
+    flex-direction: column;
+  }
+
+  .quote-preview-date {
+    text-align: left;
+    margin-top: 15px;
+  }
+
+  .button,
+  .action-button {
+    width: 100%;
+  }
+}

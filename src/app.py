@@ -4,12 +4,20 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
+from flask_cors import CORS
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
-from api.routes import api
+from api.models.models import db, User
+from api.routes.user_routes import user as user_blueprint
+from api.routes.plot_routes import fields as fields_blueprint
+from api.routes.quote_routes import quote
+from api.routes.report_routes import report_routes
+
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
+import datetime
+
 
 # from models import Person
 
@@ -17,6 +25,9 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+CORS(app)
+
+
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -38,9 +49,20 @@ setup_admin(app)
 setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(user_blueprint, url_prefix='/user')
+app.register_blueprint(fields_blueprint, url_prefix="/fields")
+app.register_blueprint(quote, url_prefix="/quote")
+app.register_blueprint(report_routes, url_prefix="/report_routes")
+
 
 # Handle/serialize errors like a JSON object
+
+app.config["JWT_SECRET_KEY"] = "yenesey-programando"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+jwt = JWTManager(app)
 
 
 @app.errorhandler(APIException)
@@ -57,6 +79,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
@@ -64,6 +88,19 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+@app.route('/uploads/<path:filename>', methods=['GET'])
+def serve_uploaded_file(filename):
+    upload_folder = os.path.join(app.root_path, 'uploads')
+    # ✅ ¡clave!
+    return send_from_directory(upload_folder, filename, as_attachment=False)
+
+
+@app.route('/download/<path:filename>', methods=['GET'])
+def download_file(filename):
+    upload_folder = os.path.join(app.root_path, 'uploads')
+    return send_from_directory(upload_folder, filename, as_attachment=True)
 
 
 # this only runs if `$ python src/main.py` is executed

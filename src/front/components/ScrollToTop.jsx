@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 // This component allows the scroll to go to the beginning when changing the view,
 // otherwise it would remain in the position of the previous view. 
-// Investigate more about this React behavior :D 
 
 const ScrollToTop = ({ location, children }) => {
     const prevLocation = useRef(location);

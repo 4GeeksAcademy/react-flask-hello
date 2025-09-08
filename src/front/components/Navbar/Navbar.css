@@ -1,0 +1,168 @@
+/* 👇 ❇️ Riki for the group success 👊 */
+
+/* 👇 ❇️ DronFarm Navbar - Ajustado para Coherencia con PublicNavbar 👊 */
+
+/* ===== FUENTES Y COLORES GLOBALES ===== */
+/* (Basado en index.css y manual tipográfico) */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap");
+
+/* ===== ESTILOS BASE ===== */
+.navbar {
+  background-color: #198754; /* Verde principal (botones/acciones) */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: "Roboto", sans-serif; /* Default para textos */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ===== LOGO ===== */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+/* ===== MENÚ HAMBURGUESA (Mobile) ===== */
+.navbar-toggle {
+  display: none;
+}
+
+.navbar-toggle-label {
+  display: none;
+  cursor: pointer;
+  width: 30px;
+  height: 21px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navbar-toggle-label span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: white;
+  border-radius: 3px;
+}
+
+/* ===== ITEMS DE NAVEGACIÓN ===== */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Asegura alineación vertical */
+}
+
+.navbar-item {
+  margin-left: 2rem; /* Igual que en PublicNavbar */
+  display: flex;
+  align-items: center;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif; /* Texto normal */
+  font-weight: 500;
+  transition: color 0.3s;
+  padding: 0.5rem 0;
+  position: relative;
+  display: inline-block; /* Importante para alineación */
+}
+
+.navbar-link:hover {
+  color: #cce7d8; /* Verde claro para hover */
+}
+
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+.navbar-button {
+  background-color: white;
+  color: #198754; /* Verde principal */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-family: "Montserrat", sans-serif; /* Tipografía destacada */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none; /* Para mantener consistencia cuando se usa en un Link */
+  display: inline-block; /* Mantiene el elemento en línea */
+  line-height: normal; /* Normaliza altura de línea */
+}
+
+.navbar-button:hover {
+  background-color: #e8f3ed; /* Fondo hover claro */
+  transform: translateY(-2px);
+}
+
+/* Estilo para el botón de cerrar sesión */
+.navbar-button-logout {
+  background-color: #dc3545; /* Rojo para cerrar sesión */
+  color: white;
+}
+
+.navbar-button-logout:hover {
+  background-color: #c82333; /* Rojo más oscuro */
+  color: white;
+}
+
+/* ===== RESPONSIVE (Mobile) ===== */
+@media (max-width: 768px) {
+  .navbar-toggle-label {
+    display: flex;
+  }
+
+  .navbar-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #198754;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    clip-path: circle(0px at 90% -10%);
+    transition: clip-path 0.5s ease-out;
+  }
+
+  .navbar-toggle:checked ~ .navbar-menu {
+    clip-path: circle(1000px at 90% -10%);
+  }
+
+  .navbar-item {
+    margin: 1rem 0;
+  }
+}

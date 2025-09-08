@@ -18,6 +18,23 @@ export const Addgame = () => {
     const [offline, setOffline] = useState("")
     const [gamemode, setGamemode] = useState("")
 
+
+
+
+    const juegoAleatorio = (e) =>{
+        e.preventDefault()
+         setImg("https://images5.alphacoders.com/864/864431.jpg")
+            setVideo("https://www.youtube.com/embed/RpZFWnnCSIM?si=1-iGQ0quKRqJL6JN")
+            setName("mario deluxe 8")
+            setPlatform("PS5")
+            setDescription("juego familiar")
+            setPrice("100")
+            setDistribuidora("SONY")
+            setGenero("aventura")
+            setOnline("1")
+            setOffline("1")
+            setGamemode("Juego Online")
+    }
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
@@ -150,10 +167,12 @@ export const Addgame = () => {
             </div>
             <button
                 type="submit"
-                className="mt-6 px-4 py-2 bg-blue-600 text-white rounded"
+                className="mt-6 mb-6 px-4 py-2 bg-blue-600 text-white rounded mr-5"
             >
                 Agregar juego
             </button>
+            <button 
+                className="mt-6 mb-6 px-4 py-2 bg-blue-600 text-white rounded" onClick={juegoAleatorio}>generar</button>
         </form>
     );
 }

@@ -4,19 +4,16 @@
 		"node": ">=20.0.0"
 	},
 	"version": "1.0.1",
-	"description": "",
+	"description": "Build web applications using React.js for the front end and python/flask for your backend API.",
 	"main": "index.js",
 	"scripts": {
 		"dev": "vite",
-        "start": "vite",
-        "build": "vite build",
-        "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+		"start": "vite",
+		"build": "vite build",
+		"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview"
 	},
-	"author": {
-		"name": "Alejandro Sanchez",
-		"url": "http://alesanchezr.com/"
-	},
+	"author": "Alejandro Sanchez (http://alesanchezr.com/)",
 	"contributors": [
 		{
 			"name": "Alejandro Sanchez",
@@ -30,13 +27,14 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/react": "^18.2.18",
-        "@types/react-dom": "^18.2.7",
-        "@vitejs/plugin-react": "^4.0.4",
-        "eslint": "^8.46.0",
-        "eslint-plugin-react": "^7.33.1",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.3",
-        "vite": "^4.4.8"
+		"@types/react-dom": "^18.2.7",
+		"@vitejs/plugin-react": "^4.0.4",
+		"eslint": "^8.46.0",
+		"eslint-plugin-react": "^7.33.1",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.3",
+		"tailwindcss": "^1.9.6",
+		"vite": "^4.4.8"
 	},
 	"babel": {
 		"presets": [
@@ -54,9 +52,30 @@
 		]
 	},
 	"dependencies": {
+		"@headlessui/react": "^2.2.4",
+		"@heroicons/react": "^2.2.0",
+		"@stripe/react-stripe-js": "^3.9.1",
+		"@stripe/stripe-js": "^7.8.0",
+		"@vis.gl/react-google-maps": "^1.5.5",
+		"bcrypt": "^6.0.0",
+		"lucide-react": "^0.525.0",
 		"prop-types": "^15.8.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "^6.18.0"
-	}
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-icons": "^5.5.0",
+		"react-multi-carousel": "^2.8.6",
+		"react-router-dom": "^6.18.0"
+	},
+	"directories": {
+		"doc": "docs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/4GeeksAcademy/FinalProject-SAB.git"
+	},
+	"keywords": [],
+	"bugs": {
+		"url": "https://github.com/4GeeksAcademy/FinalProject-SAB/issues"
+	},
+	"homepage": "https://github.com/4GeeksAcademy/FinalProject-SAB#readme"
 }

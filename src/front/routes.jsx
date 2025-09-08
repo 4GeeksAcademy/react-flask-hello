@@ -6,9 +6,34 @@ import {
     Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
+import { Home } from "./pages/home/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+import { Register } from "./pages/register/Register";
+import { AboutUs } from "./pages/aboutus/AboutUs";
+import { Soporte } from "./pages/soporte/Soporte.jsx";
+import { Privacidad } from "./pages/soporte/Privacidad.jsx";
+import { Login } from "./pages/login/Login.jsx";
+import { Addgame } from "./pages/addgame/Addgame.jsx";
+import { DetailsGames } from "./pages/detailsGames/DetailsGames.jsx";
+import { Carro } from "./pages/carro/Carro.jsx";
+import { Success } from "./pages/Success.jsx";
+import { Cancel } from "./pages/cancelPayment/Cancel.jsx";
+
+import { Historial } from "./pages/historial/Historial.jsx";
+import { RecPassword } from "./pages/recPassword/RecPassword.jsx";
+import { ResetPassword } from "./pages/resetPassword/ResetPassword.jsx";
+import GamesByPlatform from "./components/games/GamesByPlatform.jsx";
+import { EditGames } from "./pages/editgames/EditGames.jsx";
+import { Favorites } from "./pages/Favorites.jsx";
+import { Contact } from "./pages/Contact.jsx";
+
+
+
+
+
+
+
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -17,14 +42,38 @@ export const router = createBrowserRouter(
     // Root, on the contrary, create a sister Route, if you have doubts, try it!
     // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+    // Root Route: All navigation will start from here.
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>}>
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Home />} />
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
+        <Route path="/register" element={<Register />} /> {/* PAGINA REGISTER*/}
+        <Route path="/login" element={<Login />} /> {/* PAGINA LOGIN*/}
+        <Route path="/aboutus" element={<AboutUs />} /> {/* PAGINA AboutUs STORE*/}
+        <Route path="/soporte" element={<Soporte />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/privacidad" element={<Privacidad />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/addgame" element={<Addgame />} /> {/* PAGINA Soporte STORE*/}
+        <Route path="/detailsgames/:id" element={<DetailsGames />} /> {/* PAGINA DETALLES GAMES*/}
+        <Route path="/carro" element={<Carro />} /> {/* PAGINA Carrito*/}
+        <Route path="/favorites" element={<Favorites />} /> {/* PAGINA Carrito*/}
+
+       
+
+        <Route path="/historial" element={<Historial />} />
+        <Route path="/contact" element={<Contact/>} />
+
+        <Route path="/recPassword" element={<RecPassword />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
+        <Route path="/editgames/:id" element={<EditGames />} />
+        <Route path="/games/platform/:platform" element={<GamesByPlatform />} />     
+
+        {/* STRIPE */}
+       <Route path="/success" element={<Success />} /> 
+        <Route path="/cancel" element={<Cancel />} /> 
+
       </Route>
     )
 );

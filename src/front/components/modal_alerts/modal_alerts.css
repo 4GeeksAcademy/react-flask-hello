@@ -1,0 +1,44 @@
+/* 👇 ❇️ Riki for the group success 👊
+
+/* 👇 ❇️ DronFarm Modal Alerts - 100% Coherente 👊 */
+
+/* Títulos */
+.modal-title-error,
+.modal-title-success {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 700 !important;
+  color: #4682b4 !important; /* Azul corporativo */
+}
+
+/* Texto */
+.modal-text {
+  font-family: "Roboto", sans-serif !important;
+  color: #333 !important; /* Gris oscuro */
+  line-height: 1.5 !important;
+}
+
+/* Estructura */
+.swal2-popup {
+  border-radius: 12px !important;
+  border: 1px solid #dee2e6 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  background: #ffffff !important; /* Fondo blanco */
+}
+
+/* Botones */
+.swal2-confirm {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 500 !important;
+  background-color: #198754 !important; /* Verde de acciones */
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1.5rem !important;
+}
+
+/* Iconos */
+.swal2-icon.swal2-error {
+  color: #dc3545 !important; /* Rojo para error */
+}
+.swal2-icon.swal2-success {
+  color: #198754 !important; /* Verde para éxito */
+}

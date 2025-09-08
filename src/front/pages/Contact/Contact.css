@@ -1,0 +1,229 @@
+/* 👆 🤟🏼 ❇️ Riki for the group success 9_Abril 👊 */
+
+/* Estilos para la página de contacto - coherente con el sistema de diseño */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap');
+
+.contacto-container {
+  font-family: 'Roboto', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: #333;
+}
+
+/* Hero section - Glassmorphism */
+.contacto-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 3rem 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(25, 135, 84, 0.1);
+}
+
+.contacto-hero h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #198754; /* Verde principal coherente con el navbar */
+}
+
+.contacto-hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Layout principal de contacto */
+.contacto-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background-color: rgba(25, 135, 84, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+/* Columna de información */
+.contacto-info {
+  flex: 1;
+  min-width: 300px;
+  background-color: #1f6e41; /* Verde claro del logo */
+  color: #ffffff; /* Texto blanco para mejor contraste */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.contacto-info h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: white; /* Asegurando buen contraste */
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.info-item i {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: #e8f7ee; /* Color claro para iconos que contrasta con el verde del logo */
+}
+
+.contacto-social {
+  margin-top: 2rem;
+}
+
+.contacto-social h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  background-color: white;
+  color: #4cc480; /* Verde claro del logo */
+  transform: translateY(-3px);
+}
+
+/* Columna del formulario */
+.contacto-form-container {
+  flex: 2;
+  min-width: 300px;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.contacto-form-container h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #198754;
+  font-size: 1.8rem;
+}
+
+.contacto-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.form-group {
+  flex: 1 1 calc(50% - 0.75rem);
+  min-width: 250px;
+}
+
+.full-width {
+  flex: 1 1 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #198754;
+  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+}
+
+.submit-button {
+  background-color: #198754;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background-color: #146c43;
+  transform: translateY(-2px);
+}
+
+/* Mensajes de éxito y error */
+.mensaje-exito,
+.mensaje-error {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.mensaje-exito {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+}
+
+.mensaje-error {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contacto-content {
+    flex-direction: column;
+  }
+  
+  .contacto-info,
+  .contacto-form-container {
+    width: 100%;
+  }
+  
+  .form-group {
+    flex: 1 1 100%;
+  }
+}

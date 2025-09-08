@@ -1,0 +1,74 @@
+.weather-forecast-container {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  background: none;
+
+  width: 100%; /* ✅ ocupa el 100% del ancho disponible */
+  flex-grow: 1; /* ✅ permite que crezca */
+  justify-content: start; /* asegura que el contenido arranque a la izquierda */
+  box-sizing: border-box; /* asegura que padding no altere el ancho real */
+}
+
+/* Tarjeta del día */
+.forecast-day {
+  flex: 0 0 auto;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  min-width: 100px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-size: 0.85rem;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.forecast-day:hover {
+  border-color: #38bdf8;
+  background-color: #f0fbff;
+}
+
+/* Día actual destacado */
+.forecast-day.today-highlight {
+  border: 2px solid #38bdf8;
+  background-color: #e0f7ff;
+}
+
+/* Nombre del día */
+.day-name {
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.1;
+  text-transform: capitalize;
+}
+
+/* Icono */
+.forecast-day img {
+  width: 40px;
+  height: 40px;
+  margin: 0.4rem auto;
+}
+
+/* Temperaturas */
+.temp-range {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.3rem 0;
+}
+
+/* Descripción */
+.desc {
+  font-size: 0.75rem;
+  color: #444;
+  line-height: 1.1;
+}
+
+/* Datos extra (solo para hoy) */
+.extra {
+  font-size: 0.7rem;
+  color: #333;
+  margin-top: 0.1rem;
+}

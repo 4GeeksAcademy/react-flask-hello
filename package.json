@@ -8,10 +8,10 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "vite",
-        "start": "vite",
-        "build": "vite build",
-        "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+		"start": "vite",
+		"build": "vite build",
+		"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview"
 	},
 	"author": {
 		"name": "Alejandro Sanchez",
@@ -30,13 +30,13 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/react": "^18.2.18",
-        "@types/react-dom": "^18.2.7",
-        "@vitejs/plugin-react": "^4.0.4",
-        "eslint": "^8.46.0",
-        "eslint-plugin-react": "^7.33.1",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.3",
-        "vite": "^4.4.8"
+		"@types/react-dom": "^18.2.7",
+		"@vitejs/plugin-react": "^4.0.4",
+		"eslint": "^8.46.0",
+		"eslint-plugin-react": "^7.33.1",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.3",
+		"vite": "^6.2.6"
 	},
 	"babel": {
 		"presets": [
@@ -54,9 +54,19 @@
 		]
 	},
 	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.7.2",
+		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@react-pdf/renderer": "^4.3.0",
+		"axios": "^1.8.4",
+		"cors": "^2.8.5",
+		"framer-motion": "^12.6.3",
+		"mapbox-gl": "^3.11.0",
 		"prop-types": "^15.8.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "^6.18.0"
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-dropzone": "^14.3.8",
+		"react-router-dom": "^6.18.0",
+		"requests": "^0.3.0",
+		"sweetalert2": "^11.6.13"
 	}
 }

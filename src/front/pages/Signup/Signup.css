@@ -1,0 +1,98 @@
+/* 👇 ❇️ Riki for the group success 👊 12 Abril */
+
+
+/* Contenedor del formulario con posicionamiento */
+.signup-background {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Eliminamos las propiedades de background-image que ahora están en Layout.css */
+}
+
+/* Contenedor del formulario */
+.signup-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.signup-title {
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #198754; /* Verde (coherente con botones) */
+  font-size: 24px;
+  font-weight: 700; /* Negrita */
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.signup-input:focus {
+  outline: none;
+  border-color: #198754;
+}
+
+.signup-button {
+  padding: 12px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.signup-button:hover {
+  background-color: #157347;
+}
+
+.signup-message {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.signup-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.signup-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.signup-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #555;
+}
+
+.signup-link {
+  color: #198754;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}

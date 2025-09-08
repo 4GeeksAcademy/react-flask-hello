@@ -1,0 +1,104 @@
+.logo {
+  margin-top: 4rem;
+  margin-left: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+}
+
+.modal button {
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal button:hover {
+  background: #0056b3;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* Gradient background */
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full screen height */
+  color: #333; /* Text color */
+}
+
+h1, h2, h3 {
+  font-family: 'Helvetica', sans-serif;
+  color: #444; /* Darker text color for headers */
+}
+
+button {
+  background-color: #007bff; /* Button background */
+  color: #fff; /* Button text */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3; /* Hover background */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+.Cocktail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.drink {
+  width: 150px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.drink img {
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.drink div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.drink input[type="checkbox"] {
+  margin-bottom: 5px;
+}
+
+.drink:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}

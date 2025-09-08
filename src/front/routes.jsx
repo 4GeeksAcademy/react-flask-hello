@@ -25,6 +25,12 @@ import { RecPassword } from "./pages/recPassword/RecPassword.jsx";
 import { ResetPassword } from "./pages/resetPassword/ResetPassword.jsx";
 import GamesByPlatform from "./components/games/GamesByPlatform.jsx";
 import { EditGames } from "./pages/editgames/EditGames.jsx";
+import { Favorites } from "./pages/Favorites.jsx";
+import { Contact } from "./pages/Contact.jsx";
+
+
+
+
 
 
 
@@ -52,14 +58,20 @@ export const router = createBrowserRouter(
         <Route path="/addgame" element={<Addgame />} /> {/* PAGINA Soporte STORE*/}
         <Route path="/detailsgames/:id" element={<DetailsGames />} /> {/* PAGINA DETALLES GAMES*/}
         <Route path="/carro" element={<Carro />} /> {/* PAGINA Carrito*/}
+        <Route path="/favorites" element={<Favorites />} /> {/* PAGINA Carrito*/}
+
        
 
         <Route path="/historial" element={<Historial />} />
+        <Route path="/contact" element={<Contact/>} />
+
         <Route path="/recPassword" element={<RecPassword />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/editgames/:id" element={<EditGames />} />
         <Route path="/games/platform/:platform" element={<GamesByPlatform />} />     
-       <Route path="/success" element={<Success />} />
+
+        {/* STRIPE */}
+       <Route path="/success" element={<Success />} /> 
         <Route path="/cancel" element={<Cancel />} /> 
 
       </Route>

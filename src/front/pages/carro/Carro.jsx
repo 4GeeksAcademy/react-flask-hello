@@ -203,12 +203,12 @@ export const Carro = () => {
               </button>
 
               {/* Botón de pago simulado (para testing) */}
-              <button
+              {/* <button
                 onClick={handleSimulatedPayment}
                 className="mt-2 w-full py-2 px-4 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Pago Simulado (Testing)
-              </button>
+              </button> */}
             </aside>
           </div>
         )}

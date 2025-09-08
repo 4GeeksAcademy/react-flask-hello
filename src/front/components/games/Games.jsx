@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../../store/appContext";
 import "./games.css";
-import { Trash } from 'lucide-react';
-import { Pencil } from 'lucide-react';
+import { HeartPlus, Trash, Pencil } from 'lucide-react';
+
 
 
 export const Games = () => {
@@ -17,7 +17,12 @@ export const Games = () => {
   const user = localStorage.getItem('user');
   const [view, setview] = useState(false)
 
-
+  const addFavorite = (data) => {
+    dispatch({
+      type: 'setFavorites',
+      payload: data
+    })
+  }
 
   const moreInfoGame = (id) => {
     navigate(`/DetailsGames/${id}`);
@@ -107,18 +112,22 @@ export const Games = () => {
             )}
           </div>
           {
-token_user && (
-                  <div className="px-6 pb-4">
-            <button
-              className=" w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
-              onClick={() => dispatch({ type: "addToCarro", payload: game })}
-            >
-              Agregar al carro
+            token_user && (
+              <div className="px-6 pb-4 ">
+                <button
+                  className=" w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg"
+                  onClick={() => dispatch({ type: "addToCarro", payload: game })}
+                >
+                  Agregar al carro
+                </button>
+              </div>
+            )}
+          {/* ---- boton para añadir al carro ---- */}
+          <div>
+            <button className="" onClick={() => addFavorite(game)} >
+              <HeartPlus size={24} color="#ff0000ff" strokeWidth={2} />
             </button>
           </div>
-                  )}
-          {/* ---- boton para añadir al carro ---- */}
-          
           {
             view && (
               <div className="px-6 pb-4 flex justify-around text-white">
@@ -133,6 +142,7 @@ token_user && (
                     <Trash size={24} color="#ffffff" strokeWidth={1.75} />
                   </button>
                 </div>
+
               </div>
             )}
 

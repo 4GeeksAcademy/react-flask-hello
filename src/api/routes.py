@@ -24,7 +24,7 @@ from sqlalchemy import select
 from api.models import db, User, Listing, Booking
 
 api = Blueprint("api", __name__)
-CORS(api)
+CORS(api, supports_credentials=True, origins="*")
 
 # -----------------------------
 # Auth endpoints (simple demo)

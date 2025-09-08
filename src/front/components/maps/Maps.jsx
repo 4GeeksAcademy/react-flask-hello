@@ -11,7 +11,7 @@ function MapInner() {
     <Map
       style={{ width: "100%", height: "100%" }}
       defaultCenter={position}
-      defaultZoom={16}
+      defaultZoom={15}
       gestureHandling="greedy"
       disableDefaultUI={false}
       mapId={API_KEY}

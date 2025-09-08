@@ -16,12 +16,15 @@ export const Contact = () => {
                     
                 </div>
 
-                {/* Contact Section */}
+                {/* SECCION CONTACTO */}
                 <div className="flex flex-col lg:flex-row min-h-[500px]">
-                    {/* Left Side - Contact Information */}
+                   
+                   
+                    {/* Left Side - INFORMACION DEL CONTACTO*/}
                     <div className="lg:w-1/2 bg-gray-900 text-white p-8 lg:p-12">
                         <div className="max-w-md mx-auto lg:mx-0 space-y-12">
-                            {/* Address Section */}
+                            
+                            {/* DIRECCION */}
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center flex-shrink-0 mt-2">
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,14 +45,14 @@ export const Contact = () => {
                                 <div>
                                     <h3 className="text-lg font-semibold mb-2">DIRECCIÓN:</h3>
                                     <p className="text-gray-300 leading-relaxed">
-                                        direccion
+                                       Plaza ciudad de brujas
                                         <br />
-                                        CIUDAD
+                                        Valencia,46019
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Email Section */}
+                            {/* Email */}
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center flex-shrink-0 mt-2">
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +92,7 @@ export const Contact = () => {
                                     <h3 className="text-lg font-semibold mb-2">LLÁMANOS:</h3>
                                     <p className="text-gray-300">
                                         <a href="tel:+12345678901" className="hover:text-white transition-colors">
-                                            telefono
+                                            694 654 548
                                         </a>
                                         <br />
 

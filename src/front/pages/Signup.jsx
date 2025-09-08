@@ -8,7 +8,7 @@ export const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://ubiquitous-enigma-v6w9xj4v9rjpcwxj5-3001.app.github.dev/signup", {
+    const response = await fetch("https://ubiquitous-enigma-v6w9xj4v9rjpcwxj5-3001.app.github.dev/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

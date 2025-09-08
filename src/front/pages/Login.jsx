@@ -37,36 +37,6 @@ export const Login = () => {
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       {/* Navbar to mirror Account.jsx */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <span className="navbar-brand">YourApp</span>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#loginNavbar"
-            aria-controls="loginNavbar"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="loginNavbar">
-            <ul className="navbar-nav ms-auto align-items-lg-center gap-2">
-              <li className="nav-item">
-                <Link to="/signup" className="btn btn-outline-light btn-sm">
-                  Create account
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/" className="btn btn-primary btn-sm">
-                  Home
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
       {/* Main */}
       <main className="container flex-grow-1 py-5">
         <div className="row justify-content-center">

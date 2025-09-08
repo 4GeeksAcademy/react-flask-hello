@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+//check if token is in local storage,
+//if not redirect to login page
+//replace line
 
 function Profile() {
     const [firstName, setFirstName] = useState("");
@@ -9,6 +12,8 @@ function Profile() {
     const [isActive, setIsActive] = useState(true);
 
     useEffect(() => {
+    //chekc if token exists in local storage, if it does then fetch profile
+    // if it doesnt, return nothing
         const fetchProfile = async () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
                 headers: {
@@ -16,7 +21,7 @@ function Profile() {
                 }
                 //above is needed to access env token for backend, DOUBLE CHECK
             });
-            // Check for server errors
+            // Check for server errors (both # code and text)
             if (!response.ok) {
                 console.error("Server error:", response.status, response.statusText);
                 return;

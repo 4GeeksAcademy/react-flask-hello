@@ -1,0 +1,104 @@
+#root {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.unsetBtn {
+  all: unset;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-menu {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  right: auto !important;
+}
+
+.avatar-btn {
+  border: 2px solid #b0b0b0;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(120, 120, 120, 0.15);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  background: #f8f9fa;
+}
+
+.avatar-btn:hover {
+  border-color: #6c757d;
+  box-shadow: 0 4px 16px rgba(80, 80, 80, 0.2);
+}
+
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100vh;
+  width: 250px;
+  background-color: white;
+  color: black;
+  padding: 1.5rem;
+  transition: left 0.3s ease;
+  z-index: 200;
+}
+
+.sidenav-open {
+  left: 0;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.menu-overlay.active {
+  opacity: 0.5;
+  pointer-events: all;
+}
+
+.imgUserWidth {
+  width: 4rem;
+  height: 4rem;
+}
+
+.hovNav:hover {
+  color: #6c757d !important;
+}
+
+.imgLogin {
+  width: 30rem;
+  height: 40rem;
+}
+
+.AdminLoginWidth {
+  width: 30rem;
+}
+
+.imgLogin {
+  width: 40rem;
+  height: 40rem;
+  object-fit: cover;
+}
+
+.AdminLoginWidth {
+  width: 30rem;
+}
+
+.img-profile {
+  max-width: 254px;
+  width: 100%;
+  height: 254px;
+  aspect-ratio: 1/1;
+}

@@ -1,180 +1,136 @@
-import React, { useEffect } from "react"
-
+import React, { useEffect, useState } from "react";
+import "./Landing.css";
+// Example fetch for events (replace with your real API endpoint)
+const EVENTS_API_URL = "http://localhost:3001/api/events";
 export const Landing = () => {
-
+    const [events, setEvents] = useState([]);
+    useEffect(() => {
+        fetch(EVENTS_API_URL)
+            .then(res => res.json())
+            .then(data => setEvents(data))
+            .catch(() => setEvents([]));
+    }, []);
     return (
-        <div className="text-center mt-5">
-            <h1 className="display-4">Landing Page</h1>
-
+        <div>
+            {/* Background Music */}
+            <audio autoPlay loop>
+                <source src="/background-music.mp3" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            {/* Navbar */}
+            <nav className="navbar">
+                <span className="logo">E-Venture</span>
+                <div className="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#why">Why E-Venture</a>
+                    <a href="/signup" className="signup">Sign Up</a>
+                </div>
+            </nav>
+            {/* Hero Section */}
+            <section className="hero" id="home">
+                <video autoPlay loop muted className="hero-video">
+                    <source src="https://assets.mixkit.co/videos/348/348-720.mp4" type="video/mp4" />
+                </video>
+                <div className="hero-overlay">
+                    <h1>Where Every Event Becomes a Story</h1>
+                    <p>Plan, share, and remember your events.</p>
+                    <div className="cta-buttons">
+                        <a href="/signup" className="btn btn-primary">Get Started</a>
+                        <a href="#features" className="btn btn-secondary">See How It Works</a>
+                    </div>
+                </div>
+            </section>
+            {/* Features Section */}
+            <section className="features" id="features">
+                <h2>Features</h2>
+                <div className="features-grid">
+                    <div className="feature-card">
+                        <span className="feature-icon">:date:</span>
+                        <h5>My Events</h5>
+                        <p>Create, view, and manage events.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span className="feature-icon">:ballot_box_with_ballot:</span>
+                        <h5>RSVP & Polling</h5>
+                        <p>Let guests RSVP and vote on event options.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span className="feature-icon">:star:</span>
+                        <h5>Favorites</h5>
+                        <p>Save your favorite events and people.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span className="feature-icon">:bell:</span>
+                        <h5>Notifications</h5>
+                        <p>Stay updated with event changes.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span className="feature-icon">:bust_in_silhouette:</span>
+                        <h5>Profile</h5>
+                        <p>Customize your experience.</p>
+                    </div>
+                </div>
+            </section>
+            {/* Upcoming Events Section */}
+            <section className="events" id="events">
+                <h2>Upcoming Events</h2>
+                <div className="events-list">
+                    {events.length === 0 ? (
+                        <div className="event-card">No events found.</div>
+                    ) : (
+                        events.map((event, idx) => (
+                            <EventCard event={event} key={idx} />
+                        ))
+                    )}
+                </div>
+            </section>
+            {/* Why E-Venture Section */}
+            <section className="why" id="why">
+                <h2>Why E-Venture?</h2>
+                <div className="why-panels">
+                    <div className="why-panel">
+                        <span className="why-icon">:zap:</span>
+                        <h5>Simple & Fast</h5>
+                        <p>Easy event planning.</p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">:globe_with_meridians:</span>
+                        <h5>Stay Connected</h5>
+                        <p>RSVP, follow, and interact.</p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">:camera_with_flash:</span>
+                        <h5>Memories That Last</h5>
+                        <p>Capture and revisit your events.</p>
+                    </div>
+                </div>
+            </section>
+            {/* CTA Section */}
+            <section className="cta">
+                <h2>Ready to start your next adventure?</h2>
+                <a href="/signup" className="btn btn-primary cta-btn">Sign Up Free</a>
+            </section>
+            {/* Footer */}
+            <footer className="footer">
+                <div className="footer-links">
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                </div>
+                <p className="mb-0">© 2025 E-Venture. All Rights Reserved.</p>
+            </footer>
         </div>
     );
 };
-
-
-
-// <!DOCTYPE html>
-// <html lang="en">
-//   <head>
-//     <meta charset="UTF-8" />
-//     <title>E-Venture Landing Page</title>
-//     <link rel="stylesheet" href="styles.css" />
-//   </head>
-//   <body>
-//     <!-- Navbar -->
-//     <nav class="navbar">
-//       <div class="logo">E-Venture</div>
-//       <div class="nav-links">
-//         <a href="#home">Home</a>
-//         <a href="#features">Features</a>
-//         <a href="#events">Events</a>
-//         <a href="#why">Why E-Venture</a>
-//         <a href="/signup.html" class="signup">Sign Up</a>
-//       </div>
-//     </nav>
-
-//     <!-- Hero Section -->
-//     <section class="hero" id="home">
-//       <video autoplay loop muted class="hero-video">
-//         <source
-//           src="https://assets.mixkit.co/videos/348/348-720.mp4"
-//           type="video/mp4"
-//         />
-//       </video>
-//       <div class="hero-overlay">
-//         <h1>Where Every Event Becomes a Story</h1>
-//         <p>Plan, share, and remember your events.</p>
-//         <div class="cta-buttons">
-//           <a href="/signup.html" class="btn btn-primary">Get Started</a>
-//           <a href="#features" class="btn btn-secondary">See How It Works</a>
-//         </div>
-//       </div>
-//     </section>
-
-//     <!-- Features Section -->
-//     <section class="features" id="features">
-//       <h2>Features</h2>
-//       <div class="features-grid">
-//         <div class="feature-card">
-//           <span class="feature-icon">📅</span>
-//           <h3>My Events</h3>
-//           <p>Create, view, and manage events.</p>
-//         </div>
-//         <div class="feature-card">
-//           <span class="feature-icon">🗳️</span>
-//           <h3>RSVP & Polling</h3>
-//           <p>Let guests RSVP and vote on event options.</p>
-//         </div>
-//         <div class="feature-card">
-//           <span class="feature-icon">⭐</span>
-//           <h3>Favorites</h3>
-//           <p>Save your favorite events and people.</p>
-//         </div>
-//         <div class="feature-card">
-//           <span class="feature-icon">🔔</span>
-//           <h3>Notifications</h3>
-//           <p>Stay updated with event changes.</p>
-//         </div>
-//         <div class="feature-card">
-//           <span class="feature-icon">👤</span>
-//           <h3>Profile</h3>
-//           <p>Customize your experience.</p>
-//         </div>
-//       </div>
-//     </section>
-
-//     <!-- Upcoming Events Section (cards only, no carousel) -->
-//     <section class="events" id="events">
-//       <h2>Upcoming Events</h2>
-//       <div class="events-list" id="events-list">
-//         <!-- Event cards will be injected here by JS -->
-//       </div>
-//     </section>
-
-//     <script>
-//       const apiUrl = "http://localhost:3001/api/events";
-
-//       function createEventCard(event) {
-//         return `
-//           <div class="event-card">
-//             <span class="event-icon">${event.icon || "🎉"}</span>
-//             <h4>${event.title}</h4>
-//             <p>${event.date} • ${event.rsvp || "?"} RSVPs</p>
-//             ${
-//               event.location
-//                 ? `<p><span class="event-location">📍 ${event.location}</span></p>`
-//                 : ""
-//             }
-//           </div>
-//         `;
-//       }
-
-//       function fetchCustomEvents() {
-//         return fetch(apiUrl)
-//           .then((res) => res.json())
-//           .catch(() => []);
-//       }
-
-//       function renderEvents(allEvents) {
-//         const list = document.getElementById("events-list");
-//         if (!allEvents.length) {
-//           list.innerHTML = "<div class='event-card'>No events found.</div>";
-//           return;
-//         }
-//         list.innerHTML = allEvents.map(createEventCard).join("");
-//       }
-
-//       function loadEvents() {
-//         fetchCustomEvents().then(renderEvents);
-//       }
-//       loadEvents();
-//     </script>
-
-//     <!-- Why E-Venture Section -->
-//     <section class="why" id="why">
-//       <h2>Why E-Venture?</h2>
-//       <div class="why-panels">
-//         <div class="why-panel">
-//           <span class="why-icon">⚡</span>
-//           <h3>Simple & Fast</h3>
-//           <p>Easy event planning.</p>
-//         </div>
-//         <div class="why-panel">
-//           <span class="why-icon">🌐</span>
-//           <h3>Stay Connected</h3>
-//           <p>RSVP, follow, and interact.</p>
-//         </div>
-//         <div class="why-panel">
-//           <span class="why-icon">📸</span>
-//           <h3>Memories That Last</h3>
-//           <p>Capture and revisit your events.</p>
-//         </div>
-//       </div>
-//     </section>
-
-//     <!-- CTA Section -->
-//     <section class="cta">
-//       <h2>Ready to start your next adventure?</h2>
-//       <a href="/signup.html" class="btn btn-primary cta-btn">Sign Up Free</a>
-//     </section>
-
-//     <!-- Footer -->
-//     <footer class="footer">
-//       <div class="footer-links">
-//         <a href="/about.html">About</a>
-//         <a href="/contact.html">Contact</a>
-//         <a href="/terms.html">Terms</a>
-//         <a href="/privacy.html">Privacy</a>
-//       </div>
-//       <p>© 2025 E-Venture. All Rights Reserved.</p>
-//     </footer>
-
-//     <audio
-//       id="bg-music"
-//       src="background-music.mp3"
-//       autoplay
-//       loop
-//       style="display: none"
-//     ></audio>
-//     <script src="carousel.js"></script>
-//   </body>
-// </html>
+const EventCard = ({ event }) => (
+    <div className="event-card">
+        <span className="event-icon">{event.icon || ":tada:"}</span>
+        <h4>{event.title}</h4>
+        <p>{event.date} • {event.rsvp || "?"} RSVPs</p>
+        {event.location && (
+            <p><span role="img" aria-label="location">:round_pushpin:</span> {event.location}</p>
+        )}
+    </div>
+);

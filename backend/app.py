@@ -13,12 +13,15 @@ def public_events():
     url = (
         f"https://www.eventbriteapi.com/v3/events/search/"
         f"?location.latitude={lat}&location.longitude={lon}&token={EVENTBRITE_TOKEN}"
+        # need token for line 15, place in .env file
+        # not pulling events from everbrite
+        #everbrite token is to pull events from everbrite. so we can post new events and everbrite events
     )
     resp = requests.get(url)
     return jsonify(resp.json())
 
 
-@app.route("/api/events")
+@app.route("/api/events") 
 def get_events():
     # Example: return a static list of events for testing
     events = [

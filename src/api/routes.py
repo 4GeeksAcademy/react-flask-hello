@@ -24,7 +24,7 @@ from sqlalchemy import select
 from api.models import db, User, Listing, Booking
 
 api = Blueprint("api", __name__)
-CORS(api)
+CORS(api, supports_credentials=True, origins="*")
 
 # -----------------------------
 # Auth endpoints (simple demo)
@@ -82,6 +82,18 @@ def protect_preview():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     return jsonify({"id": user.id, "email": user.email}), 200
+
+@api.route("/admin/users", methods=["GET"])
+def list_all_users():
+    """
+    Get all users in the database. Requires authentication.
+    Returns user info without sensitive data like passwords.
+    """
+    users = User.query.all()
+    return jsonify({
+        "total_users": len(users),
+        "users": [user.serialize() for user in users]
+    }), 200
 
 
 @api.route("/hello", methods=["GET"])

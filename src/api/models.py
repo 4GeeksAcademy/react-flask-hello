@@ -60,7 +60,7 @@ class Listing(db.Model):
         nullable=False
     )
 
-    # Optional pointer to a “current” booking (nullable)
+    # Optional pointer to a "current" booking (nullable)
     booking_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("bookings.id", use_alter=True,
                    name="fk_listings_current_booking"),
@@ -76,14 +76,15 @@ class Listing(db.Model):
 
     bookings: Mapped[List["Booking"]] = relationship(
         back_populates="listing",
+        foreign_keys="[Booking.listing_id]",
         cascade="all, delete-orphan",
         passive_deletes=True
     )
 
-    # “current” booking object corresponding to booking_id above
+    # "current" booking object corresponding to booking_id above
     current_booking: Mapped[Optional["Booking"]] = relationship(
         "Booking",
-        foreign_keys="Listing.booking_id",
+        foreign_keys="[Listing.booking_id]",
         post_update=True,
         viewonly=False,
         uselist=False,
@@ -146,7 +147,10 @@ class Booking(db.Model):
         Boolean, default=True, nullable=False)
 
     # relationships
-    listing: Mapped["Listing"] = relationship(back_populates="bookings")
+    listing: Mapped["Listing"] = relationship(
+        back_populates="bookings",
+        foreign_keys="[Booking.listing_id]"
+    )
 
     __table_args__ = (
         CheckConstraint(

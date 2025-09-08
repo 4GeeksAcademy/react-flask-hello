@@ -6,17 +6,37 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
-api = Blueprint('api', __name__)
+from flask import Blueprint
+from src.controllers.events_controller import (
+    create_event,
+    get_events,
+    get_event,
+    update_event,
+    delete_event,
+    leave_event,
+    join_event,
 
-# Allow CORS requests to this API
-CORS(api)
+)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+events_bp = Blueprint('events', __name__)
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+events_bp.route('/', methods=['POST'])(create_event) # Crear un nuevo evento
+events_bp.route('/', methods=['GET'])(get_events)# Obtener todos los eventos
+events_bp.route('/<int:event_id>/join', methods=['POST'])(join_event)# Unirse a un evento
+events_bp.route('/<int:event_id>', methods=['GET'])(get_event) # Obtener un evento por ID
+events_bp.route('/<int:event_id>', methods=['PUT'])(update_event) # Actualizar un evento por ID
+events_bp.route('/<int:event_id>', methods=['DELETE'])(delete_event)  # Eliminar evento
+events_bp.route('/<int:event_id>/leave', methods=['POST'])(leave_event)
 
-    return jsonify(response_body), 200
+
+users_bp = Blueprint('users', __name__)
+
+users_bp.route('/', methods=['POST'])(create_user)
+users_bp.route('/', methods=['GET'])(get_users)
+users_bp.route('/<int:user_id>', methods=['GET'])(get_user)
+users_bp.route('/<int:user_id>', methods=['PUT'])(update_user)         # <--- Esto es necesario
+users_bp.route('/<int:user_id>', methods=['DELETE'])(delete_user)
+users_bp.route('/<int:user_id>/join', methods=['POST'])(join_event)
+users_bp.route('/<int:user_id>/leave', methods=['POST'])(leave_event)
+users_bp.route('/<int:user_id>/events', methods=['GET'])(get_user_events)

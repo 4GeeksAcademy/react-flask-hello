@@ -83,6 +83,7 @@ def protect_preview():
     user = User.query.get(current_user_id)
     return jsonify({"id": user.id, "email": user.email}), 200
 
+
 @api.route("/admin/users", methods=["GET"])
 def list_all_users():
     """

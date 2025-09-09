@@ -25,11 +25,10 @@ export const router = createBrowserRouter(
 
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
       <Route path="/profile" element={<Profile />} />
-      <Route index element={<Landing />} />
     </Route>
   )
 );

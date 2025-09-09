@@ -7,8 +7,9 @@ export const Signup = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    console.log("clicked")
     e.preventDefault();
-    const response = await fetch("https://ubiquitous-enigma-v6w9xj4v9rjpcwxj5-3001.app.github.dev/api/signup", {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

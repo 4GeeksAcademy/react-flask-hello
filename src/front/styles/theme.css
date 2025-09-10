@@ -1,199 +1,655 @@
-/* Transición suave de colores */
-* { transition: background-color .25s ease, color .25s ease, border-color .25s ease; }
+/* 
+🎉 KNECT - SISTEMA DE TEMA ESPECTACULAR
+Una experiencia visual inolvidable para tu plataforma de eventos
+*/
 
-/* ===== TOKENS ===== */
-:root[data-theme="dark"]{
-  --bg-start:#1a1530; --bg-end:#d86a4a;
-  --surface:#1e1b2b; --card:#1c1828; --card-2:#221d33;
-  --text:#f2effa; --muted:#bfb9d8; --border:#2f2a42;
-  --accent:#7c5cff; --accent-2:#ffb86b;
-  --shadow:0 10px 30px rgba(0,0,0,.45); --overlay:rgba(0,0,0,.35);
-}
-:root[data-theme="light"]{
-  --bg-start:#bdbfc9; --bg-end:#ffe9d6;
-  --surface:#fff; --card:#ec5050; --card-2:#f7f7ff;
-  --text:#1d1930; --muted:#5f5b7d; --border:#e6e2f3;
-  --accent:#6b4dff; --accent-2:#ff8a4c;
-  --shadow:0 8px 22px rgba(0,0,0,.10); --overlay:rgba(0,0,0,.08);
+/* ===== TRANSICIONES CINEMATOGRÁFICAS ===== */
+* { 
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  scroll-behavior: smooth;
 }
 
-/* ===== FONDO GLOBAL ===== */
-html, body, #root, #app { min-height: 100%; }
-body{
-  background:
-    radial-gradient(1200px 800px at 70% -10%, var(--bg-start), transparent) no-repeat fixed,
-    linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%) fixed;
-  color:var(--text);
+/* ===== SISTEMA DE TOKENS DINÁMICOS ===== */
+:root[data-theme="dark"] {
+  /* 🌙 TUS COLORES ORIGINALES - INTACTOS */
+  --bg-start: #1a1530;
+  --bg-end: #d86a4a;
+  --surface: #1e1b2b;
+  --card: #1c1828;
+  --card-2: #221d33;
+  --text: #f2effa;
+  --muted: #bfb9d8;
+  --border: #2f2a42;
+  --accent: #7c5cff;
+  --accent-2: #ffb86b;
+  
+  /* ✨ EFECTOS ESPECTACULARES PARA EVENTOS */
+  --glow-primary: rgba(124, 92, 255, 0.6);
+  --glow-secondary: rgba(255, 184, 107, 0.5);
+  --glass-bg: rgba(17, 14, 28, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-hover: rgba(255, 255, 255, 0.05);
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 20px 60px rgba(124, 92, 255, 0.3);
+  --particles: rgba(124, 92, 255, 0.8);
+  
+  /* 🎯 ESPECÍFICOS PARA EVENTOS */
+  --event-card-bg: rgba(28, 24, 40, 0.9);
+  --event-card-hover: rgba(34, 29, 51, 0.95);
+  --event-overlay: rgba(124, 92, 255, 0.9);
+  --btn-gradient: linear-gradient(135deg, #7c5cff, #9f7aea);
+  --text-glow: 0 0 20px rgba(242, 239, 250, 0.3);
 }
 
-/* Scrollbar */
-*::-webkit-scrollbar{ width:10px; height:10px; }
-*::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
-*::-webkit-scrollbar-track{ background:transparent; }
-
-/* ===== LAYOUT ===== */
-header, nav, .navbar{
-  background: rgba(30,27,43,.88);
-  backdrop-filter: saturate(120%) blur(6px);
-  border-bottom:1px solid var(--border);
-  box-shadow:var(--shadow);
-}
-[data-theme="light"] header,
-[data-theme="light"] nav,
-[data-theme="light"] .navbar{ background: rgba(255,255,255,.85); }
-
-footer{
-  background: color-mix(in oklab, var(--surface) 92%, transparent);
-  border-top:1px solid var(--border);
-}
-
-/* ===== COMPONENTES ===== */
-.card, [class*="Card"], [class*="card"], [class*="panel"], .box, .modal-content{
-  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
-  border:1px solid var(--border)!important;
-  color:var(--text);
-  box-shadow:var(--shadow);
-  border-radius:16px;
-}
-
-input, select, textarea{
-  background:var(--surface)!important; color:var(--text)!important;
-  border:1px solid var(--border)!important; border-radius:12px!important;
-}
-input::placeholder, textarea::placeholder{ color:var(--muted); }
-
-button, .btn{
-  background:var(--accent); color:#fff;
-  border:1px solid color-mix(in oklab, var(--accent) 65%, #000 0%);
-  border-radius:14px; box-shadow:var(--shadow);
-}
-button:hover, .btn:hover{ filter:brightness(1.05); }
-.btn-secondary{ background:var(--accent-2)!important; color:#111!important; }
-
-.tag, .badge, .pill, [class*="badge"]{
-  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
-  color:var(--text); border:1px solid var(--border); border-radius:999px;
+:root[data-theme="light"] {
+  /* ☀️ MODO CLARO ESPECTACULAR */
+  --bg-start: #f7f8fc;
+  --bg-end: #fff5f0;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-2: #fafbff;
+  --text: #2d2a45;
+  --muted: #6b6880;
+  --border: #e2e1f3;
+  --accent: #6b4dff;
+  --accent-2: #ff7b54;
+  
+  /* ✨ EFECTOS PARA MODO CLARO */
+  --glow-primary: rgba(107, 77, 255, 0.4);
+  --glow-secondary: rgba(255, 123, 84, 0.4);
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(45, 42, 69, 0.1);
+  --glass-hover: rgba(107, 77, 255, 0.05);
+  --shadow-soft: 0 8px 32px rgba(45, 42, 69, 0.1);
+  --shadow-glow: 0 20px 60px rgba(107, 77, 255, 0.2);
+  --particles: rgba(107, 77, 255, 0.6);
+  
+  /* 🎯 ESPECÍFICOS PARA EVENTOS EN CLARO */
+  --event-card-bg: rgba(255, 255, 255, 0.95);
+  --event-card-hover: rgba(250, 251, 255, 0.98);
+  --event-overlay: rgba(107, 77, 255, 0.9);
+  --btn-gradient: linear-gradient(135deg, #6b4dff, #8b5cf6);
+  --text-glow: 0 0 20px rgba(45, 42, 69, 0.1);
 }
 
-[class*="evento"] .overlay, .image-overlay, .card-media::after{
-  background: linear-gradient(180deg, transparent, var(--overlay));
+/* ===== FONDO DINÁMICO CON PARTÍCULAS ===== */
+html, body, #root {
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-.login-card, .register-card, [class*="Login"], [class*="Register"],
-.profile-card, [class*="Perfil"], [class*="profile"]{
-  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
-  border:1px solid var(--border);
-}
-
-/* ======= TOKENS extra para glass ======= */
-:root[data-theme="dark"]{
-  --glass-bg: rgba(17, 14, 28, 0.55);      /* capa vidrio oscura */
-  --glass-border: rgba(255,255,255,0.08);
-  --input-bg: rgba(255,255,255,0.04);
-  --pill-bg: rgba(124, 92, 255, 0.16);
-  --pill-text: var(--text);
-  --blur: 10px;
-}
-
-:root[data-theme="light"]{
-  --glass-bg: rgba(255,255,255,0.58);      /* capa vidrio clara */
-  --glass-border: rgba(24,18,49,0.10);
-  --input-bg: rgba(255,255,255,0.92);
-  --pill-bg: rgba(107, 77, 255, 0.14);
-  --pill-text: #2a2450;
-  --blur: 12px;
-}
-
-/* ======= NAVBAR vidrio (mejor integración) ======= */
-.knect-navbar, header, nav, .navbar {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur)) saturate(125%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 8px 24px rgba(0,0,0,.15);
-}
-
-/* ======= Tarjetas y paneles en vidrio ======= */
-.card,
-[class*="Card"],
-[class*="card"],
-[class*="panel"],
-.box,
-.modal-content,
-.profile-dropdown,
-.mobile-panel,
-.glass-card,
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur)) saturate(125%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
-  border: 1px solid var(--glass-border) !important;
+body {
+  background: 
+    radial-gradient(circle at 20% 80%, var(--glow-primary) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--glow-secondary) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--particles) 0%, transparent 30%),
+    linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  background-attachment: fixed;
   color: var(--text);
-  border-radius: 18px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  animation: backgroundShift 20s ease-in-out infinite;
 }
 
-/* === Safety net: panel que contiene formularios grandes === */
-/* (Esto dará glass al panel de Crear Evento sin tocar JSX)  */
-.container_layout > div:has(> form),
-.container_layout > form {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur)) saturate(125%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+@keyframes backgroundShift {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+  50% { filter: hue-rotate(5deg) brightness(1.02); }
 }
 
-/* ======= Inputs coherentes con glass ======= */
-input, select, textarea {
-  background: var(--input-bg) !important;
+/* ===== EFECTOS DE PARTÍCULAS FLOTANTES ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(2px 2px at 20% 30%, var(--particles), transparent),
+    radial-gradient(1px 1px at 40% 70%, var(--glow-primary), transparent),
+    radial-gradient(1px 1px at 90% 40%, var(--glow-secondary), transparent);
+  background-size: 300px 200px;
+  animation: particlesFloat 30s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+@keyframes particlesFloat {
+  0% { transform: translateX(0) translateY(0); }
+  100% { transform: translateX(-300px) translateY(-200px); }
+}
+
+/* ===== NAVBAR ESPECTACULAR ===== */
+.knect-navbar {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  box-shadow: var(--shadow-soft), 0 0 40px var(--glow-primary) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-link {
+  color: var(--text) !important;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--btn-gradient);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-link:hover::before,
+.navbar-link.active::before {
+  width: 100%;
+}
+
+.navbar-link:hover {
+  color: var(--accent) !important;
+  text-shadow: var(--text-glow);
+  transform: translateY(-1px);
+}
+
+/* ===== CARDS ESPECTACULARES PARA EVENTOS ===== */
+.dest-card,
+.card-ev,
+.destinos__card {
+  background: var(--event-card-bg) !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-soft) !important;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dest-card::before,
+.card-ev::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--btn-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.dest-card:hover,
+.card-ev:hover {
+  transform: translateY(-8px) rotateX(5deg);
+  box-shadow: var(--shadow-glow), var(--shadow-soft);
+  background: var(--event-card-hover) !important;
+}
+
+.dest-card:hover::before,
+.card-ev:hover::before {
+  opacity: 0.05;
+}
+
+/* ===== IMÁGENES CON EFECTOS MÁGICOS ===== */
+.thumb-img,
+.img-card,
+.collage-img {
+  border-radius: 20px;
+  transition: all 0.4s ease;
+  filter: brightness(0.9) contrast(1.1);
+}
+
+.dest-card:hover .thumb-img,
+.card-ev:hover .img-card {
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.2) saturate(1.3);
+}
+
+/* ===== OVERLAY DINÁMICO ===== */
+.img-gradient {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0,0,0,0.1) 40%,
+    var(--event-overlay) 100%
+  ) !important;
+  transition: all 0.3s ease;
+}
+
+.dest-card:hover .img-gradient,
+.card-ev:hover .img-gradient {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0,0,0,0.2) 30%,
+    var(--event-overlay) 90%
+  ) !important;
+}
+
+/* ===== TÍTULOS CINEMATOGRÁFICOS ===== */
+.title,
+.knect-title {
+  color: var(--text) !important;
+  text-shadow: var(--text-glow);
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.knect-title {
+  background: rgb(202, 190, 14);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px var(--glow-primary));
+}
+
+.dest-card:hover .title,
+.card-ev:hover .title {
+  color: #ffffff !important;
+  text-shadow: 0 0 20px rgba(255,255,255,0.8);
+  transform: translateY(-2px);
+}
+
+/* ===== BADGES Y CHIPS ESPECTACULARES ===== */
+.chip,
+.badge,
+.pill,
+.meta-badges li {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text) !important;
+  border-radius: 20px !important;
+  padding: 6px 12px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.chip:hover,
+.badge:hover {
+  background: var(--glass-hover) !important;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
+}
+
+/* ===== BOTONES ESPECTACULARES ===== */
+.btn {
+  background: var(--btn-gradient) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 16px !important;
+  padding: 12px 24px !important;
+  box-shadow: var(--shadow-soft) !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: var(--shadow-glow), var(--shadow-soft) !important;
+  filter: brightness(1.1);
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-ghost {
+  background: var(--glass-bg) !important;
   color: var(--text) !important;
   border: 1px solid var(--glass-border) !important;
-  border-radius: 12px !important;
 }
 
-/* ======= Chips / pills (fecha, precio, plazas) ======= */
-.tag, .badge, .pill, .chip,
-[class*="pill"], [class*="badge"], [class*="chip"] {
-  background: var(--pill-bg) !important;
-  color: var(--pill-text) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 999px !important;
-  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.15);
+.btn-ghost:hover {
+  background: var(--glass-hover) !important;
+  color: var(--accent) !important;
 }
 
-/* Si tus “barras meta” al pie de la card tienen un fondo propio */
-.card .meta, .CardEvento .meta, .event-card .meta, .event-card .footer-meta {
+/* ===== FORMULARIOS ELEGANTES ===== */
+input,
+textarea,
+select {
   background: var(--glass-bg) !important;
-  border: 1px solid var(--glass-border) !important;
+  border: 2px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  padding: 14px 18px !important;
+  color: var(--text) !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
 }
 
-/* ======= Dropdown de perfil en claro/oscuro ======= */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 4px var(--glow-primary) !important;
+  transform: translateY(-2px) !important;
+  outline: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted) !important;
+  font-weight: 400;
+}
+
+/* ===== GRID ADAPTATIVO ESPECTACULAR ===== */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .grid-cards {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+}
+
+/* ===== DROPDOWN MÁGICO ===== */
 .profile-dropdown {
-  padding: 8px;
-}
-.profile-dropdown .dropdown-item {
-  background: transparent;
-  color: var(--text);
-  border-radius: 10px;
-}
-.profile-dropdown .dropdown-item:hover {
-  background: rgba(124,92,255,0.12);
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-glow) !important;
+  padding: 12px !important;
+  animation: dropdownSlide 0.3s ease;
 }
 
-/* ======= Botones coherentes ======= */
-button, .btn {
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-item {
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+}
+
+.dropdown-item:hover {
+  background: var(--glass-hover) !important;
+  transform: translateX(4px);
+  color: var(--accent) !important;
+}
+
+/* ===== FOOTER ELEGANTE ===== */
+.site-footer {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border-top: 1px solid var(--glass-border) !important;
+  color: var(--text) !important;
+}
+
+/* ===== LOADING CINEMATOGRÁFICO ===== */
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--glass-border);
+  border-top: 4px solid var(--accent);
+  border-radius: 50%;
+  animation: loaderSpin 1s linear infinite;
+  filter: drop-shadow(0 0 10px var(--glow-primary));
+}
+
+@keyframes loaderSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+}
+
+/* ===== HERO SECTION ESPECTACULAR ===== */
+.hero-collage .card {
+  border-radius: 24px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s ease;
+}
+
+.hero-collage .card:hover {
+  transform: translateY(-5px) rotateZ(1deg);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===== ANIMACIONES DE ENTRADA ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dest-card,
+.card-ev {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.dest-card:nth-child(1) { animation-delay: 0.1s; }
+.dest-card:nth-child(2) { animation-delay: 0.2s; }
+.dest-card:nth-child(3) { animation-delay: 0.3s; }
+.dest-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* ===== PANEL MÓVIL ESPECTACULAR ===== */
+.mobile-panel {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text) !important;
+  border-radius: 0 0 20px 20px !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+.mobile-nav-link {
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.mobile-nav-link:hover {
+  background: var(--glass-hover) !important;
+  color: var(--accent) !important;
+  transform: translateX(8px);
+}
+
+/* ===== EFECTOS ESPECIALES PARA EVENTOS ===== */
+.event-special {
+  position: relative;
+}
+
+.event-special::after {
+  content: '✨';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+}
+
+/* ===== MODO CLARO - FIXES ESPECÍFICOS ===== */
+[data-theme="light"] .dest-card,
+[data-theme="light"] .card-ev {
+  box-shadow: 0 8px 32px rgba(107, 77, 255, 0.1) !important;
+}
+
+[data-theme="light"] .dest-card:hover,
+[data-theme="light"] .card-ev:hover {
+  box-shadow: 0 20px 60px rgba(107, 77, 255, 0.2) !important;
+}
+
+[data-theme="light"] .chip,
+[data-theme="light"] .badge {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(107, 77, 255, 0.2) !important;
+  color: var(--text) !important;
+}
+
+/* ===== RESPONSIVE PERFECTION ===== */
+@media (max-width: 480px) {
+  .dest-card,
+  .card-ev {
+    border-radius: 20px !important;
+  }
+  
+  .btn {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+  
+  .grid-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ===== SCROLLBAR ELEGANTE ===== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--glass-bg);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--btn-gradient);
+  border-radius: 6px;
+  border: 2px solid var(--glass-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
-  color: #fff;
-  border: 1px solid color-mix(in oklab, var(--accent) 65%, #000 0%);
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.15);
 }
-button:hover, .btn:hover { filter: brightness(1.05); }
 
-/* ======= Fondo de footer y contenedores anulando blanco en claro ======= */
-footer, .container_layout { background: transparent; color: var(--text); }
+/* ===== TEXTO Y TIPOGRAFÍA MEJORADA ===== */
+.copy {
+  color: var(--muted) !important;
+  line-height: 1.7;
+  font-weight: 400;
+}
 
+h1, h2, h3 {
+  color: var(--text) !important;
+  font-weight: 700;
+  line-height: 1.3;
+  text-shadow: var(--text-glow);
+}
 
+/* ===== EFECTOS DE GLASSMORPHISM AVANZADO ===== */
+.glass-advanced {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
 
+/* ===== SISTEMA DE NOTIFICACIONES ELEGANTE ===== */
+.Toastify__toast {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+.Toastify__toast--success {
+  border-left: 4px solid #10b981 !important;
+}
+
+.Toastify__toast--error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.Toastify__toast--warning {
+  border-left: 4px solid #f59e0b !important;
+}
+
+/* ===== FINAL TOUCH - MAGIC DUST ===== */
+.magic-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.magic-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--glow-primary),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.magic-hover:hover::before {
+  left: 100%;
+}

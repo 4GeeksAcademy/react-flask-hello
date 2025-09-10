@@ -11,6 +11,7 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
+import { Landing } from "./pages/Landing";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,4 +32,11 @@ export const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
       </Route>
     )
+      {/* Show Landing page at root */}
+      <Route index element={<Landing />} />
+      <Route path="home" element={<Home />} />
+      <Route path="single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
+      <Route path="demo" element={<Demo />} />
+    </Route>
+  )
 );

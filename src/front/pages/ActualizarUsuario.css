@@ -1,0 +1,266 @@
+/* === Fondo estilo Knect (concierto láser) === */
+.fondo_perfil {
+  position: relative;
+  min-height: 100vh;
+  color: #fff;
+  background: url("https://wallpapers.com/images/hd/laser-concert-party-wahno00bwn97aj9v.webp")
+    center / cover fixed no-repeat;
+}
+.fondo_perfil::after {
+  /* overlay morado/fucsia para legibilidad */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(11, 16, 32, 0.82),
+    rgba(43, 17, 64, 0.72),
+    rgba(83, 15, 70, 0.82)
+  );
+  pointer-events: none;
+}
+.perfil__glow-right {
+  position: absolute;
+  right: -160px;
+  bottom: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 9999px;
+  background: rgba(99, 102, 241, 0.28);
+  filter: blur(64px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === Layout general === */
+.perfil {
+  display: block;
+}
+.perfil__wrap {
+  position: relative;
+  z-index: 1; /* por encima del overlay */
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+}
+.perfil__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.perfil__foot {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+/* === Badge simple === */
+.badge {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  color: #e5e7eb;
+}
+
+/* === Card principal (glassmorphism) === */
+.perfil__card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  padding: 22px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+.perfil__intro .perfil__title {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+}
+.perfil__intro .perfil__subtitle {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+}
+
+/* === Grid responsive dos columnas === */
+.perfil__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+@media (min-width: 900px) {
+  .perfil__grid {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+/* === Tarjeta de avatar === */
+.avatar-card {
+  text-align: center;
+  padding: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.06)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+}
+.avatar-card__img {
+  width: 112px;
+  height: 112px;
+  border-radius: 9999px;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
+}
+.avatar-card__hint {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+/* === Progreso === */
+.progress {
+  margin-top: 18px;
+}
+.progress__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #cbd5e1;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.progress__val {
+  color: #fff;
+  font-weight: 600;
+}
+.progress__track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress__bar {
+  height: 8px;
+  width: 0;
+  background: #d946ef; /* fucsia */
+  border-radius: 999px;
+  transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 12px rgba(217, 70, 239, 0.5);
+}
+
+/* === Datos actuales === */
+.datos {
+  margin-top: 18px;
+  font-size: 14px;
+}
+.datos__title {
+  margin: 0 0 6px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* === Formulario === */
+.perfil__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.label {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  color: #f1f5f9;
+  background: rgba(15, 18, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  outline: none;
+  transition: border 160ms, box-shadow 160ms, transform 80ms;
+}
+.input::placeholder {
+  color: #94a3b8;
+}
+.input:focus {
+  border-color: rgba(217, 70, 239, 0.6);
+  box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.25);
+}
+
+/* Helper text */
+.helper {
+  margin-top: -2px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* === Botones === */
+.btns {
+  display: flex;
+  gap: 10px;
+  padding-top: 6px;
+  flex-wrap: wrap;
+}
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  transition: transform 120ms, box-shadow 200ms, background 160ms, opacity 160ms;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.btn--primary {
+  color: #fff;
+  background: #d946ef; /* fucsia */
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.35);
+}
+.btn--primary:hover {
+  transform: translateY(-1px) scale(1.02);
+  background: #c026d3;
+  box-shadow: 0 0 45px rgba(217, 70, 239, 0.6);
+}
+.btn--secondary {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.btn--ghost {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.08);
+}
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* === Alertas === */
+.alert {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+.alert--ok {
+  color: #bbf7d0;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.alert--error {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+}

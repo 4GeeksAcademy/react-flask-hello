@@ -49,7 +49,7 @@ export const PerfilUsuario = () => {
   }
 
   const VIDEO_URL =
-    "https://cdn.pixabay.com/video/2018/11/16/19368-301525727_large.mp4";
+    "https://cdn.pixabay.com/video/2023/07/05/170258-843059148_large.mp4";
   const FALLBACK_POSTER =
     "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop";
 

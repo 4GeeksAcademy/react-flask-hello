@@ -1133,7 +1133,6 @@ h1,h2,h3{ letter-spacing:.2px; }
   pointer-events:none;
 }
 .chip{
-  position:absolute; top:12px; left:12px;
   background:#312e81; color:#e5e7eb; border:1px solid #3f3d9b;
   font-size:12px; padding:6px 10px; border-radius:999px;
 }
@@ -1248,7 +1247,6 @@ h1, h2, h3 { letter-spacing: .2px; }
 
 /* Categoría y título encima de la imagen */
 .chip{
-  position: absolute; top: 12px; left: 12px;
   background: #312e81; color: #e5e7eb; border: 1px solid #3f3d9b;
   font-size: 12px; padding: 6px 10px; border-radius: 999px;
 }

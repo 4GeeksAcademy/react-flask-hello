@@ -56,6 +56,16 @@ body,
   color: #ff7c2d;
 }
 
+.login {
+  color: #fff;
+  font-weight: 500;
+  margin-left: 1.5rem;
+  transition: color 0.2s;
+}
+.login:hover {
+  color: #ff2d75;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: absolute;
@@ -414,4 +424,25 @@ body,
 }
 .footer-links a:hover {
   color: #ff7c2d;
+}
+
+/* Testimonials Carousel Fade Animation */
+.fade-carousel {
+  transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 2.5s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+.fade-carousel.fade-out {
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(2px);
+  pointer-events: none;
+}
+.fade-carousel.fade-in {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
 }

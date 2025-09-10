@@ -145,6 +145,41 @@ export const Landing = () => {
                 </div>
             </section>
 
+            {/* Why E-Venture Section */}
+            <section className="why" id="why">
+                <h2>Why E-Venture?</h2>
+                <div className="why-panels">
+                    <div className="why-panel">
+                        <span className="why-icon">⚡</span>
+                        <h5>Simple & Fast</h5>
+                        <p>
+                            Create and manage events in seconds with our intuitive interface. No tech skills required—just pure convenience!
+                        </p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">🌐</span>
+                        <h5>Stay Connected</h5>
+                        <p>
+                            Effortlessly invite friends, family, or colleagues. Get instant updates and never miss an important event again.
+                        </p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">📸</span>
+                        <h5>Memories That Last</h5>
+                        <p>
+                            Share photos, stories, and highlights. Relive your favorite moments and keep your event memories forever.
+                        </p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">🔒</span>
+                        <h5>Private & Secure</h5>
+                        <p>
+                            Your data and events are protected with industry-standard security. You control who sees your events.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {/* Testimonials Section */}
             <section className="testimonials" id="testimonials">
                 <h2 className="testimonials-title">What Our Users Say</h2>

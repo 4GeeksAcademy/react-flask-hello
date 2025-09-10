@@ -1,0 +1,199 @@
+/* Transición suave de colores */
+* { transition: background-color .25s ease, color .25s ease, border-color .25s ease; }
+
+/* ===== TOKENS ===== */
+:root[data-theme="dark"]{
+  --bg-start:#1a1530; --bg-end:#d86a4a;
+  --surface:#1e1b2b; --card:#1c1828; --card-2:#221d33;
+  --text:#f2effa; --muted:#bfb9d8; --border:#2f2a42;
+  --accent:#7c5cff; --accent-2:#ffb86b;
+  --shadow:0 10px 30px rgba(0,0,0,.45); --overlay:rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{
+  --bg-start:#bdbfc9; --bg-end:#ffe9d6;
+  --surface:#fff; --card:#ec5050; --card-2:#f7f7ff;
+  --text:#1d1930; --muted:#5f5b7d; --border:#e6e2f3;
+  --accent:#6b4dff; --accent-2:#ff8a4c;
+  --shadow:0 8px 22px rgba(0,0,0,.10); --overlay:rgba(0,0,0,.08);
+}
+
+/* ===== FONDO GLOBAL ===== */
+html, body, #root, #app { min-height: 100%; }
+body{
+  background:
+    radial-gradient(1200px 800px at 70% -10%, var(--bg-start), transparent) no-repeat fixed,
+    linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%) fixed;
+  color:var(--text);
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar{ width:10px; height:10px; }
+*::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
+*::-webkit-scrollbar-track{ background:transparent; }
+
+/* ===== LAYOUT ===== */
+header, nav, .navbar{
+  background: rgba(30,27,43,.88);
+  backdrop-filter: saturate(120%) blur(6px);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+[data-theme="light"] header,
+[data-theme="light"] nav,
+[data-theme="light"] .navbar{ background: rgba(255,255,255,.85); }
+
+footer{
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  border-top:1px solid var(--border);
+}
+
+/* ===== COMPONENTES ===== */
+.card, [class*="Card"], [class*="card"], [class*="panel"], .box, .modal-content{
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+  border:1px solid var(--border)!important;
+  color:var(--text);
+  box-shadow:var(--shadow);
+  border-radius:16px;
+}
+
+input, select, textarea{
+  background:var(--surface)!important; color:var(--text)!important;
+  border:1px solid var(--border)!important; border-radius:12px!important;
+}
+input::placeholder, textarea::placeholder{ color:var(--muted); }
+
+button, .btn{
+  background:var(--accent); color:#fff;
+  border:1px solid color-mix(in oklab, var(--accent) 65%, #000 0%);
+  border-radius:14px; box-shadow:var(--shadow);
+}
+button:hover, .btn:hover{ filter:brightness(1.05); }
+.btn-secondary{ background:var(--accent-2)!important; color:#111!important; }
+
+.tag, .badge, .pill, [class*="badge"]{
+  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
+  color:var(--text); border:1px solid var(--border); border-radius:999px;
+}
+
+[class*="evento"] .overlay, .image-overlay, .card-media::after{
+  background: linear-gradient(180deg, transparent, var(--overlay));
+}
+
+.login-card, .register-card, [class*="Login"], [class*="Register"],
+.profile-card, [class*="Perfil"], [class*="profile"]{
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+  border:1px solid var(--border);
+}
+
+/* ======= TOKENS extra para glass ======= */
+:root[data-theme="dark"]{
+  --glass-bg: rgba(17, 14, 28, 0.55);      /* capa vidrio oscura */
+  --glass-border: rgba(255,255,255,0.08);
+  --input-bg: rgba(255,255,255,0.04);
+  --pill-bg: rgba(124, 92, 255, 0.16);
+  --pill-text: var(--text);
+  --blur: 10px;
+}
+
+:root[data-theme="light"]{
+  --glass-bg: rgba(255,255,255,0.58);      /* capa vidrio clara */
+  --glass-border: rgba(24,18,49,0.10);
+  --input-bg: rgba(255,255,255,0.92);
+  --pill-bg: rgba(107, 77, 255, 0.14);
+  --pill-text: #2a2450;
+  --blur: 12px;
+}
+
+/* ======= NAVBAR vidrio (mejor integración) ======= */
+.knect-navbar, header, nav, .navbar {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur)) saturate(125%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+
+/* ======= Tarjetas y paneles en vidrio ======= */
+.card,
+[class*="Card"],
+[class*="card"],
+[class*="panel"],
+.box,
+.modal-content,
+.profile-dropdown,
+.mobile-panel,
+.glass-card,
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur)) saturate(125%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text);
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+}
+
+/* === Safety net: panel que contiene formularios grandes === */
+/* (Esto dará glass al panel de Crear Evento sin tocar JSX)  */
+.container_layout > div:has(> form),
+.container_layout > form {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur)) saturate(125%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(125%);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+}
+
+/* ======= Inputs coherentes con glass ======= */
+input, select, textarea {
+  background: var(--input-bg) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 12px !important;
+}
+
+/* ======= Chips / pills (fecha, precio, plazas) ======= */
+.tag, .badge, .pill, .chip,
+[class*="pill"], [class*="badge"], [class*="chip"] {
+  background: var(--pill-bg) !important;
+  color: var(--pill-text) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.15);
+}
+
+/* Si tus “barras meta” al pie de la card tienen un fondo propio */
+.card .meta, .CardEvento .meta, .event-card .meta, .event-card .footer-meta {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ======= Dropdown de perfil en claro/oscuro ======= */
+.profile-dropdown {
+  padding: 8px;
+}
+.profile-dropdown .dropdown-item {
+  background: transparent;
+  color: var(--text);
+  border-radius: 10px;
+}
+.profile-dropdown .dropdown-item:hover {
+  background: rgba(124,92,255,0.12);
+}
+
+/* ======= Botones coherentes ======= */
+button, .btn {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid color-mix(in oklab, var(--accent) 65%, #000 0%);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+button:hover, .btn:hover { filter: brightness(1.05); }
+
+/* ======= Fondo de footer y contenedores anulando blanco en claro ======= */
+footer, .container_layout { background: transparent; color: var(--text); }
+
+
+

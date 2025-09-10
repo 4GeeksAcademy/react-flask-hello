@@ -83,7 +83,6 @@ export const Forgot = () => {
          style={{ 
             padding: '8px 16px',
             width: '100%',
-            padding: '0.75rem',
             borderRadius: '8px',
             border: 'none',
             backgroundColor: '#facc15',

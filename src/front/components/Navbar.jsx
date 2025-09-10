@@ -4,7 +4,10 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../api/supabaseClient.js";
 import { notifyError, notifySuccess } from '../utils/Notifications';
-import  Knect_logo from "../assets/img/Knect_logo.png";
+import Knect_logo from "../assets/img/Knect_logo.png";
+
+// 👉 IMPORT NUEVO:
+import { PacmanToggle } from "./PacmanToggle.jsx";
 
 const navigation = [
   { name: "Home", to: "/" },           // o "/"
@@ -94,48 +97,52 @@ export function Navbar() {
           </div>
 
           {/* Acciones derecha */}
-          <div className="navbar-actions">
-            {
-              !token ? (
-                <>
-                  <NavLink to="/login" className="navbar-link">Login</NavLink>
-                  <NavLink to="/register" className="navbar-link">Register</NavLink>
-                </>
-              ) : (
-                <div className="profile-menu" ref={profileMenuRef}>
-                  <button
-                    className="profile-btn"
-                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                    type="button"
-                    aria-label="Abrir menú de perfil"
-                    aria-expanded={isProfileMenuOpen}
-                  >
-                    <div className="profile-avatar">
-                      <UserIcon className="icon" />
-                    </div>
-                  </button>
-                  {isProfileMenuOpen && (
-                    <div className="profile-dropdown">
-                      <Link to={"/user/perfil"}>
-                        <button className="dropdown-item" type="button">
-                         <UserIcon className="icon-sm" /> Tu perfil
-                         </button>
-                      </Link>
-                      <Link to={"/crear-evento"}>
-                        <button className="dropdown-item" type="button">Crear evento</button>
-                      </Link>
-                      <Link to={"/mis-eventos"}>
-                        <button className="dropdown-item" type="button">Mis eventos</button>
-                      </Link>
-                      <div className="dropdown-divider"></div>
-                      <button className="dropdown-item logout" onClick={handleLogout} type="button">
-                        Cerrar sesión
+          <div
+            className="navbar-actions"
+            style={{ display: "flex", alignItems: "center", gap: "12px" }} // pequeño gap para el toggle
+          >
+            {/* 👉 Toggle de tema (siempre visible) */}
+            <PacmanToggle />
+            {/* Tu lógica de auth intacta */}
+            {!token ? (
+              <>
+                <NavLink to="/login" className="navbar-link">Login</NavLink>
+                <NavLink to="/register" className="navbar-link">Register</NavLink>
+              </>
+            ) : (
+              <div className="profile-menu" ref={profileMenuRef}>
+                <button
+                  className="profile-btn"
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  type="button"
+                  aria-label="Abrir menú de perfil"
+                  aria-expanded={isProfileMenuOpen}
+                >
+                  <div className="profile-avatar">
+                    <UserIcon className="icon" />
+                  </div>
+                </button>
+                {isProfileMenuOpen && (
+                  <div className="profile-dropdown">
+                    <Link to={"/user/perfil"}>
+                      <button className="dropdown-item" type="button">
+                        <UserIcon className="icon-sm" /> Tu perfil
                       </button>
-                    </div>
-                  )}
-                </div>
-              )
-            }
+                    </Link>
+                    <Link to={"/crear-evento"}>
+                      <button className="dropdown-item" type="button">Crear evento</button>
+                    </Link>
+                    <Link to={"/mis-eventos"}>
+                      <button className="dropdown-item" type="button">Mis eventos</button>
+                    </Link>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item logout" onClick={handleLogout} type="button">
+                      Cerrar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -143,6 +150,15 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="mobile-panel active">
             <ul className="mobile-nav-list">
+              {/* 👉 (Opcional) Toggle también en móvil */}
+              <li
+                className="mobile-toggle-row"
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 4px" }}
+              >
+                <span className="mobile-toggle-text">Tema</span>
+              </li>
+              <PacmanToggle />
+
               {navigation.map((item) => (
                 <li key={item.name}>
                   <NavLink

@@ -53,6 +53,7 @@ export function CreateEvent() {
     if (eventId) {
       const findEvent = store.misEventos.find((e) => e.id == eventId);
 
+      
       if (!findEvent) {
         navigate("/mis-eventos");
         return;
@@ -72,6 +73,10 @@ export function CreateEvent() {
         price: findEvent.precio ?? 0,
       };
 
+      setCoordenadas({
+        latitude: findEvent.latitud,
+        longitude: findEvent.longitud
+      })
       setFormData(newFormat);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

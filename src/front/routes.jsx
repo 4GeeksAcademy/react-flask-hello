@@ -9,6 +9,8 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+import Login from './pages/Login.jsx';
+import Signup from './pages/Signup.jsx';
 import { Landing } from "./pages/Landing";
 
 export const router = createBrowserRouter(
@@ -22,10 +24,12 @@ export const router = createBrowserRouter(
     // Root Route: All navigation will start from here.
     <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
 
-      {/* Show Landing page at root */}
+      {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
+      <Route path="single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
       <Route index element={<Landing />} />
       <Route path="home" element={<Home />} />
-      <Route path="single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="demo" element={<Demo />} />
     </Route>
   )

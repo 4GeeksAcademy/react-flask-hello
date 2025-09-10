@@ -1,0 +1,82 @@
+.pacman-toggle{ --sz:26px; --sp:1.5s; --white:#fff; --yellow:#ffeb04; }
+.pacman-toggle{ position:relative; width:calc(var(--sz)*4); height:calc(var(--sz)*2); display:inline-flex; align-items:center; justify-content:center; }
+.pacman-toggle input{ display:none; }
+
+.pacman-toggle label{
+  position:absolute; width:calc(var(--sz)*4); height:calc(var(--sz)*1.25);
+  --dot:var(--white) calc(var(--sz)*.125), #fff0 calc(calc(var(--sz)*.125) + 1px) 100%;
+  --dot-shadow:#0008 calc(var(--sz)*.125), #fff0 calc(calc(var(--sz)*.2) + 0px) 100%;
+  background:
+    radial-gradient(circle at 33% 50%, var(--dot)),
+    radial-gradient(circle at 33% 55%, var(--dot-shadow)),
+    radial-gradient(circle at 50% 50%, var(--dot)),
+    radial-gradient(circle at 50% 55%, var(--dot-shadow)),
+    radial-gradient(circle at 67% 50%, var(--dot)),
+    radial-gradient(circle at 67% 55%, var(--dot-shadow)),
+    radial-gradient(circle at 84% 50%, var(--dot)),
+    radial-gradient(circle at 84% 55%, var(--dot-shadow)),
+    linear-gradient(0deg, #121720, #0d1217);
+  border-radius:var(--sz);
+  box-shadow:0 0 calc(var(--sz)/50) calc(var(--sz)/50) #0006,
+             0 -4px calc(var(--sz)/10) calc(var(--sz)/500) #0b0b10,
+             0 0px calc(var(--sz)/10) calc(var(--sz)/50) #b9e1ff88,
+             0 -4px calc(var(--sz)/5) calc(var(--sz)/50) #15182fcc;
+  cursor:pointer;
+}
+
+.pacman-toggle .thumb{
+  position:absolute;
+  width:calc(calc(var(--sz)*2) - calc(var(--sz)/8));
+  height:calc(calc(var(--sz)*2) - calc(var(--sz)/8));
+  top:calc(var(--sz)*-0.325); left:calc(var(--sz)*-0.2);
+  background:conic-gradient(from 135deg at 50% 50%, var(--yellow) 0 270deg, #fff0 0 100%);
+  border-radius:var(--sz); display:flex; align-items:center; justify-content:center;
+  z-index:1; overflow:hidden; filter:drop-shadow(0 2vmin 1vmin #000C);
+  animation:go-back var(--sp) linear 0s; animation-fill-mode:forwards;
+}
+.pacman-toggle input:checked + label .thumb{ animation:go-ahead var(--sp) linear 0s; animation-fill-mode:forwards; }
+@keyframes go-ahead{ 0%{left:calc(var(--sz)*-0.2);} 100%{left:calc(var(--sz)*2.325);} }
+@keyframes go-back { 0%{left:calc(var(--sz)*2.325);} 100%{left:calc(var(--sz)*-0.2);} }
+
+.pacman-toggle label .thumb:before,
+.pacman-toggle label .thumb:after{
+  content:""; background:conic-gradient(from 0deg at 50% 50%, var(--yellow) 0 90deg, #fff0 0 100%);
+  width:100%; height:100%; position:absolute;
+  animation:waka-waka-top-back .2s linear -.2s alternate 8; animation-fill-mode:forwards;
+}
+.pacman-toggle label .thumb:after{ transform:rotate(90deg); animation-name:waka-waka-bot-back; }
+.pacman-toggle input:checked + label .thumb:before,
+.pacman-toggle input:checked + label .thumb:after{
+  animation:waka-waka-top .2s linear -.2s alternate 8; animation-fill-mode:forwards;
+}
+.pacman-toggle input:checked + label .thumb:after{ transform:rotate(90deg); animation-name:waka-waka-bot; }
+
+@keyframes waka-waka-top{ 0%{transform:rotate(1deg);} 100%{transform:rotate(-45deg);} }
+@keyframes waka-waka-bot{ 0%{transform:rotate(89deg);} 100%{transform:rotate(135deg);} }
+@keyframes waka-waka-top-back{ 0%{transform:rotate(-45deg);} 100%{transform:rotate(1deg);} }
+@keyframes waka-waka-bot-back{ 0%{transform:rotate(135deg);} 100%{transform:rotate(89deg);} }
+
+.pacman-toggle .shine{
+  border:calc(var(--sz)/3) solid #fff0; width:85%; height:85%; position:absolute; z-index:1;
+  border-left-color:#fff; transform:rotate(45deg); border-radius:100%;
+  filter:blur(calc(var(--sz)*.1)); box-shadow:-1vmin 0 0 #ff8800, 0 1vmin 0 #897127;
+}
+
+.pacman-toggle label:before{
+  content:""; height:calc(100% - 2px); background:linear-gradient(0deg, #121720, #0d1217);
+  position:absolute; border-radius:var(--sz); top:1px; left:calc(var(--sz)/1);
+  width:calc(var(--sz)*0); animation:make-dots 2s linear -.5s; animation-fill-mode:forwards;
+}
+@keyframes make-dots{ 0%{width:calc(var(--sz)*2.5);} 100%{width:calc(var(--sz)*0);} }
+
+.pacman-toggle input:checked + label:before{
+  animation:eat-dots 2.25s linear .35s; animation-fill-mode:forwards;
+}
+@keyframes eat-dots{ 0%{width:calc(var(--sz)*0);} 100%{width:calc(var(--sz)*2.5);} }
+
+/* Tamaño específico dentro de la navbar */
+.knect-navbar .pacman-toggle { --sz: 18px; transform: translateY(1px); }
+
+/* Un poco mayor en el panel móvil */
+.mobile-panel .pacman-toggle { --sz: 22px; }
+

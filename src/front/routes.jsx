@@ -1,30 +1,59 @@
-// Import necessary components and functions from react-router-dom.
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-} from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
+import { Login } from "./pages/Login.jsx";
+import { NotFound } from "./pages/NotFound";
+import { CreateEvent } from "./pages/CreateEvent";
+import { Register } from "./pages/Register.jsx";
+import { Forgot } from './pages/Forgot.jsx';
+import { Reset } from './pages/Reset.jsx';
+import { MisEventos } from "./pages/MisEventos.jsx";
+import { ListaEventos } from "./pages/ListaEventos.jsx";
+import { PerfilUsuario } from "./pages/PerfilUsuario.jsx";
+import { ID_Evento } from "./pages/ID_Evento.jsx";
+import { ActualizarUsuario } from "./pages/ActualizarUsuario";
+
+
+
 
 export const router = createBrowserRouter(
-    createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+      {/* Home (index) */}
+      <Route index element={<Home />} />
+      {/* Alternativa a lo de antes: /home */}
+      <Route path="/home" element={<Home />} />
+      <Route path="/home/:token" element={<Home />} />
+      <Route path="/home/:token/:resetPassword/:email/reset" element={<Reset />} />
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+      {/* Auth */}
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route path="forgot" element={<Forgot />} />
 
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
-      </Route>
-    )
+
+
+
+      {/* Rutas adicionales */}
+      <Route path="/crear-evento" element={<CreateEvent />} />
+      <Route path="/crear-evento/:eventId" element={<CreateEvent />} />
+
+
+
+      {/* Eventos */}
+      <Route path="eventos" element={<ListaEventos />} />
+      <Route path="mis-eventos" element={<MisEventos />} />
+      <Route path="/evento/:event_id" element={<ID_Evento />} />
+      
+      {/* Usuario */}
+      <Route path="user/perfil" element={<PerfilUsuario />} />
+      <Route path="user/actualizar-perfil/:userId" element={<ActualizarUsuario />} />
+
+
+      {/* Catch-all */}
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  )
 );
+

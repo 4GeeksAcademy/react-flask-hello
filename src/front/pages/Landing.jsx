@@ -5,6 +5,7 @@ export const Landing = () => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const [events, setEvents] = useState([]);
+    const [navOpen, setNavOpen] = useState(false);
 
     useEffect(() => {
         fetch("http://localhost:3001/api/events")
@@ -23,6 +24,9 @@ export const Landing = () => {
         setIsPlaying(!isPlaying);
     };
 
+    // Navbar toggle for mobile
+    const handleNavToggle = () => setNavOpen(!navOpen);
+
     return (
         <div>
             {/* Background Music with Play/Pause */}
@@ -34,11 +38,20 @@ export const Landing = () => {
             {/* Navbar */}
             <nav className="navbar">
                 <span className="logo">E-Venture</span>
-                <div className="nav-links">
-                    <a href="#home">Home</a>
-                    <a href="#features">Features</a>
-                    <a href="#why">Why E-Venture</a>
-                    <a href="/signup" className="signup">Sign Up</a>
+                <button
+                    className="navbar-toggle"
+                    aria-label="Toggle navigation"
+                    onClick={handleNavToggle}
+                >
+                    <span className="navbar-toggle-icon">&#9776;</span>
+                </button>
+                <div className={`nav-links${navOpen ? " open" : ""}`}>
+                    <a href="#home" onClick={() => setNavOpen(false)}>Home</a>
+                    <a href="#features" onClick={() => setNavOpen(false)}>Features</a>
+                    <a href="#how-it-works" onClick={() => setNavOpen(false)}>How It Works</a>
+                    <a href="#why" onClick={() => setNavOpen(false)}>Why E-Venture</a>
+                    <a href="#testimonials" onClick={() => setNavOpen(false)}>Testimonials</a>
+                    <a href="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</a>
                 </div>
             </nav>
 

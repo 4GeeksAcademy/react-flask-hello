@@ -16,13 +16,32 @@ body,
   padding: 1.2rem 2rem;
   background: #23234a;
   color: #fff;
-  box-shadow: 0 2px 8px #23234a22;
+  position: relative;
 }
 
 .logo {
   font-weight: bold;
   font-size: 1.5rem;
   letter-spacing: 2px;
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.navbar-toggle-icon {
+  display: inline-block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .nav-links a {
@@ -35,6 +54,32 @@ body,
 .nav-links a:hover,
 .nav-links .signup {
   color: #ff7c2d;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #23234a;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 1rem 2rem;
+    display: none;
+    z-index: 100;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .nav-links a {
+    margin: 0.5rem 0;
+    width: 100%;
+  }
 }
 
 /* Hero Section */

@@ -51,6 +51,7 @@ export const Landing = () => {
                     <a href="#how-it-works" onClick={() => setNavOpen(false)}>How It Works</a>
                     <a href="#why" onClick={() => setNavOpen(false)}>Why E-Venture</a>
                     <a href="#testimonials" onClick={() => setNavOpen(false)}>Testimonials</a>
+                    <a href="/login" className="login" onClick={() => setNavOpen(false)}>Login</a>
                     <a href="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</a>
                 </div>
             </nav>
@@ -181,23 +182,7 @@ export const Landing = () => {
             </section>
 
             {/* Testimonials Section */}
-            <section className="testimonials" id="testimonials">
-                <h2 className="testimonials-title">What Our Users Say</h2>
-                <div className="testimonials-list">
-                    <div className="event-card testimonial-card">
-                        <p className="testimonial-text">"E-Venture made planning my birthday party a breeze!"</p>
-                        <span className="testimonial-author">- Alex P.</span>
-                    </div>
-                    <div className="event-card testimonial-card">
-                        <p className="testimonial-text">"I love how easy it is to RSVP and keep track of events."</p>
-                        <span className="testimonial-author">- Jamie L.</span>
-                    </div>
-                    <div className="event-card testimonial-card">
-                        <p className="testimonial-text">"The notifications keep me updated on all my favorite events."</p>
-                        <span className="testimonial-author">- Morgan S.</span>
-                    </div>
-                </div>
-            </section>
+            <TestimonialsCarousel />
 
             {/* CTA Section */}
             <section className="cta">
@@ -239,4 +224,78 @@ const EventCard = ({ event }) => (
     </div>
 );
 
+const TESTIMONIALS = [
+    {
+        text: "E-Venture made planning my birthday party a breeze!",
+        author: "- Alex P."
+    },
+    {
+        text: "I love how easy it is to RSVP and keep track of events.",
+        author: "- Jamie L."
+    },
+    {
+        text: "The notifications keep me updated on all my favorite events.",
+        author: "- Morgan S."
+    },
+    {
+        text: "The interface is so intuitive and fast.",
+        author: "- Priya K."
+    },
+    {
+        text: "I was able to organize a charity event in minutes.",
+        author: "- Chris D."
+    },
+    {
+        text: "My friends and I never miss an event now!",
+        author: "- Taylor R."
+    },
+    {
+        text: "The best event platform I've used.",
+        author: "- Jordan M."
+    },
+    {
+        text: "Love the privacy controls and reminders.",
+        author: "- Sam W."
+    },
+    {
+        text: "Sharing photos after the event is a great touch.",
+        author: "- Riley F."
+    }
+];
 
+const TESTIMONIALS_PER_PAGE = 3;
+const FADE_DURATION = 500; // ms
+
+function TestimonialsCarousel() {
+    const [page, setPage] = useState(0);
+    const [fade, setFade] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFade(true);
+            setTimeout(() => {
+                setPage((prev) => (prev + 1) % Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE));
+                setFade(false);
+            }, FADE_DURATION);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const start = page * TESTIMONIALS_PER_PAGE;
+    const current = TESTIMONIALS.slice(start, start + TESTIMONIALS_PER_PAGE);
+
+    return (
+        <section className="testimonials" id="testimonials">
+            <h2 className="testimonials-title">What Our Users Say</h2>
+            <div className={`testimonials-list fade-carousel${fade ? " fade-out" : " fade-in"}`}>
+                {current.map((t, idx) => (
+                    <div className="event-card testimonial-card" key={start + idx}>
+                        <p className="testimonial-text">{t.text}</p>
+                        <span className="testimonial-author">{t.author}</span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+export default Landing;

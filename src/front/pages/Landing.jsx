@@ -1,34 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Landing.css";
-// Example fetch for events (replace with your real API endpoint)
-const EVENTS_API_URL = "http://localhost:3001/api/events";
+
 export const Landing = () => {
+    const audioRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [events, setEvents] = useState([]);
+    const [navOpen, setNavOpen] = useState(false);
+
     useEffect(() => {
-        fetch(EVENTS_API_URL)
+        fetch("http://localhost:3001/api/events")
             .then(res => res.json())
             .then(data => setEvents(data))
             .catch(() => setEvents([]));
     }, []);
+
+    const handleToggleMusic = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+    };
+
+    // Navbar toggle for mobile
+    const handleNavToggle = () => setNavOpen(!navOpen);
+
     return (
         <div>
-            {/* Background Music */}
-            <audio autoPlay loop>
+            {/* Background Music with Play/Pause */}
+            <audio ref={audioRef} autoPlay loop>
                 <source src="/background-music.mp3" type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
             {/* Navbar */}
             <nav className="navbar">
                 <span className="logo">E-Venture</span>
-                <div className="nav-links">
-                    <a href="#home">Home</a>
-                    <a href="#features">Features</a>
-                    <a href="#why">Why E-Venture</a>
-                    <a href="/signup" className="signup">Sign Up</a>
+                <button
+                    className="navbar-toggle"
+                    aria-label="Toggle navigation"
+                    onClick={handleNavToggle}
+                >
+                    <span className="navbar-toggle-icon">&#9776;</span>
+                </button>
+                <div className={`nav-links${navOpen ? " open" : ""}`}>
+                    <a href="#home" onClick={() => setNavOpen(false)}>Home</a>
+                    <a href="#features" onClick={() => setNavOpen(false)}>Features</a>
+                    <a href="#how-it-works" onClick={() => setNavOpen(false)}>How It Works</a>
+                    <a href="#why" onClick={() => setNavOpen(false)}>Why E-Venture</a>
+                    <a href="#testimonials" onClick={() => setNavOpen(false)}>Testimonials</a>
+                    <a href="/login" className="login" onClick={() => setNavOpen(false)}>Login</a>
+                    <a href="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</a>
                 </div>
             </nav>
             {/* Hero Section */}
-            <section className="hero" id="home">
+            <section className="hero" id="home" style={{ position: "relative" }}>
                 <video autoPlay loop muted className="hero-video">
                     <source src="https://assets.mixkit.co/videos/348/348-720.mp4" type="video/mp4" />
                 </video>
@@ -40,6 +67,13 @@ export const Landing = () => {
                         <a href="#features" className="btn btn-secondary">See How It Works</a>
                     </div>
                 </div>
+                <button
+                    onClick={handleToggleMusic}
+                    className="music-toggle-btn"
+                    aria-label={isPlaying ? "Pause music" : "Play music"}
+                >
+                    {isPlaying ? <span>&#10073;&#10073;</span> : <span>&#9654;</span>}
+                </button>
             </section>
             {/* Features Section */}
             <section className="features" id="features">
@@ -72,19 +106,43 @@ export const Landing = () => {
                     </div>
                 </div>
             </section>
-            {/* Upcoming Events Section */}
+
+            {/* Upcoming Events Section (Styled) */}
             <section className="events" id="events">
                 <h2>Upcoming Events</h2>
                 <div className="events-list">
                     {events.length === 0 ? (
                         <div className="event-card">No events found.</div>
                     ) : (
-                        events.map((event, idx) => (
-                            <EventCard event={event} key={idx} />
+                        events.map((event) => (
+                            <EventCard event={event} key={event.id} />
                         ))
                     )}
                 </div>
             </section>
+
+            {/* How It Works Section */}
+            <section className="how-it-works" id="how-it-works">
+                <h2 className="how-it-works-title">How It Works</h2>
+                <div className="how-it-works-steps">
+                    <div className="feature-card how-it-works-step">
+                        <span className="how-it-works-icon feature-icon">📝</span>
+                        <h5 className="how-it-works-step-title">Create an Event</h5>
+                        <p className="how-it-works-step-desc">Set up your event in just a few clicks.</p>
+                    </div>
+                    <div className="feature-card how-it-works-step">
+                        <span className="how-it-works-icon feature-icon">📢</span>
+                        <h5 className="how-it-works-step-title">Invite & Share</h5>
+                        <p className="how-it-works-step-desc">Send invites and share your event link.</p>
+                    </div>
+                    <div className="feature-card how-it-works-step">
+                        <span className="how-it-works-icon feature-icon">🎉</span>
+                        <h5 className="how-it-works-step-title">Enjoy Together</h5>
+                        <p className="how-it-works-step-desc">Track RSVPs and enjoy your event!</p>
+                    </div>
+                </div>
+            </section>
+
             {/* Why E-Venture Section */}
             <section className="why" id="why">
                 <h2>Why E-Venture?</h2>
@@ -92,20 +150,37 @@ export const Landing = () => {
                     <div className="why-panel">
                         <span className="why-icon">:zap:</span>
                         <h5>Simple & Fast</h5>
-                        <p>Easy event planning.</p>
+                        <p>
+                            Create and manage events in seconds with our intuitive interface. No tech skills required—just pure convenience!
+                        </p>
                     </div>
                     <div className="why-panel">
                         <span className="why-icon">:globe_with_meridians:</span>
                         <h5>Stay Connected</h5>
-                        <p>RSVP, follow, and interact.</p>
+                        <p>
+                            Effortlessly invite friends, family, or colleagues. Get instant updates and never miss an important event again.
+                        </p>
                     </div>
                     <div className="why-panel">
                         <span className="why-icon">:camera_with_flash:</span>
                         <h5>Memories That Last</h5>
-                        <p>Capture and revisit your events.</p>
+                        <p>
+                            Share photos, stories, and highlights. Relive your favorite moments and keep your event memories forever.
+                        </p>
+                    </div>
+                    <div className="why-panel">
+                        <span className="why-icon">🔒</span>
+                        <h5>Private & Secure</h5>
+                        <p>
+                            Your data and events are protected with industry-standard security. You control who sees your events.
+                        </p>
                     </div>
                 </div>
             </section>
+
+            {/* Testimonials Section */}
+            <TestimonialsCarousel />
+
             {/* CTA Section */}
             <section className="cta">
                 <h2>Ready to start your next adventure?</h2>
@@ -128,9 +203,94 @@ const EventCard = ({ event }) => (
     <div className="event-card">
         <span className="event-icon">{event.icon || ":tada:"}</span>
         <h4>{event.title}</h4>
-        <p>{event.date} • {event.rsvp || "?"} RSVPs</p>
+        <p>
+            {event.date} • {event.rsvp || "?"} RSVPs
+        </p>
         {event.location && (
-            <p><span role="img" aria-label="location">:round_pushpin:</span> {event.location}</p>
+            <p>
+                <span role="img" aria-label="location">📍</span> {event.location}
+            </p>
+        )}
+        {event.description && (
+            <p className="event-description">
+                {event.description}
+            </p>
         )}
     </div>
 );
+
+const TESTIMONIALS = [
+    {
+        text: "E-Venture made planning my birthday party a breeze!",
+        author: "- Alex P."
+    },
+    {
+        text: "I love how easy it is to RSVP and keep track of events.",
+        author: "- Jamie L."
+    },
+    {
+        text: "The notifications keep me updated on all my favorite events.",
+        author: "- Morgan S."
+    },
+    {
+        text: "The interface is so intuitive and fast.",
+        author: "- Priya K."
+    },
+    {
+        text: "I was able to organize a charity event in minutes.",
+        author: "- Chris D."
+    },
+    {
+        text: "My friends and I never miss an event now!",
+        author: "- Taylor R."
+    },
+    {
+        text: "The best event platform I've used.",
+        author: "- Jordan M."
+    },
+    {
+        text: "Love the privacy controls and reminders.",
+        author: "- Sam W."
+    },
+    {
+        text: "Sharing photos after the event is a great touch.",
+        author: "- Riley F."
+    }
+];
+
+const TESTIMONIALS_PER_PAGE = 3;
+const FADE_DURATION = 500; // ms
+
+function TestimonialsCarousel() {
+    const [page, setPage] = useState(0);
+    const [fade, setFade] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFade(true);
+            setTimeout(() => {
+                setPage((prev) => (prev + 1) % Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE));
+                setFade(false);
+            }, FADE_DURATION);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const start = page * TESTIMONIALS_PER_PAGE;
+    const current = TESTIMONIALS.slice(start, start + TESTIMONIALS_PER_PAGE);
+
+    return (
+        <section className="testimonials" id="testimonials">
+            <h2 className="testimonials-title">What Our Users Say</h2>
+            <div className={`testimonials-list fade-carousel${fade ? " fade-out" : " fade-in"}`}>
+                {current.map((t, idx) => (
+                    <div className="event-card testimonial-card" key={start + idx}>
+                        <p className="testimonial-text">{t.text}</p>
+                        <span className="testimonial-author">{t.author}</span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+export default Landing;

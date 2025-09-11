@@ -298,5 +298,4 @@ function TestimonialsCarousel() {
         </section>
     );
 }
-
-
+export default Landing;

@@ -2,6 +2,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// Optional: include these if you plan to use them later
+// import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// import { useGeoLocation } from "../hooks/GeoLocation.jsx";
+
 export const Home = () => {
   const year = new Date().getFullYear();
 

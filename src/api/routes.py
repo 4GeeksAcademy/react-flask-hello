@@ -18,13 +18,17 @@ import requests
 from icalendar import Calendar
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash
-from api.models import db, User, Listing, Booking
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from sqlalchemy import select
 
-api = Blueprint('api', __name__)
+from api.models import db, User, Listing, Booking
+
+api = Blueprint("api", __name__)
 CORS(api, supports_credentials=True, origins="*")
+
+# -----------------------------
+# Auth endpoints (simple demo)
+# -----------------------------
 
 
 @api.route("/token", methods=["POST"])
@@ -37,6 +41,27 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({"token": access_token, "user_id": user.id})
 
+@api.route('/reset-password', methods=['POST'])
+def reset_password():
+    # Expect JSON: { "email": "user@email.com", "new_password": "NewStrongPass123!" }
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    new_password = (data.get("new_password") or "").strip()
+
+    if not email or not new_password:
+        return jsonify({"error": "email_and_new_password_required"}), 400
+    if len(new_password) < 8:
+        return jsonify({"error": "password_too_short"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "user_not_found"}), 404
+
+    
+    user.password = generate_password_hash(new_password)     
+    
+    db.session.commit()
+    return jsonify({"ok": True}), 200
 
 @api.route("/signup", methods=["POST"])
 def signup():
@@ -95,36 +120,13 @@ def list_all_users():
 
 @api.route("/hello", methods=["GET"])
 def handle_hello():
+    return jsonify({
+        "message": "Hello! I'm a message that came from the backend. Check the network tab."
+    }), 200
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
-
-@api.route('/reset-password', methods=['POST'])
-def reset_password():
-    # Expect JSON: { "email": "user@email.com", "new_password": "NewStrongPass123!" }
-    data = request.get_json() or {}
-    email = (data.get("email") or "").strip().lower()
-    new_password = (data.get("new_password") or "").strip()
-
-    if not email or not new_password:
-        return jsonify({"error": "email_and_new_password_required"}), 400
-    if len(new_password) < 8:
-        return jsonify({"error": "password_too_short"}), 400
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return jsonify({"error": "user_not_found"}), 404
-
-    
-    user.password = generate_password_hash(new_password)     
-    
-    db.session.commit()
-    return jsonify({"ok": True}), 200
-
-
+# -----------------------------------------
+# Calendar (ICS) parsing + JSON exposure
+# -----------------------------------------
 
 
 ICS_URL = os.getenv(

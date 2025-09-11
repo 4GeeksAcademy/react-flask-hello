@@ -32,6 +32,7 @@ export const router = createBrowserRouter(
       <Route index element={<Landing />} />
       <Route path="home" element={<Home />} />
       <Route path="demo" element={<Demo />} />
+      <Route path="profile" element={<Profile />} />
     </Route>
   )
 );

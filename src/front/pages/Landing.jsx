@@ -43,6 +43,12 @@ export const Landing = () => {
             .catch(() => setEvents([]));
     }, []);
 
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = 0.2; // 40%
+        }
+    }, []);
+
     const handleToggleMusic = () => {
         if (!audioRef.current) return;
         if (isPlaying) {

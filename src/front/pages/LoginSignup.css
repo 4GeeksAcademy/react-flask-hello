@@ -97,3 +97,9 @@
   background: linear-gradient(90deg, #ff7c2d, #ff2d75);
   box-shadow: 0 0 32px #ff2d75cc;
 }
+
+.signup-footer {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+}

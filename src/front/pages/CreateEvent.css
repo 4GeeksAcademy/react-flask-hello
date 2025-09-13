@@ -1,0 +1,67 @@
+.photo-upload-wrapper {
+  position: relative;
+  width: 300px;  
+  aspect-ratio: 5 / 2;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff2d75;
+  font-size: 32px;
+  width: 50px;
+  height: 100px; 
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.plus-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  line-height: 1;
+}
+
+.photo-preview {
+  width: 200px; 
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.photo-preview-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.change-photo-label {
+  font-size: 12px;
+  color: #ff2d75;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: underline;
+  white-space: nowrap;
+}

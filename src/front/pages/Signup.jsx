@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./Landing.css";  
+import "./Landing.css";  
 import "./LoginSignup.css";
 
 function Signup() {
@@ -68,6 +68,10 @@ function Signup() {
           {success && <div className="signup-success">{success}</div>}
           <button type="submit" className="signup-button">Sign Up</button>
         </form>
+
+        <p className="signup-footer">
+           <a href="/login">Already have an account?</a>
+        </p>
       </div>
     </div>
   );

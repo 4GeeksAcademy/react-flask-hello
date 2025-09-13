@@ -1,10 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Landing.css";
 
 export const Landing = () => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState([
+        {
+            id: 1,
+            title: "Mock Music Festival",
+            date: "2025-09-15",
+            location: "Central Park",
+            description: "A fun outdoor music festival for all ages.",
+            rsvp: 42,
+            icon: "🎵"
+        },
+        {
+            id: 2,
+            title: "Tech Conference",
+            date: "2025-10-01",
+            location: "Convention Center",
+            description: "Join the latest in tech and innovation.",
+            rsvp: 87,
+            icon: "💻"
+        },
+        {
+            id: 3,
+            title: "Art Expo",
+            date: "2025-11-05",
+            location: "Art Gallery",
+            description: "Explore modern art from local artists.",
+            rsvp: 30,
+            icon: "🎨"
+        }
+    ]);
     const [navOpen, setNavOpen] = useState(false);
 
     useEffect(() => {
@@ -12,6 +41,12 @@ export const Landing = () => {
             .then(res => res.json())
             .then(data => setEvents(data))
             .catch(() => setEvents([]));
+    }, []);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = 0.2; // 40%
+        }
     }, []);
 
     const handleToggleMusic = () => {
@@ -51,8 +86,8 @@ export const Landing = () => {
                     <a href="#how-it-works" onClick={() => setNavOpen(false)}>How It Works</a>
                     <a href="#why" onClick={() => setNavOpen(false)}>Why E-Venture</a>
                     <a href="#testimonials" onClick={() => setNavOpen(false)}>Testimonials</a>
-                    <a href="/login" className="login" onClick={() => setNavOpen(false)}>Login</a>
-                    <a href="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</a>
+                    <Link to="/login" className="login" onClick={() => setNavOpen(false)}>Login</Link>
+                    <Link to="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</Link>
                 </div>
             </nav>
 

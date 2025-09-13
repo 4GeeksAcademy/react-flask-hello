@@ -20,6 +20,7 @@ function Signup() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName }),
       });
+      console.log(response)
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.msg || 'Signup failed');

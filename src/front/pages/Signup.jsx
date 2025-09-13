@@ -15,7 +15,7 @@ function Signup() {
     setError('');
     setSuccess('');
     try {
-      const response = await fetch('https://friendly-computing-machine-pxw4p4r46rq2r7gp-3001.app.github.dev/api/signup', {
+      const response = await fetch('https://upgraded-system-7vgj4vjj6j52rx7j-3001.app.github.dev/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName }),

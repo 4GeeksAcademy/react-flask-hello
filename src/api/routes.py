@@ -1,13 +1,24 @@
-from flask import request, jsonify, Blueprint
-from api.models import db, User, Favorite, Event, FavoriteMember, RSVP
+import time
+import re
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity,
     get_jwt, unset_jwt_cookies
 )
-from werkzeug.security import generate_password_hash, check_password_hash
-import re
-import time
+from api.models import db, User, Favorite, Event, FavoriteMember, RSVP
+from flask import request, jsonify, Blueprint
+from flask_cors import CORS
 
+api = Blueprint('api', __name__)
+# 'api' is your Blueprint instance
+CORS(
+    api,
+    origins=["https://upgraded-system-7vgj4vjj6j52rx7j-3000.app.github.dev"],
+    supports_credentials=True,
+    allow_headers="*",
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    expose_headers="*"
+)
 api = Blueprint('api', __name__)
 
 login_attempts = {}

@@ -74,44 +74,44 @@ function Profile() {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        try { 
+        try {
             const payload = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            profile_photo: profilePhoto,
-            is_verified: isVerified,
-            is_active: isActive,
-            password: passWord,
-            new_pass_word: newPassWord,
-            confirm_pass_word: confirmPassword,
-            profile_pic: profilePic,
-            location: location,
-            language: language
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                profile_photo: profilePhoto,
+                is_verified: isVerified,
+                is_active: isActive,
+                password: passWord,
+                new_pass_word: newPassWord,
+                confirm_pass_word: confirmPassword,
+                profile_pic: profilePic,
+                location: location,
+                language: language
 
             }
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-        if (!response.ok) {
-            console.error("Server error:", response.status, response.statusText);
-            return;
-        }
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) {
+                console.error("Server error:", response.status, response.statusText);
+                return;
+            }
             const data = await response.json();
             console.log("Profile saved successfully:", data
-        );
+            );
         } catch (error) {
             console.error("Error saving profile:", error);
         }
-            
-        };
 
-        
-            
+    };
+
+
+
 
     return (
         <div>
@@ -231,7 +231,7 @@ function Profile() {
                     />
                 </label>
             </div>
-            <div>   
+            <div>
                 <button onClick={handleSave}>Save Button</button>
             </div>
         </div>

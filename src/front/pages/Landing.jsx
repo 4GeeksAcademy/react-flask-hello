@@ -69,7 +69,6 @@ export const Landing = () => {
                 <source src="/background-music.mp3" type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
-
             {/* Navbar */}
             <nav className="navbar">
                 <span className="logo">E-Venture</span>
@@ -90,7 +89,6 @@ export const Landing = () => {
                     <Link to="/signup" className="signup" onClick={() => setNavOpen(false)}>Sign Up</Link>
                 </div>
             </nav>
-
             {/* Hero Section */}
             <section className="hero" id="home" style={{ position: "relative" }}>
                 <video autoPlay loop muted className="hero-video">
@@ -112,33 +110,32 @@ export const Landing = () => {
                     {isPlaying ? <span>&#10073;&#10073;</span> : <span>&#9654;</span>}
                 </button>
             </section>
-
             {/* Features Section */}
             <section className="features" id="features">
                 <h2>Features</h2>
                 <div className="features-grid">
                     <div className="feature-card">
-                        <span className="feature-icon">📅</span>
+                        <span className="feature-icon">:date:</span>
                         <h5>My Events</h5>
                         <p>Create, view, and manage events.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">🗳️</span>
+                        <span className="feature-icon">:ballot_box_with_ballot:</span>
                         <h5>RSVP & Polling</h5>
                         <p>Let guests RSVP and vote on event options.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">⭐</span>
+                        <span className="feature-icon">:star:</span>
                         <h5>Favorites</h5>
                         <p>Save your favorite events and people.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">🔔</span>
+                        <span className="feature-icon">:bell:</span>
                         <h5>Notifications</h5>
                         <p>Stay updated with event changes.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">👤</span>
+                        <span className="feature-icon">:bust_in_silhouette:</span>
                         <h5>Profile</h5>
                         <p>Customize your experience.</p>
                     </div>
@@ -186,21 +183,21 @@ export const Landing = () => {
                 <h2>Why E-Venture?</h2>
                 <div className="why-panels">
                     <div className="why-panel">
-                        <span className="why-icon">⚡</span>
+                        <span className="why-icon">:zap:</span>
                         <h5>Simple & Fast</h5>
                         <p>
                             Create and manage events in seconds with our intuitive interface. No tech skills required—just pure convenience!
                         </p>
                     </div>
                     <div className="why-panel">
-                        <span className="why-icon">🌐</span>
+                        <span className="why-icon">:globe_with_meridians:</span>
                         <h5>Stay Connected</h5>
                         <p>
                             Effortlessly invite friends, family, or colleagues. Get instant updates and never miss an important event again.
                         </p>
                     </div>
                     <div className="why-panel">
-                        <span className="why-icon">📸</span>
+                        <span className="why-icon">:camera_with_flash:</span>
                         <h5>Memories That Last</h5>
                         <p>
                             Share photos, stories, and highlights. Relive your favorite moments and keep your event memories forever.
@@ -224,7 +221,6 @@ export const Landing = () => {
                 <h2>Ready to start your next adventure?</h2>
                 <a href="/signup" className="btn btn-primary cta-btn">Sign Up Free</a>
             </section>
-
             {/* Footer */}
             <footer className="footer">
                 <div className="footer-links">
@@ -238,10 +234,9 @@ export const Landing = () => {
         </div>
     );
 };
-
 const EventCard = ({ event }) => (
     <div className="event-card">
-        <span className="event-icon">{event.icon || "🎉"}</span>
+        <span className="event-icon">{event.icon || ":tada:"}</span>
         <h4>{event.title}</h4>
         <p>
             {event.date} • {event.rsvp || "?"} RSVPs

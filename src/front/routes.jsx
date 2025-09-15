@@ -13,6 +13,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import { Landing } from "./pages/Landing";
 import CreateEvent from "./pages/CreateEvent.jsx";
+import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,8 @@ export const router = createBrowserRouter(
       <Route path="home" element={<Home />} />
       <Route path="demo" element={<Demo />} />
       <Route path="createevent" element={<CreateEvent />} />
+      <Route path="profile" element={<Profile />} />
     </Route>
   )
 );
+

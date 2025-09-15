@@ -1,58 +1,66 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
 
 app = Flask(__name__)
 CORS(app)
 
-EVENTBRITE_TOKEN = "FDIOJ3HFYP42QXSWQWHW"
+# In-memory event storage for demonstration
+EVENTS = [
+    {
+        "id": 1,
+        "title": "Mock Music Festival",
+        "date": "2025-09-15",
+        "location": "Central Park",
+        "description": "A fun outdoor music festival for all ages.",
+        "rsvp": 42,
+        "icon": "🎵",
+    },
+    {
+        "id": 2,
+        "title": "Tech Conference",
+        "date": "2025-10-01",
+        "location": "Convention Center",
+        "description": "Join the latest in tech and innovation.",
+        "rsvp": 87,
+        "icon": "💻",
+    },
+    {
+        "id": 3,
+        "title": "Art Expo",
+        "date": "2025-11-05",
+        "location": "Art Gallery",
+        "description": "Explore modern art from local artists.",
+        "rsvp": 30,
+        "icon": "🎨",
+    },
+]
 
 
-@app.route("/api/public-events")
-def public_events():
-    lat = request.args.get("lat")
-    lon = request.args.get("lon")
-    url = (
-        f"https://www.eventbriteapi.com/v3/events/search/"
-        f"?location.latitude={lat}&location.longitude={lon}&token={EVENTBRITE_TOKEN}"
-        # need token for line 15, place in .env file
-        # not pulling events from everbrite
-        #everbrite token is to pull events from everbrite. so we can post new events and everbrite events
-    )
-    resp = requests.get(url)
-    return jsonify(resp.json())
+@app.route("/api/events", methods=["GET", "POST"])
+def events():
+    if request.method == "POST":
+        data = request.json
+        event = {
+            "id": len(EVENTS) + 1,
+            "title": data.get("title"),
+            "date": data.get("date"),
+            "location": data.get("location"),
+            "description": data.get("description"),
+            "icon": data.get("icon", "🎉"),
+            "rsvp": 0,
+        }
+        EVENTS.append(event)
+        return jsonify(event), 201
+    return jsonify(EVENTS)
 
 
-@app.route("/api/events") 
-def get_events():
-    lat = request.args.get("lat", "40.7128")  # Default: New York City
-    lon = request.args.get("lon", "-74.0060")
-    url = (
-        f"https://www.eventbriteapi.com/v3/events/search/"
-        f"?location.latitude={lat}&location.longitude={lon}&expand=venue&token={EVENTBRITE_TOKEN}"
-    )
-    resp = requests.get(url)
-    if resp.status_code != 200:
-        return jsonify({"error": "Failed to fetch events"}), 500
-
-    data = resp.json()
-    # Extract and format events for frontend
-    events = []
-    for e in data.get("events", []):
-        events.append(
-            {
-                "id": e.get("id"),
-                "title": e.get("name", {}).get("text"),
-                "date": e.get("start", {}).get("local"),
-                "location": e.get("venue", {}).get("address", {}).get(
-                    "localized_address_display", "Unknown"
-                ),
-                "description": e.get("description", {}).get("text", "")[:120] + "...",
-                "icon": "🎉",
-                "rsvp": "?",  # Eventbrite doesn't provide RSVP count in search API
-            }
-        )
-    return jsonify(events)
+@app.route("/api/events/<int:event_id>/rsvp", methods=["POST"])
+def rsvp(event_id):
+    for event in EVENTS:
+        if event["id"] == event_id:
+            event["rsvp"] += 1
+            return jsonify({"message": "RSVP successful", "event": event})
+    return jsonify({"error": "Event not found"}), 404
 
 
 if __name__ == "__main__":

@@ -1,42 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import "./Profile.css";
+import "./Landing.css";
 //check if token is in local storage,
 //if not redirect to login page
-
 
 function Profile() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [isVerified, setIsVerified] = useState(false);
-    const [isActive, setIsActive] = useState(true);
 
-    const [passWord, setPassWord] = useState("");
-    const [newPassWord, setNewPassWord] = useState("");
-    const [confirmPassword, setConfirmPassWord] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [newPassword, setNewPassword] = useState("");
+    // const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [profilePic, setProfilePic] = useState("");
+    const [profilePhoto, setProfilePhoto] = useState("");
 
     const [location, setLocation] = useState("");
     const [language, setLanguage] = useState("");
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         //check if token exists in local storage, if it does then fetch profile
-        // if it doesnt, return nothing
-
-        // token storage
-        const token = localStorage.getItem(token);
-        if (token == null) {
-            return <Redirect to={"/LOGIN"} />;
-        }
-
+        // if it doesnt, redirect to login
+        const token = localStorage.getItem("token");
+        // if (!token) {
+        //     navigate("/login");
+        //     return;
+        // }
 
         const fetchProfile = async () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
                 headers: {
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}` //needed to access protected route
                 }
-                //above is needed to access env token for backend
             });
+
             // Check for server errors (both # code and text)
             if (!response.ok) {
                 console.error("Server error:", response.status, response.statusText);
@@ -51,14 +51,10 @@ function Profile() {
                 setLastName(data.last_name || "");
                 setEmail(data.email || "");
                 setProfilePhoto(data.profile_photo || "");
-                setIsVerified(data.is_verified || false);
-                setIsActive(data.is_active || true);
 
-                setPassword(data.password || "");
-                setNewPassWord(data.new_pass_word || "");
-                setConfirmPassWord(data.confirm_pass_word || "");
-
-                setProfilePic(data.profile_pic || "");
+                // setPassword(data.password || "");
+                // setNewPassword(data.new_pass_word || "");
+                // setConfirmPassword(data.confirm_pass_word || "");
 
                 setLocation(data.location || "");
                 setLanguage(data.language || "");
@@ -70,114 +66,111 @@ function Profile() {
         };
 
         fetchProfile();
-    }, []);
+    }, [navigate]);
 
     const handleSave = async (e) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem("token");
+
             const payload = {
                 first_name: firstName,
                 last_name: lastName,
                 email: email,
                 profile_photo: profilePhoto,
-                is_verified: isVerified,
-                is_active: isActive,
-                password: passWord,
-                new_pass_word: newPassWord,
-                confirm_pass_word: confirmPassword,
-                profile_pic: profilePic,
+                // password: password,
+                // new_pass_word: newPassword,
+                // confirm_pass_word: confirmPassword,
                 location: location,
                 language: language
+            };
 
-            }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` //include token for save too
                 },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok) {
                 console.error("Server error:", response.status, response.statusText);
                 return;
             }
+
             const data = await response.json();
-            console.log("Profile saved successfully:", data
-            );
+            console.log("Profile saved successfully:", data);
+
         } catch (error) {
             console.error("Error saving profile:", error);
         }
-
     };
 
-
-
-
     return (
-        <div>
-            <h2>My Profile</h2>
-            <p>First Name: {firstName}</p>
-            <p>Last Name: {lastName}</p>
-            <p>Email: {email}</p>
-            <p>Verified: {isVerified ? "Yes" : "No"}</p>
-            <p>Active: {isActive ? "Yes" : "No"}</p>
+        <div className="profile-page">
+            <h2 className="My-profile-title">My Profile</h2>
+            <div className="container">
+                <p>First Name: {firstName}</p>
+                <p>Last Name: {lastName}</p>
+                <p>Email: {email}</p>
 
-            <p>Password: {passWord}</p>
-            <p>New Password: {newPassWord}</p>
-            <p>Confirm Password: {confirmPassword}</p>
+                {/* <p>Password: {password}</p>
+            <p>New Password: {newPassword}</p>
+            <p>Confirm Password: {confirmPassword}</p> */}
 
-            {profilePhoto && <img src={profilePhoto} alt="Profile" width="100" />}
+                {profilePhoto && <img src={profilePhoto} alt="Profile" width="100" />}
 
-            <p>Location: {location}</p>
-            <p>Language: {language}</p>
+                <p>Location: {location}</p>
+                <p>Language: {language}</p>
 
-            <div>
-                <label>
-                    First Name:
-                    <input
-                        type="text"
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Last Name:
-                    <input
-                        type="text"
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Profile Photo URL:
-                    <input
-                        type="text"
-                        value={profilePhoto}
-                        onChange={e => setProfilePhoto(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
+                <div className="form-group"><div>
+                    <label>
+                        First Name:
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={e => setFirstName(e.target.value)}
+                        />
+                    </label>
+                </div>
+                    <div>
+                        <label>
+                            Last Name:
+                            <input
+                                type="text"
+                                value={lastName}
+                                onChange={e => setLastName(e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Email:
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Profile Photo URL:
+                            <input
+                                type="text"
+                                value={profilePhoto}
+                                onChange={e => setProfilePhoto(e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    {/* <div>
                 <label>
                     Password:
                     <input
                         type="text"
-                        value={passWord}
-                        onChange={e => setPassWord(e.target.value)}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </label>
             </div>
@@ -186,8 +179,8 @@ function Profile() {
                     New Password:
                     <input
                         type="text"
-                        value={newPassWord}
-                        onChange={e => setNewPassWord(e.target.value)}
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)}
                     />
                 </label>
             </div>
@@ -197,42 +190,34 @@ function Profile() {
                     <input
                         type="text"
                         value={confirmPassword}
-                        onChange={e => setConfirmPassWord(e.target.value)}
+                        onChange={e => setConfirmPassword(e.target.value)}
                     />
                 </label>
-            </div>
-            <div>
-                <label>
-                    Profile Pic:
-                    <input
-                        type="text" //update to file upload later
-                        value={profilePic}
-                        onChange={e => setProfilePic(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Location:
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={e => setLocation(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Language:
-                    <input
-                        type="text"
-                        value={language}
-                        onChange={e => setLanguage(e.target.value)}
-                    />
-                </label>
-            </div>
-            <div>
-                <button onClick={handleSave}>Save Button</button>
+            </div> */}
+                    <div>
+                        <label>
+                            Location:
+                            <input
+                                type="text"
+                                value={location}
+                                onChange={e => setLocation(e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Language:
+                            <input
+                                type="dropdown"
+                                value={language}
+                                onChange={e => setLanguage(e.target.value)}
+                            />
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button className="save-button" onClick={handleSave}>Save Button</button>
+                </div>
             </div>
         </div>
     );

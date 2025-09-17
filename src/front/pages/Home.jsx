@@ -59,7 +59,7 @@ export const Home = () => {
   );
 };
 
-// Quick test component for geolocation
+/*
 function GeolocationTest() {
   const location = useGeoLocation();
 
@@ -108,3 +108,4 @@ function BackendPing() {
 
   return <small className="text-muted">Backend: {status}</small>;
 }
+*/

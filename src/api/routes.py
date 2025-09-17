@@ -69,7 +69,7 @@ def login():
 
 
 @api.route("/account", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def protect_account():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)

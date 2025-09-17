@@ -1,10 +1,8 @@
 // src/front/js/pages/home.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// Optional: include these if you plan to use them later
-// import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-// import { useGeoLocation } from "../hooks/GeoLocation.jsx";
+import { useGeoLocation } from "../hooks/GeoLocation.jsx";
+import { NearbyRestaurants } from "../components/NearbyRestaurants.jsx";
 
 export const Home = () => {
   return (
@@ -22,6 +20,16 @@ export const Home = () => {
       </section>
 
       <hr className="my-5" />
+
+      {/* Quick Geolocation Test */}
+      <section className="text-center mb-4">
+        <GeolocationTest />
+      </section>
+
+      {/* Yelp API Test - just use your existing component */}
+      <section className="mb-4">
+        <NearbyRestaurants />
+      </section>
 
       <section className="row g-3">
         <div className="col-md-6">
@@ -50,6 +58,36 @@ export const Home = () => {
     </main>
   );
 };
+
+// Quick test component for geolocation
+function GeolocationTest() {
+  const location = useGeoLocation();
+
+  if (location.error) {
+    return (
+      <div className="alert alert-warning">
+        <strong>Geolocation Error:</strong> {location.error}
+      </div>
+    );
+  }
+
+  if (!location.latitude) {
+    return (
+      <div className="alert alert-info">
+        <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+        Getting your location...
+      </div>
+    );
+  }
+
+  return (
+    <div className="alert alert-success">
+      <strong>Location Found!</strong><br />
+      Latitude: {location.latitude.toFixed(4)}<br />
+      Longitude: {location.longitude.toFixed(4)}
+    </div>
+  );
+}
 
 function BackendPing() {
   const [status, setStatus] = useState("Checking…");

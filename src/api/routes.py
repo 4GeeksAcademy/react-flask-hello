@@ -69,7 +69,7 @@ def login():
 
 
 @api.route("/account", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def protect_account():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
@@ -331,3 +331,51 @@ def list_bookings():
 
     items = db.session.execute(q).scalars().all()
     return jsonify([b.serialize() for b in items]), 200
+
+# -----------------------------
+# Restaurant endpoints
+# -----------------------------
+
+
+@api.route("/restaurants/nearby", methods=["GET"])
+def get_nearby_restaurants():
+    """Get nearby restaurants using Yelp API"""
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
+    radius = request.args.get('radius', 5000)  # Default 5km radius
+
+    if not latitude or not longitude:
+        return jsonify({"error": "Latitude and longitude are required"}), 400
+
+    yelp_api_key = os.getenv('YELP_API_KEY')
+    if not yelp_api_key:
+        return jsonify({"error": "Yelp API key not configured"}), 500
+
+    headers = {
+        'Authorization': f'Bearer {yelp_api_key}',
+    }
+
+    params = {
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': radius,
+        'categories': 'restaurants',
+        'limit': 20,
+        'sort_by': 'distance'
+    }
+
+    try:
+        response = requests.get(
+            'https://api.yelp.com/v3/businesses/search',
+            headers=headers,
+            params=params
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            return jsonify(data), 200
+        else:
+            return jsonify({"error": "Failed to fetch restaurants"}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

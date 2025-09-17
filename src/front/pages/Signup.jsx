@@ -10,6 +10,7 @@ export const Signup = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    console.log("clicked")
     e.preventDefault();
     setErr("");
     setBusy(true);

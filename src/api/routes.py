@@ -360,7 +360,7 @@ def get_nearby_restaurants():
         'longitude': longitude,
         'radius': radius,
         'categories': 'restaurants',
-        'limit': 20,
+        'limit': 5,
         'sort_by': 'distance'
     }
 

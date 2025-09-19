@@ -41,6 +41,27 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({"token": access_token, "user_id": user.id})
 
+@api.route('/reset-password', methods=['POST'])
+def reset_password():
+    # Expect JSON: { "email": "user@email.com", "new_password": "NewStrongPass123!" }
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    new_password = (data.get("new_password") or "").strip()
+
+    if not email or not new_password:
+        return jsonify({"error": "email_and_new_password_required"}), 400
+    if len(new_password) < 8:
+        return jsonify({"error": "password_too_short"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "user_not_found"}), 404
+
+    
+    user.password = generate_password_hash(new_password)     
+    
+    db.session.commit()
+    return jsonify({"ok": True}), 200
 
 @api.route("/signup", methods=["POST"])
 def signup():
@@ -332,7 +353,6 @@ def list_bookings():
 
     items = db.session.execute(q).scalars().all()
     return jsonify([b.serialize() for b in items]), 200
-
 # -----------------------------
 # Restaurant endpoints
 # -----------------------------

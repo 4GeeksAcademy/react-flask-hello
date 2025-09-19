@@ -19,9 +19,9 @@ typing-extensions = "*"
 flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
 sqlalchemy = "*"
+flask-migrate = "*"
 requests = "*"
 icalendar = "*"
-flask-migrate = "*"
 
 [requires]
 python_version = "3.13"

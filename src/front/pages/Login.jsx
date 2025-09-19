@@ -1,7 +1,20 @@
-
 import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+
+async function apiLogin({ email, password }) {
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.msg || "Login failed");
+  }
+  return res.json();
+}
+
 export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -11,39 +24,32 @@ export const Login = () => {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // If you redirected here after signup, show a friendly notice
   const justSignedUp = location.state?.justSignedUp;
+
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // setErr("");
-    // setBusy(true);
-    // try {
-    //   // Expecting: { token, user }
-    //   const data = await apiLogin({ email, password });
-    //   const jwt = data?.token || "";
-    //   // Keep existing reducer contract from your prior Login.jsx
-    //   // so Account.jsx (which reads store.session.token) will work.
-    //   dispatch({ type: "set_jwt", payload: { jwt, user: data?.user } });
-    //   // Prefer redirect target if provided, else go to account
-    //   const dest = location.state?.from ?? "/account";
-    //   navigate(dest, { replace: true });
-    // } catch (error) {
-    //   setErr(error?.message || "Unable to sign in. Please try again.");
-    // } finally {
-    //   setBusy(false);
-    // }
-    console.log("clicked")
+    e.preventDefault();
+    setErr("");
+    setBusy(true);
+    try {
+      const data = await apiLogin({ email, password });
+      const jwt = data?.token || "";
+      dispatch({ type: "set_jwt", payload: { jwt, user: data?.user } });
+      const dest = location.state?.from ?? "/account";
+      navigate(dest, { replace: true });
+    } catch (error) {
+      setErr(error?.message || "Unable to sign in. Please try again.");
+    } finally {
+      setBusy(false);
+    }
   };
+
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
-      {/* Navbar to mirror Account.jsx */}
-      {/* Main */}
       <main className="container flex-grow-1 py-5">
         <div className="row justify-content-center">
           <div className="col-12 col-lg-10">
             <div className="card shadow-sm border-0">
               <div className="row g-0">
-                {/* Left image to echo Account page layout */}
                 <div className="col-md-5">
                   <img
                     src="https://picsum.photos/id/1069/800/600"
@@ -52,7 +58,6 @@ export const Login = () => {
                     style={{ minHeight: 280 }}
                   />
                 </div>
-                {/* Right: form */}
                 <div className="col-md-7">
                   <div className="card-body">
                     <h1 className="h4 mb-2">Log in to your account</h1>
@@ -125,11 +130,7 @@ export const Login = () => {
                           Forgot password?
                         </Link>
                       </div>
-                      <button
-                        className="btn btn-primary w-100"
-                        type="submit"
-                        disabled={busy}
-                      >
+                      <button className="btn btn-primary w-100" type="submit" disabled={busy}>
                         {busy ? "Signing in..." : "Log in"}
                       </button>
                     </form>
@@ -139,7 +140,6 @@ export const Login = () => {
                     </div>
                   </div>
                 </div>
-                {/* /right */}
               </div>
             </div>
           </div>
@@ -147,4 +147,4 @@ export const Login = () => {
       </main>
     </div>
   );
-}
+};

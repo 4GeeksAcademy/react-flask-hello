@@ -7,13 +7,6 @@ export const Home = () => {
 
   return (
     <main className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="h3 m-0">WhiteGlove BnB</h1>
-        <div>
-          <Link to="/login" className="btn btn-outline-secondary me-2">Log in</Link>
-          <Link to="/signup" className="btn btn-primary">Sign up</Link>
-        </div>
-      </div>
 
       <section className="row align-items-center g-4">
         <div className="col-md-6">

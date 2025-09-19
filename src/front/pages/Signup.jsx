@@ -4,24 +4,28 @@ import { Link, useNavigate } from "react-router-dom";
 export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pet, setPet] = useState(""); // Add this missing state variable
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.log("clicked")
     e.preventDefault();
     setErr("");
     setBusy(true);
 
     try {
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({
+          email,
+          password,
+          favorite_pet: pet // Add this to match your backend
+        })
       });
 
       if (response.ok) {
@@ -108,6 +112,21 @@ export const Signup = () => {
                             {showPassword ? "Hide" : "Show"}
                           </button>
                         </div>
+                      </div>
+
+                      <div className="mb-3">
+                        <label htmlFor="signupPet" className="form-label">
+                          Favorite Pet (for password recovery)
+                        </label>
+                        <input
+                          id="signupPet"
+                          className="form-control"
+                          type="text"
+                          value={pet}
+                          onChange={(e) => setPet(e.target.value)}
+                          required
+                          placeholder="Enter your favorite pet"
+                        />
                       </div>
 
                       <button

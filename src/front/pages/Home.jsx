@@ -1,6 +1,8 @@
 // src/front/js/pages/home.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useGeoLocation } from "../hooks/GeoLocation.jsx";
+import { NearbyRestaurants } from "../components/NearbyRestaurants.jsx";
 
 export const Home = () => {
   return (
@@ -20,18 +22,14 @@ export const Home = () => {
       <hr className="my-5" />
 
       {/* Quick Geolocation Test */}
-      {/*
       <section className="text-center mb-4">
         <GeolocationTest />
       </section>
-      */}
 
       {/* Yelp API Test - just use your existing component */}
-      {/*
       <section className="mb-4">
         <NearbyRestaurants />
       </section>
-      */}
 
       <section className="row g-3">
         <div className="col-md-6">
@@ -61,7 +59,7 @@ export const Home = () => {
   );
 };
 
-/*
+
 function GeolocationTest() {
   const location = useGeoLocation();
 
@@ -90,7 +88,6 @@ function GeolocationTest() {
     </div>
   );
 }
-*/
 
 function BackendPing() {
   const [status, setStatus] = useState("Checking…");

@@ -67,12 +67,13 @@ def reset_password():
 def signup():
     email = request.json.get("email")
     password = request.json.get("password")
+    favorite_pet = request.json.get("pet")
 
     existing_user = User.query.filter_by(email=email).first()
     if existing_user is not None:
         return jsonify({"msg": "User already exists"}), 409
 
-    new_user = User(email=email, password=password, is_active=True)
+    new_user = User(email=email, password=password, security_question=favorite_pet, is_active=True)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"msg": "User created successfully"}), 201
@@ -352,3 +353,50 @@ def list_bookings():
 
     items = db.session.execute(q).scalars().all()
     return jsonify([b.serialize() for b in items]), 200
+# -----------------------------
+# Restaurant endpoints
+# -----------------------------
+
+
+@api.route("/restaurants/nearby", methods=["GET"])
+def get_nearby_restaurants():
+    """Get nearby restaurants using Yelp API"""
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
+    radius = request.args.get('radius', 5000)  # Default 5km radius
+
+    if not latitude or not longitude:
+        return jsonify({"error": "Latitude and longitude are required"}), 400
+
+    yelp_api_key = os.getenv('YELP_API_KEY')
+    if not yelp_api_key:
+        return jsonify({"error": "Yelp API key not configured"}), 500
+
+    headers = {
+        'Authorization': f'Bearer {yelp_api_key}',
+    }
+
+    params = {
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': radius,
+        'categories': 'restaurants',
+        'limit': 5,
+        'sort_by': 'distance'
+    }
+
+    try:
+        response = requests.get(
+            'https://api.yelp.com/v3/businesses/search',
+            headers=headers,
+            params=params
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            return jsonify(data), 200
+        else:
+            return jsonify({"error": "Failed to fetch restaurants"}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

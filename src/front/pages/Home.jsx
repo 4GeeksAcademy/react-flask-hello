@@ -2,22 +2,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// Optional: include these if you plan to use them later
-// import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-// import { useGeoLocation } from "../hooks/GeoLocation.jsx";
-
 export const Home = () => {
   const year = new Date().getFullYear();
 
   return (
     <main className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="h3 m-0">WhiteGlove BnB</h1>
-        <div>
-          <Link to="/login" className="btn btn-outline-secondary me-2">Log in</Link>
-          <Link to="/signup" className="btn btn-primary">Sign up</Link>
-        </div>
-      </div>
 
       <section className="row align-items-center g-4">
         <div className="col-md-6">
@@ -43,7 +32,7 @@ export const Home = () => {
         <div className="col-md-6">
           <h2 className="h4">Our mission</h2>
           <p className="text-muted">
-            WhiteGlove BnB helps hosts share the right details, fast. We turn a host’s
+            WhiteGlove BnB helps hosts share the right details, fast. We turn a host's
             Google Calendar into a clear schedule and a single guest link that shows the
             essentials—property basics, live weather, and top nearby restaurants—so
             arrivals are smooth and questions are few.

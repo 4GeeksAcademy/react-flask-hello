@@ -11,18 +11,18 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
-
-# from models import Person
+from flask_cors import CORS  # ⬅️ CORS for cross-origin requests
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this "super secret" to something else!
+# Change this "super secret" to something else!
+app.config["JWT_SECRET_KEY"] = "super-secret"
 jwt = JWTManager(app)
 app.url_map.strict_slashes = False
 
-# database condiguration
+# database configuration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
@@ -34,13 +34,20 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
+# ---- CORS (allow frontend origin to call /api/*) ----------------------------
+origins_env = os.getenv("FRONTEND_ORIGINS", "")
+origins_list = [o.strip()
+                for o in origins_env.split(",") if o.strip()] or ["*"]
+CORS(app, resources={r"/api/*": {"origins": origins_list}},
+     supports_credentials=True)
+
 # add the admin
 setup_admin(app)
 
-# add the admin
+# add CLI commands
 setup_commands(app)
 
-# Add all endpoints form the API with a "api" prefix
+# Add all endpoints from the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
@@ -60,6 +67,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):

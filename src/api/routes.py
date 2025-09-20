@@ -2,92 +2,109 @@ from __future__ import annotations
 
 import os
 import re
-import json
 import pytz
 import requests
 from datetime import datetime, timedelta
 from flask import Blueprint, current_app, jsonify, request
 from icalendar import Calendar
 
-# If you’re using SQLAlchemy elsewhere in your app, you can import the db and models,
-# but nothing in this ICS endpoint requires the database.
-# from models import db, Booking
-
 api = Blueprint("api", __name__)
-
-# ---- Config helpers ---------------------------------------------------------
 
 
 def _env(name: str, default: str | None = None) -> str | None:
     return os.environ.get(name, default)
 
 
-# Public ICS URL to your calendar (from your .env)
 RESERVATIONS_ICS_URL = _env("RESERVATIONS_ICS_URL")
 DEFAULT_TZ = _env("DEFAULT_TIMEZONE", "America/New_York")
 
-# ---- Regex helpers ----------------------------------------------------------
+# --- URL helpers -------------------------------------------------------------
 
 RE_URL = re.compile(r"(https?://[^\s)]+)", re.I)
-RE_IMG = re.compile(r"(https?://\S+\.(?:png|jpe?g|webp|gif))", re.I)
 
-# ---- Datetime helpers -------------------------------------------------------
+# Accept common image URL patterns (with or without file extension)
+RE_EXT_IMAGE = re.compile(r"\.(?:png|jpe?g|webp|gif)(?:\?.*)?$", re.I)
+
+# Google Drive link patterns
+RE_DRIVE_FILE_VIEW = re.compile(
+    r"https?://drive\.google\.com/file/d/([^/]+)/view(?:\?[^ ]*)?", re.I)
+RE_DRIVE_OPEN = re.compile(
+    r"https?://drive\.google\.com/open\?id=([^&]+)", re.I)
+RE_DRIVE_UC = re.compile(
+    r"https?://drive\.google\.com/uc\?(?:export=\w+&)?id=([^&]+)", re.I)
+
+
+def to_direct_image_url(url: str) -> str:
+    """
+    Convert known providers (Google Drive) to a direct image URL.
+    If it already looks like an image or a direct-drive link, return as-is/converted.
+    """
+    if not url:
+        return url
+
+    # Google Drive conversions
+    m = RE_DRIVE_FILE_VIEW.search(url) or RE_DRIVE_OPEN.search(
+        url) or RE_DRIVE_UC.search(url)
+    if m:
+        file_id = m.group(1)
+        # Direct view endpoint that returns an image content-type
+        return f"https://drive.google.com/uc?export=view&id={file_id}"
+
+    # Otherwise, if it looks like a normal image (by extension), return as is
+    if RE_EXT_IMAGE.search(url):
+        return url
+
+    # Fallback: return original (may still work if server responds with image content-type)
+    return url
+
+# --- Datetime helpers --------------------------------------------------------
 
 
 def _to_tz(dt, tzname: str):
-    """Convert a date/datetime (possibly naive) to target tz, return date-only events as date boundaries."""
     tz = pytz.timezone(tzname)
     if isinstance(dt, datetime):
         if dt.tzinfo is None:
             return tz.localize(dt)
         return dt.astimezone(tz)
-    # All-day date comes in as date; interpret as midnight in target tz
     return tz.localize(datetime(dt.year, dt.month, dt.day, 0, 0, 0))
 
 
 def _fix_all_day_checkout(start, end):
-    """
-    Google all-day events in ICS export set DTEND to the day AFTER the event ends (exclusive).
-    For “nights” style reservations, we show checkout as end - 1 day.
-    Only apply when the event is all-day.
-    """
     if isinstance(start, datetime) or isinstance(end, datetime):
-        return end  # not an all-day event
-    # both are date → subtract one day for display
+        return end
     return end - timedelta(days=1)
 
-# ---- Image extraction -------------------------------------------------------
+# --- Image extraction --------------------------------------------------------
 
 
 def _first_image_from_vevent(vevent) -> str | None:
     """
-    Try to extract an image URL from ICS:
-      1) ATTACH: lines (one or many)
-      2) Any image-looking URL inside DESCRIPTION
-    Note: Public Google Calendar ICS often omits file attachments; this is best-effort only.
+    Extract an image URL from an event via:
+      1) ATTACH property (may be one or many)
+      2) Any URL in DESCRIPTION (first match)
+    For Google Drive links, convert to a direct-view URL.
     """
+    # 1) ATTACH
     attach = vevent.get("attach")
     if attach:
         cands = attach if isinstance(attach, list) else [attach]
         for a in cands:
-            url = str(a)
-            if RE_IMG.search(url):
+            url = to_direct_image_url(str(a))
+            if url:
                 return url
 
+    # 2) DESCRIPTION scan for any URL
     desc = str(vevent.get("description") or "")
-    m_img = RE_IMG.search(desc)
-    if m_img:
-        return m_img.group(1)
+    m = RE_URL.search(desc)
+    if m:
+        return to_direct_image_url(m.group(1))
+
     return None
 
-# ---- ICS parsing core -------------------------------------------------------
+# --- Core ICS parsing --------------------------------------------------------
 
 
 def _fetch_reserved_rows(tzname: str) -> list[dict]:
-    """
-    Download the ICS feed and return a list of dicts with:
-      { event, checkin, checkout, reservation_url, image }
-    """
     if not RESERVATIONS_ICS_URL:
         raise RuntimeError("RESERVATIONS_ICS_URL is not configured")
 
@@ -101,8 +118,7 @@ def _fetch_reserved_rows(tzname: str) -> list[dict]:
             continue
 
         summary = str(component.get("summary") or "")
-        # Only include events that look like reservations.
-        # If you want ALL events, remove this filter.
+        # Only "Reserved ..." events; remove this if you want all events
         if "reserved" not in summary.lower():
             continue
 
@@ -115,46 +131,37 @@ def _fetch_reserved_rows(tzname: str) -> list[dict]:
         if not dtstart or not dtend:
             continue
 
-        # Normalize to the requested tz
         start_local = _to_tz(dtstart, tzname)
         end_local = _to_tz(dtend, tzname)
 
-        # If it’s an all-day event, fix the exclusive DTEND → display checkout = end - 1 day
         checkout_display = end_local
         if not isinstance(dtstart, datetime) and not isinstance(dtend, datetime):
             checkout_display = _to_tz(
                 _fix_all_day_checkout(dtstart, dtend), tzname)
 
-        # Parse description for a URL (Airbnb/confirmation/etc.)
         desc = str(component.get("description") or "")
         m_url = RE_URL.search(desc)
         reservation_url = m_url.group(1) if m_url else None
 
-        # Best-effort image
         image_url = _first_image_from_vevent(component)
 
         rows.append({
-            "event": uid,                               # event uid
-            "checkin": start_local.isoformat(),         # start
-            "checkout": checkout_display.isoformat(),   # end (fixed for all-day)
-            "reservation_url": reservation_url,         # link, if present
-            # best-effort ATTACH or img URL in description
-            "image": image_url,
+            "event": uid,                         # UID
+            "title": summary.strip(),             # e.g., "Reserved - Andres"
+            "checkin": start_local.isoformat(),
+            "checkout": checkout_display.isoformat(),
+            "reservation_url": reservation_url,
+            "image": image_url,                   # now direct-view if it's a Drive link
         })
 
     rows.sort(key=lambda x: x["checkin"])
     return rows
 
-# ---- Routes ----------------------------------------------------------------
+# --- Route -------------------------------------------------------------------
 
 
-@api.route("/api/calendar/reserved", methods=["GET"])
+@api.route("/calendar/reserved", methods=["GET"])
 def calendar_reserved():
-    """
-    Public: read from public ICS and return normalized reservations.
-    Query params:
-      - tz=America/New_York (optional)
-    """
     tzname = request.args.get("tz") or DEFAULT_TZ
     try:
         rows = _fetch_reserved_rows(tzname)

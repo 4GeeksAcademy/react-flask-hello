@@ -13,7 +13,11 @@ api = Blueprint('api', __name__)
 # 'api' is your Blueprint instance
 CORS(
     api,
-    origins=["https://upgraded-system-7vgj4vjj6j52rx7j-3000.app.github.dev"],
+    origins=[
+        "https://friendly-computing-machine-pxw4p4r46rq2r7gp-3001.app.github.dev",
+        "http://localhost:3000",
+        "http://localhost:3001"
+    ],
     supports_credentials=True,
     allow_headers="*",
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],

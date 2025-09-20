@@ -68,6 +68,9 @@ def update_profile():
     data = request.get_json()
     user.first_name = data.get("first_name", user.first_name)
     user.last_name = data.get("last_name", user.last_name)
+    user.email = data.get("email", user.email)
+    user.location = data.get("location", user.location)
+    user.language = data.get("language", user.language)
     db.session.commit()
     return jsonify(msg="Profile updated"), 200
 

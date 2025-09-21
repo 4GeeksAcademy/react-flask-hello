@@ -1,4 +1,3 @@
-// src/front/pages/Account.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
@@ -77,8 +76,6 @@ function toDriveDirect(url) {
   return null;
 }
 
-/* -------------------- COMPONENT -------------------- */
-
 const CARD_HEIGHT = 180; // unified height for image + content
 
 export const Account = () => {
@@ -146,32 +143,36 @@ export const Account = () => {
     [reservations]
   );
 
-  // Find current/next card index
+  // Helpers for date window checks
+  const todayStart = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+  const todayEnd = useMemo(() => {
+    const d = new Date();
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }, []);
+
+  const isCurrent = (ci, co) =>
+    ci && co && todayStart <= co && todayEnd >= ci; // inclusive window
+  const isPast = (co) => co && co < todayStart;
+
+  // Find current/next card index for initial scroll
   const currentIndex = useMemo(() => {
     if (!items.length) return 0;
-    const now = new Date();
-    const sod = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
-    const eod = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
-
-    const cur = items.findIndex(
-      (it) =>
-        it.checkinDate &&
-        it.checkoutDate &&
-        now >= sod(it.checkinDate) &&
-        now <= eod(it.checkoutDate)
-    );
+    const cur = items.findIndex((it) => isCurrent(it.checkinDate, it.checkoutDate));
     if (cur !== -1) return cur;
-
-    const upcoming = items.findIndex((it) => it.checkinDate && sod(it.checkinDate) > eod(now));
+    const upcoming = items.findIndex((it) => it.checkinDate && it.checkinDate > todayEnd);
     return upcoming !== -1 ? upcoming : 0;
-  }, [items]);
+  }, [items, todayEnd, todayStart]);
 
   const listRef = useRef(null);
   const cardRefs = useRef([]);
 
   useEffect(() => {
     if (!listRef.current || !cardRefs.current[currentIndex]) return;
-    // Auto-scroll to current card; padding handled by scrollPaddingTop on the container
     cardRefs.current[currentIndex].scrollIntoView({ block: "start" });
   }, [currentIndex, items.length]);
 
@@ -187,8 +188,18 @@ export const Account = () => {
 
   return (
     // Lock outer page scroll; only the list scrolls
-    <div className="bg-light" style={{ position: "fixed", inset: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <div
+      className="bg-light"
+      style={{ position: "fixed", inset: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}
+    >
       <main className="container py-4 d-flex flex-column" style={{ flex: 1, minHeight: 0 }}>
+        {/* Top-right logo */}
+        <div className="d-flex justify-content-end">
+          <span className="navbar-brand mb-0 h1">
+            WhiteGlove <span className="text-primary">BnB</span>
+          </span>
+        </div>
+
         <h1 className="h4 mb-3">Welcome {email}</h1>
 
         <div className="d-flex align-items-center justify-content-between">
@@ -197,7 +208,7 @@ export const Account = () => {
           {err && <span className="text-danger small">Error: {err}</span>}
         </div>
 
-        {/* Scrollable list — now with top gap + scroll padding to prevent overlap */}
+        {/* Scrollable list — with top gap + scroll padding to prevent overlap */}
         <div
           ref={listRef}
           className="row g-3 mx-0 mt-3"
@@ -206,54 +217,69 @@ export const Account = () => {
             overflowY: "auto",
             paddingRight: 4,
             minHeight: 0,
-            paddingTop: 16,       // EDIT #1: visible gap above first card
-            scrollPaddingTop: 16, // EDIT #2: keeps gap when scrollIntoView runs
+            paddingTop: 16,
+            scrollPaddingTop: 16,
           }}
         >
-          {items.map((it, idx) => (
-            <div
-              key={it.key}
-              ref={(el) => (cardRefs.current[idx] = el)}
-              className="col-12 d-flex justify-content-center"
-              style={{ scrollMarginTop: 16 }}
-            >
-              <div className="card shadow-sm border-0 w-100" style={{ maxWidth: 900, height: CARD_HEIGHT }}>
-                <div className="row g-0 h-100">
-                  {/* Left image pane: fixed height, fully fills, always aligned */}
-                  <div className="col-5 col-sm-4 col-md-3 d-flex h-100 overflow-hidden">
-                    <img
-                      src={it.image}
-                      alt="Guest"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      className="rounded-start"
-                    />
-                  </div>
+          {items.map((it, idx) => {
+            const shaded = isPast(it.checkoutDate);               // old reservations look lighter
+            const showCurrent = isCurrent(it.checkinDate, it.checkoutDate); // badge only when hosting now
 
-                  {/* Right content pane: fixed height; content clipped to keep equal height */}
-                  <div className="col-7 col-sm-8 col-md-9 d-flex h-100">
-                    <div className="card-body d-flex flex-column justify-content-start w-100 overflow-hidden">
-                      <h5 className="card-title mb-2 text-truncate">
-                        {it.guestName || "(No name in event)"}
-                      </h5>
+            return (
+              <div
+                key={it.key}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                className="col-12 d-flex justify-content-center"
+                style={{ scrollMarginTop: 16 }}
+              >
+                <div
+                  className={`card shadow-sm border-0 w-100 ${shaded ? "opacity-50" : ""}`}
+                  style={{ maxWidth: 900, height: CARD_HEIGHT, position: "relative" }}
+                >
+                  {/* Badge: top-right inside the card */}
+                  {showCurrent && (
+                    <span className="badge bg-success position-absolute top-0 end-0 m-2">
+                      Currently hosting
+                    </span>
+                  )}
 
-                      <div className="mb-1 small">
-                        <strong>Check-in:</strong> {it.checkinText || "—"}
-                      </div>
-                      <div className="mb-2 small">
-                        <strong>Check-out:</strong> {it.checkoutText || "—"}
-                      </div>
-
-                      <input
-                        type="text"
-                        className="form-control form-control-sm text-muted"
-                        placeholder="write your personalized note here"
+                  <div className="row g-0 h-100">
+                    {/* Left image pane */}
+                    <div className="col-5 col-sm-4 col-md-3 d-flex h-100 overflow-hidden">
+                      <img
+                        src={it.image}
+                        alt="Guest"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        className="rounded-start"
                       />
+                    </div>
+
+                    {/* Right content pane */}
+                    <div className="col-7 col-sm-8 col-md-9 d-flex h-100">
+                      <div className="card-body d-flex flex-column justify-content-start w-100 overflow-hidden">
+                        <h5 className="card-title mb-2 text-truncate">
+                          {it.guestName || "(No name in event)"}
+                        </h5>
+
+                        <div className="mb-1 small">
+                          <strong>Check-in:</strong> {it.checkinText || "—"}
+                        </div>
+                        <div className="mb-2 small">
+                          <strong>Check-out:</strong> {it.checkoutText || "—"}
+                        </div>
+
+                        <input
+                          type="text"
+                          className="form-control form-control-sm text-muted"
+                          placeholder="write your personalized note here"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {!loading && items.length === 0 && !err && (
             <div className="col-12 d-flex justify-content-center">

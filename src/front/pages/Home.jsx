@@ -1,52 +1,57 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// src/front/js/pages/Home.jsx
+import React from "react";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
+  const year = new Date().getFullYear();
 
-	const { store, dispatch } = useGlobalReducer()
+  return (
+    <main className="container py-5">
 
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
+      <section className="row align-items-center g-4">
+        <div className="col-md-6">
+          <div
+            className="position-relative"
+            style={{
+              paddingTop: "56.25%",
+              borderRadius: "12px",
+              overflow: "hidden",
+              boxShadow: "0 0 0 1px rgba(0,0,0,.08)"
+            }}
+          >
+            <iframe
+              src="https://www.youtube.com/embed/YU7eKZ9iIMg"
+              title="Happy Airbnb arrival"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+            />
+          </div>
+        </div>
 
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
+        <div className="col-md-6">
+          <h2 className="h4">Our mission</h2>
+          <p className="text-muted">
+            WhiteGlove BnB helps hosts share the right details, fast. We turn a host's
+            Google Calendar into a clear schedule and a single guest link that shows the
+            essentials—property basics, live weather, and top nearby restaurants—so
+            arrivals are smooth and questions are few.
+          </p>
 
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
+          <ul className="mb-4">
+            <li>Connect Google Calendar to see booked and open dates</li>
+            <li>Guest preview page with live weather and Yelp restaurants</li>
+            <li>Simple setup so hosts and guests stay on the same page</li>
+          </ul>
 
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
+          <Link to="/signup" className="btn btn-primary me-2">Get Started</Link>
+          <Link to="/login" className="btn btn-outline-secondary">Log in</Link>
+        </div>
+      </section>
 
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-	useEffect(() => {
-		loadMessage()
-	}, [])
-
-	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
-		</div>
-	);
-}; 
+      <div className="text-center text-muted mt-5 border rounded-3 py-3">
+        © {year} WhiteGlove BnB
+      </div>
+    </main>
+  );
+};

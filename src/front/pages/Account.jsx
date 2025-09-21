@@ -1,181 +1,271 @@
-import React, { useEffect, useMemo, useState } from "react";
+// src/front/pages/Account.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
-/** Strip prefixes like "Reserved - " from the event title to get the guest name */
+/* -------------------- EXPLICIT PHOTO IMPORTS -------------------- */
+import AndresPhoto from "../assets/img/Andres.jpg";
+import AnoukPhoto from "../assets/img/Anouk.jpg";
+import CarolinePhoto from "../assets/img/Caroline.jpg";
+import DanielPhoto from "../assets/img/Daniel.jpg";
+import DiegoPhoto from "../assets/img/Diego.jpg";
+import HoucinePhoto from "../assets/img/Houcine.jpg";
+import JessicaPhoto from "../assets/img/Jessica.jpg";
+import JianyanPhoto from "../assets/img/Jianyan.jpg";
+import KsanaPhoto from "../assets/img/Ksana.jpg";
+import LuisPhoto from "../assets/img/Luis.jpg";
+import NykealahPhoto from "../assets/img/Nykealah.jpg";
+import OluyinkaPhoto from "../assets/img/Oluyinka.jpg";
+import RebecaPhoto from "../assets/img/Rebeca.jpg";
+import SieversPhoto from "../assets/img/Sievers.jpg";
+
+const IMAGES = {
+  andres: AndresPhoto,
+  anouk: AnoukPhoto,
+  caroline: CarolinePhoto,
+  daniel: DanielPhoto,
+  diego: DiegoPhoto,
+  houcine: HoucinePhoto,
+  jessica: JessicaPhoto,
+  jianyan: JianyanPhoto,
+  ksana: KsanaPhoto,
+  luis: LuisPhoto,
+  nykealah: NykealahPhoto,
+  oluyinka: OluyinkaPhoto,
+  rebeca: RebecaPhoto,
+  sievers: SieversPhoto,
+};
+
+/* -------------------- HELPERS -------------------- */
+
 function extractGuestName(eventTitle) {
-    if (!eventTitle) return "";
-    const cleaned = String(eventTitle).trim();
-    const patterns = [
-        /^Reserved\s*[-–—]\s*/i,       // Reserved - Name / Reserved–Name / Reserved — Name
-        /^Reserva(do|da)?\s*[-–—]\s*/i // Spanish/Portuguese variants (optional)
-    ];
-    let name = cleaned;
-    for (const p of patterns) name = name.replace(p, "");
-    return name.trim();
+  if (!eventTitle) return "";
+  const cleaned = String(eventTitle).trim();
+  const patterns = [/^Reserved\s*[-–—]\s*/i, /^Reserva(do|da)?\s*[-–—]\s*/i];
+  let name = cleaned;
+  for (const p of patterns) name = name.replace(p, "");
+  return name.trim();
 }
 
-/** Format ISO to a readable local date */
+function normalizeKey(s) {
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 function fmtDate(iso) {
-    if (!iso) return "";
-    try {
-        const d = new Date(iso);
-        return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-    } catch {
-        return iso;
-    }
+  if (!iso) return "";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  } catch {
+    return iso;
+  }
 }
 
-/** Convert Google Drive links to a direct-view image URL */
 function toDriveDirect(url) {
-    if (!url) return null;
-    // /file/d/<id>/view
-    const m1 = url.match(/https?:\/\/drive\.google\.com\/file\/d\/([^/]+)\/view/i);
-    if (m1) return `https://drive.google.com/uc?export=view&id=${m1[1]}`;
-    // open?id=<id>
-    const m2 = url.match(/https?:\/\/drive\.google\.com\/open\?id=([^&]+)/i);
-    if (m2) return `https://drive.google.com/uc?export=view&id=${m2[1]}`;
-    // uc?export=view&id=<id>
-    const m3 = url.match(/https?:\/\/drive\.google\.com\/uc\?(?:export=\w+&)?id=([^&]+)/i);
-    if (m3) return `https://drive.google.com/uc?export=view&id=${m3[1]}`;
-    return null;
+  if (!url) return null;
+  const m1 = url.match(/https?:\/\/drive\.google\.com\/file\/d\/([^/]+)\/view/i);
+  if (m1) return `https://drive.google.com/uc?export=view&id=${m1[1]}`;
+  const m2 = url.match(/https?:\/\/drive\.google\.com\/open\?id=([^&]+)/i);
+  if (m2) return `https://drive.google.com/uc?export=view&id=${m2[1]}`;
+  const m3 = url.match(/https?:\/\/drive\.google\.com\/uc\?(?:export=\w+&)?id=([^&]+)/i);
+  if (m3) return `https://drive.google.com/uc?export=view&id=${m3[1]}`;
+  return null;
 }
+
+/* -------------------- COMPONENT -------------------- */
+
+const CARD_HEIGHT = 180; // unified height for image + content
 
 export const Account = () => {
-    const { store } =
-        (typeof useGlobalReducer === "function" ? useGlobalReducer() : { store: {} }) || { store: {} };
+  const { store } =
+    (typeof useGlobalReducer === "function" ? useGlobalReducer() : { store: {} }) || { store: {} };
 
-    // Testing bypass
-    // const token = store?.session?.token ?? null;
-    const token = store?.token ?? true;
+  const token = store?.token ?? true;
+  const email = store?.user?.email ?? "Guest";
 
-    // Show account email
-    const email = store?.user?.email ?? "Guest";
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
 
-    const [reservations, setReservations] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
+  useEffect(() => {
+    const url = `${API_BASE}/calendar/reserved?tz=America/New_York`;
+    fetch(url)
+      .then(async (r) => {
+        const txt = await r.text();
+        if (!r.ok) throw new Error(`HTTP ${r.status}: ${txt.slice(0, 200)}`);
+        try {
+          return JSON.parse(txt);
+        } catch {
+          throw new Error(`Expected JSON, got: ${txt.slice(0, 120)}`);
+        }
+      })
+      .then((data) => {
+        setReservations(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setErr(e.message);
+        setLoading(false);
+      });
+  }, []);
 
-    useEffect(() => {
-        const url = `${API_BASE}/calendar/reserved?tz=America/New_York`;
-        fetch(url)
-            .then(async (r) => {
-                const txt = await r.text();
-                if (!r.ok) throw new Error(`HTTP ${r.status}: ${txt.slice(0, 200)}`);
-                try {
-                    return JSON.parse(txt);
-                } catch {
-                    throw new Error(`Expected JSON, got: ${txt.slice(0, 120)}`);
-                }
-            })
-            .then((data) => {
-                setReservations(Array.isArray(data) ? data : []);
-                setLoading(false);
-            })
-            .catch((e) => {
-                setErr(e.message);
-                setLoading(false);
-            });
-    }, []);
+  const items = useMemo(
+    () =>
+      reservations.map((r) => {
+        const title = r.title || r.event;
+        const guestName = extractGuestName(title);
+        const keyName = normalizeKey(guestName);
 
-    // Build UI items:
-    // - Prefer backend-provided image (r.image).
-    // - If missing, but reservation_url is a public Google Drive link, convert and use that as the image.
-    // - Always show the personalized note textbox; do NOT render a reservation button/link.
-    const items = useMemo(
-        () =>
-            reservations.map((r) => {
-                const directFromReservation = toDriveDirect(r.reservation_url || "");
-                const imageSrc =
-                    (r.image && r.image.trim()) ||
-                    (directFromReservation && directFromReservation.trim()) ||
-                    "https://picsum.photos/seed/guest/600/400";
+        const imported = IMAGES[keyName];
+        const backendImg = (r.image && r.image.trim()) || null;
+        const directFromReservation = toDriveDirect(r.reservation_url || "");
+        const imageSrc =
+          imported ||
+          backendImg ||
+          (directFromReservation && directFromReservation.trim()) ||
+          "https://picsum.photos/seed/guest/600/400";
 
-                return {
-                    key: r.event || crypto.randomUUID(),
-                    guestName: extractGuestName(r.title || r.event),
-                    checkin: fmtDate(r.checkin),
-                    checkout: fmtDate(r.checkout),
-                    image: imageSrc
-                };
-            }),
-        [reservations]
+        const checkinDate = r.checkin ? new Date(r.checkin) : null;
+        const checkoutDate = r.checkout ? new Date(r.checkout) : null;
+
+        return {
+          key: r.event || crypto.randomUUID(),
+          guestName,
+          checkinText: fmtDate(r.checkin),
+          checkoutText: fmtDate(r.checkout),
+          checkinDate,
+          checkoutDate,
+          image: imageSrc,
+        };
+      }),
+    [reservations]
+  );
+
+  // Find current/next card index
+  const currentIndex = useMemo(() => {
+    if (!items.length) return 0;
+    const now = new Date();
+    const sod = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+    const eod = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+
+    const cur = items.findIndex(
+      (it) =>
+        it.checkinDate &&
+        it.checkoutDate &&
+        now >= sod(it.checkinDate) &&
+        now <= eod(it.checkoutDate)
     );
+    if (cur !== -1) return cur;
 
-    if (!token) {
-        return (
-            <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
-                <div className="text-center p-4">
-                    <h1 className="h4 mb-2">Not authorized</h1>
-                </div>
-            </div>
-        );
-    }
+    const upcoming = items.findIndex((it) => it.checkinDate && sod(it.checkinDate) > eod(now));
+    return upcoming !== -1 ? upcoming : 0;
+  }, [items]);
 
+  const listRef = useRef(null);
+  const cardRefs = useRef([]);
+
+  useEffect(() => {
+    if (!listRef.current || !cardRefs.current[currentIndex]) return;
+    // Auto-scroll to current card; padding handled by scrollPaddingTop on the container
+    cardRefs.current[currentIndex].scrollIntoView({ block: "start" });
+  }, [currentIndex, items.length]);
+
+  if (!token) {
     return (
-        <div className="min-vh-100 d-flex flex-column bg-light">
-            <main className="container py-4 flex-grow-1">
-                <h1 className="h4 mb-4">Welcome {email}</h1>
-
-                <div className="d-flex align-items-center justify-content-between mb-3">
-                    <h2 className="h5 mb-0">Upcoming Reservations</h2>
-                    {loading && <span className="text-muted small">Loading…</span>}
-                    {err && <span className="text-danger small">Error: {err}</span>}
-                </div>
-
-                {/* Centered, one-per-row cards */}
-                <div className="row g-4">
-                    {items.map((it) => (
-                        <div key={it.key} className="col-12 d-flex justify-content-center">
-                            <div className="card shadow-sm border-0 w-100" style={{ maxWidth: 900 }}>
-                                <div className="row g-0 align-items-stretch">
-                                    {/* Left: guest picture (from r.image or reservation_url if it's a Drive link) */}
-                                    <div className="col-5 col-sm-4 col-md-3">
-                                        <img
-                                            src={it.image}
-                                            alt="Guest"
-                                            className="img-fluid w-100 h-100 object-fit-cover rounded-start"
-                                            style={{ minHeight: 180 }}
-                                        />
-                                    </div>
-
-                                    {/* Right: name, then check-in, then check-out, then always show note textbox */}
-                                    <div className="col-7 col-sm-8 col-md-9">
-                                        <div className="card-body">
-                                            <h5 className="card-title mb-2">{it.guestName || "(No name in event)"}</h5>
-
-                                            <div className="mb-1">
-                                                <strong>Check-in:</strong> {it.checkin || "—"}
-                                            </div>
-                                            <div className="mb-3">
-                                                <strong>Check-out:</strong> {it.checkout || "—"}
-                                            </div>
-
-                                            {/* Always render personalized note textbox */}
-                                            <input
-                                                type="text"
-                                                className="form-control form-control-sm text-muted"
-                                                placeholder="write your personalized note here"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-
-                    {!loading && items.length === 0 && !err && (
-                        <div className="col-12 d-flex justify-content-center">
-                            <div className="alert alert-info mb-0 w-100" style={{ maxWidth: 900 }}>
-                                No reservations found.
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </main>
+      <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+        <div className="text-center p-4">
+          <h1 className="h4 mb-2">Not authorized</h1>
         </div>
+      </div>
     );
+  }
+
+  return (
+    // Lock outer page scroll; only the list scrolls
+    <div className="bg-light" style={{ position: "fixed", inset: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <main className="container py-4 d-flex flex-column" style={{ flex: 1, minHeight: 0 }}>
+        <h1 className="h4 mb-3">Welcome {email}</h1>
+
+        <div className="d-flex align-items-center justify-content-between">
+          <h2 className="h5 mb-0">Here are your upcoming reservations...</h2>
+          {loading && <span className="text-muted small">Loading…</span>}
+          {err && <span className="text-danger small">Error: {err}</span>}
+        </div>
+
+        {/* Scrollable list — now with top gap + scroll padding to prevent overlap */}
+        <div
+          ref={listRef}
+          className="row g-3 mx-0 mt-3"
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            paddingRight: 4,
+            minHeight: 0,
+            paddingTop: 16,       // EDIT #1: visible gap above first card
+            scrollPaddingTop: 16, // EDIT #2: keeps gap when scrollIntoView runs
+          }}
+        >
+          {items.map((it, idx) => (
+            <div
+              key={it.key}
+              ref={(el) => (cardRefs.current[idx] = el)}
+              className="col-12 d-flex justify-content-center"
+              style={{ scrollMarginTop: 16 }}
+            >
+              <div className="card shadow-sm border-0 w-100" style={{ maxWidth: 900, height: CARD_HEIGHT }}>
+                <div className="row g-0 h-100">
+                  {/* Left image pane: fixed height, fully fills, always aligned */}
+                  <div className="col-5 col-sm-4 col-md-3 d-flex h-100 overflow-hidden">
+                    <img
+                      src={it.image}
+                      alt="Guest"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      className="rounded-start"
+                    />
+                  </div>
+
+                  {/* Right content pane: fixed height; content clipped to keep equal height */}
+                  <div className="col-7 col-sm-8 col-md-9 d-flex h-100">
+                    <div className="card-body d-flex flex-column justify-content-start w-100 overflow-hidden">
+                      <h5 className="card-title mb-2 text-truncate">
+                        {it.guestName || "(No name in event)"}
+                      </h5>
+
+                      <div className="mb-1 small">
+                        <strong>Check-in:</strong> {it.checkinText || "—"}
+                      </div>
+                      <div className="mb-2 small">
+                        <strong>Check-out:</strong> {it.checkoutText || "—"}
+                      </div>
+
+                      <input
+                        type="text"
+                        className="form-control form-control-sm text-muted"
+                        placeholder="write your personalized note here"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {!loading && items.length === 0 && !err && (
+            <div className="col-12 d-flex justify-content-center">
+              <div className="alert alert-info mb-0 w-100" style={{ maxWidth: 900 }}>
+                No reservations found.
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
 };
 
 export default Account;

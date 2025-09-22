@@ -164,26 +164,9 @@ def signup():
                 first_name=first_name, last_name=last_name)
     db.session.add(user)
     db.session.commit()
-    # Generate verification token and send email (pseudo-code)
-    verification_token = create_access_token(
-        identity=user.id, expires_delta=False)
-    # send_verification_email(user.email, verification_token)  # Implement this
-    return jsonify(msg="Signup successful, verification email sent"), 201
+    return jsonify(msg="Signup successful"), 201
 
 
-@api.route('/verify-email', methods=['POST'])
-def verify_email():
-    data = request.get_json()
-    token = data.get("token")
-    from flask_jwt_extended import decode_token
-    try:
-        identity = decode_token(token)["sub"]
-        user = User.query.get(identity)
-        user.is_verified = True  # <-- Set verified
-        db.session.commit()
-        return jsonify(msg="Email verified"), 200
-    except Exception:
-        return jsonify(msg="Invalid token"), 400
 
 # Event CRUD
 

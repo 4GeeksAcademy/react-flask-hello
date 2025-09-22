@@ -1,0 +1,61 @@
+/* EventDetails.css - matches core card/button design */
+.event-details-container {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+.event-details-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+.event-details-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+.event-section {
+  margin-bottom: 2rem;
+}
+.event-section h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  color: #2c3e50;
+}
+.event-section ul {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+}
+.event-section li {
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.event-details-inputs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+.event-details-inputs input {
+  flex: 1;
+}
+.event-details-btn,
+.signup-button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.event-details-btn:hover,
+.signup-button:hover {
+  background: #0056b3;
+}
+.event-details-divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 1.5rem 0;
+}

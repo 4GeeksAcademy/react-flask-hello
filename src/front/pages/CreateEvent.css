@@ -1,3 +1,25 @@
+@media (max-width: 768px) {
+  .photo-upload-wrapper {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+    margin-bottom: 10px;
+  }
+  .photo-preview {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+  }
+  .photo-preview-container {
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+  }
+  .file-upload-label {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+  }
+}
 .photo-upload-wrapper {
   position: relative;
   width: 300px;  

@@ -1,3 +1,38 @@
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .event-details-container {
+    max-width: 100%;
+    margin: 1rem;
+    padding: 0;
+  }
+  .event-details-card {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .event-details-info p {
+    font-size: 0.98rem;
+  }
+  .event-section {
+    margin-bottom: 1rem;
+  }
+  .event-section ul {
+    padding-left: 0.5rem;
+  }
+  .event-section li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .event-details-inputs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .event-details-btn {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+}
 /* EventDetails.css - matches core card/button design */
 .event-details-container {
   max-width: 600px;

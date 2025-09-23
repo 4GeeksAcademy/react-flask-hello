@@ -1,3 +1,44 @@
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-overlay {
+    padding: 2rem 1rem 2rem 1rem;
+  }
+  .hero-overlay h1 {
+    font-size: 1.5rem;
+  }
+  .features-grid,
+  .events-list,
+  .how-it-works-steps,
+  .testimonials-list,
+  .why-panels {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .feature-card,
+  .event-card,
+  .how-it-works-step,
+  .testimonial-card,
+  .why-panel {
+    width: 100%;
+    min-width: 0;
+    padding: 1rem;
+  }
+  .cta {
+    padding: 2rem 1rem;
+  }
+  .footer {
+    padding: 1rem 0 0.5rem 0;
+  }
+}
 /* General page layout */
 body,
 .landing-root,

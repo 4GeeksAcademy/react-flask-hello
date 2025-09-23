@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import "./Landing.css";  
+import { useNavigate } from 'react-router-dom';
+import "./Landing.css";
 import "./LoginSignup.css";
 
 function Signup() {
@@ -9,23 +10,24 @@ function Signup() {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
     try {
-      const response = await fetch(' https://upgraded-system-7vgj4vjj6j52rx7j-3001.app.github.dev/api/signup', {
+      const response = await fetch('https://upgraded-system-7vgj4vjj6j52rx7j-3001.app.github.dev/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName }),
       });
-      console.log(response)
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.msg || 'Signup failed');
       }
-      setSuccess(data.msg || 'Signup successful! Please check your email for verification.');
+      setSuccess(data.msg || 'Signup successful!');
+      setTimeout(() => navigate('/login'), 1500);
     } catch (error) {
       setError(error.message || 'Failed to signup');
     }
@@ -70,7 +72,7 @@ function Signup() {
         </form>
 
         <p className="signup-footer">
-           <a href="/login">Already have an account?</a>
+          <a href="/login">Already have an account?</a>
         </p>
       </div>
     </div>

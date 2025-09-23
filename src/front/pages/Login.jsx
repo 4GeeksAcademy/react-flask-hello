@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./Landing.css";
 import "./LoginSignup.css";
 
@@ -6,6 +7,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +19,12 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log('Login success:', data);
+      if (response.ok && data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        navigate('/dashboard');
+      } else {
+        setError(data.msg || 'Failed to login');
+      }
     } catch (error) {
       setError(error.message || 'Failed to login');
       console.error('Failed to login:', error);

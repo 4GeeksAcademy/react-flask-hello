@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt, faPoll, faStar, faBell, faUser, faBolt, faGlobe, faCamera, faLock, faMusic, faLaptop, faPalette, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import "./Landing.css";
 
 export const Landing = () => {
@@ -115,27 +117,27 @@ export const Landing = () => {
                 <h2>Features</h2>
                 <div className="features-grid">
                     <div className="feature-card">
-                        <span className="feature-icon">:date:</span>
+                        <span className="feature-icon"><FontAwesomeIcon icon={faCalendarAlt} /></span>
                         <h5>My Events</h5>
                         <p>Create, view, and manage events.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">:ballot_box_with_ballot:</span>
+                        <span className="feature-icon"><FontAwesomeIcon icon={faPoll} /></span>
                         <h5>RSVP & Polling</h5>
                         <p>Let guests RSVP and vote on event options.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">:star:</span>
+                        <span className="feature-icon"><FontAwesomeIcon icon={faStar} /></span>
                         <h5>Favorites</h5>
                         <p>Save your favorite events and people.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">:bell:</span>
+                        <span className="feature-icon"><FontAwesomeIcon icon={faBell} /></span>
                         <h5>Notifications</h5>
                         <p>Stay updated with event changes.</p>
                     </div>
                     <div className="feature-card">
-                        <span className="feature-icon">:bust_in_silhouette:</span>
+                        <span className="feature-icon"><FontAwesomeIcon icon={faUser} /></span>
                         <h5>Profile</h5>
                         <p>Customize your experience.</p>
                     </div>
@@ -234,25 +236,34 @@ export const Landing = () => {
         </div>
     );
 };
-const EventCard = ({ event }) => (
-    <div className="event-card">
-        <span className="event-icon">{event.icon || ":tada:"}</span>
-        <h4>{event.title}</h4>
-        <p>
-            {event.date} • {event.rsvp || "?"} RSVPs
-        </p>
-        {event.location && (
+const EventCard = ({ event }) => {
+    let icon;
+    switch (event.icon) {
+        case "🎵": icon = faMusic; break;
+        case "💻": icon = faLaptop; break;
+        case "🎨": icon = faPalette; break;
+        default: icon = faCalendarAlt;
+    }
+    return (
+        <div className="event-card">
+            <span className="event-icon"><FontAwesomeIcon icon={icon} /></span>
+            <h4>{event.title}</h4>
             <p>
-                <span role="img" aria-label="location">📍</span> {event.location}
+                {event.date} • {event.rsvp || "?"} RSVPs
             </p>
-        )}
-        {event.description && (
-            <p className="event-description">
-                {event.description}
-            </p>
-        )}
-    </div>
-);
+            {event.location && (
+                <p>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {event.location}
+                </p>
+            )}
+            {event.description && (
+                <p className="event-description">
+                    {event.description}
+                </p>
+            )}
+        </div>
+    );
+};
 
 const TESTIMONIALS = [
     {

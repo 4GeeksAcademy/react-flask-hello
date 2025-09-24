@@ -127,6 +127,22 @@ function Dashboard() {
         }
     };
 
+    // Placeholder data for widgets
+    const stats = {
+        eventsAttended: 5,
+        rsvps: 3,
+        favorites: 2
+    };
+    const notifications = [
+        { id: 1, message: "You have a new event invitation!" },
+        { id: 2, message: "Event 'React Summit' starts tomorrow." }
+    ];
+    const upcomingEvent = {
+        title: "React Summit",
+        date: "2025-09-30",
+        location: "Online"
+    };
+
     return (
         <div className="dashboard-container">
             {/* Dashboard Navbar */}
@@ -142,94 +158,40 @@ function Dashboard() {
             <h1>Welcome to Your Dashboard</h1>
             {error && <div className="dashboard-error">{error}</div>}
             <div className="dashboard-widgets">
-                <div className="dashboard-card">
-                    <h2>Profile</h2>
-                    {profile ? (
-                        editMode ? (
-                            <form onSubmit={handleEditSubmit} className="dashboard-edit-form">
-                                <input
-                                    type="text"
-                                    name="first_name"
-                                    value={editProfile.first_name}
-                                    onChange={handleEditChange}
-                                    placeholder="First Name"
-                                    className="dashboard-input"
-                                />
-                                <input
-                                    type="text"
-                                    name="last_name"
-                                    value={editProfile.last_name}
-                                    onChange={handleEditChange}
-                                    placeholder="Last Name"
-                                    className="dashboard-input"
-                                />
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={editProfile.email}
-                                    onChange={handleEditChange}
-                                    placeholder="Email"
-                                    className="dashboard-input"
-                                />
-                                <button type="submit" className="dashboard-button">Save</button>
-                                <button type="button" className="dashboard-button" onClick={() => setEditMode(false)}>Cancel</button>
-                                {updateMsg && <div className="dashboard-update-msg">{updateMsg}</div>}
-                            </form>
-                        ) : (
-                            <>
-                                <ul>
-                                    <li><strong>Email:</strong> {profile.email}</li>
-                                    <li><strong>Name:</strong> {profile.first_name} {profile.last_name}</li>
-                                </ul>
-                                <button className="dashboard-button" onClick={() => setEditMode(true)}>Edit Profile</button>
-                                {updateMsg && <div className="dashboard-update-msg">{updateMsg}</div>}
-                            </>
-                        )
-                    ) : (
-                        <p>Loading profile...</p>
-                    )}
+                {/* Quick Stats Widget */}
+                <div className="dashboard-card dashboard-stats">
+                    <h2>Quick Stats</h2>
+                    <ul className="dashboard-stats-list">
+                        <li><strong>Events Attended:</strong> {stats.eventsAttended}</li>
+                        <li><strong>RSVPs:</strong> {stats.rsvps}</li>
+                        <li><strong>Favorites:</strong> {stats.favorites}</li>
+                    </ul>
                 </div>
-                <div className="dashboard-card" id="my-events">
-                    <h2>My Events</h2>
-                    {events.length > 0 ? (
-                        <ul>
-                            {events.map(event => (
-                                <li key={event.id} className="dashboard-event">
-                                    <div className="dashboard-event-details">
-                                        <div><strong>Name:</strong> {event.title}</div>
-                                        <div><strong>Location:</strong> {event.location}</div>
-                                        <div><strong>Time:</strong> {event.time}</div>
-                                        <div><strong>Description:</strong> {event.description}</div>
-                                        <div><strong>Cost:</strong> {event.cost ? event.cost : 'Free'}</div>
-                                    </div>
-                                    <div className="dashboard-event-rsvp">
-                                        <button className="dashboard-button" onClick={() => handleRSVP(event.id, 'yes')}>Yes</button>
-                                        <button className="dashboard-button" onClick={() => handleRSVP(event.id, 'maybe')}>Maybe</button>
-                                        <button className="dashboard-button" onClick={() => handleRSVP(event.id, 'no')}>No</button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No events found.</p>
-                    )}
-                    {rsvpMsg && <div className="dashboard-update-msg">{rsvpMsg}</div>}
+                {/* Notifications Widget */}
+                <div className="dashboard-card dashboard-notifications">
+                    <h2>Notifications</h2>
+                    <ul>
+                        {notifications.map(note => (
+                            <li key={note.id}>{note.message}</li>
+                        ))}
+                    </ul>
                 </div>
-                <div className="dashboard-card">
-                    <h2>Favorites</h2>
-                    {favorites.length > 0 ? (
-                        <ul>
-                            {favorites.map(fav => (
-                                <li key={fav.id}>
-                                    Event #{fav.event_id}
-                                    <button className="dashboard-button" style={{ marginLeft: '1rem' }} onClick={() => handleRemoveFavorite(fav.event_id)}>Remove</button>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No favorites found.</p>
-                    )}
-                    {favMsg && <div className="dashboard-update-msg">{favMsg}</div>}
+                {/* Upcoming Event Widget */}
+                <div className="dashboard-card dashboard-upcoming">
+                    <h2>Upcoming Event</h2>
+                    <div>
+                        <strong>{upcomingEvent.title}</strong><br />
+                        {upcomingEvent.date} @ {upcomingEvent.location}
+                    </div>
+                </div>
+                {/* Quick Links Widget */}
+                <div className="dashboard-card dashboard-quicklinks">
+                    <h2>Quick Links</h2>
+                    <ul className="dashboard-quicklinks-list">
+                        <li><Link to="/discover">Find Events</Link></li>
+                        <li><Link to="/create-event">Create Event</Link></li>
+                        <li><Link to="/profile">Edit Profile</Link></li>
+                    </ul>
                 </div>
             </div>
         </div>

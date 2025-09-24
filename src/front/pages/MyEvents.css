@@ -1,0 +1,54 @@
+.my-events-container {
+  padding: 2rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.my-events-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.my-event-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  text-align: left;
+  transition: box-shadow 0.2s;
+}
+.my-event-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.my-event-card h2 {
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+.my-event-details-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.my-event-details-link:hover {
+  text-decoration: underline;
+}
+.my-events-error {
+  color: #c00;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .my-events-container {
+    padding: 1rem;
+  }
+  .my-events-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .my-event-card {
+    padding: 1rem;
+  }
+}

@@ -40,11 +40,11 @@ export const router = createBrowserRouter(
       <Route path="demo" element={<Demo />} />
       <Route path="createevent" element={<CreateEvent />} />
       <Route path="profile" element={<Profile />} />
-  <Route path="dashboard" element={<Dashboard />} />
-  <Route path="discover" element={<Discover />} />
-  <Route path="rsvp" element={<RSVP />} />
-  <Route path="fav" element={<Fav />} />
-  <Route path="event/:eventId" element={<EventDetails />} />
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="discover" element={<Discover />} />
+      <Route path="rsvp" element={<RSVP />} />
+      <Route path="fav" element={<Fav />} />
+      <Route path="event/:eventId" element={<EventDetails />} />
     </Route>
   )
 );

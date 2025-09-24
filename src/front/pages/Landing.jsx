@@ -144,19 +144,6 @@ export const Landing = () => {
                 </div>
             </section>
 
-            {/* Upcoming Events Section (Styled) */}
-            <section className="events" id="events">
-                <h2>Upcoming Events</h2>
-                <div className="events-list">
-                    {events.length === 0 ? (
-                        <div className="event-card">No events found.</div>
-                    ) : (
-                        events.map((event) => (
-                            <EventCard event={event} key={event.id} />
-                        ))
-                    )}
-                </div>
-            </section>
 
             {/* How It Works Section */}
             <section className="how-it-works" id="how-it-works">

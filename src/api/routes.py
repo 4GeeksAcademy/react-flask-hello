@@ -40,6 +40,17 @@ def logout():
     unset_jwt_cookies(response)
     return response, 200
 
+
+@api.after_request
+def add_cors_headers(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    response.headers.add('Access-Control-Allow-Headers',
+                         'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods',
+                         'GET,POST,PUT,DELETE,OPTIONS')
+    return response
+
 # JWT blacklist check (add to your JWT setup in app.py)
 # from flask_jwt_extended import JWTManager
 # jwt = JWTManager(app)
@@ -165,7 +176,6 @@ def signup():
     db.session.add(user)
     db.session.commit()
     return jsonify(msg="Signup successful"), 201
-
 
 
 # Event CRUD

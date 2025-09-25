@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt, faStar, faBell, faUser, faBolt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 function Dashboard() {
@@ -144,53 +146,149 @@ function Dashboard() {
     };
 
     return (
-        <div className="dashboard-container">
+        <div className="dashboard-container" style={{ background: '#f8f9fa', minHeight: '100vh' }}>
             {/* Dashboard Navbar */}
-            <nav className="dashboard-navbar">
-                <ul>
-                    <li><Link to="/dashboard">Home</Link></li>
-                    <li><Link to="/discover">Discover</Link></li>
-                    <li><Link to="/dashboard#my-events">My Events</Link></li>
-                    <li><Link to="/dashboard#rsvp">RSVP</Link></li>
-                    <li><Link to="/dashboard#fav">Fav</Link></li>
+            <nav className="dashboard-navbar" style={{ background: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px #23234a11', marginBottom: '2rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'center' }}>
+                <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0, alignItems: 'center' }}>
+                    <li><Link to="/dashboard" style={{ color: '#23234a', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Dashboard</Link></li>
+                    <li><Link to="/discover" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Discover</Link></li>
+                    <li><Link to="/myevents" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>My Events</Link></li>
+                    <li><Link to="/rsvp" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>RSVP</Link></li>
+                    <li><Link to="/fav" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Favorites</Link></li>
+                    <li><Link to="/profile" style={{ color: '#23234a', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Profile</Link></li>
+                    <li><Link to="/" style={{ color: '#007bff', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Logout</Link></li>
                 </ul>
             </nav>
-            <h1>Welcome to Your Dashboard</h1>
+            {/* Hero-style header */}
+            <section className="dashboard-hero" style={{ background: '#23234a', color: '#fff', borderRadius: '0 0 32px 32px', padding: '2.5rem 2rem 2rem 2rem', marginBottom: '2rem', textAlign: 'center', boxShadow: '0 2px 16px #23234a22' }}>
+                <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', letterSpacing: '2px' }}>Welcome, {profile ? profile.first_name : 'User'}!</h1>
+                <p style={{ fontSize: '1.2rem', marginBottom: '1.5rem' }}>Your event adventure starts here.</p>
+                <div className="dashboard-cta-buttons" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                    <Link to="/discover" className="btn btn-primary" style={{ background: '#ff7c2d', color: '#fff', borderRadius: '25px', padding: '0.7rem 2rem', fontWeight: 600, fontSize: '1rem', textDecoration: 'none' }}>Find Events</Link>
+                    <Link to="/createevent" className="btn btn-secondary" style={{ background: '#fff', color: '#23234a', border: '1px solid #ff7c2d', borderRadius: '25px', padding: '0.7rem 2rem', fontWeight: 600, fontSize: '1rem', textDecoration: 'none' }}>Create Event</Link>
+                </div>
+            </section>
             {error && <div className="dashboard-error">{error}</div>}
-            <div className="dashboard-widgets">
+            <div className="dashboard-widgets" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', justifyItems: 'stretch', alignItems: 'stretch' }}>
+                {/* Profile Widget */}
+                <div className="dashboard-card dashboard-profile" style={{ background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#ff7c2d' }}><FontAwesomeIcon icon={faUser} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Profile</h2>
+                    {profile ? (
+                        editMode ? (
+                            <form onSubmit={handleEditSubmit} className="dashboard-edit-form">
+                                <input
+                                    type="text"
+                                    name="first_name"
+                                    value={editProfile.first_name}
+                                    onChange={handleEditChange}
+                                    placeholder="First Name"
+                                    className="dashboard-input"
+                                />
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    value={editProfile.last_name}
+                                    onChange={handleEditChange}
+                                    placeholder="Last Name"
+                                    className="dashboard-input"
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={editProfile.email}
+                                    onChange={handleEditChange}
+                                    placeholder="Email"
+                                    className="dashboard-input"
+                                />
+                                <button type="submit" className="dashboard-button">Save</button>
+                                <button type="button" className="dashboard-button" onClick={() => setEditMode(false)}>Cancel</button>
+                                {updateMsg && <div className="dashboard-update-msg">{updateMsg}</div>}
+                            </form>
+                        ) : (
+                            <>
+                                <ul style={{ textAlign: 'left', margin: '0 auto 1rem auto', display: 'inline-block' }}>
+                                    <li><strong>Email:</strong> {profile.email}</li>
+                                    <li><strong>Name:</strong> {profile.first_name} {profile.last_name}</li>
+                                </ul>
+                                <button className="dashboard-button" onClick={() => setEditMode(true)} style={{ background: '#ff7c2d', color: '#fff', borderRadius: '25px', padding: '0.5rem 1.5rem', fontWeight: 600, border: 'none', marginTop: '0.5rem' }}>Edit Profile</button>
+                                {updateMsg && <div className="dashboard-update-msg">{updateMsg}</div>}
+                            </>
+                        )
+                    ) : (
+                        <p>Loading profile...</p>
+                    )}
+                </div>
+                {/* My Events Widget */}
+                <div className="dashboard-card dashboard-events" style={{ background: '#f4f6fb', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#ff7c2d' }}><FontAwesomeIcon icon={faCalendarAlt} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>My Events</h2>
+                    {events.length > 0 ? (
+                        <ul style={{ textAlign: 'left', margin: '0 auto', display: 'inline-block' }}>
+                            {events.map(event => (
+                                <li key={event.id}>
+                                    <strong>{event.title}</strong> — {event.date} @ {event.location}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No events found.</p>
+                    )}
+                </div>
+                {/* Favorites Widget */}
+                <div className="dashboard-card dashboard-favorites" style={{ background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#ff7c2d' }}><FontAwesomeIcon icon={faStar} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Favorites</h2>
+                    {favorites.length > 0 ? (
+                        <ul style={{ textAlign: 'left', margin: '0 auto', display: 'inline-block' }}>
+                            {favorites.map(fav => (
+                                <li key={fav.event_id || fav.id}>
+                                    Event #{fav.event_id || fav.id}
+                                    <button className="dashboard-button" style={{ marginLeft: '1rem', background: '#ff7c2d', color: '#fff', borderRadius: '25px', padding: '0.3rem 1rem', fontWeight: 600, border: 'none' }} onClick={() => handleRemoveFavorite(fav.event_id || fav.id)}>Remove</button>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No favorites found.</p>
+                    )}
+                    {favMsg && <div className="dashboard-update-msg">{favMsg}</div>}
+                </div>
                 {/* Quick Stats Widget */}
-                <div className="dashboard-card dashboard-stats">
-                    <h2>Quick Stats</h2>
-                    <ul className="dashboard-stats-list">
+                <div className="dashboard-card dashboard-stats" style={{ background: '#eaf4ff', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center', borderLeft: '5px solid #007bff' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#007bff' }}><FontAwesomeIcon icon={faBolt} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Quick Stats</h2>
+                    <ul className="dashboard-stats-list" style={{ textAlign: 'left', margin: '0 auto', display: 'inline-block' }}>
                         <li><strong>Events Attended:</strong> {stats.eventsAttended}</li>
                         <li><strong>RSVPs:</strong> {stats.rsvps}</li>
                         <li><strong>Favorites:</strong> {stats.favorites}</li>
                     </ul>
                 </div>
                 {/* Notifications Widget */}
-                <div className="dashboard-card dashboard-notifications">
-                    <h2>Notifications</h2>
-                    <ul>
+                <div className="dashboard-card dashboard-notifications" style={{ background: '#f9f9f9', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#ff7c2d' }}><FontAwesomeIcon icon={faBell} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Notifications</h2>
+                    <ul style={{ textAlign: 'left', margin: '0 auto', display: 'inline-block' }}>
                         {notifications.map(note => (
                             <li key={note.id}>{note.message}</li>
                         ))}
                     </ul>
                 </div>
                 {/* Upcoming Event Widget */}
-                <div className="dashboard-card dashboard-upcoming">
-                    <h2>Upcoming Event</h2>
+                <div className="dashboard-card dashboard-upcoming" style={{ background: '#eafaf1', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center', borderLeft: '5px solid #28a745' }}>
+                    <span className="feature-icon" style={{ fontSize: '2.2rem', color: '#28a745' }}><FontAwesomeIcon icon={faCalendarAlt} /></span>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Upcoming Event</h2>
                     <div>
-                        <strong>{upcomingEvent.title}</strong><br />
+                        <strong style={{ color: '#28a745', fontSize: '1.1rem' }}>{upcomingEvent.title}</strong><br />
                         {upcomingEvent.date} @ {upcomingEvent.location}
                     </div>
                 </div>
                 {/* Quick Links Widget */}
-                <div className="dashboard-card dashboard-quicklinks">
-                    <h2>Quick Links</h2>
-                    <ul className="dashboard-quicklinks-list">
-                        <li><Link to="/discover">Find Events</Link></li>
-                        <li><Link to="/create-event">Create Event</Link></li>
-                        <li><Link to="/profile">Edit Profile</Link></li>
+                <div className="dashboard-card dashboard-quicklinks" style={{ background: '#f9f9f9', borderRadius: '16px', boxShadow: '0 2px 8px #23234a11', padding: '2rem 1.5rem', textAlign: 'center' }}>
+                    <h2 style={{ color: '#23234a', marginBottom: '0.5rem' }}>Quick Links</h2>
+                    <ul className="dashboard-quicklinks-list" style={{ textAlign: 'left', margin: '0 auto', display: 'inline-block' }}>
+                        <li><Link to="/discover" style={{ color: '#ff7c2d', fontWeight: 500, textDecoration: 'none' }}>Find Events</Link></li>
+                        <li><Link to="/createevent" style={{ color: '#ff7c2d', fontWeight: 500, textDecoration: 'none' }}>Create Event</Link></li>
+                        <li><Link to="/profile" style={{ color: '#ff7c2d', fontWeight: 500, textDecoration: 'none' }}>Edit Profile</Link></li>
                     </ul>
                 </div>
             </div>

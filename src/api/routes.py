@@ -189,11 +189,14 @@ def my_events():
     if hasattr(Event, 'creator_id'):
         created_events = Event.query.filter_by(creator_id=user_id).all()
     # Events RSVP'd by user
-    rsvp_event_ids = [rsvp.event_id for rsvp in RSVP.query.filter_by(user_id=user_id).all()]
-    rsvp_events = Event.query.filter(Event.id.in_(rsvp_event_ids)).all() if rsvp_event_ids else []
+    rsvp_event_ids = [
+        rsvp.event_id for rsvp in RSVP.query.filter_by(user_id=user_id).all()]
+    rsvp_events = Event.query.filter(Event.id.in_(
+        rsvp_event_ids)).all() if rsvp_event_ids else []
     # Combine and deduplicate
     all_events = {event.id: event for event in created_events + rsvp_events}
     return jsonify([event.serialize() for event in all_events.values()]), 200
+
 
 @api.route('/events', methods=['POST'])
 @jwt_required()
@@ -254,6 +257,24 @@ def delete_event(event_id):
     return jsonify({"msg": "Event deleted"}), 200
 
 # RSVP
+
+
+@api.route('/my-rsvps', methods=['GET'])
+@jwt_required()
+def my_rsvps():
+    user_id = get_jwt_identity()
+    rsvps = RSVP.query.filter_by(user_id=user_id).all()
+    result = []
+    for rsvp in rsvps:
+        event = Event.query.get(rsvp.event_id)
+        result.append({
+            "event_id": rsvp.event_id,
+            "event_title": event.title if event else None,
+            "event_date": event.date.isoformat() if event and event.date else None,
+            "event_location": event.location if event else None,
+            "status": rsvp.response
+        })
+    return jsonify(result), 200
 
 
 @api.route('/events/<int:event_id>/rsvp', methods=['POST'])

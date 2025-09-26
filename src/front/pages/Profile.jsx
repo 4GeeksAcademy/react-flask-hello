@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 import "./Landing.css";
+import DashboardNavbar from "../components/DashboardNavbar";
+
 //check if token is in local storage,
 //if not redirect to login page
 
@@ -110,6 +112,7 @@ function Profile() {
     return (
         <div className="profile-page">
             <h2 className="My-profile-title">My Profile</h2>
+            <DashboardNavbar />
             <div className="container">
                 <p>First Name: {firstName}</p>
                 <p>Last Name: {lastName}</p>

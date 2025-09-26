@@ -1,9 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faStar, faBell, faUser, faBolt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import DashboardNavbar from '../components/DashboardNavbar';
+import Favorites from "./Favorites.jsx";
 
 function Dashboard() {
     const [profile, setProfile] = useState(null);
@@ -147,18 +148,7 @@ function Dashboard() {
 
     return (
         <div className="dashboard-container" style={{ background: '#f8f9fa', minHeight: '100vh' }}>
-            {/* Dashboard Navbar */}
-            <nav className="dashboard-navbar" style={{ background: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px #23234a11', marginBottom: '2rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'center' }}>
-                <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0, alignItems: 'center' }}>
-                    <li><Link to="/dashboard" style={{ color: '#23234a', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Dashboard</Link></li>
-                    <li><Link to="/discover" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Discover</Link></li>
-                    <li><Link to="/myevents" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>My Events</Link></li>
-                    <li><Link to="/rsvp" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>RSVP</Link></li>
-                    <li><Link to="/fav" style={{ color: '#ff7c2d', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Favorites</Link></li>
-                    <li><Link to="/profile" style={{ color: '#23234a', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Profile</Link></li>
-                    <li><Link to="/" style={{ color: '#007bff', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem' }}>Logout</Link></li>
-                </ul>
-            </nav>
+            <DashboardNavbar />
             {/* Hero-style header */}
             <section className="dashboard-hero" style={{ background: '#23234a', color: '#fff', borderRadius: '0 0 32px 32px', padding: '2.5rem 2rem 2rem 2rem', marginBottom: '2rem', textAlign: 'center', boxShadow: '0 2px 16px #23234a22' }}>
                 <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', letterSpacing: '2px' }}>Welcome, {profile ? profile.first_name : 'User'}!</h1>

@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import "./Fav.css";
 import { Link } from "react-router-dom";
+import DashboardNavbar from "../components/DashboardNavbar";
 
 function Fav() {
   const [favorites, setFavorites] = useState([]);
@@ -30,6 +30,7 @@ function Fav() {
 
   return (
     <div className="fav-container">
+      <DashboardNavbar />
       <h1>Favorites</h1>
       {loading && <p>Loading your favorite events...</p>}
       {error && <div className="fav-error">{error}</div>}

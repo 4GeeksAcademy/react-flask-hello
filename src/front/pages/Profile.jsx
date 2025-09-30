@@ -33,7 +33,7 @@ function Profile() {
         // }
 
         const fetchProfile = async () => {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
                 headers: {
                     "Authorization": `Bearer ${token}` //needed to access protected route
                 }
@@ -87,7 +87,7 @@ function Profile() {
                 language: language
             };
 
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

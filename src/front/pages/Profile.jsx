@@ -114,19 +114,6 @@ function Profile() {
             <h2 className="My-profile-title">My Profile</h2>
             <DashboardNavbar />
             <div className="container">
-                <p>First Name: {firstName}</p>
-                <p>Last Name: {lastName}</p>
-                <p>Email: {email}</p>
-
-                {/* <p>Password: {password}</p>
-            <p>New Password: {newPassword}</p>
-            <p>Confirm Password: {confirmPassword}</p> */}
-
-                {profilePhoto && <img src={profilePhoto} alt="Profile" width="100" />}
-
-                <p>Location: {location}</p>
-                <p>Language: {language}</p>
-
                 <div className="form-group"><div>
                     <label>
                         First Name:

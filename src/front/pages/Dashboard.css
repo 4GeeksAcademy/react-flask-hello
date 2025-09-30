@@ -1,0 +1,209 @@
+/* Responsive Grid Layout for Dashboard Widgets */
+.dashboard-widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+/* Highlight Quick Stats and Upcoming Event */
+.dashboard-stats {
+  border-left: 5px solid #007bff;
+  background: #eaf4ff;
+}
+.dashboard-upcoming {
+  border-left: 5px solid #28a745;
+  background: #eafaf1;
+}
+
+/* Notifications and Quick Links subtle backgrounds */
+.dashboard-notifications {
+  background: #f9f9f9;
+}
+.dashboard-quicklinks {
+  background: #f9f9f9;
+}
+
+/* Card improvements */
+.dashboard-card {
+  transition: box-shadow 0.2s;
+}
+.dashboard-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Stats List Styling */
+.dashboard-stats-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.1rem;
+}
+.dashboard-stats-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Links Styling */
+.dashboard-quicklinks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dashboard-quicklinks-list li {
+  margin-bottom: 0.5rem;
+}
+.dashboard-quicklinks-list a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.dashboard-quicklinks-list a:hover {
+  text-decoration: underline;
+}
+
+/* Notifications List */
+.dashboard-notifications ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+.dashboard-notifications li {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+/* Upcoming Event Widget */
+.dashboard-upcoming strong {
+  color: #28a745;
+  font-size: 1.1rem;
+}
+.dashboard-upcoming {
+  font-size: 1.05rem;
+}
+
+/* Responsive tweaks for mobile */
+@media (max-width: 768px) {
+  .dashboard-widgets {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .dashboard-card {
+    min-width: 0;
+    max-width: 100%;
+    padding: 1rem;
+  }
+}
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  .dashboard-navbar ul {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .dashboard-widgets {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .dashboard-card {
+    min-width: 0;
+    max-width: 100%;
+    padding: 1rem;
+  }
+  .dashboard-event-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .dashboard-event-rsvp {
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+/* Dashboard Navbar */
+.dashboard-navbar {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+}
+.dashboard-navbar ul {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+.dashboard-navbar li {
+  font-weight: 500;
+}
+.dashboard-navbar a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+.dashboard-navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Event Page Styling */
+.dashboard-event {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.dashboard-event-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+.dashboard-event-details > div {
+  min-width: 120px;
+}
+.dashboard-event-rsvp {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  justify-content: flex-start;
+}
+.dashboard-container {
+  padding: 2rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.dashboard-widgets {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  min-width: 250px;
+  max-width: 350px;
+  flex: 1 1 300px;
+  text-align: center;
+}
+
+.dashboard-card h2 {
+  margin-bottom: 0.5rem;
+  color: #007bff;
+}
+
+.dashboard-card p {
+  color: #555;
+}

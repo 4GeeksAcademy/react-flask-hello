@@ -1,0 +1,136 @@
+@media (max-width: 768px) {
+  .login-page,
+  .signup-container {
+    padding: 8px;
+  }
+  .login-title,
+  .signup-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .login-box,
+  .signup-box {
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 100%;
+    box-shadow: 0 2px 8px #ff2d7588;
+  }
+  .login-input,
+  .signup-input {
+    padding: 10px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
+  .login-button,
+  .signup-button {
+    padding: 12px 0;
+    font-size: 16px;
+    border-radius: 20px;
+  }
+}
+.login-page,
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a40 60%, #ff2d75 100%);
+  color: #fff;
+  padding: 25px;
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+}
+
+.login-title,
+.signup-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 3.5px #757d9d;
+}
+
+.login-box,
+.signup-box {
+  background-color: rgba(24, 24, 40, 0.92);
+  padding: 35px;
+  border-radius: 15px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 5px 13px #ff2d7588;
+}
+
+.login-form,
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input,
+.signup-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border: 2px solid #c4c4c5ff;
+  font-size: 16px;
+  box-shadow: 0 1px 3px #0000001a;
+  outline-color: #585d7a;
+  transition: border-color 0.3s;
+  color: #fff;
+  background-color: #1a1a40;
+}
+
+.signup-input:-webkit-autofill {
+  background-color: #1a1a40 !important;
+  color: #fff !important;
+}
+
+.login-input:focus,
+.signup-input:focus {
+  border-color: #585d7a;
+}
+
+.login-input:blur,
+.signup-input:blur {
+  border-color: #757d9d;
+}
+
+.login-error,
+.signup-error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.signup-success {
+  color: lightgreen;
+  margin-bottom: 10px;
+}
+
+.login-button,
+.signup-button {
+  background: linear-gradient(90deg, #ff2d75, #ff7c2d);
+  color: #fff;
+  width: 100%;
+  padding: 16px 0;
+  border: none;
+  border-radius: 28px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 16px #ff2d7588;
+  transition: background 0.3s ease;
+}
+
+.login-button:hover,
+.signup-button:hover {
+  background: linear-gradient(90deg, #ff7c2d, #ff2d75);
+  box-shadow: 0 0 32px #ff2d75cc;
+}
+
+.signup-footer {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+}

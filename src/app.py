@@ -1,15 +1,14 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
 from api.models import db
-from api.routes import api
+from api.routes import api, jwt_blacklist  # Import from routes.py
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 # from models import Person
 
@@ -17,6 +16,11 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
+CORS(app, origins=[
+    "https://friendly-computing-machine-pxw4p4r46rq2r7gp-3000.app.github.dev",
+    "https://upgraded-system-7vgj4vjj6j52rx7j-3000.app.github.dev",
+    "https://jubilant-telegram-9759j7q57vg92pgg4-3000.app.github.dev",
+], supports_credentials=True)
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -57,6 +61,8 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
+
+
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
@@ -64,6 +70,18 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+
+jwt = JWTManager(app)
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload):
+    return jwt_payload["jti"] in jwt_blacklist
 
 
 # this only runs if `$ python src/main.py` is executed

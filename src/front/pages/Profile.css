@@ -1,0 +1,55 @@
+
+.My-profile-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 3.5px #757d9d;
+}
+
+
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a40 60%, #ff2d75 100%);
+  color: #fff;
+  padding: 25px;
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+}
+
+.container{
+  background-color: rgba(24, 24, 40, 0.92);
+  padding: 35px;
+  border-radius: 15px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 5px 13px #ff2d7588;
+  justify-content: space-between;
+}
+
+.save-button {
+  background: linear-gradient(90deg, #ff2d75, #ff7c2d);
+  color: #fff;
+  width: 100%;
+  padding: 16px 0;
+  border: none;
+  border-radius: 28px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 16px #ff2d7588;
+  transition: background 0.3s ease;
+  margin-top: 50px;
+}
+.form-group input {
+  display: block;       /* puts the input on its own line */
+  width: 100%;          /* makes it stretch across the container */
+  padding: 8px;         /* adds spacing inside */
+  border-radius: 6px;   /* rounded corners */
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* keeps padding inside the width */
+}

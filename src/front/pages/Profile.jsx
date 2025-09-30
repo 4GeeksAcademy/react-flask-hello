@@ -4,7 +4,7 @@ import "./Profile.css";
 import "./Landing.css";
 import DashboardNavbar from "../components/DashboardNavbar";
 
-//check if token is in local storage,
+//check if token is in local storages,
 //if not redirect to login page
 
 function Profile() {

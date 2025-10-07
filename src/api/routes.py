@@ -12,11 +12,31 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+# CRUD USERS
+@api.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([user.serialize() for user in users]), 200
 
-    return jsonify(response_body), 200
+
+#------------------------------CREATE USER-----------------------#
+
+@api.route('/user', methods=['POST'])
+def create_user():
+
+    recieved = request.get_json()
+    user_name = recieved.get("user_name")
+    email = recieved.get("email")
+    password = recieved.get("password")
+
+    if not user_name or not email:
+        return jsonify({"message": "user_name and email are obligatory"}),400
+    if not password:
+        return jsonify({"message": "password are obligatory"}),400
+    
+    user = User(user_name=user_name, email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"message": f"{user_name} user created"}), 200

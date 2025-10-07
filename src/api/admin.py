@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User, Todo, Friend
+from .models import db, User, Todo, Friend, GroupTodo
 from flask_admin.contrib.sqla import ModelView
 
 class TodoAdmin(ModelView):
@@ -17,6 +17,7 @@ def setup_admin(app):
     admin.add_view(ModelView(User, db.session))
     admin.add_view(TodoAdmin(Todo, db.session))
     admin.add_view(ModelView(Friend, db.session))
+    admin.add_view(ModelView(GroupTodo, db.session))
 
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session))

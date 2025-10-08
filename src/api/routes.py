@@ -12,7 +12,6 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-
 # CRUD USERS
 @api.route('/users', methods=['GET'])
 def get_users():
@@ -20,7 +19,7 @@ def get_users():
     return jsonify([user.serialize() for user in users]), 200
 
 
-#------------------------------CREATE USER-----------------------#
+# ------------------------------CREATE USER-----------------------#
 
 @api.route('/user', methods=['POST'])
 def create_user():
@@ -31,17 +30,19 @@ def create_user():
     password = recieved.get("password")
 
     if not user_name or not email:
-        return jsonify({"message": "user_name and email are obligatory"}),400
+        return jsonify({"message": "user_name and email are obligatory"}), 400
     if not password:
-        return jsonify({"message": "password are obligatory"}),400
-    
+        return jsonify({"message": "password are obligatory"}), 400
+
     user = User(user_name=user_name, email=email, password=password)
     db.session.add(user)
     db.session.commit()
 
     return jsonify({"message": f"{user_name} user created"}), 200
 
-#--------------------------DELETE USER----------------------------#
+# --------------------------DELETE USER----------------------------#
+
+
 @api.route('/user/<int:id>', methods=['DELETE'])
 def delete_user(id):
     user = User.query.get(id)
@@ -51,4 +52,33 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
     return jsonify({"message": f"{user_name} user deleted successfully"})
+
+
+# --------------------------EDIT USER------------------------------#
+@api.route('/user/<int:id>', methods=['PATCH'])
+def edit_user(id):
+
+    user = User.query.get(id)
+
+    data = request.get_json()
+    if not data:
+        return {"error": "please send information to update "}
     
+
+
+    for key,value in data.items():
+
+        user_founded = User.query.filter(getattr(User, key) == value).first()
+
+        if user_founded and user_founded.id != id:
+            return jsonify({"error": "user_name o email already exist, try using another one"})
+
+        if hasattr(user, key):
+            setattr(user,key,value)
+    
+    db.session.commit()
+
+
+
+    return jsonify({"user": user.serialize()}), 200
+

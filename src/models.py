@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Integer, ForeignKey, Date
+from sqlalchemy import String, Boolean, Integer, ForeignKey, Date, create_engine
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+engine = create_engine('sqlite:///my_database.db')
 
 db = SQLAlchemy()
 

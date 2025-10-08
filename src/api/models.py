@@ -16,11 +16,15 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=True) 
 
+
+    friends_from: Mapped[List["Friend"]] = relationship("Friend", foreign_keys="Friend.user_from_id", back_populates="user_from", cascade="all, delete-orphan")
+    friends_to: Mapped[List["Friend"]] = relationship("Friend", foreign_keys="Friend.user_to_id", back_populates="user_to", cascade="all, delete-orphan")
+
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
-            "is_active": self.email,
+            "is_active": self.is_active,
             "user_name": self.user_name
             # do not serialize the password, its a security breach
         }
@@ -60,7 +64,7 @@ class Friend(db.Model):
 
     user_to: Mapped['User'] = relationship("User", foreign_keys=[user_to_id], backref="friend_from")
     user_from: Mapped['User'] = relationship("User", foreign_keys=[user_from_id], backref="friend_to")
-    group_todo : Mapped[List['GroupTodo']] = relationship("GroupTodo", backref="friend")
+    group_todo : Mapped[List['GroupTodo']] = relationship("GroupTodo",cascade="all, delete-orphan", backref="friend")
 
     def serialize(self):
         return {

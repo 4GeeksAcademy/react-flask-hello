@@ -40,3 +40,15 @@ def create_user():
     db.session.commit()
 
     return jsonify({"message": f"{user_name} user created"}), 200
+
+#--------------------------DELETE USER----------------------------#
+@api.route('/user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "please send a correct id user to delete"})
+    user_name = user.user_name
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message": f"{user_name} user deleted successfully"})
+    

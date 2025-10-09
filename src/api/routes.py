@@ -5,12 +5,61 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Friend, Todo, GroupTodo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+#--------------------------------------------CRUD TOKEN-------------------------------------------------#
+
+#-----------------------------TOKEN CREATION--------------------------#
+@api.route('/auth/login', methods=['POST'])
+def login():
+    
+    identificator = request.json.get("identificator", None)
+
+    
+    if not identificator:
+        return jsonify({"error": "none email or user_name has been provided"}),400
+
+    password = request.json.get("password", None)
+
+    if not password:
+        return jsonify({"error": "none password has been provided"}), 400
+
+    user = User.query.filter(or_(User.email == identificator , User.user_name == identificator), User.password==password).first()
+
+    if not user:
+        return jsonify({"error": "bad login information"}),400
+    
+
+    access_token = create_access_token(identity=str(user.id))
+
+    return jsonify({"token": access_token, "user_id": user.id}), 200
+    
+#-----------------------------TOKEN VERIFICATION--------------------------#
+
+@api.route('/auth/protected', methods=['GET'])
+@jwt_required()
+def protected_access():
+
+    current_user_id = get_jwt_identity()
+    
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({"error": "user not found"}),404
+    
+    if not user.is_active:
+        return jsonify({"error": "user is inactive"}),403
+
+    return jsonify({"id": user.id, "user_name": user.user_name}),200
+
+
+
 
 
 # CRUD USERS-------------------------------------------------------------------------------------------------------------||

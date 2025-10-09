@@ -64,14 +64,14 @@ class Friend(db.Model):
 
     user_to: Mapped['User'] = relationship("User", foreign_keys=[user_to_id], backref="friend_from")
     user_from: Mapped['User'] = relationship("User", foreign_keys=[user_from_id], backref="friend_to")
-    group_todo : Mapped[List['GroupTodo']] = relationship("GroupTodo",cascade="all, delete-orphan", backref="friend")
+    group_todos : Mapped[List['GroupTodo']] = relationship("GroupTodo",cascade="all, delete-orphan", backref="friend")
 
     def serialize(self):
         return {
             "id": self.id,
             "user_to": self.user_to_id,
             "user_from": self.user_from_id,
-            "group_todo": [todo.serialize() for todo in self.group_todo]
+            "group_todo": [todo.serialize() for todo in self.group_todos]
 
         }
 

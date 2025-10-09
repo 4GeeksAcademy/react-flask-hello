@@ -371,7 +371,7 @@ def edit_user_todo():
     
     title = data.get("title")
     description = data.get("description")
-    
+
     if not title and not description:
         return jsonify({"error":"no fields to update, please provide a title or a description"}),400
 
@@ -393,29 +393,179 @@ def edit_user_todo():
 #-----------------GET ALL FRIEND Todos------------------#
 @api.route('/friendship/todos', methods=['GET'])
 def get_friendship_todos():
-    pass
+    
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "send a body with info to see all friendship todos"}),400
+    
+    friendship_id = data.get("friendship_id")
+
+    if not friendship_id:
+        return jsonify({"error": "none friendship_id provided"}),400
+    
+    group_todos = GroupTodo.query.filter_by(friend_id=friendship_id).all()
+
+    if not group_todos:
+        return jsonify({"error": "none group todos has been founded with the provided friendship_id"}),400
+    
+    return jsonify([group_todo.serialize() for group_todo in group_todos]),200
+
+
 
    
  #-----------------GET UNIQUE FRIEND Todo------------------#
 @api.route('/friendship/todo', methods=['GET'])
 def get_friendship_todo():
-    pass   
+    
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "none body information has been provided"}),400
+    
+    friendship_id = data.get("friendship_id")
+    group_todo_id = data.get("group_todo_id")
+
+    if not friendship_id or not group_todo_id:
+        return jsonify({"error": "you have not provided a friendship_id or group_todo_id"}),400
+    
+    group_todo = GroupTodo.query.filter_by(friend_id=friendship_id, id=group_todo_id).first()
+
+    if not group_todo_id:
+        return jsonify({"error": "none group todo has been founded with the provided friendship_id or group_todo_id"}),400
+    
+    return jsonify(group_todo.serialize()),200
+    
+
+
 
  #-----------------CREATE UNIQUE FRIEND Todo------------------# 
-@api.route('/friendship/todo', methods=['GET'])
+@api.route('/friendship/todo', methods=['POST'])
 def create_friendship_todo():
-    pass    
+
+
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "none body information has been provided"}),400
+    
+    title = data.get("title")
+    description = data.get("description")
+    friendship_id = data.get("friendship_id")
+
+    if not title and not friendship_id:
+
+        return jsonify({"error": "please provide a friendship_id and a title"}),400
+    
+    friendship = Friend.query.get(friendship_id)
+
+    if not friendship:
+        return jsonify({"error": "there is not friendship with this friendship_id"}), 400
+    
+    group_todo = GroupTodo(friend_id=friendship_id, title=title)
+
+    if description:
+        group_todo.description = description
+
+    db.session.add(group_todo)
+    db.session.commit()
+
+    return jsonify(group_todo.serialize()),200
+
+
+
 
  #-----------------DELETE UNIQUE FRIEND Todo------------------# 
 
-@api.route('/friendship/todo', methods=['GET'])
+@api.route('/friendship/todo', methods=['DELETE'])
 def delete_friendship_todo():
-    pass
+    
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "none body information has been provided"}),400
+
+
+    friendship_id = data.get("friendship_id")
+    group_todo_id = data.get("group_todo_id")
+
+    if not friendship_id or not group_todo_id:
+        return jsonify({"error": "none friendship_id or group_todo_id has been provided"}),400
+    
+    if not isinstance(friendship_id, int) or not isinstance(group_todo_id,int):
+        return jsonify({"error": "friendship_id and group_todo_id must be integer numbers"}),400
+    
+    friendship = Friend.query.get(friendship_id)
+
+    if not friendship:
+        return jsonify({"error":"none friendship has been founded with the provided friendship_id"}),400
+    
+    group_todo = GroupTodo.query.filter_by(friend_id=friendship_id, id=group_todo_id).first()
+
+    if not group_todo:
+        return jsonify({"error": "none group_todo has been founded with the provided friendship_id and group_todo_id"}),400
+    
+    db.session.delete(group_todo)
+    db.session.commit()
+
+    return jsonify({"message": "group_todo successfully deleted"}),200
+
 
  #-----------------EDIT UNIQUE FRIEND Todo------------------# 
-@api.route('/friendship/todo', methods=['GET'])
+@api.route('/friendship/todo', methods=['PATCH'])
 def edit_friendship_todo():
-    pass
+    
+    data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "none body information has been provided"}),400
 
+    friendship_id = data.get("friendship_id")
+    group_todo_id = data.get("group_todo_id")
 
+    if not friendship_id or not group_todo_id:
+        return jsonify({"error": "none friendship_id or group_todo_id has been provided"}),400
+    
+    if not isinstance(friendship_id, int) or not isinstance(group_todo_id,int):
+        return jsonify({"error": "friendship_id and group_todo_id must be integer numbers"}),400
+    
+    friendship = Friend.query.get(friendship_id)
+
+    if not friendship:
+        return jsonify({"error":"none friendship has been founded with the provided friendship_id"}),400
+    
+    group_todo = GroupTodo.query.filter_by(friend_id=friendship_id, id=group_todo_id).first()
+
+    if not group_todo:
+        return jsonify({"error": "none group_todo has been founded with the provided friendship_id and group_todo_id"}),400
+    
+    title = data.get("title")
+    description = data.get("description")
+
+    if not title and not description:
+        return jsonify({"error": "please provide a title or a description data to modify the actual group_todo"}),400
+
+    if title:
+
+        old_title = group_todo.title.replace(" ", "").lower()
+        new_title = title.replace(" ", "").lower()
+
+        if old_title == new_title:
+            return jsonify({"error": "new title can not be the same as the older one"}),400
+
+        group_todo.title = title
+
+    if description:
+
+        old_description = group_todo.description.replace(" ", "").lower()
+        new_description = description.replace(" ", "").lower()
+
+        if old_description == new_description:
+            return jsonify({"error": "new description can not be the same as the older one"}),400
+
+        group_todo.description = description
+
+    db.session.commit()
+
+    return jsonify(group_todo.serialize()), 200
+    

@@ -42,7 +42,7 @@ class Todo(db.Model):
     is_active : Mapped[bool] = mapped_column(Boolean(), nullable=False, default=True)
     user_id : Mapped[int] = mapped_column(ForeignKey("user.id"))
     
-    user : Mapped["User"] = relationship(backref="todo")
+    user : Mapped["User"] = relationship(backref="todos")
     
     def serialize(self):
         return{

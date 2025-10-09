@@ -371,27 +371,20 @@ def edit_user_todo():
     
     title = data.get("title")
     description = data.get("description")
+    
+    if not title and not description:
+        return jsonify({"error":"no fields to update, please provide a title or a description"}),400
 
     if title:
         todo.title = title
     if description:
         todo.description = description
 
+
     db.session.commit()
 
     return jsonify(todo.serialize()), 200
     
-
-    
-
-
-
-
-
-
-
-
-
 
 #-------------------------------------------FIN CRUD Todo --------------------------------------------------------------------------------------------#
 

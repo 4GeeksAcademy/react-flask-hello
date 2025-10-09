@@ -36,3 +36,38 @@ background-color: #780000!important;
 .font-color-5{
    color:#669bbc!important;
 }
+
+.button-color-1{
+background-color: #780000!important;
+}
+.button-color-1:hover{
+background-color: #a80404!important;
+}
+
+.button-color-2{
+    background-color:#c1121f!important;
+}
+.button-color-2:hover{
+    background-color:#e93440!important;
+}
+
+.button-color-3{
+    background-color: #fdf0d5!important;
+}
+.button-color-3:hover{
+    background-color: #fffdf8!important;
+}
+
+.button-color-4{
+    background-color: #003049!important;
+}
+.button-color-4:hover{
+    background-color: #054f77!important;
+}
+
+.button-color-5{
+    background-color: #669bbc!important;
+}
+.button-color-5:hover{
+    background-color: #79accc!important;
+}

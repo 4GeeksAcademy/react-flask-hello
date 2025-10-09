@@ -1,22 +1,23 @@
-import { Link } from "react-router-dom";
-
 export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-expand-lg back-color-5  " >
 			<div className="container">
-				<a className="navbar-brand font-color-1" href="#">Tartara</a>
+				<a className="navbar-brand font-color-1 fw-semibold fs-4" href="#">Tartara</a>
 				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"></span>
+					<i className="fa-solid fa-bars font-color-1 fs-2" ></i>
 				</button>
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav ms-auto">
-						<li className="nav-item ">
-							<a className="nav-link border-end border-black p-0 text-center" aria-current="page" href="#">Todo's</a>
+						<li className="nav-item d-flex align-items-center font-color-3 ">
+							<a className="nav-link  py-0 text-center fw-semibold font-color-3" aria-current="page" href="/auth/todo-panel">Todo's</a> |
 						</li>
 					
 						<li className="nav-item">
-							<a className="nav-link" href="#">About us</a>
+							<a className="nav-link fw-semibold font-color-3" href="/about-us">About us</a>
+						</li>
+						<li className="nav-item">
+							<button type="button" className="btn back-color-2 button-color-1 font-color-3 fw-semibold">Log in</button>
 						</li>
 					
 					</ul>

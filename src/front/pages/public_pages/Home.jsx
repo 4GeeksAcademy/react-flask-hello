@@ -6,6 +6,7 @@ export const Home = () => {
 	return (
 		<div className="container py-5">
 			<Jumbotron/>
+			{/* <GuideCards/> */}
 		</div>
 	);
 }; 

@@ -71,3 +71,9 @@ background-color: #a80404!important;
 .button-color-5:hover{
     background-color: #79accc!important;
 }
+
+
+.footer-filled {
+    width:100%;
+    height: 2.5rem;
+}

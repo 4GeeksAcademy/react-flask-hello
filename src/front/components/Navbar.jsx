@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
+
 export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-expand-lg back-color-5  " >
 			<div className="container">
-				<a className="navbar-brand font-color-1 fw-semibold fs-4" href="#">Tartara</a>
+				<Link to="/" className="text-decoration-none">
+				<p className="font-color-1 fw-semibold fs-4" href="/">Tartara</p>
+				</Link>
 				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<i className="fa-solid fa-bars font-color-1 fs-2" ></i>
 				</button>
@@ -17,7 +21,9 @@ export const Navbar = () => {
 							<a className="nav-link fw-semibold font-color-3" href="/about-us">About us</a>
 						</li>
 						<li className="nav-item">
+							<Link to="/auth">
 							<button type="button" className="btn back-color-2 button-color-1 font-color-3 fw-semibold">Log in</button>
+							</Link>
 						</li>
 					
 					</ul>

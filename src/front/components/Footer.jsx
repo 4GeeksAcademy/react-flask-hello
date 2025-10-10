@@ -22,7 +22,7 @@ export const Footer = () => (
 					<div className="border-white border-3 border-end pe-2">
 
 					<i class="fs-1 fa-solid fa-sailboat"></i>
-					 <p className="fs-4">Contact</p>
+					 <p className="fs-4">Navigate</p>
 					 
 					 </div>
 					</div>

@@ -1,10 +1,11 @@
+import Jumbotron from "../../components/home-components/Jumbotron";
 
 
 export const Home = () => {
 
 	return (
-		<>
-			Home page
-		</>
+		<div className="container py-5">
+			<Jumbotron/>
+		</div>
 	);
 }; 

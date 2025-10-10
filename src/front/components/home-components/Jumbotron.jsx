@@ -5,7 +5,7 @@ const Jumbotron = () => {
 
             <div className="row h-100">
                 <div class="col-lg-6 d-none d-lg-block bg-danger h-100">
-                        <img className="object-fit-cover" src="https://i.pinimg.com/736x/6f/e2/d3/6fe2d31038a92c02223c31d9dc0bdfca.jpg" />
+                        <img className="object-fit-cover" src="https://elbohemiodehojalata.wordpress.com/wp-content/uploads/2018/08/obito-uchiha-3.jpg" />
                 
                 </div>
                 <div class="col-lg-6 col-12 bg-white ">

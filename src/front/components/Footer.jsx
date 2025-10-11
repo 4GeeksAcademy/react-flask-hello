@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export const Footer = () => (
-	<footer className="footer mt-auto pt-3 text-center">
+	<footer className="footer mt-auto text-center">
 		<div className="back-color-2 font-color-3 py-4">
 			<div className="row">
 				<div className="col-lg-3 col-12 h-100">

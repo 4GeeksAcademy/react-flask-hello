@@ -4,7 +4,11 @@ export const Footer = () => (
 	<footer className="footer mt-auto pt-3 text-center">
 		<div className="back-color-2 font-color-3 py-4">
 			<div className="row">
-				<div className="col-lg-3 col-12 ">Marca</div>
+				<div className="col-lg-3 col-12 h-100">
+					<div className="img-footer">
+					<img className="object-fit-cover h-100" src="https://res.cloudinary.com/dra2cr3uw/image/upload/v1760182053/Elio_ejemplo_zqfn5o.png"/>
+					</div>
+				</div>
 				<div className="col-lg-2 col-3 d-flex flex-column justify-content-center align-items-end">
 					<div className="border-white border-end border-3 pe-2">
 						<i class="fs-1 fa-regular fa-envelope">

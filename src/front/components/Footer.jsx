@@ -35,7 +35,7 @@ export const Footer = () => (
 						</li>
 						<li>
 							<Link to="/auth/todo-panel" className="text-decoration-none"> 
-							<p className="text-start m-0 fw-semibold font-color-3">Todo's</p>
+							<p className="text-start m-0 fw-semibold font-color-3">Missions</p>
 								</Link>
 							</li>
 						<li>

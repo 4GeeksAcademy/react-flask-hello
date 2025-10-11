@@ -14,7 +14,7 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav ms-auto">
 						<li className="nav-item d-flex align-items-center font-color-3 ">
-							<a className="nav-link  py-0 text-center fw-semibold font-color-3" aria-current="page" href="/auth/todo-panel">Todo's</a> |
+							<a className="nav-link  py-0 text-center fw-semibold font-color-3" aria-current="page" href="/auth/todo-panel">Missions</a> |
 						</li>
 					
 						<li className="nav-item">

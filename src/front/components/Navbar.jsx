@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
 
 	return (
-		<nav className="navbar navbar-expand-lg back-color-5  " >
+		<div>
+
+		<nav className="navbar navbar-expand-lg back-color-5 " >
 			<div className="container">
 				<Link to="/" className="text-decoration-none">
 				<p className="font-color-1 fw-semibold fs-4" href="/">Tartara</p>
@@ -30,5 +32,8 @@ export const Navbar = () => {
 				</div>
 			</div>
 		</nav>
+		<div className="navbar-filled back-color-4">
+		</div>
+		</div>
 	);
 };

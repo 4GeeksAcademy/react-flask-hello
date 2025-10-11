@@ -14,7 +14,7 @@ const Jumbotron = () => {
                         <p className="fw-semibold mt-3">Join Claude, a determined marine, on his journey to reach the legendary island of Tartara.
                             Every mission you and your friends add becomes a mission that brings him closer to shore.
                             Write your goals. Share the challenge. Reach Tartara.</p>
-                        <button type="button" className="btn btn-primary">Join the mission</button>
+                        <button type="button" className="btn button-color-2 font-color-3">Join the mission</button>
                     </div>
                 </div>
             </div>

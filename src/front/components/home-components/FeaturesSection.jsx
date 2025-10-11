@@ -10,7 +10,7 @@ const FeaturesSection = () => {
 
 
     return (
-        <div className="bg-light w-100 rounded-4">
+        <div className="bg-body-tertiary w-100 rounded-4">
             <div className="row my-5 py-2 gy-lg-0 gy-5">
                 {
                     featureCardsInfo.map((card, index)=>{

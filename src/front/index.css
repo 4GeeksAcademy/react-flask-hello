@@ -105,3 +105,35 @@ background-color: #a80404!important;
 .closing-section {
     height:30rem;
 }
+
+.closing-img {
+    height:13rem;
+}
+
+.button-2-color-2{
+   border : solid 0.3rem#c1121f!important;
+}
+.button-2-color-2:hover{
+    border-color:#e93440!important;
+}
+
+.button-2-color-3{
+    border : solid 0.3rem #fdf0d5!important;
+}
+.button-2-color-3:hover{
+    border-color: #fffdf8!important;
+}
+
+.button-2-color-4{
+   border : solid 0.3rem #003049!important;
+}
+.button-2-color-4:hover{
+    border-color: #054f77!important;
+}
+
+.button-2-color-5{
+  border : solid 0.3rem #669bbc!important;
+}
+.button-2-color-5:hover{
+   border-color: #79accc!important;
+}

@@ -23,7 +23,7 @@ export const Navbar = () => {
 							<a className="nav-link fw-semibold font-color-3" href="/about-us">About us</a>
 						</li>
 						<li className="nav-item">
-							<Link to="/auth">
+							<Link to="/auth" state={{type:"login"}}>
 							<button type="button" className="btn back-color-2 button-color-1 font-color-3 fw-semibold">Log in</button>
 							</Link>
 						</li>

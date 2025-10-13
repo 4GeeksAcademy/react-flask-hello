@@ -9,10 +9,10 @@ const ClosingSection = () => {
                 <div className="closing-text back-color-3 rounded-5 flex-grow-1 w-100 text-center">
                     <div className="d-flex flex-column justify-content-center align-items-center h-100 px-5">
 
-                        <p className="fs-4">Elio's not just searching for Tartara. He's discovering himself along the way.
+                        <p className="fs-4">Claude's not just searching for Tartara. He's discovering himself along the way.
                             Every mission completed brings him closer to home</p>
                         <button type="button" className="btn button-2-color-2 font-color-1 fw-semibold">
-                            KEEP HELPING ELIO
+                            KEEP HELPING CLAUDE
                         </button>
                     </div>
 

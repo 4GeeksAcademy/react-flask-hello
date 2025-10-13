@@ -22,10 +22,10 @@ const AuthForm = ({ color, fields }) => {
 
 
     return (
-        <div className={`d-flex flex-column justify-content-center align-items-center ${color == "a" ? "font-color-1" : "font-color-3" }`}>
-            <div> <h2 className={`display-2 ${color == "a" ? "font-color-3" : "font-color-1"} mb-4 pb-5`}>{fields.title}</h2></div>
-            <div className={`${color == "a" ? "back-color-3" : "back-color-1"} rounded-4  d-inline-flex px-5  py-2`}>
-                <form>
+        <div className={`d-flex flex-column justify-content-center align-items-center ${color == "a" ? "font-color-1" : "font-color-3" } h-100 w-100`}>
+            <div> <h2 className={`display-3 ${color == "a" ? "font-color-3" : "font-color-1"} mb-4 pb-5`}>{fields.title}</h2></div>
+            <div className={`${color == "a" ? "back-color-3" : "back-color-1"} rounded-4  d-inline-flex px-5  py-2 shadow-lg`}>
+                <form >
                     {fields.fields.map((field, indice) => {
                         return (
                             field.type == "checkbox" ?
@@ -36,8 +36,8 @@ const AuthForm = ({ color, fields }) => {
                                 </>
                                 :
                                     <>
-                                    <label className="form-label" htmlFor={`input-${field.fieldName}`}>{field.fieldName}</label>
-                                    <input className={field.type == "checkbox" ? "form-check-input" : "form-control"} id={`input-${field.fieldName}`} type={field.type}></input>
+                                    <label className="form-label fw-semibold pt-3" htmlFor={`input-${field.fieldName}`}>{field.fieldName}</label>
+                                    <input className={field.type == "checkbox" ? "form-check-input" : "form-control"} id={`input-${field.fieldName}`} type={field.type} placeholder={field.placeholder}></input>
                                 </>
                         )
                     })}

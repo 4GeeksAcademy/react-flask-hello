@@ -67,3 +67,19 @@ input[type="password"] {
     text-align: center;
     font-weight: bold;
 }
+
+.register-link-button {
+    background: none;
+    border: none;
+    color: #5c67f2; 
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit; 
+    margin-left: 5px; 
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.register-link-button:hover {
+    color: #4a54e0;
+}

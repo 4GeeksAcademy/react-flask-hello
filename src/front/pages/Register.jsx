@@ -1,118 +1,190 @@
 import React, { useState } from 'react';
 import './Register.css';
 
-// ideas para Register: Formulario (buscar en Google), al final un Button "Submit o Registrarse con la funcionalidad de que lo clickea que lo mande a API" y luego que te devuelva a la pagina de Login (idea).
-
-
 function Register() {
 
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [dob, setDob] = useState(''); 
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState(''); 
+    
+    const [role, setRole] = useState(''); 
+    const [licenseNumber, setLicenseNumber] = useState(''); 
+   
+
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    
     const [message, setMessage] = useState('');
 
-  
+    const isValidEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
+    const handleRoleChange = (selectedRole) => {
+        setRole(selectedRole);
+        if (selectedRole !== 'medico') {
+            setLicenseNumber('');
+        }
+    };
+
     const handleRegistration = (event) => {
         event.preventDefault(); 
+        setMessage('');
 
-        setMessage(''); 
+
+        if (!name || !lastName || !dob || !email || !phoneNumber || !password || !confirmPassword) {
+            setMessage({ text: 'Todos los campos básicos son obligatorios. 📝', type: 'error' });
+            return;
+        }
 
        
-        if (username.length < 3) {
-            setMessage({ text: 'El usuario debe tener al menos 3 caracteres.', type: 'error' });
+        if (!role) {
+            setMessage({ text: 'Debes seleccionar si eres Médico o Paciente. 🧑‍⚕️/🧍', type: 'error' });
             return;
         }
+
+        
+        if (role === 'medico') {
+            const licenseRegex = /^\d{9}$/; 
+            if (!licenseNumber || !licenseRegex.test(licenseNumber)) {
+                setMessage({ text: 'El Número de Matrícula debe tener exactamente 9 dígitos. 🔢', type: 'error' });
+                return;
+            }
+        }
+
+        
+        if (!isValidEmail(email)) {
+            setMessage({ text: 'Por favor, introduce un correo electrónico válido. 📧', type: 'error' });
+            return;
+        }
+        
+        const phoneRegex = /^\d{9,}$/; 
+        if (!phoneRegex.test(phoneNumber)) {
+            setMessage({ text: 'Por favor, introduce un número de teléfono válido (mín. 9 dígitos). 📞', type: 'error' });
+            return;
+        }
+
         if (password.length < 6) {
-            setMessage({ text: 'La contraseña debe tener al menos 6 caracteres.', type: 'error' });
+            setMessage({ text: 'La contraseña debe tener al menos 6 caracteres. 🔑', type: 'error' });
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            setMessage({ text: 'Las contraseñas no coinciden. Por favor, revísalas. ❌', type: 'error' });
             return;
         }
 
-        // 2. Backend (BACKEND_URL)
-        /*
-        fetch(`${BACKEND_URL}/api/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Manejar la respuesta del servidor
-            setMessage({ text: `¡Registro exitoso para ${username}!`, type: 'success' });
-            setUsername('');
-            setPassword('');
-        })
-        .catch(error => {
-            setMessage({ text: 'Error al conectar con el servidor.', type: 'error' });
+       
+        
+        setMessage({ 
+            text: `¡Registro exitoso como ${role.toUpperCase()} para ${name}! Redirigiendo... 🎉`, 
+            type: 'success' 
         });
-        */
-
-        // SIMULACIÓN 
-        setMessage({ text: `¡Registro exitoso para ${username}! Redirigiendo...`, type: 'success' });
-        setUsername('');
+        
+       
+        setName('');
+        setLastName('');
+        setDob('');
+        setEmail('');
+        setPhoneNumber('');
+        setRole('');
+        setLicenseNumber(''); 
         setPassword('');
+        setConfirmPassword('');
+        
+       
+        /*
+        const registrationData = { name, lastName, dob, email, phoneNumber, password, role };
+        if (role === 'medico') {
+            registrationData.licenseNumber = licenseNumber;
+        }
+        
+        fetch(`${BACKEND_URL}/api/register`, {
+            // ...
+            body: JSON.stringify(registrationData) 
+        })
+        */
     };
 
 
     return (
         <div className="register-container">
-            <h2>Registro de Nuevo Usuario</h2>
+            <h2>Crear una Cuenta Nueva</h2>
             
-            <form onSubmit={handleRegistration}>
-                <table className="register-table">
-                    <thead>
-                        <tr>
-                            <th colSpan="2" style={{ textAlign: 'center', color: '#5c67f2' }}>
-                                ¡Únete a la comunidad!
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       
-                        <tr>
-                            <th><label htmlFor="username">Usuario:</label></th>
-                            <td>
-                                <input
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Elige un nombre de usuario"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)} 
-                                    required
-                                />
-                            </td>
-                        </tr>
-                      
-                        <tr>
-                            <th><label htmlFor="password">Contraseña:</label></th>
-                            <td>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Crea una contraseña segura"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)} 
-                                    required
-                                />
-                            </td>
-                        </tr>
-                      
-                        <tr>
-                            <td colSpan="2" className="submit-cell">
-                                <button type="submit" className="register-button">
-                                    REGISTRARME
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <form onSubmit={handleRegistration} className="register-form">
+                
+              
+                <div className="form-group"><label htmlFor="name">Nombre:</label><input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Tu nombre" required/></div>
+                <div className="form-group"><label htmlFor="lastName">Apellidos:</label><input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Tus apellidos" required/></div>
+                <div className="form-group"><label htmlFor="dob">Fecha de Nacimiento:</label><input type="date" id="dob" value={dob} onChange={(e) => setDob(e.target.value)} required/></div>
+                <div className="form-group"><label htmlFor="email">Correo Electrónico:</label><input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="ejemplo@dominio.com" required/></div>
+                <div className="form-group"><label htmlFor="phoneNumber">Número de Teléfono:</label><input type="tel" id="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Ej. 600112233" required/></div>
+
+                <hr className="divider"/>
+                
+              
+                <div className="form-group role-selection">
+                    <label>Selecciona tu Rol:</label>
+                    <div className="checkbox-group">
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                checked={role === 'medico'} 
+                                onChange={() => handleRoleChange('medico')}
+                            /> 
+                            Médico 🧑‍⚕️
+                        </label>
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                checked={role === 'paciente'} 
+                                onChange={() => handleRoleChange('paciente')}
+                            /> 
+                            Paciente 🧍
+                        </label>
+                    </div>
+                </div>
+
+               
+                {role === 'medico' && (
+                    <div className="form-group license-group">
+                        <label htmlFor="licenseNumber">Número de Matrícula de Colegiado (9 dígitos):</label>
+                        <input
+                            type="number"
+                            id="licenseNumber"
+                            value={licenseNumber}
+                            onChange={(e) => setLicenseNumber(e.target.value)} 
+                            placeholder="Introduce tu matrícula (Ej: 123456789)"
+                            required={role === 'medico'} 
+                            maxLength="9" 
+                        />
+                    </div>
+                )}
+              
+
+                <hr className="divider"/>
+
+                
+                <div className="form-group"><label htmlFor="password">Contraseña (Mín. 6 chars):</label><input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Crea una contraseña segura" required/></div>
+                <div className="form-group"><label htmlFor="confirmPassword">Repetir Contraseña:</label><input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Repite la contraseña" required/></div>
+
+                
+                <button type="submit" className="register-button">
+                    REGISTRARME
+                </button>
             </form>
             
-           
+            
             {message.text && (
                 <div 
                     className="message" 
-                    style={{ color: message.type === 'error' ? 'red' : 'green' }}
+                    style={{ 
+                        color: message.type === 'error' ? '#e74c3c' : '#2ecc71',
+                        fontWeight: 'bold',
+                        marginTop: '15px'
+                    }}
                 >
                     {message.text}
                 </div>
@@ -120,6 +192,5 @@ function Register() {
         </div>
     );
 }
-
 
 export default Register;

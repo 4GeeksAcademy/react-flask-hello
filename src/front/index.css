@@ -1,0 +1,161 @@
+.navbar {
+  background-color: #5aa8ab;
+}
+
+.icon {
+  width: 8rem;
+  height: auto;
+  margin-right: 5px;
+}
+
+.icon-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+}
+
+.navbar-btn {
+  background-color: #184039;
+  border: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.navbar-btn:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  background-color: #77a6aa;
+}
+
+.navbar-text,
+.navbar-btn {
+  font-family: "Inter";
+}
+
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 480px; /* O la altura que prefieras */
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  overflow: hidden;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 800px;
+  padding: 20px;
+  z-index: 2; /* Para que el contenido esté por encima de posibles animaciones de fondo */
+}
+
+.hero-image {
+  width: 12rem; /* Ajusta el tamaño de tu imagen */
+  margin-bottom: 2rem;
+  opacity: 0; /* Inicia invisible para la animación */
+  transform: translateY(-20px); /* Inicia un poco arriba */
+  animation: fadeInSlideDown 1s forwards;
+  animation-delay: 0.5s; /* Retrasa la aparición de la imagen */
+}
+
+h1 {
+  font-family: "Poppins", sans-serif; /* Puedes elegir tu fuente */
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #263c5e;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s forwards;
+  animation-delay: 1s; /* Retrasa la aparición del título */
+}
+
+.span-text {
+  color: #77a6aa; /* Un color verde, por ejemplo */
+}
+
+.hero-text {
+  font-family: "Inter", sans-serif; /* Puedes elegir tu fuente */
+  font-size: 0.94em;
+  font-weight: lighter;
+  color: #263c5e;
+  margin-bottom: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s forwards;
+  animation-delay: 1.5s; /* Retrasa la aparición del párrafo */
+}
+
+.cta-button {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: 297px;
+  height: 46px;
+  font-family: "Inter", sans-serif;
+  background-color: #184039; /* Color de tu botón */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.94em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s forwards;
+  animation-delay: 2s; /* Retrasa la aparición del botón */
+  border: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #77a6aa;
+  transform: translateY(-5px); /* Pequeño efecto al pasar el mouse */
+}
+
+/* Animaciones */
+@keyframes fadeInSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.div-card {
+  width: 100%;
+  height: auto;
+  background: radial-gradient(circle, #ffffff 10%, #5AA8AB 100%);
+  /* Opcional: define un tamaño y padding para que veas el efecto */
+
+  min-height: 300px;
+  padding: 20px;
+  box-sizing: border-box; /* Para que el padding no aumente el ancho/alto total */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+
+}
+
+.title {
+  padding-left: 2rem;
+  color: #263c5e;
+  font-family: "Poppins", sans-serif;
+  font-weight: normal;
+ 
+}

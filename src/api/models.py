@@ -40,22 +40,12 @@ class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(
         primary_key=True)
-    username: Mapped[str] = mapped_column(
-        String(20), unique=True, nullable=True)
-    name: Mapped[str] = mapped_column(
-        String(15), nullable=True)
     email: Mapped[str] = mapped_column(
         String(30), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         String(255), unique=True, nullable=False)
-    avatar: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=True)
     role: Mapped[bool] = mapped_column(
         Boolean(), nullable=False)  # False=student, True=mentor
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow)
 
     # Relaciones
     mentor_profile = relationship(
@@ -81,6 +71,16 @@ class MentorProfile(db.Model):
     __tablename__ = 'mentor_profile'
     id: Mapped[int] = mapped_column(
         primary_key=True)
+    username: Mapped[str] = mapped_column(
+        String(20), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(
+        String(15), nullable=False)
+    avatar: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
     rate: Mapped[int] = mapped_column(

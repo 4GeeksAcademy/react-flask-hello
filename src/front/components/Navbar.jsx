@@ -25,8 +25,12 @@ export const Navbar = () => {
 						</li>
 					</ul>
 					<div>
+
 						<button type="button" class="btn btn-primary me-2 rounded-pill navbar-btn ">Login</button>
-						<button type="button" class="btn btn-primary rounded-pill navbar-btn">Registro</button>
+
+						<Link to="/register">
+							<button type="button" class="btn btn-primary rounded-pill navbar-btn">Registro</button>
+						</Link>
 					</div>
 
 				</div>

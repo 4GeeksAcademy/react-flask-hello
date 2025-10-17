@@ -41,15 +41,15 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(
         primary_key=True)
     username: Mapped[str] = mapped_column(
-        String(20), unique=True, nullable=False)
+        String(20), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(
-        String(15), nullable=False)
+        String(15), nullable=True)
     email: Mapped[str] = mapped_column(
         String(30), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=False)
+        String(255), unique=True, nullable=False)
     avatar: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=False)
+        String(50), unique=True, nullable=True)
     role: Mapped[bool] = mapped_column(
         Boolean(), nullable=False)  # False=student, True=mentor
     created_at: Mapped[datetime] = mapped_column(
@@ -58,9 +58,11 @@ class User(db.Model):
         DateTime, default=datetime.utcnow)
 
     # Relaciones
-    mentor_profile = relationship("MentorProfile", back_populates='user', uselist=False)
-    student_profile = relationship("StudentProfile", back_populates='user', uselist=False)
-    comments = relationship("Comments", back_populates="user") 
+    mentor_profile = relationship(
+        "MentorProfile", back_populates='user', uselist=False)
+    student_profile = relationship(
+        "StudentProfile", back_populates='user', uselist=False)
+    comments = relationship("Comments", back_populates="user")
 
     def serialize(self):
         return {
@@ -138,8 +140,9 @@ class StudentProfile(db.Model):
 
     # Relaciones
     user = relationship("User", back_populates="student_profile")
-    mentorings = relationship("Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
-    
+    mentorings = relationship(
+        "Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
+
     def serialize(self):
         return {
             'id': self.id,
@@ -282,9 +285,9 @@ class Comments(db.Model):
     id_mentor: Mapped[int] = mapped_column(
         Integer, ForeignKey('mentor_profile.id'), nullable=False)
     id_student: Mapped[int] = mapped_column(
-        Integer, ForeignKey('student_profile.id'), nullable = False)
+        Integer, ForeignKey('student_profile.id'), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default = datetime.utcnow)
+        DateTime, default=datetime.utcnow)
 
     # Relationships
     user = relationship("User", back_populates="comments")

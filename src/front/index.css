@@ -34,7 +34,7 @@
 .hero-section {
   position: relative;
   width: 100%;
-  height: 480px; 
+  height: 480px;
   display: flex;
   justify-content: center;
   margin-top: 5rem;
@@ -45,21 +45,20 @@
   text-align: center;
   max-width: 800px;
   padding: 20px;
-  z-index: 2; 
+  z-index: 2;
 }
 
 .logo-image {
-  width: 12rem; 
+  width: 12rem;
   margin-bottom: 2rem;
-  opacity: 0; 
-  transform: translateY(-20px); 
+  opacity: 0;
+  transform: translateY(-20px);
   animation: fadeInSlideDown 1s forwards;
-  animation-delay: 0.5s; 
-
+  animation-delay: 0.5s;
 }
 
 h1 {
-  font-family: "Poppins", sans-serif; 
+  font-family: "Poppins", sans-serif;
   font-size: 2.5em;
   font-weight: bold;
   color: #263c5e;
@@ -67,15 +66,15 @@ h1 {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInSlideUp 1s forwards;
-  animation-delay: 1s; 
+  animation-delay: 1s;
 }
 
 .span-text {
-  color: #77a6aa; 
+  color: #77a6aa;
 }
 
 .hero-text {
-  font-family: "Inter", sans-serif; 
+  font-family: "Inter", sans-serif;
   font-size: 0.94em;
   font-weight: lighter;
   color: #263c5e;
@@ -83,16 +82,24 @@ h1 {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInSlideUp 1s forwards;
-  animation-delay: 1.5s; 
+  animation-delay: 1.5s;
 }
 
-.cta-button {
+.cta-button{
+ width: 297px;
+  height: 46px;
+}
+.cta-send {
+  width: 180px;
+  height: 35px;
+}
+
+.cta-button,
+.cta-send {
   padding-top: 0px;
   padding-bottom: 0px;
-  width: 297px;
-  height: 46px;
   font-family: "Inter", sans-serif;
-  background-color: #184039; 
+  background-color: #184039;
   color: white;
   border: none;
   border-radius: 50px;
@@ -102,15 +109,15 @@ h1 {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInSlideUp 1s forwards;
-  animation-delay: 2s; 
+  animation-delay: 2s;
   border: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
-.cta-button:hover {
+.cta-button:hover, .cta-send:hover {
   background-color: #77a6aa;
-  transform: translateY(-5px); 
+  transform: translateY(-5px);
 }
 
 /* Animaciones */
@@ -140,11 +147,10 @@ h1 {
   width: 100%;
   height: auto;
   background: radial-gradient(circle, #ffffff 10%, #5aa8ab 100%);
-  
 
   min-height: 300px;
   padding: 20px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   position: relative;
   display: flex;
   justify-content: center;
@@ -162,15 +168,22 @@ h1 {
   width: 440px;
   padding: 1rem;
   height: auto;
-  border: #77A6AA;
-  border-radius: 1rem;
+  border-color: #77a6aa;
   border-width: 2rem;
+  border-radius: 2rem;
   box-shadow: 0 8px 20px rgb(119, 166, 170);
 }
 
-.form-label{
+.form-input{
+  border-color: #77a6aa;
+   border-width: 0.07rem;
+  box-shadow: 0 4px 6px rgb(119, 166, 170, 0.4);
+
+}
+
+.form-label {
   font-family: "Poppins", sans-serif;
-  color: #263C5E;
+  color: #263c5e;
   font-size: 16px;
   font-weight: bold;
 }

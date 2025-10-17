@@ -1,6 +1,7 @@
 import { useState } from "react";
 import userServices from "../services/userServices";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const navigate = useNavigate()
@@ -37,45 +38,47 @@ const Register = () => {
                 <img src="src/front/assets/img/MM-2.png" alt="Hero Illustration" className="logo-image"></img>
             </div>
             <div className="d-flex justify-content-center">
-            <form className="form-style" onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label className="form-label">Email</label>
-                    <input
-                        type="email"
-                        value={formData.email}
-                        name="email"
-                        onChange={handleChange}
-                        className="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                    ></input>
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Password</label>
-                    <input
-                        type="password"
-                        value={formData.password}
-                        name="password"
-                        onChange={handleChange}
-                        className="form-control"
-                        id="exampleInputPassword1"
-                    ></input>
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Role</label>
+                <form className="form-style p-4" onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input
+                            type="email"
+                            value={formData.email}
+                            name="email"
+                            onChange={handleChange}
+                            className="form-control form-input"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                            required
+                        ></input>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Password</label>
+                        <input
+                            type="password"
+                            value={formData.password}
+                            name="password"
+                            onChange={handleChange}
+                            className="form-control form-input"
+                            id="exampleInputPassword1"
+                            required
+                        ></input>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Role</label>
 
-                    <select class="form-select" id="inputGroupSelect01" value={formData.role} name="role" onChange={handleChange}>
-                        <option selected>Indica tu role...</option>
-                        <option value="mentor">Mentor</option>
-                        <option value="student">Estudiante</option>
+                        <select className="form-select form-input" id="inputGroupSelect01" value={formData.role} name="role" onChange={handleChange}>
+                            <option selected>Indica tu role...</option>
+                            <option value="mentor">Mentor</option>
+                            <option value="student">Estudiante</option>
 
-                    </select>
-                </div>
-
-                <button type="submit" className="btn btn-primary">
-                    Enviar
-                </button>
-            </form>
+                        </select>
+                    </div>
+                    <div className="d-flex justify-content-center my-2" >
+                        <button type="submit" className="cta-send">Enviar</button>
+                    </div>
+                 <Link to={`/`}>Volver a inicio</Link>
+                </form>
             </div>
         </div>
     );

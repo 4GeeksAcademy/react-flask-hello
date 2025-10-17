@@ -40,10 +40,16 @@ class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(
         primary_key=True)
+    username: Mapped[str] = mapped_column(
+        String(20), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(
+        String(15), nullable=False)
     email: Mapped[str] = mapped_column(
         String(30), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
-        String(255), unique=True, nullable=False)
+        String(50), unique=True, nullable=False)
+    avatar: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False)
     role: Mapped[bool] = mapped_column(
         Boolean(), nullable=False)  # False=student, True=mentor
 

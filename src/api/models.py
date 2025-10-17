@@ -30,7 +30,7 @@ class Patient(db.Model):
     last_name: Mapped[str] = mapped_column(String(255), nullable=False)
     birth_date: Mapped[Date] = mapped_column(Date)
     password: Mapped[str] = mapped_column(String)
-    assign_doctor: Mapped[int] = mapped_column(ForeignKey("doctors.id"))
+    assign_doctor: Mapped[int] = mapped_column(ForeignKey("doctors.id"), nullable=True)
     is_active: Mapped[Boolean] = mapped_column(Boolean)
 
     appointments: Mapped["Appointment"] = relationship(

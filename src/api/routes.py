@@ -87,7 +87,8 @@ def register():
                             first_name=first_name,
                             last_name=last_name,
                             birth_date=birth_date,
-                            password=hashed_password.decode("utf-8")
+                            password=hashed_password.decode("utf-8"),
+                            is_active=True
                         )
         db.session.add(new_patient)
         db.session.commit()
@@ -98,16 +99,13 @@ def register():
                         "Error": f"El rol no coincide con doctor o paciente: {role}"}), 400
 
 
-@api.route("/login", methods=["POST"])
-def create_token():
+@api.route("/login/patient", methods=["POST"])
+def create_token_patient():
     data = request.json
     username = data["email"]
     password = data["password"]
 
     user = Patient.query.filter_by(email=username).first()
-    if not user:
-        Doctor.query.filter_by(email=username).first()
-    
 
     if not user or not bcrypt.checkpw(password.encode("utf-8"),user.password.encode("utf-8")):
         return jsonify({"msg": "Bad username or password"}), 401
@@ -115,10 +113,48 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({"token": access_token, "user_id": user.id})
 
-@api.route("/protected", methods=["GET"])
+@api.route("/login/doctor", methods=["POST"])
+def create_token_doctor():
+    data = request.json
+    username = data["email"]
+    password = data["password"]
+
+    user = Doctor.query.filter_by(email=username).first()
+    
+    if not user or not bcrypt.checkpw(password.encode("utf-8"),user.password.encode("utf-8")):
+        return jsonify({"msg": "Bad username or password"}), 401
+     
+    access_token = create_access_token(identity=user.id)
+    return jsonify({"token": access_token, "user_id": user.id})
+
+@api.route("/protected/patient", methods=["GET"])
 @jwt_required()
-def protected():
+def protected_patient():
     # Access the identity of the current user with get_jwt_identity
     current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    return jsonify ({"id": user.id, "email": user.email}), 200
+    user = Patient.query.get(current_user_id)
+    return jsonify ({"id": user.id,
+                     "email": user.email,
+                     "first_name": user.first_name,
+                     "last_name": user.last_name,
+                     "birth_date": user.birth_date,
+                     "password": user.password,
+                     "assign_doctor": user.assign_doctor,
+                     "is_active": user.is_active}), 200
+
+
+@api.route("/protected/doctor", methods=["GET"])
+@jwt_required()
+def protected_doctor():
+    # Access the identity of the current user with get_jwt_identity
+    current_user_id = get_jwt_identity()
+    user = Doctor.query.get(current_user_id)
+    return jsonify ({"id": user.id,
+                     "email": user.email,
+                     "first_name": user.first_name,
+                     "last_name": user.last_name,
+                     "specialty": user.specialty,
+                     "center_id": user.center_id,
+                     "work_days": user.work_days,
+                     "is_active": user.is_active,
+                     "password": user.password}), 200

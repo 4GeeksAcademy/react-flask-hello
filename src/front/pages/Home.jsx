@@ -16,12 +16,8 @@ export const Home = () => {
 	return (
 		<div className="text-center mt-5">
 
-			<Register/>
+			<PatientDashboard/>
 			<HeroSection/>
-
-
-
-
 
 		</div>
 	);

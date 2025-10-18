@@ -1,11 +1,36 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+import enum
+from sqlalchemy import String, Boolean, ForeignKey, Integer, Float, Text, DateTime, Enum
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime
+
 
 db = SQLAlchemy()
 
 # Definición de ENUMs
+
+
 class ExperienceLevelEnum(enum.Enum):
+    BEGINNER = "beginner"
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
+
+
+class StatusEnum(enum.Enum):
+    PENDING = "pending"
+    CONFIRMED = "confirmed"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
+
+
+class PaymentStatusEnum(enum.Enum):
+    PENDING = "pending"
+    PAID = "paid"
+    FAILED = "failed"
+    REFUNDED = "refunded"
+
+
+class DifficultyLevelEnum(enum.Enum):
     BEGINNER = "beginner"
     INTERMEDIATE = "intermediate"
     ADVANCED = "advanced"
@@ -15,27 +40,20 @@ class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(
         primary_key=True)
-    username: Mapped[str] = mapped_column(
-        String(20), unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(
-        String(15), nullable=False)
     email: Mapped[str] = mapped_column(
         String(30), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=False)
-    avatar: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=False)
+        String(255), unique=True, nullable=False)
     role: Mapped[bool] = mapped_column(
-        Boolean(), nullable=False) # False=student, True=mentor
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.func.utcnow)
-    
-    #Relaciones
-    mentor_profile = relationship("MentorProfile", back_populates='user', uselist=False)
-    student_profile = relationship ("StudentProfile", back_populates='user', uselist=False)
-  
+        Boolean(), nullable=False)  # False=student, True=mentor
+
+    # Relaciones
+    mentor_profile = relationship(
+        "MentorProfile", back_populates='user', uselist=False)
+    student_profile = relationship(
+        "StudentProfile", back_populates='user', uselist=False)
+    comments = relationship("Comments", back_populates="user")
+
     def serialize(self):
         return {
             'id': self.id,
@@ -43,7 +61,7 @@ class User(db.Model):
             'name': self.name,
             'email': self.email,
             'avatar': self.avatar,
-            'role': self.role, # False=student, True=mentor
+            'role': self.role,  # False=student, True=mentor
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
@@ -53,6 +71,16 @@ class MentorProfile(db.Model):
     __tablename__ = 'mentor_profile'
     id: Mapped[int] = mapped_column(
         primary_key=True)
+    username: Mapped[str] = mapped_column(
+        String(20), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(
+        String(15), nullable=False)
+    avatar: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
     rate: Mapped[int] = mapped_column(
@@ -62,7 +90,7 @@ class MentorProfile(db.Model):
     bio: Mapped[str] = mapped_column(
         Text, nullable=True)
     availability: Mapped[str] = mapped_column(
-        String(400) nullable=True)
+        String(400), nullable=True)
     hourly_rate: Mapped[float] = mapped_column(
         Float, nullable=True)
     linkedin_url: Mapped[str] = mapped_column(
@@ -73,12 +101,12 @@ class MentorProfile(db.Model):
         Text, nullable=True)
     interests: Mapped[str] = mapped_column(
         Text, nullable=True)
-    
-    #Relaciones
+
+    # Relaciones
     user = relationship("User", back_populates="mentor_profile")
-    topics = relatiopnship("MentorTopic", back_populates="mentor_profile")
-    mentorings: relationship("Mentoring", back_populates="mentor_profile")
-    
+    topics = relationship("MentorTopic", back_populates="mentor_profile")
+    mentorings = relationship("Mentoring", back_populates="mentor_profile")
+
     def serialize(self):
         return {
             'id': self.id,
@@ -93,7 +121,8 @@ class MentorProfile(db.Model):
             'skills': self.skills,
             'interests': self.interests
         }
-    
+
+
 class StudentProfile(db.Model):
     __tablename__ = 'student_profile'
     id: Mapped[int] = mapped_column(
@@ -111,8 +140,8 @@ class StudentProfile(db.Model):
 
     # Relaciones
     user = relationship("User", back_populates="student_profile")
-    mentorings = relationship("Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
-    mentorings_profile = relationship("MentorProfile", back_populates="mentor", foreign_keys="Mentoring.mentor_id")
+    mentorings = relationship(
+        "Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
 
     def serialize(self):
         return {
@@ -120,7 +149,7 @@ class StudentProfile(db.Model):
             'user_id': self.user_id,
             'interests': self.interests,
             'goals': self.goals,
-            'exp   erience_level': self.experience_level.value if self.experience_level else None,
+            'experience_level': self.experience_level.value if self.experience_level else None,
             'skills': self.skills
         }
 
@@ -153,13 +182,15 @@ class MentorTopic(db.Model):
             'difficulty_level': self.difficulty_level.value if self.difficulty_level else None,
             'price': self.price
         }
-    
+
+
 class Mentoring(db.Model):
     __tablename__ = 'mentoring'
     id: Mapped[int] = mapped_column(primary_key=True)
     topic_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('mentor_topic.id'), nullable=False)
-    mentor_profile_id: Mapped[int] = mapped_column(Integer, ForeignKey('mentor_profile.id'), nullable=False)
+    mentor_profile_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('mentor_profile.id'), nullable=False)
     student_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('student_profile.id'), nullable=False)
     scheduled_at: Mapped[datetime] = mapped_column(
@@ -181,7 +212,8 @@ class Mentoring(db.Model):
     # Relationships
     topic = relationship("MentorTopic", back_populates="mentorings")
     mentor_profile = relationship("MentorProfile", back_populates="mentorings")
-    student = relationship("StudentProfile", back_populates="mentorings", foreign_keys=[student_id])
+    student = relationship(
+        "StudentProfile", back_populates="mentorings", foreign_keys=[student_id])
     reviews = relationship("Review", back_populates="mentoring")
 
     def serialize(self):
@@ -210,8 +242,8 @@ class Review(db.Model):
         Integer, ForeignKey('user.id'), nullable=False)
     reviewed_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
-    role: Mapped[ReviewRoleEnum] = mapped_column(
-        Enum(ReviewRoleEnum), nullable=False)
+    role: Mapped[bool] = mapped_column(
+        Boolean(), nullable=False)  # False=student, True=mentor
     ranking: Mapped[float] = mapped_column(
         Float, nullable=False)
     title: Mapped[str] = mapped_column(
@@ -234,7 +266,7 @@ class Review(db.Model):
             'mentoring_id': self.mentoring_id,
             'reviewer_id': self.reviewer_id,
             'reviewed_id': self.reviewed_id,
-            'role': self.role.value,
+            'role': self.role,
             'ranking': self.ranking,
             'title': self.title,
             'comment': self.comment,
@@ -252,7 +284,7 @@ class Comments(db.Model):
         Text, nullable=False)
     id_mentor: Mapped[int] = mapped_column(
         Integer, ForeignKey('mentor_profile.id'), nullable=False)
-    id_student: Mapped[int] = mapped_column
+    id_student: Mapped[int] = mapped_column(
         Integer, ForeignKey('student_profile.id'), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow)
@@ -270,11 +302,4 @@ class Comments(db.Model):
             'id_mentor': self.id_mentor,
             'id_student': self.id_student,
             'created_at': self.created_at.isoformat() if self.created_at else None
-        }    
-    
-
-
-
-
-
-
+        }

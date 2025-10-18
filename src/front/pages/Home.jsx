@@ -1,6 +1,11 @@
 import React, { useEffect } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import { motion } from "framer-motion";
+
+import Particles from "react-tsparticles";
+import { Hero } from "../components/Hero.jsx";
+import MentorsTop from "../components/MentorsTop.jsx";
 
 export const Home = () => {
 
@@ -33,20 +38,16 @@ export const Home = () => {
 	}, [])
 
 	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
+		<div className="style-home vh-100">
+			<Hero />
+
+			<MentorsTop/>
+
+			
+
+			
+
 		</div>
+
 	);
 }; 

@@ -71,10 +71,6 @@ async function login(email, password, role) {
   }
 }
 
-// --- Ejemplo de uso ---
-// handleLogin("paciente@test.com", "password123", "patient");
-// handleLogin("doctor@test.com", "password456", "doctor");
-
 // Obtener perfil (ruta protegida)
 
 async function getProfile() {

@@ -110,7 +110,7 @@ def create_token_patient():
     if not user or not bcrypt.checkpw(password.encode("utf-8"),user.password.encode("utf-8")):
         return jsonify({"msg": "Bad username or password"}), 401
      
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({"token": access_token, "user_id": user.id})
 
 @api.route("/login/doctor", methods=["POST"])
@@ -120,41 +120,28 @@ def create_token_doctor():
     password = data["password"]
 
     user = Doctor.query.filter_by(email=username).first()
+    print(user.id)
     
     if not user or not bcrypt.checkpw(password.encode("utf-8"),user.password.encode("utf-8")):
         return jsonify({"msg": "Bad username or password"}), 401
      
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({"token": access_token, "user_id": user.id})
 
 @api.route("/protected/patient", methods=["GET"])
 @jwt_required()
 def protected_patient():
     # Access the identity of the current user with get_jwt_identity
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     user = Patient.query.get(current_user_id)
-    return jsonify ({"id": user.id,
-                     "email": user.email,
-                     "first_name": user.first_name,
-                     "last_name": user.last_name,
-                     "birth_date": user.birth_date,
-                     "password": user.password,
-                     "assign_doctor": user.assign_doctor,
-                     "is_active": user.is_active}), 200
+    return jsonify (user.serialize()), 200
 
 
 @api.route("/protected/doctor", methods=["GET"])
 @jwt_required()
 def protected_doctor():
     # Access the identity of the current user with get_jwt_identity
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
+    print(current_user_id)
     user = Doctor.query.get(current_user_id)
-    return jsonify ({"id": user.id,
-                     "email": user.email,
-                     "first_name": user.first_name,
-                     "last_name": user.last_name,
-                     "specialty": user.specialty,
-                     "center_id": user.center_id,
-                     "work_days": user.work_days,
-                     "is_active": user.is_active,
-                     "password": user.password}), 200
+    return jsonify (user.serialize()), 200

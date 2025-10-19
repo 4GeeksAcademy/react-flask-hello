@@ -11,6 +11,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import Register from "./components/Register";
 import RegisterPage from "./pages/RegisterPage";
+import Login from "./components/Login";
+import LoginPage from "./pages/LoginPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,7 @@ export const router = createBrowserRouter(
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Route>
   )
 );

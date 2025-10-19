@@ -13,6 +13,7 @@ import Register from "./components/Register";
 import RegisterPage from "./pages/RegisterPage";
 import Login from "./components/Login";
 import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

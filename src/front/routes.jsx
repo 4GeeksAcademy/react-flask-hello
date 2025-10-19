@@ -13,6 +13,7 @@ import Register from "./components/Register";
 import RegisterPage from "./pages/RegisterPage";
 import Login from "./components/Login";
 import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,8 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard/:role" element={<Dashboard />} />
+
     </Route>
   )
 );

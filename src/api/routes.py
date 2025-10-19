@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, MentorProfile, StudentProfile
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-#from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select
 
@@ -57,8 +57,23 @@ def login():
     if not check_password_hash(user.password, body["password"]):
         return jsonify({"success": False, "data": "Invalid password"}), 401
 
-    #token = create_access_token(identity=str(user.id))
-    #return jsonify({"success": True, "data": "user logged in", "token": token}), 200
-    return jsonify({"success": True, "data": "user logged in"}), 200
+    role = user.role
+    role_string = 'mentor' if role else 'student'
 
-    
+    token = create_access_token(identity=str(user.id))
+
+    return jsonify({"success": True, "data": "user logged in", "token": token, "role": role,
+                    "user": {"id": user.id,
+                             "email": user.email,
+                             "role": role_string}}), 200
+
+
+@api.route('/dashboard', methods=['GET'])
+@jwt_required()
+def get_dashboard():
+    id = get_jwt_identity()
+
+    query = select(User).where(User.id == id)
+    userData = db.session.execute(query).scalar_one()
+    print(userData)
+    return jsonify(userData.serialize())

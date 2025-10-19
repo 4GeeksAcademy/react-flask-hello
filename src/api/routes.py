@@ -57,6 +57,22 @@ def login():
     if not check_password_hash(user.password, body["password"]):
         return jsonify({"success": False, "data": "Invalid password"}), 401
   
+    role = user.role
+    role_string = 'mentor' if role else 'student' 
 
     token = create_access_token(identity=str(user.id))
-    return jsonify({"success": True, "data": "user logged in", "token": token}), 200
+
+    return jsonify({"success": True, "data": "user logged in", "token": token, "role": role,
+                    "user": {"id": user.id,
+                             "email": user.email,
+                             "role": role_string}}), 200
+
+@api.route('/dashboard', methods=['GET'])
+@jwt_required()
+def get_dashboard():
+     id = get_jwt_identity()
+     
+     query = select(User).where(User.id == id)
+     userData = db.session.execute(query).scalar_one()
+     print(userData)
+     return jsonify(userData.serialize())

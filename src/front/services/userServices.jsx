@@ -18,7 +18,7 @@ userServices.register = async (formData) => {
   }
 }
 
-// 👇 Mueve esto FUERA del register
+
 userServices.login = async (formData) => {
   try {
     const resp = await fetch(url + '/api/login', {
@@ -35,5 +35,27 @@ userServices.login = async (formData) => {
     console.log(error)
   }
 }
+
+userServices.dashboard = async () => {
+  try {
+    const resp = await fetch(url + `api/dashboard`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+
+    })
+    if (!resp.ok) throw new Error('error private')
+    const data = await resp.json()
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+
 
 export default userServices

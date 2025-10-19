@@ -1,6 +1,8 @@
-export const initialStore=()=>{
-  return{
-    icon: 'src/front/assets/img/MM-1.png',
+export const initialStore = () => {
+  return {
+    userRole: localStorage.getItem("userRole"),
+    auth: localStorage.getItem("token") ? true : false,
+    icon: "/src/front/assets/img/MM-1.png",
     nameApp: "MentorMatch",
     message: null,
     todos: [
@@ -13,28 +15,54 @@ export const initialStore=()=>{
         id: 2,
         title: "Do my homework",
         background: null,
-      }
-    ]
-  }
-}
+      },
+    ],
+  };
+};
 
 export default function storeReducer(store, action = {}) {
-  switch(action.type){
-    case 'set_hello':
+  switch (action.type) {
+    case "save_user":
       return {
         ...store,
-        message: action.payload
+        user: action.payload,
       };
-      
-    case 'add_task':
+    case "logged_out":
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      return {
+        ...store,
+        auth: false,
+        user:null,
+        token: null
+        
+      };
+    case "logged_in":
+      return {
+        ...store,
+        auth: true,
+        user:{
+          email: action.payload.email,
+          role: action.payload.role
+        },
+        token: action.payload.token
+      };
+    case "set_hello":
+      return {
+        ...store,
+        message: action.payload,
+      };
 
-      const { id,  color } = action.payload
+    case "add_task":
+      const { id, color } = action.payload;
 
       return {
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        todos: store.todos.map((todo) =>
+          todo.id === id ? { ...todo, background: color } : todo
+        ),
       };
     default:
-      throw Error('Unknown action.');
-  }    
+      throw Error("Unknown action.");
+  }
 }

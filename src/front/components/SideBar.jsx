@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react"
-import { LayoutDashboard, Settings, MessageSquare, Star, Briefcase, Calendar, DollarSign, Eye } from 'lucide-react';
+import { LayoutDashboard, Settings, MessageSquare, Star, Briefcase, Calendar, DollarSign, Eye, LogOut, LogOutIcon } from 'lucide-react';
 import MenuItem from "./MenuItem";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const PERMISSIONS = {
     PANEL_VIEW: 'panel:view',
@@ -131,36 +131,46 @@ const filterFullMenu = (menuItems, userPermissions) => {
             menuFiltered.push(itemFiltered)
         }
 
-        console.log("menu->>>", menuFiltered)
+
     }
     return menuFiltered
 
 }
 
 
-const menuFiltered = (userRole) => {
-    return useMemo(() => {
-        const permissionUser = ROLES[userRole] || [];
-        return filterFullMenu(MENU_ITEMS, permissionUser)
 
-    }, [userRole]);
-
-}
 
 
 const SideBar = ({ userRole }) => {
     const [currentPath, setCurrentPath] = useState('/panel');
-    const {store, dispatch} = useGlobalReducer()
+    const { store, dispatch } = useGlobalReducer()
+    const navigate = useNavigate();
+
+    //const menu = menuFiltered(userRole)
+
+    console.log("🔵 Store completo:", store)
+    console.log("👤 Usuario en store:", store.user)
 
 
-    const menu = menuFiltered(userRole)
+    const menu = useMemo(() => {
 
+        const permissionUser = ROLES[userRole] || [];
+        const filtered = filterFullMenu(MENU_ITEMS, permissionUser)
 
+        return filtered
+    }, [userRole]);
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        dispatch({ type: "logged_out" })
+        navigate('/')
+    }
 
 
     return (
         <>
+
             <button className="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">Toggle offcanvas</button>
             <div className="offcanvas-lg offcanvas-end sidebar" tabindex="-1" id="offcanvasResponsive" aria-labelledby="offcanvasResponsiveLabel">
                 <div className="offcanvas-header">
@@ -173,10 +183,19 @@ const SideBar = ({ userRole }) => {
                         <p className="fs-5 mb-0 text-white mt-3">{store.nameApp}</p>
                     </div>
                 </Link>
-                       
+                {store?.user && (
+                    <div className="contains-info d-flex align-items-center mt-3">
+                        <div className="user-info " >
+                            <span>{store?.user?.email}</span>
+                            <span>Perfil: {store?.user?.role}</span>
+                        </div>
+                        <span className="icon-logout" onClick={handleLogout}><LogOutIcon /></span>
+                    </div>
+                )}
+
                 <div className="offcanvas-body vh-100 ">
                     <nav className="style-nav">
-                        {menu?.map(item => (
+                        {menu.map(item => (
                             <MenuItem
                                 key={item.id}
                                 item={item}

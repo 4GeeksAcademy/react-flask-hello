@@ -1,5 +1,7 @@
 export const initialStore=()=>{
   return{
+    icon: 'src/front/assets/img/MM-1.png',
+    nameApp: "MentorMatch",
     message: null,
     todos: [
       {

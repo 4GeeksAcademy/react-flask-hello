@@ -85,8 +85,8 @@ h1 {
   animation-delay: 1.5s;
 }
 
-.cta-button{
- width: 297px;
+.cta-button {
+  width: 297px;
   height: 46px;
 }
 .cta-send {
@@ -115,7 +115,8 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.cta-button:hover, .cta-send:hover {
+.cta-button:hover,
+.cta-send:hover {
   background-color: #77a6aa;
   transform: translateY(-5px);
 }
@@ -174,11 +175,10 @@ h1 {
   box-shadow: 0 8px 20px rgb(119, 166, 170);
 }
 
-.form-input{
+.form-input {
   border-color: #77a6aa;
-   border-width: 0.07rem;
+  border-width: 0.07rem;
   box-shadow: 0 4px 6px rgb(119, 166, 170, 0.4);
-
 }
 
 .form-label {
@@ -186,4 +186,47 @@ h1 {
   color: #263c5e;
   font-size: 16px;
   font-weight: bold;
+}
+
+.sidebar {
+  width: 270px;
+  background: linear-gradient(
+    to bottom,
+    #184039 0%,
+    #184039 75%,
+    rgba(119, 166, 170, 0.7) 100%
+  );
+}
+
+.style-nav{
+  margin-top: 6rem;
+  margin-left: 0.5rem;
+}
+
+.menu-item {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 1rem;
+    padding: 0.2em;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.menu-item-active {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    color: #fff;
+}
+
+.menu-item:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.menu-item-active:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%);
 }

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Navbar = () => {
+	const {store, dispatch} = useGlobalReducer()
 
 	return (
 
@@ -11,9 +13,9 @@ export const Navbar = () => {
 				</button>
 				<div className="w-50 navbar-brand d-flex align-items-center ">
 					<Link to="/" className="d-flex align-items-center text-decoration-none">
-						<img className="my-2 icon" src="src/front/assets/img/MM-1.png" alt="" />
+						<img className="my-2 icon" src={store.icon} alt="" />
+					    <p className="icon-text mb-0 text-white">{store.nameApp}</p>
 					</Link>
-					<p className="icon-text mb-0 text-white">MentorMatch</p>
 				</div>
 				<div className="collapse navbar-collapse" id="navbarTogglerDemo03">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0 ">

@@ -2,10 +2,10 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, MentorProfile, StudentProfile
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+#from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select
 
@@ -33,7 +33,7 @@ def register():
     hashed_password = generate_password_hash(body["password"])
     if body['role'] == 'mentor':
         role = True
-    else: 
+    else:
         role = False
     new_user = User(email=body['email'],
                     password=hashed_password, role=role)
@@ -47,16 +47,18 @@ def login():
     body = request.json
     query = select(User).where(User.email == body['email'])
     user = db.session.execute(query).scalar_one_or_none()
-  
+
     if not user:
         return jsonify({"success": False, "data": "user not found"}), 404
 
     if not body["password"]:
         return jsonify({"success": False, "data": "Password is required"})
-    
+
     if not check_password_hash(user.password, body["password"]):
         return jsonify({"success": False, "data": "Invalid password"}), 401
-  
 
-    token = create_access_token(identity=str(user.id))
-    return jsonify({"success": True, "data": "user logged in", "token": token}), 200
+    #token = create_access_token(identity=str(user.id))
+    #return jsonify({"success": True, "data": "user logged in", "token": token}), 200
+    return jsonify({"success": True, "data": "user logged in"}), 200
+
+    

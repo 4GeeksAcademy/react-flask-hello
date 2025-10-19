@@ -7,6 +7,7 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import select
 
 api = Blueprint('api', __name__)
 
@@ -39,3 +40,23 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"success": True, "data": "user register log in now"}), 201
+
+
+@api.route('/login', methods=['POST'])
+def login():
+    body = request.json
+    query = select(User).where(User.email == body['email'])
+    user = db.session.execute(query).scalar_one_or_none()
+  
+    if not user:
+        return jsonify({"success": False, "data": "user not found"}), 404
+
+    if not body["password"]:
+        return jsonify({"success": False, "data": "Password is required"})
+    
+    if not check_password_hash(user.password, body["password"]):
+        return jsonify({"success": False, "data": "Invalid password"}), 401
+  
+
+    token = create_access_token(identity=str(user.id))
+    return jsonify({"success": True, "data": "user logged in", "token": token}), 200

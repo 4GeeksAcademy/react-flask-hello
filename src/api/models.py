@@ -57,12 +57,8 @@ class User(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-
-
             'email': self.email,
-
             'role': self.role,  # False=student, True=mentor
-
         }
 
 

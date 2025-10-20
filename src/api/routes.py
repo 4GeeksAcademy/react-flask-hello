@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, MentorProfile, StudentProfile
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -13,6 +13,21 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+# --------------#
+#    Helpers    #
+# --------------#
+def commit_and_serialize(obj):
+    db.session.add(obj)
+    db.session.commit()
+    return jsonify(obj.serialize()), 201
+
+
+def commit_only(obj):
+    db.session.add(obj)
+    db.session.commit()
+    return obj
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -81,3 +96,179 @@ def private():
                     "user": {"id": user.id,
                              "email": user.email,
                              "role": role_string}}), 200
+
+
+# ------------------#
+#       USERS       #
+# ------------------#
+
+@api.route("/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
+    return jsonify([u.serialize() for u in users])
+
+
+@api.route("/users/<int:id>", methods=["GET"])
+def get_user(id):
+    user = User.query.get_or_404(id)
+    return jsonify(user.serialize())
+
+
+@api.route("/users", methods=["POST"])
+def create_user():
+    data = request.json
+    user = User(
+        email=data["email"],
+        password=data["password"],
+        role=data["role"]
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(user.serialize()), 201
+
+
+@api.route("/users/<int:id>", methods=["PUT"])
+def update_user(id):
+    user = User.query.get_or_404(id)
+    data = request.json
+    user.email = data.get("email", user.email)
+    user.password = data.get("password", user.password)
+    user.role = data.get("role", user.role)
+
+    db.session.commit()
+    return jsonify(user.serialize())
+
+
+@api.route("/users/<int:id>", methods=["DELETE"])
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message": "User deleted"})
+
+
+# ----------------------#
+#   MENTOR PROFILES     #
+# ----------------------#
+
+@api.route("/mentor-profiles", methods=["GET"])
+def get_mentor_profiles():
+    mentor_profiles = MentorProfile.query.all()
+    return jsonify([mp.serialize() for mp in mentor_profiles])
+
+
+@api.route("/mentor-profiles/<int:id>", methods=["GET"])
+def get_mentor_profile(id):
+    mentor_profile = MentorProfile.query.get_or_404(id)
+    return jsonify(mentor_profile.serialize())
+
+
+@api.route("/mentor-profiles", methods=["POST"])
+def create_mentor_profile():
+    data = request.json
+    mentor_profile = MentorProfile(
+        username=data["username"],
+        name=data["name"],
+        avatar=data["avatar"],
+        user_id=data["user_id"],
+        rate=data["rate"],
+        years_experience=data["years_experience"],
+        bio=data.get("bio"),
+        availability=data.get("availability"),
+        hourly_rate=data.get("hourly_rate"),
+        linkedin_url=data.get("linkedin_url"),
+        website=data.get("website"),
+        skills=data.get("skills"),
+        interests=data.get("interests")
+    )
+    db.session.add(mentor_profile)
+    db.session.commit()
+    return jsonify(mentor_profile.serialize()), 201
+
+
+@api.route("/mentor-profiles/<int:id>", methods=["PUT"])
+def update_mentor_profile(id):
+    mentor_profile = MentorProfile.query.get_or_404(id)
+    data = request.json
+    mentor_profile.username = data.get("username", mentor_profile.username)
+    mentor_profile.name = data.get("name", mentor_profile.name)
+    mentor_profile.avatar = data.get("avatar", mentor_profile.avatar)
+    mentor_profile.rate = data.get("rate", mentor_profile.rate)
+    mentor_profile.years_experience = data.get(
+        "years_experience", mentor_profile.years_experience)
+    mentor_profile.bio = data.get("bio", mentor_profile.bio)
+    mentor_profile.availability = data.get(
+        "availability", mentor_profile.availability)
+    mentor_profile.hourly_rate = data.get(
+        "hourly_rate", mentor_profile.hourly_rate)
+    mentor_profile.linkedin_url = data.get(
+        "linkedin_url", mentor_profile.linkedin_url)
+    mentor_profile.website = data.get("website", mentor_profile.website)
+    mentor_profile.skills = data.get("skills", mentor_profile.skills)
+    mentor_profile.interests = data.get("interests", mentor_profile.interests)
+
+    db.session.commit()
+    return jsonify(mentor_profile.serialize())
+
+
+@api.route("/mentor-profiles/<int:id>", methods=["DELETE"])
+def delete_mentor_profile(id):
+    mentor_profile = MentorProfile.query.get_or_404(id)
+
+    db.session.delete(mentor_profile)
+    db.session.commit()
+    return jsonify({"message": "Mentor profile deleted"})
+
+
+# ------------------------#
+#   STUDENT PROFILES      #
+# ------------------------#
+
+@api.route("/student-profiles", methods=["GET"])
+def get_student_profiles():
+    student_profiles = StudentProfile.query.all()
+    return jsonify([sp.serialize() for sp in student_profiles])
+
+
+@api.route("/student-profiles/<int:id>", methods=["GET"])
+def get_student_profile(id):
+    student_profile = StudentProfile.query.get_or_404(id)
+    return jsonify(student_profile.serialize())
+
+
+@api.route("/student-profiles", methods=["POST"])
+def create_student_profile():
+    data = request.json
+    student_profile = StudentProfile(
+        user_id=data["user_id"],
+        interests=data.get("interests"),
+        goals=data.get("goals"),
+        experience_level=data.get("experience_level"),
+        skills=data.get("skills")
+    )
+    db.session.add(student_profile)
+    db.session.commit()
+    return jsonify(student_profile.serialize()), 201
+
+
+@api.route("/student-profiles/<int:id>", methods=["PUT"])
+def update_student_profile(id):
+    student_profile = StudentProfile.query.get_or_404(id)
+    data = request.json
+    student_profile.interests = data.get(
+        "interests", student_profile.interests)
+    student_profile.goals = data.get("goals", student_profile.goals)
+    student_profile.experience_level = data.get(
+        "experience_level", student_profile.experience_level)
+    student_profile.skills = data.get("skills", student_profile.skills)
+    db.session.commit()
+    return jsonify(student_profile.serialize())
+
+
+@api.route("/student-profiles/<int:id>", methods=["DELETE"])
+def delete_student_profile(id):
+    student_profile = StudentProfile.query.get_or_404(id)
+    db.session.delete(student_profile)
+    db.session.commit()
+    return jsonify({"message": "Student profile deleted"})

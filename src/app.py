@@ -23,7 +23,7 @@ app.url_map.strict_slashes = False
 
 # JWT config
 # ¡Cambia las palabras "super-secret" por otra cosa!
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 jwt = JWTManager(app)
 
 

@@ -1,0 +1,149 @@
+/* Contenedor Principal */
+.cita-container {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cita-container h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Selector de Mes/Año */
+.date-selector-mock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.date-selector-mock button {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Estilos del Calendario */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 días a la semana */
+    gap: 5px;
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.day-header {
+    background-color: #f0f0f0;
+    padding: 10px 5px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.day-cell {
+    padding: 15px 5px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+
+.day-cell:not(.empty):hover {
+    background-color: #e9f5ff;
+}
+
+.day-cell.empty {
+    background-color: #f9f9f9;
+    cursor: default;
+    border: none;
+}
+
+/* Días con disponibilidad */
+.day-cell.has-availability {
+    background-color: #d1e7ff; /* Fondo azul claro */
+    border-color: #007bff;
+}
+
+/* Día seleccionado */
+.day-cell.selected {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-color: #007bff;
+}
+
+/* Panel de Horas Disponibles */
+.availability-panel {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.availability-panel h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.hours-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.hour-button {
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    background-color: white;
+    color: #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: bold;
+}
+
+.hour-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.hour-button.selected-hour {
+    background-color: #28a745; /* Verde para la selección final */
+    color: white;
+    border-color: #28a745;
+}
+
+.no-availability {
+    color: #dc3545;
+    font-style: italic;
+}
+
+/* Botón de confirmación final */
+.confirmation-box {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+.confirmation-box p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #28a745;
+}
+.confirm-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+}

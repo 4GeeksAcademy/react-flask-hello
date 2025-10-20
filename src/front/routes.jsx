@@ -14,6 +14,14 @@ import RegisterPage from "./pages/RegisterPage";
 import Login from "./components/Login";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import Panel from "./components/Panel";
+import ViewSessions from "./components/ViewSessions";
+import Messages from "./components/Messages";
+import Reviews from "./components/Reviews";
+import Configuration from "./components/Configuration";
+import Services from "./components/Services";
+import ManageSessions from "./components/ManageSessions";
+import Finance from "./components/Finance";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +40,20 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/dashboard/:role" element={<Dashboard />} />
+
+
+      <Route path="/dashboard/:role/*" element={<Dashboard />}>
+        <Route path="panel" element={<Panel />} />
+        <Route path="sessions/view" element={<ViewSessions />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="reviews" element={<Reviews />} />
+        <Route path="configuration" element={<Configuration />} />
+        <Route path="services" element={<Services />} />
+        <Route path="sessions/manage" element={<ManageSessions />} />
+        <Route path="finance" element={<Finance />} />
+
+
+      </Route>
 
     </Route>
   )

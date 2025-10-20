@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate, Link } from "react-router-dom";
 import userServices from "../services/userServices";
+import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
     const { store, dispatch } = useGlobalReducer()
@@ -62,7 +63,8 @@ const Dashboard = () => {
                         />
                     </div>
                     <div className="col-9">
-                        <h2>Contenido</h2>
+
+                        <Outlet />
                     </div>
                 </div>
             }

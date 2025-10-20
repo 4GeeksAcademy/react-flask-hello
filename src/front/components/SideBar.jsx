@@ -208,6 +208,7 @@ const SideBar = ({ userRole, userEmail }) => {
                                 item={item}
                                 isActive={currentPath === item.path}
                                 onClick={setCurrentPath}
+                                userRole={userRole}
                             />
                         ))}
 

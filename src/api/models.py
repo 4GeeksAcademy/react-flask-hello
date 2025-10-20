@@ -57,13 +57,12 @@ class User(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'username': self.username,
-            'name': self.name,
+
+
             'email': self.email,
-            'avatar': self.avatar,
+
             'role': self.role,  # False=student, True=mentor
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+
         }
 
 

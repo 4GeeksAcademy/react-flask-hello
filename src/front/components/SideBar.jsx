@@ -141,15 +141,14 @@ const filterFullMenu = (menuItems, userPermissions) => {
 
 
 
-const SideBar = ({ userRole }) => {
+const SideBar = ({ userRole, userEmail }) => {
     const [currentPath, setCurrentPath] = useState('/panel');
     const { store, dispatch } = useGlobalReducer()
     const navigate = useNavigate();
 
     //const menu = menuFiltered(userRole)
 
-    console.log("🔵 Store completo:", store)
-    console.log("👤 Usuario en store:", store.user)
+
 
 
     const menu = useMemo(() => {
@@ -161,8 +160,7 @@ const SideBar = ({ userRole }) => {
     }, [userRole]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userRole');
+        localStorage.removeItem('user');
         dispatch({ type: "logged_out" })
         navigate('/')
     }
@@ -171,11 +169,20 @@ const SideBar = ({ userRole }) => {
     return (
         <>
 
-            <button className="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">Toggle offcanvas</button>
+            <nav className="navbar navbar-light bg-white" >
+                <button
+                    className="navbar-toggler d-lg-none"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasResponsive"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+            </nav>
             <div className="offcanvas-lg offcanvas-end sidebar" tabindex="-1" id="offcanvasResponsive" aria-labelledby="offcanvasResponsiveLabel">
                 <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasResponsiveLabel">Responsive offcanvas</h5>
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+
+                    <button type="button" className="btn-close bg-white" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
                 </div>
                 <Link to="/" className="d-flex align-items-center text-decoration-none">
                     <div className="d-flex justify-content-center gap-2 p-2">
@@ -183,11 +190,11 @@ const SideBar = ({ userRole }) => {
                         <p className="fs-5 mb-0 text-white mt-3">{store.nameApp}</p>
                     </div>
                 </Link>
-                {store?.user && (
+                {store?.auth && (
                     <div className="contains-info d-flex align-items-center mt-3">
                         <div className="user-info " >
-                            <span>{store?.user?.email}</span>
-                            <span>Perfil: {store?.user?.role}</span>
+                            <span>{userEmail}</span>
+                            <span>Perfil: {userRole}</span>
                         </div>
                         <span className="icon-logout" onClick={handleLogout}><LogOutIcon /></span>
                     </div>

@@ -29,14 +29,14 @@ export const Navbar = () => {
 					<div>
 						{!store.auth &&
 							<><Link to="/login">
-								<button type="button" class="btn btn-primary rounded-pill navbar-btn">Login</button>
+								<button type="button" className="btn btn-primary rounded-pill navbar-btn">Login</button>
 							</Link>
 								<Link to="/register">
-									<button type="button" class="btn btn-primary rounded-pill navbar-btn">Registro</button>
+									<button type="button" className="btn btn-primary rounded-pill navbar-btn">Registro</button>
 								</Link>
 							</>}
-						{store.auth && <Link to={`/dashboard/${store?.userRole}`}>
-							<button type="button" class="btn btn-primary rounded-pill navbar-btn">Mi cuenta</button>
+						{store.auth && <Link to={`/dashboard/${store?.user.role}`}>
+							<button type="button" className="btn btn-primary rounded-pill navbar-btn">Mi cuenta</button>
 						</Link>}
 					</div>
 

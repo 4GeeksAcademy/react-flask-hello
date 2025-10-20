@@ -12,30 +12,34 @@ const Dashboard = () => {
     const [currentPath, setCurrentPath] = useState('/panel')
     const navigate = useNavigate();
     const { role } = useParams();
+    const [userEmail, setUserEmail] = useState("")
+    const [userToken, setUserToken] = useState("")
+    const [userRole, setUserRole] = useState(role)
 
 
 
-    const userRole = role || 'mentor';
-
-
-
-/*
     useEffect(() => {
-
+        /*
         userServices.dashboard().then((data) => {
             console.log("data-->", data)
             dispatch({ type: "save_user", payload: data })
-        });
-        
-                const token = localStorage.getItem('token');
-                if (!token || !store.auth) {
-                    console.log("No hay sesión, redirigiendo a login");
-                    navigate('/login', { replace: true });
-                }
-                    
+            });
+            */
+
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            dispatch({ type: 'logged_in' })
+
+            setUserRole(user.role)
+            setUserEmail(user.email)
+            setUserToken(user.token)
+
+        }
+
     }, [store.auth, navigate]);
 
-*/
+
 
     return (
         <>
@@ -51,6 +55,9 @@ const Dashboard = () => {
                     <div className="col-3">
                         <SideBar
                             userRole={userRole}
+                            userEmail={userEmail}
+
+
 
                         />
                     </div>

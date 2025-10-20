@@ -1,5 +1,6 @@
 export const initialStore = () => {
   return {
+    user: null,
     userRole: localStorage.getItem("userRole"),
     auth: localStorage.getItem("token") ? true : false,
     icon: "/src/front/assets/img/MM-1.png",
@@ -26,26 +27,19 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         user: action.payload,
+        auth: true
       };
     case "logged_out":
-      localStorage.removeItem("token");
       localStorage.removeItem("user");
       return {
         ...store,
         auth: false,
-        user:null,
-        token: null
-        
+        user: null,
       };
     case "logged_in":
       return {
         ...store,
         auth: true,
-        user:{
-          email: action.payload.email,
-          role: action.payload.role
-        },
-        token: action.payload.token
       };
     case "set_hello":
       return {

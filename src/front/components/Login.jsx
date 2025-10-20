@@ -27,17 +27,20 @@ const Login = () => {
 
             if (data.success) {
 
-                localStorage.setItem('token', data.token)
+                localStorage.setItem("user", JSON.stringify({
+                    'token': data.token,
+                    'email': data.user.email,
+                    'role': data.user.role
+                }))
+
+
+
                 const userRole = data.user.role
-                localStorage.setItem('userRole', userRole)
-                dispatch({
-                    type: 'logged_in',
-                    payload: {
-                        email: data.user.email,
-                        role: data.user.role,
-                        token: data.token
-                    }
-                })
+
+                dispatch({ type: 'logged_in' })
+                dispatch({ type: 'save_user', payload: data.user })
+
+
                 navigate(`/dashboard/${userRole}`)
             } else {
                 setError(data.data)

@@ -36,13 +36,13 @@ userServices.login = async (formData) => {
   }
 }
 
-userServices.dashboard = async () => {
+userServices.dashboard = async (token) => {
   try {
     const resp = await fetch(url + `api/dashboard`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + token
       }
 
     })

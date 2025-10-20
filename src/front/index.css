@@ -252,3 +252,12 @@ h1 {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%);
 }
 
+.btn-hamburger {
+  border: none;
+  background: transparent;
+  font-size: 1.8rem;
+  color: #184039;
+}
+.btn-hamburger:hover {
+  color: #5aa8ab;
+}

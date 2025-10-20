@@ -68,6 +68,7 @@ def login():
                              "role": role_string}}), 200
 
 
+<<<<<<< HEAD
 @api.route('/dashboard', methods=['GET'])
 @jwt_required()
 def get_dashboard():
@@ -77,3 +78,18 @@ def get_dashboard():
     userData = db.session.execute(query).scalar_one()
     print(userData)
     return jsonify(userData.serialize())
+=======
+@api.route('/dashboard', methods=["GET"])
+@jwt_required()
+def private():
+    id = get_jwt_identity()
+    print('user id is ----------------------------------------> ', id)
+
+    user = db.session.get(User, id)
+    role = user.role
+    role_string = 'mentor' if role else 'student'
+    return jsonify({"success": True, "data": "user logged in",
+                    "user": {"id": user.id,
+                             "email": user.email,
+                             "role": role_string}}), 200
+>>>>>>> 459a3330edb8ca79c470b99b1a8cb3330ecdc3f7

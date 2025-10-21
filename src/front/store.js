@@ -1,8 +1,8 @@
 export const initialStore = () => {
   return {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")),
     userRole: localStorage.getItem("userRole"),
-    auth: localStorage.getItem("token") ? true : false,
+    auth: localStorage.getItem("user") ? true : false,
     icon: "/src/front/assets/img/MM-1.png",
     nameApp: "MentorMatch",
     message: null,
@@ -24,9 +24,10 @@ export const initialStore = () => {
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
     case "add_avatar":
+      const updatedUser = { ...store.user, avatarUrl: action.payload };
       return {
         ...store,
-        avatarUrl: action.payload,
+        user: updatedUser,
       };
     case "save_user":
       return {

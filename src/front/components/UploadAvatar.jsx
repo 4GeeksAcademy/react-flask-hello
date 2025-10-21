@@ -40,7 +40,7 @@ const UploadAvatar = () => {
             <div className="photo-upload-container">
 
                 <div className="avatar-circle">
-                    {store?.avatarUrl && <img src={store?.avatarUrl} alt="Avatar" />}
+                    {store?.user?.avatarUrl && <img src={store?.user?.avatarUrl} alt="Avatar" />}
                 </div>
 
                 <label htmlFor="avatar" className="upload-btn">

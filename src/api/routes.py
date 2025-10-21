@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select
+import cloudinary.uploader
 
 api = Blueprint('api', __name__)
 
@@ -272,3 +273,38 @@ def delete_student_profile(id):
     db.session.delete(student_profile)
     db.session.commit()
     return jsonify({"message": "Student profile deleted"})
+
+
+@api.route("upload-avatar", methods=['POST'])
+def upload_avatar():
+    file = request.files.get('avatar')
+
+    if not file:
+        return jsonify({"error": "No file uploaded"}), 400
+    
+    try: 
+        result = cloudinary.uploader.upload(
+            file,
+            folder = 'mentormatch/avatars',
+            resource_type = 'image',
+            overwrite = True
+
+        )
+
+        avatar_url = result.get("secure_url")
+        public_id = result.get("public_id")
+
+        return jsonify({
+            "url": avatar_url,
+            "public_id": public_id
+        }), 200
+    
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
+    
+
+
+
+
+
+

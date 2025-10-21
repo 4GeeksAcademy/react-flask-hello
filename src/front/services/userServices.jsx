@@ -55,7 +55,26 @@ userServices.dashboard = async (token) => {
 }
 
 
+userServices.uploadAvatar = async (formData) => {
+  try {
+    // const file = e.target.files[0]
 
+
+    // const formData = new FormData()
+    // formData.append('avatar', file)
+
+    const resp = await fetch(url + `api/upload-avatar`, {
+      method: "POST",
+      body: formData
+    })
+    if (!resp.ok) throw new Error('error upload avatar')
+    const data = await resp.json()
+    console.log("Avatar subido---->>", data.url)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 
 export default userServices

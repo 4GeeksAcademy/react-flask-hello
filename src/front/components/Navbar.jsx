@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import ImageAvatar from "./ImageAvatar";
 
 export const Navbar = () => {
 	const { store, dispatch } = useGlobalReducer()
@@ -35,8 +36,9 @@ export const Navbar = () => {
 									<button type="button" className="btn btn-primary rounded-pill navbar-btn">Registro</button>
 								</Link>
 							</>}
-						{store.auth && <Link to={`/dashboard/${store?.user.role}`}>
-							<button type="button" className="btn btn-primary rounded-pill navbar-btn">Mi cuenta</button>
+						{store.auth && <Link className="d-flex" to={`/dashboard/${store?.user.role}`}>
+							
+							<ImageAvatar/>
 						</Link>}
 					</div>
 

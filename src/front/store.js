@@ -23,11 +23,16 @@ export const initialStore = () => {
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
+    case "add_avatar":
+      return {
+        ...store,
+        avatarUrl: action.payload,
+      };
     case "save_user":
       return {
         ...store,
         user: action.payload,
-        auth: true
+        auth: true,
       };
     case "logged_out":
       localStorage.removeItem("user");

@@ -66,6 +66,8 @@ class Tienda(db.Model):
     productos: Mapped[list['Productos']] = relationship(back_populates='tienda')
     favoritos: Mapped['Favoritos'] = relationship(back_populates='tienda')
 
+    historial_tienda: Mapped[list['Historial']] = relationship(back_populates='tienda')
+
 
     def serialize(self):
         return{
@@ -155,16 +157,15 @@ class Favoritos(db.Model):
 class Detalles_pedido(db.Model):
     __tablename__="detalles_pedido"
     id: Mapped[int] = mapped_column(primary_key=True)
-    
+
     user_id: Mapped[int] =  mapped_column(ForeignKey('user.id'))#unir a producto
     user: Mapped['User'] = relationship(back_populates="pedidos")
 
     producto_id: Mapped[int] = mapped_column(ForeignKey('productos.id'))#unir a producto
     productos: Mapped[list['Productos']] = relationship(back_populates="pedidos")
     subtotal: Mapped[float] = mapped_column(nullable=False , unique=False)
-
-
-
+    
+    historial_pedido: Mapped[list['Historial']] = relationship(back_populates='pedido')
 
     def serialize(self):
         return{
@@ -172,8 +173,8 @@ class Detalles_pedido(db.Model):
             "user_id": self.user_id,
             "producto_id": self.producto_id,
             "user": {"email": self.user.email} if self.user else None,
-            "producto": [p.serialize() for p in self.productos] if self.productos else None,
-            "subtotal": self.subtotal
+            "productos": [p.serialize() for p in self.productos] if self.productos else None,
+            "subtotal": self.subtotal,
         }
 
 
@@ -229,13 +230,18 @@ class Resenas(db.Model):
 class Historial(db.Model):
     __tablename__="historial"
     id: Mapped[int] = mapped_column(primary_key=True)
-    pedido_id: Mapped[int] = mapped_column(ForeignKey('user.id'))#unir a detalles pedido (user = cliente)
-    tienda_id: Mapped[int] = mapped_column(ForeignKey('tienda.id'))#unir a tienda id
     total: Mapped[float] = mapped_column(unique=False,nullable=False, default=0.0)
     gastos_envio: Mapped[float] = mapped_column(unique=False,nullable=False, default=0.0)
     fecha_pedido: Mapped[TIMESTAMP] = mapped_column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     direccion: Mapped[str] = mapped_column(String(100),unique=False,nullable=False)
     pago: Mapped[bool] = mapped_column(Boolean())
+
+    pedido_id: Mapped[int] = mapped_column(ForeignKey('user.id'))#unir a detalles pedido (user = cliente)
+    pedido: Mapped['Detalles_pedido'] = relationship(back_populates='historial_pedido')
+    
+    
+    tienda_id: Mapped[int] = mapped_column(ForeignKey('tienda.id'))#unir a tienda id
+    tienda: Mapped['Tienda'] = relationship(back_populates='historial_tienda')
 
 
     def serialize(self):

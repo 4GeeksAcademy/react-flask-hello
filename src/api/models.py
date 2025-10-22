@@ -99,8 +99,6 @@ class MentorProfile(db.Model):
         Text, nullable=True)
     availability: Mapped[str] = mapped_column(
         String(400), nullable=True)
-    hourly_rate: Mapped[float] = mapped_column(
-        Float, nullable=True)
     linkedin_url: Mapped[str] = mapped_column(
         String(100), nullable=True)
     website: Mapped[str] = mapped_column(

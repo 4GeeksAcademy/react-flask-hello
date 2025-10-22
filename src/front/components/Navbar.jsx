@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import ImageAvatar from "./ImageAvatar";
 
 export const Navbar = () => {
+	const { store, dispatch } = useGlobalReducer()
 
 	return (
 
@@ -11,9 +14,9 @@ export const Navbar = () => {
 				</button>
 				<div className="w-50 navbar-brand d-flex align-items-center ">
 					<Link to="/" className="d-flex align-items-center text-decoration-none">
-						<img className="my-2 icon" src="src/front/assets/img/MM-1.png" alt="" />
+						<img className="my-2 icon" src={store.icon} alt="" />
+						<p className="icon-text mb-0 text-white">{store.nameApp}</p>
 					</Link>
-					<p className="icon-text mb-0 text-white">MentorMatch</p>
 				</div>
 				<div className="collapse navbar-collapse" id="navbarTogglerDemo03">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
@@ -25,8 +28,18 @@ export const Navbar = () => {
 						</li>
 					</ul>
 					<div>
-						<button type="button" class="btn btn-primary me-2 rounded-pill navbar-btn ">Login</button>
-						<button type="button" class="btn btn-primary rounded-pill navbar-btn">Registro</button>
+						{!store.auth &&
+							<><Link to="/login">
+								<button type="button" className="btn btn-primary rounded-pill navbar-btn">Login</button>
+							</Link>
+								<Link to="/register">
+									<button type="button" className="btn btn-primary rounded-pill navbar-btn">Registro</button>
+								</Link>
+							</>}
+						{store.auth && <Link className="d-flex" to={`/dashboard/${store?.user.role}`}>
+							
+							<ImageAvatar/>
+						</Link>}
 					</div>
 
 				</div>

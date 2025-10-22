@@ -52,8 +52,8 @@ const Dashboard = () => {
             }
 
             {store?.auth &&
-                <div className="row">
-                    <div className="col-3">
+                <div className="row d-flex align-items-stretch vh-100">
+                    <div className="col-2 me-5 sidebar-container">
                         <SideBar
                             userRole={userRole}
                             userEmail={userEmail}
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
                         />
                     </div>
-                    <div className="col-9">
+                    <div className="col-8 ms-2">
 
                         <Outlet />
                     </div>

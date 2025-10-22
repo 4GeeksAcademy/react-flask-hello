@@ -7,13 +7,14 @@ import ImageAvatar from "./ImageAvatar";
 
 const PERMISSIONS = {
     PANEL_VIEW: 'panel:view',
-    CONFIGURATION_VIEW: 'configuration:view',
+    CONFIGURATIONMENTOR_VIEW: 'configurationmentor:view',
     MESSAGES_VIEW: 'messages:view',
     REVIEWS_VIEW: 'reviews:view',
     SERVICES_VIEW: 'services:view',
     MANAGE_SESSIONS_VIEW: 'sessions:manage',
     FINANCE_VIEW: 'finance:view',
-    SESSIONS_VIEW: 'sessions:view'
+    SESSIONS_VIEW: 'sessions:view',
+    CONFIGURATIONSTUDENT_VIEW: 'configurationstudent:view'
 }
 
 
@@ -21,7 +22,7 @@ const ROLES = {
 
     mentor: [
         PERMISSIONS.PANEL_VIEW,
-        PERMISSIONS.CONFIGURATION_VIEW,
+        PERMISSIONS.CONFIGURATIONMENTOR_VIEW,
         PERMISSIONS.MESSAGES_VIEW,
         PERMISSIONS.REVIEWS_VIEW,
         PERMISSIONS.SERVICES_VIEW,
@@ -31,7 +32,7 @@ const ROLES = {
 
     student: [
         PERMISSIONS.PANEL_VIEW,
-        PERMISSIONS.CONFIGURATION_VIEW,
+        PERMISSIONS.CONFIGURATIONSTUDENT_VIEW,
         PERMISSIONS.MESSAGES_VIEW,
         PERMISSIONS.REVIEWS_VIEW,
         PERMISSIONS.SESSIONS_VIEW
@@ -98,13 +99,20 @@ const MENU_ITEMS = [
     },
 
     {
-        id: 'configuration',
+        id: 'configurationMentor',
         label: 'Configuración de la cuenta',
         icon: Settings,
-        path: '/configuration',
-        permission: PERMISSIONS.CONFIGURATION_VIEW
-    }
+        path: '/configurationmentor',
+        permission: PERMISSIONS.CONFIGURATIONMENTOR_VIEW
+    },
 
+    {
+        id: 'configurationStudent',
+        label: 'Configuración de la cuenta',
+        icon: Settings,
+        path: '/configurationstudent',
+        permission: PERMISSIONS.CONFIGURATIONSTUDENT_VIEW,
+    }
 ]
 
 
@@ -197,7 +205,7 @@ const SideBar = ({ userRole, userEmail }) => {
                             <span>{userEmail}</span>
                             <span>Perfil: {userRole}</span>
                         </div>
-                        <ImageAvatar/>
+                        <ImageAvatar />
                         <span className="icon-logout ms-2" onClick={handleLogout}><LogOutIcon /></span>
                     </div>
                 )}

@@ -56,6 +56,7 @@
 	"dependencies": {
 		"@react-three/drei": "^9.92.6",
 		"@react-three/fiber": "^8.15.17",
+		"country-list": "^2.4.1",
 		"framer-motion": "^12.23.24",
 		"lucide": "^0.546.0",
 		"lucide-react": "^0.546.0",
@@ -64,6 +65,7 @@
 		"react-dom": "^18.2.0",
 		"react-icons": "^5.5.0",
 		"react-router-dom": "^6.18.0",
+		"react-select": "^5.10.2",
 		"react-tsparticles": "^2.12.2",
 		"three": "^0.159.0",
 		"tsparticles": "^3.9.1",

@@ -36,6 +36,14 @@ class DifficultyLevelEnum(enum.Enum):
     ADVANCED = "advanced"
 
 
+class LanguageEnum(enum.Enum):
+    SPANISH = "spanish"
+    ENGLISH = "english"
+    FRENCH = "french"
+    GERMAN = "german"
+
+
+# Models
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(
@@ -52,7 +60,12 @@ class User(db.Model):
         "MentorProfile", back_populates='user', uselist=False)
     student_profile = relationship(
         "StudentProfile", back_populates='user', uselist=False)
-    comments = relationship("Comments", back_populates="user")
+    comments = relationship(
+        "Comments", back_populates="user")
+    reviews_given = relationship(
+        "Review", back_populates="reviewer", foreign_keys="Review.reviewer_id")
+    reviews_received = relationship(
+        "Review", back_populates="reviewed", foreign_keys="Review.reviewed_id")
 
     def serialize(self):
         return {
@@ -78,16 +91,14 @@ class MentorProfile(db.Model):
         DateTime, default=datetime.utcnow)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
-    rate: Mapped[int] = mapped_column(
-        Integer, nullable=False)
+    hourly_rate: Mapped[float] = mapped_column(
+        Float, nullable=False)
     years_experience: Mapped[int] = mapped_column(
         Integer, nullable=False)
     bio: Mapped[str] = mapped_column(
         Text, nullable=True)
     availability: Mapped[str] = mapped_column(
         String(400), nullable=True)
-    hourly_rate: Mapped[float] = mapped_column(
-        Float, nullable=True)
     linkedin_url: Mapped[str] = mapped_column(
         String(100), nullable=True)
     website: Mapped[str] = mapped_column(
@@ -96,25 +107,35 @@ class MentorProfile(db.Model):
         Text, nullable=True)
     interests: Mapped[str] = mapped_column(
         Text, nullable=True)
+    languaje: Mapped[LanguageEnum] = mapped_column(
+        Enum(LanguageEnum), nullable=False)
+    location: Mapped[str] = mapped_column(
+        String(30), nullable=True)
 
     # Relaciones
     user = relationship("User", back_populates="mentor_profile")
     topics = relationship("MentorTopic", back_populates="mentor_profile")
     mentorings = relationship("Mentoring", back_populates="mentor_profile")
+    comments = relationship(
+        "Comments", back_populates="mentor", foreign_keys="Comments.id_mentor")
 
     def serialize(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'rate': self.rate,
+            'username': self.username,
+            'name': self.name,
+            'avatar': self.avatar,
+            'hourly_rate': self.hourly_rate,
             'years_experience': self.years_experience,
             'bio': self.bio,
             'availability': self.availability,
-            'hourly_rate': self.hourly_rate,
             'linkedin_url': self.linkedin_url,
             'website': self.website,
             'skills': self.skills,
-            'interests': self.interests
+            'interests': self.interests,
+            'language': self.language.value if self.language else None,
+            'location': self.location
         }
 
 
@@ -132,11 +153,17 @@ class StudentProfile(db.Model):
         Enum(ExperienceLevelEnum), nullable=True)
     skills: Mapped[str] = mapped_column(
         Text, nullable=True)
+    language: Mapped[LanguageEnum] = mapped_column(
+        Enum(LanguageEnum), nullable=False)
+    location: Mapped[str] = mapped_column(
+        String(30), nullable=True)
 
     # Relaciones
     user = relationship("User", back_populates="student_profile")
     mentorings = relationship(
         "Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
+    comments = relationship(
+        "Comments", back_populates="student", foreign_keys="Comments.id_student")
 
     def serialize(self):
         return {
@@ -145,7 +172,9 @@ class StudentProfile(db.Model):
             'interests': self.interests,
             'goals': self.goals,
             'experience_level': self.experience_level.value if self.experience_level else None,
-            'skills': self.skills
+            'skills': self.skills,
+            'language': self.language.value if self.language else None,
+            'location': self.location
         }
 
 

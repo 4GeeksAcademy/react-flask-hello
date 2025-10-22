@@ -1,31 +1,44 @@
 import { Link } from "react-router-dom";
-
+import logo from "../assets/img/Logo.png"
 export const Navbar = () => {
 
-	return (
-		<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid justify-content-end">
-    <a class="navbar-brand" href="#">Products</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Shopping Cart</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">QR Code Generator</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact Us</a>
-        </li>
-       <li class="nav-item">
-          <a class="nav-link" href="#">Login</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-	);
+  return (
+
+
+    <nav className="navbar navbar-expand-lg bg-transparent ">
+      
+      <div className="container-fluid ">
+        <a className="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src={logo}
+            alt="Logo"
+            width="360"
+            height="56"
+            className="d-inline-block align-text-top me-2"
+          />
+        </a>
+        <div className="d-flex">
+        <a className="navbar-brand m-3 " href="#">Products</a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ">
+            <li className="nav-item m-3">
+              <a className="nav-link active" aria-current="page" href="#">Shopping Cart</a>
+            </li>
+            <li className="nav-item m-3">
+              <a className="nav-link" href="#">QR Code Generator</a>
+            </li>
+          
+            <li className="nav-item">
+              <a className="btn btn-danger m-3 px-4" href="#"><strong>Login</strong></a>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+      
+    </nav>
+  );
 };

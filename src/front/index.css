@@ -1,3 +1,11 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+
+
+
 .navbar {
   background-color: #5aa8ab;
 }
@@ -77,6 +85,20 @@ h2 {
   color: #263c5e;
   margin-bottom: 15px;
 
+}
+
+.titles-form{
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: medium;
+  color:#263A5B
+}
+
+.info-form{
+   font-family: "Poppins", sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  color:#184039c7
 }
 
 
@@ -176,8 +198,18 @@ h2 {
   font-weight: normal;
 }
 
-.form-style {
+.form-metorprofile{
+  width: 100%;
+  background-color: rgba(119, 166, 170, 0.46)
+  
+}
+
+.form-style{
+
   width: 440px;
+}
+
+.form-style, .form-metorprofile {
   padding: 1rem;
   height: auto;
   border-color: #77a6aa;
@@ -199,14 +231,22 @@ h2 {
   font-weight: bold;
 }
 
+
+
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 270px;
+  height: 100vh;
   background: linear-gradient(
     to bottom,
     #184039 0%,
     #184039 75%,
     rgba(119, 166, 170, 0.7) 100%
   );
+  display: flex;
+  flex-direction: column;
 }
 .contains-info {
   padding: 0.5rem;

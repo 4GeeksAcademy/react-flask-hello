@@ -18,10 +18,11 @@ import Panel from "./components/Panel";
 import ViewSessions from "./components/ViewSessions";
 import Messages from "./components/Messages";
 import Reviews from "./components/Reviews";
-import Configuration from "./components/Configuration";
+import ConfigurationMentor from "./components/ConfigurationMentor";
 import Services from "./components/Services";
 import ManageSessions from "./components/ManageSessions";
 import Finance from "./components/Finance";
+import ConfigurationStudent from "./components/ConfigurationStudent";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,7 +48,8 @@ export const router = createBrowserRouter(
         <Route path="sessions/view" element={<ViewSessions />} />
         <Route path="messages" element={<Messages />} />
         <Route path="reviews" element={<Reviews />} />
-        <Route path="configuration" element={<Configuration />} />
+        <Route path="configurationmentor" element={<ConfigurationMentor />} />
+        <Route path="configurationstudent" element={<ConfigurationStudent />} />
         <Route path="services" element={<Services />} />
         <Route path="sessions/manage" element={<ManageSessions />} />
         <Route path="finance" element={<Finance />} />

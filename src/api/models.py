@@ -93,7 +93,7 @@ class MentorProfile(db.Model):
     website: Mapped[str] = mapped_column(
         String(100), nullable=True)
     skills: Mapped[str] = mapped_column(
-        Text, nullable=True)
+        Text, nullable=True)    
     interests: Mapped[str] = mapped_column(
         Text, nullable=True)
 

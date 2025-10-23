@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, DateTime , TIMESTAMP , Integer , Date , DECIMAL , ForeignKey, Text, Float
+from sqlalchemy import String, Boolean, DateTime , TIMESTAMP , Integer , Date , DECIMAL , ForeignKey, Text, Float , JSON
 from sqlalchemy.orm import Mapped, mapped_column , relationship
 from datetime import datetime , timezone
+from typing import List , Dict , Any
 
 db = SQLAlchemy()
 class User(db.Model):
@@ -19,11 +20,11 @@ class User(db.Model):
     registro_fecha: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
-    tiendas: Mapped[list['Tienda']] = relationship(back_populates='owner')
-    resenas: Mapped[list['Resenas']] = relationship(back_populates='autor')
-    favoritos: Mapped[list['Favoritos']] = relationship(back_populates='user')
-    pedidos: Mapped[list['Detalles_pedido']] = relationship(back_populates='user')
-    notificaciones: Mapped[list['Notificaciones']] = relationship(back_populates='user')
+    tiendas: Mapped[List['Tienda']] = relationship(back_populates='owner')
+    resenas: Mapped[List['Resenas']] = relationship(back_populates='autor')
+    favoritos: Mapped[List['Favoritos']] = relationship(back_populates='user')
+    pedidos: Mapped[List['Detalles_pedido']] = relationship(back_populates='user')
+    notificaciones: Mapped[List['Notificaciones']] = relationship(back_populates='user')
 
 
 
@@ -54,19 +55,17 @@ class Tienda(db.Model):
     categoria_principal: Mapped[str] = mapped_column(nullable=False , unique=False)
     telefono_comercial: Mapped[int] = mapped_column(unique=True , nullable=False)
     logo_url: Mapped[str] = mapped_column(String(300),unique=True , nullable=False)
-    primary_color: Mapped[str] = mapped_column(String(15), nullable=False , unique=False)
-    secondary_color: Mapped[str] = mapped_column(String(15), nullable=False , unique=False)
-    text_color: Mapped[str] = mapped_column(String(15), nullable=False , unique=False)
+    estilos: Mapped[Dict[str,Any]] = mapped_column(JSON , nullable=False , default=dict)#my sql colocar JSON y si es postgress JSONb
     redes_sociales: Mapped[str] = mapped_column(unique=False , nullable=False)
     fecha_creacion: Mapped[TIMESTAMP] = mapped_column(DateTime(), default=datetime.now(timezone.utc))
 
     owner_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     owner: Mapped['User'] = relationship(back_populates='tiendas')
 
-    productos: Mapped[list['Productos']] = relationship(back_populates='tienda')
+    productos: Mapped[List['Productos']] = relationship(back_populates='tienda')
     favoritos: Mapped['Favoritos'] = relationship(back_populates='tienda')
 
-    historial_tienda: Mapped[list['Historial']] = relationship(back_populates='tienda')
+    historial_tienda: Mapped[List['Historial']] = relationship(back_populates='tienda')
 
 
     def serialize(self):
@@ -78,9 +77,7 @@ class Tienda(db.Model):
             "categoria_principal": self.categoria_principal,
             "telefono_comercial": self.telefono_comercial,
             "logo_url": self.logo_url,
-            "primary_color": self.primary_color,
-            "secondary_color": self.secondary_color,
-            "text_color": self.text_color,
+            "estilos": self.estilos,
             "redes_sociales": self.redes_sociales,
             "fecha_creacion": self.fecha_creacion,
         }
@@ -103,7 +100,7 @@ class Productos(db.Model):
     tienda_id: Mapped[int] = mapped_column(ForeignKey('tienda.id'))
     tienda: Mapped['Tienda'] = relationship(back_populates='productos', uselist=False)
 
-    resenas: Mapped[list['Resenas']] = relationship(back_populates='producto')
+    resenas: Mapped[List['Resenas']] = relationship(back_populates='producto')
     favoritos: Mapped['Favoritos'] = relationship(back_populates='producto')
 
     pedidos: Mapped['Detalles_pedido'] = relationship(back_populates="productos")
@@ -162,10 +159,10 @@ class Detalles_pedido(db.Model):
     user: Mapped['User'] = relationship(back_populates="pedidos")
 
     producto_id: Mapped[int] = mapped_column(ForeignKey('productos.id'))#unir a producto
-    productos: Mapped[list['Productos']] = relationship(back_populates="pedidos")
+    productos: Mapped[List['Productos']] = relationship(back_populates="pedidos")
     subtotal: Mapped[float] = mapped_column(nullable=False , unique=False)
     
-    historial_pedido: Mapped[list['Historial']] = relationship(back_populates='pedido')
+    historial_pedido: Mapped[List['Historial']] = relationship(back_populates='pedido')
 
     def serialize(self):
         return{
@@ -224,7 +221,7 @@ class Resenas(db.Model):
             "comentario": self.comentario,
             "fecha": self.fecha,
             "respuestas": self.respuestas,
-            "producto": {"nombre_producto": self.producto.nombre_producto} if self.producto else None
+            "producto": {"nombre_producto": self.producto.nombre_producto} if self.producto else None #posible recursividad
         }
 
 class Historial(db.Model):

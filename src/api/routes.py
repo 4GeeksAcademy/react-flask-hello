@@ -89,7 +89,7 @@ def login():
                     "user": {"id": user.id,
                              "email": user.email,
                              "role": role_string,
-                             "avatarUrl":avatar_url}}), 200
+                             "avatarUrl": avatar_url}}), 200
 
 
 @api.route('/dashboard', methods=["GET"])
@@ -174,9 +174,73 @@ def get_mentor_profile(userId):
     return jsonify(mentor_profile.serialize())
 
 
+# -------------------start filter get
+
+@api.route("/mentor-profiles/filter", methods=["GET"])
+def filter_mentor_profiles():
+    skills_filter = request.args.get('skills')
+    years_experience_filter = request.args.get('years_experience')
+    language_filter = request.args.get('language')
+
+    query = MentorProfile.query
+
+    if skills_filter:
+        query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
+
+    # filter by “years of experience”: example mentors with more than 3 years of experience
+    if years_experience_filter:
+        query = query.filter(MentorProfile.years_experience >=
+                             int(years_experience_filter))
+
+    if language_filter:
+        query = query.filter(MentorProfile.language == language_filter)
+
+    mentor_profiles = query.all()
+
+    return jsonify({
+        "success": True,
+        "count": len(mentor_profiles),
+        "data": [mp.serialize() for mp in mentor_profiles]
+    }), 200
+
+# -------------------end filter get
+
+
 @api.route("/mentor-profiles", methods=["POST"])
 def create_mentor_profile():
     data = request.json
+
+    # Validación que us_id existe:
+    if not data.get("user_id"):
+        return jsonify({
+            "success": False,
+            "error": "user_id is required"
+        }), 400
+
+      # Verificar que usuario existe
+    user = User.query.get(data["user_id"])
+    if not user:
+        return jsonify({
+            "success": False,
+            "error": "User not found"
+        }), 404
+
+    # Verificar que usuario sea mentor (role = True)
+    if not user.role:
+        return jsonify({
+            "success": False,
+            "error": "User is not a mentor"
+        }), 400
+
+    # Verificar que no tenga ya un mentor profile
+    existing_profile = MentorProfile.query.filter_by(
+        user_id=data["user_id"]).first()
+    if existing_profile:
+        return jsonify({
+            "success": False,
+            "error": "Mentor profile already exists for this user"
+        }), 400
+
     mentor_profile = MentorProfile(
         username=data["username"],
         name=data["name"],

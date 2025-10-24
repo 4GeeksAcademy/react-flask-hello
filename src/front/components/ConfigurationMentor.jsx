@@ -8,6 +8,8 @@ import CategoriesSelect from "./CategoriesSelect";
 import SkillsSelect from "./SkillsSelect";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import userServices from "../services/userServices";
+import AlertSuccess from "./AlertSuccess";
+import AlertError from "./AlertError";
 
 const ConfigurationMentor = () => {
     const { role } = useParams();
@@ -16,6 +18,8 @@ const ConfigurationMentor = () => {
     const [skills, setSkills] = useState([])
     const { store, dispatch } = useGlobalReducer()
     const [update, setUpdate] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [alertError, setAlertError] = useState(false)
 
     const options = [
         { value: "webdev", label: "Desarrollo Web" },
@@ -86,6 +90,19 @@ const ConfigurationMentor = () => {
     }, []);
 
 
+    useEffect(() => {
+        if (success || alertError) {
+            const timer = setTimeout(() => {
+                setSuccess(false);
+                setAlertError(false)
+            }, 3000); 
+        
+              
+            return () => clearTimeout(timer);
+        }
+    }, [success, alertError]);
+
+
     const handleChange = (e) => {
 
         const { name, value } = e.target;
@@ -117,16 +134,27 @@ const ConfigurationMentor = () => {
         if (update) {
             userServices.putMentorProfile(dataToSend, store.user.id).then(data => {
                 console.log("Data desde el back----->", data)
+
+                if (data.success) {
+                    setSuccess(true)
+                } else{
+                    setAlertError(true)
+                }
+
             })
         } else {
             userServices.mentorprofile(dataToSend).then(data => {
                 console.log("Data desde el back----->", data)
+
+                if (data.success) {
+                    setSuccess(true)
+                } else{
+                    setAlertError(true)
+                }
+
             })
 
         }
-
-
-
 
 
     }
@@ -138,8 +166,10 @@ const ConfigurationMentor = () => {
         <>
             {role === 'mentor' &&
                 <>
+
                     <div className="my-4">
                         <h2 >Configura tu cuenta</h2>
+
                         <UploadAvatar />
                     </div>
                     <div  >
@@ -325,7 +355,9 @@ const ConfigurationMentor = () => {
 
 
                             <div className="d-flex justify-content-end my-2" >
-                                <button type="submit" className="cta-send">Guardar</button>
+                                {success && <AlertSuccess />}
+                                 {alertError && <AlertError />}
+                                <button type="submit" className="cta-send ms-5 ">Guardar</button>
                             </div>
                         </form>
                     </div>

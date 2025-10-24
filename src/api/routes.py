@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
 
 api = Blueprint('api', __name__)
@@ -209,38 +210,6 @@ def filter_mentor_profiles():
 @api.route("/mentor-profiles", methods=["POST"])
 def create_mentor_profile():
     data = request.json
-
-    # Validación que us_id existe:
-    if not data.get("user_id"):
-        return jsonify({
-            "success": False,
-            "error": "user_id is required"
-        }), 400
-
-      # Verificar que usuario existe
-    user = User.query.get(data["user_id"])
-    if not user:
-        return jsonify({
-            "success": False,
-            "error": "User not found"
-        }), 404
-
-    # Verificar que usuario sea mentor (role = True)
-    if not user.role:
-        return jsonify({
-            "success": False,
-            "error": "User is not a mentor"
-        }), 400
-
-    # Verificar que no tenga ya un mentor profile
-    existing_profile = MentorProfile.query.filter_by(
-        user_id=data["user_id"]).first()
-    if existing_profile:
-        return jsonify({
-            "success": False,
-            "error": "Mentor profile already exists for this user"
-        }), 400
-
     mentor_profile = MentorProfile(
         username=data["username"],
         name=data["name"],
@@ -266,25 +235,32 @@ def update_mentor_profile(userId):
     query = select(MentorProfile).where(MentorProfile.user_id == userId)
     mentor_profile = db.session.execute(query).scalar_one()
     data = request.json
-    mentor_profile.username = data.get("username", mentor_profile.username)
-    mentor_profile.name = data.get("name", mentor_profile.name)
-    mentor_profile.avatar = data.get("avatar", mentor_profile.avatar)
-    mentor_profile.years_experience = data.get(
-        "years_experience", mentor_profile.years_experience)
-    mentor_profile.bio = data.get("bio", mentor_profile.bio)
-    mentor_profile.availability = data.get(
-        "availability", mentor_profile.availability)
-    mentor_profile.hourly_rate = data.get(
-        "hourly_rate", mentor_profile.hourly_rate)
-    mentor_profile.linkedin_url = data.get(
-        "linkedin_url", mentor_profile.linkedin_url)
-    mentor_profile.website = data.get("website", mentor_profile.website)
-    mentor_profile.skills = data.get("skills", mentor_profile.skills)
-    mentor_profile.interests = data.get("interests", mentor_profile.interests)
-    mentor_profile.language = data.get("language", mentor_profile.language)
-    mentor_profile.location = data.get("location", mentor_profile.location)
-    db.session.commit()
-    return jsonify(mentor_profile.serialize())
+    try:
+        mentor_profile.username = data.get("username", mentor_profile.username)
+        mentor_profile.name = data.get("name", mentor_profile.name)
+        mentor_profile.avatar = data.get("avatar", mentor_profile.avatar)
+        mentor_profile.years_experience = data.get(
+            "years_experience", mentor_profile.years_experience)
+        mentor_profile.bio = data.get("bio", mentor_profile.bio)
+        mentor_profile.availability = data.get(
+            "availability", mentor_profile.availability)
+        mentor_profile.hourly_rate = data.get(
+            "hourly_rate", mentor_profile.hourly_rate)
+        mentor_profile.linkedin_url = data.get(
+            "linkedin_url", mentor_profile.linkedin_url)
+        mentor_profile.website = data.get("website", mentor_profile.website)
+        mentor_profile.skills = data.get("skills", mentor_profile.skills)
+        mentor_profile.interests = data.get("interests", mentor_profile.interests)
+        mentor_profile.language = data.get("language", mentor_profile.language)
+        mentor_profile.location = data.get("location", mentor_profile.location)
+        db.session.commit()
+        return jsonify(mentor_profile.serialize())
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({
+            "error": True,
+            "message": "No se pudo crear el perfil del mentor."
+        }), 400
 
 
 @api.route("/mentor-profiles/<int:id>", methods=["DELETE"])

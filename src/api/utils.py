@@ -1,4 +1,28 @@
-from flask import jsonify, url_for
+
+from flask import Blueprint, jsonify, url_for
+import requests
+import os
+from .user import user_bp
+
+api = Blueprint('api', __name__)
+api.register_blueprint(user_bp)
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")  # SE AGREGA GOOGLE MAPS 
+
+def geocode_address(address):
+    url = f"https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        "address": address,
+        "key": GOOGLE_MAPS_API_KEY
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data["status"] == "OK":
+        location = data["results"][0]["geometry"]["location"]
+        return location["lat"], location["lng"]
+    else:
+        return None, None
+    
 
 class APIException(Exception):
     status_code = 400
@@ -23,8 +47,6 @@ def has_no_empty_params(rule):
 def generate_sitemap(app):
     links = ['/admin/']
     for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
         if "GET" in rule.methods and has_no_empty_params(rule):
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             if "/admin/" not in url:

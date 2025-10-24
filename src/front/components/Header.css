@@ -1,0 +1,137 @@
+.hero {
+  background: linear-gradient(to right, #ffe2e2, #fbeeee);
+  padding: 60px 40px;
+  font-family: Arial, sans-serif;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  color: #1e1e1e;
+  margin-bottom: 20px;
+}
+
+.hero-text h1 span {
+  color: #bd1a1a;
+}
+
+.hero-text p {
+  font-size: 18px;
+  color: #4a4a4a;
+  margin-bottom: 30px;
+  max-width: 550px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn.primary {
+  background-color: #bd1a1a;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #a11212;
+}
+
+.btn.secondary {
+  background-color: transparent;
+  color: #bd1a1a;
+  border: 2px solid #bd1a1a;
+}
+
+.btn.secondary:hover {
+  background-color: #bd1a1a;
+  color: white;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+}
+
+.hero-stats div h3 {
+  color: #bd1a1a;
+  font-size: 24px;
+}
+
+.hero-stats div p {
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkout-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.checkout-bg {
+  width: 300px; 
+  height: auto;
+  opacity: 0.30;
+  margin-bottom: -40px;
+}
+
+.checkout-card {
+  background-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px 25px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+  transform: translateY(-10px);
+}
+
+.cart-icon {
+  font-size: 22px;
+  color: #bd1a1a;
+}
+
+.checkout-card h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.checkout-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #4a4a4a;
+}

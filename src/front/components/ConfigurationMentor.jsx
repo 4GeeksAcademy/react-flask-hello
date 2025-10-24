@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom";
 import UploadAvatar from "./UploadAvatar";
 import { div } from "framer-motion/client";
@@ -6,43 +6,131 @@ import { useState } from "react";
 import { getNames } from "country-list";
 import CategoriesSelect from "./CategoriesSelect";
 import SkillsSelect from "./SkillsSelect";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import userServices from "../services/userServices";
 
 const ConfigurationMentor = () => {
     const { role } = useParams();
     const countries = getNames()
     const [selectedCategories, setSelectedCategories] = useState([])
     const [skills, setSkills] = useState([])
+    const { store, dispatch } = useGlobalReducer()
+    const [update, setUpdate] = useState(false)
+
+    const options = [
+        { value: "webdev", label: "Desarrollo Web" },
+        { value: "ia", label: "Inteligencia Artificial" },
+        { value: "datasci", label: "Ciencia de Datos" },
+        { value: "cyber", label: "Ciberseguridad" },
+        { value: "mobile", label: "Desarrollo Móvil" },
+        { value: "devops", label: "DevOps" },
+        { value: "uiux", label: "Diseño UI/UX" },
+    ]
+
+    const popularsSkill = [
+        { value: "react", label: "React" },
+        { value: "node", label: "Node.js" },
+        { value: "python", label: "Python" },
+        { value: "docker", label: "Docker" },
+        { value: "git", label: "Git" },
+    ]
+
 
     const [formData, setFormData] = useState({
-        username:" ",
-        name:" ",
-        avatar:" ",
-        location:" ",
-        hourlyRate:" ",
-        yearsExperience:" ",
-        linkedinUrl:" ",
-        website:" ",
-        interests:" ",
-        bio:" ",
-
-
-
-
-
+        avatar: " ",
+        username: " ",
+        name: " ",
+        location: " ",
+        hourly_rate: " ",
+        years_experience: " ",
+        linkedin_url: " ",
+        website: " ",
+        interests: " ",
+        bio: " ",
+        skills: " ",
+        language: " "
 
     });
 
-    const handleChange = () => {
-        
+    useEffect(() => {
+        userServices.getMentorProfile(store.user.id).then(async data => {
+            // console.log(data)
+            if (data != undefined) {
+                setUpdate(true)
+                setFormData({
+                    username: data.username,
+                    name: data.name,
+                    location: data.location,
+                    hourly_rate: data.hourly_rate,
+                    linkedin_url: data.linkedin_url,
+                    website: data.website,
+                    bio: data.bio,
+                    language: data.language,
+                    years_experience: data.years_experience
+                })
+
+                //Damos formatos a los campos de skill y Intereses
+                const formattedInterests = options.filter(opt =>
+                    data.interests?.includes(opt.value)
+                );
+                setSelectedCategories(formattedInterests);
+
+                const formattedSkills = popularsSkill.filter(sk =>
+                    data.skills?.includes(sk.value)
+                )
+                setSkills(formattedSkills)
+
+                //console.log("Datos del perfil--->", data)
+            }
+        })
+    }, []);
+
+
+    const handleChange = (e) => {
+
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const categoriesValues = selectedCategories.map(categorie => categorie.value)
+        //console.log("Data Mentor---->>>>>", formData)
 
     }
+
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("Aqui store user--->", store.user)
+        const categoriesValues = selectedCategories.map(categorie => categorie.value)
+        const skillsValues = skills.map(skill => skill.value)
+        // console.log("Categorias seleccionadas--->>", categoriesValues)
+
+        const dataToSend = {
+            ...formData,
+            interests: categoriesValues,
+            skills: skillsValues,
+            avatar: store.user.avatarUrl,
+            user_id: store.user.id
+
+        }
+        console.log("Informacion del perfil--->>", dataToSend)
+
+        if (update) {
+            userServices.putMentorProfile(dataToSend, store.user.id).then(data => {
+                console.log("Data desde el back----->", data)
+            })
+        } else {
+            userServices.mentorprofile(dataToSend).then(data => {
+                console.log("Data desde el back----->", data)
+            })
+
+        }
+
+
+
+
+
+    }
+
 
 
 
@@ -110,8 +198,8 @@ const ConfigurationMentor = () => {
                                             <label className="form-label">Tarifa por hora</label>
                                             <input
                                                 type="number"
-                                                value={formData.hourlyRate}
-                                                name="hourlyRate"
+                                                value={formData.hourly_rate}
+                                                name="hourly_rate"
                                                 onChange={handleChange}
                                                 className="form-control form-input"
                                                 id="exampleInputhourlyRate"
@@ -125,8 +213,8 @@ const ConfigurationMentor = () => {
                                             <label className="form-label">Años de experiencia</label>
                                             <input
                                                 type="number"
-                                                value={formData.yearsExperience}
-                                                name="yearsExperience"
+                                                value={formData.years_experience}
+                                                name="years_experience"
                                                 onChange={handleChange}
                                                 className="form-control form-input"
                                                 id="exampleInputyearsExperience"
@@ -142,8 +230,8 @@ const ConfigurationMentor = () => {
                                             <label className="form-label">LinkedIn URL</label>
                                             <input
                                                 type="text"
-                                                value={formData.linkedinUrl}
-                                                name="linkedinUrl"
+                                                value={formData.linkedin_url}
+                                                name="linkedin_url"
                                                 onChange={handleChange}
                                                 className="form-control form-input"
                                                 id="exampleInputlinkedinUrl"
@@ -167,6 +255,21 @@ const ConfigurationMentor = () => {
                                             ></input>
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="mb-3">
+                                                <label className="form-label">Lenguaje</label>
+
+                                                <select className="form-select form-input" id="inputGroupSelect01" value={formData.language} name="language" onChange={handleChange}>
+                                                    <option selected>Indica su idioma...</option>
+                                                    <option value="SPANISH">Español</option>
+                                                    <option value="ENGLISH">Ingles</option>
+                                                    <option value="FRENCH">Frances</option>
+                                                    <option value="GERMAN">Aleman</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="form-metorprofile mb-5 p-5"> {/*segunda parte del perfil */}
@@ -175,10 +278,10 @@ const ConfigurationMentor = () => {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="mb-3">
-                                            <CategoriesSelect 
-                                              value={selectedCategories}
-                                              onChange={setSelectedCategories}/>
-
+                                            <CategoriesSelect
+                                                value={selectedCategories}
+                                                onChange={setSelectedCategories}
+                                                options={options} />
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +292,7 @@ const ConfigurationMentor = () => {
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="mb-3">
-                                           <label className="form-label">Biografia</label>
+                                            <label className="form-label">Biografia</label>
                                             <textarea
                                                 rows={5}
                                                 cols={50}
@@ -205,11 +308,12 @@ const ConfigurationMentor = () => {
                                     </div>
                                     <div className="col-12">
                                         <div className="mb-3">
-                                           <SkillsSelect 
+                                            <SkillsSelect
                                                 skills={skills}
                                                 setSkills={setSkills}
-                                                />
-                                           <p className="info-form">Describe tu experiencia para conectar con aprendices con intereses similares</p>
+                                                popularsSkill={popularsSkill}
+                                            />
+                                            <p className="info-form">Describe tu experiencia para conectar con aprendices con intereses similares</p>
                                         </div>
                                     </div>
                                 </div>

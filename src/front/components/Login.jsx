@@ -23,14 +23,18 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        userServices.login(formData).then(data => {
+        userServices.login(formData).then(async data => {
 
             if (data.success) {
 
+
                 localStorage.setItem("user", JSON.stringify({
+                    'id': data.user.id,
                     'token': data.token,
                     'email': data.user.email,
-                    'role': data.user.role
+                    'role': data.user.role,
+                    'avatarUrl': data.user.avatarUrl
+
                 }))
 
 
@@ -39,6 +43,7 @@ const Login = () => {
 
                 dispatch({ type: 'logged_in' })
                 dispatch({ type: 'save_user', payload: data.user })
+                // dispatch({ type: 'add_avatar', payload: infoMentor.avatar })
 
 
                 navigate(`/dashboard/${userRole}`)

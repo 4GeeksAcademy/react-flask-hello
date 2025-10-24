@@ -77,4 +77,62 @@ userServices.uploadAvatar = async (formData) => {
 }
 
 
+userServices.mentorprofile = async (formData) => {
+  try {
+    const resp = await fetch(url + '/api/mentor-profiles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    if (!resp.ok) throw new Error('error al registrar perfil del mentor')
+    const data = await resp.json()
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+userServices.getMentorProfile = async (userId) => {
+  try {
+    const resp = await fetch(url + `api/mentor-profiles/${userId}`)
+    if (!resp.ok) throw new Error('error fetching image item')
+    const data = await resp.json()
+   // console.log('Perfil del mentor', data)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+userServices.putMentorProfile = async (formData, userId) =>{
+ try {
+        const resp = await fetch(url+`api/mentor-profiles/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        if(!resp.ok) throw new Error('error creating user')
+            const data = await resp.json();
+          
+            return data
+
+    } catch (error){
+        console.log(error)
+        return error
+    };
+    
+
+}
+
+
+
 export default userServices
+
+

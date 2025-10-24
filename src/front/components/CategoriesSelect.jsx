@@ -1,7 +1,7 @@
 import Select from "react-select"
 
-const CategoriesSelect = ({ value, onChange }) => {
-
+const CategoriesSelect = ({ value, onChange, options }) => {
+/*
     const options = [
         { value: "webdev", label: "Desarrollo Web" },
         { value: "ia", label: "Inteligencia Artificial" },
@@ -11,7 +11,7 @@ const CategoriesSelect = ({ value, onChange }) => {
         { value: "devops", label: "DevOps" },
         { value: "uiux", label: "Diseño UI/UX" },
     ]
-
+*/
     return (
         <div>
             <label className="form-label fw-bold">Categorías de interés</label>

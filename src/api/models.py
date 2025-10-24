@@ -177,32 +177,31 @@ class Appointment(db.Model):
         "Patient", back_populates="appointments")
     center: Mapped["Center"] = relationship("Center")
 
-    def serialize(self) -> dict:
+    def serialize(self) -> dict: 
             return {
                 "id": self.id,
                 "doctor_id": self.doctor_id,
                 "patient_id": self.patient_id,
                 "center_id": self.center_id,
-                "appointment_date": self.appointment_date.strptime("%d-%m-%Y %H:%M"),
-                "medical_record": self.medical_record,
+                "appointment_date": self.appointment_date,
                 "status": self.status
             }
     
 
     @classmethod
-    def create(cls, doctor_id, patient_id, center_id, appointment_date, medical_record):
+    def create(cls, doctor_id, patient_id, center_id, appointment_date, status: str="Pending"):
         new_appointment = cls(
             doctor_id=doctor_id,
             patient_id=patient_id,
             center_id=center_id,
             appointment_date=appointment_date,
-            status="Pending"
+            status=status
         )
         db.session.add(new_appointment)
         db.session.commit()
         return new_appointment
     
-    def update(self, appointment_date=None, medical_record=None, status=None):
+    def update(self, appointment_date=None, status=None):
         if appointment_date is not None:
             self.appointment_date = appointment_date
 

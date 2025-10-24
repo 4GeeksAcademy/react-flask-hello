@@ -9,6 +9,7 @@ export const Navbar = () => {
       
       <div className="container-fluid ">
         <a className="navbar-brand d-flex align-items-center" href="#">
+          <Link to="/">
           <img
             src={logo}
             alt="Logo"
@@ -16,6 +17,7 @@ export const Navbar = () => {
             height="56"
             className="d-inline-block align-text-top me-2"
           />
+          </Link>
         </a>
         <div className="d-flex">
         <a className="navbar-brand m-3 " href="#">Products</a>
@@ -32,7 +34,7 @@ export const Navbar = () => {
             </li>
           
             <li className="nav-item">
-              <a className="btn btn-danger m-3 px-4" href="#"><strong>Login</strong></a>
+              <Link to="/Login" className="btn btn-danger m-3 px-4" ><strong>Login</strong></Link>
             </li>
           </ul>
         </div>

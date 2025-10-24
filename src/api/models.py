@@ -37,10 +37,10 @@ class DifficultyLevelEnum(enum.Enum):
 
 
 class LanguageEnum(enum.Enum):
-    SPANISH = "spanish"
-    ENGLISH = "english"
-    FRENCH = "french"
-    GERMAN = "german"
+    SPANISH = "SPANISH"
+    ENGLISH = "ENGLISH"
+    FRENCH = "FRENCH"
+    GERMAN = "GERMAN"
 
 
 # Models
@@ -84,7 +84,7 @@ class MentorProfile(db.Model):
     name: Mapped[str] = mapped_column(
         String(15), nullable=False)
     avatar: Mapped[str] = mapped_column(
-        String(50), unique=True, nullable=False)
+        String(200), unique=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(
@@ -104,10 +104,10 @@ class MentorProfile(db.Model):
     website: Mapped[str] = mapped_column(
         String(100), nullable=True)
     skills: Mapped[str] = mapped_column(
-        Text, nullable=True)    
+        Text, nullable=True)
     interests: Mapped[str] = mapped_column(
         Text, nullable=True)
-    languaje: Mapped[LanguageEnum] = mapped_column(
+    language: Mapped[LanguageEnum] = mapped_column(
         Enum(LanguageEnum), nullable=False)
     location: Mapped[str] = mapped_column(
         String(30), nullable=True)

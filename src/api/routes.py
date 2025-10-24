@@ -78,10 +78,18 @@ def login():
 
     token = create_access_token(identity=str(user.id))
 
+    # obtenemos la url del avatar segun su relacion user.id -> mentor_profile.user_id
+    avatar_url = None
+    if user.role and user.mentor_profile:
+        avatar_url = user.mentor_profile.avatar
+    elif not user.role and user.student_profile:
+        avatar_url = user.student_profile.avatar
+
     return jsonify({"success": True, "data": "user logged in", "token": token, "role": role,
                     "user": {"id": user.id,
                              "email": user.email,
-                             "role": role_string}}), 200
+                             "role": role_string,
+                             "avatarUrl":avatar_url}}), 200
 
 
 @api.route('/dashboard', methods=["GET"])
@@ -159,9 +167,10 @@ def get_mentor_profiles():
     return jsonify([mp.serialize() for mp in mentor_profiles])
 
 
-@api.route("/mentor-profiles/<int:id>", methods=["GET"])
-def get_mentor_profile(id):
-    mentor_profile = MentorProfile.query.get_or_404(id)
+@api.route("/mentor-profiles/<int:userId>", methods=["GET"])
+def get_mentor_profile(userId):
+    query = select(MentorProfile).where(MentorProfile.user_id == userId)
+    mentor_profile = db.session.execute(query).scalar_one()
     return jsonify(mentor_profile.serialize())
 
 
@@ -173,29 +182,29 @@ def create_mentor_profile():
         name=data["name"],
         avatar=data["avatar"],
         user_id=data["user_id"],
-        rate=data["rate"],
+        hourly_rate=data["hourly_rate"],
         years_experience=data["years_experience"],
         bio=data.get("bio"),
         availability=data.get("availability"),
-        hourly_rate=data.get("hourly_rate"),
         linkedin_url=data.get("linkedin_url"),
         website=data.get("website"),
         skills=data.get("skills"),
-        interests=data.get("interests")
-    )
+        interests=data.get("interests"),
+        language=data.get("language"),
+        location=data.get("location"))
     db.session.add(mentor_profile)
     db.session.commit()
     return jsonify(mentor_profile.serialize()), 201
 
 
-@api.route("/mentor-profiles/<int:id>", methods=["PUT"])
-def update_mentor_profile(id):
-    mentor_profile = MentorProfile.query.get_or_404(id)
+@api.route("/mentor-profiles/<int:userId>", methods=["PUT"])
+def update_mentor_profile(userId):
+    query = select(MentorProfile).where(MentorProfile.user_id == userId)
+    mentor_profile = db.session.execute(query).scalar_one()
     data = request.json
     mentor_profile.username = data.get("username", mentor_profile.username)
     mentor_profile.name = data.get("name", mentor_profile.name)
     mentor_profile.avatar = data.get("avatar", mentor_profile.avatar)
-    mentor_profile.rate = data.get("rate", mentor_profile.rate)
     mentor_profile.years_experience = data.get(
         "years_experience", mentor_profile.years_experience)
     mentor_profile.bio = data.get("bio", mentor_profile.bio)
@@ -208,7 +217,8 @@ def update_mentor_profile(id):
     mentor_profile.website = data.get("website", mentor_profile.website)
     mentor_profile.skills = data.get("skills", mentor_profile.skills)
     mentor_profile.interests = data.get("interests", mentor_profile.interests)
-
+    mentor_profile.language = data.get("language", mentor_profile.language)
+    mentor_profile.location = data.get("location", mentor_profile.location)
     db.session.commit()
     return jsonify(mentor_profile.serialize())
 
@@ -281,13 +291,13 @@ def upload_avatar():
 
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
-    
-    try: 
+
+    try:
         result = cloudinary.uploader.upload(
             file,
-            folder = 'mentormatch/avatars',
-            resource_type = 'image',
-            overwrite = True
+            folder='mentormatch/avatars',
+            resource_type='image',
+            overwrite=True
 
         )
 
@@ -298,13 +308,6 @@ def upload_avatar():
             "url": avatar_url,
             "public_id": public_id
         }), 200
-    
+
     except Exception as error:
         return jsonify({"error": str(error)}), 500
-    
-
-
-
-
-
-

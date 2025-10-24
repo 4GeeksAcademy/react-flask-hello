@@ -1,14 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Integer, ForeignKey, DateTime, Date, create_engine
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-import uuid
 from datetime import datetime, date
 import bcrypt
 
 db = SQLAlchemy()
 
-def generete_id():
-    return str(uuid.uuid4())
 
 class User(db.Model):
     __tablename__ = "user"
@@ -88,7 +85,7 @@ class Patient(db.Model):
         return self.serialize()
     
     #Funcion para dejar inactivo a un paciente
-    def delete(self, is_active):
+    def soft_delete(self):
         self.is_active=False
         db.session.commit()
         return self.serialize()
@@ -172,7 +169,6 @@ class Appointment(db.Model):
     center_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("centers.id"), index=True)
     appointment_date: Mapped[datetime] = mapped_column(DateTime)
-    medical_record: Mapped[str] = mapped_column((String), nullable=True)
     status: Mapped[str] = mapped_column(String)
 
     doctor: Mapped["Doctor"] = relationship(
@@ -200,7 +196,6 @@ class Appointment(db.Model):
             patient_id=patient_id,
             center_id=center_id,
             appointment_date=appointment_date,
-            medical_record=medical_record,
             status="Pending"
         )
         db.session.add(new_appointment)
@@ -210,8 +205,7 @@ class Appointment(db.Model):
     def update(self, appointment_date=None, medical_record=None, status=None):
         if appointment_date is not None:
             self.appointment_date = appointment_date
-        if medical_record is not None:
-            self.medical_record = medical_record
+
         if status is not None:
             self.status = status
 

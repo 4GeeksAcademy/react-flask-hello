@@ -1,9 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-
-
-
-export default function LoginPage() {
+const Login = () => {
     return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
             <div className="card p-4 shadow-lg" style={{ width: "22rem" }}>
@@ -58,5 +56,7 @@ export default function LoginPage() {
                 </p>
             </div>
         </div>
-    );
+
+    )
 }
+export default Login

@@ -1,0 +1,122 @@
+
+.sport-page {
+  padding-top: 10px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin-bottom: 0;
+  background: #213448;
+}
+
+.logo-navbar {
+  height: 90px;
+  object-fit: contain;
+}
+
+.sport-page .sport-header {
+  background-color: #547792;
+  border-radius: 20px;
+}
+
+.sport-header {
+  background-image: url("https://img.freepik.com/fotos-premium/varios-jovenes-amigos-haciendo-ejercicio-duro-pesas-gimnasio-enfoque-selectivo-centrarse-gyoung-womanl-primer-plano_360066-451.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  color: white;
+  margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 260px;
+}
+
+.sport-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.sport-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.sport1 {
+  background: #ecefca;
+}
+
+.sport-page .tittle,
+.sport-page .subtittle {
+  color: white;
+  font-weight: bold;
+}
+
+.sport-page .card-title {
+  color: #547792;
+}
+
+.sport-page .list-group-item {
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+}
+
+.beneficios {
+  padding: 2rem 1rem;
+  border-radius: 10px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.beneficios .subtittle {
+  color: #ecefca;
+  font-weight: bold;
+}
+
+.caja-bot {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.caja-bot .list-group-item {
+  background-color: #f4f4f4;
+  border: none;
+  color: #213448;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+.sport-page .beneficios .list-group-item {
+  background-color: #ECEFCA;
+  color: #213448;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}

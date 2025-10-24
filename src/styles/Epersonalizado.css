@@ -1,0 +1,342 @@
+/* Estilos para la página de entrenamiento personalizado */
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.entrenamiento-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #213448 100%);
+  padding: 4rem 1.5rem 1.5rem 1.5rem; /* top, right, bottom, left */
+}
+
+.entrenamiento-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+/* Encabezado principal */
+.entrenamiento-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.entrenamiento-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ecefca;
+  color: #ecefca;
+  margin-bottom: 1rem;
+}
+.entrenamiento-subtitle {
+  font-size: 1.25rem;
+  color: #ecefca;
+  color: #ecefca;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+/* Grid de grupos musculares */
+.grupos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+/* Tarjetas de grupos musculares */
+.grupo-card {
+  background: #ecefca;
+  background: #ecefca;
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid #213448;
+  border: 1px solid #213448;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.grupo-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+.grupo-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.grupo-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #03000d;
+  transition: color 0.3s ease;
+}
+.grupo-card:hover .grupo-icon {
+  color: #0a0316;
+}
+.grupo-arrow {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #94b4c1;
+  color: #94b4c1;
+  transition: all 0.3s ease;
+}
+.grupo-card:hover .grupo-arrow {
+  color: #213448;
+  color: #213448;
+  transform: translateX(4px);
+}
+.grupo-nombre {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #213448;
+  color: #213448;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+.grupo-card:hover .grupo-nombre {
+  color: #213448;
+  color: #213448;
+}
+.grupo-descripcion {
+  color: #213448;
+  color: #213448;
+  transition: color 0.3s ease;
+}
+.grupo-card:hover .grupo-descripcion {
+  color: #213448;
+  color: #213448;
+}
+.grupo-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f1f3f5, #94b4c1);
+  border-radius: 0 0 1rem 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.grupo-card:hover .grupo-progress-bar {
+  opacity: 1;
+}
+/* Vista de ejercicios */
+.ejercicios-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.ejercicios-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2rem;
+}
+.btn-volver {
+  display: flex;
+  align-items: center;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+.btn-volver:hover {
+  color: #7298cc;
+}
+.btn-volver-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  transform: rotate(180deg);
+}
+.ejercicios-title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.ejercicios-title-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #213448;
+  color: #213448;
+  margin-right: 0.75rem;
+}
+.ejercicios-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+}
+/* Grid de ejercicios */
+.ejercicios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+/* Tarjetas de ejercicios */
+.ejercicio-card {
+  background: #ecefca;
+  background: #ecefca;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #213448;
+  border: 1px solid #213448;
+  transition: all 0.3s ease;
+}
+.ejercicio-card:hover {
+  transform: translateY(-2px);
+}
+.ejercicio-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.ejercicio-nombre {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #213448;
+  color: #213448;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+.ejercicio-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #080121;
+  flex-shrink: 0;
+}
+.ejercicio-descripcion {
+  color: #213448;
+  color: #213448;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+.ejercicio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.tag-series {
+  background: #94b4c1;
+  color: #213448;
+  background: #94b4c1;
+  color: #213448;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #213448;
+  border: 1px solid #213448;
+}
+.tag-repeticiones {
+  background: rgba(59, 130, 246, 0.2);
+  color: #94b4c1;
+  color: #94b4c1;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #547792;
+  border: 1px solid #547792;
+}
+/* Footer */
+.entrenamiento-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+.footer-text {
+  color: #dadfe8;
+}
+/* Estilos del video */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: rgba(243, 240, 240, 0.003);
+  background: rgba(243, 240, 240, 0.003);
+}
+.video-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0.5rem;
+}
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 235, 235, 0.3);
+  background: rgba(240, 235, 235, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.video-container:hover .video-overlay {
+  opacity: 1;
+}
+.play-icon {
+  width: 3rem;
+  height: 3rem;
+  color: white;
+  background: rgba(2, 1, 26, 0.8);
+  border-radius: 50%;
+  padding: 0.75rem;
+  backdrop-filter: blur(8px);
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .entrenamiento-title {
+    font-size: 2.5rem;
+  }
+  .entrenamiento-subtitle {
+    font-size: 1.125rem;
+  }
+  .grupos-grid {
+    grid-template-columns: 1fr;
+  }
+  .ejercicios-grid {
+    grid-template-columns: 1fr;
+  }
+  .grupo-card,
+  .ejercicio-card {
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .entrenamiento-container {
+    padding: 1rem;
+  }
+  .entrenamiento-title {
+    font-size: 2rem;
+  }
+  .grupo-card,
+  .ejercicio-card,
+  .ejercicios-header {
+    padding: 1rem;
+  }
+  .ejercicio-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ejercicio-nombre {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}

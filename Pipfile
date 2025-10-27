@@ -27,6 +27,7 @@ wtforms = "<3.0"
 python_version = "3.13"
 
 [scripts]
+seed = "python src/seeder.py"
 diagram = "python generate_diagram.py"
 start="flask run -p 3001 -h 0.0.0.0"
 init="flask db init"

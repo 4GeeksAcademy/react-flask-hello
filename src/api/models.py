@@ -51,7 +51,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(30), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
-        String(255), unique=True, nullable=False)
+        String(255), unique=False, nullable=False)
     role: Mapped[bool] = mapped_column(
         Boolean(), nullable=False)  # False=student, True=mentor
 
@@ -71,7 +71,11 @@ class User(db.Model):
         return {
             'id': self.id,
             'email': self.email,
-            'role': self.role,  # False=student, True=mentor
+            'role': 'mentor' if self.role else 'student',
+            'profile': self.mentor_profile.serialize() if self.role else self.student_profile.serialize(),
+            'comments': [comment.serialize() for comment in self.comments] if self.comments else [],
+            'reviews_given': [review.serialize() for review in self.reviews_given] if self.reviews_given else [],
+            'reviews_received': [review.serialize() for review in self.reviews_received] if self.reviews_received else []
         }
 
 
@@ -135,7 +139,9 @@ class MentorProfile(db.Model):
             'skills': self.skills,
             'interests': self.interests,
             'language': self.language.value if self.language else None,
-            'location': self.location
+            'location': self.location,
+            #ejemplo para evitar loop infinito 
+            'user': {"email":self.user.email} if self.user else None,
         }
 
 

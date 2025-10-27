@@ -88,9 +88,16 @@ userServices.mentorprofile = async (formData) => {
     })
     if (!resp.ok) throw new Error('error al registrar perfil del mentor')
     const data = await resp.json()
-    return data
+
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error al creal el perfil" }
+    }
+
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
   }
 }
 
@@ -100,7 +107,7 @@ userServices.getMentorProfile = async (userId) => {
     const resp = await fetch(url + `api/mentor-profiles/${userId}`)
     if (!resp.ok) throw new Error('error fetching image item')
     const data = await resp.json()
-   // console.log('Perfil del mentor', data)
+    // console.log('Perfil del mentor', data)
     return data
   } catch (error) {
     console.log(error)
@@ -109,26 +116,28 @@ userServices.getMentorProfile = async (userId) => {
 
 
 
-userServices.putMentorProfile = async (formData, userId) =>{
- try {
-        const resp = await fetch(url+`api/mentor-profiles/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-type':'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        if(!resp.ok) throw new Error('error creating user')
-            const data = await resp.json();
-          
-            return data
+userServices.putMentorProfile = async (formData, userId) => {
+  try {
+    const resp = await fetch(url + `api/mentor-profiles/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    if (!resp.ok) throw new Error('error creating user')
+    const data = await resp.json();
 
-    } catch (error){
-        console.log(error)
-        return error
-    };
-    
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error al actualizar el perfil" }
+    }
 
+
+    return { success: true, data }
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
 }
 
 

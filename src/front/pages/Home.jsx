@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Header } from "../components/Header"; // 👈 importa el Header
+import { Header } from "../components/Header";
+import { HeroSection } from "../components/HeroSection";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -9,14 +10,10 @@ export const Home = () => {
   const loadMessage = async () => {
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
       if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file");
-
       const response = await fetch(backendUrl + "/api/hello");
       const data = await response.json();
-
       if (response.ok) dispatch({ type: "set_hello", payload: data.message });
-
       return data;
     } catch (error) {
       if (error.message)
@@ -33,7 +30,8 @@ export const Home = () => {
 
   return (
     <>
-      <Header /> 
+      <Header />
+      <HeroSection />
       <div className="text-center mt-5">
         <h1 className="display-4">Hello Rigo!!</h1>
         <p className="lead">
@@ -52,3 +50,5 @@ export const Home = () => {
     </>
   );
 };
+
+

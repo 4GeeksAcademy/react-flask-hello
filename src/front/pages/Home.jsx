@@ -3,6 +3,7 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Header } from "../components/Header";
 import { HeroSection } from "../components/HeroSection";
+import { Features1 } from "../components/Features1";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -32,6 +33,7 @@ export const Home = () => {
     <>
       <Header />
       <HeroSection />
+      <Features1 />
       <div className="text-center mt-5">
         <h1 className="display-4">Hello Rigo!!</h1>
         <p className="lead">
@@ -50,5 +52,4 @@ export const Home = () => {
     </>
   );
 };
-
 

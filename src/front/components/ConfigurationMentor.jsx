@@ -116,7 +116,7 @@ const ConfigurationMentor = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Aqui store user--->", store.user)
+        //console.log("Aqui store user--->", store.user)
         const categoriesValues = selectedCategories.map(categorie => categorie.value)
         const skillsValues = skills.map(skill => skill.value)
         // console.log("Categorias seleccionadas--->>", categoriesValues)

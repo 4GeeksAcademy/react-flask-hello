@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, MentorProfile, StudentProfile
+from api.models import db, User, MentorProfile, StudentProfile, MentorTopic
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -323,6 +323,35 @@ def delete_student_profile(id):
     db.session.delete(student_profile)
     db.session.commit()
     return jsonify({"message": "Student profile deleted"})
+
+# ----------------------#
+#  TYPES MENTORING     #
+# ----------------------#
+
+
+@api.route("/type-mentoring", methods=["POST"])
+def create_type_mentoring():
+    data = request.json
+    type_mentoring = MentorTopic(
+        mentor_profile_id=data["user_id"],
+        title=data.get("title"),
+        description=data.get("description"),
+        difficulty_level=data.get("difficulty_level"),
+        price=data.get("price"),
+        duration=data.get("duration")
+    )
+    db.session.add(type_mentoring)
+    db.session.commit()
+    return jsonify(type_mentoring.serialize()), 201
+
+
+@api.route("/type-mentoring/<int:userId>", methods=["GET"])
+def get_types_mentoring(userId):
+    query = select(MentorTopic).where(MentorTopic.mentor_profile_id == userId)
+    types_mentoring = db.session.execute(query).scalars().all()
+    
+    return jsonify([tm.serialize() for tm in types_mentoring])
+
 
 
 @api.route("upload-avatar", methods=['POST'])

@@ -30,7 +30,7 @@ const Login = () => {
                             type="password"
                             className="form-control"
                             id="password"
-                            placeholder="********"
+                            placeholder="contraseña"
                             required
                             style={{ borderColor: '#a00' }}
                         />

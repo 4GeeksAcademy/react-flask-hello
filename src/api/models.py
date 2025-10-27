@@ -145,6 +145,8 @@ class StudentProfile(db.Model):
         primary_key=True)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
+    avatar: Mapped[str] = mapped_column(
+        String(200), nullable=True)
     interests: Mapped[str] = mapped_column(
         Text, nullable=True)
     goals: Mapped[str] = mapped_column(
@@ -169,6 +171,7 @@ class StudentProfile(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
+            'avatar': self.avatar,
             'interests': self.interests,
             'goals': self.goals,
             'experience_level': self.experience_level.value if self.experience_level else None,

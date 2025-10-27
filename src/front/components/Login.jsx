@@ -1,9 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-
-
-
-export default function LoginPage() {
+const Login = () => {
     return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
             <div className="card p-4 shadow-lg" style={{ width: "22rem" }}>
@@ -20,6 +18,7 @@ export default function LoginPage() {
                             id="email"
                             placeholder="tuemail@ejemplo.com"
                             required
+                            style={{ borderColor: '#a00' }}
                         />
                     </div>
 
@@ -33,6 +32,7 @@ export default function LoginPage() {
                             id="password"
                             placeholder="********"
                             required
+                            style={{ borderColor: '#a00' }}
                         />
                     </div>
 
@@ -52,11 +52,13 @@ export default function LoginPage() {
 
                 <p className="text-center mt-3 mb-0">
                     
-                    <button type="submit" className="btn btn-danger w-100">
+                    <button type="submit" className="btn btn-danger w-100 mb-3">
                         Crear Cuenta
                     </button>
                 </p>
             </div>
         </div>
-    );
+
+    )
 }
+export default Login

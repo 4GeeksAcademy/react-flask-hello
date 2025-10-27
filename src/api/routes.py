@@ -87,10 +87,7 @@ def login():
         avatar_url = user.student_profile.avatar
 
     return jsonify({"success": True, "data": "user logged in", "token": token, "role": role,
-                    "user": {"id": user.id,
-                             "email": user.email,
-                             "role": role_string,
-                             "avatarUrl": avatar_url}}), 200
+                    "user": user.serialize()}), 200
 
 
 @api.route('/dashboard', methods=["GET"])

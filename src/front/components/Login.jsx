@@ -18,6 +18,7 @@ const Login = () => {
                             id="email"
                             placeholder="tuemail@ejemplo.com"
                             required
+                            style={{ borderColor: '#a00' }}
                         />
                     </div>
 
@@ -31,6 +32,7 @@ const Login = () => {
                             id="password"
                             placeholder="********"
                             required
+                            style={{ borderColor: '#a00' }}
                         />
                     </div>
 
@@ -50,7 +52,7 @@ const Login = () => {
 
                 <p className="text-center mt-3 mb-0">
                     
-                    <button type="submit" className="btn btn-danger w-100">
+                    <button type="submit" className="btn btn-danger w-100 mb-3">
                         Crear Cuenta
                     </button>
                 </p>

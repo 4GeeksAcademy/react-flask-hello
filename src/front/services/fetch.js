@@ -13,10 +13,7 @@ async function register(userData) {
     return registerPatient(userData)
   } else if (role == 'doctor') {
     //return registerDoctor(userData)
-    return { 
-            success: false, 
-            message: "La funcionalidad de registro de Doctor aún no está activa." 
-        };
+    return registerDoctor(userData)
   } else {
     return { success: false, message:"Rol no valido o no definido"}
   }
@@ -196,4 +193,4 @@ async function getProfile() {
   }
 }
 
-export { register, registerPatient, login };
+export { register, registerPatient, registerDoctor, login };

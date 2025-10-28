@@ -1,0 +1,147 @@
+.register-container {
+    max-width: 500px;
+    margin: 50px auto; /* Centra el formulario y da espacio */
+    padding: 30px 40px;
+    background-color: #FFFFFF; /* Fondo blanco del formulario */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar */
+    font-family: Arial, sans-serif;
+}
+.register-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #007BFF; /* Línea decorativa */
+    padding-bottom: 10px;
+}
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre los grupos de formulario */
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.95em;
+}
+.form-group input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    /* Para el input de tipo number (Matrícula) que no muestre las flechas */
+    -moz-appearance: textfield;
+}
+/* Ocultar flechas del input number en Chrome/Safari */
+.form-group input[type=number]::-webkit-inner-spin-button,
+.form-group input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.form-group input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+/* Estilo para la Matrícula para distinguirla */
+.license-group input {
+    background-color: #F7F9FC;
+}
+/* Separador (Línea horizontal) */
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+.role-selection {
+    margin-bottom: 10px;
+}
+.role-selection > label {
+    margin-bottom: 10px;
+}
+.checkbox-group {
+    display: flex;
+    gap: 30px; /* Espacio entre Médico y Paciente */
+}
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+    user-select: none; /* Previene selección de texto al hacer clic */
+}
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    /* Estilos personalizados para el checkbox */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    position: relative;
+    top: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: #007BFF;
+    border-color: #007BFF;
+}
+.checkbox-group input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.register-button {
+    padding: 15px;
+    background-color: #007BFF; /* Azul primario */
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.1s;
+    letter-spacing: 1px;
+}
+.register-button:hover {
+    background-color: #0056B3; /* Azul más oscuro al pasar el ratón */
+}
+.register-button:active {
+    transform: translateY(1px); /* Efecto de "presionar" */
+}
+.message {
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    /* Se usan los estilos inline para el color de fuente */
+    margin-top: 15px;
+    font-size: 1em;
+    border: 1px solid;
+}
+/* Estilo para mensaje de Error (rojo) */
+.message[style*="#E74C3C"] {
+    background-color: #FCEAE9;
+    border-color: #E74C3C;
+}
+/* Estilo para mensaje de Éxito (verde) */
+.message[style*="#2ECC71"] {
+    background-color: #EAF7EE;
+    border-color: #2FD072;
+}

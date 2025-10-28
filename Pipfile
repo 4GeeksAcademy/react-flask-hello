@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger = "*"
@@ -17,9 +16,13 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 typing-extensions = "*"
-flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
+flask = "*"
 sqlalchemy = "*"
+jwt = "*"
+bcrypt = "*"
+flask-jwt-extended = "*"
+pyjwt = "==1.7.1"
 
 [requires]
 python_version = "3.13"

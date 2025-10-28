@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DoctorDashboard.css'; 
+import '../css/DoctorDashboard.css'; 
 
 const AccordionItem = ({ title, icon, links }) => {
     const [isOpen, setIsOpen] = useState(false);

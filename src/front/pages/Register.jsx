@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './Register.css';
-import { OWN_API } from '../services/fetch';
+import '../css/Register.css';
+import { OWN_API, register } from '../services/fetch';
 
 function Register() {
 
@@ -12,7 +12,6 @@ function Register() {
 
     const [role, setRole] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
-
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,11 +29,12 @@ function Register() {
         }
     };
 
-    const handleRegistration = (event) => {
+    const handleRegistration = async (event) => {
         event.preventDefault();
         setMessage('');
 
 
+        
         if (!first_name || !last_name || !birth_date || !email || !password || !confirmPassword) {
             setMessage({ text: 'Todos los campos básicos son obligatorios. 📝', type: 'error' });
             return;
@@ -47,7 +47,7 @@ function Register() {
         }
 
 
-        if (role === 'medico') {
+        if (role === 'doctor') {
             const licenseRegex = /^\d{9}$/;
             if (!licenseNumber || !licenseRegex.test(licenseNumber)) {
                 setMessage({ text: 'El Número de Matrícula debe tener exactamente 9 dígitos. 🔢', type: 'error' });
@@ -84,28 +84,43 @@ function Register() {
             type: 'success'
         });
 
+        const registrationData = { first_name, last_name, birth_date, email, phoneNumber, password, role };
 
-        setFirst_name('');
-        setLast_name('');
-        setBirth_date('');
-        setEmail('');
-        setLicenseNumber('');
-        setPassword('');
-        setConfirmPassword('');
-
-
-
-        const registrationData = { first_name, last_name, birth_date, email, password };
-        if (role === 'medico') {
+        if (role === 'doctor') {
             registrationData.licenseNumber = licenseNumber;
         }
-        console.log(registrationData)
-        fetch(`${OWN_API}api/register/patient`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(registrationData)
+
+        setMessage({
+            text: `Registrando como ${role.toUpperCase()}...`,
+            type: 'info'
         })
 
+        console.log(registrationData)
+        console.log('enviando datos de registro a la API...')
+        const result = await register(registrationData)
+
+        if (result && result.success) {
+            setMessage({ text: `registro exitoso como ${result.role.toUpperCase()}!`, type: 'success' });
+            setFirst_name('');
+            setLast_name('');
+            setBirth_date('');
+            setEmail('');
+            setLicenseNumber('');
+            setPhoneNumber('');
+            setPassword('');
+            setConfirmPassword('');
+
+        } else if (result && result.message) {
+            setMessage({
+                text: `Fallo en el registro: ${result.message}`,
+                type: 'error'
+            });
+        } else {
+            setMessage({
+                text: 'Fallo desconocido en el registro. Inténtalo de nuevo más tarde.',
+                type: 'error'
+            });
+        }
     };
 
 
@@ -131,8 +146,8 @@ function Register() {
                         <label>
                             <input
                                 type="checkbox"
-                                checked={role === 'medico'}
-                                onChange={() => handleRoleChange('medico')}
+                                checked={role === 'doctor'}
+                                onChange={() => handleRoleChange('doctor')}
                             />
                             Médico 🧑‍⚕️
                         </label>
@@ -148,7 +163,7 @@ function Register() {
                 </div>
 
 
-                {role === 'medico' && (
+                {role === 'doctor' && (
                     <div className="form-group license-group">
                         <label htmlFor="licenseNumber">Número de Matrícula de Colegiado (9 dígitos):</label>
                         <input
@@ -157,7 +172,7 @@ function Register() {
                             value={licenseNumber}
                             onChange={(e) => setLicenseNumber(e.target.value)}
                             placeholder="Introduce tu matrícula (Ej: 123456789)"
-                            required={role === 'medico'}
+                            required={role === 'doctor'}
                             maxLength="9"
                         />
                     </div>

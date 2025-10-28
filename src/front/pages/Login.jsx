@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './Login.css'; 
+import '../css/Login.css'; 
 
 
 function Login() {
     
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
@@ -14,15 +14,15 @@ function Login() {
         setMessage('');
 
         
-        if (username.length < 3 || password.length < 6) {
+        if (email.length < 3 || password.length < 6) {
             setMessage({ text: 'Por favor, introduce credenciales válidas.', type: 'error' });
             return;
         }
 
-        setMessage({ text: `Inicio de sesión exitoso para ${username}. ¡Bienvenido!`, type: 'success' });
+        setMessage({ text: `Inicio de sesión exitoso para ${email}. ¡Bienvenido!`, type: 'success' });
         
         
-        setUsername('');
+        setEmail('');
         setPassword('');
     };
 
@@ -51,15 +51,15 @@ function Login() {
                     <tbody>
                         
                         <tr>
-                            <th><label htmlFor="username">Usuario:</label></th>
+                            <th><label htmlFor="email">Usuario:</label></th>
                             <td>
                                 <input
                                     type="text"
-                                    id="username"
-                                    name="username"
+                                    id="email"
+                                    name="email"
                                     placeholder="Correo electrónico"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
                             </td>

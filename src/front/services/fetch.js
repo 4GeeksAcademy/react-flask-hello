@@ -4,6 +4,24 @@ export const OWN_API =
   "https://haunted-spooky-werewolf-69j69rw6p76hq44-3001.app.github.dev/";
 
 async function register(userData) {
+  //variable con el rol del usuario
+  const role = userData.role;
+  let endpointPath;
+
+  //if si es doctor o paciente, cambia el endpoint
+  if (role == 'paciente') {
+    return registerPatient(userData)
+  } else if (role == 'doctor') {
+    //return registerDoctor(userData)
+    return { 
+            success: false, 
+            message: "La funcionalidad de registro de Doctor aún no está activa." 
+        };
+  } else {
+    return { success: false, message:"Rol no valido o no definido"}
+  }
+  //Este codigo estaba antes aqui ->
+  /*
   try {
     const response = await fetch(`${OWN_API}api/register/patient`, {
       method: "POST",
@@ -27,9 +45,72 @@ async function register(userData) {
   } catch (error) {
     console.error("Error de red al registrar:", error);
     alert("Error de conexión. Inténtalo más tarde.");
+  }*/
+ //aqui termina funcion register
+}
+
+//aqui nos enfocamos unicamente a mandar la info a la API
+async function registerPatient(userData) {
+  try {
+    const response = await fetch (`${OWN_API}api/register/patient`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      //devolver el error 400 o lo que sea
+      const errorMessage = `Error: ${response.status} fallo al registrar`;
+      console.error('error con el registro de paciente', errorMessage);
+      return {success: false, message: errorMessage};
+    }
+
+    console.log('Registro de paciente exitoso', data);
+    return {success: true, data: data, role: 'paciente'}
+
+  } catch (error) {
+    //error de red
+    console.error('error de red al registrar el paciente', error);
+    return{success: false, message: 'error de conexion'}
   }
 }
 
+async function registerDoctor(userData) {
+  try {
+    const response = await fetch (`${OWN_API}api/register/doctor`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      //devolver el error 400 o lo que sea
+      const errorMessage = `Error: ${response.status} fallo al registrar`;
+      console.error('error con el registro de doctor', errorMessage);
+      return {success: false, message: errorMessage};
+    }
+
+    console.log('Registro de doctor exitoso', data);
+    return {success: true, data: data, role: 'doctor'};
+
+  }catch (error) {
+    //error de red
+    console.error('error de red al registrar el doctor', error);
+    return{success: false, message: 'error de conexion'}
+  }
+}
+//a partir de aqui no he tocado nada
+//para login digo yo que podemos hacer lo mismo.
 async function login(email, password, role) {
   // Determinamos la URL correcta según el rol
   const loginUrl = `${OWN_API}/login/${role}`;
@@ -114,3 +195,5 @@ async function getProfile() {
     console.error("Error de red al obtener datos protegidos:", error);
   }
 }
+
+export { register, registerPatient, login };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AgendarCita.css'; // Crearás este CSS después
+import '../css/AgendarCita.css'; // Crearás este CSS después
 
 // --- Datos Simulados ---
 // Simulación de la disponibilidad del médico para un día específico

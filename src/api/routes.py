@@ -57,29 +57,47 @@ def register_doctor():
     first_name = data.get("first_name")
     last_name = data.get("last_name")
     password = data.get("password")
-    specialty = data.get("specialty")
-    center_id = data.get("center_id")
-    work_days = data.get("work_days")
 
-    if not email or not password:
-        return jsonify({"msg": "email, password y role son requeridos"}), 400
+    #lo pide el front pero nosotros no lo usamos
+    #license_number = data.get("license_number")
+    #phone_number = data.get("phone_number")
+
+    # Campos con valores falsos
+    specialty_falso = "General"
+    center_id_falso = None
+    work_days_falso = 0
+
+    if not email or not password or not first_name or not last_name:
+        response = jsonify({"msg": "email, password, nombre y apellido son requeridos."})
+        #solucion cors temporal
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
 
     if Doctor.query.filter_by(email=email).first():
-        return jsonify({"msg": "This user already exists."})
+        response = jsonify({"msg": "This user already exists."})
+        #solucion cors temporal
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
 
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(
         password=password.encode("utf-8"), salt=salt)
 
+    # Crear el nuevo doctor con valores falsos para los campos faltantes
     new_doctor = Doctor.create(email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    specialty=specialty,
-                    center_id=center_id,
+                    specialty=specialty_falso,
+                    center_id=center_id_falso,
                     password=hashed_password.decode("utf-8"),
-                    work_days=work_days,
+                    work_days=work_days_falso,
                     )
-    return jsonify(new_doctor.serialize()), 201
+    
+    response = jsonify(new_doctor.serialize())
+    #solucion temporal CORS
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    
+    return response, 201
 
 
 @api.route("/login/doctor", methods=["POST"])
@@ -138,14 +156,18 @@ def register_patient():
     birth_date = data.get("birth_date")
     password = data.get("password")
 
-    if not email or not password:
-        return jsonify({"msg": "email, password y role son requeridos"}), 400
+    #Modelos no tiene phone number pero lo pide el front
+    #phone_number = data.get("phone_number")
+
+    if not email or not password or not first_name or not last_name or not birth_date:
+        response = jsonify({"msg": "Todos los campos principales (email, password, nombre, apellido, fecha) son requeridos."})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
 
     if Patient.query.filter_by(email=email).first():
-        return jsonify({"msg": "This user already exists."})
-    
-    if not first_name or not last_name:
-            return jsonify({"msg": "first_name y last_name son requeridos para patient"}), 400
+        response = jsonify({"msg": "This user already exists."})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
     
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(
@@ -156,10 +178,16 @@ def register_patient():
             first_name=first_name,
             last_name=last_name,
             birth_date=birth_date,
+            #phone_number=phone_number,
             password=hashed_password.decode("utf-8"),
-            assign_doctor=data.get("assign_doctor")
+            assign_doctor=data.get("assign_doctor", None)
             )
-    return jsonify(new_patient.serialize()), 201
+    response = jsonify(new_patient.serialize())
+
+    #Solucion temporal CORS
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    
+    return response, 201
 
 @api.route('/patient/<int:patient_id>', methods=['PUT'])
 def update_patient_details(patient_id):

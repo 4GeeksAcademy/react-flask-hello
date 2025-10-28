@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './PatientDashboard.css'; 
+import '../css/PatientDashboard.css'; 
 
 // =======================================================================================
 // LÓGICA DE DÍAS Y HORAS

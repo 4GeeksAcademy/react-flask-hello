@@ -74,8 +74,7 @@ def seed_db():
             title=f"Tema {i}",
             description=f"Descripción del tema {i}",
             difficulty_level=DifficultyLevelEnum.BEGINNER if i == 1 else DifficultyLevelEnum.INTERMEDIATE,
-            price=25.0 + i * 5,
-            duration=30.0 + i * 2
+            price=25.0 + i * 5
         )
         db.session.add(topic)
         db.session.flush()

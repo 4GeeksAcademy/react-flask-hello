@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, MentorProfile, StudentProfile
+from api.models import db, User, MentorProfile, StudentProfile, MentorTopic
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -247,7 +247,8 @@ def update_mentor_profile(userId):
             "linkedin_url", mentor_profile.linkedin_url)
         mentor_profile.website = data.get("website", mentor_profile.website)
         mentor_profile.skills = data.get("skills", mentor_profile.skills)
-        mentor_profile.interests = data.get("interests", mentor_profile.interests)
+        mentor_profile.interests = data.get(
+            "interests", mentor_profile.interests)
         mentor_profile.language = data.get("language", mentor_profile.language)
         mentor_profile.location = data.get("location", mentor_profile.location)
         db.session.commit()
@@ -320,6 +321,75 @@ def delete_student_profile(id):
     db.session.delete(student_profile)
     db.session.commit()
     return jsonify({"message": "Student profile deleted"})
+
+# ----------------------#
+#  TYPES MENTORING     #
+# ----------------------#
+
+
+@api.route("/type-mentoring", methods=["POST"])
+def create_type_mentoring():
+    data = request.json
+    type_mentoring = MentorTopic(
+        mentor_profile_id=data["user_id"],
+        title=data.get("title"),
+        description=data.get("description"),
+        difficulty_level=data.get("difficulty_level"),
+        price=data.get("price"),
+        duration=data.get("duration")
+    )
+    db.session.add(type_mentoring)
+    db.session.commit()
+    return jsonify(type_mentoring.serialize()), 201
+
+# se obtienen todas los tipos de mentorias de un mentor
+
+
+@api.route("/types-mentoring/<int:userId>", methods=["GET"])
+def get_types_mentoring(userId):
+    query = select(MentorTopic).where(MentorTopic.mentor_profile_id == userId)
+    types_mentoring = db.session.execute(query).scalars().all()
+
+    return jsonify([tm.serialize() for tm in types_mentoring])
+
+# se obtiene un tipo de mentoria en especifico segun el Id
+
+
+@api.route("/type-mentoring/<int:id>", methods=["GET"])
+def get_type_mentoring(id):
+    query = select(MentorTopic).where(MentorTopic.id == id)
+    type_mentoring = db.session.execute(query).scalar_one()
+
+    return jsonify(type_mentoring.serialize())
+
+# se editan los datos de un tipo mentoria segun el id
+
+
+@api.route("/type-mentoring/<int:id>", methods=["PUT"])
+def update_type_mentoring(id):
+    type_mentoring = MentorTopic.query.get_or_404(id)
+    data = request.json
+    type_mentoring.title = data.get(
+        "title", type_mentoring.title)
+    type_mentoring.description = data.get(
+        "description", type_mentoring.description)
+    type_mentoring.duration = data.get(
+        "duration", type_mentoring.duration)
+    type_mentoring.difficulty_level = data.get(
+        "difficulty_level", type_mentoring.difficulty_level)
+    type_mentoring.price = data.get("price", type_mentoring.price)
+    type_mentoring.mentor_profile_id = data.get(
+        "user_id", type_mentoring.mentor_profile_id)
+    db.session.commit()
+    return jsonify(type_mentoring.serialize())
+
+#Elimina el tipo de mentoria por Id
+@api.route("/type-mentoring/<int:id>", methods=["DELETE"])
+def delete_type_mentoring(id):
+    type_mentoring = MentorTopic.query.get_or_404(id)
+    db.session.delete(type_mentoring)
+    db.session.commit()
+    return jsonify({"message": "Type mentoring delete"})
 
 
 @api.route("upload-avatar", methods=['POST'])

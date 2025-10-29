@@ -1,10 +1,8 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
-
-
-
 
 .navbar {
   background-color: #5aa8ab;
@@ -77,30 +75,27 @@ h1 {
   animation-delay: 1s;
 }
 
-
 h2 {
   font-family: "Poppins", sans-serif;
   font-size: 2.5em;
   font-weight: bold;
   color: #263c5e;
   margin-bottom: 15px;
-
 }
 
-.titles-form{
+.titles-form {
   font-family: "Poppins", sans-serif;
   font-size: 20px;
   font-weight: medium;
-  color:#263A5B
+  color: #263a5b;
 }
 
-.info-form{
-   font-family: "Poppins", sans-serif;
+.info-form {
+  font-family: "Poppins", sans-serif;
   font-size: 10px;
   font-weight: 300;
-  color:#184039c7
+  color: #184039c7;
 }
-
 
 .span-text {
   color: #77a6aa;
@@ -198,18 +193,19 @@ h2 {
   font-weight: normal;
 }
 
-.form-metorprofile{
+.form-metorprofile,
+.div-sessions {
   width: 100%;
-  background-color: rgba(119, 166, 170, 0.46)
-  
+  background-color: rgba(119, 166, 170, 0.46);
 }
 
-.form-style{
-
+.form-style {
   width: 440px;
 }
 
-.form-style, .form-metorprofile {
+.form-style,
+.form-metorprofile,
+.div-sessions {
   padding: 1rem;
   height: auto;
   border-color: #77a6aa;
@@ -230,8 +226,6 @@ h2 {
   font-size: 16px;
   font-weight: bold;
 }
-
-
 
 .sidebar {
   position: fixed;
@@ -394,4 +388,122 @@ h2 {
 
 .file-input {
   display: none;
+}
+
+.card-sessions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  background-color: #76a6a6;
+  color: #263c5e;
+  border-radius: 20px;
+  height: 220px; 
+  width: auto;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgb(119, 166, 170);
+  text-align: center;
+}
+
+.card-text {
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 60px;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-sessions:hover {
+  box-shadow: 0 20px 30px rgb(119, 146, 150);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.modal-label {
+  font-family: "Poppins", sans-serif;
+  font-weight: medium;
+  color: #ffffff;
+  font-size: 0.9em;
+}
+
+.modal-style {
+  background-color: #184039;
+
+  margin-right: 5em;
+  margin-top: 3em;
+}
+
+.btn-cancel {
+  background-color: #263c5e;
+  color: white;
+  box-shadow: 0 2px 5px rgb(119, 146, 150);
+}
+
+.btn-cancel:hover {
+  background-color: white;
+  color: #263c5e;
+}
+
+.btn-edit {
+  background-color: #29bbe3;
+  color: white;
+  box-shadow: 0 2px 5px rgb(119, 146, 150);
+}
+
+.btn-edit:hover {
+  background-color: white;
+  color: #29bbe3;
+}
+
+.btn-delete {
+  background-color: #df6668;
+  color: white;
+  box-shadow: 0 2px 5px rgb(119, 146, 150);
+}
+
+.btn-delete:hover {
+  background-color: white;
+  color: #df6668;
+}
+
+.btn-save {
+  background-color: #3ea694;
+  color: white;
+  box-shadow: 0 2px 5px rgb(119, 146, 150);
+}
+
+.btn-save:hover {
+  background-color: white;
+  color: #3ea694;
+}
+
+.session-duration {
+  padding: 0.9em;
+  background-color: #263c5e;
+  color: white;
+  width: 8em;
+  height: 2em;
+  border-radius: 0.9rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: medium;
+}
+
+.session-price {
+  padding: 0.9em;
+  background-color: #184039;
+  color: white;
+  width: auto;
+  height: 2em;
+  border-radius: 0.9rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: medium;
 }

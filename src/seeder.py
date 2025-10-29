@@ -12,13 +12,13 @@ def seed_db():
     mentors = []
     students = []
     for i in range(1, 4):
-        user = User(email=f"mentor{i}@example.com", #mentor1 .. mentor3
+        user = User(email=f"mentor{i}@example.com",  # mentor1 .. mentor3
                     password=generate_password_hash('user123'), role=True)
         db.session.add(user)
         db.session.flush()
         mentors.append(user)
     for i in range(1, 6):
-        user = User(email=f"student{i}@example.com", #student1 .. student5
+        user = User(email=f"student{i}@example.com",  # student1 .. student5
                     password=generate_password_hash('user123'), role=False)
         db.session.add(user)
         db.session.flush()

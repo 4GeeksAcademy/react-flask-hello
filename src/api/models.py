@@ -11,9 +11,9 @@ db = SQLAlchemy()
 
 
 class ExperienceLevelEnum(enum.Enum):
-    BEGINNER = "beginner"
-    INTERMEDIATE = "intermediate"
-    ADVANCED = "advanced"
+    BEGINNER = "BEGINNER"
+    INTERMEDIATE = "INTERMEDIATE"
+    ADVANCED = "ADVANCED"
 
 
 class StatusEnum(enum.Enum):
@@ -31,9 +31,9 @@ class PaymentStatusEnum(enum.Enum):
 
 
 class DifficultyLevelEnum(enum.Enum):
-    BEGINNER = "beginner"
-    INTERMEDIATE = "intermediate"
-    ADVANCED = "advanced"
+    BEGINNER = "BEGINNER"
+    INTERMEDIATE = "INTERMEDIATE"
+    ADVANCED = "ADVANCED"
 
 
 class LanguageEnum(enum.Enum):
@@ -140,8 +140,8 @@ class MentorProfile(db.Model):
             'interests': self.interests,
             'language': self.language.value if self.language else None,
             'location': self.location,
-            #ejemplo para evitar loop infinito 
-            'user': {"email":self.user.email} if self.user else None,
+            # ejemplo para evitar loop infinito
+            'user': {"email": self.user.email} if self.user else None,
         }
 
 
@@ -201,6 +201,8 @@ class MentorTopic(db.Model):
         Enum(DifficultyLevelEnum), nullable=True)
     price: Mapped[float] = mapped_column(
         Float, nullable=False)
+    duration: Mapped[int] = mapped_column(
+        Integer, nullable=False)
 
     # Relaciones
     mentor_profile = relationship("MentorProfile", back_populates="topics")
@@ -213,7 +215,8 @@ class MentorTopic(db.Model):
             'title': self.title,
             'description': self.description,
             'difficulty_level': self.difficulty_level.value if self.difficulty_level else None,
-            'price': self.price
+            'price': self.price,
+            'duration': self.duration
         }
 
 

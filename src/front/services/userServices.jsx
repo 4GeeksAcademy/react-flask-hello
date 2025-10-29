@@ -140,6 +140,109 @@ userServices.putMentorProfile = async (formData, userId) => {
   }
 }
 
+userServices.createTypeMentoring = async (formData) => {
+  try {
+    const resp = await fetch(url + '/api/type-mentoring', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    if (!resp.ok) throw new Error('error al registrar tipo de mentoria')
+    const data = await resp.json()
+
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error al crear tipo de mentoria" }
+    }
+
+
+    return { success: true, data }
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+}
+
+//Se obtiene todas los tipos de mentorias que registre el mentor
+
+userServices.allTypesMentoring = async (userId) => {
+   try {
+    const resp = await fetch(url + `api/types-mentoring/${userId}`)
+    if (!resp.ok) throw new Error('error fetching types mentoring')
+    const data = await resp.json()
+
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error obtener tipos de mentorias" }
+    }
+   
+    return {success: true, data}
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+}
+
+
+userServices.oneTypeMentoring = async(id) =>{
+   try {
+    const resp = await fetch(url + `api/type-mentoring/${id}`)
+    if (!resp.ok) throw new Error('error fetching type mentoring')
+    const data = await resp.json()
+
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error obtener tipos de mentorias" }
+    }
+   
+    return {success: true, data}
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+
+}
+
+userServices.putTypeMentoring = async (formData, id) => {
+  try {
+    const resp = await fetch(url + `api/type-mentoring/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    if (!resp.ok) throw new Error('error update type mentoring')
+    const data = await resp.json();
+
+    if (!resp.ok || data.error) {
+      return { success: false, error: data.message || "Error al actualizar tipo de mentoria" }
+    }
+
+
+    return { success: true, data }
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+}
+
+
+userServices.deleteTypeMentoring = async(id) =>{
+   try {
+        const resp = await fetch(url + `api/type-mentoring/${id}`, {
+            method: 'DELETE'
+            
+        })
+        if(!resp.ok) throw new Error('error delete type mentoring')
+        const data = await resp.json();
+        return { success: true, data }
+
+    } catch (error){
+        console.log(error)
+        return error
+    };
+}
+
 
 
 export default userServices

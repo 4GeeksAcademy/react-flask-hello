@@ -4,9 +4,9 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 import userServices from "../services/userServices";
 import AlertError from "./AlertError";
 import AlertSuccess from "./AlertSuccess";
-const AddSession = ({ userId }) => {
+const AddSession = ({ typeSessionId=null, edit, onUpdate}) => {
     const { store, dispatch } = useGlobalReducer()
-    // const [userId, setUserId] = useState()
+   
     const iniFormData = {
         title: " ",
         description: " ",
@@ -16,9 +16,56 @@ const AddSession = ({ userId }) => {
         user_id: store?.user?.id
 
     }
-    const [formData, setFormData] = useState(iniFormData);
+    const [formData, setFormData] = useState( {
+        title: " ",
+        description: " ",
+        duration: " ",
+        difficulty_level: " ",
+        price: " ",
+        user_id: store?.user?.id
+
+    });
     const [success, setSuccess] = useState(false)
     const [alertError, setAlertError] = useState(false)
+    const [update, setUpdate] = useState(false)
+
+
+  
+
+    useEffect(() => {
+
+        if (!typeSessionId) {
+            setFormData({
+                title: "",
+                description: "",
+                duration: "",
+                difficulty_level: "",
+                price: "",
+                user_id: store?.user?.id
+            });
+            return
+        } 
+
+        userServices.oneTypeMentoring(typeSessionId).then(async data => {
+          
+            if (data.success && edit){
+               
+                setUpdate(true)
+                setFormData({
+                    title:data.data.title,
+                    description:data.data.description,
+                    duration:data.data.duration,
+                    difficulty_level:data.data.difficulty_level,
+                    price:data.data.price,
+                    user_id:data.data.mentor_profile_id
+                     
+                })
+            }
+        })
+
+    }, [typeSessionId])
+
+
 
     useEffect(() => {
         if (success || alertError) {
@@ -34,27 +81,45 @@ const AddSession = ({ userId }) => {
 
 
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        if(update){
 
-        userServices.createTypeMentoring(formData).then(data => {
-            console.log("Data desde el back----->", data)
+            userServices.putTypeMentoring(formData, typeSessionId).then(data =>{
+                 if (data.success) {
+                    setSuccess(true)
+                    onUpdate()
+                    setUpdate(false)
+                } else{
+                    setAlertError(true)
+                }
+            })
 
-            if (data.success) {
-                setSuccess(true)
+           
+        } else{
+            
+            userServices.createTypeMentoring(formData).then(data => {
+              
+    
+                if (data.success) {
+                    setSuccess(true)
+                    onUpdate()
+                   
+                    setFormData(iniFormData)
+                } else {
+                   
+                    setAlertError(true)
+    
+                }
+    
+            })
 
-                console.log("Registro de tipo mentoria con exito")
-                setFormData(iniFormData)
-            } else {
-                console.log("No se puedo registrar tipo mentoria")
-                setAlertError(true)
 
-            }
+        }
 
-        })
-
-
-    }
+  }
 
     const handleChange = (e) => {
 
@@ -68,7 +133,7 @@ const AddSession = ({ userId }) => {
             <div className="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog ">
                     <div class=" modal-content modal-style ">
-                       
+
                         <form className="container p-2" onSubmit={handleSubmit}>
 
                             <div className="modal-body d-flex flex-column gap-3  ">
@@ -134,12 +199,12 @@ const AddSession = ({ userId }) => {
 
 
                             </div>
-                             {success && <AlertSuccess />}
-                             {alertError && <AlertError />}
+                            {success && <AlertSuccess />}
+                            {alertError && <AlertError />}
                             <div className="modal-footer">
-                                
+
                                 <button type="button" className="btn btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" className="btn btn-save" >Guardar</button>
+                                <button type="submit" className="btn btn-save" data-bs-dismiss="modal">Guardar</button>
                             </div>
                         </form>
                     </div>

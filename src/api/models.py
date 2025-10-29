@@ -31,9 +31,9 @@ class PaymentStatusEnum(enum.Enum):
 
 
 class DifficultyLevelEnum(enum.Enum):
-    BEGINNER = "beginner"
-    INTERMEDIATE = "intermediate"
-    ADVANCED = "advanced"
+    BEGINNER = "BEGINNER"
+    INTERMEDIATE = "INTERMEDIATE"
+    ADVANCED = "ADVANCED"
 
 
 class LanguageEnum(enum.Enum):
@@ -140,8 +140,8 @@ class MentorProfile(db.Model):
             'interests': self.interests,
             'language': self.language.value if self.language else None,
             'location': self.location,
-            #ejemplo para evitar loop infinito 
-            'user': {"email":self.user.email} if self.user else None,
+            # ejemplo para evitar loop infinito
+            'user': {"email": self.user.email} if self.user else None,
         }
 
 

@@ -17,9 +17,11 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 typing-extensions = "*"
-flask-jwt-extended = "==4.6.0"
 wtforms = "==3.1.2"
 sqlalchemy = "*"
+bcrypt = "*"
+flask-jwt-extended = "*"
+werkzeug = "*"
 
 [requires]
 python_version = "3.13"

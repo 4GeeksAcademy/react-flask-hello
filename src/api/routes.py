@@ -1,6 +1,3 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
@@ -25,7 +22,7 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-@api.route('/register', method=['POST'])
+@api.route('/register', methods=['POST'])
 def handle_register():
 
     body = request.get_json()
@@ -33,14 +30,15 @@ def handle_register():
     hashed_password = generate_password_hash(
         body['password'])
 
-    new_user = User(role=body['role'], nickname=body['nickname'], nombre=body['nombre'], apellido=body['apellido'], fecha_nacimiento=body['fecha_nacimiento'], email=body['email'],
-                    address=body['address'], telefono=body['telefono'], password=body[hashed_password], registro_fecha=body['registro_fecha'], is_active=body['is_active'])
+    new_user = User(email=body['email'],
+                    password=body[hashed_password], 
+                    is_active=True)
 
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({'msg': 'Nuevo usuario creado con exito'}), 201
+    return jsonify({'success': True ,'msg': 'Nuevo usuario creado con exito'}), 201
 
-@api.route('/update', methods=['PUT'])
+@api.route('/profile_update', methods=['PUT'])
 @jwt_required()
 def handle_update():
 
@@ -50,16 +48,16 @@ def handle_update():
 
     user=db.session.get(User,id)
     user.role=body.get('role', user.role)
-    user.nickname=body['nickname']
-    user.nombre=body['nombre']
-    user.apellido=body['apellido'] 
-    user.fecha_nacimiento=body['fecha_nacimiento'] 
-    user.email=body['email']
-    user.address=body['address'] 
-    user.telefono=body['telefono'] 
-    user.password=body[hashed_password] 
+    user.nickname=body.get('nickname', user.nickname)
+    user.nombre=body.get('nombre', user.nombre)
+    user.apellido=body.get('apellido', user.apellido) 
+    user.fecha_nacimiento=body.get('fecha_nacimiento', user.fecha_nacimiento) 
+    user.email=body.get('email', user.email)
+    user.address=body.get('address', user.address) 
+    user.telefono=body.get('telefono', user.telefono) 
+    user.password=body.get(hashed_password, user.password)
     db.session.commit()
-    return jsonify({'user':user.serialize()})
+    return jsonify({'user':user.serialize()}), 200
    
 @api.route('/login', methods=['POST'])
 def handle_login():
@@ -74,4 +72,4 @@ def handle_login():
         return jsonify({'msg':'email y/o contraseña no valido'}),400
     
     token=create_access_token(identity=str(user.id))
-    return jsonify({'user':user.serialize(),'token':token}),200
+    return jsonify({"user":user.serialize(),"token":token}),200

@@ -34,7 +34,7 @@ export const Navbar = () => {
             </li>
           
             <li className="nav-item">
-              <Link to="/LoginPage" className="btn btn-danger m-3 px-4" ><strong>Login</strong></Link>
+              <Link to="/login" className="btn btn-danger m-3 px-4" ><strong>Login</strong></Link>
             </li>
           </ul>
         </div>

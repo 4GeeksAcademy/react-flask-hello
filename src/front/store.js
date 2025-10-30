@@ -18,6 +18,17 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+    case "login":
+      return {
+        ...store,
+        user: action.payload
+      }
+      case "logout":
+        return {
+          ...store,
+          user: null,
+          cart: [] // no recuerdo ahora!!!! verificar
+        }
     case 'set_hello':
       return {
         ...store,

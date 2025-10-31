@@ -73,11 +73,12 @@ class User(db.Model):
             profile_data = self.mentor_profile.serialize()
         elif not self.role and self.student_profile:
             profile_data = self.student_profile.serialize()
+
         return {
             'id': self.id,
             'email': self.email,
             'role': 'mentor' if self.role else 'student',
-            'profile': profile_data,
+            'profile':  profile_data,
             'comments': [comment.serialize() for comment in self.comments] if self.comments else [],
             'reviews_given': [review.serialize() for review in self.reviews_given] if self.reviews_given else [],
             'reviews_received': [review.serialize() for review in self.reviews_received] if self.reviews_received else []

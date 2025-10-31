@@ -5,9 +5,7 @@ const MenuItem = ({ item, isActive, onClick, userRole }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        console.log("🔵 Click en:", item.label)      // ← Ahora sí se ejecuta al hacer click
-        console.log("📍 Path:", item.path)
-        console.log("✅ onClick función:", onClick)
+
         onClick(item.path)  // Ejecuta el cambio de ruta
         navigate(`/dashboard/${userRole}${item.path}`)
     }

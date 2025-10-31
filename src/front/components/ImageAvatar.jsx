@@ -6,7 +6,7 @@ const ImageAvatar = () => {
 
     return (
         <div className="avatar-circle-min">
-            {store?.user?.avatarUrl && <img src={store?.user?.avatarUrl} alt="Avatar" />}
+            {store?.user?.profile?.avatar && <img src={store?.user?.profile?.avatar} alt="Avatar" />}
         </div>
 
 

@@ -507,3 +507,32 @@ h2 {
   font-family: "Poppins", sans-serif;
   font-weight: medium;
 }
+
+.search{
+ background: linear-gradient(to bottom, #184039 6%, #3EA694 82%);
+ border-radius: 1rem;
+ color:white;
+ box-shadow: 0 8px 20px rgb(119, 166, 170);
+}
+
+.search-input{
+  border-radius: 0.7em;
+  margin-bottom: 1rem;
+  border:none;
+  height: 2.8em;
+}
+
+.search-btn{
+  background-color: #263C5E;
+  color: white;
+  border-radius: 0.7em;
+  height: 3rem;
+  width: 15rem;
+  font-size: 1.2rem;
+}
+
+
+.search-btn:hover{
+  background-color: white;
+  color:#263C5E;
+}

@@ -23,6 +23,7 @@ import Services from "./components/Services";
 import ManageSessions from "./components/ManageSessions";
 import Finance from "./components/Finance";
 import ConfigurationStudent from "./components/ConfigurationStudent";
+import SearchMentor from "./pages/SearchMentor";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,6 +42,9 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/search-mentor" element={<SearchMentor />} />
+      
+      
 
 
       <Route path="/dashboard/:role/*" element={<Dashboard />}>
@@ -53,8 +57,6 @@ export const router = createBrowserRouter(
         <Route path="services" element={<Services />} />
         <Route path="sessions/manage" element={<ManageSessions />} />
         <Route path="finance" element={<Finance />} />
-
-
       </Route>
 
     </Route>

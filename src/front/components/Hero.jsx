@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export function Hero() {
     return (
@@ -16,7 +17,9 @@ export function Hero() {
                             <img src="src/front/assets/img/MM-2.png" alt="Hero Illustration" className="logo-image"></img>
                             <h1>Encuentra el mentor perfecto para alcanzar <span className="span-text">tus objetivos</span> </h1>
                             <p className="hero-text">Agenda sesiones 1:1, recibe orientación personalizada y alcanza tus metas más rápido.</p>
-                            <button className="cta-button">Encuentra un mentor</button>
+                            <Link to="/search-mentor">
+                                <button className="cta-button">Encuentra un mentor</button>
+                            </Link>
                         </div>
                     </section>
                 </div>

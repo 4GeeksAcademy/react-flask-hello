@@ -1,6 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useState } from "react";
+import AuthServices from "../services/auth.services";
 
 const Register = () => {
   const {store, dispatch} = useGlobalReducer()
@@ -8,6 +11,7 @@ const Register = () => {
         email: '',
         password: ''
     })
+    const navigate = useNavigate()
   
   const handleChange = e => {
         const {value, name} = e.target;
@@ -17,9 +21,10 @@ const Register = () => {
 
   const handleSubmit = e => {
         e.preventDefault();
-        AuthServices.login(formData).then(data => {
+        AuthServices.register(formData).then(data => {
             console.log(data)
             dispatch({type: 'register', payload: data.user})
+            navigate('/login')
         })
     }
 
@@ -41,6 +46,7 @@ const Register = () => {
                 placeholder="tuemail@ejemplo.com"
                 required
                 value={formData.email}
+                name="email"
                 onChange={handleChange}
                 style={{ borderColor: "#a00" }}
               />
@@ -57,15 +63,16 @@ const Register = () => {
                 placeholder="contraseña"
                 required
                 value={formData.password}
+                name="password"
                 onChange={handleChange}
                 style={{ borderColor: "#a00" }}
               />
             </div>
             
-
-            <button type="submit" className="btn btn-danger w-100">
+            <button type="submit" className="btn btn-danger w-100 mb-3">
               Crear cuenta
             </button>
+            
             
           </form>
 

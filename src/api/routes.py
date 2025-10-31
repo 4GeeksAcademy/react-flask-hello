@@ -32,7 +32,6 @@ def handle_register():
 
     new_user = User(email=body['email'],
                     password=hashed_password,
-                    role=body['role'],
                     is_active=True)
 
     db.session.add(new_user)

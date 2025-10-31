@@ -10,7 +10,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
-    role: Mapped[bool] = mapped_column(Boolean())
+    role: Mapped[bool] = mapped_column(Boolean(), nullable=True)
     nickname: Mapped[str] = mapped_column(unique=True, nullable=True)
     nombre: Mapped[str] = mapped_column(nullable=True)
     apellido: Mapped[str] = mapped_column(nullable=True)

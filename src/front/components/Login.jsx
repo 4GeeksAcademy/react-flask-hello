@@ -69,20 +69,20 @@ const Login = () => {
                     </button>
                     <p className="text-center mt-3 mb-0">
                         
-                        <a href="/register" className="text-decoration-none">
+                        <a href="/" className="text-decoration-none">
                             ¿Olvidaste la contraseña?
                         </a>
                     </p>
 
                 </form>
 
-
+                
 
                 <p className="text-center mt-3 mb-0">
                     
-                    <button type="submit" className="btn btn-danger w-100 mb-3">
+                    <Link to="/register" type="submit" className="btn btn-danger w-100 mb-3">
                         Crear Cuenta
-                    </button>
+                    </Link>
                 </p>
             </div>
         </div>

@@ -68,11 +68,17 @@ class User(db.Model):
         "Review", back_populates="reviewed", foreign_keys="Review.reviewed_id")
 
     def serialize(self):
+        profile_data = None
+        if self.role and self.mentor_profile:
+            profile_data = self.mentor_profile.serialize()
+        elif not self.role and self.student_profile:
+            profile_data = self.student_profile.serialize()
+
         return {
             'id': self.id,
             'email': self.email,
             'role': 'mentor' if self.role else 'student',
-            'profile': self.mentor_profile.serialize() if self.role else self.student_profile.serialize(),
+            'profile':  profile_data,
             'comments': [comment.serialize() for comment in self.comments] if self.comments else [],
             'reviews_given': [review.serialize() for review in self.reviews_given] if self.reviews_given else [],
             'reviews_received': [review.serialize() for review in self.reviews_received] if self.reviews_received else []

@@ -185,6 +185,7 @@ def filter_mentor_profiles():
     if skills_filter:
         query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
+        
     # filter by “years of experience”: example mentors with more than 3 years of experience
     if years_experience_filter:
         query = query.filter(MentorProfile.years_experience >=
@@ -194,6 +195,9 @@ def filter_mentor_profiles():
         query = query.filter(MentorProfile.language == language_filter)
 
     mentor_profiles = query.all()
+
+    print(f"Resultados encontrados: {len(mentor_profiles)}")
+    print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
 
     return jsonify({
         "success": True,
@@ -383,7 +387,9 @@ def update_type_mentoring(id):
     db.session.commit()
     return jsonify(type_mentoring.serialize())
 
-#Elimina el tipo de mentoria por Id
+# Elimina el tipo de mentoria por Id
+
+
 @api.route("/type-mentoring/<int:id>", methods=["DELETE"])
 def delete_type_mentoring(id):
     type_mentoring = MentorTopic.query.get_or_404(id)

@@ -57,12 +57,7 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
-    // const file = e.target.files[0]
-
-
-    // const formData = new FormData()
-    // formData.append('avatar', file)
-
+   
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -100,6 +95,21 @@ userServices.mentorprofile = async (formData) => {
     return { success: false, error: "Error de conexion con el servidor" }
   }
 }
+
+
+userServices.searchMentorProfile = async(filter) =>{
+  try {
+    const resp = await fetch(url + `api/mentor-profiles/filter?skills=${filter}`)
+    if (!resp.ok) throw new Error('error fetching filters')
+    const data = await resp.json()
+    // console.log('Perfil del mentor', data)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
 
 
 userServices.getMentorProfile = async (userId) => {

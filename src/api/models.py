@@ -67,7 +67,7 @@ class User(db.Model):
     reviews_received = relationship(
         "Review", back_populates="reviewed", foreign_keys="Review.reviewed_id")
 
-    def serialize(self):
+    def serialize(self): 
         profile_data = None
         if self.role and self.mentor_profile:
             profile_data = self.mentor_profile.serialize()

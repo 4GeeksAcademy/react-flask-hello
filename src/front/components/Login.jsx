@@ -24,9 +24,8 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         userServices.login(formData).then(async data => {
-
-
             if (data.success) {
+
                 localStorage.setItem("user", JSON.stringify({
                     'id': data.user.id,
                     'token': data.token,

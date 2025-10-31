@@ -36,8 +36,8 @@ AuthServices.register = async (formData) => {
         })
         if (!resp.ok) throw new Error('error logging in')
 
-        const data = resp.json()
-        return data.success
+        const data = await resp.json()
+        return data
 
     } catch (error) {
         console.log(error)

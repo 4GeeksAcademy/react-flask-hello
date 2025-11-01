@@ -41,7 +41,8 @@ const Login = () => {
                 const userRole = data.user.role
 
                 dispatch({ type: 'logged_in' })
-                dispatch({ type: 'save_user', payload: data.user })
+                const dataUser = { ...data.user, avatarUrl: data.user.profile ? data.user.profile.avatar : " " }
+                dispatch({ type: 'save_user', payload: dataUser })
                 // dispatch({ type: 'add_avatar', payload: infoMentor.avatar })
 
 

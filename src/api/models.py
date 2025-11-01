@@ -142,7 +142,7 @@ class MentorProfile(db.Model):
             'availability': self.availability,
             'linkedin_url': self.linkedin_url,
             'website': self.website,
-            'skills': self.skills,
+            'skills': self.skills.strip("{}").split(",") if self.skills else [],
             'interests': self.interests,
             'language': self.language.value if self.language else None,
             'location': self.location,

@@ -399,7 +399,7 @@ h2 {
   background-color: #76a6a6;
   color: #263c5e;
   border-radius: 20px;
-  height: 220px; 
+  height: 220px;
   width: auto;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -508,22 +508,22 @@ h2 {
   font-weight: medium;
 }
 
-.search{
- background: linear-gradient(to bottom, #184039 6%, #3EA694 82%);
- border-radius: 1rem;
- color:white;
- box-shadow: 0 8px 20px rgb(119, 166, 170);
+.search {
+  background: linear-gradient(to bottom, #184039 6%, #3ea694 82%);
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 8px 20px rgb(119, 166, 170);
 }
 
-.search-input{
+.search-input {
   border-radius: 0.7em;
   margin-bottom: 1rem;
-  border:none;
+  border: none;
   height: 2.8em;
 }
 
-.search-btn{
-  background-color: #263C5E;
+.search-btn {
+  background-color: #263c5e;
   color: white;
   border-radius: 0.7em;
   height: 3rem;
@@ -531,8 +531,92 @@ h2 {
   font-size: 1.2rem;
 }
 
-
-.search-btn:hover{
+.search-btn:hover {
   background-color: white;
-  color:#263C5E;
+  color: #263c5e;
+}
+
+.cardsize {
+  width: 280px;
+  background: linear-gradient(180deg, #2c3e50 0%, #1a4740 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: "Poppins", sans-serif;
+  font-weight: medium;
+  color: white;
+}
+
+.imgcard {
+  height: 9rem;
+  width: auto;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 0.5rem 0.5rem #77a6aa;
+  transform: translateY(-2px);
+}
+
+.btn-view {
+  background-color: #4285f4;
+  color: white;
+}
+
+.btn-hover:hover {
+  background-color: #fecb02;
+  color: #4285f4;
+  font-weight: 600;
+
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+.mentor-card-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.mentor-card-skill {
+  background: #77a6aa;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.mentor-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-view {
+  width: 100%;
+  background: #263c5e;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: block;
 }

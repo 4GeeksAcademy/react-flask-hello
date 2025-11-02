@@ -11,6 +11,13 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+from flask_bcrypt import Bcrypt
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -18,6 +25,12 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "ESTA_ES_NUESTRA_LLAVE"
+jwt = JWTManager(app)
+
+bcrypt = Bcrypt(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

@@ -1,0 +1,18 @@
+{
+    "title": {
+      "en": "WebApp Template with React JS and Flask API",
+      "es": "Plantilla de WebApp con React JS y Flask API"
+    },
+    "description": {
+      "en": "Build web applications using React.js for the front end and python/flask for your backend API.",
+      "es": "Construye aplicaciones web usando React.js para el front end y python/flask para tu API backend."
+    },
+    "slug": "react-flask-webapp-template",
+    "difficulty": "intermediate",
+    "duration": "4",
+    "projectType": "template",
+    "repository": "https://github.com/4geeksacademy/react-flask-hello",
+    "preview": "https://github.com/4geeksacademy/react-flask-hello/preview.png",
+    "video": "https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b",
+    "technologies": ["React.js", "Flask", "Python", "SQLAlchemy","vite"]
+}

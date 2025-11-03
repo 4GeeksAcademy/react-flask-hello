@@ -1,0 +1,104 @@
+.start-shopping {
+  background: linear-gradient(to left, #ffffff, #fbeeee);
+  padding: 60px 20px 70px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.start-header h2 {
+  font-size: 32px;
+  color: #1e1e1e;
+  margin-bottom: 10px;
+}
+
+.start-header p {
+  color: #4a4a4a;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+}
+
+.start-cards {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.start-card {
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px 25px;
+  width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.start-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 26px;
+  margin: 0 auto 15px auto;
+}
+
+.card-icon.red {
+  background-color: #bd1a1a;
+}
+
+.card-icon.coral {
+  background-color: #e65a5a;
+}
+
+.card-icon.yellow {
+  background-color: #f9b233;
+}
+
+.start-card h3 {
+  color: #1e1e1e;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.start-card p {
+  color: #4a4a4a;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.card-link {
+  color: #bd1a1a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #a11212;
+}
+
+.login-btn {
+  display: inline-block;
+  background-color: #bd1a1a;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #a11212;
+}

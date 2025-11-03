@@ -3,15 +3,18 @@ import Search from "../components/Search"
 
 const SearchMentor = () => {
 
-return(
+    return (
+
+        <>
+
+            <Search />
+
+           
+
+        </>
+    )
 
 
-    <Search/>
-
-
-)
-    
- 
 
 
 }

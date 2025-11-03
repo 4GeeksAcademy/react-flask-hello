@@ -67,7 +67,7 @@ class User(db.Model):
     reviews_received = relationship(
         "Review", back_populates="reviewed", foreign_keys="Review.reviewed_id")
 
-    def serialize(self): 
+    def serialize(self):
         profile_data = None
         if self.role and self.mentor_profile:
             profile_data = self.mentor_profile.serialize()
@@ -141,7 +141,7 @@ class MentorProfile(db.Model):
             'availability': self.availability,
             'linkedin_url': self.linkedin_url,
             'website': self.website,
-            'skills': self.skills,
+            'skills': self.skills.strip("{}").split(",") if self.skills else [],
             'interests': self.interests,
             'language': self.language.value if self.language else None,
             'location': self.location,

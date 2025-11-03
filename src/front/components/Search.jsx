@@ -2,10 +2,11 @@ import { useState } from "react"
 import userServices from "../services/userServices"
 import { div } from "framer-motion/client"
 import { SearchCode } from 'lucide-react';
+import ResulSearchMentor from "../components/ResultSearchMentor"
 
 const Search = () => {
     const [search, setSearch] = useState()
-    const [result, setResult] = useState([])
+    const [mentors, setMentors] = useState([])
     
    
     const handleChange = (e) => {
@@ -17,10 +18,12 @@ const Search = () => {
         e.preventDefault()
 
         userServices.searchMentorProfile(search).then(data => {
+
+            console.log(data)
             if (data.count < 0) {
-                setResult([])
+                setMentors([])
             }
-            setResult(data.data)
+            setMentors(data.data)
         })
     }
 
@@ -37,9 +40,11 @@ const Search = () => {
                 </div>
             </div>
            </div>
-            {result && result?.map(e =>(<div>
-                <p>{e.name}</p>
+           <div className="d-flex">
+            {mentors && mentors?.map(mentor =>(<div >
+                 <ResulSearchMentor mentor={mentor} />
             </div>))}
+            </div>
         </>
     )
 

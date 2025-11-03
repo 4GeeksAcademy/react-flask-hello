@@ -21,7 +21,14 @@ export const CreateEditClient = () => {
         <div className="card-body p-4">
           <form className="needs-validation" noValidate>
             {/* --- Datos personales --- */}
+            
             <h5 className="text-danger border-bottom pb-2 mb-3">Datos Personales</h5>
+            <div className="col-md-6">
+                <label htmlFor="avatar" className="form-label fw-semibold">
+                  Foto de Perfil
+                </label>
+                <input className="form-control" type="file" id="avatar" accept="image/*" />
+              </div>
             <div className="row g-3">
               <div className="col-md-6">
                 <label htmlFor="nombre" className="form-label fw-semibold">
@@ -110,48 +117,6 @@ export const CreateEditClient = () => {
               </div>
             </div>
 
-            {/* --- Empresa y estado --- */}
-            <h5 className="text-danger border-bottom pb-2 mt-4 mb-3">Información Adicional</h5>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label htmlFor="empresa" className="form-label fw-semibold">
-                  Empresa (opcional)
-                </label>
-                <input type="text" className="form-control" id="empresa" />
-              </div>
-
-              <div className="col-md-6">
-                <label htmlFor="estado" className="form-label fw-semibold">
-                  Estado
-                </label>
-                <select id="estado" className="form-select">
-                  <option value="activo">Activo</option>
-                  <option value="inactivo">Inactivo</option>
-                  <option value="pendiente">Pendiente</option>
-                </select>
-              </div>
-
-              <div className="col-12">
-                <label htmlFor="preferencias" className="form-label fw-semibold">
-                  Preferencias
-                </label>
-                <input type="text" className="form-control" id="preferencias" placeholder="Ej: facturación electrónica" />
-              </div>
-
-              <div className="col-12">
-                <label htmlFor="notas" className="form-label fw-semibold">
-                  Notas
-                </label>
-                <textarea id="notas" className="form-control" rows="3" placeholder="Observaciones del cliente..." />
-              </div>
-
-              <div className="col-md-6">
-                <label htmlFor="avatar" className="form-label fw-semibold">
-                  Foto de Perfil
-                </label>
-                <input className="form-control" type="file" id="avatar" accept="image/*" />
-              </div>
-            </div>
 
             {/* --- Botones --- */}
             <div className="mt-5 text-end">

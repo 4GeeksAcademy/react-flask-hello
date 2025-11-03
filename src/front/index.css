@@ -1,0 +1,267 @@
+
+/* Import Bootstrap CSS */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Custom Bootstrap theme variables - Dark theme with purple accents */
+:root {
+  --bs-primary: #8b5cf6;
+  --bs-secondary: #6b7280;
+  --bs-success: #10b981;
+  --bs-info: #06b6d4;
+  --bs-warning: #f59e0b;
+  --bs-danger: #ef4444;
+  --bs-dark: #1e1b4b;
+  --bs-light: #f8fafc;
+  --bs-body-bg: #0f0f23;
+  --bs-body-color: #e2e8f0;
+}
+
+/* Global dark theme */
+body {
+  background: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 50%, #312e81 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+/* Custom navbar styling */
+.navbar-dark {
+  background: rgba(30, 27, 75, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.navbar-brand {
+  color: #8b5cf6 !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  color: #e2e8f0 !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #8b5cf6 !important;
+  transform: translateY(-1px);
+}
+
+/* Button styling */
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 600;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 600;
+}
+
+.btn-outline-light {
+  border: 2px solid #8b5cf6;
+  color: #8b5cf6;
+  border-radius: 50px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background: #8b5cf6;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Card styling */
+.card {
+  background: rgba(30, 27, 75, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+}
+
+.card-header {
+  background: rgba(139, 92, 246, 0.1);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.bg-light {
+  background: rgba(30, 27, 75, 0.6) !important;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+/* Game-specific custom styles */
+.game-board {
+  min-height: 80vh;
+  background: linear-gradient(180deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+  border: 3px solid #8b5cf6;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+}
+
+.zombie {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border-radius: 10px;
+  border: 2px solid #991b1b;
+  transition: bottom 0.1s linear;
+  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+}
+
+.flex-turret {
+  height: 80px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: 2px solid #065f46;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+.flex-turret:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+}
+
+.flex-turret.active {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border-color: #6d28d9;
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+}
+
+.pellet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
+  border-radius: 50%;
+  transition: bottom 0.1s linear;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+}
+
+.class-selector {
+  background: rgba(30, 27, 75, 0.9);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(15px);
+}
+
+.game-stats {
+  background: rgba(15, 15, 35, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(15px);
+}
+
+/* Bootstrap flex utility demonstrations */
+.flex-demo {
+  min-height: 100px;
+  border: 2px dashed #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+/* Hero section styling */
+.display-4 {
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.lead {
+  color: #cbd5e1;
+  font-size: 1.2rem;
+}
+
+/* Table styling for leaderboard */
+.table-dark {
+  background: rgba(30, 27, 75, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.table-dark th {
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #8b5cf6;
+}
+
+.table-dark td {
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+/* Form styling */
+.form-control {
+  background: rgba(30, 27, 75, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #e2e8f0;
+  border-radius: 10px;
+}
+
+.form-control:focus {
+  background: rgba(30, 27, 75, 0.9);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
+  color: #e2e8f0;
+}
+
+.form-label {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* Alert styling */
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}

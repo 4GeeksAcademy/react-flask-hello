@@ -41,24 +41,25 @@ const ConfigurationStudent = () => {
     avatar: "",
     username: "",
     name: "",
-    location: "",
-    experience_level: "",
-    interests: "",
-    skills: "",
-    language: "",
+    location: "España",           // valor por defecto
+    experience_level: "BEGINNER", // valor por defecto
+    interests: [],
+    skills: [],
+    language: "SPANISH",          // valor por defecto
   });
 
   // Cargar perfil del estudiante
   useEffect(() => {
+    if (!store.user) return;
     userServices.getStudentProfile(store.user.id).then((data) => {
       if (data) {
         setUpdate(true);
         setFormData({
           username: data.username || "",
           name: data.name || "",
-          location: data.location || "",
-          language: data.language || "",
-          experience_level: data.experience_level || "",
+          location: data.location || "España",
+          language: data.language || "SPANISH",
+          experience_level: data.experience_level || "BEGINNER",
         });
 
         const formattedInterests = options.filter((opt) =>
@@ -72,7 +73,7 @@ const ConfigurationStudent = () => {
         setSkills(formattedSkills);
       }
     });
-  }, []);
+  }, [store.user]);
 
   // Limpiar alertas después de 3 segundos
   useEffect(() => {
@@ -81,7 +82,6 @@ const ConfigurationStudent = () => {
         setSuccess(false);
         setAlertError(false);
       }, 3000);
-
       return () => clearTimeout(timer);
     }
   }, [success, alertError]);
@@ -103,25 +103,17 @@ const ConfigurationStudent = () => {
       skills: skillsValues,
       avatar: store.user.avatarUrl,
       user_id: store.user.id,
+      language: formData.language || "SPANISH",
+      location: formData.location || "España",
     };
 
-    if (update) {
-      userServices
-        .updateStudentProfile(dataToSend, store.user.id)
-        .then((res) => {
-          if (res.success) setSuccess(true);
-          else setAlertError(true);
-        })
-        .catch(() => setAlertError(true));
-    } else {
-      userServices
-        .createStudentProfile(dataToSend)
-        .then((res) => {
-          if (res.success) setSuccess(true);
-          else setAlertError(true);
-        })
-        .catch(() => setAlertError(true));
-    }
+    const action = update
+      ? userServices.updateStudentProfile(dataToSend, store.user.id)
+      : userServices.createStudentProfile(dataToSend);
+
+    action
+      .then((res) => (res.success ? setSuccess(true) : setAlertError(true)))
+      .catch(() => setAlertError(true));
   };
 
   return (
@@ -136,134 +128,131 @@ const ConfigurationStudent = () => {
           {success && <AlertSuccess message="Perfil guardado correctamente" />}
           {alertError && <AlertError message="Error al guardar el perfil" />}
 
-          <div>
-            <form className="p-3" onSubmit={handleSubmit}>
-              {/* Información personal */}
-              <div className="form-metorprofile mb-5 p-5">
-                <div className="h4 titles-form">Información personal</div>
-                <p className="fs-6 info-form">Visible a los miembros</p>
+          <form className="p-3" onSubmit={handleSubmit}>
+            {/* Información personal */}
+            <div className="form-metorprofile mb-5 p-5">
+              <div className="h4 titles-form">Información personal</div>
+              <p className="fs-6 info-form">Visible a los miembros</p>
 
-                <div className="row">
-                  <div className="col-sm-12 col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Nombre de usuario</label>
-                      <input
-                        type="text"
-                        value={formData.username}
-                        name="username"
-                        onChange={handleChange}
-                        className="form-control form-input"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm-12 col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Nombre</label>
-                      <input
-                        type="text"
-                        value={formData.name}
-                        name="name"
-                        onChange={handleChange}
-                        className="form-control form-input"
-                        required
-                      />
-                    </div>
+              <div className="row">
+                <div className="col-sm-12 col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Nombre de usuario</label>
+                    <input
+                      type="text"
+                      value={formData.username}
+                      name="username"
+                      onChange={handleChange}
+                      className="form-control form-input"
+                      required
+                    />
                   </div>
                 </div>
 
-                <div className="row">
-                  <div className="col-12">
-                    <div className="mb-3">
-                      <label className="form-label">Ubicación</label>
-                      <select
-                        className="form-select form-input"
-                        value={formData.location}
-                        name="location"
-                        onChange={handleChange}
-                      >
-                        {countries.map((country) => (
-                          <option key={country} value={country}>
-                            {country}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-12">
-                    <div className="mb-3">
-                      <label className="form-label">Lenguaje</label>
-                      <select
-                        className="form-select form-input"
-                        value={formData.language}
-                        name="language"
-                        onChange={handleChange}
-                      >
-                        <option value="">Indica su idioma...</option>
-                        <option value="SPANISH">Español</option>
-                        <option value="ENGLISH">Inglés</option>
-                        <option value="FRENCH">Francés</option>
-                        <option value="GERMAN">Alemán</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-12">
-                    <div className="mb-3">
-                      <label className="form-label">Nivel de experiencia</label>
-                      <select
-                        className="form-select form-input"
-                        value={formData.experience_level}
-                        name="experience_level"
-                        onChange={handleChange}
-                      >
-                        <option value="">Selecciona tu nivel...</option>
-                        <option value="beginner">Principiante</option>
-                        <option value="intermediate">Intermedio</option>
-                        <option value="advanced">Avanzado</option>
-                      </select>
-                    </div>
+                <div className="col-sm-12 col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Nombre</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      name="name"
+                      onChange={handleChange}
+                      className="form-control form-input"
+                      required
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* Especialización */}
-              <div className="form-metorprofile mb-5 p-5">
-                <div className="h4 titles-form">Especialización</div>
-                <p className="fs-6 info-form">
-                  Indica en qué categorías estás interesado
-                </p>
-                <CategoriesSelect
-                  value={selectedCategories}
-                  onChange={setSelectedCategories}
-                  options={options}
-                />
+              <div className="row">
+                <div className="col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Ubicación</label>
+                    <select
+                      className="form-select form-input"
+                      value={formData.location}
+                      name="location"
+                      onChange={handleChange}
+                    >
+                      {countries.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              {/* Skills */}
-              <div className="form-metorprofile mb-5 p-5">
-                <div className="h4 titles-form"></div>
-                <SkillsSelect
-                  skills={skills}
-                  setSkills={setSkills}
-                  popularsSkill={popularsSkill}
-                />
-                <p className="info-form">
-                  Describe tu experiencia para conectar con mentores
-                </p>
+              <div className="row">
+                <div className="col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Lenguaje</label>
+                    <select
+                      className="form-select form-input"
+                      value={formData.language}
+                      name="language"
+                      onChange={handleChange}
+                    >
+                      <option value="SPANISH">Español</option>
+                      <option value="ENGLISH">Inglés</option>
+                      <option value="FRENCH">Francés</option>
+                      <option value="GERMAN">Alemán</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              <button type="submit" className="btn btn-primary">
-                Guardar
-              </button>
-            </form>
-          </div>
+              <div className="row">
+                <div className="col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Nivel de experiencia</label>
+                    <select
+                      className="form-select form-input"
+                      value={formData.experience_level}
+                      name="experience_level"
+                      onChange={handleChange}
+                    >
+                      <option value="BEGINNER">Principiante</option>
+                      <option value="INTERMEDIATE">Intermedio</option>
+                      <option value="ADVANCED">Avanzado</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Especialización */}
+            <div className="form-metorprofile mb-5 p-5">
+              <div className="h4 titles-form">Especialización</div>
+              <p className="fs-6 info-form">
+                Indica en qué categorías estás interesado
+              </p>
+              <CategoriesSelect
+                value={selectedCategories}
+                onChange={setSelectedCategories}
+                options={options}
+              />
+            </div>
+
+            {/* Skills */}
+            <div className="form-metorprofile mb-5 p-5">
+              <SkillsSelect
+                skills={skills}
+                setSkills={setSkills}
+                popularsSkill={popularsSkill}
+              />
+              <p className="info-form">
+                Describe tu experiencia para conectar con mentores
+              </p>
+            </div>
+
+            <div className="d-flex justify-content-end my-2" >
+              {success && <AlertSuccess />}
+              {alertError && <AlertError />}
+              <button type="submit" className="cta-send ms-5 ">Guardar</button>
+            </div>
+          </form>
         </>
       )}
     </>

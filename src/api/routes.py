@@ -284,37 +284,59 @@ def get_student_profiles():
     return jsonify([sp.serialize() for sp in student_profiles])
 
 
-@api.route("/student-profiles/<int:id>", methods=["GET"])
-def get_student_profile(id):
-    student_profile = StudentProfile.query.get_or_404(id)
+@api.route("/student-profiles/user/<int:user_id>", methods=["GET"])
+def get_student_profile_by_user(user_id):
+    student_profile = StudentProfile.query.filter_by(user_id=user_id).first()
+    if not student_profile:
+        return jsonify({"error": "Perfil no encontrado"}), 404
     return jsonify(student_profile.serialize())
 
 
 @api.route("/student-profiles", methods=["POST"])
 def create_student_profile():
     data = request.json
+    raw_exp = data.get("experience_level")
+    experience_level = None
+    if raw_exp:
+        experience_level = raw_exp.strip().upper()
+        allowed = ["BEGINNER", "INTERMEDIATE", "ADVANCED"]
+        if experience_level not in allowed:
+            return jsonify({
+                "error": "Valor de experience_level no válido",
+                "allowed": allowed
+            }), 400
     student_profile = StudentProfile(
         user_id=data["user_id"],
+        username=data.get("username"),
+        name=data.get("name"),
         interests=data.get("interests"),
         goals=data.get("goals"),
-        experience_level=data.get("experience_level"),
-        skills=data.get("skills")
+        experience_level=experience_level,
+        skills=data.get("skills"),
+        language = data.get("language") or "SPANISH",
+        location = data.get ("location")
     )
     db.session.add(student_profile)
     db.session.commit()
     return jsonify(student_profile.serialize()), 201
 
 
-@api.route("/student-profiles/<int:id>", methods=["PUT"])
-def update_student_profile(id):
-    student_profile = StudentProfile.query.get_or_404(id)
+@api.route("/student-profiles/user/<int:user_id>", methods=["PUT"])
+def update_student_profile_by_user(user_id):
+    student_profile = StudentProfile.query.filter_by(user_id=user_id).first()
+    if not student_profile:
+        return jsonify({"error": "Perfil no encontrado"}), 404
+
     data = request.json
-    student_profile.interests = data.get(
-        "interests", student_profile.interests)
+    student_profile.username = data.get("username", student_profile.username)
+    student_profile.name = data.get("name", student_profile.name)
+    student_profile.location = data.get("location", student_profile.location)
+    student_profile.interests = data.get("interests", student_profile.interests)
     student_profile.goals = data.get("goals", student_profile.goals)
-    student_profile.experience_level = data.get(
-        "experience_level", student_profile.experience_level)
+    student_profile.experience_level = data.get("experience_level", student_profile.experience_level)
     student_profile.skills = data.get("skills", student_profile.skills)
+    student_profile.language = data.get("language", student_profile.language)
+
     db.session.commit()
     return jsonify(student_profile.serialize())
 
@@ -325,6 +347,7 @@ def delete_student_profile(id):
     db.session.delete(student_profile)
     db.session.commit()
     return jsonify({"message": "Student profile deleted"})
+
 
 # ----------------------#
 #  TYPES MENTORING     #
@@ -401,7 +424,7 @@ def delete_type_mentoring(id):
 @api.route("upload-avatar", methods=['POST'])
 def upload_avatar():
     file = request.files.get('avatar')
-
+    print (file)
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
 
@@ -424,3 +447,8 @@ def upload_avatar():
 
     except Exception as error:
         return jsonify({"error": str(error)}), 500
+    
+
+
+
+

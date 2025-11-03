@@ -156,6 +156,10 @@ class StudentProfile(db.Model):
         primary_key=True)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('user.id'), nullable=False)
+    username: Mapped[str] = mapped_column(
+        String(20), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(
+        String(15), nullable=False)
     avatar: Mapped[str] = mapped_column(
         String(200), nullable=True)
     interests: Mapped[str] = mapped_column(
@@ -182,6 +186,8 @@ class StudentProfile(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
+            'username': self.username,
+            'name': self.name,
             'avatar': self.avatar,
             'interests': self.interests,
             'goals': self.goals,

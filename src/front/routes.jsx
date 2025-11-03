@@ -24,6 +24,7 @@ import ManageSessions from "./components/ManageSessions";
 import Finance from "./components/Finance";
 import ConfigurationStudent from "./components/ConfigurationStudent";
 import SearchMentor from "./pages/SearchMentor";
+import ViewProfile from "./pages/ViewProfile";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,6 +44,7 @@ export const router = createBrowserRouter(
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/search-mentor" element={<SearchMentor />} />
+      <Route path="/view-mentor/:id" element={<ViewProfile />} />
       
       
 

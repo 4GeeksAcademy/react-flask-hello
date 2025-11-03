@@ -18,7 +18,7 @@ const UploadAvatar = () => {
         formData.append('avatar', file)
 
         userServices.uploadAvatar(formData).then(data => {
-
+            console.log (data)
             if (data) {
                 setAvatarUrl(data.url)
 

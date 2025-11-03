@@ -57,7 +57,7 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
-   
+   console.log(formData)
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -177,7 +177,7 @@ userServices.createTypeMentoring = async (formData) => {
 //Se obtiene todas los tipos de mentorias que registre el mentor
 
 userServices.allTypesMentoring = async (userId) => {
-   try {
+  try {
     const resp = await fetch(url + `api/types-mentoring/${userId}`)
     if (!resp.ok) throw new Error('error fetching types mentoring')
     const data = await resp.json()
@@ -185,8 +185,8 @@ userServices.allTypesMentoring = async (userId) => {
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-   
-    return {success: true, data}
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
     return { success: false, error: "Error de conexion con el servidor" }
@@ -194,8 +194,8 @@ userServices.allTypesMentoring = async (userId) => {
 }
 
 
-userServices.oneTypeMentoring = async(id) =>{
-   try {
+userServices.oneTypeMentoring = async (id) => {
+  try {
     const resp = await fetch(url + `api/type-mentoring/${id}`)
     if (!resp.ok) throw new Error('error fetching type mentoring')
     const data = await resp.json()
@@ -203,8 +203,8 @@ userServices.oneTypeMentoring = async(id) =>{
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-   
-    return {success: true, data}
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
     return { success: false, error: "Error de conexion con el servidor" }
@@ -237,24 +237,68 @@ userServices.putTypeMentoring = async (formData, id) => {
 }
 
 
-userServices.deleteTypeMentoring = async(id) =>{
-   try {
-        const resp = await fetch(url + `api/type-mentoring/${id}`, {
-            method: 'DELETE'
-            
-        })
-        if(!resp.ok) throw new Error('error delete type mentoring')
-        const data = await resp.json();
-        return { success: true, data }
+userServices.deleteTypeMentoring = async (id) => {
+  try {
+    const resp = await fetch(url + `api/type-mentoring/${id}`, {
+      method: 'DELETE'
 
-    } catch (error){
-        console.log(error)
-        return error
-    };
+    })
+    if (!resp.ok) throw new Error('error delete type mentoring')
+    const data = await resp.json();
+    return { success: true, data }
+
+  } catch (error) {
+    console.log(error)
+    return error
+  };
 }
 
+userServices.createStudentProfile = async (formData) => {
+
+  try {
+    const resp = await fetch(url + "/api/student-profiles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!resp.ok) throw new Error("Error al registrar perfil del estudiante");
+    const data = await resp.json();
+    return { success: true, data };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Error de conexión con el servidor" };
+  }
+};
 
 
-export default userServices
+userServices.getStudentProfile = async (userId) => {
+  try {
+    const resp = await fetch(url + `/api/student-profiles/user/${userId}`);
+    if (!resp.ok) throw new Error("Error fetching perfil del estudiante");
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
 
+userServices.updateStudentProfile = async (formData, userId) => {
+  try {
+    const resp = await fetch(url + `/api/student-profiles/user/${userId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!resp.ok) throw new Error("Error al actualizar perfil del estudiante");
+    const data = await resp.json();
+    return { success: true, data };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Error de conexión con el servidor" };
+  }
+};
+
+
+export default userServices;

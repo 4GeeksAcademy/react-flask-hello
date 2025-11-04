@@ -13,6 +13,7 @@ export const CreateEditClient = () => {
 
   const handleChange = e => {
     const {name, value} = e.target
+    console.log(name, value)
     setUserData({...userData, [name]: value})
   }
 
@@ -24,7 +25,9 @@ const handleSubmit  = e => {
 
 }
 
+  const formatDate = () => (new Date(userData.fecha_nacimiento).toLocaleDateString().split('/').reverse().join('/'))
 
+console.log(formatDate(store.fecha_nacimiento))
   return (
     <>
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
@@ -113,7 +116,7 @@ const handleSubmit  = e => {
                 <input type="date" className="form-control" id="fechaNacimiento" 
                  name = "fecha_nacimiento"
                 onChange={handleChange}
-                value={userData.fecha_nacimiento || ""}
+                value={formatDate() || ""}
                 />
 
               </div>

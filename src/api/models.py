@@ -18,7 +18,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     address: Mapped[str] = mapped_column(nullable=True)
-    telefono: Mapped[int] = mapped_column(unique=True, nullable=True)
+    telefono: Mapped[str] = mapped_column(unique=True, nullable=True)
     password: Mapped[str] = mapped_column(nullable=False)
     registro_fecha: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))

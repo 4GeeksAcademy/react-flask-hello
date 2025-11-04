@@ -48,8 +48,9 @@ def handle_update():
     user = db.session.get(User, id)
     if not user: 
         return jsonify({'msg': 'user not found'}), 404
-
-    hashed_password = generate_password_hash(body['password']).decode('utf-8')
+    
+   
+        
     user.nickname = body.get('nickname', user.nickname)
     user.nombre = body.get('nombre', user.nombre)
     user.apellido = body.get('apellido', user.apellido)
@@ -57,7 +58,6 @@ def handle_update():
     user.email = body.get('email', user.email)
     user.address = body.get('address', user.address)
     user.telefono = body.get('telefono', user.telefono)
-    user.password = body.get(hashed_password, user.password)
     user.direccion = body.get('direccion', user.direccion)
     user.ciudad= body.get('ciudad', user.ciudad)
     user.pais= body.get('pais', user.pais)

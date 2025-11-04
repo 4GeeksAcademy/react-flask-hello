@@ -80,7 +80,7 @@ export const CreateEditClient = () => {
                   />
                   <figcaption>{userData.nombre || 'avatar'}</figcaption>
                 </figure>
-               {edit && <CloudinaryComponent />}
+               {edit && <CloudinaryComponent avatar={true} />}
               </div>
               {/* --- Datos personales --- */}
               <h5 className="text-danger border-bottom pb-2 mb-3">Datos Personales</h5>

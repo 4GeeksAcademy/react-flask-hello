@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import cloudinaryServices from "../services/cloudinary.services";
 
-function CloudinaryComponent() {
+function CloudinaryComponent({avatar = false, product=false}) {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -13,7 +13,7 @@ function CloudinaryComponent() {
 
         try {
             setLoading(true);
-            const data = await cloudinaryServices.uploadImage(file);
+            const data = await cloudinaryServices.uploadImage(file, {avatar, product});
             return data;
         } catch (err) {
             console.error(err);

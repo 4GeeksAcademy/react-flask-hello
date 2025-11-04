@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Productos
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,8 +39,17 @@ def upload_image():
         #upload to cloudinary
         upload_result = cloudinary.uploader.upload(file)
         #return the url of the uploaded image to be used in the frontend and/or stored in the database
-        user.avatar = upload_result["secure_url"]
-        db.session.commit()
+        if request.form.get("upload_preset") == "avatar":
+            user.avatar = upload_result["secure_url"]
+            db.session.commit()
+        
+        if request.form.get("upload_preset") == "product":
+            producto = db.session.get(Productos, request.form.get("product_id"))
+            if not producto:
+                return jsonify({'msg': 'product not found'}), 404
+            producto.imagenes = upload_result["secure_url"]
+            db.session.commit()
+
         return jsonify({
             "url": upload_result["secure_url"],
             "public_id": upload_result["public_id"]

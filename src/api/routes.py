@@ -45,10 +45,11 @@ def handle_update():
 
     id = get_jwt_identity()
     body = request.get_json()
-    hashed_password = generate_password_hash(body['password']).decode('utf-8')
-
     user = db.session.get(User, id)
-    user.role = body.get('role', user.role)
+    if not user: 
+        return jsonify({'msg': 'user not found'}), 404
+
+    hashed_password = generate_password_hash(body['password']).decode('utf-8')
     user.nickname = body.get('nickname', user.nickname)
     user.nombre = body.get('nombre', user.nombre)
     user.apellido = body.get('apellido', user.apellido)
@@ -57,6 +58,11 @@ def handle_update():
     user.address = body.get('address', user.address)
     user.telefono = body.get('telefono', user.telefono)
     user.password = body.get(hashed_password, user.password)
+    user.direccion = body.get('direccion', user.direccion)
+    user.ciudad= body.get('ciudad', user.ciudad)
+    user.pais= body.get('pais', user.pais)
+    user.cp= body.get('cp', user.cp)
+    user.dni = body.get('dni', user.dni)
     db.session.commit()
     return jsonify({'user': user.serialize()}), 200
 

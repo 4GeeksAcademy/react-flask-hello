@@ -12,7 +12,7 @@ def seed_data():
     # === USERS ===
     users = [
         User(
-            role=True,
+           
             nickname="admin",
             nombre="Pepe",
             apellido="Lola",
@@ -25,7 +25,7 @@ def seed_data():
             is_active=True
         ),
         User(
-            role=False,
+           
             nickname="maria",
             nombre="María",
             apellido="Gómez",
@@ -38,7 +38,7 @@ def seed_data():
             is_active=True
         ),
         User(
-            role=False,
+           
             nickname="carlos",
             nombre="Carlos",
             apellido="Ole Ole",
@@ -63,7 +63,7 @@ def seed_data():
             categoria_principal="Gastronomía",
             telefono_comercial=955123456,
             logo_url="https://example.com/logos/bodega.png",
-         
+            cif=123456,
             redes_sociales="@labodegadelSur",
             fecha_creacion=datetime.now(timezone.utc)
         ),
@@ -74,7 +74,7 @@ def seed_data():
             categoria_principal="Moda",
             telefono_comercial=955987654,
             logo_url="https://example.com/logos/ecomoda.png",
-          
+            cif=123457,
             redes_sociales="@ecomoda",
             fecha_creacion=datetime.now(timezone.utc)
         ),
@@ -85,7 +85,7 @@ def seed_data():
             categoria_principal="Tecnología",
             telefono_comercial=955567890,
             logo_url="https://example.com/logos/techzone.png",
-           
+            cif=123458,
             redes_sociales="@techzone_es",
             fecha_creacion=datetime.now(timezone.utc)
         ),

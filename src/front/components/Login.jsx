@@ -23,8 +23,10 @@ const Login = () => {
             if (data.token) {
 
                 console.log(data)
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('user', JSON.stringify(data.user))
                 dispatch({type: 'login', payload: data.user})
-                return navigate('/')   
+                return navigate('/perfil')   
             }
         })
     }

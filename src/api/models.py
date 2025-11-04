@@ -10,8 +10,8 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
-    role: Mapped[bool] = mapped_column(Boolean(), nullable=True)
     nickname: Mapped[str] = mapped_column(unique=True, nullable=True)
+    avatar: Mapped[str] = mapped_column(nullable=True)
     nombre: Mapped[str] = mapped_column(nullable=True)
     apellido: Mapped[str] = mapped_column(nullable=True)
     fecha_nacimiento: Mapped[datetime] = mapped_column(nullable=True)
@@ -22,8 +22,12 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     registro_fecha: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    direccion: Mapped[str] = mapped_column(String(150) ,nullable=True)
+    ciudad:  Mapped[str] = mapped_column(String(150) ,nullable=True)
+    pais:  Mapped[str] = mapped_column(String(50) ,nullable=True)
+    cp: Mapped[int] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
-
+    dni: Mapped[str] = mapped_column(unique=True, nullable=True) #esto es nuevo
     tiendas: Mapped[List['Tienda']] = relationship(back_populates='owner')
     resenas: Mapped[List['Resenas']] = relationship(back_populates='autor')
     favoritos: Mapped[List['Favoritos']] = relationship(back_populates='user')
@@ -35,13 +39,17 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,  # id debe conectarse con user_id en class tienda
-            "role": self.role,
             "nickname": self.nickname,
             "nombre": self.nombre,
+            'dni': self.dni,
             "apellido": self.apellido,
             "fecha_nacimiento": self.fecha_nacimiento,
             "address": self.address,
             "telefono": self.telefono,
+            "direccion": self.direccion,
+            "ciudad": self.ciudad,
+            "pais": self.pais,
+            'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
             "pedidos": [p.serialize() for p in self.pedidos] if self.pedidos else None,
@@ -55,6 +63,7 @@ class User(db.Model):
 class Tienda(db.Model):
     __tablename__ = "tienda"
     id: Mapped[int] = mapped_column(primary_key=True)
+    cif: Mapped[str] = mapped_column(unique=True, nullable=False) #esto es nuevo
     nombre_tienda: Mapped[str] = mapped_column(unique=False, nullable=False)
     descripcion_tienda: Mapped[str] = mapped_column(
         String(300), nullable=False, unique=False)
@@ -86,6 +95,7 @@ class Tienda(db.Model):
             "id": self.id,
             "user_id": self.owner_id,  # corregido para usar el campo correcto
             "nombre_tienda": self.nombre_tienda,
+            'cif': self.cif,
             "descripcion_tienda": self.descripcion_tienda,
             "categoria_principal": self.categoria_principal,
             "telefono_comercial": self.telefono_comercial,

@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 
 import logo from "../assets/img/Logo.png"
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import userServices from "../services/user.services";
 
 export const CreateEditClient = () => {
+
+  const {store, dispatch} = useGlobalReducer()
+
+  const [userData, setUserData] = useState(store.user)
+
+
+  const handleChange = e => {
+    const {name, value} = e.target
+    setUserData({...userData, [name]: value})
+  }
+
+const handleSubmit  = e => {
+  e.preventDefault();
+  userServices.profile_update(userData).then(data=>{ 
+    if (data.user) dispatch({type: "update_user", payload: data.user})
+  })
+
+}
+
 
   return (
     <>
@@ -15,11 +36,18 @@ export const CreateEditClient = () => {
 
           }}
         >
-          <h3 className="mb-0 fw-semibold text-center py-2">🧾 Crear Cliente</h3>
+          <h3 className="mb-0 fw-semibold text-center py-2">🧾 Editar</h3>
         </div>
 
         <div className="card-body p-4">
-          <form className="needs-validation" noValidate>
+          <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+             <div className="col-md-6">
+                <img src={store.user?.avatar} alt="" />
+                <label htmlFor="avatar" className="form-label fw-semibold">
+                  Foto de Perfil
+                </label>
+                <input className="form-control" type="file" id="avatar" accept="image/*" />
+              </div>
             {/* --- Datos personales --- */}
             <h5 className="text-danger border-bottom pb-2 mb-3">Datos Personales</h5>
             <div className="row g-3">
@@ -27,54 +55,67 @@ export const CreateEditClient = () => {
                 <label htmlFor="nombre" className="form-label fw-semibold">
                   Nombre
                 </label>
-                <input type="text" className="form-control" id="nombre" placeholder="Ej: Juan" required />
+                <input type="text" className="form-control" id="nombre" placeholder="Ej: Juan" required
+                name = "nombre"
+                onChange={handleChange}
+                value={userData.nombre || ""}
+                />
               </div>
 
               <div className="col-md-6">
                 <label htmlFor="apellido" className="form-label fw-semibold">
                   Apellido
                 </label>
-                <input type="text" className="form-control" id="apellido" placeholder="Ej: Pérez" required />
+                <input type="text" className="form-control" id="apellido" placeholder="Ej: Pérez" required
+                 name = "apellido"
+                onChange={handleChange}
+                value={userData.apellido || ""}
+                />
               </div>
 
               <div className="col-md-6">
                 <label htmlFor="nickname" className="form-label fw-semibold">
                   NickName
                 </label>
-                <input type="text" className="form-control" id="nickname" placeholder="Ej: Spidy" required />
+                <input type="text" className="form-control" id="nickname" placeholder="Ej: Spidy" required
+                 name = "nickname"
+                onChange={handleChange}
+                value={userData.nickname || ""}
+                />
               </div>
 
               <div className="col-md-6">
                 <label htmlFor="telefono" className="form-label fw-semibold">
                   Teléfono
                 </label>
-                <input type="tel" className="form-control" id="telefono" placeholder="+34 600 000 000" />
-              </div>
-
-              <div className="col-md-4">
-                <label htmlFor="tipoCliente" className="form-label fw-semibold">
-                  Tipo de Usuario
-                </label>
-                <select id="tipoCliente" className="form-select">
-                  <option>Seleccione...</option>
-                  <option value="particular">Cliente</option>
-                  <option value="empresa">Empresa</option>
-                  
-                </select>
+                <input type="tel" className="form-control" id="telefono" placeholder="+34 600 000 000"
+                 name = "telefono"
+                onChange={handleChange}
+                value={userData.telefono || ""}
+                />
               </div>
 
               <div className="col-md-4">
                 <label htmlFor="dni" className="form-label fw-semibold">
                   DNI / NIF / Pasaporte
                 </label>
-                <input type="text" className="form-control" id="dni" />
+                <input type="text" className="form-control" id="dni" 
+                 name = "dni"
+                onChange={handleChange}
+                value={userData.dni || ""}
+                />
               </div>
 
               <div className="col-md-4">
                 <label htmlFor="fechaNacimiento" className="form-label fw-semibold">
                   Fecha de Nacimiento
                 </label>
-                <input type="date" className="form-control" id="fechaNacimiento" />
+                <input type="date" className="form-control" id="fechaNacimiento" 
+                 name = "fecha_nacimiento"
+                onChange={handleChange}
+                value={userData.fecha_nacimiento || ""}
+                />
+
               </div>
             </div>
 
@@ -85,35 +126,51 @@ export const CreateEditClient = () => {
                 <label htmlFor="direccion" className="form-label fw-semibold">
                   Dirección
                 </label>
-                <input type="text" className="form-control" id="direccion" placeholder="Calle, número, ciudad" />
+                <input type="text" className="form-control" id="direccion" placeholder="Calle, número, ciudad"
+                 name = "direccion"
+                onChange={handleChange}
+                value={userData.direccion || ""}
+                />
               </div>
 
               <div className="col-md-6">
                 <label htmlFor="ciudad" className="form-label fw-semibold">
                   Ciudad
                 </label>
-                <input type="text" className="form-control" id="ciudad" />
+                <input type="text" className="form-control" id="ciudad" 
+                 name = "ciudad"
+                onChange={handleChange}
+                value={userData.ciudad || ""}
+                />
               </div>
 
               <div className="col-md-3">
                 <label htmlFor="codigoPostal" className="form-label fw-semibold">
                   Código Postal
                 </label>
-                <input type="text" className="form-control" id="codigoPostal" />
+                <input type="text" className="form-control" id="codigoPostal" 
+                 name = "cp"
+                onChange={handleChange}
+                value={userData.cp || ""}
+                />
               </div>
 
               <div className="col-md-3">
                 <label htmlFor="pais" className="form-label fw-semibold">
                   País
                 </label>
-                <input type="text" className="form-control" id="pais" defaultValue="España" />
+                <input type="text" className="form-control" id="pais" defaultValue="España"
+                 name = "pais"
+                onChange={handleChange}
+                value={userData.pais || ""}
+                />
               </div>
             </div>
 
             {/* --- Empresa y estado --- */}
             <h5 className="text-danger border-bottom pb-2 mt-4 mb-3">Información Adicional</h5>
             <div className="row g-3">
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="empresa" className="form-label fw-semibold">
                   Empresa (opcional)
                 </label>
@@ -143,14 +200,9 @@ export const CreateEditClient = () => {
                   Notas
                 </label>
                 <textarea id="notas" className="form-control" rows="3" placeholder="Observaciones del cliente..." />
-              </div>
+              </div> */}
 
-              <div className="col-md-6">
-                <label htmlFor="avatar" className="form-label fw-semibold">
-                  Foto de Perfil
-                </label>
-                <input className="form-control" type="file" id="avatar" accept="image/*" />
-              </div>
+             
             </div>
 
             {/* --- Botones --- */}

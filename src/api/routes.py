@@ -6,10 +6,47 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import select
 
+import cloudinary
+import cloudinary.uploader
+
+
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+#cloudinary route
+
+
+# Cloudinary upload endpoint
+@api.route("/upload", methods=["POST"])
+@jwt_required()
+def upload_image():
+    # Check if a file part is present in the request
+    if "file" not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    id = get_jwt_identity()
+    user = db.session.get(User, id)
+    if not user: 
+        return jsonify({'msg': 'user not found'}), 404
+
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    try:
+        #upload to cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+        #return the url of the uploaded image to be used in the frontend and/or stored in the database
+        user.avatar = upload_result["secure_url"]
+        db.session.commit()
+        return jsonify({
+            "url": upload_result["secure_url"],
+            "public_id": upload_result["public_id"]
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @api.route('/hello', methods=['POST', 'GET'])

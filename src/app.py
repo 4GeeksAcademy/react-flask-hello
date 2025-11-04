@@ -18,6 +18,8 @@ from flask_jwt_extended import JWTManager
 
 from flask_bcrypt import Bcrypt
 
+from flask_mail import Mail
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -31,6 +33,18 @@ app.config["JWT_SECRET_KEY"] = "ESTA_ES_NUESTRA_LLAVE"
 jwt = JWTManager(app)
 
 bcrypt = Bcrypt(app)
+
+app.config.update(dict(
+    DEBUG=False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME='meetfit119@gmail.com',
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
+
+))
+
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

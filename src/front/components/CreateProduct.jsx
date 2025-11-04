@@ -32,13 +32,13 @@ export const CreateProduct = () => {
           <div className="mb-4">
             <div className="mb-3">
               <label htmlFor="nombre" className="form-label fw-semibold">
-                Nombre del Producto
+                Nombre del Producto o Servicio
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="nombre"
-                placeholder="Ej: Camiseta Deportiva"
+                placeholder=""
                 required
               />
             </div>
@@ -66,14 +66,14 @@ export const CreateProduct = () => {
                 id="descripcion"
                 className="form-control"
                 rows="3"
-                placeholder="Agrega una breve descripción del producto..."
+                placeholder="Agrega una breve descripción del producto o servicio..."
               ></textarea>
             </div>
           </div>
 
           {/* --- Bloque inferior --- */}
           <div className="card border-0 shadow-sm rounded-4 p-4 bg-white">
-            <h5 className="text-primary border-bottom pb-2 mb-3">
+            <h5 className="text-danger border-bottom pb-2 mb-3">
               📦 Detalles del Producto
             </h5>
 
@@ -82,13 +82,19 @@ export const CreateProduct = () => {
                 <label htmlFor="categoria" className="form-label fw-semibold">
                   Categoría
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="categoria"
-                  placeholder="Ej: Ropa"
-                />
+                <select id="categoria" className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
+                  <option value="" disabled>
+                    Selecciona una categoría
+                  </option>
+                  <option value="ropa">Ropa</option>
+                  <option value="electronica">Electrónica</option>
+                  <option value="hogar">Hogar</option>
+                  <option value="belleza">Belleza</option>
+                  <option value="deportes">Deportes</option>
+                  <option value="otros">Otros</option>
+                </select>
               </div>
+
 
               <div className="col-md-6">
                 <label htmlFor="tamaño" className="form-label fw-semibold">
@@ -98,7 +104,7 @@ export const CreateProduct = () => {
                   type="text"
                   className="form-control"
                   id="tamaño"
-                  placeholder="Ej: M, L, XL"
+                  placeholder=""
                 />
               </div>
 

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthServices from "../services/auth.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Login = () => {
     const {store, dispatch} = useGlobalReducer()
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -19,8 +20,12 @@ const Login = () => {
     const handleSubmit = e => {
         e.preventDefault();
         AuthServices.login(formData).then(data => {
-            console.log(data)
-            dispatch({type: 'login', payload: data.user})
+            if (data.token) {
+
+                console.log(data)
+                dispatch({type: 'login', payload: data.user})
+                return navigate('/')   
+            }
         })
     }
 

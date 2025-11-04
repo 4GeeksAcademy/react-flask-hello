@@ -27,6 +27,7 @@ werkzeug = "*"
 python_version = "3.13"
 
 [scripts]
+seeder= 'python src/seeder.py'
 start="flask run -p 3001 -h 0.0.0.0"
 init="flask db init"
 migrate="flask db migrate"

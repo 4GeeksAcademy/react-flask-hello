@@ -3,6 +3,7 @@ from api.models import db, User, Tienda, Productos, Favoritos, Detalles_pedido, 
 from datetime import date, datetime, timezone
 from app import app
 import random
+from werkzeug.security import generate_password_hash
 
 def seed_data():
     db.drop_all()
@@ -19,7 +20,7 @@ def seed_data():
             email="admin@example.com",
             address="Calle Sol 123, Sevilla",
             telefono=600111222,
-            password="hashed_password",
+            password="pepe123",
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -32,7 +33,7 @@ def seed_data():
             email="maria@example.com",
             address="Av. Andalucía 45, Sevilla",
             telefono=600333444,
-            password="hashed_password",
+            password="pepe123",
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -45,7 +46,7 @@ def seed_data():
             email="carlos@example.com",
             address="Calle Luna 9, Sevilla",
             telefono=600555666,
-            password="hashed_password",
+            password="pepe123",
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -62,9 +63,7 @@ def seed_data():
             categoria_principal="Gastronomía",
             telefono_comercial=955123456,
             logo_url="https://example.com/logos/bodega.png",
-            primary_color=True,
-            secondary_color=False,
-            text_color=True,
+         
             redes_sociales="@labodegadelSur",
             fecha_creacion=datetime.now(timezone.utc)
         ),
@@ -75,9 +74,7 @@ def seed_data():
             categoria_principal="Moda",
             telefono_comercial=955987654,
             logo_url="https://example.com/logos/ecomoda.png",
-            primary_color=False,
-            secondary_color=True,
-            text_color=False,
+          
             redes_sociales="@ecomoda",
             fecha_creacion=datetime.now(timezone.utc)
         ),
@@ -88,9 +85,7 @@ def seed_data():
             categoria_principal="Tecnología",
             telefono_comercial=955567890,
             logo_url="https://example.com/logos/techzone.png",
-            primary_color=True,
-            secondary_color=True,
-            text_color=False,
+           
             redes_sociales="@techzone_es",
             fecha_creacion=datetime.now(timezone.utc)
         ),

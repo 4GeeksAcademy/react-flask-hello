@@ -476,6 +476,7 @@ def upload_avatar():
 # ----------------------#
 #  CALENDLY             #
 # ----------------------#
+
 api.route('/calendly/mentorias', methods=['GET'])
 
 
@@ -510,10 +511,10 @@ def get_event_types():
 @jwt_required()
 def get_scheduled_events():
     try:
+        # Autorizacion para comunicarse con la API de calendly
         headers = get_calendly_headers()
 
-        # Obtener parámetros de la query string
-        # valor por defecto 'active'
+        # Para eventos activos, cancelados, busqueda entre dos fechas...
         status = request.args.get('status', 'active')
         min_start_time = request.args.get('min_start_time')
         max_start_time = request.args.get('max_start_time')
@@ -524,17 +525,20 @@ def get_scheduled_events():
             'status': status
         }
 
+        # Si hay fechas en la url las agrega
         if min_start_time:
             params['min_start_time'] = min_start_time
         if max_start_time:
             params['max_start_time'] = max_start_time
 
+        # Pide a Calendly las mentorías con los filtros
         response = requests.get(
             f'{CALENDLY_BASE_URL}/scheduled_events',
             headers=headers,
             params=params
         )
 
+        # Proceso de la petición y obtención de los datos de las mentorías o en su defecto error.
         if response.status_code == 200:
             return jsonify({
                 "success": True,
@@ -549,119 +553,3 @@ def get_scheduled_events():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
-
-# ----------------------#
-#   Reset password      #
-# ----------------------#
-@api.route('/reset-password-request', methods=['POST'])
-def reset_password_request():
-    """Solicitar el restablecimiento de contraseña"""
-    data = request.json
-    email = data.get('email')
-
-    if not email:
-        return jsonify({
-            "success": False,
-            "message": "El email es requerido"
-        }), 400
-
-    # Buscar usuario por email
-    query = select(User).where(User.email == email)
-    user = db.session.execute(query).scalar_one_or_none()
-
-    # Por seguridad, siempre devolver el mismo mensaje
-    # (no revelar si el email existe o no)
-    message = "If the email address exists in our system, you will receive a link to reset your password."
-
-    if user:
-        try:
-            # Generar token
-            token = generate_reset_token(user.id)
-
-            # Obtener la instancia de Mail desde la aplicación Flask
-            from flask import current_app
-            mail = current_app.extensions.get('mail')
-
-            # Enviar email
-            send_reset_email(user.email, token, mail)
-
-            return jsonify({
-                "success": True,
-                "message": message
-            }), 200
-
-        except Exception as e:
-            print(f"Error sending email: {str(e)}")
-            # Aún así devolver mensaje exitoso por seguridad
-            return jsonify({
-                "success": True,
-                "message": message
-            }), 200
-
-    return jsonify({
-        "success": True,
-        "message": message
-    }), 200
-
-
-@api.route('/reset-password/<token>', methods=['POST'])
-def reset_password(token):
-    """Restablecer la contraseña con el token"""
-    data = request.json
-    new_password = data.get('password')
-
-    if not new_password:
-        return jsonify({
-            "success": False,
-            "message": "Password is required"
-        }), 400
-
-    if len(new_password) < 8:
-        return jsonify({
-            "success": False,
-            "message": "The password must be at least 8 characters long."
-        }), 400
-
-    # Verificar el token
-    user = verify_reset_token(token)
-
-    if not user:
-        return jsonify({
-            "success": False,
-            "message": "The token is invalid or has expired."
-        }), 400
-
-    try:
-        # Actualizar la contraseña
-        user.password = generate_password_hash(new_password)
-        db.session.commit()
-
-        return jsonify({
-            "success": True,
-            "message": "Your password has been successfully updated."
-        }), 200
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({
-            "success": False,
-            "message": "Error updating password"
-        }), 500
-
-
-@api.route('/verify-reset-token/<token>', methods=['GET'])
-def verify_token(token):
-    """Verificar si un token es válido (opcional, para UX)"""
-    user = verify_reset_token(token)
-
-    if user:
-        return jsonify({
-            "success": True,
-            "message": "Valid token"
-        }), 200
-    else:
-        return jsonify({
-            "success": False,
-            "message": "Invalid or expired token"
-        }), 400

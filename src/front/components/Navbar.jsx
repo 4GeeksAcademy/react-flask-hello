@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/img/Logo.png"
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
+
 export const Navbar = () => {
+
+  const {store, dispatch } = useGlobalReducer()
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    dispatch({type: "logout"})
+    navigate('/')
+  }
 
   return (
 
@@ -8,8 +18,8 @@ export const Navbar = () => {
     <nav className="navbar navbar-expand-lg bg-transparent ">
       
       <div className="container-fluid ">
-        <a className="navbar-brand d-flex align-items-center" href="#">
-          <Link to="/">
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+       
           <img
             src={logo}
             alt="Logo"
@@ -17,8 +27,8 @@ export const Navbar = () => {
             height="56"
             className="d-inline-block align-text-top me-2"
           />
-          </Link>
-        </a>
+         
+        </Link>
         <div className="d-flex">
         <a className="navbar-brand m-3 " href="#">Products</a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,8 +44,14 @@ export const Navbar = () => {
             </li>
           
             <li className="nav-item">
-              <Link to="/login" className="btn btn-danger m-3 px-4" ><strong>Login</strong></Link>
+              <Link to={`${store.auth ? '/perfil' : "/login"}`} className="btn btn-danger m-3 px-4" ><strong>{`${store.auth ? 'Perfil' : "Login"}`}</strong></Link>
             </li>
+            {store.auth && <li>
+                    <button onClick={handleLogout}>
+                      logout
+                      </button>
+
+            </li>}
           </ul>
         </div>
         </div>

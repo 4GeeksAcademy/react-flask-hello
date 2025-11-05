@@ -1,6 +1,7 @@
 export const initialStore=()=>{
   return{
-    user: null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    auth: localStorage.getItem('token')? true :  false,
     message: null,
     todos: [
       {
@@ -19,10 +20,26 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+
+    case 'update_user':
+      return {
+        ...store, 
+        user: action.payload
+      }
+
+    case 'logout': 
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    return {
+      ...store, 
+      user: null,
+      auth: false
+    }
     case "login":
       return {
         ...store,
-        user: action.payload
+        user: action.payload,
+        auth: true
       }
       case "register":
         return {

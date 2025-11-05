@@ -24,6 +24,10 @@ import ManageSessions from "./components/ManageSessions";
 import Finance from "./components/Finance";
 import ConfigurationStudent from "./components/ConfigurationStudent";
 import SearchMentor from "./pages/SearchMentor";
+import RequestPasswordReset from "./pages/RequestPasswordReset";
+import ResetPassword from "./pages/ResetPassword";
+
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,8 +47,10 @@ export const router = createBrowserRouter(
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/search-mentor" element={<SearchMentor />} />
-      
-      
+      {/*reset email*/}
+      <Route path="/request-password-reset" element={<RequestPasswordReset />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+
 
 
       <Route path="/dashboard/:role/*" element={<Dashboard />}>

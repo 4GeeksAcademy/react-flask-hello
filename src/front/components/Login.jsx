@@ -94,6 +94,9 @@ const Login = () => {
                     <div className="d-flex justify-content-center my-2" >
                         <button type="submit" className="cta-send">Iniciar Sesion</button>
                     </div>
+                    <div className="text-center mt-3">
+                        <Link to="/request-password-reset">¿Olvidaste tu contraseña?</Link>
+                    </div>
                     <Link to={`/`}>Volver a inicio</Link>
                 </form>
             </div>

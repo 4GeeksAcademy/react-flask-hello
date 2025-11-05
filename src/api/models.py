@@ -208,7 +208,7 @@ class MentorTopic(db.Model):
     price: Mapped[float] = mapped_column(
         Float, nullable=False)
     duration: Mapped[int] = mapped_column(
-        Integer, nullable=False)
+        Integer, nullable=True)
 
     # Relaciones
     mentor_profile = relationship("MentorProfile", back_populates="topics")

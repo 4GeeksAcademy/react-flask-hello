@@ -57,7 +57,7 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
-   
+
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -97,7 +97,7 @@ userServices.mentorprofile = async (formData) => {
 }
 
 
-userServices.searchMentorProfile = async(filter) =>{
+userServices.searchMentorProfile = async (filter) => {
   try {
     const resp = await fetch(url + `api/mentor-profiles/filter?skills=${filter}`)
     if (!resp.ok) throw new Error('error fetching filters')
@@ -177,7 +177,7 @@ userServices.createTypeMentoring = async (formData) => {
 //Se obtiene todas los tipos de mentorias que registre el mentor
 
 userServices.allTypesMentoring = async (userId) => {
-   try {
+  try {
     const resp = await fetch(url + `api/types-mentoring/${userId}`)
     if (!resp.ok) throw new Error('error fetching types mentoring')
     const data = await resp.json()
@@ -185,8 +185,8 @@ userServices.allTypesMentoring = async (userId) => {
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-   
-    return {success: true, data}
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
     return { success: false, error: "Error de conexion con el servidor" }
@@ -194,8 +194,8 @@ userServices.allTypesMentoring = async (userId) => {
 }
 
 
-userServices.oneTypeMentoring = async(id) =>{
-   try {
+userServices.oneTypeMentoring = async (id) => {
+  try {
     const resp = await fetch(url + `api/type-mentoring/${id}`)
     if (!resp.ok) throw new Error('error fetching type mentoring')
     const data = await resp.json()
@@ -203,8 +203,8 @@ userServices.oneTypeMentoring = async(id) =>{
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-   
-    return {success: true, data}
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
     return { success: false, error: "Error de conexion con el servidor" }
@@ -237,24 +237,74 @@ userServices.putTypeMentoring = async (formData, id) => {
 }
 
 
-userServices.deleteTypeMentoring = async(id) =>{
-   try {
-        const resp = await fetch(url + `api/type-mentoring/${id}`, {
-            method: 'DELETE'
-            
-        })
-        if(!resp.ok) throw new Error('error delete type mentoring')
-        const data = await resp.json();
-        return { success: true, data }
+userServices.deleteTypeMentoring = async (id) => {
+  try {
+    const resp = await fetch(url + `api/type-mentoring/${id}`, {
+      method: 'DELETE'
 
-    } catch (error){
-        console.log(error)
-        return error
-    };
+    })
+    if (!resp.ok) throw new Error('error delete type mentoring')
+    const data = await resp.json();
+    return { success: true, data }
+
+  } catch (error) {
+    console.log(error)
+    return error
+  };
 }
 
 
+// ============================================
+// Request/reset password
+// ============================================
 
-export default userServices
+userServices.requestPasswordReset = async (email) => {
+  try {
+    const resp = await fetch(url + '/api/reset-password-request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email })
+    });
+    if (!resp.ok) throw new Error('error requesting password reset')
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+};
 
+userServices.resetPassword = async (token, password) => {
+  try {
+    const resp = await fetch(url + `/api/reset-password/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password })
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+};
+
+userServices.verifyResetToken = async (token) => {
+  try {
+    const resp = await fetch(url + `/api/verify-reset-token/${token}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Token inválido o expirado" }
+  }
+};
+
+export default userServices;
 

@@ -11,10 +11,10 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-
 
 # from models import Person
 
@@ -24,12 +24,23 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-
 # JWT config
-# ¡Cambia las palabras "super-secret" por otra cosa!
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 jwt = JWTManager(app)
 
+# Configuración de Flask-Mail
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.getenv(
+    'MAIL_USE_TLS', 'True').lower() == 'true'
+app.config['MAIL_USE_SSL'] = os.getenv(
+    'MAIL_USE_SSL', 'False').lower() == 'true'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
+
+# Inicializar Flask-Mail
+mail = Mail(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -43,7 +54,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-
 # add the admin
 setup_admin(app)
 
@@ -53,14 +63,12 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
-
 cloudinary.config(
     cloud_name="dp6e1sg4y",
     api_key="838782492858263",
     api_secret="HDNSe0YGwqKD34sOPuYsqVJxiio",
     secure=True
 )
-
 
 # Handle/serialize errors like a JSON object
 

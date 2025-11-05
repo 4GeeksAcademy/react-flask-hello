@@ -12,10 +12,6 @@ from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
 import os
 from datetime import datetime, timedelta
-from itsdangerous import URLSafeTimedSerializer as Serializer
-from flask_mail import Mail, Message
-import requests
-
 
 # ------------------------------#
 #    CALENDLY CONFIGURATION     #
@@ -53,68 +49,6 @@ def commit_only(obj):
     db.session.add(obj)
     db.session.commit()
     return obj
-
-# Helper Flask-email
-
-
-def generate_reset_token(user_id):
-    """Genera un token de restablecimiento para el usuario"""
-    s = Serializer(os.getenv('SECRET_KEY', 'dev-secret-key'))
-    return s.dumps({'user_id': user_id})
-
-
-def verify_reset_token(token, expires_sec=1800):
-    """Verifica el token de restablecimiento (expira en 30 minutos por defecto)"""
-    s = Serializer(os.getenv('SECRET_KEY', 'dev-secret-key'))
-    try:
-        user_id = s.loads(token, max_age=expires_sec)['user_id']
-    except:
-        return None
-    return User.query.get(user_id)
-
-
-def send_reset_email(user_email, token, mail_instance):
-    """Envía el email con el enlace de restablecimiento"""
-    # Construir URL del frontend para restablecer contraseña
-    reset_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/reset-password/{token}"
-
-    msg = Message('Restablecimiento de Contraseña - MentorMatch',
-                  recipients=[user_email])
-
-    msg.body = f'''Para restablecer tu contraseña, visita el siguiente enlace:
-{reset_url}
-
-Si no solicitaste este cambio, ignora este email y no se realizarán cambios.
-
-El enlace expirará en 30 minutos.
-
-Saludos,
-Equipo MentorMatch
-'''
-
-    msg.html = f'''
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Restablecimiento de Contraseña</h2>
-        <p>Hola,</p>
-        <p>Recibimos una solicitud para restablecer tu contraseña en MentorMatch.</p>
-        <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
-        <div style="text-align: center; margin: 30px 0;">
-            <a href="{reset_url}" 
-               style="background-color: #4CAF50; color: white; padding: 12px 30px; 
-                      text-decoration: none; border-radius: 5px; display: inline-block;">
-                Restablecer Contraseña
-            </a>
-        </div>
-        <p>O copia y pega este enlace en tu navegador:</p>
-        <p style="word-break: break-all; color: #666;">{reset_url}</p>
-        <p style="color: #999; font-size: 12px; margin-top: 30px;">
-            Si no solicitaste este cambio, ignora este email.<br>
-            Este enlace expira en 30 minutos.
-        </p>
-    </div>
-    '''
-
-    mail_instance.send(msg)
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -268,7 +202,11 @@ def filter_mentor_profiles():
     query = MentorProfile.query
 
     if skills_filter:
-        query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
+        skills_list = [s.strip().lower() for s in skills_filter.split(',')]
+        conditions = [func.lower(MentorProfile.skills).ilike(
+            f'%{skill}%') for skill in skills_list]
+        query = query.filter(or_(*conditions))
+        # query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
     # filter by “years of experience”: example mentors with more than 3 years of experience
     if years_experience_filter:
@@ -436,7 +374,7 @@ def delete_student_profile(id):
 
 
 # ----------------------#
-#  TYPES MENTORING      #
+#  TYPES MENTORING     #
 # ----------------------#
 
 
@@ -538,7 +476,6 @@ def upload_avatar():
 # ----------------------#
 #  CALENDLY             #
 # ----------------------#
-
 api.route('/calendly/mentorias', methods=['GET'])
 
 

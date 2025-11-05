@@ -6,10 +6,17 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db, User, Activity, Message, PasswordResetToken
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+from flask_bcrypt import Bcrypt
 
 from flask_mail import Mail, Message
 
@@ -24,6 +31,9 @@ app.url_map.strict_slashes = False
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "ESTA_ES_NUESTRA_LLAVE"
 
+jwt = JWTManager(app)
+
+bcrypt = Bcrypt(app)
 
 app.config.update(dict(
     DEBUG=False,

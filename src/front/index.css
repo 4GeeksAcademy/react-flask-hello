@@ -405,14 +405,28 @@ h2 {
   transition: all 0.3s ease;
   box-shadow: 0 8px 20px rgb(119, 166, 170);
   text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-.card-text {
-  height: 60px;
+.card-title {
+  height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-height: 60px;
+  min-height: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.card-text {
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 30px;
+  color: #FFFFFF;
+  font-size: 1.2rem;
 }
 
 .card-body {
@@ -499,7 +513,7 @@ h2 {
 
 .session-price {
   padding: 0.9em;
-  background-color: #184039;
+  background-color: #DF6668;
   color: white;
   width: auto;
   height: 2em;

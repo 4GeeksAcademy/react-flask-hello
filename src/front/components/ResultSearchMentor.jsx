@@ -22,7 +22,7 @@ const ResultSearchMentor = ({ mentor }) => {
     .map(interest => {
         const trimmed = interest.trim();
         const option = options.find(opt => opt.value === trimmed);
-        ///console.log('Buscando:', trimmed, '→', option?.label); // Para verificar
+       
         return option?.label || trimmed;
     })
     ?.join(", ");

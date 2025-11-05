@@ -199,8 +199,8 @@ def filter_mentor_profiles():
 
     mentor_profiles = query.all()
 
-    print(f"Resultados encontrados: {len(mentor_profiles)}")
-    print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
+   # print(f"Resultados encontrados: {len(mentor_profiles)}")
+    #print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
 
     return jsonify({
         "success": True,
@@ -379,7 +379,7 @@ def create_type_mentoring():
 def get_types_mentoring(userId):
     query = select(MentorTopic).where(MentorTopic.mentor_profile_id == userId)
     types_mentoring = db.session.execute(query).scalars().all()
-
+   # print(f"Tipos de mentoria------>>>>: {[tm.serialize() for tm in  types_mentoring]}")
     return jsonify([tm.serialize() for tm in types_mentoring])
 
 # se obtiene un tipo de mentoria en especifico segun el Id

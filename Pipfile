@@ -20,8 +20,8 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 bcrypt = "*"
 flask-jwt-extended = "*"
-werkzeug = "*"
 cloudinary = "*"
+werkzeug = "*"
 
 [requires]
 python_version = "3.13"

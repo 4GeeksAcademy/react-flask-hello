@@ -31,8 +31,7 @@ class User(db.Model):
     tiendas: Mapped[List['Tienda']] = relationship(back_populates='owner')
     resenas: Mapped[List['Resenas']] = relationship(back_populates='autor')
     favoritos: Mapped[List['Favoritos']] = relationship(back_populates='user')
-    pedidos: Mapped[List['Detalles_pedido']
-                    ] = relationship(back_populates='user')
+    
     notificaciones: Mapped[List['Notificaciones']
                            ] = relationship(back_populates='user')
 
@@ -73,9 +72,8 @@ class Tienda(db.Model):
         unique=True, nullable=False)
     logo_url: Mapped[str] = mapped_column(
         String(300), unique=True, nullable=False)
-    estilos: Mapped[Dict[str, Any]] = mapped_column(
-        JSON, nullable=True, default=dict)  # my sql colocar JSON y si es postgress JSONb
-    redes_sociales: Mapped[str] = mapped_column(unique=False, nullable=False)
+     # my sql colocar JSON y si es postgress JSONb
+    redes_sociales: Mapped[str] = mapped_column(unique=False, nullable=True)
     fecha_creacion: Mapped[TIMESTAMP] = mapped_column(
         DateTime(), default=datetime.now(timezone.utc))
 
@@ -100,7 +98,6 @@ class Tienda(db.Model):
             "categoria_principal": self.categoria_principal,
             "telefono_comercial": self.telefono_comercial,
             "logo_url": self.logo_url,
-            "estilos": self.estilos,
             "redes_sociales": self.redes_sociales,
             "fecha_creacion": self.fecha_creacion,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
@@ -138,8 +135,7 @@ class Productos(db.Model):
     favoritos: Mapped[List['Favoritos']] = relationship(
         back_populates='producto')
 
-    pedidos: Mapped[List['Detalles_pedido']] = relationship(
-        back_populates="productos")
+  
 
     def serialize(self):
         return {
@@ -190,37 +186,7 @@ class Favoritos(db.Model):
         }
 
 
-class Detalles_pedido(db.Model):
-    __tablename__ = "detalles_pedido"
-    id: Mapped[int] = mapped_column(primary_key=True)
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'))  # unir a producto
-    user: Mapped['User'] = relationship(back_populates="pedidos")
-
-    producto_id: Mapped[int] = mapped_column(
-        ForeignKey('productos.id'))  # unir a producto
-    productos: Mapped['Productos'] = relationship(back_populates="pedidos")
-    subtotal: Mapped[float] = mapped_column(nullable=False, unique=False)
-
-    historial_pedido: Mapped[List['Historial']
-                             ] = relationship(back_populates='pedido')
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "producto_id": self.producto_id,
-            "user": {"email": self.user.email} if self.user else None,
-            "productos": {'id': self.productos.id,
-                          'nombre_producto': self.productos.nombre_producto,
-                          'descripcion_producto':  self.productos.descripcion_producto,
-                          'precio': self.productos.precio,
-                          'tienda': {
-                              "id": self.productos.tienda.id
-                          }} if self.productos else None,
-            "subtotal": self.subtotal,
-        }
 
 
 class Notificaciones(db.Model):
@@ -293,8 +259,6 @@ class Historial(db.Model):
 
     # unir a detalles pedido (user = cliente)
     pedido_id: Mapped[int] = mapped_column(ForeignKey('detalles_pedido.id'))
-    pedido: Mapped['Detalles_pedido'] = relationship(
-        back_populates='historial_pedido')
 
     tienda_id: Mapped[int] = mapped_column(
         ForeignKey('tienda.id'))  # unir a tienda id

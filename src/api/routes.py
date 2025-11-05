@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Productos
+from api.models import db, User, Productos , Tienda
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -127,3 +127,30 @@ def handle_login():
 
     token = create_access_token(identity=str(user.id))
     return jsonify({"user": user.serialize(), "token": token}), 200
+
+@api.route('/mi_tienda' , methods=['GET'])
+@jwt_required()
+def handle_tienda_item():
+    id = get_jwt_identity()
+    stm = select(Tienda).where(Tienda.owner_id == id)
+    tienda = db.session.execute(stm).scalar_one_or_none()
+    if tienda is None : 
+        return jsonify({'msg':'tienda no encontrada'}),404
+    return jsonify({'tienda':tienda.serialize()}),200 
+
+@api.route('/crear_tienda' , methods=['POST'])
+@jwt_required()
+def handle_crear_tienda():
+    id = get_jwt_identity()
+    body = request.get_json()
+    
+    new_tienda = Tienda(cif=body['cif'],
+                    nombre_tienda=body['nombre_tienda'],
+                    descripcion_tienda=body['descripcion_tienda'],
+                    categoria_principal=body['categoria_principal'],
+                    telefono_comercial=body['telefono_comercial'],
+                    logo_url=body['logo_url'],
+                    )
+    db.session.add(new_tienda)
+    db.session.commit()
+    return jsonify({'success': True, 'msg': 'Nueva tienda tiendificada con exito'}), 201

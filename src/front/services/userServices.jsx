@@ -57,7 +57,6 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
-   console.log(formData)
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -97,7 +96,7 @@ userServices.mentorprofile = async (formData) => {
 }
 
 
-userServices.searchMentorProfile = async(filter) =>{
+userServices.searchMentorProfile = async (filter) => {
   try {
     const resp = await fetch(url + `api/mentor-profiles/filter?skills=${filter}`)
     if (!resp.ok) throw new Error('error fetching filters')
@@ -280,6 +279,36 @@ userServices.getStudentProfile = async (userId) => {
   } catch (error) {
     console.log(error);
     return null;
+  }
+};
+
+userServices.resetPassword = async (token, password) => {
+  try {
+    const resp = await fetch(url + `/api/reset-password/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password })
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+};
+
+userServices.verifyResetToken = async (token) => {
+  try {
+    const resp = await fetch(url + `/api/verify-reset-token/${token}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Token inválido o expirado" }
   }
 };
 

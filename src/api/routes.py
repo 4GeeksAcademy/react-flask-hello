@@ -10,6 +10,25 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, or_, func
 from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
+import os
+from datetime import datetime, timedelta
+
+# ------------------------------#
+#    CALENDLY CONFIGURATION     #
+# ------------------------------#
+
+CALENDLY_API_KEY = os.getenv('CALENDLY_API_KEY')
+CALENDLY_USER_URI = os.getenv('CALENDLY_USER_URI')
+CALENDLY_BASE_URL = 'https://api.calendly.com'
+
+
+def get_calendly_headers():
+    """Retorna los headers necesarios para las peticiones a Calendly"""
+    return {
+        'Authorization': f'Bearer {CALENDLY_API_KEY}',
+        'Content-Type': 'application/json'
+    }
+
 
 api = Blueprint('api', __name__)
 
@@ -184,11 +203,11 @@ def filter_mentor_profiles():
 
     if skills_filter:
         skills_list = [s.strip().lower() for s in skills_filter.split(',')]
-        conditions = [func.lower(MentorProfile.skills).ilike(f'%{skill}%') for skill in skills_list]
+        conditions = [func.lower(MentorProfile.skills).ilike(
+            f'%{skill}%') for skill in skills_list]
         query = query.filter(or_(*conditions))
-        #query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
+        # query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
-        
     # filter by “years of experience”: example mentors with more than 3 years of experience
     if years_experience_filter:
         query = query.filter(MentorProfile.years_experience >=
@@ -200,7 +219,7 @@ def filter_mentor_profiles():
     mentor_profiles = query.all()
 
    # print(f"Resultados encontrados: {len(mentor_profiles)}")
-    #print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
+    # print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
 
     return jsonify({
         "success": True,
@@ -316,8 +335,8 @@ def create_student_profile():
         goals=data.get("goals"),
         experience_level=experience_level,
         skills=data.get("skills"),
-        language = data.get("language") or "SPANISH",
-        location = data.get ("location")
+        language=data.get("language") or "SPANISH",
+        location=data.get("location")
     )
     db.session.add(student_profile)
     db.session.commit()
@@ -334,9 +353,11 @@ def update_student_profile_by_user(user_id):
     student_profile.username = data.get("username", student_profile.username)
     student_profile.name = data.get("name", student_profile.name)
     student_profile.location = data.get("location", student_profile.location)
-    student_profile.interests = data.get("interests", student_profile.interests)
+    student_profile.interests = data.get(
+        "interests", student_profile.interests)
     student_profile.goals = data.get("goals", student_profile.goals)
-    student_profile.experience_level = data.get("experience_level", student_profile.experience_level)
+    student_profile.experience_level = data.get(
+        "experience_level", student_profile.experience_level)
     student_profile.skills = data.get("skills", student_profile.skills)
     student_profile.language = data.get("language", student_profile.language)
 
@@ -427,7 +448,7 @@ def delete_type_mentoring(id):
 @api.route("upload-avatar", methods=['POST'])
 def upload_avatar():
     file = request.files.get('avatar')
-    print (file)
+    print(file)
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
 
@@ -450,8 +471,85 @@ def upload_avatar():
 
     except Exception as error:
         return jsonify({"error": str(error)}), 500
-    
 
 
+# ----------------------#
+#  CALENDLY             #
+# ----------------------#
+
+api.route('/calendly/mentorias', methods=['GET'])
 
 
+@jwt_required()
+def get_event_types():
+    """Obtiene las clases disponibles del mentor"""
+    try:
+        headers = get_calendly_headers()
+        response = requests.get(
+            f'{CALENDLY_BASE_URL}/event_types',
+            headers=headers,
+            params={'user': CALENDLY_USER_URI}
+        )
+
+        if response.status_code == 200:
+            return jsonify({
+                "success": True,
+                "data": response.json()
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "error": "No se pudieron obtener las clases",
+                "details": response.text
+            }), response.status_code
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@api.route('/calendly/mentorias-programadas', methods=['GET'])
+@jwt_required()
+def get_scheduled_events():
+    try:
+        # Autorizacion para comunicarse con la API de calendly
+        headers = get_calendly_headers()
+
+        # Para eventos activos, cancelados, busqueda entre dos fechas...
+        status = request.args.get('status', 'active')
+        min_start_time = request.args.get('min_start_time')
+        max_start_time = request.args.get('max_start_time')
+
+        # Construir parámetros para la petición
+        params = {
+            'user': CALENDLY_USER_URI,
+            'status': status
+        }
+
+        # Si hay fechas en la url las agrega
+        if min_start_time:
+            params['min_start_time'] = min_start_time
+        if max_start_time:
+            params['max_start_time'] = max_start_time
+
+        # Pide a Calendly las mentorías con los filtros
+        response = requests.get(
+            f'{CALENDLY_BASE_URL}/scheduled_events',
+            headers=headers,
+            params=params
+        )
+
+        # Proceso de la petición y obtención de los datos de las mentorías o en su defecto error.
+        if response.status_code == 200:
+            return jsonify({
+                "success": True,
+                "data": response.json()
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "error": "No se pudieron obtener los eventos",
+                "details": response.text
+            }), response.status_code
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

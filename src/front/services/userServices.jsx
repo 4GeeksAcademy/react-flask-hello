@@ -57,7 +57,11 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
+<<<<<<< HEAD
+
+=======
    console.log(formData)
+>>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -97,7 +101,7 @@ userServices.mentorprofile = async (formData) => {
 }
 
 
-userServices.searchMentorProfile = async(filter) =>{
+userServices.searchMentorProfile = async (filter) => {
   try {
     const resp = await fetch(url + `api/mentor-profiles/filter?skills=${filter}`)
     if (!resp.ok) throw new Error('error fetching filters')
@@ -270,7 +274,27 @@ userServices.createStudentProfile = async (formData) => {
   }
 };
 
+// ============================================
+// Request/reset password
+// ============================================
 
+<<<<<<< HEAD
+userServices.requestPasswordReset = async (email) => {
+  try {
+    const resp = await fetch(url + '/api/reset-password-request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email })
+    });
+    if (!resp.ok) throw new Error('error requesting password reset')
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+=======
 userServices.getStudentProfile = async (userId) => {
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`);
@@ -280,9 +304,41 @@ userServices.getStudentProfile = async (userId) => {
   } catch (error) {
     console.log(error);
     return null;
+>>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
   }
 };
 
+userServices.resetPassword = async (token, password) => {
+  try {
+    const resp = await fetch(url + `/api/reset-password/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password })
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error de conexion con el servidor" }
+  }
+};
+
+userServices.verifyResetToken = async (token) => {
+  try {
+    const resp = await fetch(url + `/api/verify-reset-token/${token}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Token inválido o expirado" }
+  }
+};
+
+export default userServices;
 
 userServices.updateStudentProfile = async (formData, userId) => {
   try {

@@ -12,7 +12,7 @@ import { Demo } from "./pages/Demo";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { CreateEditClient } from "./components/CreateEditClient";
-import { PerfilPage } from "./pages/PerfilPage";
+import { CreateProduct } from "./components/CreateProduct";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -32,6 +32,7 @@ export const router = createBrowserRouter(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage/>}/>
         <Route path="/perfil" element={<CreateEditClient/>}/>
+        <Route path="/product" element={<CreateProduct/>}/>
       </Route>
     )
 );

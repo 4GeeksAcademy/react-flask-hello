@@ -57,7 +57,11 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
+<<<<<<< HEAD
 
+=======
+   console.log(formData)
+>>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -253,11 +257,28 @@ userServices.deleteTypeMentoring = async (id) => {
   };
 }
 
+userServices.createStudentProfile = async (formData) => {
+
+  try {
+    const resp = await fetch(url + "/api/student-profiles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!resp.ok) throw new Error("Error al registrar perfil del estudiante");
+    const data = await resp.json();
+    return { success: true, data };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Error de conexión con el servidor" };
+  }
+};
 
 // ============================================
 // Request/reset password
 // ============================================
 
+<<<<<<< HEAD
 userServices.requestPasswordReset = async (email) => {
   try {
     const resp = await fetch(url + '/api/reset-password-request', {
@@ -273,6 +294,17 @@ userServices.requestPasswordReset = async (email) => {
   } catch (error) {
     console.log(error)
     return { success: false, error: "Error de conexion con el servidor" }
+=======
+userServices.getStudentProfile = async (userId) => {
+  try {
+    const resp = await fetch(url + `/api/student-profiles/user/${userId}`);
+    if (!resp.ok) throw new Error("Error fetching perfil del estudiante");
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+>>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
   }
 };
 
@@ -308,3 +340,21 @@ userServices.verifyResetToken = async (token) => {
 
 export default userServices;
 
+userServices.updateStudentProfile = async (formData, userId) => {
+  try {
+    const resp = await fetch(url + `/api/student-profiles/user/${userId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!resp.ok) throw new Error("Error al actualizar perfil del estudiante");
+    const data = await resp.json();
+    return { success: true, data };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: "Error de conexión con el servidor" };
+  }
+};
+
+
+export default userServices;

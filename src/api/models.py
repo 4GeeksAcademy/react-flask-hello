@@ -1,6 +1,7 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+import secrets
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Float, DateTime, Text, Date, Time, Integer, ForeignKey, Table
+from sqlalchemy import (String, Float, DateTime, Text, Date, Time, Integer, ForeignKey, Table, Boolean)
 from sqlalchemy.orm import mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -36,6 +37,7 @@ class User(db.Model):
     activities_created = relationship("Activity", back_populates="creator", lazy=True)
     activities_joined = relationship("Activity", secondary=activity_user, back_populates="participants")
     messages_sent = relationship("Message", back_populates="sender", lazy=True)
+    reset_tokens = relationship("PasswordResetToken", back_populates="user", cascade="all, delete-orphan")
 
     # Métodos de seguridad
     def set_password(self, password):
@@ -117,5 +119,39 @@ class Message(db.Model):
             "activity_id": self.activity_id,
             "sender_id": self.sender_id,
             "message": self.message,
+            "created_at": self.created_at.isoformat(),
+        }
+
+# MODELO: PasswordResetToken
+class PasswordResetToken(db.Model):
+    __tablename__ = "password_reset_token"
+
+    id = mapped_column(Integer, primary_key=True)
+    user_id = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    token = mapped_column(String(128), unique=True, nullable=False)
+    expires_at = mapped_column(DateTime(timezone=True), nullable=False)
+    used = mapped_column(Boolean, default=False)
+    created_at = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    user = relationship("User", back_populates="reset_tokens")
+
+    @staticmethod
+    def generate_token(user_id, expiration_minutes=30):
+        """Genera un nuevo token de recuperación con validez temporal."""
+        token = secrets.token_urlsafe(64)
+        expires_at = datetime.now(timezone.utc) + timedelta(minutes=expiration_minutes)
+        return PasswordResetToken(user_id=user_id, token=token, expires_at=expires_at)
+
+    def is_valid(self):
+        """Valida si el token sigue activo y no se ha usado."""
+        return not self.used and datetime.now(timezone.utc) < self.expires_at
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "token": self.token,
+            "expires_at": self.expires_at.isoformat(),
+            "used": self.used,
             "created_at": self.created_at.isoformat(),
         }

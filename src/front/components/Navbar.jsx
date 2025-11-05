@@ -47,8 +47,8 @@ export const Navbar = () => {
               <Link to={`${store.auth ? '/perfil' : "/login"}`} className="btn btn-danger m-3 px-4" ><strong>{`${store.auth ? 'Perfil' : "Login"}`}</strong></Link>
             </li>
             {store.auth && <li>
-                    <button onClick={handleLogout}>
-                      logout
+                    <button onClick={handleLogout} className="btn btn-danger text-light mt-3">
+                      <strong>logout</strong>
                       </button>
 
             </li>}

@@ -405,14 +405,28 @@ h2 {
   transition: all 0.3s ease;
   box-shadow: 0 8px 20px rgb(119, 166, 170);
   text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-.card-text {
-  height: 60px;
+.card-title {
+  height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-height: 60px;
+  min-height: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.card-text {
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 30px;
+  color: #FFFFFF;
+  font-size: 1.2rem;
 }
 
 .card-body {
@@ -499,7 +513,7 @@ h2 {
 
 .session-price {
   padding: 0.9em;
-  background-color: #184039;
+  background-color: #DF6668;
   color: white;
   width: auto;
   height: 2em;
@@ -537,7 +551,11 @@ h2 {
 }
 
 .cardsize {
-  width: 280px;
+  margin-inline: 5rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(180deg, #2c3e50 0%, #1a4740 100%);
   border-radius: 20px;
   overflow: hidden;
@@ -547,9 +565,19 @@ h2 {
   color: white;
 }
 
+.card-image-container {
+  padding-top: 0.9em;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
 .imgcard {
-  height: 9rem;
-  width: auto;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 .card-hover {
@@ -562,48 +590,121 @@ h2 {
 }
 
 .btn-view {
-  background-color: #4285f4;
-  color: white;
+  width: 100%;
+  background: #263c5e;
+  color: #ffffff;
+  padding: 8px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: block;
 }
 
 .btn-hover:hover {
-  background-color: #fecb02;
-  color: #4285f4;
-  font-weight: 600;
-
+  background-color: #ffffff;
+  color: #263c5e;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
 }
 
+.card-mentor-interest {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8em;
+}
+
 .mentor-card-skills {
+  font-family: "Inter", sans-serif;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 3px;
   margin-bottom: 20px;
 }
 
 .mentor-card-skill {
   background: #77a6aa;
   color: #ffffff;
-  padding: 8px 16px;
+  padding: 8px 1px;
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.card-image-container {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+.view-profile-mentor {
+  background: linear-gradient(to bottom, #184039 6%, #3ea694 82%);
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 8px 20px rgb(119, 166, 170);
+  font-family: "Poppins", sans-serif;
 }
 
-.mentor-card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.view-profile-mentor-name{
+  font-size: 3em;
+  font-weight:bolder;
+  margin-bottom: 0;
 }
+
+.view-profile-mentor-location{
+ font-size: 1.5em;
+
+}
+
+
+.view-profile-mentor-img {
+  height: 10em;
+  width: 10em;
+  border-radius: 80px;
+  border-color: #ffffff;
+  border-width: 0.1em;
+  border-style:solid;
+}
+
+.custom-tabs .nav-link.active {
+  /*background-color: #77A6AA !important;  /* color de fondo del tab activo */
+  color: #77A6AA !important;               /* texto en blanco */
+  /*border-color: #77A6AA !important;      /* color del borde */
+  border: none;
+  border-bottom: 2px solid #77A6AA !important; ;
+ 
+
+}
+
+.custom-tabs .nav-link:hover {
+  background-color: rgba(119, 166, 170, 0.15);
+  color: #184039;
+}
+
+.custom-tabs .nav-tabs .nav-link.active {
+ border: none;
+}
+
+.custom-tabs .nav-link {
+  transition: all 0.3s ease;
+  color:dimgrey;
+  border: none;
+}
+
+.tab-profile-bio{
+  border:1px solid #77A6AA;
+  min-height: 12rem;  
+  border-radius: 20px;
+  padding-left: 2rem;
+  padding-top: 1rem;
+}
+
+.tab-profile-bio .title{
+  color: #263C5E
+}
+
+
+
+
+
+
+/*
 
 .btn-view {
   width: 100%;
@@ -620,3 +721,4 @@ h2 {
   text-decoration: none;
   display: block;
 }
+*/

@@ -7,7 +7,7 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import select
+from sqlalchemy import select, or_, func
 from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
 
@@ -183,7 +183,10 @@ def filter_mentor_profiles():
     query = MentorProfile.query
 
     if skills_filter:
-        query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
+        skills_list = [s.strip().lower() for s in skills_filter.split(',')]
+        conditions = [func.lower(MentorProfile.skills).ilike(f'%{skill}%') for skill in skills_list]
+        query = query.filter(or_(*conditions))
+        #query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
         
     # filter by “years of experience”: example mentors with more than 3 years of experience
@@ -196,8 +199,8 @@ def filter_mentor_profiles():
 
     mentor_profiles = query.all()
 
-    print(f"Resultados encontrados: {len(mentor_profiles)}")
-    print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
+   # print(f"Resultados encontrados: {len(mentor_profiles)}")
+    #print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
 
     return jsonify({
         "success": True,
@@ -376,7 +379,7 @@ def create_type_mentoring():
 def get_types_mentoring(userId):
     query = select(MentorTopic).where(MentorTopic.mentor_profile_id == userId)
     types_mentoring = db.session.execute(query).scalars().all()
-
+   # print(f"Tipos de mentoria------>>>>: {[tm.serialize() for tm in  types_mentoring]}")
     return jsonify([tm.serialize() for tm in types_mentoring])
 
 # se obtiene un tipo de mentoria en especifico segun el Id

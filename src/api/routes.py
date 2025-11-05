@@ -10,6 +10,29 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, or_, func
 from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
+import os
+from datetime import datetime, timedelta
+from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask_mail import Mail, Message
+import requests
+
+
+# ------------------------------#
+#    CALENDLY CONFIGURATION     #
+# ------------------------------#
+
+CALENDLY_API_KEY = os.getenv('CALENDLY_API_KEY')
+CALENDLY_USER_URI = os.getenv('CALENDLY_USER_URI')
+CALENDLY_BASE_URL = 'https://api.calendly.com'
+
+
+def get_calendly_headers():
+    """Retorna los headers necesarios para las peticiones a Calendly"""
+    return {
+        'Authorization': f'Bearer {CALENDLY_API_KEY}',
+        'Content-Type': 'application/json'
+    }
+
 
 api = Blueprint('api', __name__)
 
@@ -30,6 +53,68 @@ def commit_only(obj):
     db.session.add(obj)
     db.session.commit()
     return obj
+
+# Helper Flask-email
+
+
+def generate_reset_token(user_id):
+    """Genera un token de restablecimiento para el usuario"""
+    s = Serializer(os.getenv('SECRET_KEY', 'dev-secret-key'))
+    return s.dumps({'user_id': user_id})
+
+
+def verify_reset_token(token, expires_sec=1800):
+    """Verifica el token de restablecimiento (expira en 30 minutos por defecto)"""
+    s = Serializer(os.getenv('SECRET_KEY', 'dev-secret-key'))
+    try:
+        user_id = s.loads(token, max_age=expires_sec)['user_id']
+    except:
+        return None
+    return User.query.get(user_id)
+
+
+def send_reset_email(user_email, token, mail_instance):
+    """Envía el email con el enlace de restablecimiento"""
+    # Construir URL del frontend para restablecer contraseña
+    reset_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/reset-password/{token}"
+
+    msg = Message('Restablecimiento de Contraseña - MentorMatch',
+                  recipients=[user_email])
+
+    msg.body = f'''Para restablecer tu contraseña, visita el siguiente enlace:
+{reset_url}
+
+Si no solicitaste este cambio, ignora este email y no se realizarán cambios.
+
+El enlace expirará en 30 minutos.
+
+Saludos,
+Equipo MentorMatch
+'''
+
+    msg.html = f'''
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #333;">Restablecimiento de Contraseña</h2>
+        <p>Hola,</p>
+        <p>Recibimos una solicitud para restablecer tu contraseña en MentorMatch.</p>
+        <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{reset_url}" 
+               style="background-color: #4CAF50; color: white; padding: 12px 30px; 
+                      text-decoration: none; border-radius: 5px; display: inline-block;">
+                Restablecer Contraseña
+            </a>
+        </div>
+        <p>O copia y pega este enlace en tu navegador:</p>
+        <p style="word-break: break-all; color: #666;">{reset_url}</p>
+        <p style="color: #999; font-size: 12px; margin-top: 30px;">
+            Si no solicitaste este cambio, ignora este email.<br>
+            Este enlace expira en 30 minutos.
+        </p>
+    </div>
+    '''
+
+    mail_instance.send(msg)
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -183,12 +268,8 @@ def filter_mentor_profiles():
     query = MentorProfile.query
 
     if skills_filter:
-        skills_list = [s.strip().lower() for s in skills_filter.split(',')]
-        conditions = [func.lower(MentorProfile.skills).ilike(f'%{skill}%') for skill in skills_list]
-        query = query.filter(or_(*conditions))
-        #query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
+        query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
-        
     # filter by “years of experience”: example mentors with more than 3 years of experience
     if years_experience_filter:
         query = query.filter(MentorProfile.years_experience >=
@@ -200,7 +281,7 @@ def filter_mentor_profiles():
     mentor_profiles = query.all()
 
    # print(f"Resultados encontrados: {len(mentor_profiles)}")
-    #print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
+    # print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
 
     return jsonify({
         "success": True,
@@ -316,8 +397,8 @@ def create_student_profile():
         goals=data.get("goals"),
         experience_level=experience_level,
         skills=data.get("skills"),
-        language = data.get("language") or "SPANISH",
-        location = data.get ("location")
+        language=data.get("language") or "SPANISH",
+        location=data.get("location")
     )
     db.session.add(student_profile)
     db.session.commit()
@@ -334,9 +415,11 @@ def update_student_profile_by_user(user_id):
     student_profile.username = data.get("username", student_profile.username)
     student_profile.name = data.get("name", student_profile.name)
     student_profile.location = data.get("location", student_profile.location)
-    student_profile.interests = data.get("interests", student_profile.interests)
+    student_profile.interests = data.get(
+        "interests", student_profile.interests)
     student_profile.goals = data.get("goals", student_profile.goals)
-    student_profile.experience_level = data.get("experience_level", student_profile.experience_level)
+    student_profile.experience_level = data.get(
+        "experience_level", student_profile.experience_level)
     student_profile.skills = data.get("skills", student_profile.skills)
     student_profile.language = data.get("language", student_profile.language)
 
@@ -353,7 +436,7 @@ def delete_student_profile(id):
 
 
 # ----------------------#
-#  TYPES MENTORING     #
+#  TYPES MENTORING      #
 # ----------------------#
 
 
@@ -427,7 +510,7 @@ def delete_type_mentoring(id):
 @api.route("upload-avatar", methods=['POST'])
 def upload_avatar():
     file = request.files.get('avatar')
-    print (file)
+    print(file)
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
 
@@ -450,8 +533,198 @@ def upload_avatar():
 
     except Exception as error:
         return jsonify({"error": str(error)}), 500
-    
 
 
+# ----------------------#
+#  CALENDLY             #
+# ----------------------#
+
+api.route('/calendly/mentorias', methods=['GET'])
 
 
+@jwt_required()
+def get_event_types():
+    """Obtiene las clases disponibles del mentor"""
+    try:
+        headers = get_calendly_headers()
+        response = requests.get(
+            f'{CALENDLY_BASE_URL}/event_types',
+            headers=headers,
+            params={'user': CALENDLY_USER_URI}
+        )
+
+        if response.status_code == 200:
+            return jsonify({
+                "success": True,
+                "data": response.json()
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "error": "No se pudieron obtener las clases",
+                "details": response.text
+            }), response.status_code
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@api.route('/calendly/mentorias-programadas', methods=['GET'])
+@jwt_required()
+def get_scheduled_events():
+    try:
+        headers = get_calendly_headers()
+
+        # Obtener parámetros de la query string
+        # valor por defecto 'active'
+        status = request.args.get('status', 'active')
+        min_start_time = request.args.get('min_start_time')
+        max_start_time = request.args.get('max_start_time')
+
+        # Construir parámetros para la petición
+        params = {
+            'user': CALENDLY_USER_URI,
+            'status': status
+        }
+
+        if min_start_time:
+            params['min_start_time'] = min_start_time
+        if max_start_time:
+            params['max_start_time'] = max_start_time
+
+        response = requests.get(
+            f'{CALENDLY_BASE_URL}/scheduled_events',
+            headers=headers,
+            params=params
+        )
+
+        if response.status_code == 200:
+            return jsonify({
+                "success": True,
+                "data": response.json()
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "error": "No se pudieron obtener los eventos",
+                "details": response.text
+            }), response.status_code
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+# ----------------------#
+#   Reset password      #
+# ----------------------#
+@api.route('/reset-password-request', methods=['POST'])
+def reset_password_request():
+    """Solicitar el restablecimiento de contraseña"""
+    data = request.json
+    email = data.get('email')
+
+    if not email:
+        return jsonify({
+            "success": False,
+            "message": "El email es requerido"
+        }), 400
+
+    # Buscar usuario por email
+    query = select(User).where(User.email == email)
+    user = db.session.execute(query).scalar_one_or_none()
+
+    # Por seguridad, siempre devolver el mismo mensaje
+    # (no revelar si el email existe o no)
+    message = "If the email address exists in our system, you will receive a link to reset your password."
+
+    if user:
+        try:
+            # Generar token
+            token = generate_reset_token(user.id)
+
+            # Obtener la instancia de Mail desde la aplicación Flask
+            from flask import current_app
+            mail = current_app.extensions.get('mail')
+
+            # Enviar email
+            send_reset_email(user.email, token, mail)
+
+            return jsonify({
+                "success": True,
+                "message": message
+            }), 200
+
+        except Exception as e:
+            print(f"Error sending email: {str(e)}")
+            # Aún así devolver mensaje exitoso por seguridad
+            return jsonify({
+                "success": True,
+                "message": message
+            }), 200
+
+    return jsonify({
+        "success": True,
+        "message": message
+    }), 200
+
+
+@api.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    """Restablecer la contraseña con el token"""
+    data = request.json
+    new_password = data.get('password')
+
+    if not new_password:
+        return jsonify({
+            "success": False,
+            "message": "Password is required"
+        }), 400
+
+    if len(new_password) < 8:
+        return jsonify({
+            "success": False,
+            "message": "The password must be at least 8 characters long."
+        }), 400
+
+    # Verificar el token
+    user = verify_reset_token(token)
+
+    if not user:
+        return jsonify({
+            "success": False,
+            "message": "The token is invalid or has expired."
+        }), 400
+
+    try:
+        # Actualizar la contraseña
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Your password has been successfully updated."
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": "Error updating password"
+        }), 500
+
+
+@api.route('/verify-reset-token/<token>', methods=['GET'])
+def verify_token(token):
+    """Verificar si un token es válido (opcional, para UX)"""
+    user = verify_reset_token(token)
+
+    if user:
+        return jsonify({
+            "success": True,
+            "message": "Valid token"
+        }), 200
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Invalid or expired token"
+        }), 400

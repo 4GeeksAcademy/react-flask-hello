@@ -48,7 +48,7 @@ export const Navbar = () => {
             </li>
             {store.auth && <li>
                     <button onClick={handleLogout} className="btn btn-danger text-light mt-3">
-                      <strong>logout</strong>
+                      <strong>Logout</strong>
                       </button>
 
             </li>}

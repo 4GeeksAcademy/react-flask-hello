@@ -57,11 +57,6 @@ userServices.dashboard = async (token) => {
 
 userServices.uploadAvatar = async (formData) => {
   try {
-<<<<<<< HEAD
-
-=======
-   console.log(formData)
->>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
     const resp = await fetch(url + `api/upload-avatar`, {
       method: "POST",
       body: formData
@@ -274,27 +269,7 @@ userServices.createStudentProfile = async (formData) => {
   }
 };
 
-// ============================================
-// Request/reset password
-// ============================================
 
-<<<<<<< HEAD
-userServices.requestPasswordReset = async (email) => {
-  try {
-    const resp = await fetch(url + '/api/reset-password-request', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email })
-    });
-    if (!resp.ok) throw new Error('error requesting password reset')
-    const data = await resp.json();
-    return data;
-  } catch (error) {
-    console.log(error)
-    return { success: false, error: "Error de conexion con el servidor" }
-=======
 userServices.getStudentProfile = async (userId) => {
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`);
@@ -304,7 +279,6 @@ userServices.getStudentProfile = async (userId) => {
   } catch (error) {
     console.log(error);
     return null;
->>>>>>> 9688940130d0fcd8dd1b3c64251d5f0196b83878
   }
 };
 
@@ -338,7 +312,6 @@ userServices.verifyResetToken = async (token) => {
   }
 };
 
-export default userServices;
 
 userServices.updateStudentProfile = async (formData, userId) => {
   try {

@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { HeroSection } from "../components/HeroSection";
 import { Features1 } from "../components/Features1";
 import StartShopping from "../components/Call"; 
+import GenerateQr  from "../components/GenerateQr.jsx";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -35,6 +36,7 @@ export const Home = () => {
       <Header />
       <HeroSection />
       <Features1 />
+      <GenerateQr/>
       <StartShopping />
       <div className="text-center mt-5">
         <h1 className="display-4">Hello Rigo!!</h1>

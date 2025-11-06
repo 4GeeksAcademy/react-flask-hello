@@ -32,7 +32,7 @@ export const CreateProduct = () => {
           <div className="mb-4">
             <div className="mb-3">
               <label htmlFor="nombre" className="form-label fw-semibold">
-                Nombre del Producto o Servicio
+                Nombre del Producto
               </label>
               <input
                 type="text"
@@ -43,12 +43,12 @@ export const CreateProduct = () => {
               />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-3 border border-danger rounded p-3" >
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
               </label>
               <input
-                className="form-control"
+                className="form-control border border-danger"
                 type="file"
                 id="imagen"
                 accept="image/*"
@@ -64,7 +64,7 @@ export const CreateProduct = () => {
               </label>
               <textarea
                 id="descripcion"
-                className="form-control"
+                className="form-control border border-danger"
                 rows="3"
                 placeholder="Agrega una breve descripción del producto o servicio..."
               ></textarea>
@@ -97,28 +97,17 @@ export const CreateProduct = () => {
 
 
               <div className="col-md-6">
-                <label htmlFor="tamaño" className="form-label fw-semibold">
-                  Tamaño
+                <label htmlFor="dimensiones" className="form-label fw-semibold">
+                  Dimensiones
                 </label>
                 <input
                   type="text"
-                  className="form-control"
-                  id="tamaño"
-                  placeholder=""
+                  className="form-control border border-danger"
+                  id="dimensiones"
+                  placeholder="Ej: 10x20x100 cm"
                 />
               </div>
 
-              <div className="col-md-4">
-                <label htmlFor="color" className="form-label fw-semibold">
-                  Color
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="color"
-                  placeholder="Ej: Azul"
-                />
-              </div>
 
               <div className="col-md-4">
                 <label htmlFor="peso" className="form-label fw-semibold">
@@ -126,8 +115,8 @@ export const CreateProduct = () => {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
-                  className="form-control"
+                  step="0.1"
+                  className="form-control border border-danger"
                   id="peso"
                   placeholder="Ej: 0.25"
                 />
@@ -139,8 +128,8 @@ export const CreateProduct = () => {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
-                  className="form-control"
+                  step="1"
+                  className="form-control border border-danger"
                   id="precio"
                   placeholder="Ej: 25.99"
                 />

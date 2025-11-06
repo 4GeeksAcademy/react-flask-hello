@@ -15,8 +15,7 @@ from datetime import datetime, timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 import os
-from flask_mail import Mail, Message
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
+import requests
 
 # ------------------------------#
 #    CALENDLY CONFIGURATION     #

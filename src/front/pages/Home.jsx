@@ -1,52 +1,45 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, Button } from "react-bootstrap";
 
 export const Home = () => {
+  const navigate = useNavigate();
 
-	const { store, dispatch } = useGlobalReducer()
+  return (
+    <Container
+      fluid
+      className="vh-100 d-flex flex-column justify-content-center align-items-center bg-dark text-center text-light"
+    >
+      {/* Logo */}
+      <div className="mb-4">
+        <img
+          src="https://res.cloudinary.com/drv35m83m/image/upload/v1762508774/logo_MeetFit_transparente_arl18c.png"
+          alt="MeetFit Logo"
+          style={{ width: "140px", height: "140px" }}
+        />
+      </div>
 
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
+      {/* Título */}
+      <h1 className="fw-bold" style={{ color: "#f97316" }}>
+        MeetFit
+      </h1>
 
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
-
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
-
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-	useEffect(() => {
-		loadMessage()
-	}, [])
-
-	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
-		</div>
-	);
-}; 
+      {/* Botón de Login */}
+      <div className="mt-5 w-100 px-5">
+        <Button
+          variant="warning"
+          className="w-100 py-2 fw-bold"
+          style={{
+            backgroundColor: "#f97316",
+            border: "none",
+            color: "white",
+            borderRadius: "10px",
+          }}
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </Button>
+      </div>
+    </Container>
+  );
+};

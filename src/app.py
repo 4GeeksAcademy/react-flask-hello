@@ -106,6 +106,76 @@ def send_mail():
     mail.send(msg)
     return jsonify({'msg': 'Correo enviado con exito'}), 200
 
+@app.route('/api/register', methods=['POST'])
+def register():
+    body = request.get_json(silent=True)
+
+    if body is None:
+        return jsonify({'msg': 'POST method needs a body or email/password not found.'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'email field is mandatory'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'password field is mandatory'}), 400
+    if 'name' not in body:
+        return jsonify({'msg': 'name  field is mandatory'})
+    email = body.get("email")
+    password = body.get("password")
+    name = body.get("name")
+
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        return jsonify({'msg': 'Usuario ya registrado!'}), 400
+    
+    pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    user = User(email=email, name=name, password_hash=pw_hash)
+    db.session.add(user)
+    db.session.commit()
+
+
+    # access_token = create_access_token(identity=str(user.id))
+    return jsonify({'msg': 'User Registered successfully'})
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    
+    body = request.get_json(silent=True)
+    # validar body
+    if body is None:
+        return jsonify({'msg': 'POST method needs a body or email/password not found.'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'email field is mandatory'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'password field is mandatory'}), 400
+    # buscar usuario
+    email = body['email']
+    password = body['password']
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'msg':'User or password incorrect'}), 400
+    # validar password
+    is_password = bcrypt.check_password_hash(user.password_hash, password)
+
+    if not is_password:
+        return jsonify({'msg': 'User or password incorrect'}), 400
+    # crear token
+    access_token = create_access_token(identity=str(user.id))
+    
+    return jsonify(access_token=access_token)
+
+
+@app.route("/api/me", methods=["GET"])
+@jwt_required()
+def me():
+    
+
+    current_user = get_jwt_identity()
+    user = User.query.get(current_user)
+    print(user)
+    return jsonify(user.serialize()), 200
+
+
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

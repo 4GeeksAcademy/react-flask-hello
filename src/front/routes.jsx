@@ -1,4 +1,3 @@
-// Import necessary components and functions from react-router-dom.
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -12,7 +11,8 @@ import { Demo } from "./pages/Demo";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { CreateEditClient } from "./components/CreateEditClient";
-import { Pago } from "./pages/pago"; 
+import { Payment } from "./pages/Payment";
+import { ExplorePage } from "./pages/ExplorePage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,7 +23,8 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/createeditclient" element={<CreateEditClient />} />
-      <Route path="/pago" element={<Pago />} />
+      <Route path="/payment" element={<Payment />} />
+      <Route path="/explorar" element={<ExplorePage />} />
     </Route>
   )
 );

@@ -22,8 +22,8 @@ export const Tienda = () => {
 
   const handleSubmit = e => {
       e.preventDefault();
-      userServices.profile_update(tiendaData).then(data => {
-        if (data.user) dispatch({ type: "update_user", payload: data.user })
+      tiendaServices.crearTienda(tiendaData).then(data => {
+        if (data.tienda) dispatch({ type: "upload_tienda", payload: data.tienda })
       })
   
     }

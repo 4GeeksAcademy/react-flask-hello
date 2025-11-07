@@ -6,6 +6,7 @@ import { HeroSection } from "../components/HeroSection";
 import { Features1 } from "../components/Features1";
 import StartShopping from "../components/Call"; 
 import GenerateQr  from "../components/GenerateQr.jsx";
+import { StoreComp } from "../components/StoreComp.jsx";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -33,6 +34,7 @@ export const Home = () => {
 
   return (
     <>
+    <StoreComp/>
       <Header />
       <HeroSection />
       <Features1 />

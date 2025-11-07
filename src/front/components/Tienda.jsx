@@ -9,11 +9,11 @@ export const Tienda = () => {
 
   const { store, dispatch } = useGlobalReducer()
   const [edit, setEdit] = useState(false)
-  const [userData, setUserData] = useState(store.user)
+  const [tiendaData, setTiendaData] = useState(store.user)
 
   const handleEdit = () => {
     if (edit) {
-      if (JSON.stringify(store.user) !== JSON.stringify(userData)) {
+      if (JSON.stringify(store.tienda) !== JSON.stringify(tiendaData)) {
         handleSubmit(new Event('submit'));
       }
     }
@@ -22,7 +22,7 @@ export const Tienda = () => {
 
   const handleSubmit = e => {
       e.preventDefault();
-      userServices.profile_update(userData).then(data => {
+      userServices.profile_update(tiendaData).then(data => {
         if (data.user) dispatch({ type: "update_user", payload: data.user })
       })
   
@@ -50,11 +50,11 @@ export const Tienda = () => {
             <form className="needs-validation" noValidate onSubmit={handleSubmit}>
               <div className="d-flex justify-content-start align-items-center">
                   <img
-                    src={userData.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
-                    alt={userData.nombre || 'avatar'}
+                    src={tiendaData.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
+                    alt={tiendaData.nombre || 'avatar'}
                     onError={e => {
                       e.target.onerror = null;
-                      setUserData({ ...userData, avatar: 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g' });
+                      setTiendaData({ ...tiendaData, avatar: 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g' });
                     }}
                     style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '0%' }}
                   />

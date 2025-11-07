@@ -1,6 +1,7 @@
 export const initialStore=()=>{
   return{
     user: JSON.parse(localStorage.getItem('user')) || null,
+    tienda: JSON.parse(localStorage.getItem('tienda')) || null,
     auth: localStorage.getItem('token')? true :  false,
     message: null,
     todos: [
@@ -20,6 +21,12 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+
+    case 'upload_tienda':
+      return{
+        ...store,
+        tienda: action.payload
+      }
 
     case 'update_user':
       return {

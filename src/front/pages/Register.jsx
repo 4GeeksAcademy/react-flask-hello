@@ -1,4 +1,4 @@
-// src/front/src/pages/Register.jsx
+
 // Registro: guarda datos en el estado local y simula registro.
 // Tras registrar, redirige a /login con ?registered=1 para mostrar aviso.
 

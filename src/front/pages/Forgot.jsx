@@ -1,5 +1,5 @@
-// src/front/src/pages/Forgot.jsx
-// Forgot: pide email y muestra confirmación (solo UI).
+
+// Pide email y muestra confirmación (solo UI).
 
 import { useState } from "react";
 import AuthShell from "../components/AuthShell";

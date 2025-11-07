@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import cloudinaryServices from "../services/cloudinary.services";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 function CloudinaryComponent({avatar = false, product=false}) {
     const [file, setFile] = useState(null);
+    const {store,dispatch} = useGlobalReducer();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -14,6 +16,8 @@ function CloudinaryComponent({avatar = false, product=false}) {
         try {
             setLoading(true);
             const data = await cloudinaryServices.uploadImage(file, {avatar, product});
+            //actualizar avatar en store
+            dispatch({type:'update_avatar',payload:data.url})
             return data;
         } catch (err) {
             console.error(err);
@@ -36,7 +40,7 @@ function CloudinaryComponent({avatar = false, product=false}) {
                     accept="image/*"
                     onChange={(e) => {
                         setFile(e.target.files[0]);
-                        setUrl("");
+                        //setUrl("");
                         setError("");
                     }}
                 />

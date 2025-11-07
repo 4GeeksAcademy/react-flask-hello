@@ -27,6 +27,12 @@ export default function storeReducer(store, action = {}) {
         ...store,
         tienda: action.payload
       }
+    
+      case 'update_avatar':
+        return{
+          ...store,
+          user:{...store.user, ['avatar']:action.payload} 
+        }
 
     case 'update_user':
       return {

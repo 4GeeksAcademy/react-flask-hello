@@ -1,4 +1,4 @@
-
+import CloudinaryComponent from "./cloudinary";
 import React from "react";
 
 
@@ -47,12 +47,7 @@ export const CreateProduct = () => {
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
               </label>
-              <input
-                className="form-control border border-danger"
-                type="file"
-                id="imagen"
-                accept="image/*"
-              />
+             <CloudinaryComponent product={true}/>
               <div className="form-text">
                 Formatos admitidos: JPG, PNG, WEBP — Máx. 5MB
               </div>

@@ -150,6 +150,7 @@ def handle_crear_tienda():
                     categoria_principal=body['categoria_principal'],
                     telefono_comercial=body['telefono_comercial'],
                     logo_url=body['logo_url'],
+                    owner_id=id,
                     )
     db.session.add(new_tienda)
     db.session.commit()

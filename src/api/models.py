@@ -51,7 +51,6 @@ class User(db.Model):
             'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
-            "pedidos": [p.serialize() for p in self.pedidos] if self.pedidos else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
             "notificaciones": [n.serialize() for n in self.notificaciones] if self.notificaciones else None,
@@ -154,7 +153,6 @@ class Productos(db.Model):
             "tienda": {"nombre": self.tienda.nombre_tienda} if self.tienda else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
-            "pedidos": [p.serialize() for p in self.pedidos] if self.pedidos else None
         }
 
 
@@ -218,7 +216,7 @@ class Resenas(db.Model):
     __tablename__ = "resenas"
     id: Mapped[int] = mapped_column(primary_key=True)
     estrellas:  Mapped[int] = mapped_column(Integer())
-    comentario: Mapped[str] = mapped_column(Text())
+    
     fecha: Mapped[TIMESTAMP] = mapped_column(
         DateTime(timezone=True), default=datetime.now(timezone.utc))
     respuestas: Mapped[str] = mapped_column(Text())
@@ -256,9 +254,7 @@ class Historial(db.Model):
     direccion: Mapped[str] = mapped_column(
         String(100), unique=False, nullable=False)
     pago: Mapped[bool] = mapped_column(Boolean())
-
-    # unir a detalles pedido (user = cliente)
-    pedido_id: Mapped[int] = mapped_column(ForeignKey('detalles_pedido.id'))
+    
 
     tienda_id: Mapped[int] = mapped_column(
         ForeignKey('tienda.id'))  # unir a tienda id

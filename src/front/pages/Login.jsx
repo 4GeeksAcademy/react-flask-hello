@@ -1,5 +1,5 @@
-// src/front/src/pages/Login.jsx
-// Pantalla de login: guarda email y password en el estado local y simula login en la consola.
+
+// Guarda email y password en el estado local y simula login en la consola.
 // Muestra el aviso de "Cuenta creada" si viene el query param registered=1.
 // Usa AuthShell y TextInput como componentes hijos.
 

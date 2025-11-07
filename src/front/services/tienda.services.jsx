@@ -3,7 +3,7 @@ const url = import.meta.env.VITE_BACKEND_URL
 
 tiendaServices.miTienda = async () => {
     try {
-        const resp = await fetch(url + '/api/mi_tienda', {
+        const resp = await fetch(url + 'api/mi_tienda', {
             method: "GET",
             headers: {
                 "Content-Type": 'application/json',

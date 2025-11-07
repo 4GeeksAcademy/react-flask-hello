@@ -36,6 +36,7 @@ export const Home = () => {
       <Header />
       <HeroSection />
       <Features1 />
+      
       <GenerateQr/>
       <StartShopping />
       <div className="text-center mt-5">

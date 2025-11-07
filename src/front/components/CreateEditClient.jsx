@@ -79,7 +79,7 @@ export const CreateEditClient = () => {
                 <figure className="text-center">
                   <img
                     src={
-                      userData.avatar ||
+                      store.user?.avatar ||
                       "https://secure.gravatar.com/avatar/?s=80&d=mm&r=g"
                     }
                     alt={userData.nombre || "avatar"}

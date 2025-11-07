@@ -20,7 +20,7 @@ export const Navbar = () => {
           </Link>
         </a>
         <div className="d-flex">
-        <a className="navbar-brand m-3 " href="#">Products</a>
+        <Link className="navbar-brand m-3" to="/explorar">Products</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

@@ -66,7 +66,19 @@ const ViewProfileMentor = () => {
         ?.join(", ");
 
 
+    const handleReserve = (type) => {
 
+        console.log(type.calendly_event_type_slug)
+        console.log(store?.user)
+        if (type?.calendly_event_type_slug) {   /* enviamos la informacion del estudiante para pre cargar informacion en formulario de Calendly */
+            window.Calendly.initPopupWidget({ url: type?.calendly_event_type_slug,
+                                              prefill: {
+                                              name: store?.user?.profile?.name,
+                                              email: store?.user?.email
+                                              }
+             })
+        }
+    }
 
 
     return (
@@ -121,7 +133,7 @@ const ViewProfileMentor = () => {
                                 {store?.auth && typesMentoring?.map(type =>
                                 (
                                     <div className="col-12 col-sm-12 col-lg-6 col-xl-4 d-flex">
-                                        <div class="card card-sessions text-center mb-3 mx-2 flex-fill">
+                                        <div class="card card-sessions text-center mb-3 mx-2 flex-fill" onClick={() => handleReserve(type)}>
                                             <div class="card-body">
                                                 <h5 class="card-title">{type.title}</h5>
                                                 <p class="card-text">{type.description}</p>

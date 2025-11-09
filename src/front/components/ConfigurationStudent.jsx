@@ -106,7 +106,7 @@ const ConfigurationStudent = () => {
       language: formData.language || "SPANISH",
       location: formData.location || "España",
     };
-
+   
     const action = update
       ? userServices.updateStudentProfile(dataToSend, store.user.id)
       : userServices.createStudentProfile(dataToSend);

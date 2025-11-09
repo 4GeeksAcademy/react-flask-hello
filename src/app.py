@@ -63,12 +63,22 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
+
+
+
 cloudinary.config(
     cloud_name="dp6e1sg4y",
     api_key="838782492858263",
     api_secret="HDNSe0YGwqKD34sOPuYsqVJxiio",
     secure=True
 )
+
+
+#calendly
+
+#with app.app_context():
+ #  register_calendly_webhook()
+
 
 # Handle/serialize errors like a JSON object
 

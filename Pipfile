@@ -29,6 +29,7 @@ requests = "*"
 python_version = "3.13"
 
 [scripts]
+calendly ="python src/setup_calendly.py"
 seed = "python src/seeder.py"
 diagram = "python generate_diagram.py"
 start="flask run -p 3001 -h 0.0.0.0"

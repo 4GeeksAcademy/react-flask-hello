@@ -184,7 +184,7 @@ userServices.allTypesMentoring = async (userId) => {
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-
+    console.log(data)
     return { success: true, data }
   } catch (error) {
     console.log(error)
@@ -314,6 +314,7 @@ userServices.verifyResetToken = async (token) => {
 
 
 userServices.updateStudentProfile = async (formData, userId) => {
+
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`, {
       method: "PUT",
@@ -328,6 +329,65 @@ userServices.updateStudentProfile = async (formData, userId) => {
     return { success: false, error: "Error de conexión con el servidor" };
   }
 };
+
+/*==============================================*/
+/* Desencadena el flujo de conexion con calendly*/ 
+/*==============================================*/
+userServices.connectCalendly = async (mentorId) => {
+  try {
+    const resp = await fetch(url + `/api/mentor/${mentorId}/authorize_calendly`, {
+      method: "POST"
+    })
+    const data = await resp.json()
+
+    if (resp.ok && data.auth_url) {
+      window.location.href = data.auth_url
+      console.log(data)
+    } else {
+      console.error("Error retrieving Calendly URL:", data)
+    }
+  } catch (error) {
+    console.error("Error connectCalendly: ", error)
+  }
+
+}
+
+/*==========================================*/
+/* Verifica estatus de conexion con calendly*/ 
+/*==========================================*/
+
+
+userServices.getCalendlyStatus = async (mentorId) => {
+  try {
+    const resp = await fetch(url + `/api/mentor/${mentorId}/calendly_status`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error al verificar status" }
+  }
+}
+
+
+/*Obteniendo las mentorias segun el id del mentor */
+userServices.getMentorings = async (mentorId) =>{
+  try {
+    const resp = await fetch(url + `/api/sessions/${mentorId}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error al verificar status" }
+  }
+}
+
+
+
+
 
 
 // ============================================================================

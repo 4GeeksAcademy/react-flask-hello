@@ -1,4 +1,4 @@
-import { Euro, Clock } from 'lucide-react';
+import { Euro, Clock, Trash, SquarePen } from 'lucide-react';
 import AddSession from './AddSession';
 import { useState } from 'react';
 
@@ -18,13 +18,13 @@ const CarTypeMentoring = ({ type, onEdit, onDelete }) => {
                                 <span className='me-1'><Euro /></span>{`${type?.price} por sesión`}
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end gap-2 mt-3'>
-                            <button type="button" className="btn btn-edit btn-sm" onClick={onEdit} >Editar</button>
+                        <div className='d-flex justify-content-end align-content-center mt-3'>
+                            <button type="button" className="btn btn-edit " onClick={onEdit} ><SquarePen/></button>
                             <button
                                 type="button"
-                                className="btn btn-delete btn-sm"
+                                className="btn btn-delete btn-lg"
                                onClick={() =>  onDelete(type)}
-                            >Eliminar</button>
+                            ><Trash /></button>
                         </div>
                     </div>
                 </div>

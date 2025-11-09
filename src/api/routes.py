@@ -1,8 +1,8 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, MentorProfile, StudentProfile, MentorTopic
+from flask import Flask, request, jsonify, url_for, Blueprint, redirect, url_for, session
+from api.models import db, User, MentorProfile, StudentProfile, MentorTopic, Mentoring, StatusEnum
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
@@ -11,18 +11,72 @@ from sqlalchemy import select, or_, func
 from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
 import os
+import requests
+from urllib.parse import urlencode
 from datetime import datetime, timedelta
 from flask_mail import Mail, Message
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 import requests
+from pprint import pprint
+
+
+def get_valid_calendly_token(mentor_profile):
+
+    if not mentor_profile.calendly_access_token:
+        return None
+
+    # aqui verificamos si el token expiro
+
+    if mentor_profile.calendly_token_expires_at and mentor_profile.calendly_token_expires_at > datetime.utcnow():
+        return mentor_profile.calendly_access_token
+
+    # si expiro lo refrescamos
+    token_url = 'https://auth.calendly.com/oauth/token'
+
+    token_response = requests.post(
+        token_url,
+        data={
+            'grant_type': 'refresh_token',
+            'client_id': CALENDLY_CLIENT_ID,
+            'client_secret': CALENDLY_CLIENT_SECRET,
+            'refresh_token': mentor_profile.calendly_refresh_token
+        },
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+
+    if token_response.status_code != 200:
+        print("Error al refrescar el token Calendly:", token_response.text)
+        return None
+
+    token_data = token_response.json()
+
+    # aqui guardamos los nuevos tokens
+
+    mentor_profile.calendly_access_token = token_data.get('access_token')
+    mentor_profile.calendly_refresh_token = token_data.get('refresh_token')
+    mentor_profile.calendly_token_expires_at = datetime.utcnow(
+    ) + timedelta(seconds=token_data.get('expires_in', 3600))
+    db.session.commit()
+
+    return mentor_profile.calendly_access_token
+
 
 # ------------------------------#
 #    CALENDLY CONFIGURATION     #
 # ------------------------------#
-
 CALENDLY_API_KEY = os.getenv('CALENDLY_API_KEY')
 CALENDLY_USER_URI = os.getenv('CALENDLY_USER_URI')
 CALENDLY_BASE_URL = 'https://api.calendly.com'
+
+CALENDLY_CLIENT_ID = os.getenv('CALENDLY_CLIENT_ID')
+CALENDLY_REDIRECT_URI = os.getenv('CALENDLY_REDIRECT_URI')
+CALENDLY_CLIENT_SECRET = os.getenv('CALENDLY_CLIENT_SECRET')
+URL_BACKEND = os.getenv('VITE_BACKEND_URL')
+CALENDLY_ACCESS_TOKEN = os.getenv('CALENDLY_ACCESS_TOKEN')
+CALENDLY_ORGANIZATION_URI = os.getenv('CALENDLY_ORGANIZATION_URI')
+
+
+URL = os.getenv('FRONTEND_URL')
 
 
 def get_calendly_headers():
@@ -348,8 +402,7 @@ def filter_mentor_profiles():
 
     mentor_profiles = query.all()
 
-   # print(f"Resultados encontrados: {len(mentor_profiles)}")
-    # print(f"Mentores: {[mp.serialize() for mp in mentor_profiles]}")
+   
 
     return jsonify({
         "success": True,
@@ -459,6 +512,7 @@ def create_student_profile():
             }), 400
     student_profile = StudentProfile(
         user_id=data["user_id"],
+        avatar=data["avatar"],
         username=data.get("username"),
         name=data.get("name"),
         interests=data.get("interests"),
@@ -490,6 +544,7 @@ def update_student_profile_by_user(user_id):
         "experience_level", student_profile.experience_level)
     student_profile.skills = data.get("skills", student_profile.skills)
     student_profile.language = data.get("language", student_profile.language)
+    student_profile.avatar = data.get("avatar", student_profile.avatar)
 
     db.session.commit()
     return jsonify(student_profile.serialize())
@@ -511,8 +566,15 @@ def delete_student_profile(id):
 @api.route("/type-mentoring", methods=["POST"])
 def create_type_mentoring():
     data = request.json
+
+    mentor_profile = MentorProfile.query.filter_by(
+        user_id=data["user_id"]).first()
+
+    if not mentor_profile or not mentor_profile.calendly_access_token:
+        return jsonify({"success": False, "error": "Mentor not connected to Calendly"}), 400
+
     type_mentoring = MentorTopic(
-        mentor_profile_id=data["user_id"],
+        mentor_profile_id=mentor_profile.user_id,
         title=data.get("title"),
         description=data.get("description"),
         difficulty_level=data.get("difficulty_level"),
@@ -521,7 +583,40 @@ def create_type_mentoring():
     )
     db.session.add(type_mentoring)
     db.session.commit()
-    return jsonify(type_mentoring.serialize()), 201
+
+    # aqui le indicamos a calendly la creacion del nuevo evento
+
+    calendly_url = "https://api.calendly.com/event_types"
+    headers = {
+        "Authorization": f"Bearer {mentor_profile.calendly_access_token}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "owner": mentor_profile.calendly_user_uri,
+        "name": data["title"],
+        "active": True,
+        "duration": int(data["duration"]),
+        "color": "#0069ff",
+        "description_html": data["description"]
+    }
+
+    response = requests.post(calendly_url, json=payload, headers=headers)
+
+    if response.status_code == 201:
+        calendly_data = response.json()
+
+        type_mentoring.calendly_event_type_slug = calendly_data["resource"]["scheduling_url"]
+        type_mentoring.calendly_event_type_uri = calendly_data["resource"]["uri"]
+
+        db.session.commit()
+        return jsonify({"success": True, "message": "Sesion creada y sincronizada con Calendly",
+                        "data": type_mentoring.serialize()}), 201
+    else:
+        print("Error al crear evento en Calendly", response.text)
+        return jsonify({"success": True, "message": "Sesion creada en MentorMacth, pero no sinconizada con Calendly"}), 200
+
+  #  return jsonify(type_mentoring.serialize()), 201
 
 # se obtienen todas los tipos de mentorias de un mentor
 
@@ -530,7 +625,7 @@ def create_type_mentoring():
 def get_types_mentoring(userId):
     query = select(MentorTopic).where(MentorTopic.mentor_profile_id == userId)
     types_mentoring = db.session.execute(query).scalars().all()
-   # print(f"Tipos de mentoria------>>>>: {[tm.serialize() for tm in  types_mentoring]}")
+   
     return jsonify([tm.serialize() for tm in types_mentoring])
 
 # se obtiene un tipo de mentoria en especifico segun el Id
@@ -682,7 +777,6 @@ def get_scheduled_events():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-
 # ----------------------#
 #   Reset password      #
 # ----------------------#
@@ -814,3 +908,268 @@ def verify_token(token):
             "success": False,
             "message": "Invalid or expired token"
         }), 400
+
+@api.route('/mentor/<int:mentor_id>/authorize_calendly', methods=["POST"])
+def authorize_calendly(mentor_id):
+    query = select(MentorProfile).where(MentorProfile.user_id == mentor_id)
+    mentor = db.session.execute(query).scalar_one_or_none()
+
+    if not mentor:
+        return jsonify({"error": "Mentor not found"}), 404
+
+    session['current_mentor_id'] = mentor.user_id
+
+    params = {
+        'response_type': 'code',
+        'client_id': CALENDLY_CLIENT_ID,
+        'redirect_uri': CALENDLY_REDIRECT_URI,
+        'state': mentor.user_id
+
+    }
+
+    auth_url = "https://auth.calendly.com/oauth/authorize?" + urlencode(params)
+    return jsonify({"auth_url": auth_url}), 200
+
+
+# aqui intercambiamos el code por el token y luego almacenarlo
+
+@api.route('/calendly/callback', methods=['GET'])
+def calendly_callback():
+    code = request.args.get('code')
+    if not code:
+        return jsonify({"error": "Authorization code not found"}), 400
+
+    token_url = 'https://auth.calendly.com/oauth/token'
+
+    token_response = requests.post(
+        token_url,
+        data={
+            'grant_type': 'authorization_code',
+            'client_id': CALENDLY_CLIENT_ID,
+            'client_secret': CALENDLY_CLIENT_SECRET,
+            'redirect_uri': CALENDLY_REDIRECT_URI,
+            'code': code
+        },
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    )
+
+    if token_response.status_code != 200:
+        print(token_response.text)
+        return jsonify({
+            "success": False,
+            "error": "Failed access token",
+            "details": token_response.text
+        }), token_response.status_code
+
+    token_data = token_response.json()
+    
+    mentor_id = request.args.get('state')
+
+    print("Mentor ID", mentor_id)
+    if not mentor_id:
+        return jsonify({"error": "Mentor ID not found"}), 400
+
+    mentor_profile = MentorProfile.query.filter_by(user_id=mentor_id).first()
+    if not mentor_profile:
+        return jsonify({"error": "Mentor profile not found"}), 404
+
+    # aqui guardamos los datos de calendly
+
+    mentor_profile.calendly_access_token = token_data.get('access_token')
+    mentor_profile.calendly_refresh_token = token_data.get('refresh_token')
+    mentor_profile.calendly_connected = True
+    mentor_profile.calendly_token_expires_at = datetime.utcnow(
+    ) + timedelta(seconds=token_data.get('expires_in', 3600))
+
+    # obtenemos el user_uri y scheduling_url
+    user_response = requests.get(
+        'https://api.calendly.com/users/me',
+        headers={'Authorization': f"Bearer {token_data['access_token']}"}
+    )
+
+    if user_response.status_code == 200:
+        user_data = user_response.json()
+        organization_uri = user_data['resource']['current_organization']
+
+        mentor_profile.calendly_user_uri = user_data['resource']['uri']
+        mentor_profile.calendly_username = user_data['resource']['name']
+        mentor_profile.scheduling_url = user_data['resource']['scheduling_url']
+
+    db.session.commit()
+
+    # aqui registramos el webhook en calendly para recibir informacion
+
+    webhook_url = URL_BACKEND + "api/calendly/webhook"
+    access_token = token_data.get('access_token')
+    organization_uri = token_data.get('organization')
+
+    webhook_payload = {
+        'url': webhook_url,
+        'events': ['invitee.created', 'invitee.canceled'],
+        'scope': 'user',
+        'user': mentor_profile.calendly_user_uri,
+        'organization': organization_uri
+
+    }
+
+    webhook_response = requests.post(
+        "https://api.calendly.com/webhook_subscriptions",
+        headers={
+            "Authorization": f"Bearer {mentor_profile.calendly_access_token}",
+            "Content-Type": "application/json"
+        },
+        json=webhook_payload
+    )
+
+    print("Respuesta de Calendly webhook", webhook_response.json())
+
+    if webhook_response.status_code == 201:
+        webhook_data = webhook_response.json()["resource"]
+        mentor_profile.calendly_webhook_uri = webhook_data["uri"]
+        if "signing_key" in webhook_data:
+            mentor_profile.calendly_signing_key = webhook_data["signing_key"]
+        db.session.commit()
+
+    return redirect(URL + "dashboard/mentor/services?connected=true")
+
+
+# endpoint para verificar el status de conexion
+@api.route('/mentor/<int:mentor_id>/calendly_status', methods=['GET'])
+def calendly_status(mentor_id):
+    mentor = MentorProfile.query.filter_by(user_id=mentor_id).first()
+
+    if not mentor:
+        return jsonify({"error": "Mentor not found"}), 404
+
+    return jsonify({
+        "connected": mentor.calendly_connected,
+        "scheduling_url": mentor.scheduling_url
+    }), 200
+
+###############################################
+# Endpoint que se ejecuta al detectar cambios #
+# registros de envento en calendly            #
+###############################################
+
+
+@api.route('/calendly/webhook', methods=['POST'])
+def calendly_webhook():
+    try:
+        data = request.json
+
+        event = data.get('event')
+        payload = data.get('payload', {})
+        # print("DATA COMPLETO:", type(data), data)
+
+        if event == 'invitee.created':
+            invitee = payload.get('invitee', {})
+            event_data = payload.get('scheduled_event', {})
+
+            # Obtenemos el tipo de sesión asociado
+            event_type_uri = payload.get(
+                'scheduled_event', {}).get('event_type')
+            type_mentoring = MentorTopic.query.filter_by(
+                calendly_event_type_uri=event_type_uri
+            ).first()
+
+            if not type_mentoring:
+                print("Evento no asociado a ningún mentor")
+                return jsonify({"success": False, "error": "Evento no encontrado"}), 404
+
+            mentor_profile = MentorProfile.query.filter_by(
+                user_id=type_mentoring.mentor_profile_id).first()
+
+            if not mentor_profile:
+                print(" Mentor no encontrado para este evento")
+                return jsonify({"success": False, "error": "Mentor no encontrado"}), 404
+
+            # Usamos el token del mentor (refrescándolo si hace falta)
+            token = get_valid_calendly_token(mentor_profile)
+
+            # Obtenemos detalles del evento desde Calendly con el token del mentor
+            event_url = event_data.get('uri')
+            event_response = requests.get(
+                event_url,
+                headers={"Authorization": f"Bearer {token}"}
+            )
+
+            if event_response.status_code == 200:
+                event_details = event_response.json().get("resource", {})
+            else:
+                print(" No se pudieron obtener detalles del evento:",
+                      event_response.text)
+                event_details = {}
+
+            # verificamos si existe mentoria ya registrada para evitar duplicados
+            invitee_uri = event_details.get('uri')
+            existing_mentoring = Mentoring.query.filter_by(
+                calendly_event_uri=invitee_uri).first()
+            if existing_mentoring:
+                print(f"Mentoria ya existe, se ignora {invitee_uri}")
+                return jsonify({"success": True, "message": "Duplicate ignored"}), 200
+
+            #  Obtenemos el estudiante por email
+            student_email = payload.get('email')
+            student_user = User.query.filter_by(email=student_email).first()
+
+            if not student_user:
+                print(" No se encontró usuario con email:", student_email)
+                return jsonify({"success": False, "error": "Estudiante no encontrado"}), 404
+
+            student_profile = StudentProfile.query.filter_by(
+                user_id=student_user.id).first()
+            if not student_profile:
+                return jsonify({"success": False, "error": "Perfil estudiante no encontrado"}), 404
+
+            #  Guardamos la reserva en la BD
+            mentoring = Mentoring(
+                topic_id=type_mentoring.id,
+                mentor_profile_id=type_mentoring.mentor_profile_id,
+                student_id=student_profile.user_id,
+                start_time=event_details.get('start_time'),
+                end_time=event_details.get('end_time'),
+                calendly_event_uri=event_details.get('event_type'),
+                calendly_invitee_uri=event_details.get('uri'),
+                status=StatusEnum.SCHEDULED,
+                scheduled_at=event_details.get('start_time'),
+                duration_minutes=type_mentoring.duration,
+                pricing_topic=type_mentoring.price
+            )
+
+            db.session.add(mentoring)
+            db.session.commit()
+
+            print(" Nueva sesión programada:", mentoring.id)
+
+        elif event == 'invitee.canceled':
+            invitee = payload.get('invitee', {})
+            invitee_uri = payload.get('scheduled_event', {}).get('uri')
+            reason = payload.get('cancellation', {}).get('reason')
+            mentoring = Mentoring.query.filter_by(
+                calendly_invitee_uri=invitee_uri
+            ).first()
+
+            if mentoring:
+                mentoring.status = StatusEnum.CANCELED
+                mentoring.notes = reason
+                db.session.commit()
+                print(f" Sesión cancelada: {invitee_uri}")
+
+        return jsonify({"success": True}), 200
+
+    except Exception as e:
+        print(" Error en Calendly webhook:", e)
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+# ----------------------#
+#  MENTORING            #
+# ----------------------#
+@api.route('/sessions/<int:mentor_id>', methods=['GET'])
+def manage_sessions(mentor_id):
+    query = select(Mentoring).where(Mentoring.mentor_profile_id == mentor_id)
+    sessions = db.session.execute(query).scalars().all()
+
+    return jsonify([se.serialize() for se in sessions])

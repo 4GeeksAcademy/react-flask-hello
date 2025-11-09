@@ -24,7 +24,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         userServices.login(formData).then(async data => {
-
+            console.log("datos del estutiante---->",data)
 
             if (data.success) {
                 localStorage.setItem("user", JSON.stringify({
@@ -42,6 +42,7 @@ const Login = () => {
 
                 dispatch({ type: 'logged_in' })
                 const dataUser = { ...data.user, avatarUrl: data.user.profile ? data.user.profile.avatar : " " }
+                console.log("informacion guardada en store----->", dataUser)
                 dispatch({ type: 'save_user', payload: dataUser })
                 // dispatch({ type: 'add_avatar', payload: infoMentor.avatar })
 

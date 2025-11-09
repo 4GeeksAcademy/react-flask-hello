@@ -5,11 +5,23 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+
+from flask_cors import CORS
+
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User, Activity, Message, PasswordResetToken
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+from flask_bcrypt import Bcrypt
+
+from flask_mail import Mail, Message
 
 # from models import Person
 
@@ -18,6 +30,27 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+
+CORS(app)
+
+jwt = JWTManager(app)
+
+bcrypt = Bcrypt(app)
+
+app.config.update(dict(
+    DEBUG=False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME='meetfitfspt119@gmail.com',
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
+))
+
+mail = Mail(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -65,6 +98,102 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+
+#prueba send-mail
+@app.route('/api/send-mail', methods=['GET'])
+def send_mail():
+    msg = Message(
+        subject='Prueba de correo de proyecto',
+        sender='meetfitfspt119@gmail.com',
+        recipients=['meetfitfspt119@gmail.com'],
+    )
+    msg.html = '<h1>Testeando envio de correo</h1>'
+    mail.send(msg)
+    return jsonify({'msg': 'Correo enviado con exito'}), 200
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    body = request.get_json(silent=True)
+
+    if body is None:
+        return jsonify({'msg': 'POST method needs a body or email/password not found.'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'El campo email es obligatorio'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+    if 'nombre' not in body:
+        return jsonify({'msg': 'El campo nombre es obligatorio'}), 400
+    if 'edad' not in body:
+        return jsonify({'msg': 'El campo edad es obligatorio'}), 400
+    if 'apellidos' not in body:
+        return jsonify({'msg': 'El campo apellidos es obligatorio'}), 400
+    if 'telefono' not in body:
+        return jsonify({'msg': 'El campo telefono es obligatorio'}), 400
+    if 'genero' not in body:
+        return jsonify({'msg': 'El campo Genero es obligatorio'}),400
+    
+    email = body.get("email")
+    password = body.get("password")
+    nombre = body.get("nombre")
+    edad = body.get("edad")
+    apellidos = body.get("apellidos")
+    telefono = body.get("telefono")
+    genero = body.get("genero")
+
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        return jsonify({'msg': 'Error al registrar Usuario!'}), 400 
+    
+    pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    user = User(email=email, name=nombre, password_hash=pw_hash, age=edad, lastname=apellidos, gender=genero, phone=telefono)
+    db.session.add(user)
+    db.session.commit()
+
+
+    # access_token = create_access_token(identity=str(user.id))
+    return jsonify({'msg': 'User Registered successfully'})
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    
+    body = request.get_json(silent=True)
+    # validar body
+    if body is None:
+        return jsonify({'msg': 'POST method needs a body or email/password not found.'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'email field is mandatory'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'password field is mandatory'}), 400
+    # buscar usuario
+    email = body['email']
+    password = body['password']
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'msg':'User or password incorrect'}), 400
+    # validar password
+    is_password = bcrypt.check_password_hash(user.password_hash, password)
+
+    if not is_password:
+        return jsonify({'msg': 'User or password incorrect'}), 400
+    # crear token
+    access_token = create_access_token(identity=str(user.id))
+    
+    return jsonify(access_token=access_token)
+
+
+@app.route("/api/me", methods=["GET"])
+@jwt_required()
+def me():
+    
+
+    current_user = get_jwt_identity()
+    user = User.query.get(current_user)
+    print(user)
+    return jsonify(user.serialize()), 200
+
+
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

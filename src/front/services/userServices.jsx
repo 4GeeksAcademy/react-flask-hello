@@ -337,10 +337,6 @@ userServices.updateStudentProfile = async (formData, userId) => {
 /**
  * Solicita un enlace de restablecimiento de contraseña
  * Con este método se envía un email al usuario con un token único para restablecer su contraseña
- * 
- * @ param {string} email - Es el Email del usuario que solicita el restablecimiento
- * @ returns {Object} - { success: boolean, message: string }
- * 
  */
 userServices.requestPasswordReset = async (email) => {
   try {
@@ -378,12 +374,6 @@ userServices.requestPasswordReset = async (email) => {
 /**
  * Verifica si un token de restablecimiento es válido
  * Se ejecuta al cargar el componente ResetPassword para validar el enlace
- * 
- * @ param {string} token - Token recibido en la URL del enlace de restablecimiento
- * @ returns {Object} - { success: boolean, message: string }
- * 
- * Uso en ResetPassword.jsx (useEffect):
- * const response = await userServices.verifyResetToken(token);
  */
 userServices.verifyResetToken = async (token) => {
   try {
@@ -417,13 +407,6 @@ userServices.verifyResetToken = async (token) => {
 /**
  * Restablece la contraseña del usuario
  * Actualiza la contraseña en la base de datos usando el token validado
- * 
- * @ param {string} token - Token de restablecimiento validado
- * @ param {string} password - Nueva contraseña del usuario
- * @ returns {Object} - { success: boolean, message: string }
- * 
- * Uso en ResetPassword.jsx (handleSubmit):
- * const response = await userServices.resetPassword(token, password);
  */
 userServices.resetPassword = async (token, password) => {
   try {

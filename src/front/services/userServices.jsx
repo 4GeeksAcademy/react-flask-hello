@@ -253,7 +253,6 @@ userServices.deleteTypeMentoring = async (id) => {
 }
 
 userServices.createStudentProfile = async (formData) => {
-
   try {
     const resp = await fetch(url + "/api/student-profiles", {
       method: "POST",
@@ -268,8 +267,6 @@ userServices.createStudentProfile = async (formData) => {
     return { success: false, error: "Error de conexión con el servidor" };
   }
 };
-
-
 userServices.getStudentProfile = async (userId) => {
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`);

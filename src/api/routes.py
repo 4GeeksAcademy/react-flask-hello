@@ -5,13 +5,16 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, MentorProfile, StudentProfile, MentorTopic
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, or_, func
 from sqlalchemy.exc import SQLAlchemyError
 import cloudinary.uploader
 import os
 from datetime import datetime, timedelta
+from flask_mail import Mail, Message
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+import requests
 
 # ------------------------------#
 #    CALENDLY CONFIGURATION     #
@@ -28,6 +31,133 @@ def get_calendly_headers():
         'Authorization': f'Bearer {CALENDLY_API_KEY}',
         'Content-Type': 'application/json'
     }
+
+# ------------------------------#
+#  PASSWORD RESET HELPERS       #
+# ------------------------------#
+
+
+def generate_reset_token(user_id):
+    """
+    Genera un token JWT para restablecer contraseña
+    - El token expira en 1 hora
+    """
+    token = create_access_token(
+        identity=str(user_id),
+        expires_delta=timedelta(hours=1),
+        additional_claims={"type": "password_reset"}
+    )
+    return token
+
+
+def verify_reset_token(token):
+    """
+    Verifica si el token JWT es válido y no ha expirado
+    - Retorna el objeto User si el token es válido
+    - Retorna None si el token es inválido o expiró
+    """
+    try:
+        # Decodificar el token sin verificar la firma primero (para debug)
+        decoded = decode_token(token, allow_expired=False)
+
+        print(f"Token decoded successfully: {decoded}")
+
+        # Verificar que sea un token de reset de contraseña
+        if decoded.get('type') != 'password_reset':
+            print("Token type mismatch")
+            return None
+
+        user_id = decoded['sub']
+        user = db.session.get(User, int(user_id))
+
+        if user:
+            print(f"User found: {user.email}")
+        else:
+            print(f"User not found with id: {user_id}")
+
+        return user
+
+    except ExpiredSignatureError as e:
+        print(f"Token expired: {str(e)}")
+        return None
+    except InvalidTokenError as e:
+        print(f"Invalid token: {str(e)}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error verifying token: {str(e)}")
+        return None
+
+
+def send_reset_email(user_email, token, mail):
+    """
+    Envía email con enlace de restablecimiento
+    - user_email: email del destinatario
+    - token: token generado para el reset
+    """
+    # Construir la URL completa de reset (frontend)
+    reset_url = f"{os.getenv('FRONTEND_URL')}reset-password?token={token}"
+
+    # Crear mensaje de email
+    msg = Message(
+        subject="Restablecer Contraseña - MentorMatch",
+        sender=os.getenv('MAIL_DEFAULT_SENDER'),
+        recipients=[user_email]
+    )
+
+    # Versión texto plano del email
+    msg.body = f"""Hola,
+
+Has solicitado restablecer tu contraseña en MentorMatch.
+
+Haz clic en el siguiente enlace para restablecer tu contraseña:
+{reset_url}
+
+Este enlace expirará en 1 hora.
+
+Si no solicitaste este cambio, ignora este mensaje.
+
+Saludos,
+El equipo de MentorMatch
+"""
+
+    # Versión HTML del email
+    msg.html = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #4a5568;">Restablecer Contraseña</h2>
+                <p>Hola,</p>
+                <p>Has solicitado restablecer tu contraseña en <strong>MentorMatch</strong>.</p>
+                <p>Haz clic en el siguiente botón para restablecer tu contraseña:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{reset_url}" 
+                       style="background-color: #4299e1; color: white; padding: 12px 30px; 
+                              text-decoration: none; border-radius: 5px; display: inline-block;">
+                        Restablecer Contraseña
+                    </a>
+                </div>
+                <p style="color: #718096; font-size: 14px;">
+                    O copia y pega este enlace en tu navegador:<br>
+                    <a href="{reset_url}" style="color: #4299e1;">{reset_url}</a>
+                </p>
+                <p style="color: #718096; font-size: 14px;">
+                    <strong>Este enlace expirará en 1 hora.</strong>
+                </p>
+                <p style="color: #718096; font-size: 14px;">
+                    Si no solicitaste este cambio, ignora este mensaje.
+                </p>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+                <p style="color: #a0aec0; font-size: 12px;">
+                    Saludos,<br>
+                    El equipo de MentorMatch
+                </p>
+            </div>
+        </body>
+    </html>
+    """
+
+    # Envia el email
+    mail.send(msg)
 
 
 api = Blueprint('api', __name__)
@@ -208,7 +338,7 @@ def filter_mentor_profiles():
         query = query.filter(or_(*conditions))
         # query = query.filter(MentorProfile.skills.ilike(f'%{skills_filter}%'))
 
-    # filter by “years of experience”: example mentors with more than 3 years of experience
+    # filter by "years of experience": example mentors with more than 3 years of experience
     if years_experience_filter:
         query = query.filter(MentorProfile.years_experience >=
                              int(years_experience_filter))
@@ -477,9 +607,7 @@ def upload_avatar():
 #  CALENDLY             #
 # ----------------------#
 
-api.route('/calendly/mentorias', methods=['GET'])
-
-
+@api.route('/calendly/mentorias', methods=['GET'])
 @jwt_required()
 def get_event_types():
     """Obtiene las clases disponibles del mentor"""
@@ -553,3 +681,136 @@ def get_scheduled_events():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+# ----------------------#
+#   Reset password      #
+# ----------------------#
+@api.route('/request-password-reset', methods=['POST'])
+def reset_password_request():
+    """
+    PASO 1: Usuario solicita restablecer contraseña
+    - Recibe el email del usuario
+    - Genera un token JWT de seguridad
+    - Envía email con enlace de restablecimiento
+    """
+    data = request.json
+    email = data.get('email')
+
+    # Validar que se envió el email
+    if not email:
+        return jsonify({
+            "success": False,
+            "message": "El email es requerido"
+        }), 400
+
+    # Buscar usuario por email en BD
+    query = select(User).where(User.email == email)
+    user = db.session.execute(query).scalar_one_or_none()
+
+    # Por seguridad, no revelar si el email existe o no
+    message = "If the email address exists in our system, you will receive a link to reset your password."
+
+    if user:
+        try:
+            # Generar token JWT
+            token = generate_reset_token(user.id)
+
+            # Obtener la instancia de Flask-Mail
+            from flask import current_app
+            mail = current_app.extensions.get('mail')
+
+            # Enviar email con el enlace de restablecimiento
+            send_reset_email(user.email, token, mail)
+
+            return jsonify({
+                "success": True,
+                "message": message
+            }), 200
+
+        except Exception as e:
+            print(f"Error sending email: {str(e)}")
+            # Por seguridad, devolver mensaje exitoso aunque falle
+            return jsonify({
+                "success": True,
+                "message": message
+            }), 200
+
+    return jsonify({
+        "success": True,
+        "message": message
+    }), 200
+
+
+@api.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    """
+    PASO 2: Usuario establece nueva contraseña
+    - Verifica que el token JWT sea válido y no haya expirado
+    - Actualiza la contraseña del usuario
+    """
+    data = request.json
+    new_password = data.get('password')
+
+    # Validar que se haya enviado una contraseña
+    if not new_password:
+        return jsonify({
+            "success": False,
+            "message": "Password is required"
+        }), 400
+
+    if len(new_password) < 8:
+        return jsonify({
+            "success": False,
+            "message": "The password must be at least 8 characters long."
+        }), 400
+
+    # Verificar el token JWT y obtener el usuario
+    user = verify_reset_token(token)
+
+    if not user:
+        return jsonify({
+            "success": False,
+            "message": "The token is invalid or has expired."
+        }), 400
+
+    try:
+        # Actualizar la contraseña
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Your password has been successfully updated."
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating password: {str(e)}")
+        return jsonify({
+            "success": False,
+            "message": "Error updating password"
+        }), 500
+
+
+@api.route('/verify-reset-token/<token>', methods=['GET'])
+def verify_token(token):
+    """
+    Verificar si un token JWT es válido
+    Útil para validar el token antes de mostrar el formulario de reset
+    """
+    print(f"Received token for verification: {token[:50]}...")  # Debug
+
+    user = verify_reset_token(token)
+
+    if user:
+        return jsonify({
+            "success": True,
+            "message": "Valid token",
+            "user_email": user.email  # Opcional: mostrar email en frontend
+        }), 200
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Invalid or expired token"
+        }), 400

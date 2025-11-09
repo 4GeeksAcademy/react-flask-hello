@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import TextInput from "../components/TextInput";
+import {login} from "../jsApiComponents/auth"
 
 export function Login() {
   const nav = useNavigate();
@@ -31,6 +32,7 @@ export function Login() {
       return;
     }
     console.log("Login (solo UI):", form);
+    const user_login = login(form)
     nav("/login");
   };
 

@@ -6,8 +6,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import TextInput from "../components/TextInput";
+import {register} from "../jsApiComponents/auth"
 
 export function Register() {
+
   const nav = useNavigate();
   const [form, setForm] = useState({
     nombre: "",
@@ -40,6 +42,8 @@ export function Register() {
       return setErr("Selecciona un género.");
 
     console.log("Register (solo UI):", form);
+    let body = form
+    const new_user = register(body)
     nav("/login?registered=1");
   };
 

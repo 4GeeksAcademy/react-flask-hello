@@ -1039,7 +1039,7 @@ def calendly_callback():
 @api.route('/mentor/<int:mentor_id>/calendly_status', methods=['GET'])
 def calendly_status(mentor_id):
     mentor = MentorProfile.query.filter_by(user_id=mentor_id).first()
-
+    get_valid_calendly_token(mentor)
     if not mentor:
         return jsonify({"error": "Mentor not found"}), 404
 

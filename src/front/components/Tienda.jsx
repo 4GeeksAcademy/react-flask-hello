@@ -50,8 +50,8 @@ export const Tienda = () => {
             <form className="needs-validation" noValidate onSubmit={handleSubmit}>
               <div className="d-flex justify-content-start align-items-center">
                   <img
-                    src={tiendaData.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
-                    alt={tiendaData.nombre || 'avatar'}
+                    src={tiendaData?.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
+                    alt={tiendaData?.nombre || 'avatar'}
                     onError={e => {
                       e.target.onerror = null;
                       setTiendaData({ ...tiendaData, avatar: 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g' });

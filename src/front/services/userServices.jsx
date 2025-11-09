@@ -253,6 +253,7 @@ userServices.deleteTypeMentoring = async (id) => {
 }
 
 userServices.createStudentProfile = async (formData) => {
+
   try {
     const resp = await fetch(url + "/api/student-profiles", {
       method: "POST",
@@ -267,6 +268,8 @@ userServices.createStudentProfile = async (formData) => {
     return { success: false, error: "Error de conexión con el servidor" };
   }
 };
+
+
 userServices.getStudentProfile = async (userId) => {
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`);
@@ -326,5 +329,120 @@ userServices.updateStudentProfile = async (formData, userId) => {
   }
 };
 
+
+// ============================================================================
+// MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA
+// ============================================================================
+
+/**
+ * Solicita un enlace de restablecimiento de contraseña
+ * Con este método se envía un email al usuario con un token único para restablecer su contraseña
+ */
+userServices.requestPasswordReset = async (email) => {
+  try {
+    const resp = await fetch(url + '/api/request-password-reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email })
+    });
+    const data = await resp.json();
+
+    // Verifica si la respuesta del servidor fue exitosa
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Error al solicitar restablecimiento de contraseña"
+      };
+    }
+
+    // Retorna éxito con el mensaje del servidor
+    return {
+      success: true,
+      message: data.message || "Se ha enviado un enlace a tu email"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Error de conexión con el servidor"
+    };
+  }
+};
+
+/**
+ * Verifica si un token de restablecimiento es válido
+ * Se ejecuta al cargar el componente ResetPassword para validar el enlace
+ */
+userServices.verifyResetToken = async (token) => {
+  try {
+    const resp = await fetch(url + `/api/verify-reset-token/${token}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+
+    // Valida si el token es correcto y no ha expirado
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Token inválido o expirado"
+      };
+    }
+
+    // Token válido
+    return {
+      success: true,
+      message: data.message || "Token válido"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Token inválido o expirado"
+    };
+  }
+};
+
+/**
+ * Restablece la contraseña del usuario
+ * Actualiza la contraseña en la base de datos usando el token validado
+ */
+userServices.resetPassword = async (token, password) => {
+  try {
+    const resp = await fetch(url + `/api/reset-password/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password })
+    });
+    const data = await resp.json();
+
+    // Verifica si la contraseña se actualizó correctamente
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Error al restablecer la contraseña"
+      };
+    }
+
+    // Contraseña actualizada exitosamente
+    return {
+      success: true,
+      message: data.message || "Contraseña actualizada correctamente"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Error de conexión con el servidor"
+    };
+  }
+};
+
+// ============================================================================
+// FIN DE MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA
+// ============================================================================
 
 export default userServices;

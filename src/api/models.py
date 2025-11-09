@@ -25,7 +25,11 @@ class User(db.Model):
     name = mapped_column(String(50), nullable=False)
     email = mapped_column(String(120), unique=True, nullable=False)
     password_hash = mapped_column(String(200), nullable=False)
+    age = mapped_column(Integer, nullable=False)
     avatar_url = mapped_column(String(200))
+    lastname = mapped_column(String(120))
+    gender = mapped_column(String(10), nullable=False)
+    phone = mapped_column(String(120))
     biography = mapped_column(Text)
     sports = mapped_column(String(200))
     level = mapped_column(String(20))
@@ -51,7 +55,11 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
+            "age": self.age,
             "avatar_url": self.avatar_url,
+            "lastname": self.lastname,
+            "gender": self.gender,
+            "phone": self.phone,
             "biography": self.biography,
             "sports": self.sports,
             "level": self.level,

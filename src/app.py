@@ -5,6 +5,9 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+
+from flask_cors import CORS
+
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Activity, Message, PasswordResetToken
 from api.routes import api
@@ -29,7 +32,9 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = "ESTA_ES_NUESTRA_LLAVE"
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+
+CORS(app)
 
 jwt = JWTManager(app)
 
@@ -113,21 +118,34 @@ def register():
     if body is None:
         return jsonify({'msg': 'POST method needs a body or email/password not found.'}), 400
     if 'email' not in body:
-        return jsonify({'msg': 'email field is mandatory'}), 400
+        return jsonify({'msg': 'El campo email es obligatorio'}), 400
     if 'password' not in body:
-        return jsonify({'msg': 'password field is mandatory'}), 400
-    if 'name' not in body:
-        return jsonify({'msg': 'name  field is mandatory'})
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+    if 'nombre' not in body:
+        return jsonify({'msg': 'El campo nombre es obligatorio'}), 400
+    if 'edad' not in body:
+        return jsonify({'msg': 'El campo edad es obligatorio'}), 400
+    if 'apellidos' not in body:
+        return jsonify({'msg': 'El campo apellidos es obligatorio'}), 400
+    if 'telefono' not in body:
+        return jsonify({'msg': 'El campo telefono es obligatorio'}), 400
+    if 'genero' not in body:
+        return jsonify({'msg': 'El campo Genero es obligatorio'}),400
+    
     email = body.get("email")
     password = body.get("password")
-    name = body.get("name")
+    nombre = body.get("nombre")
+    edad = body.get("edad")
+    apellidos = body.get("apellidos")
+    telefono = body.get("telefono")
+    genero = body.get("genero")
 
     user = User.query.filter_by(email=email).first()
     if user is not None:
-        return jsonify({'msg': 'Usuario ya registrado!'}), 400
+        return jsonify({'msg': 'Error al registrar Usuario!'}), 400 
     
     pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-    user = User(email=email, name=name, password_hash=pw_hash)
+    user = User(email=email, name=nombre, password_hash=pw_hash, age=edad, lastname=apellidos, gender=genero, phone=telefono)
     db.session.add(user)
     db.session.commit()
 

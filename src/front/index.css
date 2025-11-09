@@ -1,0 +1,128 @@
+/* Tema de autenticación oscuro */
+.auth-theme {
+ 
+  --bg: #0f1b2b;
+  --card: #1a2740;
+  --muted: #a3b1c6;
+  --text: #e8eef7;
+  --accent: #ff6b4a;
+  --accent-hover: #ff5832;
+  --input: #0e1a2a;
+  --radius: 22px;
+
+  
+  background: #f7eded;
+  min-height: 100vh;
+}
+
+/* Layout y tarjeta */
+.auth-theme .auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7eded;
+}
+
+.auth-theme .auth-card {
+  width: 360px;
+  max-width: 92vw;
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.auth-theme .auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin: 6px 0 18px;
+}
+.auth-theme .auth-sub {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* Inputs y labels dentro del scope */
+.auth-theme .form-label {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.auth-theme .input-dark.form-control {
+  background: var(--input);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-radius: 12px;
+  height: 44px;
+}
+.auth-theme .input-dark.form-control::placeholder {
+  color: #7f8ba1;
+}
+.auth-theme .input-dark.form-control:focus {
+  background: var(--input);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 107, 74, 0.15);
+}
+
+/* Botones y links (solo auth) */
+.auth-theme .btn-accent {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  height: 46px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.auth-theme .btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+.auth-theme .link-muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+.auth-theme .link-accent {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.auth-theme .link-accent:hover {
+  color: var(--accent-hover);
+}
+
+/* Icono ojo y notas */
+.auth-theme .eye-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: #9ab0cc;
+}
+.auth-theme .small-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* Select oscuro */
+.auth-theme .select-dark.form-select {
+  background: var(--input);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-radius: 12px;
+  height: 44px;
+}
+.auth-theme .select-dark.form-select:focus {
+  background: var(--input);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 107, 74, 0.15);
+}

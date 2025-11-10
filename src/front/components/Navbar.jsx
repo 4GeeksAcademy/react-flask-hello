@@ -15,47 +15,70 @@ export const Navbar = () => {
   return (
 
 
-    <nav className="navbar navbar-expand-lg bg-transparent ">
+    <nav className="navbar navbar-expand-lg bg-transparent">
+  <div className="container-fluid">
 
-      <div className="container-fluid ">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+    {/* Logo a la izquierda */}
+    <Link className="navbar-brand d-flex align-items-center" to="/">
+      <img
+        src={logo}
+        alt="Logo"
+        width="360"
+        height="56"
+        className="d-inline-block align-text-top me-2"
+        style={{ objectFit: "contain" }}
+      />
+    </Link>
 
-          <img
-            src={logo}
-            alt="Logo"
-            width="360"
-            height="56"
-            className="d-inline-block align-text-top me-2"
-          />
+    {/* Botón hamburguesa centrado */}
+    <div className="d-lg-none d-flex justify-content-center w-100 mb-2">
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+    </div>
 
-        </Link>
-        <div className="d-flex">
-          <Link className="navbar-brand m-3" to="/explorar">Products</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ">
-              <li className="nav-item m-3">
-                <a className="nav-link active" aria-current="page" href="#">Shopping Cart</a>
-              </li>
-              <li className="nav-item m-3">
-                <a className="nav-link" href="#">QR Code Generator</a>
-              </li>
+    {/* Menú desplegable */}
+    <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul className="navbar-nav align-items-center">
+        <li className="nav-item m-2">
+          <Link className="nav-link" to="/products">Products</Link>
+        </li>
+        <li className="nav-item m-2">
+          <a className="nav-link" href="#">Shopping Cart</a>
+        </li>
+        <li className="nav-item m-2">
+          <a className="nav-link" href="#">QR Code Generator</a>
+        </li>
+        <li className="nav-item m-2">
+          <Link
+            to={store.auth ? "/perfil" : "/login"}
+            className="btn btn-danger px-4"
+          >
+            <strong>{store.auth ? "Perfil" : "Login"}</strong>
+          </Link>
+        </li>
+        {store.auth && (
+          <li className="nav-item m-2">
+            <button
+              onClick={handleLogout}
+              className="btn btn-danger text-light"
+            >
+              <strong>Logout</strong>
+            </button>
+          </li>
+        )}
+      </ul>
+    </div>
+  </div>
+</nav>
 
-              <li className="nav-item">
-                <Link to={`${store.auth ? '/perfil' : "/login"}`} className="btn btn-danger m-3 px-4" ><strong>{`${store.auth ? 'Perfil' : "Login"}`}</strong></Link>
-              </li>
-              {store.auth && <li>
-                <button onClick={handleLogout} className="btn btn-danger text-light mt-3">
-                  <strong>Logout</strong>
-                </button>
-              </li>}
-          </ul>
-        </div>
-        </div>
-      </div>
-      
-    </nav>
   );
 };

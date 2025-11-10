@@ -343,6 +343,12 @@ h2 {
   height: 80px;
 }
 
+.avatar-card-student{
+   width: 8rem;
+  height: 8rem;
+}
+
+.avatar-card-student,
 .avatar-circle,
 .avatar-circle-min {
   border-radius: 50%;
@@ -354,6 +360,7 @@ h2 {
   flex-shrink: 0;
 }
 
+.avatar-card-student img,
 .avatar-circle img,
 .avatar-circle-min img {
   width: 100%;
@@ -409,6 +416,39 @@ h2 {
   padding-bottom: 1rem;
 }
 
+
+.card-student {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  background-color: #77A6AA;
+  color: #263c5e;
+  border-radius: 20px;
+  height: auto;
+  min-height: 180px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgb(119, 166, 170);
+  text-align: left;
+  padding: 1rem;
+ 
+  
+}
+
+.card-title-student {
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+
 .card-title {
   height: 30px;
   overflow: hidden;
@@ -436,10 +476,36 @@ h2 {
   justify-content: space-between;
 }
 
-.card-sessions:hover {
+.card-sessions:hover,
+.card-student:hover  {
   box-shadow: 0 20px 30px rgb(119, 146, 150);
   transform: translateY(-2px);
-  cursor: pointer;
+  
+}
+
+
+@media (max-width: 576px) {
+  .card-student {
+    min-height: 150px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+
+  .card-title-student {
+    font-size: 1.1rem;
+  }
+}
+
+
+
+
+.student-card-skill {
+  background: #184039;
+  color: #ffffff;
+  padding: 8px 1px;
+  border-radius: 20px;
+  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modal-label {
@@ -468,25 +534,25 @@ h2 {
 }
 
 .btn-edit {
-  background-color: #29bbe3;
+  
   color: white;
-  box-shadow: 0 2px 5px rgb(119, 146, 150);
+ 
 }
 
 .btn-edit:hover {
-  background-color: white;
-  color: #29bbe3;
+ 
+  color: #184039;
 }
 
 .btn-delete {
-  background-color: #df6668;
-  color: white;
-  box-shadow: 0 2px 5px rgb(119, 146, 150);
+  
+  color: #184039;
+ font-weight: bold;
 }
 
 .btn-delete:hover {
-  background-color: white;
-  color: #df6668;
+  
+  color: white;
 }
 
 .btn-save {
@@ -498,6 +564,18 @@ h2 {
 .btn-save:hover {
   background-color: white;
   color: #3ea694;
+}
+
+.btn-addnew{
+   background-color: #184039;
+  color: white;
+  border: none;
+   box-shadow: 0 2px 5px rgb(119, 146, 150);
+}
+
+.btn-addnew:hover{
+  background-color:#3ea694 ;
+  color: white;
 }
 
 .session-duration {
@@ -513,7 +591,7 @@ h2 {
 
 .session-price {
   padding: 0.9em;
-  background-color: #DF6668;
+  background-color: #184039;
   color: white;
   width: auto;
   height: 2em;

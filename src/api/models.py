@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 import enum
 from sqlalchemy import String, Boolean, ForeignKey, Integer, Float, Text, DateTime, Enum
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, foreign
 from datetime import datetime
 
 
@@ -20,7 +20,8 @@ class StatusEnum(enum.Enum):
     PENDING = "pending"
     CONFIRMED = "confirmed"
     COMPLETED = "completed"
-    CANCELLED = "cancelled"
+    CANCELED = "canceled"
+    SCHEDULED = "scheduled"
 
 
 class PaymentStatusEnum(enum.Enum):
@@ -99,7 +100,7 @@ class MentorProfile(db.Model):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('user.id'), nullable=False)
+        Integer, ForeignKey('user.id'), unique=True, nullable=False)
     hourly_rate: Mapped[float] = mapped_column(
         Float, nullable=False)
     years_experience: Mapped[int] = mapped_column(
@@ -121,10 +122,30 @@ class MentorProfile(db.Model):
     location: Mapped[str] = mapped_column(
         String(30), nullable=True)
 
+    # agregamos campos de calendly
+    calendly_access_token: Mapped[str] = mapped_column(Text, nullable=True)
+    calendly_refresh_token: Mapped[str] = mapped_column(Text, nullable=True)
+    calendly_token_expires_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+    calendly_user_uri: Mapped[str] = mapped_column(String(255), nullable=True)
+    calendly_username: Mapped[str] = mapped_column(String(100), nullable=True)
+    calendly_connected: Mapped[bool] = mapped_column(
+        Boolean(), nullable=False, default=False)
+    scheduling_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    calendly_webhook_uri: Mapped[str] = mapped_column(
+        String(255), nullable=True)
+    calendly_signing_key: Mapped[str] = mapped_column(
+        String(255), nullable=True)
+
     # Relaciones
     user = relationship("User", back_populates="mentor_profile")
-    topics = relationship("MentorTopic", back_populates="mentor_profile")
-    mentorings = relationship("Mentoring", back_populates="mentor_profile")
+    topics = relationship("MentorTopic",
+                          back_populates="mentor",
+                          lazy=True)
+    mentorings = relationship("Mentoring",
+                              primaryjoin="MentorProfile.user_id == foreign(Mentoring.mentor_profile_id)",
+                              back_populates="mentor_profile",
+                              lazy=True)
     comments = relationship(
         "Comments", back_populates="mentor", foreign_keys="Comments.id_mentor")
 
@@ -147,6 +168,17 @@ class MentorProfile(db.Model):
             'location': self.location,
             # ejemplo para evitar loop infinito
             'user': {"email": self.user.email} if self.user else None,
+            'calendly_connected': self.calendly_connected,
+            'calendly_scheduling_url': self.scheduling_url
+        }
+
+    def serialize_basic(self):
+        return {
+            'user_id': self.user_id,
+            'username': self.username,
+            'name': self.name,
+            'avatar': self.avatar,
+            'email': self.user.email if self.user else None
         }
 
 
@@ -155,7 +187,7 @@ class StudentProfile(db.Model):
     id: Mapped[int] = mapped_column(
         primary_key=True)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('user.id'), nullable=False)
+        Integer, ForeignKey('user.id'), unique=True, nullable=False)
     username: Mapped[str] = mapped_column(
         String(20), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(
@@ -178,7 +210,10 @@ class StudentProfile(db.Model):
     # Relaciones
     user = relationship("User", back_populates="student_profile")
     mentorings = relationship(
-        "Mentoring", back_populates="student", foreign_keys="Mentoring.student_id")
+        "Mentoring",
+        primaryjoin="StudentProfile.user_id == foreign(Mentoring.student_id)",
+        back_populates="student_profile", lazy=True)
+
     comments = relationship(
         "Comments", back_populates="student", foreign_keys="Comments.id_student")
 
@@ -197,13 +232,27 @@ class StudentProfile(db.Model):
             'location': self.location
         }
 
+    def serialize_basic(self):
+        return {
+            'user_id': self.user_id,
+            'username': self.username,
+            'name': self.name,
+            'avatar': self.avatar,
+            'email': self.user.email if self.user else None,
+            'interests': self.interests,
+            'experience_level': self.experience_level.value if self.experience_level else None,
+            'skills': self.skills,
+            'location': self.location
+
+        }
+
 
 class MentorTopic(db.Model):
     __tablename__ = 'mentor_topic'
     id: Mapped[int] = mapped_column(
         primary_key=True)
     mentor_profile_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('mentor_profile.id'), nullable=False)
+        Integer, ForeignKey('mentor_profile.user_id'), nullable=False)
     title: Mapped[str] = mapped_column(
         String(50), nullable=False)
     description: Mapped[str] = mapped_column(
@@ -215,8 +264,14 @@ class MentorTopic(db.Model):
     duration: Mapped[int] = mapped_column(
         Integer, nullable=True)
 
+    # campos de calendly
+    calendly_event_type_uri: Mapped[str] = mapped_column(
+        String(255), unique=True, nullable=True)
+    calendly_event_type_slug: Mapped[str] = mapped_column(
+        String(255), nullable=True)
+
     # Relaciones
-    mentor_profile = relationship("MentorProfile", back_populates="topics")
+    mentor = relationship("MentorProfile", back_populates="topics")
     mentorings = relationship("Mentoring", back_populates="topic")
 
     def serialize(self):
@@ -227,7 +282,9 @@ class MentorTopic(db.Model):
             'description': self.description,
             'difficulty_level': self.difficulty_level.value if self.difficulty_level else None,
             'price': self.price,
-            'duration': self.duration
+            'duration': self.duration,
+            'calendly_event_type_uri': self.calendly_event_type_uri,
+            'calendly_event_type_slug': self.calendly_event_type_slug
         }
 
 
@@ -237,11 +294,11 @@ class Mentoring(db.Model):
     topic_id: Mapped[int] = mapped_column(
         Integer, ForeignKey('mentor_topic.id'), nullable=False)
     mentor_profile_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('mentor_profile.id'), nullable=False)
+        Integer, nullable=False)
     student_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey('student_profile.id'), nullable=False)
+        Integer, nullable=False)
     scheduled_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False)
+        DateTime,  default=datetime.utcnow, onupdate=datetime.utcnow)
     duration_minutes: Mapped[int] = mapped_column(
         Integer, nullable=False)
     status: Mapped[StatusEnum] = mapped_column(
@@ -256,11 +313,26 @@ class Mentoring(db.Model):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # campos de calendly
+    calendly_invitee_uri: Mapped[str] = mapped_column(
+        String(255), unique=True, nullable=True)
+    calendly_event_uri: Mapped[str] = mapped_column(String(255), nullable=True)
+    start_time: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+    end_time: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow)
+
     # Relationships
     topic = relationship("MentorTopic", back_populates="mentorings")
-    mentor_profile = relationship("MentorProfile", back_populates="mentorings")
-    student = relationship(
-        "StudentProfile", back_populates="mentorings", foreign_keys=[student_id])
+    mentor_profile = relationship("MentorProfile",
+                                  primaryjoin="foreign(Mentoring.mentor_profile_id)== MentorProfile.user_id",
+                                  back_populates="mentorings",
+                                  lazy=True)
+    student_profile = relationship(
+        "StudentProfile",
+        primaryjoin="foreign(Mentoring.student_id)== StudentProfile.user_id",
+        back_populates="mentorings",
+        lazy=True)
     reviews = relationship("Review", back_populates="mentoring")
 
     def serialize(self):
@@ -276,7 +348,12 @@ class Mentoring(db.Model):
             'notes': self.notes,
             'payment_status': self.payment_status.value if self.payment_status else None,
             'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+            'start_time':self.start_time,
+            'end_time':self.end_time,
+            'mentor_profile': self.mentor_profile.serialize_basic() if self.mentor_profile else None,
+            'student_profile': self.student_profile.serialize_basic() if self.student_profile else None,
+            'topic': self.topic.serialize() if self.topic else None
         }
 
 

@@ -14,7 +14,8 @@ const Services = () => {
     const [selectedType, setSelectedType] = useState(null);
     const [edit, setEdit] = useState(false)
     const [sessionToDelete, setSessionToDelete] = useState(null);
-
+    const [calendlyConnected, setCalenldyConnected] = useState(false)
+    const [schedulingUrl, setSchedulingUrl] = useState("")
 
     const fetchTypesMentoring = () => {
         userServices.allTypesMentoring(store?.user.id).then(async data => {
@@ -26,7 +27,17 @@ const Services = () => {
     }
 
     useEffect(() => {
+
+        userServices.getCalendlyStatus(store?.user?.id).then(data => {
+            if (data.connected) {
+                setCalenldyConnected(true)
+                setSchedulingUrl(data.scheduling_url)
+
+            }
+        })
+
         fetchTypesMentoring()
+
     }, []);
 
     const handleEdit = (type) => {
@@ -48,22 +59,22 @@ const Services = () => {
 
     const handleOpenDeleteModal = (type) => {
         setSessionToDelete(type);
-        
+
         const modal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
         modal.show();
     }
 
-    
+
 
     const confirmDelete = () => {
         console.log(sessionToDelete)
         if (!sessionToDelete) return;
-    
+
         userServices.deleteTypeMentoring(sessionToDelete.id).then(async data => {
             if (data.success) {
                 fetchTypesMentoring();
 
-                
+
                 const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
                 modal.hide();
             }
@@ -82,11 +93,39 @@ const Services = () => {
         })
     }
 
+    const handleConnect = () => {
+        userServices.connectCalendly(store?.user.id).then(async data => {
+            console.log(data)
+        })
+
+    }
+
 
     return (
         <>
-            <div className="my-4">
-                <h2>Tipos de sesiones de mentoria</h2>
+
+            {!calendlyConnected &&
+                <div className="alert alert-danger d-flex my-4">
+                    <p className="mx-2">Antes de agregar sesiones, conecte con su cuenta de Calendly</p>
+                    <div className="btn btn-success" onClick={handleConnect}>Conectar cuenta Calendly</div>
+                </div>}
+            {calendlyConnected &&
+                <div className="alert alert-info d-flex my-4" role="alert">
+                    <p className="mx-2">Tu perfil esta conectado a Calendly:</p>
+                    <p>{schedulingUrl}</p>
+                </div>
+
+            }
+
+
+
+            <div className="d-flex align-items-center">
+                <div className="my-4 w-75">
+                    <h2>Tipos de sesiones de mentoria</h2>
+                </div>
+                <div className="d-flex">
+                    <div className="btn btn-primary btn-lg btn-addnew" onClick={handleAddNew}>Agrega una nueva sesión</div>
+                </div>
             </div>
             <div className="div-sessions mb-5 p-5">
                 <div className="row">
@@ -100,16 +139,7 @@ const Services = () => {
                     ))}
                 </div>
 
-                <div className="row">
-                    <div className="col-sm-12 col-md-4 " >
-                        <div className="card card-sessions text-center " onClick={handleAddNew} >
-                            <span className="text-center mt-5 mb-0"><CirclePlusIcon /></span>
-                            <div className="card-body mb-4 ">
-                                <p className="card-text">Agrega una nueva sesión</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <AddSession
                 typeSessionId={selectedType?.id}
@@ -136,7 +166,7 @@ const Services = () => {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 
-                           
+
                             <button type="button" className="btn btn-danger" onClick={confirmDelete}>
                                 Eliminar
                             </button>
@@ -149,6 +179,11 @@ const Services = () => {
         </>
     )
 }
+
+
+
+
+
 
 export default Services
 

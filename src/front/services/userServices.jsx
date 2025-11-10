@@ -184,7 +184,7 @@ userServices.allTypesMentoring = async (userId) => {
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-
+    console.log(data)
     return { success: true, data }
   } catch (error) {
     console.log(error)
@@ -314,6 +314,7 @@ userServices.verifyResetToken = async (token) => {
 
 
 userServices.updateStudentProfile = async (formData, userId) => {
+
   try {
     const resp = await fetch(url + `/api/student-profiles/user/${userId}`, {
       method: "PUT",
@@ -329,5 +330,179 @@ userServices.updateStudentProfile = async (formData, userId) => {
   }
 };
 
+/*==============================================*/
+/* Desencadena el flujo de conexion con calendly*/ 
+/*==============================================*/
+userServices.connectCalendly = async (mentorId) => {
+  try {
+    const resp = await fetch(url + `/api/mentor/${mentorId}/authorize_calendly`, {
+      method: "POST"
+    })
+    const data = await resp.json()
+
+    if (resp.ok && data.auth_url) {
+      window.location.href = data.auth_url
+      console.log(data)
+    } else {
+      console.error("Error retrieving Calendly URL:", data)
+    }
+  } catch (error) {
+    console.error("Error connectCalendly: ", error)
+  }
+
+}
+
+/*==========================================*/
+/* Verifica estatus de conexion con calendly*/ 
+/*==========================================*/
+
+
+userServices.getCalendlyStatus = async (mentorId) => {
+  try {
+    const resp = await fetch(url + `/api/mentor/${mentorId}/calendly_status`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error al verificar status" }
+  }
+}
+
+
+/*Obteniendo las mentorias segun el id del mentor */
+userServices.getMentorings = async (mentorId) =>{
+  try {
+    const resp = await fetch(url + `/api/sessions/${mentorId}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: "Error al verificar status" }
+  }
+}
+
+
+
+
+
+
+// ============================================================================
+// MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA
+// ============================================================================
+
+/**
+ * Solicita un enlace de restablecimiento de contraseña
+ * Con este método se envía un email al usuario con un token único para restablecer su contraseña
+ */
+userServices.requestPasswordReset = async (email) => {
+  try {
+    const resp = await fetch(url + '/api/request-password-reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email })
+    });
+    const data = await resp.json();
+
+    // Verifica si la respuesta del servidor fue exitosa
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Error al solicitar restablecimiento de contraseña"
+      };
+    }
+
+    // Retorna éxito con el mensaje del servidor
+    return {
+      success: true,
+      message: data.message || "Se ha enviado un enlace a tu email"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Error de conexión con el servidor"
+    };
+  }
+};
+
+/**
+ * Verifica si un token de restablecimiento es válido
+ * Se ejecuta al cargar el componente ResetPassword para validar el enlace
+ */
+userServices.verifyResetToken = async (token) => {
+  try {
+    const resp = await fetch(url + `/api/verify-reset-token/${token}`, {
+      method: 'GET'
+    });
+    const data = await resp.json();
+
+    // Valida si el token es correcto y no ha expirado
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Token inválido o expirado"
+      };
+    }
+
+    // Token válido
+    return {
+      success: true,
+      message: data.message || "Token válido"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Token inválido o expirado"
+    };
+  }
+};
+
+/**
+ * Restablece la contraseña del usuario
+ * Actualiza la contraseña en la base de datos usando el token validado
+ */
+userServices.resetPassword = async (token, password) => {
+  try {
+    const resp = await fetch(url + `/api/reset-password/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password })
+    });
+    const data = await resp.json();
+
+    // Verifica si la contraseña se actualizó correctamente
+    if (!resp.ok || data.error) {
+      return {
+        success: false,
+        message: data.message || "Error al restablecer la contraseña"
+      };
+    }
+
+    // Contraseña actualizada exitosamente
+    return {
+      success: true,
+      message: data.message || "Contraseña actualizada correctamente"
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Error de conexión con el servidor"
+    };
+  }
+};
+
+// ============================================================================
+// FIN DE MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA
+// ============================================================================
 
 export default userServices;

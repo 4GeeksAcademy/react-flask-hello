@@ -194,28 +194,9 @@ h2 {
 }
 
 .form-metorprofile,
-.div-statistics,
 .div-sessions {
   width: 100%;
   background-color: rgba(119, 166, 170, 0.46);
-}
-
-.div-statistics{
-  background-color: #77A6AA;
-}
-
-
-.bg-header-pending{
-  background-color: #FFBF47 ;
-}
-
-
-.bg-header-completed{
-  background-color: #38761D ;
-
-}
-.bg-header-canceled{
-  background-color: #6D6D6D	;
 }
 
 .form-style {
@@ -224,7 +205,6 @@ h2 {
 
 .form-style,
 .form-metorprofile,
-.div-statistics,
 .div-sessions {
   padding: 1rem;
   height: auto;
@@ -434,24 +414,6 @@ h2 {
   text-align: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-
-.card-states{
-   font-family: "Poppins", sans-serif;
-  font-size: 0.9rem;
-  background-color:#C1D6D8;
-  color: #263c5e;
-  border-radius: 10px;
-  height: auto;
-  min-height: 180px;
-  width: 100%;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgb(119, 166, 170);
-  text-align: left;
-  padding: 1rem;
- 
 }
 
 

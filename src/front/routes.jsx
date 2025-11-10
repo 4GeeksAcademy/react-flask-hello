@@ -13,8 +13,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { CreateEditClient } from "./components/CreateEditClient";
 import { CreateProduct } from "./components/CreateProduct";
 import { TiendaPage } from "./pages/TiendaPage";
-import { CrearTiendaPage } from "./pages/CrearTiendaPage";
-
+import { ExplorePage } from "./pages/ExplorePage";
 export const router = createBrowserRouter(
     createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.
@@ -35,7 +34,7 @@ export const router = createBrowserRouter(
         <Route path="/perfil" element={<CreateEditClient/>}/>
         <Route path="/product" element={<CreateProduct/>}/>
         <Route path="/tienda" element={<TiendaPage/>}/>
-        <Route path="/crear_tienda" element={<CrearTiendaPage/>}/>
+        <Route path="/explorar" element={<ExplorePage/>}/>
       </Route>
     )
 );

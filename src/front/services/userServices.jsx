@@ -184,7 +184,7 @@ userServices.allTypesMentoring = async (userId) => {
     if (!resp.ok || data.error) {
       return { success: false, error: data.message || "Error obtener tipos de mentorias" }
     }
-    console.log(data)
+    
     return { success: true, data }
   } catch (error) {
     console.log(error)

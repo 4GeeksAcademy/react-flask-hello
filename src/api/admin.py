@@ -31,7 +31,10 @@ class MentoringView(ModelView):
             ('pending', 'Pending'),
             ('confirmed', 'Confirmed'),
             ('completed', 'Completed'),
-            ('cancelled', 'Cancelled')
+            ('CANCELED', 'Canceled'),
+            ('SCHEDULED', 'Scheduled')
+
+
         ],
         'payment_status': [
             ('pending', 'Pending'),

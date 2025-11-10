@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import userServices from "../services/userServices";
-import { User, Star, CalendarDays, IdCardIcon, IdCardLanyardIcon, Euro, Clock } from 'lucide-react';
+import { User, Star, CalendarDays, IdCardIcon, IdCardLanyardIcon, Euro, Clock, Key } from 'lucide-react';
 import { IdCard, } from "lucide";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -26,7 +26,7 @@ const ViewProfileMentor = () => {
         userServices.allTypesMentoring(id).then(async data => {
 
             if (data?.success) {
-                console.log(data?.data)
+                
                 setTypesMentoring(data.data)
             }
         })
@@ -39,7 +39,7 @@ const ViewProfileMentor = () => {
     useEffect(() => {
 
         userServices.getMentorProfile(id).then(data => {
-            console.log(data)
+         
             if (data) {
                 setProfile(data)
             }
@@ -131,12 +131,12 @@ const ViewProfileMentor = () => {
                                     </div>
                                 }
                                 {store?.auth && typesMentoring?.map(type =>
-                                (
-                                    <div className="col-12 col-sm-12 col-lg-6 col-xl-4 d-flex">
-                                        <div class="card card-sessions text-center mb-3 mx-2 flex-fill" onClick={() => handleReserve(type)}>
-                                            <div class="card-body">
-                                                <h5 class="card-title">{type.title}</h5>
-                                                <p class="card-text">{type.description}</p>
+                                ( 
+                                    <div className="col-12 col-sm-12 col-lg-6 col-xl-4 d-flex" >
+                                        <div className="card card-sessions text-center mb-3 mx-2 flex-fill" key={type.id} onClick={() => handleReserve(type)}>
+                                            <div className="card-body">
+                                                <h5 className="card-title">{type.title}</h5>
+                                                <p className="card-text">{type.description}</p>
                                                 <div className="d-flex justify-content-center gap-3">
                                                     <div className="session-duration d-flex justify-content-center align-items-center">
                                                         <span className='me-1'><Clock /></span>{`${type?.duration} min`}</div>

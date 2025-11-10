@@ -15,7 +15,7 @@ export const Header = () => {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/products" className="btn primary">Browse Products ➝</Link>
+            <Link to="/explorar" className="btn primary">Browse Products ➝</Link>
             <Link to="/login" className="btn secondary">
               <i className="fas fa-user"></i> Login to Account
             </Link>

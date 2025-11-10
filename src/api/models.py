@@ -92,7 +92,7 @@ class MentorProfile(db.Model):
     username: Mapped[str] = mapped_column(
         String(20), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(
-        String(15), nullable=False)
+        String(50), nullable=False)
     avatar: Mapped[str] = mapped_column(
         String(200), unique=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
@@ -191,7 +191,7 @@ class StudentProfile(db.Model):
     username: Mapped[str] = mapped_column(
         String(20), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(
-        String(15), nullable=False)
+        String(50), nullable=False)
     avatar: Mapped[str] = mapped_column(
         String(200), nullable=True)
     interests: Mapped[str] = mapped_column(
@@ -349,8 +349,8 @@ class Mentoring(db.Model):
             'payment_status': self.payment_status.value if self.payment_status else None,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,
-            'start_time':self.start_time,
-            'end_time':self.end_time,
+            'start_time': self.start_time,
+            'end_time': self.end_time,
             'mentor_profile': self.mentor_profile.serialize_basic() if self.mentor_profile else None,
             'student_profile': self.student_profile.serialize_basic() if self.student_profile else None,
             'topic': self.topic.serialize() if self.topic else None

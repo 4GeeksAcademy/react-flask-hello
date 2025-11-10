@@ -177,6 +177,8 @@ def me():
     return jsonify(user.serialize()), 200
 
 
+#endPoint completo ACTIVITY ----> GET POST PUT DELETE
+
 
     
 

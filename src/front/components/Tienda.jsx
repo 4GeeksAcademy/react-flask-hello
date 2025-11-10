@@ -21,22 +21,31 @@ export const Tienda = () => {
   }
 
   const handleSubmit = e => {
-      e.preventDefault();
-      tiendaServices.crearTienda(tiendaData).then(data => {
-        if (data.tienda) dispatch({ type: "upload_tienda", payload: data.tienda })
-      })
-  
-    }
+    e.preventDefault();
+    tiendaServices.crearTienda(tiendaData).then(data => {
+      if (data.tienda) dispatch({ type: "upload_tienda", payload: data.tienda })
+    })
 
-    useEffect(() => {
-      tiendaServices.miTienda().then(data => console.log(data))
-    } , [])
+  }
 
-  return(
+
+
+  useEffect(() => {
+    tiendaServices.miTienda().then((data) => {
+      if (data?.tienda) {
+        setTiendaData(data.tienda);
+        dispatch({ type: "upload_tienda", payload: data.tienda });
+      }
+    });
+  }, []);
+
+
+  return (
     <>
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
-      <div className="card shadow-lg border-0 rounded-4" style={{ maxWidth: "900px", width: "100%" }}>
-        <div
+
+      <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+        <div className="card shadow-lg border-0 rounded-4" style={{ maxWidth: "900px", width: "100%" }}>
+          <div
             className="card-header text-white rounded-top-4 d-flex justify-content-between align-items-center"
             style={{
               background: "linear-gradient(90deg, #ff0000 0%, #f21010 50%, #a00000 100%)",
@@ -49,27 +58,43 @@ export const Tienda = () => {
           <div className="card-body p-5 ">
             <form className="needs-validation" noValidate onSubmit={handleSubmit}>
               <div className="d-flex justify-content-start align-items-center">
-                  <img
-                    src={tiendaData?.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
-                    alt={tiendaData?.nombre || 'avatar'}
-                    onError={e => {
-                      e.target.onerror = null;
-                      setTiendaData({ ...tiendaData, avatar: 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g' });
-                    }}
-                    style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '0%' }}
-                  />
-                  <h1 className="ms-5 ">Tienda Name</h1>
+                <img
+                  src={tiendaData?.avatar || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
+                  alt={tiendaData?.nombre || 'avatar'}
+                  onError={e => {
+                    e.target.onerror = null;
+                    setTiendaData({ ...tiendaData, avatar: 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g' });
+                  }}
+                  style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '0%' }}
+                />
+                <h1 className="ms-5 ">Tienda Name</h1>
               </div>
-            <h5 className="text-danger border-bottom pb-2 my-3">¿Quienes somos?</h5>
-            <textarea name="tienda-desc" id="tienda-desc" className="form-control " rows={6}></textarea>
-            <h5 className="text-danger border-bottom pb-2 my-3">Productos o Servicios</h5>
-            
-            {//añadir singles de productos
-            }
+              <h5 className="text-danger border-bottom pb-2 my-3">¿Quienes somos?</h5>
+              <textarea name="tienda-desc" id="tienda-desc" className="form-control " rows={6}></textarea>
+              <h5 className="text-danger border-bottom pb-2 my-3">Productos o Servicios</h5>
+
+              {//añadir singles de productos
+              }
+
+              {tiendaData?.productos?.length > 0 ? (
+                tiendaData.productos.map((prod) => (
+                  <div key={prod.id} className="col-md-4 mb-4">
+                    <div className="card h-100 shadow-sm border-0">
+                      <img src={prod.imagen} alt={prod.nombre} className="card-img-top" />
+                      <div className="card-body text-center">
+                        <h6>{prod.nombre}</h6>
+                        <p className="text-muted">${prod.precio}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-muted">No hay productos aún.</p>
+              )}
             </form>
           </div>
+        </div>
       </div>
-    </div>
     </>
   )
 

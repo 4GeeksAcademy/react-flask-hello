@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Productos , Tienda
+from api.models import db, User, Productos, Tienda
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,7 +16,7 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-#cloudinary route
+# cloudinary route
 
 
 # Cloudinary upload endpoint
@@ -28,7 +28,7 @@ def upload_image():
         return jsonify({"error": "No file part"}), 400
     id = get_jwt_identity()
     user = db.session.get(User, id)
-    if not user: 
+    if not user:
         return jsonify({'msg': 'user not found'}), 404
 
     file = request.files["file"]
@@ -36,15 +36,16 @@ def upload_image():
         return jsonify({"error": "No selected file"}), 400
 
     try:
-        #upload to cloudinary
+        # upload to cloudinary
         upload_result = cloudinary.uploader.upload(file)
-        #return the url of the uploaded image to be used in the frontend and/or stored in the database
+        # return the url of the uploaded image to be used in the frontend and/or stored in the database
         if request.form.get("upload_preset") == "avatar":
             user.avatar = upload_result["secure_url"]
             db.session.commit()
-        
+
         if request.form.get("upload_preset") == "product":
-            producto = db.session.get(Productos, request.form.get("product_id"))
+            producto = db.session.get(
+                Productos, request.form.get("product_id"))
             if not producto:
                 return jsonify({'msg': 'product not found'}), 404
             producto.imagenes = upload_result["secure_url"]
@@ -92,11 +93,9 @@ def handle_update():
     id = get_jwt_identity()
     body = request.get_json()
     user = db.session.get(User, id)
-    if not user: 
+    if not user:
         return jsonify({'msg': 'user not found'}), 404
-    
-   
-        
+
     user.nickname = body.get('nickname', user.nickname)
     user.nombre = body.get('nombre', user.nombre)
     user.apellido = body.get('apellido', user.apellido)
@@ -105,9 +104,9 @@ def handle_update():
     user.address = body.get('address', user.address)
     user.telefono = body.get('telefono', user.telefono)
     user.direccion = body.get('direccion', user.direccion)
-    user.ciudad= body.get('ciudad', user.ciudad)
-    user.pais= body.get('pais', user.pais)
-    user.cp= body.get('cp', user.cp)
+    user.ciudad = body.get('ciudad', user.ciudad)
+    user.pais = body.get('pais', user.pais)
+    user.cp = body.get('cp', user.cp)
     user.dni = body.get('dni', user.dni)
     db.session.commit()
     return jsonify({'user': user.serialize()}), 200
@@ -128,30 +127,65 @@ def handle_login():
     token = create_access_token(identity=str(user.id))
     return jsonify({"user": user.serialize(), "token": token}), 200
 
-@api.route('/mi_tienda' , methods=['GET'])
+
+@api.route('/mi_tienda', methods=['GET'])
 @jwt_required()
 def handle_tienda_item():
     id = get_jwt_identity()
     stm = select(Tienda).where(Tienda.owner_id == id)
     tienda = db.session.execute(stm).scalar_one_or_none()
-    if tienda is None : 
-        return jsonify({'msg':'tienda no encontrada'}),404
-    return jsonify({'tienda':tienda.serialize()}),200 
+    if tienda is None:
+        return jsonify({'msg': 'tienda no encontrada'}), 404
+    return jsonify({'tienda': tienda.serialize()}), 200
 
-@api.route('/crear_tienda' , methods=['POST'])
+
+@api.route('/crear_tienda', methods=['POST'])
 @jwt_required()
 def handle_crear_tienda():
     id = get_jwt_identity()
     body = request.get_json()
-    
+
     new_tienda = Tienda(cif=body['cif'],
-                    nombre_tienda=body['nombre_tienda'],
-                    descripcion_tienda=body['descripcion_tienda'],
-                    categoria_principal=body['categoria_principal'],
-                    telefono_comercial=body['telefono_comercial'],
-                    logo_url=body['logo_url'],
-                    owner_id=id,
-                    )
+                        nombre_tienda=body['nombre_tienda'],
+                        descripcion_tienda=body['descripcion_tienda'],
+                        categoria_principal=body['categoria_principal'],
+                        telefono_comercial=body['telefono_comercial'],
+                        logo_url=body['logo_url'],
+                        owner_id=id,
+                        )
     db.session.add(new_tienda)
     db.session.commit()
     return jsonify({'success': True, 'msg': 'Nueva tienda tiendificada con exito'}), 201
+
+
+@api.route('/mis_productos', methods=['GET'])
+@jwt_required()
+def handle_mi_producto():
+    id = get_jwt_identity()
+    stm = select(Productos).where(Productos.tienda_id == id)
+    producto = db.session.execute(stm).scalar_one_or_none()
+    if producto is None:
+        return jsonify({'msg': 'no hay productos'}), 404
+    return jsonify({'producto': producto.serialize()}), 200
+
+
+@api.route('/crear_mis_productos', methods=['POST'])
+@jwt_required()
+def handle_crear_producto():
+    id = get_jwt_identity()
+    body = request.get_json()
+
+    new_producto = Productos(nombre_producto=body['nombre_producto'],
+                             descripcion_producto=body['descripcion_producto'],
+                             precio=body['precio'],
+                             stock=body['stock'],
+                             categoria_producto=body['categoria_producto'],
+                             peso=body['peso'],
+                             dimensiones=body['dimensiones'],
+                             imagenes=body['imagenes'],
+                             estado=body['estado'],
+                             tienda_id=id,
+                             )
+    db.session.add(new_producto)
+    db.session.commit()
+    return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente'}), 201

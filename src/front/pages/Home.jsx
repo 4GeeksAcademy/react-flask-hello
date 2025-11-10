@@ -5,6 +5,8 @@ import { Header } from "../components/Header";
 import { HeroSection } from "../components/HeroSection";
 import { Features1 } from "../components/Features1";
 import StartShopping from "../components/Call"; 
+import GenerateQr  from "../components/GenerateQr.jsx";
+import { StoreComp } from "../components/StoreComp.jsx";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -32,25 +34,13 @@ export const Home = () => {
 
   return (
     <>
+    <StoreComp/>
       <Header />
       <HeroSection />
       <Features1 />
+      
+      <GenerateQr/>
       <StartShopping />
-      <div className="text-center mt-5">
-        <h1 className="display-4">Hello Rigo!!</h1>
-        <p className="lead">
-          <img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-        </p>
-        <div className="alert alert-info">
-          {store.message ? (
-            <span>{store.message}</span>
-          ) : (
-            <span className="text-danger">
-              Loading message from the backend (make sure your python 🐍 backend is running)...
-            </span>
-          )}
-        </div>
-      </div>
     </>
   );
 };

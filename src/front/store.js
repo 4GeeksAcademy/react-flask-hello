@@ -1,6 +1,9 @@
 export const initialStore=()=>{
   return{
-    user: null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    tienda: JSON.parse(localStorage.getItem('tienda')) || null,
+    producto: JSON.parse(localStorage.getItem('producto')) || null,
+    auth: localStorage.getItem('token')? true :  false,
     message: null,
     todos: [
       {
@@ -19,10 +22,38 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
+
+    case 'upload_tienda':
+      return{
+        ...store,
+        tienda: action.payload
+      }
+    
+      case 'update_avatar':
+        return{
+          ...store,
+          user:{...store.user, ['avatar']:action.payload} 
+        }
+
+    case 'update_user':
+      return {
+        ...store, 
+        user: action.payload
+      }
+
+    case 'logout': 
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    return {
+      ...store, 
+      user: null,
+      auth: false
+    }
     case "login":
       return {
         ...store,
-        user: action.payload
+        user: action.payload,
+        auth: true
       }
       case "register":
         return {

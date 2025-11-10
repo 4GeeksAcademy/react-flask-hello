@@ -20,7 +20,13 @@ app.url_map.strict_slashes = False
 
 jwt = JWTManager(app)
 
-# Database configuration
+
+# cloudinary configuration --- this uses the environment variables from the .env file
+cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME')
+api_key = os.getenv('CLOUDINARY_API_KEY')
+api_secret = os.getenv('CLOUDINARY_API_SECRET')
+
+# database condiguration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
-import { CirclePlus } from 'lucide-react';
+import { CirclePlus, CalendarDays  } from 'lucide-react';
 import AddSession from "./AddSession";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import userServices from "../services/userServices";
@@ -44,9 +44,7 @@ const ManageSessions = () => {
     const sessions = (Array.isArray(mentorings) ? mentorings : []);
 
 
-
-    console.log("Esutiantes agrupados->>>>>>>>>>>>>", sessions)
-
+    
     return (
         <>
             <div className=" mb-5 p-5">

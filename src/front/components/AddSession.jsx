@@ -132,7 +132,7 @@ const AddSession = ({ typeSessionId=null, edit, onUpdate}) => {
         <>
             <div className="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog ">
-                    <div class=" modal-content modal-style ">
+                    <div className=" modal-content modal-style ">
 
                         <form className="container p-2" onSubmit={handleSubmit}>
 

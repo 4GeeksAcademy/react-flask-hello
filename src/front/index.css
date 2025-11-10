@@ -194,9 +194,25 @@ h2 {
 }
 
 .form-metorprofile,
+.div-statistics,
 .div-sessions {
   width: 100%;
   background-color: rgba(119, 166, 170, 0.46);
+}
+
+.div-statistics {
+  background-color: #77a6aa;
+}
+
+.bg-header-pending {
+  background-color: #ffbf47;
+}
+
+.bg-header-completed {
+  background-color: #38761d;
+}
+.bg-header-canceled {
+  background-color: #6d6d6d;
 }
 
 .form-style {
@@ -205,6 +221,7 @@ h2 {
 
 .form-style,
 .form-metorprofile,
+.div-statistics,
 .div-sessions {
   padding: 1rem;
   height: auto;
@@ -343,8 +360,8 @@ h2 {
   height: 80px;
 }
 
-.avatar-card-student{
-   width: 8rem;
+.avatar-card-student {
+  width: 8rem;
   height: 8rem;
 }
 
@@ -416,6 +433,21 @@ h2 {
   padding-bottom: 1rem;
 }
 
+.card-states {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  background-color: #c1d6d8;
+  color: #263c5e;
+  border-radius: 10px;
+  height: auto;
+  min-height: 180px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgb(119, 166, 170);
+  text-align: left;
+  padding: 1rem;
+}
 
 .card-student {
   display: flex;
@@ -423,7 +455,7 @@ h2 {
   justify-content: center;
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  background-color: #77A6AA;
+  background-color: #77a6aa;
   color: #263c5e;
   border-radius: 20px;
   height: auto;
@@ -434,8 +466,6 @@ h2 {
   box-shadow: 0 8px 20px rgb(119, 166, 170);
   text-align: left;
   padding: 1rem;
- 
-  
 }
 
 .card-title-student {
@@ -447,7 +477,6 @@ h2 {
   font-weight: bold;
   font-size: 1.5rem;
 }
-
 
 .card-title {
   height: 30px;
@@ -465,7 +494,7 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
   min-height: 30px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.2rem;
 }
 
@@ -477,12 +506,10 @@ h2 {
 }
 
 .card-sessions:hover,
-.card-student:hover  {
+.card-student:hover {
   box-shadow: 0 20px 30px rgb(119, 146, 150);
   transform: translateY(-2px);
-  
 }
-
 
 @media (max-width: 576px) {
   .card-student {
@@ -495,9 +522,6 @@ h2 {
     font-size: 1.1rem;
   }
 }
-
-
-
 
 .student-card-skill {
   background: #184039;
@@ -534,24 +558,19 @@ h2 {
 }
 
 .btn-edit {
-  
   color: white;
- 
 }
 
 .btn-edit:hover {
- 
   color: #184039;
 }
 
 .btn-delete {
-  
   color: #184039;
- font-weight: bold;
+  font-weight: bold;
 }
 
 .btn-delete:hover {
-  
   color: white;
 }
 
@@ -566,15 +585,15 @@ h2 {
   color: #3ea694;
 }
 
-.btn-addnew{
-   background-color: #184039;
+.btn-addnew {
+  background-color: #184039;
   color: white;
   border: none;
-   box-shadow: 0 2px 5px rgb(119, 146, 150);
+  box-shadow: 0 2px 5px rgb(119, 146, 150);
 }
 
-.btn-addnew:hover{
-  background-color:#3ea694 ;
+.btn-addnew:hover {
+  background-color: #3ea694;
   color: white;
 }
 
@@ -719,17 +738,15 @@ h2 {
   font-family: "Poppins", sans-serif;
 }
 
-.view-profile-mentor-name{
+.view-profile-mentor-name {
   font-size: 3em;
-  font-weight:bolder;
+  font-weight: bolder;
   margin-bottom: 0;
 }
 
-.view-profile-mentor-location{
- font-size: 1.5em;
-
+.view-profile-mentor-location {
+  font-size: 1.5em;
 }
-
 
 .view-profile-mentor-img {
   height: 10em;
@@ -737,17 +754,15 @@ h2 {
   border-radius: 80px;
   border-color: #ffffff;
   border-width: 0.1em;
-  border-style:solid;
+  border-style: solid;
 }
 
 .custom-tabs .nav-link.active {
   /*background-color: #77A6AA !important;  /* color de fondo del tab activo */
-  color: #77A6AA !important;               /* texto en blanco */
+  color: #77a6aa !important; /* texto en blanco */
   /*border-color: #77A6AA !important;      /* color del borde */
   border: none;
-  border-bottom: 2px solid #77A6AA !important; ;
- 
-
+  border-bottom: 2px solid #77a6aa !important;
 }
 
 .custom-tabs .nav-link:hover {
@@ -756,38 +771,29 @@ h2 {
 }
 
 .custom-tabs .nav-tabs .nav-link.active {
- border: none;
+  border: none;
 }
 
 .custom-tabs .nav-link {
   transition: all 0.3s ease;
-  color:dimgrey;
+  color: dimgrey;
   border: none;
 }
 
-.tab-profile-bio{
-  border:1px solid #77A6AA;
-  min-height: 12rem;  
+.tab-profile-bio {
+  border: 1px solid #77a6aa;
+  min-height: 12rem;
   border-radius: 20px;
   padding-left: 2rem;
   padding-top: 1rem;
 }
 
-.tab-profile-bio .title{
-  color: #263C5E
+.tab-profile-bio .title {
+  color: #263c5e;
 }
-
-
 
 .icons {
   color: #184a45;
-
-
-}
-
-.card {
-  width: 15rem;
-  height: 18rem;
 }
 
 .icon-card {
@@ -797,21 +803,21 @@ h2 {
   align-items: center;
   height: 100px;
 }
- 
-.text-card{
+
+.text-card {
   animation: fadeInSlideUp 3s forwards;
   animation-delay: 1s;
 }
 
-.cta-section{
+.cta-section {
   background-color: #184039;
 }
 
-.tittle-CTA{
+.tittle-CTA {
   color: white;
 }
 
-.bottom-register{
+.bottom-register {
   color: #184039;
 }
 

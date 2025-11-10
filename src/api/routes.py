@@ -97,6 +97,7 @@ def handle_update():
         return jsonify({'msg': 'user not found'}), 404
 
     user.nickname = body.get('nickname', user.nickname)
+    user.avatar = body.get('avatar' , user.avatar)
     user.nombre = body.get('nombre', user.nombre)
     user.apellido = body.get('apellido', user.apellido)
     user.fecha_nacimiento = body.get('fecha_nacimiento', user.fecha_nacimiento)

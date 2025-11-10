@@ -14,6 +14,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { CreateEditClient } from "./components/CreateEditClient";
 import { CreateProduct } from "./components/CreateProduct";
 import { TiendaPage } from "./pages/TiendaPage";
+import { CrearTiendaPage } from "./pages/CrearTiendaPage";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -35,6 +36,7 @@ export const router = createBrowserRouter(
         <Route path="/perfil" element={<CreateEditClient/>}/>
         <Route path="/product" element={<CreateProduct/>}/>
         <Route path="/tienda" element={<TiendaPage/>}/>
+        <Route path="/crear_tienda" element={<CrearTiendaPage/>}/>
       </Route>
     )
 );

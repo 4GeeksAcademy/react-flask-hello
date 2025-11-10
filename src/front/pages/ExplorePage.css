@@ -1,0 +1,70 @@
+.explore-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+  min-height: 100vh;
+}
+
+.explore-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.explore-header h1 {
+  font-size: 2.5rem;
+  color: #c94b6b;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.history-section {
+  background-color: #ffc1cc;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(201, 75, 107, 0.1);
+}
+
+.history-section h2 {
+  font-size: 2rem;
+  color: #c94b6b;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.history-content {
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  padding: 30px;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-content p {
+  color: #8b5a6e;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .explore-header h1 {
+    font-size: 2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .history-section {
+    padding: 25px;
+  }
+}

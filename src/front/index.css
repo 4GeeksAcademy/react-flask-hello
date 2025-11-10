@@ -701,10 +701,41 @@ h2 {
 
 
 
+.icons {
+  color: #184a45;
 
 
+}
 
-/*
+.card {
+  width: 15rem;
+  height: 18rem;
+}
+
+.icon-card {
+  color: #5aa8ab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+ 
+.text-card{
+  animation: fadeInSlideUp 3s forwards;
+  animation-delay: 1s;
+}
+
+.cta-section{
+  background-color: #184039;
+}
+
+.tittle-CTA{
+  color: white;
+}
+
+.bottom-register{
+  color: #184039;
+}
 
 .btn-view {
   width: 100%;
@@ -721,4 +752,3 @@ h2 {
   text-decoration: none;
   display: block;
 }
-*/

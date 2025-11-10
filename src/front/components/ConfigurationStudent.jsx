@@ -120,7 +120,7 @@ const ConfigurationStudent = () => {
     <>
       {role === "student" && (
         <>
-          <div className="my-4">
+          <div className="my-4 row col-sm-12 col-md-6 col-lg-12">
             <h2>Configura tu cuenta</h2>
             <UploadAvatar />
           </div>

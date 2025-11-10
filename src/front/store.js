@@ -2,6 +2,7 @@ export const initialStore=()=>{
   return{
     user: JSON.parse(localStorage.getItem('user')) || null,
     tienda: JSON.parse(localStorage.getItem('tienda')) || null,
+    producto: JSON.parse(localStorage.getItem('producto')) || null,
     auth: localStorage.getItem('token')? true :  false,
     message: null,
     todos: [

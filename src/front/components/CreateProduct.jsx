@@ -1,13 +1,22 @@
+import React, {useState} from "react";
 import CloudinaryComponent from "./cloudinary";
-import React from "react";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import productServices from "../services/product.services";
 
 
 export const CreateProduct = () => {
 
 
+  const {store,dispatch} = useGlobalReducer();
+  const [productData, setProductData] = useState(store.producto);
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    productServices.crearProducto(productData).then((data) => {
+      if (data.producto) dispatch({type: "crear_mis_productos", payload: data.producto})
+    });
     alert("Formulario de producto enviado (solo vista previa).");
   };
 

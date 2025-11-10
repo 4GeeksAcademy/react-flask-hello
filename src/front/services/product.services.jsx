@@ -1,9 +1,9 @@
-const tiendaServices = {}
+const productServices = {}
 const url = import.meta.env.VITE_BACKEND_URL
 
-tiendaServices.miTienda = async () => {
+productServices.misProductos = async () => {
     try {
-        const resp = await fetch(url + 'api/mi_tienda', {
+        const resp = await fetch(url + 'api/mi_producto', {
             method: "GET",
             headers: {
                 "Content-Type": 'application/json',
@@ -11,7 +11,7 @@ tiendaServices.miTienda = async () => {
             },
             
         })
-        if (!resp.ok) throw new Error('error tiending in')
+        if (!resp.ok) throw new Error('error producting in')
 
         const data = await resp.json()
 
@@ -23,16 +23,16 @@ tiendaServices.miTienda = async () => {
     }
 }
 
-tiendaServices.crearTienda = async (formData) => {
+productServices.crearProducto = async (formData) => {
     try {
-        const resp = await fetch(url + '/api/crear_tienda', {
+        const resp = await fetch(url + '/api/crear_mis_productos', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json'
             },
             body: JSON.stringify(formData)
         })
-        if (!resp.ok) throw new Error('error tiendig la tienda')
+        if (!resp.ok) throw new Error('error producting el producto')
 
         const data = await resp.json()
         return data
@@ -46,5 +46,4 @@ tiendaServices.crearTienda = async (formData) => {
 
 
 
-
-export default tiendaServices
+export default productServices

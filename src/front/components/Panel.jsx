@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import userServices from "../services/userServices";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { CirclePlus, CalendarDays, CircleCheckBig, CircleX  } from 'lucide-react';
+import { CirclePlus, CalendarDays, CircleCheckBig, CircleX } from 'lucide-react';
 
 const Panel = () => {
     const { role } = useParams();
@@ -40,9 +40,9 @@ const Panel = () => {
 
 
     const totalSession = (states?.canceled || 0) + (states?.completed || 0) + (states?.pending || 0)
-    
-    const calcPercentage = (count) =>{
-        if(totalSession === 0) return 0;
+
+    const calcPercentage = (count) => {
+        if (totalSession === 0) return 0;
         return ((count / totalSession) * 100).toFixed(0)
     }
 
@@ -66,16 +66,16 @@ const Panel = () => {
                     <div className="div-statistics p-5">
                         <div className="mb-5">
                             <div className="progress-stacked">
-                                <div className="progress" role="progressbar" aria-label="Pendientes" aria-valuenow={percentPending} aria-valuemin="0" aria-valuemax="100" 
-                                style={{width: `${percentPending}%`}}>
+                                <div className="progress" role="progressbar" aria-label="Pendientes" aria-valuenow={percentPending} aria-valuemin="0" aria-valuemax="100"
+                                    style={{ width: `${percentPending}%` }}>
                                     <div className="progress-bar bg-header-pending"><span className="text-black fw-bold">{`${percentPending}%`}</span></div>
                                 </div>
                                 <div className="progress" role="progressbar" aria-label="Segment two" aria-valuenow={percentCanceled} aria-valuemin="0" aria-valuemax="100"
-                                style={{width: `${percentCanceled}%`}} >
+                                    style={{ width: `${percentCanceled}%` }} >
                                     <div className="progress-bar bg-header-canceled"><span className="text-black fw-bold">{`${percentCanceled}%`}</span></div>
                                 </div>
                                 <div className="progress" role="progressbar" aria-label="Segment three" aria-valuenow={percentCompleted} aria-valuemin="0" aria-valuemax="100"
-                                style={{width: `${percentCompleted}%`}}>
+                                    style={{ width: `${percentCompleted}%` }}>
                                     <div className="progress-bar bg-header-completed"><span className="text-black fw-bold">{`${percentCompleted}%`}</span></div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ const Panel = () => {
                             <div className="card card-states">
                                 <div className="card-header bg-header-pending"></div>
                                 <div className=" d-flex align-items-end h-75">
-                                    <p className="mb-0 me-2 ">{<CalendarDays size={50}/>}</p>
+                                    <p className="mb-0 me-2 ">{<CalendarDays size={50} />}</p>
                                     <p className="w-75 fs-4 mb-0">Pendientes</p>
                                     <span className="fs-4">({states?.pending})</span>
                                 </div>
@@ -92,7 +92,7 @@ const Panel = () => {
                             <div className="card card-states">
                                 <div className="card-header bg-header-completed"></div>
                                 <div className="d-flex align-items-end h-75">
-                                    <p className="mb-0 me-1">{<CircleCheckBig  size={50}/>}</p>
+                                    <p className="mb-0 me-1">{<CircleCheckBig size={50} />}</p>
                                     <p className="w-75 fs-4 mb-0">Completadas</p>
                                     <span className="fs-4">({states?.completed})</span>
                                 </div>
@@ -100,7 +100,7 @@ const Panel = () => {
                             <div className="card card-states">
                                 <div className="card-header bg-header-canceled"></div>
                                 <div className="d-flex align-items-end h-75">
-                                    <p className="mb-0 me-1">{<CircleX   size={50}/>}</p>
+                                    <p className="mb-0 me-1">{<CircleX size={50} />}</p>
                                     <p className="w-75 fs-4 mb-0">Canceladas</p>
                                     <span className="fs-4">({states?.canceled})</span>
                                 </div>

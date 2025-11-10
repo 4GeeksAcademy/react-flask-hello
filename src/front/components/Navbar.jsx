@@ -3,50 +3,69 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 import ImageAvatar from "./ImageAvatar";
 
 export const Navbar = () => {
-	const { store, dispatch } = useGlobalReducer()
+	const { store } = useGlobalReducer();
 
 	return (
-
-		<nav className="navbar navbar-expand-lg navbar ">
+		<nav className="navbar navbar-expand-lg">
 			<div className="container">
-				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+				
+				<Link to="/" className="navbar-brand d-flex align-items-center text-decoration-none">
+					<img
+						className="my-2 icon"
+						src={store.icon}
+						alt="icon"
+						style={{ height: "40px", width: "auto" }}
+					/>
+					<p className="icon-text mb-0 text-white ms-2">{store.nameApp}</p>
+				</Link>
+
+				
+				<button
+					className="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarContent"
+					aria-controls="navbarContent"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
 					<span className="navbar-toggler-icon"></span>
 				</button>
-				<div className="w-50 navbar-brand d-flex align-items-center ">
-					<Link to="/" className="d-flex align-items-center text-decoration-none">
-						<img className="my-2 icon" src={store.icon} alt="" />
-						<p className="icon-text mb-0 text-white">{store.nameApp}</p>
-					</Link>
-				</div>
-				<div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-					<ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
-						<li className="nav-item">
-							<a className="nav-link active text-white navbar-text fs-5" aria-current="page" href="#">Mentores</a>
-						</li>
-						<li className="nav-item ">
-							<a className="nav-link text-white navbar-text fs-5" href="#">Temas</a>
-						</li>
-					</ul>
-					<div>
-						{!store.auth &&
-							<><Link to="/login">
-								<button type="button" className="btn btn-primary rounded-pill navbar-btn">Login</button>
-							</Link>
-								<Link to="/register">
-									<button type="button" className="btn btn-primary rounded-pill navbar-btn">Registro</button>
-								</Link>
-							</>}
-						{store.auth && <Link className="d-flex" to={`/dashboard/${store?.user.role}`}>
-							
-							<ImageAvatar/>
-						</Link>}
-					</div>
 
+				
+				<div className="collapse navbar-collapse justify-content-end" id="navbarContent">
+					<ul className="navbar-nav align-items-lg-center">
+						
+						{!store.auth && (
+							<>
+								<li className="nav-item me-lg-2">
+									<Link to="/login" className="nav-link">
+										<button type="button" className="btn btn-primary rounded-pill navbar-btn w-100">
+											Login
+										</button>
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link to="/register" className="nav-link">
+										<button type="button" className="btn btn-primary rounded-pill navbar-btn w-100">
+											Registro
+										</button>
+									</Link>
+								</li>
+							</>
+						)}
+
+						
+						{store.auth && (
+							<li className="nav-item">
+								<Link className="nav-link d-flex align-items-center" to={`/dashboard/${store?.user.role}`}>
+									<ImageAvatar />
+								</Link>
+							</li>
+						)}
+					</ul>
 				</div>
 			</div>
 		</nav>
-
-
-
 	);
 };

@@ -22,8 +22,8 @@ sqlalchemy-schemadisplay = "*"
 pydot = "*"
 flask-admin = "*"
 wtforms = "<3.0"
-flask-mail = "*"
 requests = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.13"

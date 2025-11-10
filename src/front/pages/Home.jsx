@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 
 import Particles from "react-tsparticles";
 import { Hero } from "../components/Hero.jsx";
-import MentorsTop from "../components/MentorsTop.jsx";
-
+import HowItWorks from "../components/HowItWorks.jsx";
+import TechFocus  from "../components/TechFocus.jsx";
+import CTARegister from "../components/CTARegister.jsx";
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
@@ -41,9 +42,11 @@ export const Home = () => {
 		<div className="style-home vh-100">
 			<Hero />
 
-			<MentorsTop/>
-
+			<TechFocus/>
+			<HowItWorks/>
 			
+
+			<CTARegister/>
 
 			
 

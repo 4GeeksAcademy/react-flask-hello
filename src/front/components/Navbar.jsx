@@ -31,7 +31,7 @@ export const Navbar = () => {
     </Link>
 
     {/* Botón hamburguesa centrado */}
-    <div className="d-lg-none d-flex justify-content-center w-100 mb-2">
+    <div className="d-lg-none d-flex justify-content-end w-100 mb-2">
       <button
         className="navbar-toggler"
         type="button"
@@ -46,7 +46,7 @@ export const Navbar = () => {
     </div>
 
     {/* Menú desplegable */}
-    <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul className="navbar-nav align-items-center">
         <li className="nav-item m-2">
           <Link className="nav-link" to="/products">Products</Link>

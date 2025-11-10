@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect }from "react";
 
 import logo from "../assets/img/Logo.png";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -9,6 +9,9 @@ export const CreateEditClient = () => {
   const [edit, setEdit] = useState(false);
   const [userData, setUserData] = useState(store.user);
 
+  useEffect(() => {   if (store.user?.avatar !== userData.avatar) {      setUserData(prevData => ({        ...prevData,        avatar: store.user.avatar      }));    }  }, [store.user?.avatar]);
+ 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
@@ -17,6 +20,7 @@ export const CreateEditClient = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('enviando la data del user',userData)
     userServices.profile_update(userData).then((data) => {
       if (data.user) dispatch({ type: "update_user", payload: data.user });
     });

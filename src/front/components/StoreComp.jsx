@@ -1,12 +1,18 @@
-import React from "react";
-
+import React, {useState} from "react";
+import tiendaServices from "../services/tienda.services";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
 export const StoreComp = () => {
 
+  const {store,dispatch} = useGlobalReducer();
+  const [tiendaData,setTiendaData] = useState(store.tienda);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    tiendaServices.crearTienda(tiendaData).then((data) => {
+      if (data.tienda) dispatch({type: "crear_tienda", payload: data.tienda})
+    })
     alert("Formulario de producto enviado (solo vista previa).");
   };
 

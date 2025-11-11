@@ -234,7 +234,6 @@ class Resenas(db.Model):
             "producto_id": self.producto_id,
             "cliente_id": self.cliente_id,
             "estrellas": self.estrellas,
-            "comentario": self.comentario,
             "fecha": self.fecha,
             "respuestas": self.respuestas,
             # posible recursividad

@@ -3,7 +3,7 @@ const url = import.meta.env.VITE_BACKEND_URL
 
 productServices.misProductos = async () => {
     try {
-        const resp = await fetch(url + 'api/mi_producto', {
+        const resp = await fetch(url + '/api/mi_producto', {
             method: "GET",
             headers: {
                 "Content-Type": 'application/json',
@@ -35,6 +35,21 @@ productServices.crearProducto = async (formData) => {
         if (!resp.ok) throw new Error('error producting el producto')
 
         const data = await resp.json()
+        return data
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+productServices.recibirProductos = async () => {
+    try {
+        const resp = await fetch(url + '/api/recibir_productos')
+        if (!resp.ok) throw new Error('error producting in')
+
+        const data = await resp.json()
+
+        
         return data
 
     } catch (error) {

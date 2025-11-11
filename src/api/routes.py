@@ -190,3 +190,12 @@ def handle_crear_producto():
     db.session.add(new_producto)
     db.session.commit()
     return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente'}), 201
+
+@api.route('/recibir_productos', methods=['GET'])
+def handle_recibir_productos():
+    stm = select(Productos)
+    producto = db.session.execute(stm).scalars().all()
+    if producto is None:
+        return jsonify({'msg': 'no hay productos'}), 404
+    producto = [p.serialize() for p in producto]
+    return jsonify({'producto': producto}), 200

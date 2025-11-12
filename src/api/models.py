@@ -22,16 +22,17 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     registro_fecha: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    direccion: Mapped[str] = mapped_column(String(150) ,nullable=True)
-    ciudad:  Mapped[str] = mapped_column(String(150) ,nullable=True)
-    pais:  Mapped[str] = mapped_column(String(50) ,nullable=True)
+    direccion: Mapped[str] = mapped_column(String(150), nullable=True)
+    ciudad:  Mapped[str] = mapped_column(String(150), nullable=True)
+    pais:  Mapped[str] = mapped_column(String(50), nullable=True)
     cp: Mapped[int] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
-    dni: Mapped[str] = mapped_column(unique=True, nullable=True) #esto es nuevo
+    dni: Mapped[str] = mapped_column(
+        unique=True, nullable=True)  # esto es nuevo
     tiendas: Mapped[List['Tienda']] = relationship(back_populates='owner')
     resenas: Mapped[List['Resenas']] = relationship(back_populates='autor')
     favoritos: Mapped[List['Favoritos']] = relationship(back_populates='user')
-    
+
     notificaciones: Mapped[List['Notificaciones']
                            ] = relationship(back_populates='user')
 
@@ -51,7 +52,7 @@ class User(db.Model):
             'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
-            "tiendas":[t.serialize() for t in self.tiendas] if self.tiendas else None,
+            "tiendas": [t.serialize() for t in self.tiendas] if self.tiendas else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
             "notificaciones": [n.serialize() for n in self.notificaciones] if self.notificaciones else None,
@@ -62,7 +63,8 @@ class User(db.Model):
 class Tienda(db.Model):
     __tablename__ = "tienda"
     id: Mapped[int] = mapped_column(primary_key=True)
-    cif: Mapped[str] = mapped_column(unique=True, nullable=False) #esto es nuevo
+    cif: Mapped[str] = mapped_column(
+        unique=True, nullable=False)  # esto es nuevo
     nombre_tienda: Mapped[str] = mapped_column(unique=False, nullable=False)
     descripcion_tienda: Mapped[str] = mapped_column(
         String(300), nullable=False, unique=False)
@@ -72,7 +74,7 @@ class Tienda(db.Model):
         unique=True, nullable=False)
     logo_url: Mapped[str] = mapped_column(
         String(300), unique=True, nullable=False)
-     # my sql colocar JSON y si es postgress JSONb
+    # my sql colocar JSON y si es postgress JSONb
     redes_sociales: Mapped[str] = mapped_column(unique=False, nullable=True)
     fecha_creacion: Mapped[TIMESTAMP] = mapped_column(
         DateTime(), default=datetime.now(timezone.utc))
@@ -135,8 +137,6 @@ class Productos(db.Model):
     favoritos: Mapped[List['Favoritos']] = relationship(
         back_populates='producto')
 
-  
-
     def serialize(self):
         return {
             "id": self.id,
@@ -185,9 +185,6 @@ class Favoritos(db.Model):
         }
 
 
-
-
-
 class Notificaciones(db.Model):
     __tablename__ = "notificaciones"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -217,7 +214,7 @@ class Resenas(db.Model):
     __tablename__ = "resenas"
     id: Mapped[int] = mapped_column(primary_key=True)
     estrellas:  Mapped[int] = mapped_column(Integer())
-    
+
     fecha: Mapped[TIMESTAMP] = mapped_column(
         DateTime(timezone=True), default=datetime.now(timezone.utc))
     respuestas: Mapped[str] = mapped_column(Text())
@@ -254,7 +251,6 @@ class Historial(db.Model):
     direccion: Mapped[str] = mapped_column(
         String(100), unique=False, nullable=False)
     pago: Mapped[bool] = mapped_column(Boolean())
-    
 
     tienda_id: Mapped[int] = mapped_column(
         ForeignKey('tienda.id'))  # unir a tienda id
@@ -262,7 +258,7 @@ class Historial(db.Model):
 
     def serialize(self):
         return {
-            "pedido_id": self.pedido_id,
+
             "tienda_id": self.tienda_id,
             "total": self.total,
             "gastos_envio": self.gastos_envio,

@@ -1,0 +1,122 @@
+.pagina-tienda {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+  min-height: 100vh;
+  color: #3a3a3a;
+  padding-bottom: 80px;
+}
+
+.tienda-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background-color: #ffc1cc;
+  box-shadow: 0 6px 20px rgba(201, 75, 107, 0.2);
+}
+
+.tienda-imagen {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-right: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.tienda-info {
+  max-width: 500px;
+}
+
+.tienda-info h1 {
+  color: #000000;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.tienda-info p {
+  color: #a52642;
+  font-size: 1.1rem;
+}
+
+.tienda-productos {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.tienda-productos h2 {
+  color: #c94b6b;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.producto-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(201, 75, 107, 0.15);
+  padding: 25px;
+  transition: transform 0.3s ease;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+}
+
+.producto-card h3 {
+  color: #c94b6b;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.comprar-btn {
+  background-color: #c94b6b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comprar-btn:hover {
+  background-color: #a63e5a;
+}
+
+.pagina-tienda-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #c94b6b;
+  font-family: "Poppins", sans-serif;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #c94b6b;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+

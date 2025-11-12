@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
-import { ProductCard } from "../components/ProductCard";
 import "./ExplorePage.css";
 import productServices from "../services/product.services";
 
 export const ExplorePage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [products,setProducts] = useState([])
 
@@ -37,3 +38,4 @@ export const ExplorePage = () => {
     </div>
   );
 };
+

@@ -51,9 +51,9 @@ export const Navbar = () => {
         <li className="nav-item m-2">
           <Link className="nav-link" to="/products">Products</Link>
         </li>
-        <li className="nav-item m-2">
+        {/* <li className="nav-item m-2">
           <a className="nav-link" href="#">Shopping Cart</a>
-        </li>
+        </li> */}
         <li className="nav-item m-2">
           <a className="nav-link" href="#">QR Code Generator</a>
         </li>

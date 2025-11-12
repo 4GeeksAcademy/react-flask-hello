@@ -51,6 +51,7 @@ class User(db.Model):
             'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
+            "tiendas":[t.serialize() for t in self.tiendas] if self.tiendas else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
             "notificaciones": [n.serialize() for n in self.notificaciones] if self.notificaciones else None,

@@ -97,7 +97,7 @@ def handle_update():
         return jsonify({'msg': 'user not found'}), 404
 
     user.nickname = body.get('nickname', user.nickname)
-    user.avatar = body.get('avatar' , user.avatar)
+    user.avatar = body.get('avatar', user.avatar)
     user.nombre = body.get('nombre', user.nombre)
     user.apellido = body.get('apellido', user.apellido)
     user.fecha_nacimiento = body.get('fecha_nacimiento', user.fecha_nacimiento)
@@ -151,12 +151,35 @@ def handle_crear_tienda():
                         descripcion_tienda=body['descripcion_tienda'],
                         categoria_principal=body['categoria_principal'],
                         telefono_comercial=body['telefono_comercial'],
-                        logo_url=body['logo_url'],
+                        logo_url=body.get(
+                            'logo_url', 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'),
                         owner_id=id,
+                        redes_sociales=body['redes_sociales'],
                         )
     db.session.add(new_tienda)
     db.session.commit()
     return jsonify({'success': True, 'msg': 'Nueva tienda tiendificada con exito'}), 201
+
+
+@api.route('/editar_tienda', methods=['PUT'])
+@jwt_required()
+def handle_editar_tienda():
+    id = get_jwt_identity()
+    stm = select(Tienda).where(Tienda.owner_id == id)
+    tienda = db.session.execute(stm).scalar_one_or_none()
+    body = request.get_json()
+
+    tienda.cif = body.get('cif'),
+    tienda.nombre_tienda = body.get('nombre_tienda'),
+    tienda.descripcion_tienda = body.get('descripcion_tienda'),
+    tienda.categoria_principal = body.get('categoria_principal'),
+    tienda.telefono_comercial = body.get('telefono_comercial'),
+    tienda.logo_url = body.get(
+        'logo_url', 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'),
+    tienda.owner_id = id,
+    tienda.redes_sociales = body.get('redes_sociales'),
+    db.session.commit()
+    return jsonify({'success': True, 'msg': 'Tienda editada con exito','tienda':tienda.serialize()}), 201
 
 
 @api.route('/mis_productos', methods=['GET'])
@@ -190,6 +213,7 @@ def handle_crear_producto():
     db.session.add(new_producto)
     db.session.commit()
     return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente'}), 201
+
 
 @api.route('/recibir_productos', methods=['GET'])
 def handle_recibir_productos():

@@ -1,20 +1,42 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import tiendaServices from "../services/tienda.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
 export const StoreComp = () => {
 
-  const {store,dispatch} = useGlobalReducer();
-  const [tiendaData,setTiendaData] = useState(store.tienda);
+  const { store, dispatch } = useGlobalReducer();
+  const [tiendaData, setTiendaData] = useState(store.tienda || {
+    nombre_tienda: "",
+    descripcion_tienda: "",
+    categoria_principal: "",
+    telefono_comercial: "",
+    redes_sociales: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    tiendaServices.crearTienda(tiendaData).then((data) => {
-      if (data.tienda) dispatch({type: "crear_tienda", payload: data.tienda})
-    })
-    alert("Formulario de producto enviado (solo vista previa).");
+    if (store.tienda?.nombre_tienda) {
+      //llamar a editar tienda
+      tiendaServices.editar_tienda(tiendaData).then((data) => {
+        if (data.tienda) {
+          dispatch({type: "editar_tienda", payload: data.tienda})
+          localStorage.setItem('tienda',JSON.stringify(data.tienda))
+        }
+      })
+
+    } else {
+      tiendaServices.crearTienda(tiendaData).then((data) => {
+        if (data.tienda) dispatch({ type: "crear_tienda", payload: data.tienda })
+      })
+    }
+    
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setTiendaData({ ...tiendaData, [name]: value })
+  }
 
 
   return (
@@ -30,12 +52,12 @@ export const StoreComp = () => {
               "linear-gradient(90deg, #ff0000 0%, #ff7a00 50%, #fff200 100%)",
           }}
         >
-          <h3 className="fw-semibold py-2 mb-0">🛒 Crear Tienda</h3>
+          <h3 className="fw-semibold py-2 mb-0">🛒 {store.tienda?.nombre_tienda ? 'Editar Tienda' : 'Crear Tienda'}</h3>
         </div>
 
         <form onSubmit={handleSubmit}>
           {/* --- Bloque superior --- */}
-                  <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center">
             <div className="p-4 border border-danger rounded-4 bg-light" style={{ maxWidth: "500px", width: "100%" }}>
               <label htmlFor="imagen" className="form-label fw-bold text-danger">
                 Imagen o logo de la tienda
@@ -51,7 +73,7 @@ export const StoreComp = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="mb-4">
             <div className="mb-3">
               <label htmlFor="nombre" className="form-label fw-semibold">
@@ -61,6 +83,9 @@ export const StoreComp = () => {
                 type="text"
                 className="form-control border-danger"
                 id="nombre"
+                name="nombre_tienda"
+                onChange={handleChange}
+                value={tiendaData.nombre_tienda}
                 placeholder=""
                 required
               />
@@ -74,6 +99,9 @@ export const StoreComp = () => {
                 type="text"
                 className="form-control border-danger"
                 id="cif"
+                name="cif"
+                onChange={handleChange}
+                value={tiendaData.cif}
                 placeholder=""
                 required
               />
@@ -87,6 +115,9 @@ export const StoreComp = () => {
                 type="text"
                 className="form-control border-danger"
                 id="categoria"
+                name="categoria_principal"
+                onChange={handleChange}
+                value={tiendaData.categoria_principal}
                 placeholder=""
                 required
               />
@@ -100,6 +131,9 @@ export const StoreComp = () => {
                 type="text"
                 className="form-control border-danger"
                 id="telefono"
+                name="telefono_comercial"
+                onChange={handleChange}
+                value={tiendaData.telefono_comercial}
                 placeholder=""
                 required
               />
@@ -113,6 +147,9 @@ export const StoreComp = () => {
                 type="text"
                 className="form-control border-danger"
                 id="redes_sociales"
+                name="redes_sociales"
+                onChange={handleChange}
+                value={tiendaData.redes_sociales}
                 placeholder=""
                 required
               />
@@ -124,6 +161,9 @@ export const StoreComp = () => {
               </label>
               <textarea
                 id="descripcion"
+                name="descripcion_tienda"
+                onChange={handleChange}
+                value={tiendaData.descripcion_tienda}
                 className="form-control border border-danger"
                 rows="3"
                 placeholder="Agrega una breve descripción de tu tienda o servicio que quieres ofertar..."
@@ -131,7 +171,7 @@ export const StoreComp = () => {
             </div>
           </div>
 
-  
+
 
 
 

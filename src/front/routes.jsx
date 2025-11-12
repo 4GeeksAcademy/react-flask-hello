@@ -14,7 +14,8 @@ import { CreateEditClient } from "./components/CreateEditClient";
 import { CreateProduct } from "./components/CreateProduct";
 import { TiendaPage } from "./pages/TiendaPage";
 import { ExplorePage } from "./pages/ExplorePage";
-import { CrearTiendaPage } from "./pages/CrearTiendaPage";
+import { CrearTiendaPage } from "./pages/CrearTiendaPage";import { PaginaTienda } from "./components/PaginaTienda";
+
 export const router = createBrowserRouter(
     createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.
@@ -37,6 +38,9 @@ export const router = createBrowserRouter(
         <Route path="/tienda" element={<TiendaPage/>}/>
         <Route path="/explorar" element={<ExplorePage/>}/>
         <Route path="/crear_tienda" element={<CrearTiendaPage/>}/>
+        <Route path="/tienda/:id" element={<PaginaTienda />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/createeditclient" element={<CreateEditClient />} />
       </Route>
     )
 );

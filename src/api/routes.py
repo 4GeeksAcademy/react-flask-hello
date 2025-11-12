@@ -5,7 +5,7 @@ import jwt
 from werkzeug.security import check_password_hash
 from api.models import db, User
 from werkzeug.security import generate_password_hash
-from flask_cors import CORS
+
 
 
 def token_requerido(f):
@@ -26,8 +26,6 @@ def token_requerido(f):
 SECRET_KEY = "super-secret-key"
 
 api = Blueprint('api', __name__)
-CORS(api)
-
 reset_tokens = {}
 
 

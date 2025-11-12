@@ -7,12 +7,12 @@ export const Navbar = () => {
 			<div className="container">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1">
-						<img src='https://res.cloudinary.com/dmx0zjkej/image/upload/v1762540958/LOGO_600_x_600_muoehy.png' 
+						<img src='https://res.cloudinary.com/dmx0zjkej/image/upload/v1762540958/LOGO_200_x_200_muoehy.png' 
 						className='logo'/>
 					</span>
 				</Link>
 				<div className="ml-auto">
-					<Link to="/demo">
+					<Link to="/register">
 						<button className="btn btn-primary">Register</button>
 					</Link>
 				</div>

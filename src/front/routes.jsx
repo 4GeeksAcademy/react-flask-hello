@@ -13,6 +13,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { CreateEditClient } from "./components/CreateEditClient";
 import { Payment } from "./pages/Payment";
 import { ExplorePage } from "./pages/ExplorePage";
+import { PaginaTienda } from "./components/PaginaTienda";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ export const router = createBrowserRouter(
       <Route path="/createeditclient" element={<CreateEditClient />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/explorar" element={<ExplorePage />} />
+      <Route path="/tienda/:id" element={<PaginaTienda />} />
     </Route>
   )
 );

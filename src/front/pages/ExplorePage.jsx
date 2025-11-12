@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
-import { ProductCard } from "../components/ProductCard";
 import "./ExplorePage.css";
 
 export const ExplorePage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
   const products = [
@@ -31,7 +32,19 @@ export const ExplorePage = () => {
 
       <div className="products-grid">
         {filteredProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <div key={product.id} className="product-card">
+            <div className="product-image"></div>
+            <h3>{product.title}</h3>
+            <div className="price-and-button">
+              <p>{product.price} €</p>
+              <button
+                className="ver-tienda-btn"
+                onClick={() => navigate(`/tienda/${product.id}`)}
+              >
+                Ver tienda
+              </button>
+            </div>
+          </div>
         ))}
       </div>
 
@@ -44,3 +57,4 @@ export const ExplorePage = () => {
     </div>
   );
 };
+

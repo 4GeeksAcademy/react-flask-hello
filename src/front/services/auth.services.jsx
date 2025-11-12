@@ -17,6 +17,9 @@ AuthServices.login = async (formData) => {
 
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
+        if (data.user.tiendas) {
+            localStorage.setItem('tienda', JSON.stringify(data.user.tiendas[0]))
+        }
         return data
 
     } catch (error) {

@@ -23,9 +23,9 @@ export const Navbar = () => {
       <img
         src={logo}
         alt="Logo"
-        width="360"
-        height="56"
-        className="d-inline-block align-text-top me-2"
+        width="360px"
+        height="auto"
+        className="img-fluid d-inline align-text-top me-2"
         style={{ objectFit: "contain" }}
       />
     </Link>
@@ -49,11 +49,11 @@ export const Navbar = () => {
     <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul className="navbar-nav align-items-center">
         <li className="nav-item m-2">
-          <Link className="nav-link" to="/products">Products</Link>
+          <Link className="nav-link" to="/explorar">Products</Link>
         </li>
-        <li className="nav-item m-2">
+        {/* <li className="nav-item m-2">
           <a className="nav-link" href="#">Shopping Cart</a>
-        </li>
+        </li> */}
         <li className="nav-item m-2">
           <a className="nav-link" href="#">QR Code Generator</a>
         </li>
@@ -65,6 +65,18 @@ export const Navbar = () => {
             <strong>{store.auth ? "Perfil" : "Login"}</strong>
           </Link>
         </li>
+           <li className="nav-item m-2">
+
+        { store.tienda &&
+                <Link 
+                
+                  className="btn btn-danger px-4" to="/mi_tienda"><strong>Mi Tienda</strong></Link>
+        }
+        {
+         store.user && !store.tienda &&      <Link   className="btn btn-danger px-4" to="/crear_tienda">Crear Tienda</Link>
+                
+      }
+           </li>
         {store.auth && (
           <li className="nav-item m-2">
             <button

@@ -56,6 +56,7 @@ export const CreateEditClient = () => {
           className="card shadow-lg border-0 rounded-4"
           style={{ maxWidth: "900px", width: "100%" }}
         >
+
           <div
             className="card-header text-white rounded-top-4 d-flex justify-content-between align-items-center"
             style={{

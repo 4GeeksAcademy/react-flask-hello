@@ -28,13 +28,34 @@ tiendaServices.crearTienda = async (formData) => {
         const resp = await fetch(url + '/api/crear_tienda', {
             method: "POST",
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                "Authorization": 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(formData)
         })
         if (!resp.ok) throw new Error('error tiendig la tienda')
 
         const data = await resp.json()
+        return data
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+tiendaServices.editar_tienda = async (formData) => {
+    try {
+        const resp = await fetch(url + '/api/editar_tienda', {
+            method: "PUT",
+            headers: {
+                "Content-Type": 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(formData)
+        })
+        if (!resp.ok) throw new Error('error editing tienda')
+        
+        const data = resp.json()
         return data
 
     } catch (error) {

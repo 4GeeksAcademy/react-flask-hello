@@ -10,41 +10,47 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
-    role: Mapped[bool] = mapped_column(Boolean(), nullable=True)
     nickname: Mapped[str] = mapped_column(unique=True, nullable=True)
+    avatar: Mapped[str] = mapped_column(nullable=True)
     nombre: Mapped[str] = mapped_column(nullable=True)
     apellido: Mapped[str] = mapped_column(nullable=True)
     fecha_nacimiento: Mapped[datetime] = mapped_column(nullable=True)
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
     address: Mapped[str] = mapped_column(nullable=True)
-    telefono: Mapped[int] = mapped_column(unique=True, nullable=True)
+    telefono: Mapped[str] = mapped_column(unique=True, nullable=True)
     password: Mapped[str] = mapped_column(nullable=False)
     registro_fecha: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    direccion: Mapped[str] = mapped_column(String(150) ,nullable=True)
+    ciudad:  Mapped[str] = mapped_column(String(150) ,nullable=True)
+    pais:  Mapped[str] = mapped_column(String(50) ,nullable=True)
+    cp: Mapped[int] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True)
-
+    dni: Mapped[str] = mapped_column(unique=True, nullable=True) #esto es nuevo
     tiendas: Mapped[List['Tienda']] = relationship(back_populates='owner')
     resenas: Mapped[List['Resenas']] = relationship(back_populates='autor')
     favoritos: Mapped[List['Favoritos']] = relationship(back_populates='user')
-    pedidos: Mapped[List['Detalles_pedido']
-                    ] = relationship(back_populates='user')
+    
     notificaciones: Mapped[List['Notificaciones']
                            ] = relationship(back_populates='user')
 
     def serialize(self):
         return {
             "id": self.id,  # id debe conectarse con user_id en class tienda
-            "role": self.role,
             "nickname": self.nickname,
             "nombre": self.nombre,
+            'dni': self.dni,
             "apellido": self.apellido,
             "fecha_nacimiento": self.fecha_nacimiento,
             "address": self.address,
             "telefono": self.telefono,
+            "direccion": self.direccion,
+            "ciudad": self.ciudad,
+            "pais": self.pais,
+            'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
-            "pedidos": [p.serialize() for p in self.pedidos] if self.pedidos else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
             "notificaciones": [n.serialize() for n in self.notificaciones] if self.notificaciones else None,
@@ -55,6 +61,7 @@ class User(db.Model):
 class Tienda(db.Model):
     __tablename__ = "tienda"
     id: Mapped[int] = mapped_column(primary_key=True)
+    cif: Mapped[str] = mapped_column(unique=True, nullable=False) #esto es nuevo
     nombre_tienda: Mapped[str] = mapped_column(unique=False, nullable=False)
     descripcion_tienda: Mapped[str] = mapped_column(
         String(300), nullable=False, unique=False)
@@ -64,9 +71,8 @@ class Tienda(db.Model):
         unique=True, nullable=False)
     logo_url: Mapped[str] = mapped_column(
         String(300), unique=True, nullable=False)
-    estilos: Mapped[Dict[str, Any]] = mapped_column(
-        JSON, nullable=True, default=dict)  # my sql colocar JSON y si es postgress JSONb
-    redes_sociales: Mapped[str] = mapped_column(unique=False, nullable=False)
+     # my sql colocar JSON y si es postgress JSONb
+    redes_sociales: Mapped[str] = mapped_column(unique=False, nullable=True)
     fecha_creacion: Mapped[TIMESTAMP] = mapped_column(
         DateTime(), default=datetime.now(timezone.utc))
 
@@ -86,11 +92,11 @@ class Tienda(db.Model):
             "id": self.id,
             "user_id": self.owner_id,  # corregido para usar el campo correcto
             "nombre_tienda": self.nombre_tienda,
+            'cif': self.cif,
             "descripcion_tienda": self.descripcion_tienda,
             "categoria_principal": self.categoria_principal,
             "telefono_comercial": self.telefono_comercial,
             "logo_url": self.logo_url,
-            "estilos": self.estilos,
             "redes_sociales": self.redes_sociales,
             "fecha_creacion": self.fecha_creacion,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
@@ -128,8 +134,7 @@ class Productos(db.Model):
     favoritos: Mapped[List['Favoritos']] = relationship(
         back_populates='producto')
 
-    pedidos: Mapped[List['Detalles_pedido']] = relationship(
-        back_populates="productos")
+  
 
     def serialize(self):
         return {
@@ -148,7 +153,6 @@ class Productos(db.Model):
             "tienda": {"nombre": self.tienda.nombre_tienda} if self.tienda else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
-            "pedidos": [p.serialize() for p in self.pedidos] if self.pedidos else None
         }
 
 
@@ -180,37 +184,7 @@ class Favoritos(db.Model):
         }
 
 
-class Detalles_pedido(db.Model):
-    __tablename__ = "detalles_pedido"
-    id: Mapped[int] = mapped_column(primary_key=True)
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey('user.id'))  # unir a producto
-    user: Mapped['User'] = relationship(back_populates="pedidos")
-
-    producto_id: Mapped[int] = mapped_column(
-        ForeignKey('productos.id'))  # unir a producto
-    productos: Mapped['Productos'] = relationship(back_populates="pedidos")
-    subtotal: Mapped[float] = mapped_column(nullable=False, unique=False)
-
-    historial_pedido: Mapped[List['Historial']
-                             ] = relationship(back_populates='pedido')
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "producto_id": self.producto_id,
-            "user": {"email": self.user.email} if self.user else None,
-            "productos": {'id': self.productos.id,
-                          'nombre_producto': self.productos.nombre_producto,
-                          'descripcion_producto':  self.productos.descripcion_producto,
-                          'precio': self.productos.precio,
-                          'tienda': {
-                              "id": self.productos.tienda.id
-                          }} if self.productos else None,
-            "subtotal": self.subtotal,
-        }
 
 
 class Notificaciones(db.Model):
@@ -242,7 +216,7 @@ class Resenas(db.Model):
     __tablename__ = "resenas"
     id: Mapped[int] = mapped_column(primary_key=True)
     estrellas:  Mapped[int] = mapped_column(Integer())
-    comentario: Mapped[str] = mapped_column(Text())
+    
     fecha: Mapped[TIMESTAMP] = mapped_column(
         DateTime(timezone=True), default=datetime.now(timezone.utc))
     respuestas: Mapped[str] = mapped_column(Text())
@@ -260,7 +234,6 @@ class Resenas(db.Model):
             "producto_id": self.producto_id,
             "cliente_id": self.cliente_id,
             "estrellas": self.estrellas,
-            "comentario": self.comentario,
             "fecha": self.fecha,
             "respuestas": self.respuestas,
             # posible recursividad
@@ -280,11 +253,7 @@ class Historial(db.Model):
     direccion: Mapped[str] = mapped_column(
         String(100), unique=False, nullable=False)
     pago: Mapped[bool] = mapped_column(Boolean())
-
-    # unir a detalles pedido (user = cliente)
-    pedido_id: Mapped[int] = mapped_column(ForeignKey('detalles_pedido.id'))
-    pedido: Mapped['Detalles_pedido'] = relationship(
-        back_populates='historial_pedido')
+    
 
     tienda_id: Mapped[int] = mapped_column(
         ForeignKey('tienda.id'))  # unir a tienda id

@@ -1,5 +1,5 @@
 
-from api.models import db, User, Tienda, Productos, Favoritos, Detalles_pedido, Notificaciones, Resenas, Historial
+from api.models import db, User, Tienda, Productos, Favoritos, Notificaciones, Resenas, Historial
 from datetime import date, datetime, timezone
 from app import app
 import random
@@ -20,7 +20,7 @@ def seed_data():
             email="admin@example.com",
             address="Calle Sol 123, Sevilla",
             telefono=600111222,
-            password="pepe123",
+            password=generate_password_hash("pepe123"),
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -33,7 +33,7 @@ def seed_data():
             email="maria@example.com",
             address="Av. Andalucía 45, Sevilla",
             telefono=600333444,
-            password="pepe123",
+            password=generate_password_hash("pepe123"),
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -46,7 +46,7 @@ def seed_data():
             email="carlos@example.com",
             address="Calle Luna 9, Sevilla",
             telefono=600555666,
-            password="pepe123",
+            password=generate_password_hash("pepe123"),
             registro_fecha=datetime.now(timezone.utc),
             is_active=True
         ),
@@ -129,7 +129,7 @@ def seed_data():
             producto_id=productos[0].id,
             cliente_id=users[1].id,
             estrellas=5,
-            comentario="Excelente producto, muy buena calidad.",
+            
             fecha=datetime.now(timezone.utc),
             respuestas="¡Gracias por tu compra!"
         ),
@@ -137,7 +137,6 @@ def seed_data():
             producto_id=productos[2].id,
             cliente_id=users[2].id,
             estrellas=4,
-            comentario="Buen servicio, aunque tardó un poco el envío.",
             fecha=datetime.now(timezone.utc),
             respuestas="Estamos mejorando los tiempos de entrega."
         ),
@@ -153,45 +152,45 @@ def seed_data():
     db.session.add_all(notificaciones)
     db.session.commit()
 
-  # --- DETALLES_PEDIDO ---
-    detalles = []
-    historiales = []
+#   # --- DETALLES_PEDIDO ---
+#     detalles = []
+#     historiales = []
 
-    sample_orders = [
-        {"user": users[1], "producto": productos[0], "cantidad": 2},
-        {"user": users[2], "producto": productos[3], "cantidad": 1},
-        {"user": users[1], "producto": productos[4], "cantidad": 3},
-        {"user": users[0], "producto": productos[6], "cantidad": 1},
-        {"user": users[2], "producto": productos[8], "cantidad": 2},
-        {"user": users[0], "producto": productos[11], "cantidad": 1},
-    ]
+#     sample_orders = [
+#         {"user": users[1], "producto": productos[0], "cantidad": 2},
+#         {"user": users[2], "producto": productos[3], "cantidad": 1},
+#         {"user": users[1], "producto": productos[4], "cantidad": 3},
+#         {"user": users[0], "producto": productos[6], "cantidad": 1},
+#         {"user": users[2], "producto": productos[8], "cantidad": 2},
+#         {"user": users[0], "producto": productos[11], "cantidad": 1},
+#     ]
 
-    for idx, ord in enumerate(sample_orders, start=1):
-        precio_unitario = float(ord["producto"].precio)
-        cantidad = ord["cantidad"]
-        subtotal = round(precio_unitario * cantidad, 2)
+#     for idx, ord in enumerate(sample_orders, start=1):
+#         precio_unitario = float(ord["producto"].precio)
+#         cantidad = ord["cantidad"]
+#         subtotal = round(precio_unitario * cantidad, 2)
 
-        det = Detalles_pedido(
-            user_id=ord["user"].id,
-            producto_id=ord["producto"].id,
-            subtotal=subtotal
-        )
-        detalles.append(det)
+#         det = Detalles_pedido(
+#             user_id=ord["user"].id,
+#             producto_id=ord["producto"].id,
+#             subtotal=subtotal
+#         )
+#         detalles.append(det)
 
-        hist = Historial(
-            pedido_id=ord["user"].id,         
-            tienda_id=ord["producto"].tienda_id,
-            total=subtotal,
-            gastos_envio=round(random.uniform(0.0, 10.0), 2),
-            fecha_pedido=datetime.now(timezone.utc),
-            direccion=ord["user"].address,
-            pago=True if random.random() > 0.2 else False
-        )
-        historiales.append(hist)
+#         hist = Historial(
+#             pedido_id=ord["user"].id,         
+#             tienda_id=ord["producto"].tienda_id,
+#             total=subtotal,
+#             gastos_envio=round(random.uniform(0.0, 10.0), 2),
+#             fecha_pedido=datetime.now(timezone.utc),
+#             direccion=ord["user"].address,
+#             pago=True if random.random() > 0.2 else False
+#         )
+#         historiales.append(hist)
 
-    db.session.add_all(detalles)
-    db.session.add_all(historiales)
-    db.session.commit()
+#     db.session.add_all(detalles)
+#     db.session.add_all(historiales)
+#     db.session.commit()
 
     print("✅ Seeder finalizado: users, tiendas, productos, favoritos, reseñas, notificaciones, detalles_pedido e historial creados.")
 

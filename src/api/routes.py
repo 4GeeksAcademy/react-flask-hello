@@ -41,7 +41,7 @@ def upload_image():
         # return the url of the uploaded image to be used in the frontend and/or stored in the database
         if request.form.get("upload_preset") == "avatar":
             user.avatar = upload_result["secure_url"]
-            db.session.commit()
+       
 
         if request.form.get("upload_preset") == "product":
             producto = db.session.get(
@@ -49,7 +49,16 @@ def upload_image():
             if not producto:
                 return jsonify({'msg': 'product not found'}), 404
             producto.imagenes = upload_result["secure_url"]
-            db.session.commit()
+       
+
+         # return the url of the uploaded image to be used in the frontend and/or stored in the database
+        if request.form.get("upload_preset") == "tienda":
+            stm = select(Tienda).where(Tienda.owner_id == id)
+            tienda = db.session.execute(stm).scalars().all()
+            tienda = tienda[0]
+            tienda.logo_url = upload_result["secure_url"]
+        
+        db.session.commit()
 
         return jsonify({
             "url": upload_result["secure_url"],
@@ -145,21 +154,23 @@ def handle_tienda_item():
 def handle_crear_tienda():
     id = get_jwt_identity()
     body = request.get_json()
-
-    new_tienda = Tienda(cif=body['cif'],
-                        nombre_tienda=body['nombre_tienda'],
-                        descripcion_tienda=body['descripcion_tienda'],
-                        categoria_principal=body['categoria_principal'],
-                        telefono_comercial=body['telefono_comercial'],
-                        logo_url=body.get(
-                            'logo_url', 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'),
-                        owner_id=id,
-                        redes_sociales=body['redes_sociales'],
-                        )
-    db.session.add(new_tienda)
-    db.session.commit()
-    return jsonify({'success': True, 'msg': 'Nueva tienda tiendificada con exito'}), 201
-
+    try:
+        new_tienda = Tienda(cif=body['cif'],
+                            nombre_tienda=body['nombre_tienda'],
+                            descripcion_tienda=body['descripcion_tienda'],
+                            categoria_principal=body['categoria_principal'],
+                            telefono_comercial=body['telefono_comercial'],
+                            logo_url=body.get(
+                                'logo_url', 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'),
+                            owner_id=id,
+                            redes_sociales=body['redes_sociales'],
+                            )
+        db.session.add(new_tienda)
+        db.session.commit()
+        return jsonify({'success': True, 'msg': 'Nueva tienda tiendificada con exito', "tienda": new_tienda.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'msg': 'error creando tienda', 'error': str(e)}), 201
 
 @api.route('/editar_tienda', methods=['PUT'])
 @jwt_required()

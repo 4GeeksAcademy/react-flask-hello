@@ -65,6 +65,18 @@ export const Navbar = () => {
             <strong>{store.auth ? "Perfil" : "Login"}</strong>
           </Link>
         </li>
+           <li className="nav-item m-2">
+
+        { store.tienda &&
+                <Link 
+                
+                  className="btn btn-danger px-4" to="/mi_tienda">Mi Tienda</Link>
+        }
+        {
+         store.user && !store.tienda &&      <Link   className="btn btn-danger px-4" to="/crear_tienda">Crear Tienda</Link>
+                
+      }
+           </li>
         {store.auth && (
           <li className="nav-item m-2">
             <button

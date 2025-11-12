@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import tiendaServices from "../services/tienda.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import CloudinaryComponent from "./cloudinary";
 
 
 export const StoreComp = () => {
@@ -12,8 +13,9 @@ export const StoreComp = () => {
     categoria_principal: "",
     telefono_comercial: "",
     redes_sociales: "",
+    logo_url: ""
   });
-
+  const defaultLogo = 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'
   const handleSubmit = (e) => {
     e.preventDefault();
     if (store.tienda?.nombre_tienda) {
@@ -22,6 +24,9 @@ export const StoreComp = () => {
         if (data.tienda) {
           dispatch({type: "editar_tienda", payload: data.tienda})
           localStorage.setItem('tienda',JSON.stringify(data.tienda))
+        }
+        if (!data.success){
+          alert(data.error)
         }
       })
 
@@ -57,17 +62,14 @@ export const StoreComp = () => {
 
         <form onSubmit={handleSubmit}>
           {/* --- Bloque superior --- */}
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-between align-items-center">
+              <img width={'300px'} src={tiendaData.logo_url || defaultLogo} alt={tiendaData.nombre_tienda}/>
+            
             <div className="p-4 border border-danger rounded-4 bg-light" style={{ maxWidth: "500px", width: "100%" }}>
               <label htmlFor="imagen" className="form-label fw-bold text-danger">
-                Imagen o logo de la tienda
+                Logo de la tienda
               </label>
-              <input
-                className="form-control border-danger"
-                type="file"
-                id="imagen"
-                accept="image/*"
-              />
+             <CloudinaryComponent tienda={true} data={tiendaData} returnUrl={setTiendaData} />
               <div className="form-text text-muted mt-2">
                 Formatos admitidos: <strong>JPG, PNG, WEBP</strong> — Máx. <strong>5MB</strong>
               </div>

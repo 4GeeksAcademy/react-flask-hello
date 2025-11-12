@@ -28,6 +28,8 @@ export default function storeReducer(store, action = {}) {
         tienda: action.payload,
       };
 
+    
+
     case "editar_tienda":
       return {
         ...store,
@@ -39,6 +41,11 @@ export default function storeReducer(store, action = {}) {
         ...store,
         user: { ...store.user, ["avatar"]: action.payload },
       };
+    case "update_tienda_logo":
+      return {
+        ...store,
+        tienda: { ...store.tienda, ["logo_url"]: action.payload },
+      };
 
     case "update_user":
       return {
@@ -49,13 +56,18 @@ export default function storeReducer(store, action = {}) {
     case "logout":
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem('tienda')
       return {
         ...store,
         user: null,
         auth: false,
+        tienda: null
       };
     case "login":
-      let tienda = action.payload.tiendas[0];
+      let tienda = null;
+      if (action.payload.tiendas) {
+        tienda = action.payload.tiendas[0];
+      }
       return {
         ...store,
         user: action.payload,

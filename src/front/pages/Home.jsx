@@ -6,6 +6,7 @@ import { HeroSection } from "../components/HeroSection";
 import { Features1 } from "../components/Features1";
 import StartShopping from "../components/Call"; 
 import GenerateQr  from "../components/GenerateQr.jsx";
+import { SingleProduct } from "../components/singleProduct.jsx";
 
 
 export const Home = () => {
@@ -34,7 +35,7 @@ export const Home = () => {
 
   return (
     <>
-    
+      <SingleProduct/>
       <Header />
       <HeroSection />
       <Features1 />

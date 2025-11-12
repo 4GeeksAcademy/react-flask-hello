@@ -25,7 +25,7 @@ tiendaServices.miTienda = async () => {
 
 tiendaServices.crearTienda = async (formData) => {
     try {
-        const resp = await fetch(url + '/api/crear_tienda', {
+        const resp = await fetch(url + 'api/crear_tienda', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json',

@@ -4,7 +4,7 @@ const url = import.meta.env.VITE_BACKEND_URL
 
 AuthServices.login = async (formData) => {
     try {
-        const resp = await fetch(url + '/api/login', {
+        const resp = await fetch(url + 'api/login', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json'

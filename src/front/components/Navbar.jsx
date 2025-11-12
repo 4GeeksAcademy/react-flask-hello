@@ -73,7 +73,7 @@ export const Navbar = () => {
                   className="btn btn-danger px-4" to="/mi_tienda"><strong>Mi Tienda</strong></Link>
         }
         {
-         store.user && !store.tienda &&      <Link   className="btn btn-danger px-4" to="/crear_tienda">Crear Tienda</Link>
+         store.user && !store.tienda &&      <Link   className="btn btn-danger px-4" to="/crear_tienda"><strong>Crear Tienda</strong></Link>
                 
       }
            </li>

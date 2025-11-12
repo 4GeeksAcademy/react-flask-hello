@@ -11,8 +11,8 @@ export const HeroSection = () => {
         </p>
       </div>
 
-      <div className="features-row">
-        <div className="feature-card">
+      <div className="features-row row">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
           <div className="feature-icon red">
             <i className="fas fa-box-open"></i>
           </div>
@@ -20,7 +20,7 @@ export const HeroSection = () => {
           <p>Browse through hundreds of quality products across multiple categories.</p>
         </div>
 
-        <div className="feature-card">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
           <div className="feature-icon coral">
             <i className="fas fa-shopping-cart"></i>
           </div>
@@ -28,7 +28,7 @@ export const HeroSection = () => {
           <p>Manage your purchases easily with our intuitive shopping cart system.</p>
         </div>
 
-        <div className="feature-card">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
           <div className="feature-icon yellow">
             <i className="fas fa-qrcode"></i>
           </div>
@@ -36,7 +36,7 @@ export const HeroSection = () => {
           <p>Create custom QR codes for your shop to enhance customer engagement.</p>
         </div>
 
-        <div className="feature-card">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
           <div className="feature-icon blue">
             <i className="fas fa-lock"></i>
           </div>

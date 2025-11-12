@@ -15,6 +15,7 @@ import { CreateProduct } from "./components/CreateProduct";
 import { TiendaPage } from "./pages/TiendaPage";
 import { ExplorePage } from "./pages/ExplorePage";
 import { CrearTiendaPage } from "./pages/CrearTiendaPage";import { PaginaTienda } from "./components/PaginaTienda";
+import {Payment} from "./pages/Payment";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(

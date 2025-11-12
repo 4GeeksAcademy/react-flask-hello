@@ -65,7 +65,7 @@ export const Tienda = () => {
               <h5 className="text-danger border-bottom pb-2 my-3">Productos o Servicios</h5>
               <div className="d-flex justify-content-end">
                   {/* Crear pagina para crear/editar producto */}
-                  <Link to={'/nuevo_producto'}  className="btn btn-danger px-4 float-end">+ Producto</Link>
+                  <Link to={'/product'}  className="btn btn-danger px-4 float-end">+ Producto</Link>
               </div>
               {//añadir singles de productos
               }

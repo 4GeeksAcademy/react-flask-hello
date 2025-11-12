@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
 import "./ExplorePage.css";
 import productServices from "../services/product.services";
+import { ProductCard } from "../components/ProductCard";
 
 export const ExplorePage = () => {
   const navigate = useNavigate();

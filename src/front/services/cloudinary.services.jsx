@@ -1,12 +1,10 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
 const cloudinaryServices = {};
-
 cloudinaryServices.uploadImage = async (file, { avatar = false, product = false, tienda=false  }, product_id = {}) => {
     const formData = new FormData();
     formData.append("file", file);
     if (avatar) formData.append("upload_preset", "avatar");
-    if (product){ 
+    if (product){
         formData.append("upload_preset", "product");
         formData.append("product_id", product_id);
     }
@@ -24,5 +22,4 @@ cloudinaryServices.uploadImage = async (file, { avatar = false, product = false,
     }
     return resp.json();
 };
-
 export default cloudinaryServices;

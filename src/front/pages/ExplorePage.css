@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe2e2 100%);
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@
 
 .explore-header h1 {
   font-size: 2.5rem;
-  color: #c94b6b;
+  color: #000000;
   margin-bottom: 30px;
   font-weight: 700;
 }
@@ -23,6 +23,66 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
   margin-bottom: 60px;
+}
+
+.product-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(201, 75, 107, 0.15);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(201, 75, 107, 0.25);
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  background-color: #ffc1cc;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.product-card h3 {
+  color: #000000;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.price-and-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.price-and-button p {
+  color: #8b5a6e;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ver-tienda-btn {
+  background-color: #c94b6b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ver-tienda-btn:hover {
+  background-color: #a63e5a;
 }
 
 .history-section {
@@ -68,3 +128,4 @@
     padding: 25px;
   }
 }
+

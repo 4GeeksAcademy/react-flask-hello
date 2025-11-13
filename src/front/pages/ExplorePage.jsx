@@ -12,7 +12,6 @@ export const ExplorePage = () => {
 
   useEffect(() => {
     productServices.recibirProductos().then(data => {
-      console.log(data.producto[0])
       setProducts(data.producto)
     })
   },[])

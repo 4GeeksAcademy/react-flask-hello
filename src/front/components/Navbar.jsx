@@ -49,13 +49,13 @@ export const Navbar = () => {
     <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul className="navbar-nav align-items-center">
         <li className="nav-item m-2">
-          <Link className="nav-link" to="/explorar">Products</Link>
+          <Link className="nav-link" to="/explorar">Productos</Link>
         </li>
         {/* <li className="nav-item m-2">
           <a className="nav-link" href="#">Shopping Cart</a>
         </li> */}
         <li className="nav-item m-2">
-          <a className="nav-link" href="#">QR Code Generator</a>
+          <a className="nav-link" href="#qr">Generador QR</a>
         </li>
         <li className="nav-item m-2">
           <Link

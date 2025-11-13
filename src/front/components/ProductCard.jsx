@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./ProductCard.css";
 import productServices from "../services/product.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
 
@@ -11,7 +12,7 @@ export const ProductCard = ({ product }) => {
   console.log(product)
   
   return (
-    <>
+    <Link className="nav-link" to={'/single/'+ product.id}>
     <div className="product-card">
       
       <button className="favorite-btn">♡</button>
@@ -30,6 +31,6 @@ export const ProductCard = ({ product }) => {
         
       </div>
     </div>
-    </>
+    </Link>
   );
 };

@@ -25,6 +25,8 @@ const Login = () => {
                 console.log(data)
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('user', JSON.stringify(data.user))
+                localStorage.setItem('producto', JSON.stringify(data.user.tiendas[0].productos))
+                console.log(data)
                 dispatch({type: 'login', payload: data.user})
                 return navigate('/perfil')   
             }

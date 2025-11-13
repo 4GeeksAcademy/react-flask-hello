@@ -124,7 +124,7 @@ class Productos(db.Model):
         nullable=False, unique=False, default=0.0)
     dimensiones: Mapped[str] = mapped_column(nullable=False, unique=False)
     imagenes: Mapped[str] = mapped_column(
-        String(300), unique=True, nullable=False)
+        String(300), unique=False, nullable=True)
     estado: Mapped[str] = mapped_column(unique=False, nullable=True)
     fecha_subida:  Mapped[TIMESTAMP] = mapped_column(
         DateTime(timezone=True), default=datetime.now(timezone.utc))

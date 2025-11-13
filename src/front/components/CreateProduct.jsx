@@ -8,7 +8,7 @@ export const CreateProduct = () => {
 
 
   const { store, dispatch } = useGlobalReducer();
-  const [productData, setProductData] = useState(store.producto || {
+  const [productData, setProductData] = useState(store.selected_producto || {
     nombre_producto: "",
     descripcion_producto: "",
     precio: "",
@@ -27,9 +27,14 @@ export const CreateProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     productServices.crearProducto(productData).then((data) => {
-      if (data.producto) dispatch({ type: "crear_mis_productos", payload: data.producto })
+      console.log('+++++++------> ', data)
+      if (data.tienda) {
+        localStorage.setItem('tienda', JSON.stringify(data.tienda))
+        if (data.tienda.productos) localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
+        dispatch({ type: "crear_mis_productos", payload: data.tienda })
+        
+      }
     });
-    alert("Formulario de producto enviado (solo vista previa).");
   };
 
   return (

@@ -63,25 +63,24 @@ export default function QRGenerator() {
 
         <>
 
-            <section className="container py-5">
+            <section className="container py-5" id="qr" >
                 <div className="row align-items-center">
                     {/* Columna Izquierda - Texto */}
                     <div className="col-lg-6">
                         {/* Etiqueta destacada */}
                         <span className="badge bg-danger bg-opacity-10 text-danger mb-3 fw-semibold fs-6">
                             <i className="bi bi-lightning-charge-fill me-1"></i>
-                            Innovative Technology
+                            Tecnología de vanguardia
                         </span>
 
                         {/* Título */}
                         <h2 className="mb-3">
-                            QR Code Generator for Your Shop
+                            Generador QR para tu tienda
                         </h2>
 
                         {/* Descripción */}
                         <p className="mb-4">
-                            Generate custom QR codes to enhance your shopping experience. Share
-                            products, promotions, or your entire shop with a simple scan.
+                            Genera QR para subir un nivel tu experiencia. Comparte tus productos en 5 segundos.
                         </p>
 
                         {/* Bloques de beneficios */}
@@ -90,9 +89,9 @@ export default function QRGenerator() {
                            
 
                             <div>
-                                <h5 className="mb-1">Instant Sharing</h5>
+                                <h5 className="mb-1">Compartir instantaneamente.</h5>
                                 <p className="mb-0 small">
-                                    Share your products and promotions instantly with customers.
+                                    Puedes compartir tus nuevos productos cuando quieras.
                                 </p>
                             </div>
                         </div>
@@ -101,9 +100,9 @@ export default function QRGenerator() {
                         <div className="mb-3 p-3 rounded-3 d-flex align-items-start bg-gradient-danger">
                             <div className="me-3 text-danger fs-1">🗹</div>
                             <div>
-                                <h5 className="mb-1">Easy Tracking</h5>
+                                <h5 className="mb-1">Fácil creación</h5>
                                 <p className="mb-0 small">
-                                    Monitor engagement and track customer interactions.
+                                    Crea productos facilmente.
                                 </p>
                             </div>
                         </div>
@@ -115,16 +114,13 @@ export default function QRGenerator() {
                             <div>
                                 <h5 className="mb-1 fw-semibold">Customizable</h5>
                                 <p className="mb-0 small">
-                                    Create QR codes that match your brand identity.
+                                    Crea un código QR para tu tienda.
                                 </p>
                             </div>
                         </div>
 
-                        {/* Botón */}
-                        <button className="btn btn-danger btn-lg rounded-3 shadow-sm">
-                            
-                            Generate QR Code →
-                        </button>
+                       
+                        
                     </div>
 
                     {/* Columna Derecha - Imagen */}

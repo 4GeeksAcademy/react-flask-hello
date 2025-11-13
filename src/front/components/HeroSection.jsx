@@ -5,9 +5,9 @@ export const HeroSection = () => {
   return (
     <section className="features">
       <div className="features-header">
-        <h2>Why Choose Spidys?</h2>
+        <h2>Por qué elegir Spidy's?</h2>
         <p>
-          We provide a seamless shopping experience with powerful features designed for your convenience.
+         Proveemos de una tienda online customizable para tu marca o empresa.
         </p>
       </div>
 
@@ -16,32 +16,32 @@ export const HeroSection = () => {
           <div className="feature-icon red">
             <i className="fas fa-box-open"></i>
           </div>
-          <h3>Wide Selection</h3>
-          <p>Browse through hundreds of quality products across multiple categories.</p>
+          <h3>Gran selección de productos</h3>
+          <p>Busca en una lista de productos o crea una tienda para empezar a vender.</p>
         </div>
 
-        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4 ">
           <div className="feature-icon coral">
             <i className="fas fa-shopping-cart"></i>
           </div>
-          <h3>Smart Cart</h3>
-          <p>Manage your purchases easily with our intuitive shopping cart system.</p>
+          <h3>Conecta con tus clientes</h3>
+          <p>Comparte tus productos a tu público objetivo.</p>
         </div>
 
         <div className="feature-card col-sm-12 col-md-6 col-lg-4">
           <div className="feature-icon yellow">
             <i className="fas fa-qrcode"></i>
           </div>
-          <h3>QR Generator</h3>
-          <p>Create custom QR codes for your shop to enhance customer engagement.</p>
+          <h3>Generador QR</h3>
+          <p>Crea un QR automaticamente y expande tus horizontes.</p>
         </div>
 
-        <div className="feature-card col-sm-12 col-md-6 col-lg-4">
+        <div className="feature-card col-sm-12 col-md-6 col-lg-4 ">
           <div className="feature-icon blue">
             <i className="fas fa-lock"></i>
           </div>
-          <h3>Secure Login</h3>
-          <p>Access your personalized account with our secure authentication system.</p>
+          <h3>Login Seguro</h3>
+          <p>Tu tienda está segura con nosotros.</p>
         </div>
       </div>
     </section>

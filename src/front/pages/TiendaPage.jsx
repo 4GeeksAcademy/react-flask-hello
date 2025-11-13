@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tienda } from "../components/Tienda";
-import { SingleProduct } from "../components/singleProduct";
 
 
 export const TiendaPage = () => {
 
+    useEffect(()=>{
+        
+    },[])
+
     return(
         <>
         <Tienda/>
-        <SingleProduct/>
+
         </>
     )
 

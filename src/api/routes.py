@@ -209,19 +209,22 @@ def handle_mi_producto():
 def handle_crear_producto():
     id = get_jwt_identity()
     body = request.get_json()
-
+    stm = select(Tienda).where(Tienda.owner_id == id)
+    tienda = db.session.execute(stm).scalar_one_or_none()
+    if not tienda:
+        return jsonify({'success': False, 'msg': 'No se encontro la tienda'})
     new_producto = Productos(nombre_producto=body['nombre_producto'],
                              descripcion_producto=body['descripcion_producto'],
                              precio=body['precio'],
                              categoria_producto=body['categoria_producto'],
                              peso=body['peso'],
                              dimensiones=body['dimensiones'],
-                             imagenes=body['imagenes'],
-                             tienda_id=id,
+                             imagenes=body.get('imagenes', None),
+                             tienda_id=tienda.id,
                              )
     db.session.add(new_producto)
     db.session.commit()
-    return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente'}), 201
+    return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente', 'tienda': tienda.serialize() }), 201
 
 
 @api.route('/recibir_productos', methods=['GET'])
@@ -232,3 +235,5 @@ def handle_recibir_productos():
         return jsonify({'msg': 'no hay productos'}), 404
     producto = [p.serialize() for p in producto]
     return jsonify({'producto': producto}), 200
+
+

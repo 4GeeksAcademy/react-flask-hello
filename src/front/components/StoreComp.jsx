@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import tiendaServices from "../services/tienda.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import CloudinaryComponent from "./cloudinary";
+import { useNavigate } from "react-router-dom";
 
 
 export const StoreComp = () => {
 
   const { store, dispatch } = useGlobalReducer();
+  const navigate = useNavigate()
   const [tiendaData, setTiendaData] = useState(store.tienda || {
     nombre_tienda: "",
     descripcion_tienda: "",
@@ -32,7 +34,11 @@ export const StoreComp = () => {
 
     } else {
       tiendaServices.crearTienda(tiendaData).then((data) => {
-        if (data.tienda) dispatch({ type: "crear_tienda", payload: data.tienda })
+        if (data.tienda) {
+          dispatch({ type: "crear_tienda", payload: data.tienda })
+          localStorage.setItem('tienda', JSON.stringify(data.tienda))
+          navigate('/mi_tienda')
+        }
       })
     }
     

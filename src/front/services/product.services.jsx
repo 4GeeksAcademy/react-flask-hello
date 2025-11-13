@@ -28,7 +28,8 @@ productServices.crearProducto = async (formData) => {
         const resp = await fetch(url + '/api/crear_mis_productos', {
             method: "POST",
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                "Authorization": "Bearer "  + localStorage.getItem('token')
             },
             body: JSON.stringify(formData)
         })

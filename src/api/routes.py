@@ -213,12 +213,10 @@ def handle_crear_producto():
     new_producto = Productos(nombre_producto=body['nombre_producto'],
                              descripcion_producto=body['descripcion_producto'],
                              precio=body['precio'],
-                             stock=body['stock'],
                              categoria_producto=body['categoria_producto'],
                              peso=body['peso'],
                              dimensiones=body['dimensiones'],
                              imagenes=body['imagenes'],
-                             estado=body['estado'],
                              tienda_id=id,
                              )
     db.session.add(new_producto)

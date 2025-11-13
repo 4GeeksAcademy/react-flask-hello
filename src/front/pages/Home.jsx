@@ -35,7 +35,6 @@ export const Home = () => {
 
   return (
     <>
-      <SingleProduct/>
       <Header />
       <HeroSection />
       <Features1 />

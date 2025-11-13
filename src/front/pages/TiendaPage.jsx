@@ -4,13 +4,13 @@ import { Tienda } from "../components/Tienda";
 
 export const TiendaPage = () => {
 
-    useEffect(()=>{
-        
-    },[])
+    useEffect(() => {
 
-    return(
+    }, [])
+
+    return (
         <>
-        <Tienda/>
+            <Tienda />
 
         </>
     )

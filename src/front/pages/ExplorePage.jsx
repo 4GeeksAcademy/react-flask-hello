@@ -8,15 +8,15 @@ import { ProductCard } from "../components/ProductCard";
 export const ExplorePage = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [products,setProducts] = useState([])
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
     productServices.recibirProductos().then(data => {
       setProducts(data.producto)
     })
-  },[])
+  }, [])
 
-  
+
   const filteredProducts = products.filter(product =>
     product.nombre_producto.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -34,7 +34,7 @@ export const ExplorePage = () => {
         ))}
       </div>
 
-      
+
     </div>
   );
 };

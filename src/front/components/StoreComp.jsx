@@ -24,10 +24,11 @@ export const StoreComp = () => {
       //llamar a editar tienda
       tiendaServices.editar_tienda(tiendaData).then((data) => {
         if (data.tienda) {
-          dispatch({type: "editar_tienda", payload: data.tienda})
-          localStorage.setItem('tienda',JSON.stringify(data.tienda))
+          dispatch({ type: "editar_tienda", payload: data.tienda })
+          localStorage.setItem('tienda', JSON.stringify(data.tienda))
+          navigate('/mi_tienda')
         }
-        if (!data.success){
+        if (!data.success) {
           alert(data.error)
         }
       })
@@ -41,7 +42,7 @@ export const StoreComp = () => {
         }
       })
     }
-    
+
   };
 
   const handleChange = (e) => {
@@ -69,13 +70,13 @@ export const StoreComp = () => {
         <form onSubmit={handleSubmit}>
           {/* --- Bloque superior --- */}
           <div className="d-flex justify-content-between align-items-center">
-              <img width={'300px'} src={tiendaData.logo_url || defaultLogo} alt={tiendaData.nombre_tienda}/>
-            
+            <img width={'300px'} src={tiendaData.logo_url || defaultLogo} alt={tiendaData.nombre_tienda} />
+
             <div className="p-4 border border-danger rounded-4 bg-light" style={{ maxWidth: "500px", width: "100%" }}>
               <label htmlFor="imagen" className="form-label fw-bold text-danger">
                 Logo de la tienda
               </label>
-             <CloudinaryComponent tienda={true} data={tiendaData} returnUrl={setTiendaData} />
+              <CloudinaryComponent tienda={true} data={tiendaData} returnUrl={setTiendaData} />
               <div className="form-text text-muted mt-2">
                 Formatos admitidos: <strong>JPG, PNG, WEBP</strong> — Máx. <strong>5MB</strong>
               </div>

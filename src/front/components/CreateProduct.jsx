@@ -32,7 +32,7 @@ export const CreateProduct = () => {
         localStorage.setItem('tienda', JSON.stringify(data.tienda))
         if (data.tienda.productos) localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
         dispatch({ type: "crear_mis_productos", payload: data.tienda })
-        
+
       }
     });
   };
@@ -75,8 +75,10 @@ export const CreateProduct = () => {
             <div className="mb-3 border border-danger rounded p-3" >
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
+              <img src={productData.imagenes} alt={productData.nombre_producto || 'carga una imagen'} />
               </label>
-              <CloudinaryComponent product={true} />
+
+              <CloudinaryComponent product={true} returnUrl={setProductData} state={productData} product_id={productData.id} />
               <div className="form-text">
                 Formatos admitidos: JPG, PNG, WEBP — Máx. 5MB
               </div>

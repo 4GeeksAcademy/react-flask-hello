@@ -16,81 +16,81 @@ export const Navbar = () => {
 
 
     <nav className="navbar navbar-expand-lg bg-transparent">
-  <div className="container-fluid">
+      <div className="container-fluid">
 
-    {/* Logo a la izquierda */}
-    <Link className="navbar-brand d-flex align-items-center" to="/">
-      <img
-        src={logo}
-        alt="Logo"
-        width="360px"
-        height="auto"
-        className="img-fluid d-inline align-text-top me-2"
-        style={{ objectFit: "contain" }}
-      />
-    </Link>
+        {/* Logo a la izquierda */}
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img
+            src={logo}
+            alt="Logo"
+            width="360px"
+            height="auto"
+            className="img-fluid d-inline align-text-top me-2"
+            style={{ objectFit: "contain" }}
+          />
+        </Link>
 
-    {/* Botón hamburguesa centrado */}
-    <div className="d-lg-none d-flex justify-content-end w-100 mb-2">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-    </div>
+        {/* Botón hamburguesa centrado */}
+        <div className="d-lg-none d-flex justify-content-end w-100 mb-2">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
 
-    {/* Menú desplegable */}
-    <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul className="navbar-nav align-items-center">
-        <li className="nav-item m-2">
-          <Link className="nav-link" to="/explorar">Productos</Link>
-        </li>
-        {/* <li className="nav-item m-2">
+        {/* Menú desplegable */}
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul className="navbar-nav align-items-center">
+            <li className="nav-item m-2">
+              <Link className="nav-link" to="/explorar">Productos</Link>
+            </li>
+            {/* <li className="nav-item m-2">
           <a className="nav-link" href="#">Shopping Cart</a>
         </li> */}
-        <li className="nav-item m-2">
-          <a className="nav-link" href="#qr">Generador QR</a>
-        </li>
-        <li className="nav-item m-2">
-          <Link
-            to={store.auth ? "/perfil" : "/login"}
-            className="btn btn-danger px-4"
-          >
-            <strong>{store.auth ? "Perfil" : "Login"}</strong>
-          </Link>
-        </li>
-           <li className="nav-item m-2">
+            <li className="nav-item m-2">
+              <a className="nav-link" href="#qr">Generador QR</a>
+            </li>
+            <li className="nav-item m-2">
+              <Link
+                to={store.auth ? "/perfil" : "/login"}
+                className="btn btn-danger px-4"
+              >
+                <strong>{store.auth ? "Perfil" : "Login"}</strong>
+              </Link>
+            </li>
+            <li className="nav-item m-2">
 
-        { store.tienda &&
-                <Link 
-                
+              {store.tienda &&
+                <Link
+
                   className="btn btn-danger px-4" to="/mi_tienda"><strong>Mi Tienda</strong></Link>
-        }
-        {
-         store.user && !store.tienda &&      <Link   className="btn btn-danger px-4" to="/crear_tienda"><strong>Crear Tienda</strong></Link>
-                
-      }
-           </li>
-        {store.auth && (
-          <li className="nav-item m-2">
-            <button
-              onClick={handleLogout}
-              className="btn btn-danger text-light"
-            >
-              <strong>Logout</strong>
-            </button>
-          </li>
-        )}
-      </ul>
-    </div>
-  </div>
-</nav>
+              }
+              {
+                store.user && !store.tienda && <Link className="btn btn-danger px-4" to="/crear_tienda"><strong>Crear Tienda</strong></Link>
+
+              }
+            </li>
+            {store.auth && (
+              <li className="nav-item m-2">
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-danger text-light"
+                >
+                  <strong>Logout</strong>
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
 
   );
 };

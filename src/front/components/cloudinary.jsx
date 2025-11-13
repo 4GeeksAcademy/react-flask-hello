@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import cloudinaryServices from "../services/cloudinary.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-function CloudinaryComponent({avatar = false, product=false, tienda=false, returnUrl}) {
+function CloudinaryComponent({avatar = false, product=false, tienda=false, returnUrl, state, product_id}) {
     const [file, setFile] = useState(null);
     const {store,dispatch} = useGlobalReducer();
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,13 @@ function CloudinaryComponent({avatar = false, product=false, tienda=false, retur
             if (avatar) dispatch({type:'update_avatar',payload:data.url})
             if (tienda) {
                 dispatch({type:'update_tienda_logo',payload:data.url})
-                returnUrl({...tienda, ['logo_rul']:data.url})
+                returnUrl({...tienda, ['logo_url']:data.url})
+                return data.url
+            }
+            if (product) {
+                const prod = await cloudinaryServices.uploadImage(file, {avatar, product, tienda}, product_id )
+                returnUrl({...state, ['imagenes']: prod.url })
+                return prod
             }
             return data;
         } catch (err) {

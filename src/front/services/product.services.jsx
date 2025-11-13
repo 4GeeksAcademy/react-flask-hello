@@ -9,13 +9,13 @@ productServices.misProductos = async () => {
                 "Content-Type": 'application/json',
                 "Authorization": 'Bearer ' + localStorage.getItem('token')
             },
-            
+
         })
         if (!resp.ok) throw new Error('error producting in')
 
         const data = await resp.json()
 
-        
+
         return data
 
     } catch (error) {
@@ -29,7 +29,7 @@ productServices.crearProducto = async (formData) => {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json',
-                "Authorization": "Bearer "  + localStorage.getItem('token')
+                "Authorization": "Bearer " + localStorage.getItem('token')
             },
             body: JSON.stringify(formData)
         })
@@ -50,7 +50,7 @@ productServices.recibirProductos = async () => {
 
         const data = await resp.json()
 
-        
+
         return data
 
     } catch (error) {

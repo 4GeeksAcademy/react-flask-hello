@@ -14,10 +14,47 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
-stripe.api_key = os.getenv('STRIPE_SECRET')
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 
-# cloudinary route
+# stripe route
+
+# ruta para crear una session de pago con stripe
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        description = data.get('description')
+        amount = data.get('amount')  # Monto en centavos
+        quantity = data.get('quantity', 1)
+        # Crear la sesión de Checkout
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': name,
+                            'description': description,
+                        },
+                        'unit_amount': amount,
+                    },
+                    'quantity': quantity,
+                },
+            ],
+            mode='payment',
+            success_url=request.headers.get(
+                'Origin') + '/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=request.headers.get('Origin') + '/cancel',
+        )
+
+        return jsonify({'url': checkout_session.url})
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({'error': str(e)}), 500
 
 
 # Cloudinary upload endpoint
@@ -42,23 +79,30 @@ def upload_image():
         # return the url of the uploaded image to be used in the frontend and/or stored in the database
         if request.form.get("upload_preset") == "avatar":
             user.avatar = upload_result["secure_url"]
-       
 
         if request.form.get("upload_preset") == "product":
+            pid = request.form.get("product_id")
+            if not pid:
+                return jsonify({
+                            "url": upload_result["secure_url"],
+                            "public_id": upload_result["public_id"]
+                        }), 201
             producto = db.session.get(
                 Productos, request.form.get("product_id"))
-            if not producto:
-                return jsonify({'msg': 'product not found'}), 404
-            producto.imagenes = upload_result["secure_url"]
-       
-
+            if producto:
+                producto.imagenes = upload_result["secure_url"]
+                return jsonify({
+                            "url": upload_result["secure_url"],
+                            "public_id": upload_result["public_id"]
+                        }), 201
+        
          # return the url of the uploaded image to be used in the frontend and/or stored in the database
         if request.form.get("upload_preset") == "tienda":
             stm = select(Tienda).where(Tienda.owner_id == id)
             tienda = db.session.execute(stm).scalars().all()
             tienda = tienda[0]
             tienda.logo_url = upload_result["secure_url"]
-        
+
         db.session.commit()
 
         return jsonify({
@@ -173,6 +217,7 @@ def handle_crear_tienda():
         db.session.rollback()
         return jsonify({'success': False, 'msg': 'error creando tienda', 'error': str(e)}), 201
 
+
 @api.route('/editar_tienda', methods=['PUT'])
 @jwt_required()
 def handle_editar_tienda():
@@ -181,17 +226,17 @@ def handle_editar_tienda():
     tienda = db.session.execute(stm).scalar_one_or_none()
     body = request.get_json()
 
-    tienda.cif = body.get('cif'),
-    tienda.nombre_tienda = body.get('nombre_tienda'),
-    tienda.descripcion_tienda = body.get('descripcion_tienda'),
-    tienda.categoria_principal = body.get('categoria_principal'),
-    tienda.telefono_comercial = body.get('telefono_comercial'),
+    tienda.cif = body.get('cif', tienda.cif),
+    tienda.nombre_tienda = body.get('nombre_tienda', tienda.nombre_tienda),
+    tienda.descripcion_tienda = body.get('descripcion_tienda', tienda.descripcion_tienda),
+    tienda.categoria_principal = body.get('categoria_principal', tienda.categoria_principal),
+    tienda.telefono_comercial = body.get('telefono_comercial', tienda.telefono_comercial),
     tienda.logo_url = body.get(
         'logo_url', 'https://res.cloudinary.com/dqupxyrvx/image/upload/v1762548593/tfw6vouoljoki3eq75wp.png'),
     tienda.owner_id = id,
-    tienda.redes_sociales = body.get('redes_sociales'),
+    tienda.redes_sociales = body.get('redes_sociales', tienda.redes_sociales),
     db.session.commit()
-    return jsonify({'success': True, 'msg': 'Tienda editada con exito','tienda':tienda.serialize()}), 201
+    return jsonify({'success': True, 'msg': 'Tienda editada con exito', 'tienda': tienda.serialize()}), 201
 
 
 @api.route('/mis_productos', methods=['GET'])
@@ -225,7 +270,7 @@ def handle_crear_producto():
                              )
     db.session.add(new_producto)
     db.session.commit()
-    return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente', 'tienda': tienda.serialize() }), 201
+    return jsonify({'success': True, 'msg': 'Nuevo producto producteado correctamente', 'tienda': tienda.serialize()}), 201
 
 
 @api.route('/recibir_productos', methods=['GET'])
@@ -236,5 +281,3 @@ def handle_recibir_productos():
         return jsonify({'msg': 'no hay productos'}), 404
     producto = [p.serialize() for p in producto]
     return jsonify({'producto': producto}), 200
-
-

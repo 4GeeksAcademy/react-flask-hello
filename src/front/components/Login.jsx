@@ -4,7 +4,7 @@ import AuthServices from "../services/auth.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Login = () => {
-    const {store, dispatch} = useGlobalReducer()
+    const { store, dispatch } = useGlobalReducer()
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         email: '',
@@ -12,8 +12,8 @@ const Login = () => {
     })
 
     const handleChange = e => {
-        const {value, name} = e.target;
-        setFormData({...formData, [name]: value});
+        const { value, name } = e.target;
+        setFormData({ ...formData, [name]: value });
     }
 
 
@@ -27,8 +27,8 @@ const Login = () => {
                 localStorage.setItem('user', JSON.stringify(data.user))
                 localStorage.setItem('producto', JSON.stringify(data.user.tiendas[0].productos))
                 console.log(data)
-                dispatch({type: 'login', payload: data.user})
-                return navigate('/perfil')   
+                dispatch({ type: 'login', payload: data.user })
+                return navigate('/perfil')
             }
         })
     }
@@ -77,7 +77,7 @@ const Login = () => {
                         Login
                     </button>
                     <p className="text-center mt-3 mb-0">
-                        
+
                         <a href="/" className="text-decoration-none">
                             ¿Olvidaste la contraseña?
                         </a>
@@ -85,10 +85,10 @@ const Login = () => {
 
                 </form>
 
-                
+
 
                 <p className="text-center mt-3 mb-0">
-                    
+
                     <Link to="/register" type="submit" className="btn btn-danger w-100 mb-3">
                         Crear Cuenta
                     </Link>

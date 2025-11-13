@@ -1,10 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const SingleProduct = ({producto}) => {
-  const { store, dispatch } = useGlobalReducer();
-  console.log(producto)
   return (
     <>
     
@@ -47,8 +44,7 @@ export const SingleProduct = ({producto}) => {
               <p className="mb-1 small">Dimensiones {producto?.dimensiones}</p>
             <p className="fw-bold mb-1">$ {producto?.precio.toFixed(2)}</p>
             <div className="d-grid gap-2">
-              <button className="btn btn-outline-danger">Tienda</button>
-              <button className="btn btn-outline-danger">Guardar</button>
+              <Link className="btn btn-outline-danger" to={"/tienda/"+producto?.tienda_id}>Tienda</Link>
               <button className="btn btn-danger">Comprar</button>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Productos, Tienda
 from api.utils import generate_sitemap, APIException
@@ -5,15 +6,15 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import select
-
+import stripe
 import cloudinary
 import cloudinary.uploader
-
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+stripe.api_key = os.getenv('STRIPE_SECRET')
 
 
 # cloudinary route

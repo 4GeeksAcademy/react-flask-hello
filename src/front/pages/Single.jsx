@@ -12,23 +12,21 @@ export const Single = props => {
   const { store } = useGlobalReducer()
   // Retrieve the 'theId' URL parameter using useParams hook.
   const { theId } = useParams()
-  const [producto, setProducto ] = useState()
-  useEffect(()=>{
+  const [producto, setProducto] = useState()
+  useEffect(() => {
     if (store.producto) {
-
-      let myProds = store.producto.filter(el=> el.id == theId) 
+      let myProds = store.producto.filter(el => el.id == theId)
       if (myProds[0]) return setProducto(myProds[0])
-      }
-    let globals = store.productos_generales.filter(el=> el.id == theId)
-    console.log(store.productos_generales)
-    console.log(globals)
+    }
+    let globals = store.productos_generales.filter(el => el.id == theId)
+
     if (globals) return setProducto(globals[0])
-  },[])
+  }, [])
 
 
   return (
     <div className="container text-center">
-      <SingleProduct producto={producto}/>
+      <SingleProduct producto={producto} />
     </div>
   );
 };

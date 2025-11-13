@@ -1,6 +1,7 @@
 // Import necessary hooks and functions from React.
-import { useContext, useReducer, createContext } from "react";
+import { useContext, useReducer, createContext, useEffect } from "react";
 import storeReducer, { initialStore } from "../store"  // Import the reducer and the initial state.
+import productServices from "../services/product.services";
 
 // Create a context to hold the global state of the application
 // We will call this global state the "store" to avoid confusion while using local states
@@ -12,6 +13,14 @@ export function StoreProvider({ children }) {
     // Initialize reducer with the initial state.
     const [store, dispatch] = useReducer(storeReducer, initialStore())
     // Provide the store and dispatch method to all child components.
+    useEffect(() => {
+        if (!localStorage.getItem("productosGenerales")) {
+            productServices.recibirProductos().then(data => {
+                dispatch({ type: 'productos_generales', payload: data.producto })
+                localStorage.setItem('productosGenerales', JSON.stringify(data.producto))
+            })
+        }
+    }, [])
     return <StoreContext.Provider value={{ store, dispatch }}>
         {children}
     </StoreContext.Provider>

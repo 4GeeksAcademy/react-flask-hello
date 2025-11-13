@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import CloudinaryComponent from "./cloudinary";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import productServices from "../services/product.services";
@@ -7,17 +7,34 @@ import productServices from "../services/product.services";
 export const CreateProduct = () => {
 
 
-  const {store,dispatch} = useGlobalReducer();
-  const [productData, setProductData] = useState(store.producto);
+  const { store, dispatch } = useGlobalReducer();
+  const [productData, setProductData] = useState(store.selected_producto || {
+    nombre_producto: "",
+    descripcion_producto: "",
+    precio: "",
+    categoria_producto: "",
+    peso: "",
+    dimensiones: "",
+    imagenes: "",
+  });
 
+  const handleChange = e => {
+    const { name, value } = e.target
+    setProductData({ ...productData, [name]: value })
+  }
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     productServices.crearProducto(productData).then((data) => {
-      if (data.producto) dispatch({type: "crear_mis_productos", payload: data.producto})
+      console.log('+++++++------> ', data)
+      if (data.tienda) {
+        localStorage.setItem('tienda', JSON.stringify(data.tienda))
+        if (data.tienda.productos) localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
+        dispatch({ type: "crear_mis_productos", payload: data.tienda })
+        
+      }
     });
-    alert("Formulario de producto enviado (solo vista previa).");
   };
 
   return (
@@ -49,6 +66,9 @@ export const CreateProduct = () => {
                 id="nombre"
                 placeholder=""
                 required
+                name="nombre_producto"
+                onChange={handleChange}
+                value={productData.nombre_producto}
               />
             </div>
 
@@ -56,7 +76,7 @@ export const CreateProduct = () => {
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
               </label>
-             <CloudinaryComponent product={true}/>
+              <CloudinaryComponent product={true} />
               <div className="form-text">
                 Formatos admitidos: JPG, PNG, WEBP — Máx. 5MB
               </div>
@@ -71,6 +91,9 @@ export const CreateProduct = () => {
                 className="form-control border border-danger"
                 rows="3"
                 placeholder="Agrega una breve descripción del producto o servicio..."
+                name="descripcion_producto"
+                onChange={handleChange}
+                value={productData.descripcion_producto}
               ></textarea>
             </div>
           </div>
@@ -86,8 +109,12 @@ export const CreateProduct = () => {
                 <label htmlFor="categoria" className="form-label fw-semibold">
                   Categoría
                 </label>
-                <select id="categoria" className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
-                  <option value="" disabled>
+                <select id="categoria"
+                  name="categoria_producto"
+                  onChange={handleChange}
+                  value={productData.categoria_producto}
+                  className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
+                  <option value="" disabled >
                     Selecciona una categoría
                   </option>
                   <option value="ropa">Ropa</option>
@@ -109,6 +136,9 @@ export const CreateProduct = () => {
                   className="form-control border border-danger"
                   id="dimensiones"
                   placeholder="Ej: 10x20x100 cm"
+                  name="dimensiones"
+                  onChange={handleChange}
+                  value={productData.demensiones}
                 />
               </div>
 
@@ -123,6 +153,9 @@ export const CreateProduct = () => {
                   className="form-control border border-danger"
                   id="peso"
                   placeholder="Ej: 0.25"
+                  name="peso"
+                  onChange={handleChange}
+                  value={productData.peso}
                 />
               </div>
 
@@ -136,6 +169,9 @@ export const CreateProduct = () => {
                   className="form-control border border-danger"
                   id="precio"
                   placeholder="Ej: 25.99"
+                  name="precio"
+                  onChange={handleChange}
+                  value={productData.precio}
                 />
               </div>
             </div>

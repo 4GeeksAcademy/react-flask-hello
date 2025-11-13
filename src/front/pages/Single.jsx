@@ -2,29 +2,33 @@
 import { Link, useParams } from "react-router-dom";  // To use link for navigation and useParams to get URL parameters
 import PropTypes from "prop-types";  // To define prop types for this component
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Import a custom hook for accessing the global state
+import { SingleProduct } from "../components/singleProduct";
+import { useEffect, useState } from "react";
 
 
 // Define and export the Single component which displays individual item details.
 export const Single = props => {
   // Access the global state using the custom hook.
   const { store } = useGlobalReducer()
-
   // Retrieve the 'theId' URL parameter using useParams hook.
   const { theId } = useParams()
-  const singleTodo = store.todos.find(todo => todo.id === parseInt(theId));
+  const [producto, setProducto ] = useState()
+  useEffect(()=>{
+    if (store.producto) {
+
+      let myProds = store.producto.filter(el=> el.id == theId) 
+      if (myProds[0]) return setProducto(myProds[0])
+      }
+    let globals = store.productos_generales.filter(el=> el.id == theId)
+    console.log(store.productos_generales)
+    console.log(globals)
+    if (globals) return setProducto(globals[0])
+  },[])
+
 
   return (
     <div className="container text-center">
-      {/* Display the title of the todo element dynamically retrieved from the store using theId. */}
-      <h1 className="display-4">Todo: {singleTodo?.title}</h1>
-      <hr className="my-4" />  {/* A horizontal rule for visual separation. */}
-
-      {/* A Link component acts as an anchor tag but is used for client-side routing to prevent page reloads. */}
-      <Link to="/">
-        <span className="btn btn-primary btn-lg" href="#" role="button">
-          Back home
-        </span>
-      </Link>
+      <SingleProduct producto={producto}/>
     </div>
   );
 };

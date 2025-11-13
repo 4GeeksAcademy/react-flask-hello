@@ -12,15 +12,15 @@ export const Header = () => {
       <div className="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
         <div className="hero-text">
           <h1>
-            Shop Smart with <span>Spidys</span>
+            Compra inteligente con <span>Spidy's</span>
           </h1>
           <p>
-            Experience seamless online shopping with our curated collection. Browse products, manage your cart, and enjoy a personalized shopping experience.
+            Experimenta la mejor manera de crear y comprar online con Spidy's.
           </p>
 
           {/* Botones */}
           <div className="d-flex flex-column flex-sm-row gap-2 gap-sm-3 justify-content-center justify-content-lg-start hero-buttons">
-            <Link to="/explorar" className="btn primary">Browse Products ➝</Link>
+            <Link to="/explorar" className="btn primary">Productos ➝</Link>
             <Link to="/login" className="btn secondary">
               <i className="fas fa-user me-2"></i> Login to Account
             </Link>
@@ -55,8 +55,8 @@ export const Header = () => {
           <div className="checkout-card position-absolute top-50 start-50 translate-middle d-flex align-items-center">
             <i className="fas fa-shopping-cart cart-icon me-2"></i>
             <div>
-              <h4>Easy Checkout</h4>
-              <p>Secure & Fast</p>
+              <h4>Pagos Fáciles</h4>
+              <p>Seguros Veloces</p>
             </div>
           </div>
         </div>

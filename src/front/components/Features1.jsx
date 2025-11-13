@@ -1,5 +1,6 @@
 import React from "react";
 import "./Features1.css";
+import { Link } from "react-router-dom";
 
 export const Features1 = () => {
   return (
@@ -13,38 +14,39 @@ export const Features1 = () => {
         </div>
 
         <div className="features1-content">
-          <h2>Your Complete Shopping Experience</h2>
+          <h2>Tu completa experiencia de compra</h2>
           <p>
-            From browsing to checkout, we’ve streamlined every step of your shopping journey to make it effortless and enjoyable.
+            Desde la busqueda al pago , hemos prestado atención a cada detalle.
           </p>
 
           <ul>
             <li>
               <span className="number">1</span>
               <div>
-                <h4>Browse Products</h4>
-                <p>Explore our curated collection and find exactly what you need.</p>
+                <h4>Busca Productos</h4>
+                <p>Explora el catálogo y encuentra lo que buscas.</p>
               </div>
             </li>
 
             <li>
               <span className="number">2</span>
               <div>
-                <h4>Add to Cart</h4>
-                <p>Easily manage your selections with our smart shopping cart.</p>
+                <h4>Utiliza un QR para compartir el producto</h4>
+                <p>Comparte por placer o para expandir tu comercio.</p>
               </div>
             </li>
 
             <li>
               <span className="number">3</span>
               <div>
-                <h4>Secure Checkout</h4>
-                <p>Complete your purchase with confidence using our secure system.</p>
+                <h4>Pagos Seguros</h4>
+                <p>Completa tus compras con la seguridad que mereces.</p>
               </div>
             </li>
           </ul>
-
-          <button className="features1-button">Start Shopping Now</button>
+          <Link className="btn btn-danger" to="/explorar">Empieza a comprar</Link>
+          
+          
         </div>
       </div>
     </section>

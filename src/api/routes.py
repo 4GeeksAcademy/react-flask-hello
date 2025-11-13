@@ -236,3 +236,5 @@ def handle_recibir_productos():
         return jsonify({'msg': 'no hay productos'}), 404
     producto = [p.serialize() for p in producto]
     return jsonify({'producto': producto}), 200
+
+

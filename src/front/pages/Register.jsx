@@ -33,7 +33,11 @@ const Register = () => {
     }
   };
 
-  return <Form mode="register" onSubmit={handleSignup} />;
+  return (
+    <div className="register-page">
+      <Form mode="register" onSubmit={handleSignup} />
+    </div>
+  );
 };
 
 export default Register;

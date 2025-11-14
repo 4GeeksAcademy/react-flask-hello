@@ -28,7 +28,7 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
 
-      navigate("/private", {
+      navigate("/config", {
         state: { successMessage: "Inicio de sesión exitoso" },
       });
     } catch (error) {

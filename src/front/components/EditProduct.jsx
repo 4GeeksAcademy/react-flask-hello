@@ -1,43 +1,35 @@
 import React, { useState } from "react";
-import CloudinaryComponent from "./cloudinary";
-import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
 import productServices from "../services/product.services";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import CloudinaryComponent from "./cloudinary";
 
+const EditProduct = () => {
 
-export const CreateProduct = () => {
-
-
-  const { store, dispatch } = useGlobalReducer();
-  const [productData, setProductData] = useState(store.selected_producto || {
-    nombre_producto: "",
-    descripcion_producto: "",
-    precio: "",
-    categoria_producto: "",
-    peso: "",
-    dimensiones: "",
-    imagenes: "",
-  });
-
-  const handleChange = e => {
-    const { name, value } = e.target
-    setProductData({ ...productData, [name]: value })
-  }
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    productServices.crearProducto(productData).then((data) => {
-      console.log('+++++++------> ', data)
-      if (data.tienda) {
-        localStorage.setItem('tienda', JSON.stringify(data.tienda))
-        if (data.tienda.productos) localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
-        dispatch({ type: "crear_mis_productos", payload: data.tienda })
-
-      }
-    });
-  };
-
-  return (
+    const { store, dispatch } = useGlobalReducer();
+    const navigate = useNavigate();
+    const [producto, setProducto] = useState(store.producto);
+    
+    const handleEdit = (e) => {
+        e.preventDefault();
+        if (store.producto?.nombre_producto) {
+            productServices.editar_productos(producto).then((data) => {
+                if (data.productos) {
+                    dispatch({type: "editar_producto", payload: data.productos})
+                    localStorage.setItem('productos',JSON.stringify(data.productos))
+                    navigate('/mi_tienda')
+                }
+                if (!data.success) {
+                    alert(data.error)
+                }
+            })
+        }
+    }
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setProducto({ ...producto, [name]: value })
+    }
+    return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
       <div
         className="card shadow-lg border-0 rounded-4 p-4"
@@ -50,10 +42,10 @@ export const CreateProduct = () => {
               "linear-gradient(90deg, #ff0000 0%, #ff7a00 50%, #fff200 100%)",
           }}
         >
-          <h3 className="fw-semibold py-2 mb-0">🛒Crear productos</h3>
+          <h3 className="fw-semibold py-2 mb-0">🛒Editar productos</h3>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleEdit}>
           {/* --- Bloque superior --- */}
           <div className="mb-4">
             <div className="mb-3">
@@ -68,17 +60,17 @@ export const CreateProduct = () => {
                 required
                 name="nombre_producto"
                 onChange={handleChange}
-                value={productData.nombre_producto}
+                value={producto.nombre_producto}
               />
             </div>
 
             <div className="mb-3 border border-danger rounded p-3" >
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
-              <img src={productData.imagenes} alt={productData.nombre_producto || 'carga una imagen'} />
+              <img src={producto.imagenes} alt={producto.nombre_producto || 'carga una imagen'} />
               </label>
 
-              <CloudinaryComponent product={true} returnUrl={setProductData} state={productData} product_id={productData.id} />
+              <CloudinaryComponent product={true} returnUrl={setProducto} state={producto} product_id={producto.id} />
               <div className="form-text">
                 Formatos admitidos: JPG, PNG, WEBP — Máx. 5MB
               </div>
@@ -95,7 +87,7 @@ export const CreateProduct = () => {
                 placeholder="Agrega una breve descripción del producto o servicio..."
                 name="descripcion_producto"
                 onChange={handleChange}
-                value={productData.descripcion_producto}
+                value={producto.descripcion_producto}
               ></textarea>
             </div>
           </div>
@@ -114,7 +106,7 @@ export const CreateProduct = () => {
                 <select id="categoria"
                   name="categoria_producto"
                   onChange={handleChange}
-                  value={productData.categoria_producto}
+                  value={producto.categoria_producto}
                   className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
                   <option value="" disabled >
                     Selecciona una categoría
@@ -140,7 +132,7 @@ export const CreateProduct = () => {
                   placeholder="Ej: 10x20x100 cm"
                   name="dimensiones"
                   onChange={handleChange}
-                  value={productData.demensiones}
+                  value={producto.demensiones}
                 />
               </div>
 
@@ -157,7 +149,7 @@ export const CreateProduct = () => {
                   placeholder="Ej: 0.25"
                   name="peso"
                   onChange={handleChange}
-                  value={productData.peso}
+                  value={producto.peso}
                 />
               </div>
 
@@ -173,7 +165,7 @@ export const CreateProduct = () => {
                   placeholder="Ej: 25.99"
                   name="precio"
                   onChange={handleChange}
-                  value={productData.precio}
+                  value={producto.precio}
                 />
               </div>
             </div>
@@ -192,6 +184,5 @@ export const CreateProduct = () => {
       </div>
     </div>
   );
-};
-
-
+}
+export default EditProduct

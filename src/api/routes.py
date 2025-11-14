@@ -281,3 +281,31 @@ def handle_recibir_productos():
         return jsonify({'msg': 'no hay productos'}), 404
     producto = [p.serialize() for p in producto]
     return jsonify({'producto': producto}), 200
+
+@api.route('/editar_productos', methods=['PUT'])
+@jwt_required()
+def handle_editar_productos():
+    id = get_jwt_identity()
+    stm = select(Productos).where(Productos.tienda_id == id)
+    productos = db.session.execute(stm).scalar_one_or_none()
+    body = request.get_json()
+
+    productos.tienda_id = body.get('tienda_id',productos.tienda_id),
+    productos.nombre_producto = body.get('nombre_producto',productos.nombre_producto),
+    productos.descripcion_producto = body.get('descripcion_producto',productos.descripcion_producto),
+    productos.precio = body.get('precio',productos.precio),
+    productos.stock = body.get('stock',productos.stock),
+    productos.categoria_producto = body.get('categoria_producto',productos.categoria_producto),
+    productos.peso = body.get('peso',productos.peso),
+    productos.dimensiones = body.get('dimensiones',productos.dimensiones),
+    productos.imagenes = body.get('imagenes',productos.imagenes),
+    productos.estado = body.get('estado',productos.estado),
+    db.session.commit()
+    return jsonify({'success': True, 'msg': 'Producto editado con exito', 'tienda': productos.serialize()}), 201
+
+@api.route('/delete_productos', method=['DELETE'])
+@jwt_required()
+def handle_delete_productos():
+    id = get_jwt_identity()
+    
+    

@@ -18,6 +18,7 @@ import { CrearTiendaPage } from "./pages/CrearTiendaPage"; import { PaginaTienda
 import { Payment } from "./pages/Payment";
 import CancelPayment from "./pages/CancelPayment";
 import SuccessPayment from "./pages/Success";
+import EditProductPage from "./pages/EditProductPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +47,7 @@ export const router = createBrowserRouter(
       <Route path="/createeditclient" element={<CreateEditClient />} />
       <Route path="/cancel" element={<CancelPayment />} />
       <Route path="/success" element={<SuccessPayment />} />
+      <Route path="/edit_product" element={<EditProductPage/>} />
     </Route>
   )
 );

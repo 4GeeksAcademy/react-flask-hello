@@ -26,7 +26,7 @@ console.log(producto)
           <div className="col-md-8">
             {/* Imagen */}
             <div className="bg-danger bg-opacity-25 rounded d-flex flex-column align-items-center justify-content-center mb-3 me-3" style={{ height: "300px", width: "300px" }}>
-              <p className="fw-bold">Images</p>
+              
               {producto?.imagenes != '' && <img src={producto?.imagenes} alt={producto?.nombre_producto} />}
 
             </div>

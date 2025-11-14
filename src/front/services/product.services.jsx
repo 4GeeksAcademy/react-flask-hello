@@ -58,6 +58,25 @@ productServices.recibirProductos = async () => {
     }
 }
 
+productServices.editar_productos = async (formData) => {
+    try {
+        const resp = await fetch(url + '/api/editar_productos', {
+            method: "PUT",
+            headers: {
+                "Content-Type": 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(formData)
+        })
+        if (!resp.ok) throw new Error('error editing producto')
+        
+        const data = resp.json()
+        return data
+
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 

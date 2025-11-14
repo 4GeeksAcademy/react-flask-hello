@@ -74,18 +74,28 @@ export const Tienda = () => {
                 store.tienda?.productos.map((prod) => (
                   //actualizar link para que el atributo to tenga la direccion donde se vean
                   //los detalles del producto
-                  <Link className="nav-link" key={prod.id} to={"/single/"+prod.id}>
-
-                    <div  className="card my-3 shadow-sm border-1 d-flex align-content-center  flex-row">
+                  <>
+                    <div onClick={()=>navigate('/single/' + prod.id)} className="card my-3 shadow-sm border-1 d-flex align-content-center  flex-row">
                       <img src={prod.imagenes} alt={prod.nombre_producto} className="rounded-start p-0 m-0" width={'250px'} />
                       <div className="text-center px-3">
                         <h6 className="text-start mt-3">{prod.nombre_producto}</h6>
                         <p className="p-0 m-0 text-start">dimensiones: ${prod.dimensiones}</p>
 
                         <p className="p-0 m-0 text-start mb-3">precio: ${prod.precio.toFixed(2)}</p>
+                         
+                      </div>
+                      <div className="d-flex justify-content-end">
+                        
                       </div>
                     </div>
-                  </Link>
+                    <button className="btn btn-danger mb3" onClick={()=>navigate('/edit_product')}>Editar <span className="fa fa-pen"></span> </button>
+                    <button className="btn btn-danger mb3 ms-3" onClick={()=>navigate('/edit_product')}><span className="fa fa-trash"></span> </button>
+                  </>
+                    
+                  
+                  
+                  //<button className="btn btn-danger mb3" onClick={()=>navigate('/edit_product')}>Editar <span className="fa fa-pen"></span> </button>
+                  
                 ))
               ) : (
                 <p className="text-center text-muted">No hay productos aún.</p>

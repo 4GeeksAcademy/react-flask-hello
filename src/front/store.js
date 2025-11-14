@@ -56,6 +56,12 @@ export default function storeReducer(store, action = {}) {
         tienda: action.payload,
         producto: action.payload.productos,
       };
+    
+    case "editar_productos":
+      return {
+        ...store,
+        producto: action.payload.productos,
+      }
 
     case "editar_tienda":
       return {

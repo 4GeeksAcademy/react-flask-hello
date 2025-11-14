@@ -28,7 +28,7 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
 
-      navigate("/config", {
+      navigate("/dashboard", {
         state: { successMessage: "Inicio de sesión exitoso" },
       });
     } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Form.css";
-
+import { Link } from "react-router-dom";
 const Form = ({ mode, onSubmit, successMessage, userData }) => {
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState("");
@@ -149,6 +149,11 @@ const Form = ({ mode, onSubmit, successMessage, userData }) => {
                 {mode === "login" && "Iniciar Sesión"}
                 {mode === "config" && "Guardar Cambios"}
               </button>
+              {mode === "config" && (
+                <Link to="/dashboard" className="btn btn-danger w-100 mb-3">
+                  Cancelar
+                </Link>
+              )}
             </form>
           </div>
         </div>

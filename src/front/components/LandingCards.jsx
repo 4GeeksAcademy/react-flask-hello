@@ -15,7 +15,7 @@ const cards = [
   },
   { 
     title: "Integración con Google Maps",
-    desc: "Nunca te perderás: Google Maps te guía en cada tarea.",
+    desc: "Nunca te perderás: Google Maps te guía en cada tarea y en cada rincón.",
     img: "https://i.blogs.es/635f55/maps/1366_2000.jpg"
   },
   { 
